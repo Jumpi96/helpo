@@ -46,9 +46,3 @@ test:
     - npm run test
   post:
     - pipenv run coverage html -d $CIRCLE_ARTIFACTS
-
-# This is necessary for the boilerplate's CI. You can remove these lines
-general:
-  branches:
-    ignore:
-- boilerplate-release

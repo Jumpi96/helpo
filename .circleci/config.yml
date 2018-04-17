@@ -1,11 +1,12 @@
-machine:  # remeber to update those!
-  python:
-    version: 3.6.0
-  node:
-    version: 6.1.0
-  environment:
-    # makes default virtualenv be ignored by pipenv avoiding dependencies conflict
-    PIPENV_IGNORE_VIRTUALENVS: True
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circle-ci/python:3.6.0
+      - image: circle-ci/node:6.1.0
+    environment:
+      # makes default virtualenv be ignored by pipenv avoiding dependencies conflict
+      PIPENV_IGNORE_VIRTUALENVS: True
 
 dependencies:
   pre:

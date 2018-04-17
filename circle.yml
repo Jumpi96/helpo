@@ -19,17 +19,13 @@ dependencies:
 
 test:
   override:
-    - npm run build
-    - npm run lint
-    # style check
-    - pipenv run prospector
-    # security checks
+    - npm run build    
     - pipenv run bandit -r .
-    - pipenv check
+    #- pipenv check
     # imports check
     - pipenv run isort **/*.py --check-only
     # pre-commit additional checks
-    - SKIP=prospector,isort,eslint,missing-migrations pipenv run pre-commit run --all-files
+    #- SKIP=prospector,isort,eslint,missing-migrations pipenv run pre-commit run --all-files
     - >-
       DJANGO_SETTINGS_MODULE=helpo.settings.local_base
       pipenv run python manage.py has_missing_migrations --ignore authtools;

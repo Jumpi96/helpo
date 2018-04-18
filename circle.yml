@@ -27,7 +27,7 @@ test:
     # pre-commit additional checks
     #- SKIP=prospector,isort,eslint,missing-migrations pipenv run pre-commit run --all-files
     - >-
-      DJANGO_SETTINGS_MODULE=helpo.settings.local_base
+      DJANGO_SETTINGS_MODULE=helpo.settings.test
       pipenv run python manage.py has_missing_migrations --ignore authtools;
     - >-
       DJANGO_SETTINGS_MODULE=helpo.settings.production

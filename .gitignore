@@ -1,7 +1,7 @@
 *.pyc
 /db.sqlite3
 .DS_Store
-# .env
+.env
 # */settings/local.py
 /staticfiles/*
 /mediafiles/*

@@ -30,6 +30,11 @@ Created with [Django React Boilerplate](https://github.com/vintasoftware/django-
 - Run on CMD: ``pipenv install --dev``
 - Run on CMD: ``pipenv shell``
 - Run on CMD: ``python manage.py makemigrations``
+- Run on CMD: 
+	``npm update``
+	``npm update --save`
+	``npm install``
+	``npm run start``
 
 
 

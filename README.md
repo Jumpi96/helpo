@@ -28,5 +28,5 @@ Created with [Django React Boilerplate](https://github.com/vintasoftware/django-
 - Create file with name ``.env`` and text ``DJANGO_SETTINGS_MODULE="helpo.settings.local"`` on project root
 - Create file with name ``local.py`` and text ``from .local_base import *`` on ``helpo/helpo/settings``
 - Only if you installed Postgre: on pgAdmin, open Servers, PostgreSQL 10, right click on Databases and create db with name:
-    ``db-help``
+    ``db-helpo``
 

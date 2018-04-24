@@ -15,17 +15,17 @@ dependencies:
     - sudo apt-get install git-lfs --upgrade
   post:
     - pip install requests pipenv --upgrade
-    - pipenv install --dev
+    - cd helpo-api && pipenv install --dev
 
 test:
   override:
-    - npm run build
-      pwd: helpo-web
+    - cd helpo-web && npm run build
     - >-
+      cd helpo-api
       DJANGO_SETTINGS_MODULE=helpo.settings.test
       pipenv run python manage.py has_missing_migrations --ignore authtools;
-        pwd: helpo-api
     - >-
+      cd helpo-api
       DJANGO_SETTINGS_MODULE=helpo.settings.production
       SECRET_KEY=$(python -c 'import uuid; print(uuid.uuid4().hex + uuid.uuid4().hex)')
       DATABASE_URL='sqlite:///'
@@ -34,11 +34,7 @@ test:
       SENDGRID_PASSWORD='test'
       REDIS_URL='redis://'
       pipenv run python manage.py check --deploy
-        pwd: helpo-api
-    - pipenv run coverage run manage.py test
-      pwd: helpo-api
-    - npm run test
-      pwd: helpo-web
+    - cd helpo-api && pipenv run coverage run manage.py test
+    - cd helpo-web && npm run test
   post:
-    - pipenv run coverage html -d $CIRCLE_ARTIFACTS
-      pwd: helpo-api
+    - cd helpo-api && pipenv run coverage html -d $CIRCLE_ARTIFACTS

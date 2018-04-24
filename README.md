@@ -28,15 +28,18 @@ pip install pipenv
 ```
 ### Setup
 - On pgAdmin, open Servers, PostgreSQL 10, right click on Databases and create db with name: `db-helpo`
-- On project root, `helpo/`:
+- On project folder `helpo-api/`:
   - Create file with name `.env` and text `DJANGO_SETTINGS_MODULE="helpo.settings.local"`
-  - Run on CMD: 
+- Run on `helpo-api/`: 
 ```
 pipenv install --dev
 pipenv shell
 python manage.py makemigrations
 python manage.py migrate
 python manage.py runserver
+```
+- Run on `helpo-web/`: 
+```
 npm update
 npm update --save
 npm install

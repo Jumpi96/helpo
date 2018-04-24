@@ -19,13 +19,9 @@ dependencies:
 
 test:
   override:
-    - npm run build    
+    #- npm run build    
     - pipenv run bandit -r .
-    #- pipenv check
-    # imports check
     - pipenv run isort **/*.py --check-only
-    # pre-commit additional checks
-    #- SKIP=prospector,isort,eslint,missing-migrations pipenv run pre-commit run --all-files
     - >-
       DJANGO_SETTINGS_MODULE=helpo.settings.test
       pipenv run python manage.py has_missing_migrations --ignore authtools;
@@ -39,6 +35,6 @@ test:
       REDIS_URL='redis://'
       pipenv run python manage.py check --deploy
     - pipenv run coverage run manage.py test
-    - npm run test
+    #- npm run test
   post:
     - pipenv run coverage html -d $CIRCLE_ARTIFACTS

@@ -106,13 +106,13 @@ STATICFILES_DIRS = (
 WEBPACK_LOADER = {
     'DEFAULT': {
         'CACHE': False,  # on DEBUG should be False
-        'STATS_FILE': base_dir_join('webpack-stats.json'),
+        'STATS_FILE': base_dir_join('helpo-web/webpack-stats.json'),
         'POLL_INTERVAL': 0.1,
         'IGNORE': ['.+\.hot-update.js', '.+\.map']
     },
     'JQUERY': {
         'BUNDLE_DIR_NAME': 'bundles/',
-        'STATS_FILE': 'jquery-webpack-stats.json',
+        'STATS_FILE': base_dir_join('helpo-web/jquery-webpack-stats.json'),
     }
 }
 

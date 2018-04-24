@@ -16,6 +16,7 @@ dependencies:
   post:
     - pip install requests pipenv --upgrade
     - cd helpo-api && pipenv install --dev
+    - cd helpo-web && npm install
 
 test:
   override:

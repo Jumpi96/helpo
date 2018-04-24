@@ -19,12 +19,12 @@ dependencies:
 
 test:
   override:
-    #- npm run build    
-    - pipenv run bandit -r .
-    - pipenv run isort **/*.py --check-only
+    - npm run build
+      pwd: helpo-web
     - >-
       DJANGO_SETTINGS_MODULE=helpo.settings.test
       pipenv run python manage.py has_missing_migrations --ignore authtools;
+        pwd: helpo-api
     - >-
       DJANGO_SETTINGS_MODULE=helpo.settings.production
       SECRET_KEY=$(python -c 'import uuid; print(uuid.uuid4().hex + uuid.uuid4().hex)')
@@ -34,7 +34,11 @@ test:
       SENDGRID_PASSWORD='test'
       REDIS_URL='redis://'
       pipenv run python manage.py check --deploy
+        pwd: helpo-api
     - pipenv run coverage run manage.py test
-    #- npm run test
+      pwd: helpo-api
+    - npm run test
+      pwd: helpo-web
   post:
     - pipenv run coverage html -d $CIRCLE_ARTIFACTS
+      pwd: helpo-api

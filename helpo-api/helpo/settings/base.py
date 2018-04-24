@@ -102,17 +102,19 @@ STATICFILES_DIRS = (
     base_dir_join('assets'),
 )
 
+print (os.path.dirname(BASE_DIR) + '\helpo-web\jquery-webpack-stats.json')
+
 # Webpack
 WEBPACK_LOADER = {
     'DEFAULT': {
         'CACHE': False,  # on DEBUG should be False
-        'STATS_FILE': base_dir_join('helpo-web/webpack-stats.json'),
+        'STATS_FILE': os.path.dirname(BASE_DIR) + '\helpo-web\webpack-stats.json',
         'POLL_INTERVAL': 0.1,
         'IGNORE': ['.+\.hot-update.js', '.+\.map']
     },
     'JQUERY': {
         'BUNDLE_DIR_NAME': 'bundles/',
-        'STATS_FILE': base_dir_join('helpo-web/jquery-webpack-stats.json'),
+        'STATS_FILE': os.path.dirname(BASE_DIR) + '\helpo-web\jquery-webpack-stats.json',
     }
 }
 

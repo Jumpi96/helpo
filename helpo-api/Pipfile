@@ -28,6 +28,7 @@ celery = {extras = ["redis"]}
 django-model-utils = "*"
 django-js-reverse = "*"
 django-import-export = "*"
+djangorestframework = "*"
 python-decouple = "*"
 "psycopg2" = "*"
 brotlipy = "*"

@@ -9,6 +9,13 @@ services:
       POSTGRES_PASSWORD: postgres
     ports:
       - "5432:5432"
+  pgadmin:
+    image: thajeztah/pgadmin4
+    ports:
+      - "5050:5050"
+    restart: always
+    depends_on:
+      - db
   api:
     build: helpo-api/.
     command: >

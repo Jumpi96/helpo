@@ -7,20 +7,18 @@ Created with [Django React Boilerplate](https://github.com/vintasoftware/django-
 
 ## Conventions
 ### Coding
-- To be defined
+- **Python:** PEP 8 (https://www.python.org/dev/peps/pep-0008/)
+- **JavaScript:** AirBnb for React (https://github.com/airbnb/javascript/tree/master/react)
+- **HTML:** CodeGuide by Mark Otto (http://codeguide.co/)
+- **CSS:** Idiomatic CSS (https://github.com/necolas/idiomatic-css)
 ### Documenting
 - English or spanish accepted
 
-## Running
+## Running without Docker
 ### Prerequisites
 - Python 3.6.5: Full install, select "Add to PATH", for all users, including debugging binaries (select all options).
 - NodeJS and NPM LTS 8.11.1
-- Docker and latest pgAdmin if you have W10 Pro, MacOS or Linux:
-```
-docker pull postgres:latest
-docker run -d -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres --name db-helpo -p 5432:5432 --restart=always postgres
-```
-  - PostgreSQL 10.3.2 otherwise: Full install, select all options, password=postgres, port=5432, next.
+- PostgreSQL 10.3.2: Full install, select all options, password=postgres, port=5432, next.
 - Run CMD as Administrator and:
 ```
 python -m pip install --upgrade pip
@@ -45,6 +43,14 @@ npm update --save
 npm install
 npm run start
 ```
-
-
+## Running with Docker
+### Prerequisites
+- Install Docker.
+- From root: `docker-compose build`
+### Run
+- From root: `docker-compose up`
+  - For using pgAdmin4 (http://localhost:5050), *Create Server*.
+    - Name: postgres
+    - Host name: db
+    - Password: postgres
 

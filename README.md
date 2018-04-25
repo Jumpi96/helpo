@@ -47,6 +47,8 @@ npm run start
 ### Prerequisites
 - Install Docker.
 - From root: `docker-compose build`
+- On project folder `helpo-api/`:
+  - Create file with name `.env` and text `DJANGO_SETTINGS_MODULE="helpo.settings.docker"`
 ### Run
 - From root: `docker-compose up`
   - For using pgAdmin4 (http://localhost:5050), *Create Server*.

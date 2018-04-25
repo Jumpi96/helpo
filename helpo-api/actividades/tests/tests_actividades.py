@@ -5,10 +5,10 @@ from django.urls import reverse
 
 client = Client()
 
-class ExampleTestCase(TestCase):
+class BolasTestCase(TestCase):
 
     def setUp(self):
         self.a = 22
         
     def test_a_equals_22(self):
-        self.assertEqual(self.a, 22)
+        self.assertEqual(True, True)

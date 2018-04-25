@@ -36,9 +36,12 @@ INSTALLED_APPS = [
 
     'django_js_reverse',
     'import_export',
+    
+    'rest_framework',
 
     'common',
     'users',
+    'actividades',
 ]
 
 MIDDLEWARE = [

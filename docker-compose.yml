@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+  pgadmin:
+    image: thajeztah/pgadmin4
+    ports:
+      - "5050:5050"
+    restart: always
+    depends_on:
+      - db
+  api:
+    build: helpo-api/.
+    command: >
+      bash -c "python manage.py makemigrations && 
+          python manage.py migrate && 
+          python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/helpo-api/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+  web:
+    build: helpo-web/.
+    ports:
+    - "3000:3000"
+    volumes:
+      - .:/helpo-web/

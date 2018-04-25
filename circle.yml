@@ -15,7 +15,6 @@ dependencies:
     - sudo apt-get install git-lfs --upgrade
   post:
     - pip install requests pipenv --upgrade
-    - pip install codecov
     - cd helpo-api && pipenv install --dev
     - cd helpo-web && npm install
 
@@ -40,4 +39,4 @@ test:
     - cd helpo-web && npm run test
   post:
     - cd helpo-api && pipenv run coverage html -d $CIRCLE_ARTIFACTS
-    - codecov
+    - bash <(curl -s https://codecov.io/bash)

@@ -6,12 +6,12 @@ urlpatterns = [
     url(
         regex=r"^tipos_de_organizaciones/$",
         view=actividades_views.TipoDeOrganizacionCreateReadView.as_view(),
-        name="tipo_de_organizacion"
+        name="tipos_de_organizaciones"
     ),
     # {% url "api:tipos_de_organizaciones" tipo_de_organizacion.id %}
     url(
         regex=r"^tipos_de_organizaciones/(?P<id>[-\w]+)/$",
         view=actividades_views.TipoDeOrganizacionReadUpdateDeleteView.as_view(),
-        name="tipos_de_organizaciones"
+        name="tipo_de_organizacion"
     ),
 ]

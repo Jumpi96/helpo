@@ -7,7 +7,7 @@ from decouple import config
 
 
 if __name__ == "__main__":
-    settings_module = config('DJANGO_SETTINGS_MODULE', default=None)
+    settings_module = config('DJANGO_SETTINGS', default=None)
 
     if sys.argv[1] == 'test':
         if settings_module:

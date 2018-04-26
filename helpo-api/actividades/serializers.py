@@ -14,4 +14,4 @@ class OrganizacionSerializer(serializers.HyperlinkedModelSerializer):
 class TipoDeOrganizacionSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = TipoDeOrganizacion
-        fields = ('nombre')
+        fields = ('nombre',)

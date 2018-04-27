@@ -12,7 +12,7 @@ baseConfig[1].entry = [
   'bootstrap-loader',
   'whatwg-fetch',
   'babel-polyfill',
-  './assets/js/index',
+  './src/index',
 ]
 
 baseConfig[0].output['publicPath'] = 'http://localhost:3000/assets/bundles/';

@@ -11,7 +11,7 @@ baseConfig[1].entry = [
   'bootstrap-loader/extractStyles',
   'whatwg-fetch',
   'babel-polyfill',
-  './assets/js/index.js',
+  './src/index.js',
 ]
 
 baseConfig[1].output = {

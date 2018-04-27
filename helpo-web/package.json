@@ -17,15 +17,15 @@
       ".*": "<rootDir>/node_modules/jest-css-modules"
     },
     "collectCoverageFrom": [
-      "assets/js/**/*.{js,jsx}"
+      "src/**/*.{js,jsx}"
     ],
     "coveragePathIgnorePatterns": [
-      "assets/js/store.js",
-      "assets/js/index.js",
-      "assets/js/jquery-index.js",
-      "assets/js/constants/*",
-      "assets/js/pages/*",
-      "assets/js/tests/*"
+      "src/store.js",
+      "src/index.js",
+      "src/jquery-index.js",
+      "src/constants/*",
+      "src/pages/*",
+      "src/tests/*"
     ],
     "coverageThreshold": {
       "global": {
@@ -34,8 +34,8 @@
     },
     "modulePaths": [
       "assets",
-      "assets/js",
-      "assets/js/app"
+      "src",
+      "src/app"
     ]
   },
   "dependencies": {

@@ -14,4 +14,16 @@ urlpatterns = [
         view=actividades_views.TipoDeOrganizacionReadUpdateDeleteView.as_view(),
         name="get_put_delete_tipo_de_organizacion"
     ),
+    # {% url "api:organizaciones" %}
+    url(
+        regex=r"^organizaciones/$",
+        view=actividades_views.OrganizacionCreateReadView.as_view(),
+        name="get_post_organizacion"
+    ),
+    # {% url "api:organizaciones" organizacion.id %}
+    url(
+        regex=r"^organizaciones/(?P<id>[-\w]+)/$",
+        view=actividades_views.OrganizacionReadUpdateDeleteView.as_view(),
+        name="get_put_delete_organizacion"
+    ),
 ]

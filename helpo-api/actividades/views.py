@@ -11,12 +11,20 @@ class ActividadViewSet(viewsets.ModelViewSet):
     queryset = Actividad.objects.all()
     serializer_class = ActividadSerializer
 
-class OrganizacionViewSet(viewsets.ModelViewSet):
+class OrganizacionCreateReadView(ListCreateAPIView):
     """
-    API endpoint that allows organizaciones to be viewed or edited.
+    API endpoint para crear o ver todos las organizaciones
     """
     queryset = Organizacion.objects.all()
     serializer_class = OrganizacionSerializer
+
+class OrganizacionReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
+    """
+    API endpoint para leer, actualizar o eliminar una organizacion
+    """
+    queryset = Organizacion.objects.all()
+    serializer_class = OrganizacionSerializer
+    lookup_field = 'id'
 
 class TipoDeOrganizacionCreateReadView(ListCreateAPIView):
     """
@@ -25,7 +33,7 @@ class TipoDeOrganizacionCreateReadView(ListCreateAPIView):
     queryset = TipoDeOrganizacion.objects.all()
     serializer_class = TipoDeOrganizacionSerializer
 
-class TipoDeOrganizacionReadUpdateDeleteView( RetrieveUpdateDestroyAPIView):
+class TipoDeOrganizacionReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     """
     API endpoint para leer, actualizar o eliminar un tipo de organizacion
     """

@@ -2,8 +2,8 @@ import json
 from rest_framework import status
 from django.test import TestCase, Client
 from django.urls import reverse
-from actividades.models import TipoDeOrganizacion
-from actividades.serializers import TipoDeOrganizacionSerializer
+from actividades.models import TipoDeOrganizacion, Organizacion
+from actividades.serializers import TipoDeOrganizacionSerializer, OrganizacionSerializer
 
 client = Client()
 
@@ -37,5 +37,41 @@ class TipoDeOrganizacionTests(TestCase):
         response = client.get(
             reverse('get_put_delete_tipo_de_organizacion', kwargs={'id': 3})
         )
-        tipo = TipoDeOrganizacion.objects.get(id=self.ddhh.id)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+class OrganizacionTests(TestCase):
+
+    def setUp(self):
+        self.ddhh = TipoDeOrganizacion.objects.create(
+            nombre = "Defensa de los DDHH"
+        )
+        self.ai = Organizacion.objects.create(
+            nombre = "Amnistía Internacional",
+            tipo_id = self.ddhh.id
+        )
+        self.madres = Organizacion.objects.create(
+            nombre = "Madres",
+            tipo_id = self.ddhh.id
+        )
+        
+    def test_get_todos(self):
+        response = client.get(reverse('get_post_organizacion'))
+        organizaciones = Organizacion.objects.all()
+        #serializer = OrganizacionSerializer(organizaciones, many=True)
+        #self.assertEqual(response.data, serializer.data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_get_existente(self):
+        response = client.get(
+            reverse('get_put_delete_organizacion', kwargs={'id': self.ai.id})
+        )
+        org = Organizacion.objects.get(id=self.ai.id)
+        #serializer = OrganizacionSerializer(org)
+        #self.assertEqual(response.data, serializer.data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_get_no_existente(self):
+        response = client.get(
+            reverse('get_put_delete_organizacion', kwargs={'id': 3})
+        )
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)

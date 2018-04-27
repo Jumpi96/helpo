@@ -57,17 +57,13 @@ class OrganizacionTests(TestCase):
     def test_get_todos(self):
         response = client.get(reverse('get_post_organizacion'))
         organizaciones = Organizacion.objects.all()
-        #serializer = OrganizacionSerializer(organizaciones, many=True)
-        #self.assertEqual(response.data, serializer.data)
+        self.assertEqual(2, len(response.data))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_get_existente(self):
         response = client.get(
             reverse('get_put_delete_organizacion', kwargs={'id': self.ai.id})
         )
-        org = Organizacion.objects.get(id=self.ai.id)
-        #serializer = OrganizacionSerializer(org)
-        #self.assertEqual(response.data, serializer.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_get_no_existente(self):

@@ -17,8 +17,8 @@ class TipoDeOrganizacionTests(TestCase):
             nombre = "Defensa de los animales"
         )
         
-    def test_get_all(self):
-        response = client.get(reverse('tipos_de_organizaciones'))
+    def test_get_todos(self):
+        response = client.get(reverse('get_post_tipo_de_organizacion'))
         tipos = TipoDeOrganizacion.objects.all()
         serializer = TipoDeOrganizacionSerializer(tipos, many=True)
         self.assertEqual(response.data, serializer.data)
@@ -26,7 +26,7 @@ class TipoDeOrganizacionTests(TestCase):
 
     def test_get_existente(self):
         response = client.get(
-            reverse('tipo_de_organizacion', kwargs={'id': self.ddhh.id})
+            reverse('get_put_delete_tipo_de_organizacion', kwargs={'id': self.ddhh.id})
         )
         tipo = TipoDeOrganizacion.objects.get(id=self.ddhh.id)
         serializer = TipoDeOrganizacionSerializer(tipo)
@@ -35,7 +35,7 @@ class TipoDeOrganizacionTests(TestCase):
 
     def test_get_no_existente(self):
         response = client.get(
-            reverse('tipo_de_organizacion', kwargs={'id': 3})
+            reverse('get_put_delete_tipo_de_organizacion', kwargs={'id': 3})
         )
         tipo = TipoDeOrganizacion.objects.get(id=self.ddhh.id)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)

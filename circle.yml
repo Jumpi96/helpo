@@ -21,6 +21,7 @@ dependencies:
 test:
   override:
     - cd helpo-web && npm run build
+    - cd helpo-web && npm test -- --coverage
     - >-
       cd helpo-api
       DJANGO_SETTINGS_MODULE=helpo.settings.test
@@ -36,7 +37,7 @@ test:
       REDIS_URL='redis://'
       pipenv run python manage.py check --deploy
     - cd helpo-api && pipenv run coverage run manage.py test
-    - cd helpo-web && npm run test
   post:
     - cd helpo-api && pipenv run coverage html -d $CIRCLE_ARTIFACTS
+    - cd helpo-web && mv coverage/ $CIRCLE_ARTIFACTS
     - bash <(curl -s https://codecov.io/bash)

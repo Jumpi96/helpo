@@ -12,6 +12,42 @@ Created with [Django React Boilerplate](https://github.com/vintasoftware/django-
 - **CSS:** Idiomatic CSS (https://github.com/necolas/idiomatic-css)
 ### Documenting
 - English or spanish accepted
+### Tools
+- IDE: Visual Studio Code
+- Console: cmder 
+  - Go to settings (`Win+Alt+p`), startup, tasks, {{cmd:cmder}}, startup dir.. and select your GitHub directory
+- Screenshots: ScreenPresso
+### Git
+- Every time you start coding you should follow this workflow:
+```
+# Pull everything from all branches
+git pull -a
+# Check your selected branch
+git branch
+# Switch to your branch
+git checkout your_branch
+# Do your work and
+git status
+git add some_files
+git commit -m "What you change"
+git push
+```
+- How to create, update and delete branches:
+```
+# If you want to create and switch to a new branch 
+git checkout -b new_branch
+# If you want to update your SELECTED branch from master after PULLING 
+git rebase master
+# If you want to delete your branch
+git branch -d your_branch
+```
+- Useful tips:
+```
+# Rollback a commit you made on YOUR SELECTED branch
+git revert commit_id
+# Compare modified file
+git diff your_file
+```
 
 ## Running without Docker
 ### Prerequisites
@@ -54,4 +90,5 @@ npm run start
     - Name: postgres
     - Host name: db
     - Password: postgres
-
+## Testing your deployment
+- Open a browser and go to `localhost:8000`

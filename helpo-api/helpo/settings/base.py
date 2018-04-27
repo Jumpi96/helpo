@@ -35,7 +35,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'django_js_reverse',
-    'webpack_loader',
     'import_export',
 
     'common',
@@ -101,22 +100,6 @@ USE_TZ = True
 STATICFILES_DIRS = (
     base_dir_join('assets'),
 )
-
-print (os.path.dirname(BASE_DIR) + '\helpo-web\jquery-webpack-stats.json')
-
-# Webpack
-WEBPACK_LOADER = {
-    'DEFAULT': {
-        'CACHE': False,  # on DEBUG should be False
-        'STATS_FILE': os.path.dirname(BASE_DIR) + '\helpo-web\webpack-stats.json',
-        'POLL_INTERVAL': 0.1,
-        'IGNORE': ['.+\.hot-update.js', '.+\.map']
-    },
-    'JQUERY': {
-        'BUNDLE_DIR_NAME': 'bundles/',
-        'STATS_FILE': os.path.dirname(BASE_DIR) + '\helpo-web\jquery-webpack-stats.json',
-    }
-}
 
 # Celery
 CELERY_ACCEPT_CONTENT = ['json']

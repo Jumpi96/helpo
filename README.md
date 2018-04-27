@@ -36,13 +36,18 @@ git push
 ```
 # If you want to create and switch to a new branch 
 git checkout -b new_branch
-# If you want to update your *selected* branch from master after *pulling* 
+# If you want to update your SELECTED branch from master after PULLING 
 git rebase master
 # If you want to delete your branch
 git branch -d your_branch
 ```
-
-
+- Useful tips:
+```
+# Rollback a commit you made on YOUR SELECTED branch
+git revert commit_id
+# Compare modified file
+git diff your_file
+```
 
 ## Running without Docker
 ### Prerequisites

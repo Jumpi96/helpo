@@ -40,3 +40,18 @@ class TipoDeOrganizacionReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     queryset = TipoDeOrganizacion.objects.all()
     serializer_class = TipoDeOrganizacionSerializer
     lookup_field = 'id'
+
+class ActividadCreateReadView(ListCreateAPIView):
+    """
+    API endpoint para crear o ver todos los actividades
+    """
+    queryset = Actividad.objects.all()
+    serializer_class = ActividadSerializer
+
+class ActividadReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
+    """
+    API endpoint para leer, actualizar o eliminar un actividad
+    """
+    queryset = Actividad.objects.all()
+    serializer_class = ActividadSerializer
+    lookup_field = 'id'

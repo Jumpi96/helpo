@@ -32,6 +32,15 @@ git add some_files
 git commit -m "What you change"
 git push
 ```
+- Before making a Pull Request:
+```
+# Switch to master branch and pull
+git checkout master
+git pull
+# Switch to your branch and update it
+git checkout your_branch
+git rebase master
+```
 - How to create, update and delete branches:
 ```
 # If you want to create and switch to a new branch 
@@ -47,6 +56,8 @@ git branch -d your_branch
 git revert commit_id
 # Compare modified file
 git diff your_file
+# For more info visit:
+https://gist.github.com/Chaser324/ce0505fbed06b947d962
 ```
 
 ## Running without Docker

@@ -1,4 +1,5 @@
 {
-  "name": "helpo",
-  "displayName": "helpo"
+  "expo": {
+    "sdkVersion": "27.0.0"
+  }
 }

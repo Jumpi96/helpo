@@ -17,11 +17,13 @@ dependencies:
     - pip install requests pipenv --upgrade
     - cd helpo-api && pipenv install --dev
     - cd helpo-web && npm install
+    - cd helpo-mobile && npm install
 
 test:
   override:
     - cd helpo-web && npm run build
     - cd helpo-web && npm test -- --coverage
+    - cd helpo-mobile && npm test -- --coverage
     - >-
       cd helpo-api
       DJANGO_SETTINGS_MODULE=helpo.settings.test
@@ -39,5 +41,6 @@ test:
     - cd helpo-api && pipenv run coverage run manage.py test
   post:
     - cd helpo-api && pipenv run coverage html -d $CIRCLE_ARTIFACTS
+    - cd helpo-mobile && mv coverage/* $CIRCLE_ARTIFACTS
     - cd helpo-web && mv coverage/* $CIRCLE_ARTIFACTS
     - bash <(curl -s https://codecov.io/bash)

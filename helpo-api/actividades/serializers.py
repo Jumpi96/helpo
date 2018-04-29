@@ -9,9 +9,9 @@ class ActividadSerializer(serializers.ModelSerializer):
 class TipoDeOrganizacionSerializer(serializers.ModelSerializer):
     class Meta:
         model = TipoDeOrganizacion
-        fields = ('nombre',)
+        fields = ('id', 'nombre')
 
-class OrganizacionSerializer(serializers.ModelSerializer):    
+class OrganizacionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Organizacion
-        fields = ('nombre', 'tipo')
+        fields = ('id', 'nombre', 'tipo')

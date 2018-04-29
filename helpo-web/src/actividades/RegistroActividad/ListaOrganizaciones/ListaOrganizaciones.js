@@ -15,7 +15,7 @@ class ListaOrganizaciones extends Component {
     const organizacion = this.props.organizacion;
     return(
       <select
-        value={organizacion} 
+        value={organizacion.id} 
         onChange={this.handleChange}>
           {listaOrganizaciones}
       </select>

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import ListaOrganizaciones from './ListaOrganizaciones/ListaOrganizaciones'
 
 class RegistroActividad extends Component {
@@ -6,17 +7,8 @@ class RegistroActividad extends Component {
     super(props);
     this.state = { 
         nombre: '',
-        organizacion: 'Patitas de perro',
-        organizaciones: [
-            {
-                id: 1,
-                nombre: 'Patitas de perro'
-            },
-            {
-                id: 2,
-                nombre: 'Cáritas'
-            }
-        ]
+        organizaciones: [{ id: 0, nombre: 'Sin organizaciones' }],
+        organizacion: { id: 0, nombre: 'Sin organizaciones' },
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -38,8 +30,19 @@ class RegistroActividad extends Component {
 
   handleSubmit(event) {
     alert("Se registró la actividad " + this.state.nombre + " de la organización " + 
-            this.state.organizacion + ".");
+            this.state.organizacion.id + ".");
     event.preventDefault();
+  }
+
+  componentDidMount() {
+    axios.get('http://localhost:8000/organizaciones')
+      .then(res => {
+        const organizacionesData = res.data;
+        this.setState({ organizaciones: organizacionesData, organizacion: organizacionesData[0] })
+      })
+      .catch(function (error) {
+        console.log("No anda la API")
+      })
   }
 
   render() {

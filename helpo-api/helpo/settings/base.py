@@ -35,15 +35,20 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'django_js_reverse',
+    'corsheaders',
     'import_export',
+    
+    'rest_framework',
 
     'common',
     'users',
+    'actividades',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -105,3 +110,8 @@ STATICFILES_DIRS = (
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
+
+# CORS
+CORS_ORIGIN_WHITELIST = (
+    'localhost:3000'
+)

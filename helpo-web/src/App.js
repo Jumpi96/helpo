@@ -9,8 +9,11 @@ class App extends Component {
     return (
       <div className="App">
         <Header logo={logo} />
-        <RegistroActividad />
+        <div class="container">
+          <RegistroActividad />
+        </div>
       </div>
+      
     );
   }
 }

@@ -30,7 +30,7 @@ class RegistroActividad extends Component {
 
   handleSubmit(event) {
     alert("Se registró la actividad " + this.state.nombre + " de la organización " + 
-            this.state.organizacion.id + ".");
+            this.state.organizacion.nombre + ".");
     event.preventDefault();
   }
 

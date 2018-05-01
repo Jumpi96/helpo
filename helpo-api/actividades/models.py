@@ -13,7 +13,7 @@ class Ubicacion(models.Model):
     longitud = models.FloatField(null=True)
     notas = models.CharField(max_length=140)
 
-class Actividad(IndexedTimeStampedModel):
+class Evento(IndexedTimeStampedModel):
     nombre = models.CharField(max_length=100)
     fecha = models.DateTimeField()
     organizacion = models.ForeignKey(Organizacion, on_delete=models.CASCADE)

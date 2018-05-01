@@ -1,15 +1,8 @@
 from rest_framework import viewsets
 from rest_framework.generics import ListCreateAPIView
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
-from actividades.models import Actividad, Organizacion, TipoDeOrganizacion
-from actividades.serializers import ActividadSerializer, OrganizacionSerializer, TipoDeOrganizacionSerializer
-
-class ActividadViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows actividades to be viewed or edited.
-    """
-    queryset = Actividad.objects.all()
-    serializer_class = ActividadSerializer
+from actividades.models import Evento, Organizacion, TipoDeOrganizacion
+from actividades.serializers import EventoSerializer, OrganizacionSerializer, TipoDeOrganizacionSerializer
 
 class OrganizacionCreateReadView(ListCreateAPIView):
     """
@@ -41,17 +34,17 @@ class TipoDeOrganizacionReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     serializer_class = TipoDeOrganizacionSerializer
     lookup_field = 'id'
 
-class ActividadCreateReadView(ListCreateAPIView):
+class EventoCreateReadView(ListCreateAPIView):
     """
-    API endpoint para crear o ver todos los actividades
+    API endpoint para crear o ver todos los eventos
     """
-    queryset = Actividad.objects.all()
-    serializer_class = ActividadSerializer
+    queryset = Evento.objects.all()
+    serializer_class = EventoSerializer
 
-class ActividadReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
+class EventoReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     """
-    API endpoint para leer, actualizar o eliminar un actividad
+    API endpoint para leer, actualizar o eliminar un evento
     """
-    queryset = Actividad.objects.all()
-    serializer_class = ActividadSerializer
+    queryset = Evento.objects.all()
+    serializer_class = EventoSerializer
     lookup_field = 'id'

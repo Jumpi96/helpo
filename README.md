@@ -101,6 +101,13 @@ npm run start
     - Name: postgres
     - Host name: db
     - Password: postgres
+### Migrations and Docker
+- We have a problem with our optional use of Docker and migrations. **If you want to create or modify models in Django**, you have to:
+  - Do not use Docker to *makemigrations* and *migrate*.
+    - Change your .env file and run your DB with `docker-compose up db`.
+    - Use *pipenv* to run your environment and run your Django *locally*.
+    - Run `python manage.py makemigrations` and `python manage.py migrate` on your shell. 
+  - To use Docker again, change your .env file, build your Docker image and run with *docker-compose*.
 ## Testing your deployment
 - Open a browser and go to `localhost:8000`
 

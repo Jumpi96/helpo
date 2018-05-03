@@ -16,8 +16,8 @@ class EventoSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         ubicacion_data = validated_data.pop('ubicacion')
         ubicacion = Ubicacion.objects.create(**ubicacion_data)
-        actividad = Evento.objects.create(ubicacion=ubicacion, **validated_data)
-        return actividad
+        evento = Evento.objects.create(ubicacion=ubicacion, **validated_data)
+        return evento
     
     #TODO: def update
 

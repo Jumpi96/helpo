@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import logo from './logo.svg';
 import './App.css';
 import Header from './common/Header/Header';
-import EventoActividad from './actividades/EventoActividad/EventoActividad'
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import Actividades from './actividades/Actividades'
 
 
 class App extends Component {
@@ -35,25 +35,6 @@ class Home extends Component {
   render() {
     return (
       <h3>This is Home</h3>
-    )
-  }
-}
-
-class Actividades extends Component {
-  render() {
-    return (
-      <div>
-        <h3>Actividades</h3>
-        <ul>
-          <li>
-            <Link to={"actividades/registrarEvento"}>Registrar evento</Link>
-          </li>
-        </ul>
-        
-        <hr/>
-        <Route exact path="/actividades" render={() => <h4>Selecciona una opción</h4>} />
-        <Route path={"/actividades/registrarEvento"} component={EventoActividad} />
-      </div>
     )
   }
 }

@@ -3,7 +3,7 @@ import axios from 'axios';
 import ListaOrganizaciones from './ListaOrganizaciones/ListaOrganizaciones'
 import SelectorUbicacion from './SelectorUbicacion/SelectorUbicacion'
 
-class EventoActividad extends Component {
+class RegistrarEvento extends Component {
   constructor(props){
     super(props);
     this.state = { 
@@ -56,7 +56,7 @@ class EventoActividad extends Component {
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
-        <h1>Registrar actividad</h1>
+        <h1>Registrar evento</h1>
         <div className="row">
             <input type="text"
               name="nombre"
@@ -84,4 +84,4 @@ class EventoActividad extends Component {
   }
 }
 
-export default EventoActividad;
+export default RegistrarEvento;

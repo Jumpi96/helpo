@@ -1,17 +1,20 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import ListaOrganizaciones from './ListaOrganizaciones/ListaOrganizaciones'
+import SelectorUbicacion from './SelectorUbicacion/SelectorUbicacion'
 
-class RegistroActividad extends Component {
+class RegistrarEvento extends Component {
   constructor(props){
     super(props);
     this.state = { 
         nombre: '',
         organizaciones: [{ id: 0, nombre: 'Sin organizaciones' }],
         organizacion: { id: 0, nombre: 'Sin organizaciones' },
+        ubicacion: { latitud: 0, longitud: 0, notas: ''},
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleUbicacionChange = this.handleUbicacionChange.bind(this);
     this.handleOrganizacionChange = this.handleOrganizacionChange.bind(this);
   }
 
@@ -26,6 +29,11 @@ class RegistroActividad extends Component {
 
   handleOrganizacionChange(org) {
     this.setState({organizacion: org});
+  }
+
+  handleUbicacionChange(ubi) {
+    this.setState({ubicacion: ubi});
+    console.log(ubi.latitud + " " + ubi.longitud)
   }
 
   handleSubmit(event) {
@@ -48,7 +56,7 @@ class RegistroActividad extends Component {
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
-        <h1>Registrar actividad</h1>
+        <h1>Registrar evento</h1>
         <div className="row">
             <input type="text"
               name="nombre"
@@ -64,10 +72,16 @@ class RegistroActividad extends Component {
               organizaciones={this.state.organizaciones}
               onOrganizacionChange={this.handleOrganizacionChange} />
         </div>
+        <div className="row">
+          <SelectorUbicacion
+            name="selectorUbicacion"
+            ubicacion={this.state.ubicacion}
+            onUbicacionChange={this.handleUbicacionChange}/>
+        </div>
         <input type="submit" value="Guardar" />
       </form>
     );
   }
 }
 
-export default RegistroActividad;
+export default RegistrarEvento;

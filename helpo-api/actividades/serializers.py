@@ -1,10 +1,25 @@
 from rest_framework import serializers
-from actividades.models import Actividad, Organizacion, TipoDeOrganizacion
+from actividades.models import Evento, Organizacion, TipoDeOrganizacion, Ubicacion
 
-class ActividadSerializer(serializers.ModelSerializer):
+class UbicacionSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Actividad
-        fields = ('nombre', 'fecha', 'organizacion')
+        model = Ubicacion
+        fields = ('latitud', 'longitud', 'notas')
+
+class EventoSerializer(serializers.ModelSerializer):
+    ubicacion = UbicacionSerializer()
+    
+    class Meta:
+        model = Evento
+        fields = ('id', 'nombre', 'fecha', 'organizacion', 'ubicacion')
+
+    def create(self, validated_data):
+        ubicacion_data = validated_data.pop('ubicacion')
+        ubicacion = Ubicacion.objects.create(**ubicacion_data)
+        evento = Evento.objects.create(ubicacion=ubicacion, **validated_data)
+        return evento
+    
+    #TODO: def update
 
 class TipoDeOrganizacionSerializer(serializers.ModelSerializer):
     class Meta:

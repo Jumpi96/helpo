@@ -12,6 +12,11 @@ class SelectorUbicacion extends Component {
     this.handleNotasChange = this.handleNotasChange.bind(this);
     this.handleCoordenadasChange = this.handleCoordenadasChange.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleChange({ 
+      latitud: defaultPosition.lat,
+      longitud: defaultPosition.lng,
+      notas: ''
+    })
   }
 
   handleChange(ubi) {

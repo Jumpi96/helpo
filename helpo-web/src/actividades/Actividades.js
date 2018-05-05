@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Route, Link } from "react-router-dom";
 import RegistrarEvento from './RegistrarEvento/RegistrarEvento'
+import styles from './ActividadesCSS';
 
 class Actividades extends Component {
     render() {

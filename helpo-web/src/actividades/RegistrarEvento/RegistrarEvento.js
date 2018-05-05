@@ -75,7 +75,7 @@ class RegistrarEvento extends Component {
     return (
       <form onSubmit={this.handleSubmit}>
         <h1>Registrar evento</h1>
-        <div className="row">
+        <div className="form-group">
             <input type="text"
               name="nombre"
               placeholder="Nombre"
@@ -83,19 +83,17 @@ class RegistrarEvento extends Component {
               onChange={this.handleInputChange}
             />
         </div>
-        <div className="row">
+        <div className="form-group">
             <ListaOrganizaciones 
               name="listaOrganizaciones"
               organizacion={this.state.organizacion}
               organizaciones={this.state.organizaciones}
               onOrganizacionChange={this.handleOrganizacionChange} />
         </div>
-        <div className="row">
-          <SelectorUbicacion
-            name="selectorUbicacion"
-            ubicacion={this.state.ubicacion}
-            onUbicacionChange={this.handleUbicacionChange}/>
-        </div>
+        <SelectorUbicacion
+          name="selectorUbicacion"
+          ubicacion={this.state.ubicacion}
+          onUbicacionChange={this.handleUbicacionChange}/>
         <input type="submit" value="Guardar" />
       </form>
     );

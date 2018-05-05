@@ -45,13 +45,16 @@ class SelectorUbicacion extends Component {
   render(){
     return (
       <div className="form-group">
+        <label for="locationPicker">Ubicación</label>
         <LocationPicker
-          containerElement={ <div style={ {height: '100%'} } /> }
-          mapElement={ <div style={ {height: '400px'} } /> }
+          containerElement={ <div style={ {height: '100%', width: '50%'} } /> }
+          mapElement={ <div style={ {height: '300px'} } /> }
           defaultPosition={defaultPosition}
-          onChange={this.handleCoordenadasChange} />
+          onChange={this.handleCoordenadasChange} 
+          radius="-1"
+          name="locationPicker"/>
         <input type="text"
-          name="notas"
+          name="notas" className="form-control"
           placeholder="Notas (Calle, número, localidad, CP)"
           value={this.props.ubicacion.notas}
           onChange={this.handleNotasChange} />

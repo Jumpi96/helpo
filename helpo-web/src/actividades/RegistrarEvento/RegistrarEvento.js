@@ -15,6 +15,7 @@ class RegistrarEvento extends Component {
         organizaciones: [{ id: 0, nombre: 'Sin organizaciones' }],
         organizacion: { id: 0, nombre: 'Sin organizaciones' },
         ubicacion: { latitud: 0, longitud: 0, notas: ''},
+        ubicacionPorDefecto: { lat: -31.4201, lng: -64.1888 } // Córdoba, AR
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -93,7 +94,8 @@ class RegistrarEvento extends Component {
         <SelectorUbicacion
           name="selectorUbicacion"
           ubicacion={this.state.ubicacion}
-          onUbicacionChange={this.handleUbicacionChange}/>
+          onUbicacionChange={this.handleUbicacionChange}
+          ubicacionPorDefecto={this.state.ubicacionPorDefecto}/>
         <input type="submit" value="Guardar" />
       </form>
     );

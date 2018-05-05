@@ -37,7 +37,6 @@ class RegistrarEvento extends Component {
 
   handleUbicacionChange(ubi) {
     this.setState({ubicacion: ubi});
-    //console.log(ubi.latitud + " " + ubi.longitud)
   }
 
   handleSubmit(event) {

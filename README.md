@@ -124,3 +124,13 @@ npm run start
   - If it does not work, check if the React Native server IP is the same as the one of your PC in that network (it's possible that React Native choose the wrong one: a Docker, Hyper-V or VirtualBox network).
     - To solve this, set this environment variable:
       - In Windows PowerShell: `$env:REACT_NATIVE_PACKAGER_HOSTNAME = "<your_IP>"`
+
+## Tools
+### Prototyping
+- For the creation of the web and mobile prototypes we are going to use the [JustInMind](https://www.justinmind.com/) tool.
+
+### UML Modeling
+- For the creation of the UML models that will specify  our software we are going to use the  [Enterprise Architect](http://www.sparxsystems.com/products/ea/) tool.
+
+### Instructions
+- In order to install and use this tools its recommended to follow this  [Instructions]()

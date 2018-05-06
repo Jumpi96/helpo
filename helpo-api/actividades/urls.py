@@ -2,29 +2,17 @@ from django.conf.urls import url
 from actividades import views as actividades_views
 
 urlpatterns = [ 
-    # {% url "api:tipos_de_organizaciones" %}
+    # {% url "api:rubros_evento" %}
     url(
-        regex=r"^tipos_de_organizaciones/$",
-        view=actividades_views.TipoDeOrganizacionCreateReadView.as_view(),
-        name="get_post_tipo_de_organizacion"
+        regex=r"^rubros_evento/$",
+        view=actividades_views.RubroEventoCreateReadView.as_view(),
+        name="get_post_rubro_evento"
     ),
-    # {% url "api:tipos_de_organizaciones" tipo_de_organizacion.id %}
+    # {% url "api:rubros_evento" rubro_evento.id %}
     url(
-        regex=r"^tipos_de_organizaciones/(?P<id>[-\w]+)/$",
-        view=actividades_views.TipoDeOrganizacionReadUpdateDeleteView.as_view(),
-        name="get_put_delete_tipo_de_organizacion"
-    ),
-    # {% url "api:organizaciones" %}
-    url(
-        regex=r"^organizaciones/$",
-        view=actividades_views.OrganizacionCreateReadView.as_view(),
-        name="get_post_organizacion"
-    ),
-    # {% url "api:organizaciones" organizacion.id %}
-    url(
-        regex=r"^organizaciones/(?P<id>[-\w]+)/$",
-        view=actividades_views.OrganizacionReadUpdateDeleteView.as_view(),
-        name="get_put_delete_organizacion"
+        regex=r"^rubros_evento/(?P<id>[-\w]+)/$",
+        view=actividades_views.RubroEventoReadUpdateDeleteView.as_view(),
+        name="get_put_delete_rubro_evento"
     ),
     # {% url "api:eventos" %}
     url(

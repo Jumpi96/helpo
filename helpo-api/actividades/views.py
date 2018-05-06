@@ -1,38 +1,24 @@
 from rest_framework import viewsets
 from rest_framework.generics import ListCreateAPIView
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
-from actividades.models import Evento, Organizacion, TipoDeOrganizacion
-from actividades.serializers import EventoSerializer, OrganizacionSerializer, TipoDeOrganizacionSerializer
+from actividades.models import Evento, RubroEvento
+from actividades.serializers import EventoSerializer, RubroEventoSerializer
 
-class OrganizacionCreateReadView(ListCreateAPIView):
+class RubroEventoCreateReadView(ListCreateAPIView):
     """
-    API endpoint para crear o ver todos las organizaciones
+    API endpoint para crear o ver todos los rubros de evento
     """
-    queryset = Organizacion.objects.all()
-    serializer_class = OrganizacionSerializer
+    queryset = RubroEvento.objects.all()
+    serializer_class = RubroEventoSerializer
 
-class OrganizacionReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
+class RubroEventoReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     """
-    API endpoint para leer, actualizar o eliminar una organizacion
+    API endpoint para leer, actualizar o eliminar un rubro de evento
     """
-    queryset = Organizacion.objects.all()
-    serializer_class = OrganizacionSerializer
+    queryset = RubroEvento.objects.all()
+    serializer_class = RubroEventoSerializer
     lookup_field = 'id'
 
-class TipoDeOrganizacionCreateReadView(ListCreateAPIView):
-    """
-    API endpoint para crear o ver todos los tipos de organizacion
-    """
-    queryset = TipoDeOrganizacion.objects.all()
-    serializer_class = TipoDeOrganizacionSerializer
-
-class TipoDeOrganizacionReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
-    """
-    API endpoint para leer, actualizar o eliminar un tipo de organizacion
-    """
-    queryset = TipoDeOrganizacion.objects.all()
-    serializer_class = TipoDeOrganizacionSerializer
-    lookup_field = 'id'
 
 class EventoCreateReadView(ListCreateAPIView):
     """

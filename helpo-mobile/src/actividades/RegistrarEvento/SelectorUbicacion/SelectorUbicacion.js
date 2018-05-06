@@ -1,6 +1,8 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import LocationPicker from 'react-location-picker';
+import React, { Component , View } from 'react';
+import { FormLabel, FormInput, Button } from 'react-native-elements';
+import RNGooglePlacePicker from 'react-native-google-place-picker';
+import styles from './SelectorUbicacionCSS';
+
 
 class SelectorUbicacion extends Component {
   constructor(props){
@@ -30,38 +32,37 @@ class SelectorUbicacion extends Component {
     this.handleChange(ubi)
   }
 
-  handleCoordenadasChange({ position, address }){
+  handleCoordenadasChange(location){
     const notas = this.props.ubicacion.notas;
-    const ubi = { latitud: position.lat,
-                longitud: position.lng,
+    const ubi = { latitud: location.latitude,
+                longitud: position.longitude,
                 notas: notas
     };
     this.handleChange(ubi);
   }
 
+  seleccionarUbicacion() {
+    RNGooglePlacePicker.show((response) => {
+      if (!response.didCancel && !response.error)
+        this.handleCoordenadasChange(response);
+    })
+  }
+
   render(){
     return (
-      <div className="form-group">
-        <label for="locationPicker">Ubicación</label>
-        <LocationPicker
-          containerElement={ <div style={ {height: '100%', width: '50%'} } /> }
-          mapElement={ <div style={ {height: '300px'} } /> }
-          defaultPosition={this.state.ubicacionPorDefecto}
-          onChange={this.handleCoordenadasChange} 
-          radius="-1"
-          name="locationPicker"/>
-        <input type="text"
-          name="notas" className="form-control"
+      <View style={styles.container}>
+        <FormLabel>Ubicación</FormLabel>
+        <Button
+          icon={{name: 'touch-app'}}
+          title='Seleccionar ubicación' 
+          onPress={this.seleccionarUbicacion}/>
+        <FormInput
           placeholder="Notas (Calle, número, localidad, CP)"
           value={this.props.ubicacion.notas}
-          onChange={this.handleNotasChange} />
-        </div>
+          onChangeText={this.handleNotasChange} />
+      </View>
     );
   }
 }
-
-SelectorUbicacion.propTypes = {
-  ubicacion: PropTypes.any.isRequired,
-};
 
 export default SelectorUbicacion;

@@ -14,8 +14,8 @@ class RegistrarEvento extends Component {
         nombre: '',
         organizaciones: [{ id: 0, nombre: 'Sin organizaciones' }],
         organizacion: { id: 0, nombre: 'Sin organizaciones' },
-        ubicacion: { latitud: 0, longitud: 0, notas: ''},
-        ubicacionPorDefecto: { lat: -31.4201, lng: -64.1888 } // Córdoba, AR
+        //TODO: ubicacion que pasamos por defecto debería ser la de la ONG. Ahora, Córdoba.
+        ubicacion: { latitud: -31.4201, longitud: -64.1888, notas: ''}, 
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);

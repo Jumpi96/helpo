@@ -1,18 +1,19 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import LocationPicker from 'react-location-picker';
-
 
 class SelectorUbicacion extends Component {
   constructor(props){
     super(props);
+    this.state = { 
+      ubicacionPorDefecto : { 
+        lat: this.props.ubicacion.latitud,
+        lng: this.props.ubicacion.longitud
+      }
+    };
     this.handleNotasChange = this.handleNotasChange.bind(this);
     this.handleCoordenadasChange = this.handleCoordenadasChange.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.handleChange({ 
-      latitud: this.props.ubicacionPorDefecto.lat,
-      longitud: this.props.ubicacionPorDefecto.lng,
-      notas: ''
-    })
   }
 
   handleChange(ubi) {
@@ -45,7 +46,7 @@ class SelectorUbicacion extends Component {
         <LocationPicker
           containerElement={ <div style={ {height: '100%', width: '50%'} } /> }
           mapElement={ <div style={ {height: '300px'} } /> }
-          defaultPosition={this.props.ubicacionPorDefecto}
+          defaultPosition={this.state.ubicacionPorDefecto}
           onChange={this.handleCoordenadasChange} 
           radius="-1"
           name="locationPicker"/>
@@ -58,5 +59,9 @@ class SelectorUbicacion extends Component {
     );
   }
 }
+
+SelectorUbicacion.propTypes = {
+  ubicacion: PropTypes.any.isRequired,
+};
 
 export default SelectorUbicacion;

@@ -1,19 +1,21 @@
-import React, { Component } from 'react';
+import React, { Component , View } from 'react';
 import { FormLabel, FormInput, Button } from 'react-native-elements';
 import RNGooglePlacePicker from 'react-native-google-place-picker';
+import styles from './SelectorUbicacionCSS';
 
 
 class SelectorUbicacion extends Component {
   constructor(props){
     super(props);
+    this.state = { 
+      ubicacionPorDefecto : { 
+        lat: this.props.ubicacion.latitud,
+        lng: this.props.ubicacion.longitud
+      }
+    };
     this.handleNotasChange = this.handleNotasChange.bind(this);
     this.handleCoordenadasChange = this.handleCoordenadasChange.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.handleChange({ 
-      latitud: this.props.ubicacionPorDefecto.lat,
-      longitud: this.props.ubicacionPorDefecto.lng,
-      notas: ''
-    })
   }
 
   handleChange(ubi) {

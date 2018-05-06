@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ListaOrganizaciones from './ListaOrganizaciones/ListaOrganizaciones';
+import ListaRubrosEvento from './ListaRubrosEvento/ListaRubrosEvento';
 import SelectorUbicacion from './SelectorUbicacion/SelectorUbicacion';
 
 // Api
@@ -12,15 +12,14 @@ class RegistrarEvento extends Component {
     super(props);
     this.state = { 
         nombre: '',
-        organizaciones: [{ id: 0, nombre: 'Sin organizaciones' }],
-        organizacion: { id: 0, nombre: 'Sin organizaciones' },
+        rubro: {id: 0, nombre: "Sin rubros"},
         //TODO: ubicacion que pasamos por defecto debería ser la de la ONG. Ahora, Córdoba.
         ubicacion: { latitud: -31.4201, longitud: -64.1888, notas: ''}, 
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleUbicacionChange = this.handleUbicacionChange.bind(this);
-    this.handleOrganizacionChange = this.handleOrganizacionChange.bind(this);
+    this.handleRubroChange = this.handleRubroChange.bind(this);
   }
 
   handleInputChange(event) {
@@ -32,8 +31,8 @@ class RegistrarEvento extends Component {
     });
   }
 
-  handleOrganizacionChange(org) {
-    this.setState({organizacion: org});
+  handleRubroChange(r) {
+    this.setState({rubro: r});
   }
 
   handleUbicacionChange(ubi) {
@@ -46,7 +45,7 @@ class RegistrarEvento extends Component {
     const evento = {
       nombre: this.state.nombre,
       fecha: undefined,
-      organizacion_id: 1, //TODO: Interfaz con estado de sesión de ONG
+      rubro_id: this.state.rubro.id,
       ubicacion: this.state.ubicacion
     };
     console.log(evento);
@@ -55,18 +54,6 @@ class RegistrarEvento extends Component {
         console.log(res);
         console.log(res.data);
       }).catch(function (error) {
-        if (error.response){ console.log(error.response.status) }
-        else { console.log('Error: ', error.message)}
-      });
-  }
-
-  componentDidMount() {
-    axios.get(config.apiUrl + '/organizaciones')
-      .then(res => {
-        const organizacionesData = res.data;
-        this.setState({ organizaciones: organizacionesData, organizacion: organizacionesData[0] })
-      })
-      .catch(function (error) {
         if (error.response){ console.log(error.response.status) }
         else { console.log('Error: ', error.message)}
       });
@@ -85,11 +72,10 @@ class RegistrarEvento extends Component {
             />
         </div>
         <div className="form-group">
-            <ListaOrganizaciones 
-              name="listaOrganizaciones"
-              organizacion={this.state.organizacion}
-              organizaciones={this.state.organizaciones}
-              onOrganizacionChange={this.handleOrganizacionChange} />
+            <ListaRubrosEvento 
+              name="listaRubros"
+              rubro={this.state.rubro}
+              onRubroChange={this.handleRubroChange} />
         </div>
         <SelectorUbicacion
           name="selectorUbicacion"

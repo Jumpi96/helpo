@@ -49,7 +49,7 @@ class RegistrarEvento extends Component {
       ubicacion: this.state.ubicacion
     };
     console.log(evento);
-    axios.post(config.apiUrl + '/eventos', { evento })
+    axios.post(config.apiUrl + '/actividades/eventos', { evento })
       .then(res => {
         console.log(res);
         console.log(res.data);

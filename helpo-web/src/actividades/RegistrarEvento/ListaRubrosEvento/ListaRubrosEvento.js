@@ -18,7 +18,7 @@ class ListaRubrosEvento extends Component {
   }
 
   componentDidMount(){
-    axios.get(config.apiUrl + '/rubros_evento')
+    axios.get(config.apiUrl + '/actividades/rubros_evento')
       .then(res => {
         const rubrosData = res.data;
         this.setState({ rubros: rubrosData })

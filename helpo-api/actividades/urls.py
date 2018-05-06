@@ -4,25 +4,25 @@ from actividades import views as actividades_views
 urlpatterns = [ 
     # {% url "api:rubros_evento" %}
     url(
-        regex=r"^rubros_evento/$",
+        regex=r"^actividades/rubros_evento/$",
         view=actividades_views.RubroEventoCreateReadView.as_view(),
         name="get_post_rubro_evento"
     ),
     # {% url "api:rubros_evento" rubro_evento.id %}
     url(
-        regex=r"^rubros_evento/(?P<id>[-\w]+)/$",
+        regex=r"^actividades/rubros_evento/(?P<id>[-\w]+)/$",
         view=actividades_views.RubroEventoReadUpdateDeleteView.as_view(),
         name="get_put_delete_rubro_evento"
     ),
     # {% url "api:eventos" %}
     url(
-        regex=r"^eventos/$",
+        regex=r"^actividades/eventos/$",
         view=actividades_views.EventoCreateReadView.as_view(),
         name="get_post_evento"
     ),
     # {% url "api:eventos" evento.id %}
     url(
-        regex=r"^eventos/(?P<id>[-\w]+)/$",
+        regex=r"^actividades/eventos/(?P<id>[-\w]+)/$",
         view=actividades_views.EventoReadUpdateDeleteView.as_view(),
         name="get_put_delete_evento"
     ),

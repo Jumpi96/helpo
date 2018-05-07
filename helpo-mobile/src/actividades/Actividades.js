@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Text, View } from 'react-native';
 import { Route, Link } from 'react-router-native';
-import RegistrarEvento from './RegistrarEvento/RegistrarEvento'
+import RegistrarEvento from './RegistrarEvento/RegistrarEvento';
 import styles from './ActividadesCSS';
 
 class Actividades extends Component {
@@ -11,7 +11,7 @@ class Actividades extends Component {
           <Text style={styles.topic}>Actividades</Text>
           <View>
             <Link to={"/actividades/registrarEvento"}>
-              <Text style={styles.subNavItem}>Registrar evento</Text>  
+              <Text style={styles.navItem}>Registrar evento</Text>  
             </Link>
           </View>
           <Route exact path="/actividades" render={() => (<Text>Selecciona una opción</Text>)} />

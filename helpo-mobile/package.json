@@ -42,6 +42,7 @@
     "react-native": "~0.55.2",
     "react-router-native": "4.2.0",
     "react-native-elements": "0.19.1",
-    "react-native-google-place-picker": "1.2.1"
+    "react-native-google-place-picker": "1.2.1",
+    "axios": "0.18.0"
   }
 }

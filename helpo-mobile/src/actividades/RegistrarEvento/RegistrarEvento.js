@@ -1,6 +1,5 @@
 import React from 'react';
 import { Text, View } from 'react-native';
-import { Route, Link } from 'react-router-native';
 import { Form, FormInput } from 'react-native-elements';
 // import styles from './RegistrarEventoCSS';
 import SelectorUbicacion from './SelectorUbicacion/SelectorUbicacion';

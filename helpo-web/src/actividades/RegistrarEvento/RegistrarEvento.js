@@ -9,6 +9,7 @@ class RegistrarEvento extends Component {
     super(props);
     this.state = { 
         nombre: '',
+        descripcion: '',
         rubro: {id: 0, nombre: "Sin rubros"},
         //TODO: ubicacion que pasamos por defecto debería ser la de la ONG. Ahora, Córdoba.
         ubicacion: { latitud: -31.4201, longitud: -64.1888, notas: ''}, 
@@ -41,6 +42,7 @@ class RegistrarEvento extends Component {
 
     const evento = {
       nombre: this.state.nombre,
+      descripcion: this.state.descripcion,
       fecha: undefined,
       rubro_id: this.state.rubro.id,
       ubicacion: this.state.ubicacion
@@ -61,24 +63,28 @@ class RegistrarEvento extends Component {
       <form onSubmit={this.handleSubmit}>
         <h1>Registrar evento</h1>
         <div className="form-group">
-            <input type="text"
-              name="nombre"
-              placeholder="Nombre"
-              value={this.state.nombre} 
-              onChange={this.handleInputChange}
-            />
+          <label for="nombre">Nombre</label>
+          <input type="text"
+            name="nombre" className="form-control"
+            placeholder="Nombre"
+            value={this.state.nombre} 
+            onChange={this.handleInputChange}
+          />
         </div>
         <div className="form-group">
-            <textarea
-              rows="4" cols="50"
-              placeholder="Escriba una breve descripcion del evento.">
-            </textarea>
+          <label for="descripcion">Descripción</label>
+          <textarea
+            name="descripcion"
+            className="form-control"
+            placeholder="Escriba una breve descripcion del evento." 
+            value={this.state.descripcion}
+            onChange={this.handleInputChange}/>
         </div>
         <div className="form-group">
-            <ListaRubrosEvento 
-              name="listaRubros"
-              rubro={this.state.rubro}
-              onRubroChange={this.handleRubroChange} />
+          <ListaRubrosEvento 
+            name="listaRubros"
+            rubro={this.state.rubro}
+            onRubroChange={this.handleRubroChange} />
         </div>
         <SelectorUbicacion
           name="selectorUbicacion"

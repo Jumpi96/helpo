@@ -94,8 +94,7 @@ class RegistrarEvento extends Component {
         <SelectorUbicacion
           name="selectorUbicacion"
           ubicacion={this.state.ubicacion}
-          onUbicacionChange={this.handleUbicacionChange}
-          ubicacionPorDefecto={this.state.ubicacionPorDefecto}/>
+          onUbicacionChange={this.handleUbicacionChange}/>
         <input type="submit" value="Guardar" />
       </form>
     );

@@ -1,10 +1,10 @@
-import React, { Component , View } from 'react';
+import React from 'react';
+import { View } from 'react-native';
 import { FormLabel, FormInput, Button } from 'react-native-elements';
 import RNGooglePlacePicker from 'react-native-google-place-picker';
 import styles from './SelectorUbicacionCSS';
 
-
-class SelectorUbicacion extends Component {
+class SelectorUbicacion extends React.Component {
   constructor(props){
     super(props);
     this.state = { 
@@ -22,12 +22,12 @@ class SelectorUbicacion extends Component {
     this.props.onUbicacionChange(ubi);
   }
 
-  handleNotasChange(e){
+  handleNotasChange(text){
     const lat = this.props.ubicacion.latitud;
     const long = this.props.ubicacion.longitud;
     const ubi = { latitud: lat,
                 longitud: long,
-                notas: e.target.value
+                notas: text
     };
     this.handleChange(ubi)
   }
@@ -35,7 +35,7 @@ class SelectorUbicacion extends Component {
   handleCoordenadasChange(location){
     const notas = this.props.ubicacion.notas;
     const ubi = { latitud: location.latitude,
-                longitud: position.longitude,
+                longitud: location.longitude,
                 notas: notas
     };
     this.handleChange(ubi);
@@ -53,9 +53,8 @@ class SelectorUbicacion extends Component {
       <View style={styles.container}>
         <FormLabel>Ubicación</FormLabel>
         <Button
-          icon={{name: 'touch-app'}}
           title='Seleccionar ubicación' 
-          onPress={this.seleccionarUbicacion}/>
+          onPress={this.seleccionarUbicacion.bind(this)}/>
         <FormInput
           placeholder="Notas (Calle, número, localidad, CP)"
           value={this.props.ubicacion.notas}

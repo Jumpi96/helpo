@@ -13,10 +13,14 @@ Created with [Django React Boilerplate](https://github.com/vintasoftware/django-
 ### Documenting
 - English or spanish accepted
 ### Tools
-- IDE: Visual Studio Code
-- Console: cmder 
+- IDE: [Visual Studio Code](https://code.visualstudio.com/)
+- Console: [cmder](http://cmder.net/)
   - Go to settings (`Win+Alt+p`), startup, tasks, {{cmd:cmder}}, startup dir.. and select your GitHub directory
-- Screenshots: ScreenPresso
+- Prototyping: [JustInMind](https://www.justinmind.com/)
+- UML Modelling: [Enterprise Architect](http://www.sparxsystems.com/products/ea/) 
+  - It's recommended to follow this [instructions](https://docs.google.com/document/d/1aiTtPPE9bWLdNnu2MVhimmbW6wWmoZtIJilpCCdZZQQ/edit?usp=sharing)
+- Screenshots: [ScreenPresso](https://www.screenpresso.com/)
+
 ### Git
 - Every time you start coding you should follow this workflow:
 ```
@@ -125,12 +129,3 @@ npm run start
     - To solve this, set this environment variable:
       - In Windows PowerShell: `$env:REACT_NATIVE_PACKAGER_HOSTNAME = "<your_IP>"`
 
-## Tools
-### Prototyping
-- For the creation of the web and mobile prototypes we are going to use the [JustInMind](https://www.justinmind.com/) tool.
-
-### UML Modeling
-- For the creation of the UML models that will specify  our software we are going to use the  [Enterprise Architect](http://www.sparxsystems.com/products/ea/) tool.
-
-### Instructions
-- In order to install and use this tools its recommended to follow this  [Instructions]()

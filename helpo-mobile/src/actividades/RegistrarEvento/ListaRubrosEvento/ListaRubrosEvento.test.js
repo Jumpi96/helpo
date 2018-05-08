@@ -1,23 +1,37 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import ListaRubrosEvento from './ListaRubrosEvento';
 
-it('renders without crashing', () => {
-  const div = document.createElement('div');
-  const organizaciones = [
-    {
-        id: 1,
-        nombre: 'Patitas de perro'
-    },
-    {
-        id: 2,
-        nombre: 'Cáritas'
+
+describe("ListaRubrosEvento", () => {
+  let props;
+  let wrapperListaRubrosEvento;
+  const listaRubrosEvento = () => {
+    if (!wrapperListaRubrosEvento) {
+      wrapperListaRubrosEvento = shallow(
+        <ListaRubrosEvento {...props} />
+      );
     }
-  ];
-  const org = 'Patitas de perro';
-  ReactDOM.render(<ListaOrganizaciones name="listaOrganizaciones"
-    organizacion={org}
-    organizaciones={organizaciones}
-    />, div);
-  ReactDOM.unmountComponentAtNode(div);
+    return wrapperListaRubrosEvento;
+  }
+
+  beforeEach(() => {
+    props = {
+      rubro: { id: 1, nombre: "Salud" },
+      onRubroChange: undefined
+    };
+    wrapperListaRubrosEvento = undefined;
+  });
+  
+  it('renders without crashing', () => {
+    expect(listaRubrosEvento()).toMatchSnapshot();
+  });
+
+  it("always renders a select", () => {
+    expect(listaRubrosEvento().find("Picker").length).toBe(1);
+  });
+
+  it("when 'rubro' is defined sets the value", () => {
+    const select = listaRubrosEvento().find("Picker");
+    expect(select.props().selectedValue).toBe(props.rubro.id);
+  });
 });

@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
 import ListaRubrosEvento from './ListaRubrosEvento/ListaRubrosEvento';
 import SelectorUbicacion from './SelectorUbicacion/SelectorUbicacion';
+import api from '../../api';
 
-// Api
-import axios from 'axios';
-const common = require('../../common.js');
-const config = common.config();
 
 class RegistrarEvento extends Component {
   constructor(props){
@@ -49,7 +46,7 @@ class RegistrarEvento extends Component {
       ubicacion: this.state.ubicacion
     };
     console.log(evento);
-    axios.post(config.apiUrl + '/actividades/eventos', { evento })
+    api.post('/actividades/eventos', { evento })
       .then(res => {
         console.log(res);
         console.log(res.data);

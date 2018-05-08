@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
+import api from '../../../api';
 
-// Api
-import axios from 'axios';
-const common = require('../../../common.js');
-const config = common.config();
 
 class ListaRubrosEvento extends Component {
   constructor(props){
@@ -18,7 +15,7 @@ class ListaRubrosEvento extends Component {
   }
 
   componentDidMount(){
-    axios.get(config.apiUrl + '/actividades/rubros_evento')
+    api.get('/actividades/rubros_evento')
       .then(res => {
         const rubrosData = res.data;
         this.setState({ rubros: rubrosData })

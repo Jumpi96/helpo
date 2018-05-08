@@ -1,6 +1,7 @@
-var env = require('./env.json');
+import env from './env.json';
 
-exports.config = function() {
+
+export default function config() {
   var node_env = process.env.NODE_ENV || 'development';
   return env[node_env];
-};
+}

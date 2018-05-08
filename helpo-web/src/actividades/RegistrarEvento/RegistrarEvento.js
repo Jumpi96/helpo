@@ -69,6 +69,12 @@ class RegistrarEvento extends Component {
             />
         </div>
         <div className="form-group">
+            <textarea
+              rows="4" cols="50"
+              placeholder="Escriba una breve descripcion del evento.">
+            </textarea>
+        </div>
+        <div className="form-group">
             <ListaRubrosEvento 
               name="listaRubros"
               rubro={this.state.rubro}

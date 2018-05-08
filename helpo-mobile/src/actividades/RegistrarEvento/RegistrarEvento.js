@@ -1,14 +1,11 @@
 import React from 'react';
 import { Text, View } from 'react-native';
-import { Form, FormInput } from 'react-native-elements';
+import { Form, FormInput, FormLabel, Button } from 'react-native-elements';
 // import styles from './RegistrarEventoCSS';
 import SelectorUbicacion from './SelectorUbicacion/SelectorUbicacion';
-import ListaRubrosEvento from './ListaRubrosEvento/ListaRubrosEvento'
+import ListaRubrosEvento from './ListaRubrosEvento/ListaRubrosEvento';
+import api from '../../../api';
 
-// Api
-import axios from 'axios';
-const common = require('../../../common.js');
-const config = common.config();
 
 class RegistrarEvento extends React.Component {
   constructor(props){
@@ -48,7 +45,7 @@ class RegistrarEvento extends React.Component {
       ubicacion: this.state.ubicacion
     };
     console.log(evento);
-    axios.post(config.apiUrl + '/actividades/eventos', { evento })
+    api.post('/actividades/eventos', { evento })
       .then(res => {
         console.log(res);
         console.log(res.data);

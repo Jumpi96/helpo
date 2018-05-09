@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ListaRubrosEvento from './ListaRubrosEvento/ListaRubrosEvento';
 import SelectorUbicacion from './SelectorUbicacion/SelectorUbicacion';
+import SelectorFechaHora from './SelectorFechaHora/SelectorFechaHora';
 import api from '../../api';
 
 
@@ -11,6 +12,8 @@ class RegistrarEvento extends Component {
         nombre: '',
         descripcion: '',
         rubro: {id: 0, nombre: "Sin rubros"},
+        fecha_hora_inicio: Date.now(),
+        fecha_hora_fin: Date.now(),
         //TODO: ubicacion que pasamos por defecto debería ser la de la ONG. Ahora, Córdoba.
         ubicacion: { latitud: -31.4201, longitud: -64.1888, notas: ''}, 
     };
@@ -18,6 +21,7 @@ class RegistrarEvento extends Component {
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleUbicacionChange = this.handleUbicacionChange.bind(this);
     this.handleRubroChange = this.handleRubroChange.bind(this);
+    this.handleFechaHoraChange = this.handleFechaHoraChange.bind(this);
   }
 
   handleInputChange(event) {
@@ -37,13 +41,17 @@ class RegistrarEvento extends Component {
     this.setState({ubicacion: ubi});
   }
 
+  handleFechaHoraChange(selectedDay, modifiers){
+    this.setState({fecha: selectedDay});
+  }
+
   handleSubmit(event) {
     event.preventDefault();
 
     const evento = {
       nombre: this.state.nombre,
       descripcion: this.state.descripcion,
-      fecha: undefined,
+      fecha_hora: undefined,
       rubro_id: this.state.rubro.id,
       ubicacion: this.state.ubicacion
     };
@@ -71,6 +79,16 @@ class RegistrarEvento extends Component {
             onChange={this.handleInputChange}
           />
         </div>
+        <SelectorFechaHora
+          name="fecha" detalle="Inicio"
+          value={this.state.fecha_hora_inicio}
+          onFechaHoraChange={this.state.onFechaHoraChange}
+        />
+        <SelectorFechaHora
+          name="fecha" detalle="Fin"
+          value={this.state.fecha_hora_inicio}
+          onFechaHoraChange={this.state.onFechaHoraChange}
+        />
         <div className="form-group">
           <label for="descripcion">Descripción</label>
           <textarea

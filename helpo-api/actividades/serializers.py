@@ -16,8 +16,8 @@ class EventoSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Evento
-        fields = ('id', 'nombre', 'descripcion', 'fecha_hora',
-            'duracion', 'rubro_id', 'ubicacion')
+        fields = ('id', 'nombre', 'descripcion', 'fecha_hora_inicio',
+            'fecha_hora_fin', 'rubro_id', 'ubicacion')
 
     def create(self, validated_data):
         ubicacion_data = validated_data.pop('ubicacion')

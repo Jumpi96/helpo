@@ -1,4 +1,5 @@
 import json, datetime
+from django.utils import timezone
 from rest_framework import status
 from django.test import TestCase, Client
 from django.urls import reverse
@@ -53,8 +54,8 @@ class EventoTests(TestCase):
         self.jornada = Evento.objects.create(
             nombre = "Jornada 28/04/18",
             descripcion = "Esta es una jornada de prueba",
-            fecha_hora = datetime.datetime.now(),
-            duracion = 120,
+            fecha_hora_inicio = timezone.now(),
+            fecha_hora_fin = timezone.now(),
             rubro_id = self.salud.id,
             ubicacion = self.ubicacion
         )

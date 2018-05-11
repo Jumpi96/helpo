@@ -21,7 +21,8 @@ class RegistrarEvento extends Component {
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleUbicacionChange = this.handleUbicacionChange.bind(this);
     this.handleRubroChange = this.handleRubroChange.bind(this);
-    this.handleFechaHoraChange = this.handleFechaHoraChange.bind(this);
+    this.handleFechaHoraInicioChange = this.handleFechaHoraInicioChange.bind(this);
+    this.handleFechaHoraFinChange = this.handleFechaHoraFinChange.bind(this);
   }
 
   handleInputChange(event) {
@@ -41,8 +42,12 @@ class RegistrarEvento extends Component {
     this.setState({ubicacion: ubi});
   }
 
-  handleFechaHoraChange(selectedDay, modifiers){
-    this.setState({fecha: selectedDay});
+  handleFechaHoraInicioChange(fecha_hora){
+    this.setState({fecha_hora_inicio: fecha_hora});
+  }
+
+  handleFechaHoraFinChange(fecha_hora){
+    this.setState({fecha_hora_fin: fecha_hora});
   }
 
   handleSubmit(event) {
@@ -51,7 +56,7 @@ class RegistrarEvento extends Component {
     const evento = {
       nombre: this.state.nombre,
       descripcion: this.state.descripcion,
-      fecha_hora: undefined,
+      fecha_hora: this.state.fecha_hora_inicio.format('DD/MM/YYYY HH:mm'),
       rubro_id: this.state.rubro.id,
       ubicacion: this.state.ubicacion
     };
@@ -80,14 +85,14 @@ class RegistrarEvento extends Component {
           />
         </div>
         <SelectorFechaHora
-          name="fecha" detalle="Inicio"
+          name="fecha_inicio" detalle="Inicio"
           value={this.state.fecha_hora_inicio}
-          onFechaHoraChange={this.state.onFechaHoraChange}
+          onFechaHoraChange={this.handleFechaHoraInicioChange}
         />
         <SelectorFechaHora
-          name="fecha" detalle="Fin"
-          value={this.state.fecha_hora_inicio}
-          onFechaHoraChange={this.state.onFechaHoraChange}
+          name="fecha_fin" detalle="Fin"
+          value={this.state.fecha_hora_fin}
+          onFechaHoraChange={this.handleFechaHoraFinChange}
         />
         <div className="form-group">
           <label for="descripcion">Descripción</label>

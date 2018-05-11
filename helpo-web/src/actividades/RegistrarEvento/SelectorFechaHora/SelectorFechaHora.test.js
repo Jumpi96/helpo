@@ -19,7 +19,7 @@ describe("SelectorFechaHora", () => {
 
   beforeEach(() => {
     props = {
-      detalle: "Algo",
+      detalle: undefined,
       value: undefined,
       onFechaHoraChange: undefined
     };
@@ -37,34 +37,7 @@ describe("SelectorFechaHora", () => {
     expect(wrappingDiv.children()).toEqual(selectorFechaHora().children());
   });
 
-  it("always renders an DayPickerInput", () => {
-    expect(selectorFechaHora().find("DayPickerInput").length).toBe(1);
+  it("always renders an SelectorFecha", () => {
+    expect(selectorFechaHora().find("SelectorFecha").length).toBe(1);
   });
-/*
-  it("always renders an input", () => {
-    expect(selectorUbicacion().find("input").length).toBe(1);
-  });
-
-  describe("when `fecha` is defined with 'value'", () => {
-    beforeEach(() => {
-      props = {
-        detalle: "Algo",
-        value: Date.now(),
-        onFechaHoraChange: undefined
-      };
-    });
-  
-    it("sets the 'fecha' value", () => {
-      const input = selectorFechaHora().find("DayPickerInput");
-      const pasado = moment(input.props().value).format('DD/MM/YYYY');
-      expect(pasado).toBe(props.value);
-    });
-    
-    it("sets the 'fecha' value", () => {
-        const input = selectorUbicacion().find("input");
-        expect(input.props().value).toBe(props.ubicacion.value);
-      });
-      
-  });
-  */
 });

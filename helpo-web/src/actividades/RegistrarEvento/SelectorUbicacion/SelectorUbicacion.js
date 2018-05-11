@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import LocationPicker from 'react-location-picker';
 
+
 class SelectorUbicacion extends Component {
   constructor(props){
     super(props);

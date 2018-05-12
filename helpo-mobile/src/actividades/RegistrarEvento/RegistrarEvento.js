@@ -1,10 +1,10 @@
 import React from 'react';
 import { Text, View } from 'react-native';
-import { Form, FormInput, FormLabel, Button } from 'react-native-elements';
-// import styles from './RegistrarEventoCSS';
+import { FormInput, FormLabel, Button } from 'react-native-elements';
 import SelectorUbicacion from './SelectorUbicacion/SelectorUbicacion';
 import ListaRubrosEvento from './ListaRubrosEvento/ListaRubrosEvento';
 import api from '../../../api';
+import SelectorFechaHora from './SelectorFechaHora/SelectorFechaHora';
 
 
 class RegistrarEvento extends React.Component {
@@ -13,6 +13,8 @@ class RegistrarEvento extends React.Component {
     this.state = { 
         nombre: '',
         rubro: {id: 0, nombre: "Sin rubros"},
+        fecha_hora_inicio: Date.now(),
+        fecha_hora_fin: Date.now(),
         //TODO: ubicacion que pasamos por defecto debería ser la de la ONG. Ahora, Córdoba.
         ubicacion: { latitud: -31.4201, longitud: -64.1888, notas: ''}, 
     };
@@ -20,6 +22,8 @@ class RegistrarEvento extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleRubroChange = this.handleRubroChange.bind(this);
+    this.handleFechaHoraInicioChange = this.handleFechaHoraInicioChange.bind(this);
+    this.handleFechaHoraFinChange = this.handleFechaHoraFinChange.bind(this);
   }
 
   handleInputChange(event) {
@@ -40,7 +44,8 @@ class RegistrarEvento extends React.Component {
 
     const evento = {
       nombre: this.state.nombre,
-      fecha: undefined,
+      fecha_hora_inicio: this.state.fecha_hora_inicio.toISOString(),
+      fecha_hora_fin: this.state.fecha_hora_fin.toISOString(),
       rubro_id: this.state.rubro.id,
       ubicacion: this.state.ubicacion
     };
@@ -59,9 +64,17 @@ class RegistrarEvento extends React.Component {
     this.setState({ubicacion: ubi});
   }
 
+  handleFechaHoraInicioChange(f_h) {
+    this.setState({fecha_hora_inicio: f_h});
+  }
+  
+  handleFechaHoraFinChange(f_h) {
+    this.setState({fecha_hora_fin: f_h});
+  }
+
   render(){
     return (
-      <Form>
+      <View>
         <Text>Registrar evento</Text>
 
         <FormLabel>Nombre</FormLabel>
@@ -73,14 +86,26 @@ class RegistrarEvento extends React.Component {
             rubro={this.state.rubro}
             onRubroChange={this.handleRubroChange} />
         
+        <SelectorFechaHora 
+          detalle="Inicio"
+          soloFecha={false}
+          value={this.state.fecha_hora_inicio}
+          handleChange={this.handleFechaHoraInicioChange}/>
+
+        <SelectorFechaHora
+          detalle="Fin"
+          soloFecha={false}
+          value={this.state.fecha_hora_fin}
+          handleChange={this.handleFechaHoraFinChange}/>
+
         <SelectorUbicacion
           ubicacion={this.state.ubicacion}
           onUbicacionChange={this.handleUbicacionChange} />
-        
+
         <Button
           title='Guardar evento' 
           onPress={this.handleSubmit}/>
-      </Form>
+      </View>
     );
   }
 }

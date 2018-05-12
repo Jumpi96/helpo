@@ -12,8 +12,8 @@ class RegistrarEvento extends Component {
         nombre: '',
         descripcion: '',
         rubro: {id: 0, nombre: "Sin rubros"},
-        fecha_hora_inicio: Date.now(),
-        fecha_hora_fin: Date.now(),
+        fecha_hora_inicio: new Date(),
+        fecha_hora_fin: new Date(),
         //TODO: ubicacion que pasamos por defecto debería ser la de la ONG. Ahora, Córdoba.
         ubicacion: { latitud: -31.4201, longitud: -64.1888, notas: ''}, 
     };
@@ -56,7 +56,8 @@ class RegistrarEvento extends Component {
     const evento = {
       nombre: this.state.nombre,
       descripcion: this.state.descripcion,
-      fecha_hora: this.state.fecha_hora_inicio.format('DD/MM/YYYY HH:mm'),
+      fecha_hora_inicio: this.state.fecha_hora_inicio.toISOString(),
+      fecha_hora_fin: this.state.fecha_hora_fin.toISOString(),
       rubro_id: this.state.rubro.id,
       ubicacion: this.state.ubicacion
     };

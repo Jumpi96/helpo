@@ -29,7 +29,7 @@ class ListaRubrosEvento extends React.Component {
 
   render(){
     const listaRubroEventos = this.state.rubros.map((r) =>
-      <Picker.Item value={r.id} label={r.nombre}/>
+      <Picker.Item value={r.id} key={r.id} label={r.nombre}/>
     );
     const rubro = this.props.rubro;
     return(

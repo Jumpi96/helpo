@@ -24,14 +24,14 @@ class SelectorFechaHora extends Component {
     const fecha = moment(e).format('DD/MM/YYYY');
     this.setState({fecha: fecha});
     const nueva_fecha_hora = fecha + ' ' + this.state.hora;
-    this.handleChange(moment(nueva_fecha_hora, 'DD/MM/YYYY HH:mm'));
+    this.handleChange(moment(nueva_fecha_hora, 'DD/MM/YYYY HH:mm').toDate());
   }
 
   handleHoraChange(e){
     const hora = moment(e._d).format('HH:mm');
     this.setState({hora: hora});
     const nueva_fecha_hora = this.state.fecha + ' ' + hora;
-    this.handleChange(moment(nueva_fecha_hora, 'DD/MM/YYYY HH:mm'));
+    this.handleChange(moment(nueva_fecha_hora, 'DD/MM/YYYY HH:mm').toDate());
   }
 
   render(){

@@ -11,8 +11,8 @@ class ListaRubrosEvento extends React.Component {
     };
     this.handleChange = this.handleChange.bind(this);
   }
-  handleChange(e) {
-    this.props.onRubroChange(e.target.value);
+  handleChange(value, index) {
+    this.props.onRubroChange(value);
   }
 
   componentDidMount(){
@@ -20,6 +20,7 @@ class ListaRubrosEvento extends React.Component {
       .then(res => {
         const rubrosData = res.data;
         this.setState({ rubros: rubrosData })
+        this.props.rubro_id = rubrosData[0].id
       })
       .catch(function (error) {
         if (error.response){ console.log(error.response.status) }
@@ -31,10 +32,9 @@ class ListaRubrosEvento extends React.Component {
     const listaRubroEventos = this.state.rubros.map((r) =>
       <Picker.Item value={r.id} key={r.id} label={r.nombre}/>
     );
-    const rubro = this.props.rubro;
     return(
       <Picker
-        selectedValue={rubro.id}
+        selectedValue={this.props.rubro_id}
         onValueChange={this.handleChange}>
           {listaRubroEventos}
       </Picker>

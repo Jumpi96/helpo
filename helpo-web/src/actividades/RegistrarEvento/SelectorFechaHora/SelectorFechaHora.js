@@ -36,7 +36,7 @@ class SelectorFechaHora extends Component {
 
   render(){
     return (
-      <div className="form-group">
+      <div>
         <label for="fecha">{this.props.detalle}</label>
         <div className="row">
         <SelectorFecha

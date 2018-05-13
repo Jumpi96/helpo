@@ -85,7 +85,9 @@ class RegistrarEvento extends React.Component {
     } else {
       const inicio = moment(this.state.fecha_hora_inicio);
       const fin = moment(this.state.fecha_hora_fin);
-      if (moment.duration(fin.diff(inicio)).asHours() > 24) {
+      if (moment.duration(fin.diff(inicio)).asHours() > 24 ||
+          moment.duration(inicio.diff(moment()) < 0) ||
+          moment.duration(fin.diff(inicio)).asHours() < 0) {
         formIsValid = false;
         errors.fechas = "Las fecha de fin debe ser mayor a la de inicio y " +
           "la actividad no durar más de 24 horas.";

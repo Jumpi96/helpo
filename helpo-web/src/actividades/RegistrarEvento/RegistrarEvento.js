@@ -12,7 +12,7 @@ class RegistrarEvento extends Component {
     this.state = { 
         nombre: '',
         descripcion: '',
-        rubro: {id: 0, nombre: "Sin rubros"},
+        rubro_id: 0,
         fecha_hora_inicio: new Date(),
         fecha_hora_fin: new Date(),
         //TODO: ubicacion que pasamos por defecto debería ser la de la ONG. Ahora, Córdoba.
@@ -37,7 +37,7 @@ class RegistrarEvento extends Component {
   }
 
   handleRubroChange(r) {
-    this.setState({rubro: r});
+    this.setState({rubro_id: r});
   }
 
   handleUbicacionChange(ubi) {
@@ -54,17 +54,16 @@ class RegistrarEvento extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    
     if (this.handleValidation()) {
       const evento = {
         nombre: this.state.nombre,
         descripcion: this.state.descripcion,
         fecha_hora_inicio: this.state.fecha_hora_inicio.toISOString(),
         fecha_hora_fin: this.state.fecha_hora_fin.toISOString(),
-        rubro_id: this.state.rubro.id,
+        rubro_id: this.state.rubro_id,
         ubicacion: this.state.ubicacion
       };
-      api.post('/actividades/eventos', { evento })
+      api.post('/actividades/eventos/', evento)
         .then(res => {
           console.log(res);
           console.log(res.data);
@@ -73,7 +72,7 @@ class RegistrarEvento extends Component {
           if (error.response){ console.log(error.response.status) }
           else { console.log('Error: ', error.message)}
         });
-    }    
+    }
   }
 
   handleValidation(event) {
@@ -92,13 +91,15 @@ class RegistrarEvento extends Component {
     } else {
       const inicio = moment(this.state.fecha_hora_inicio);
       const fin = moment(this.state.fecha_hora_fin);
-      if (moment.duration(fin.diff(inicio)).asHours() > 24) {
+      if (moment.duration(fin.diff(inicio)).asHours() > 24 ||
+          moment.duration(inicio.diff(moment()) < 0) ||
+          moment.duration(fin.diff(inicio)).asHours() < 0) {
         formIsValid = false;
         errors.fechas = "Las fecha de fin debe ser mayor a la de inicio y " +
           "la actividad no durar más de 24 horas.";
       }
     }
-    if (this.state.rubro.id === 0) {
+    if (this.state.rubro_id === 0) {
       formIsValid = false;
       errors.rubro = "Hubo un problema al cargar los rubros.";
     }
@@ -147,7 +148,7 @@ class RegistrarEvento extends Component {
           <label for="listaRubros">Rubro</label>
           <ListaRubrosEvento 
             name="listaRubros"
-            rubro={this.state.rubro}
+            rubro={this.state.rubro_id}
             onRubroChange={this.handleRubroChange} />
           <span style={{color: "red"}}>{this.state.errors["rubro"]}</span>
         </div>
@@ -155,7 +156,7 @@ class RegistrarEvento extends Component {
           name="selectorUbicacion"
           ubicacion={this.state.ubicacion}
           onUbicacionChange={this.handleUbicacionChange}/>
-        <input type="submit" class="btn btn-primary" value="Guardar" />
+        <input type="submit" className="btn btn-primary" value="Guardar" />
       </form>
     );
   }

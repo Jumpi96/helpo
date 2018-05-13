@@ -28,10 +28,13 @@ class SelectorFechaHora extends Component {
   }
 
   handleHoraChange(e){
-    const hora = moment(e._d).format('HH:mm');
-    this.setState({hora: hora});
-    const nueva_fecha_hora = this.state.fecha + ' ' + hora;
-    this.handleChange(moment(nueva_fecha_hora, 'DD/MM/YYYY HH:mm').toDate());
+    const hora = moment(e._d, 'HH:mm', true);
+    if (hora.isValid())
+    {
+      this.setState({hora: hora});
+      const nueva_fecha_hora = this.state.fecha + ' ' + hora;
+      this.handleChange(moment(nueva_fecha_hora, 'DD/MM/YYYY HH:mm').toDate());
+    }
   }
 
   render(){

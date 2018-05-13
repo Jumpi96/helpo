@@ -1,5 +1,10 @@
 from rest_framework import serializers
-from actividades.models import Evento, Organizacion, TipoDeOrganizacion, Ubicacion
+from actividades.models import Evento, RubroEvento, Ubicacion
+
+class RubroEventoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RubroEvento
+        fields = ('id', 'nombre')
 
 class UbicacionSerializer(serializers.ModelSerializer):
     class Meta:
@@ -11,7 +16,8 @@ class EventoSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Evento
-        fields = ('id', 'nombre', 'fecha', 'organizacion', 'ubicacion')
+        fields = ('id', 'nombre', 'descripcion', 'fecha_hora_inicio',
+            'fecha_hora_fin', 'rubro_id', 'ubicacion')
 
     def create(self, validated_data):
         ubicacion_data = validated_data.pop('ubicacion')
@@ -21,12 +27,3 @@ class EventoSerializer(serializers.ModelSerializer):
     
     #TODO: def update
 
-class TipoDeOrganizacionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = TipoDeOrganizacion
-        fields = ('id', 'nombre')
-
-class OrganizacionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Organizacion
-        fields = ('id', 'nombre', 'tipo')

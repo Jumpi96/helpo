@@ -1,20 +1,18 @@
 from django.db import models
 from common.models import IndexedTimeStampedModel
 
-class TipoDeOrganizacion(models.Model):
+class RubroEvento(models.Model):
     nombre = models.CharField(max_length=100)
-
-class Organizacion(IndexedTimeStampedModel):
-    nombre = models.CharField(max_length=100)
-    tipo = models.ForeignKey(TipoDeOrganizacion, null=True, on_delete=models.SET_NULL)
 
 class Ubicacion(models.Model):
-    latitud = models.FloatField(null=True)
-    longitud = models.FloatField(null=True)
+    latitud = models.FloatField()
+    longitud = models.FloatField()
     notas = models.CharField(max_length=140)
 
 class Evento(IndexedTimeStampedModel):
     nombre = models.CharField(max_length=100)
-    fecha = models.DateTimeField()
-    organizacion = models.ForeignKey(Organizacion, on_delete=models.CASCADE)
+    descripcion = models.CharField(max_length=1000, null=True)
+    fecha_hora_inicio = models.DateTimeField()
+    fecha_hora_fin = models.DateTimeField()
+    rubro = models.ForeignKey(RubroEvento, null=True, on_delete=models.SET_NULL)
     ubicacion = models.ForeignKey(Ubicacion, null=True, on_delete=models.SET_NULL)

@@ -1,102 +1,68 @@
 import json, datetime
+from django.utils import timezone
 from rest_framework import status
 from django.test import TestCase, Client
 from django.urls import reverse
-from actividades.models import TipoDeOrganizacion, Organizacion, Evento, Ubicacion
-from actividades.serializers import TipoDeOrganizacionSerializer, OrganizacionSerializer
+from actividades.models import RubroEvento, Evento, Ubicacion
+from actividades.serializers import RubroEventoSerializer
 
 client = Client()
 
-class TipoDeOrganizacionTests(TestCase):
+class RubroEventoTests(TestCase):
 
     def setUp(self):
-        self.ddhh = TipoDeOrganizacion.objects.create(
-            nombre = "Defensa de los DDHH"
+        self.salud = RubroEvento.objects.create(
+            nombre = "Salud"
         )
-        self.peta = TipoDeOrganizacion.objects.create(
-            nombre = "Defensa de los animales"
+        self.edu = RubroEvento.objects.create(
+            nombre = "Educación"
         )
         
     def test_get_todos(self):
-        response = client.get(reverse('get_post_tipo_de_organizacion'))
-        tipos = TipoDeOrganizacion.objects.all()
-        serializer = TipoDeOrganizacionSerializer(tipos, many=True)
+        response = client.get(reverse('get_post_rubro_evento'))
+        rubros = RubroEvento.objects.all()
+        serializer = RubroEventoSerializer(rubros, many=True)
         self.assertEqual(response.data, serializer.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_get_existente(self):
         response = client.get(
-            reverse('get_put_delete_tipo_de_organizacion', kwargs={'id': self.ddhh.id})
+            reverse('get_put_delete_rubro_evento', kwargs={'id': self.salud.id})
         )
-        tipo = TipoDeOrganizacion.objects.get(id=self.ddhh.id)
-        serializer = TipoDeOrganizacionSerializer(tipo)
+        rubro = RubroEvento.objects.get(id=self.salud.id)
+        serializer = RubroEventoSerializer(rubro)
         self.assertEqual(response.data, serializer.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_get_no_existente(self):
         response = client.get(
-            reverse('get_put_delete_tipo_de_organizacion', kwargs={'id': 3})
-        )
-        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
-
-class OrganizacionTests(TestCase):
-
-    def setUp(self):
-        self.ddhh = TipoDeOrganizacion.objects.create(
-            nombre = "Defensa de los DDHH"
-        )
-        self.ai = Organizacion.objects.create(
-            nombre = "Amnistía Internacional",
-            tipo_id = self.ddhh.id
-        )
-        self.madres = Organizacion.objects.create(
-            nombre = "Madres",
-            tipo_id = self.ddhh.id
-        )
-        
-    def test_get_todos(self):
-        response = client.get(reverse('get_post_organizacion'))
-        organizaciones = Organizacion.objects.all()
-        self.assertEqual(2, len(response.data))
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-
-    def test_get_existente(self):
-        response = client.get(
-            reverse('get_put_delete_organizacion', kwargs={'id': self.ai.id})
-        )
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-
-    def test_get_no_existente(self):
-        response = client.get(
-            reverse('get_put_delete_organizacion', kwargs={'id': 3})
+            reverse('get_put_delete_rubro_evento', kwargs={'id': 30})
         )
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
 class EventoTests(TestCase):
 
     def setUp(self):
-        self.ddhh = TipoDeOrganizacion.objects.create(
-            nombre = "Defensa de los DDHH"
-        )
-        self.ai = Organizacion.objects.create(
-            nombre = "Amnistía Internacional",
-            tipo_id = self.ddhh.id
-        )
+        self.salud = RubroEvento.objects.create(
+            nombre = "Salud"
+        )        
         self.ubicacion = Ubicacion.objects.create(
-            latitud = None,
-            longitud = None,
+            latitud = -10.0,
+            longitud = -10.0,
             notas = "Espejo Norte 926"
         )
         self.jornada = Evento.objects.create(
             nombre = "Jornada 28/04/18",
-            fecha = datetime.datetime.now(),
-            organizacion_id = self.ai.id,
+            descripcion = "Esta es una jornada de prueba",
+            fecha_hora_inicio = timezone.now(),
+            fecha_hora_fin = timezone.now(),
+            rubro_id = self.salud.id,
             ubicacion = self.ubicacion
         )
         
     def test_get_todos(self):
         response = client.get(reverse('get_post_evento'))
-        eventos = Organizacion.objects.all()
+        eventos = Evento.objects.all()
         self.assertEqual(1, len(response.data))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 

@@ -86,6 +86,8 @@ python manage.py makemigrations
 python manage.py migrate
 python manage.py runserver
 ```
+- On projec folder `helpo-web/`:
+  - Create file with name `.env` and text `REACT_APP_API_URL="http://localhost:8000"`
 - Run on `helpo-web/`: 
 ```
 npm update

@@ -16,7 +16,7 @@ describe("ListaRubrosEvento", () => {
 
   beforeEach(() => {
     props = {
-      rubro: { id: 1, nombre: "Salud" },
+      rubro_id: 1,
       onRubroChange: undefined
     };
     wrapperListaRubrosEvento = undefined;
@@ -32,6 +32,6 @@ describe("ListaRubrosEvento", () => {
 
   it("when 'rubro' is defined sets the value", () => {
     const select = listaRubrosEvento().find("Picker");
-    expect(select.props().selectedValue).toBe(props.rubro.id);
+    expect(select.props().selectedValue).toBe(props.rubro_id);
   });
 });

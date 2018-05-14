@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ListaRubrosEvento from './ListaRubrosEvento/ListaRubrosEvento';
 import SelectorUbicacion from './SelectorUbicacion/SelectorUbicacion';
-import SelectorFechaHora from './SelectorFechaHora/SelectorFechaHora';
+import DateTimePicker from 'react-datetime-picker';
 import moment from 'moment';
 import api from '../../api';
 
@@ -45,7 +45,7 @@ class RegistrarEvento extends Component {
   }
 
   handleFechaHoraInicioChange(fecha_hora){
-    this.setState({fecha_hora_inicio: fecha_hora});
+    this.setState({fecha_hora_inicio: fecha_hora, fecha_hora_fin: fecha_hora});
   }
 
   handleFechaHoraFinChange(fecha_hora){
@@ -91,8 +91,9 @@ class RegistrarEvento extends Component {
     } else {
       const inicio = moment(this.state.fecha_hora_inicio);
       const fin = moment(this.state.fecha_hora_fin);
+      const ahora = moment(new Date());
       if (moment.duration(fin.diff(inicio)).asHours() > 24 ||
-          moment.duration(inicio.diff(moment()) < 0) ||
+          inicio < ahora ||
           moment.duration(fin.diff(inicio)).asHours() < 0) {
         formIsValid = false;
         errors.fechas = "Las fecha de fin debe ser mayor a la de inicio y " +
@@ -122,17 +123,20 @@ class RegistrarEvento extends Component {
           />
           <span style={{color: "red"}}>{this.state.errors["nombre"]}</span>
         </div>
-        <div>
-          <SelectorFechaHora
-            name="fecha_inicio" detalle="Inicio"
-            value={this.state.fecha_hora_inicio}
-            onFechaHoraChange={this.handleFechaHoraInicioChange}
-          />
-          <SelectorFechaHora
-            name="fecha_fin" detalle="Fin"
-            value={this.state.fecha_hora_fin}
-            onFechaHoraChange={this.handleFechaHoraFinChange}
-          />
+        <div className="form-group">
+          <label>Fecha</label>
+          <div className="form-group">
+            <DateTimePicker name="inicio"
+              onChange={this.handleFechaHoraInicioChange}
+              isClockOpen={false}
+              value={this.state.fecha_hora_inicio}
+            />
+            <DateTimePicker name="fin"
+              onChange={this.handleFechaHoraFinChange}
+              isClockOpen={false}
+              value={this.state.fecha_hora_fin}
+            />
+          </div>
           <span style={{color: "red"}}>{this.state.errors["fechas"]}</span>
         </div>
         <div className="form-group">

@@ -15,7 +15,7 @@ class RegistrarEvento extends React.Component {
         nombre: '',
         descripcion: '',
         rubro_id: 0,
-        fecha_hora_inicio: new Date,
+        fecha_hora_inicio: new Date(),
         fecha_hora_fin: new Date(),
         //TODO: ubicacion que pasamos por defecto debería ser la de la ONG. Ahora, Córdoba.
         ubicacion: { latitud: -31.4201, longitud: -64.1888, notas: ''}, 
@@ -75,9 +75,9 @@ class RegistrarEvento extends React.Component {
     } else {
       const inicio = moment(this.state.fecha_hora_inicio);
       const fin = moment(this.state.fecha_hora_fin);
-      const ahora = moment();
+      const ahora = moment(new Date());
       if (moment.duration(fin.diff(inicio)).asHours() > 24 ||
-          moment.duration(inicio.diff(ahora)).asHours() < 0 ||
+          inicio < ahora ||
           moment.duration(fin.diff(inicio)).asHours() < 0) {
         formIsValid = false;
         errors.fechas = "Las fecha de fin debe ser mayor a la de inicio y " +
@@ -98,7 +98,7 @@ class RegistrarEvento extends React.Component {
   }
 
   handleFechaHoraInicioChange(f_h) {
-    this.setState({fecha_hora_inicio: f_h});
+    this.setState({fecha_hora_inicio: f_h, fecha_hora_fin: f_h});
   }
   
   handleFechaHoraFinChange(f_h) {

@@ -98,7 +98,7 @@ class RegistrarEvento extends React.Component {
   }
 
   handleFechaHoraInicioChange(f_h) {
-    this.setState({fecha_hora_inicio: f_h});
+    this.setState({fecha_hora_inicio: f_h, fecha_hora_fin: f_h});
   }
   
   handleFechaHoraFinChange(f_h) {

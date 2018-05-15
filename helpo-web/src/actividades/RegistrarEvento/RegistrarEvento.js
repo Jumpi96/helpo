@@ -120,24 +120,24 @@ class RegistrarEvento extends Component {
       <form onSubmit={this.handleSubmit}>
         <h1>Registrar evento</h1>
         <div className="row">
-        <div className="form-group col-md-6">
-          <label for="nombre">Nombre</label>
-          <input type="text" 
-            name="nombre" className="form-control"
-            placeholder="Nombre"
-            value={this.state.nombre} 
-            onChange={this.handleInputChange}
-          />
-          <span style={{color: "red"}}>{this.state.errors["nombre"]}</span>
-        </div>
-        <div className="form-group col-md-6">
-          <label for="listaRubros">Rubro</label>
-          <ListaRubrosEvento 
-            name="listaRubros"
-            rubro={this.state.rubro_id}
-            onRubroChange={this.handleRubroChange} />
-          <span style={{color: "red"}}>{this.state.errors["rubro"]}</span>
-        </div>
+          <div className="form-group col-md-6">
+            <label for="nombre">Nombre</label>
+            <input type="text" 
+              name="nombre" className="form-control"
+              placeholder="Nombre"
+              value={this.state.nombre} 
+              onChange={this.handleInputChange}
+            />
+            <span style={{color: "red"}}>{this.state.errors["nombre"]}</span>
+          </div>
+          <div className="form-group col-md-6">
+            <label for="listaRubros">Rubro</label>
+            <ListaRubrosEvento 
+              name="listaRubros"
+              rubro={this.state.rubro_id}
+              onRubroChange={this.handleRubroChange} />
+            <span style={{color: "red"}}>{this.state.errors["rubro"]}</span>
+          </div>
         </div>
         <div className="form-group">
           <label>Fecha</label>

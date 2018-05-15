@@ -83,6 +83,8 @@ class RegistrarEvento extends Component {
       formIsValid = false;
       errors.nombre = "Debe ingresar un nombre.";
     }
+    else
+      errors.nombre = undefined;
 
     if (isNaN(Date.parse(this.state.fecha_hora_inicio)) ||
     isNaN(Date.parse(this.state.fecha_hora_fin))) {
@@ -99,11 +101,15 @@ class RegistrarEvento extends Component {
         errors.fechas = "Las fecha de fin debe ser mayor a la de inicio y " +
           "la actividad no durar más de 24 horas.";
       }
+      else
+        errors.fechas = undefined;
     }
     if (this.state.rubro_id === 0) {
       formIsValid = false;
       errors.rubro = "Hubo un problema al cargar los rubros.";
     }
+    else
+      errors.rubro = undefined;
 
     this.setState({errors: errors});
     return formIsValid;
@@ -113,15 +119,25 @@ class RegistrarEvento extends Component {
     return (
       <form onSubmit={this.handleSubmit}>
         <h1>Registrar evento</h1>
-        <div className="form-group">
+        <div className="row">
+        <div className="form-group col-md-6">
           <label for="nombre">Nombre</label>
-          <input type="text"
+          <input type="text" 
             name="nombre" className="form-control"
             placeholder="Nombre"
             value={this.state.nombre} 
             onChange={this.handleInputChange}
           />
           <span style={{color: "red"}}>{this.state.errors["nombre"]}</span>
+        </div>
+        <div className="form-group col-md-6">
+          <label for="listaRubros">Rubro</label>
+          <ListaRubrosEvento 
+            name="listaRubros"
+            rubro={this.state.rubro_id}
+            onRubroChange={this.handleRubroChange} />
+          <span style={{color: "red"}}>{this.state.errors["rubro"]}</span>
+        </div>
         </div>
         <div className="form-group">
           <label>Fecha</label>
@@ -142,25 +158,19 @@ class RegistrarEvento extends Component {
         <div className="form-group">
           <label for="descripcion">Descripción</label>
           <textarea
-            name="descripcion"
+            name="descripcion" rows="9"
             className="form-control"
             placeholder="Escriba una breve descripcion del evento." 
             value={this.state.descripcion}
             onChange={this.handleInputChange}/>
         </div>
-        <div className="form-group">
-          <label for="listaRubros">Rubro</label>
-          <ListaRubrosEvento 
-            name="listaRubros"
-            rubro={this.state.rubro_id}
-            onRubroChange={this.handleRubroChange} />
-          <span style={{color: "red"}}>{this.state.errors["rubro"]}</span>
-        </div>
         <SelectorUbicacion
           name="selectorUbicacion"
           ubicacion={this.state.ubicacion}
           onUbicacionChange={this.handleUbicacionChange}/>
-        <input type="submit" className="btn btn-primary" value="Guardar" />
+        <div className="form-group">
+          <input type="submit" className="btn btn-primary" value="Guardar evento" />
+        </div>
       </form>
     );
   }

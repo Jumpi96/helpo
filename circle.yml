@@ -22,7 +22,7 @@ dependencies:
 test:
   override:
     - cd helpo-web && npm run build
-    - cd helpo-web && npm test -- --coverage
+    - cd helpo-web && npm test
     - cd helpo-mobile && npm test -- --updateSnapshot
     - >-
       cd helpo-api
@@ -41,5 +41,4 @@ test:
     - cd helpo-api && pipenv run coverage run manage.py test
   post:
     - cd helpo-api && pipenv run coverage html -d $CIRCLE_ARTIFACTS
-    - cd helpo-web && mv coverage/* $CIRCLE_ARTIFACTS
     - bash <(curl -s https://codecov.io/bash)

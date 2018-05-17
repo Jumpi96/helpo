@@ -1,19 +1,24 @@
 {
-  "name": "helpoApp",
-  "version": "0.1.0",
+  "name": "NativebaseKitchenSink",
+  "version": "2.5.0",
   "private": true,
   "devDependencies": {
-    "jest-expo": "~27.0.0",
-    "jest-transform-stub": "^1.0.0",
-    "react-native-scripts": "1.14.0",
-    "react-test-renderer": "16.3.1",
-    "react-addons-test-utils": "15.6.2",
-    "enzyme": "3.3.0",
-    "enzyme-adapter-react-16": "1.1.1",
-    "enzyme-to-json": "3.3.3",
-    "react-dom": "16.3.2",
-    "react-native-modal-datetime-picker": "5.1.0",
-    "moment": "2.22.1"
+    "babel-eslint": "7.2.3",
+    "eslint": "4.4.1",
+    "eslint-plugin-flowtype": "2.35.0",
+    "eslint-plugin-import": "2.7.0",
+    "eslint-plugin-jsx-a11y": "6.0.2",
+    "eslint-plugin-prettier": "2.1.2",
+    "eslint-plugin-react": "7.1.0",
+    "eslint-plugin-react-native": "3.0.1",
+    "flow-bin": "0.52.0",
+    "flow-typed": "2.1.5",
+    "husky": "0.14.3",
+    "jest": "20.0.4",
+    "jest-expo": "25.0.0",
+    "prettier": "1.5.3",
+    "react-native-scripts": "1.11.1",
+    "react-test-renderer": "16.2.0"
   },
   "main": "./node_modules/react-native-scripts/build/bin/crna-entry.js",
   "scripts": {
@@ -21,31 +26,19 @@
     "eject": "react-native-scripts eject",
     "android": "react-native-scripts android",
     "ios": "react-native-scripts ios",
-    "test": "jest"
+    "test": "node node_modules/jest/bin/jest.js --watch"
   },
   "jest": {
-    "preset": "react-native",
-    "transformIgnorePatterns": [
-      "node_modules/(?!react-native|react-router-native)/"
-    ],
-    "snapshotSerializers": [
-      "enzyme-to-json/serializer"
-    ],
-    "setupFiles": [
-      "./setupTests.js"
-    ],
-    "transform": {
-      ".+\\.(css|styl|less|sass|scss|png|jpg|ttf|woff|woff2)$": "jest-transform-stub"
-    }
+    "preset": "jest-expo"
   },
   "dependencies": {
-    "expo": "^27.0.1",
-    "react": "16.3.1",
-    "react-native": "~0.55.2",
-    "react-router-native": "4.2.0",
-    "react-native-elements": "0.19.1",
-    "react-native-google-place-picker": "1.2.1",
-    "axios": "0.18.0",
-    "react-native-config": "0.11.5"
+    "color": "1.0.3",
+    "expo": "25.0.0",
+    "lodash": "4.13.1",
+    "moment": "2.13.0",
+    "native-base": "2.4.1",
+    "react": "16.2.0",
+    "react-native": "0.52.0",
+    "react-navigation": "1.5.0"
   }
 }

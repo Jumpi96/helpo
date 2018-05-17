@@ -379,7 +379,7 @@ class Cards extends Component {
                 <CardHeader>
                   Card actions
                   <div className="card-header-actions">
-                    <a href="#" className="card-header-action btn btn-setting"><i className="icon-settings"></i></a>
+                    <a href="https://coreui.io/react/" className="card-header-action btn btn-setting"><i className="icon-settings"></i></a>
                     <a className="card-header-action btn btn-minimize" data-target="#collapseExample" onClick={this.toggle}><i className="icon-arrow-up"></i></a>
                     <a className="card-header-action btn btn-close" onClick={this.toggleFade}><i className="icon-close"></i></a>
                   </div>

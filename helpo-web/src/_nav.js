@@ -3,11 +3,21 @@ export default {
     {
       name: 'Dashboard',
       url: '/dashboard',
-      icon: 'icon-speedometer',
-      badge: {
-        variant: 'info',
-        text: 'NEW',
+      icon: 'icon-speedometer'
+    },
+    {
+      title: true,
+      name: 'Actividades sociales',
+      wrapper: {            // optional wrapper object
+        element: '',        // required valid HTML5 element tag
+        attributes: {}        // optional valid JS object with JS API naming ex: { className: "my-class", style: { fontFamily: "Verdana" }, id: "my-id"}
       },
+      class: ''             // optional class names space delimited list for title item ex: "text-center"
+    },
+    {
+      name: 'Nuevo evento',
+      url: '/actividades/registrar-evento',
+      icon: 'icon-pencil',
     },
     {
       title: true,

@@ -10,7 +10,12 @@ function Loading() {
 const RegistrarEvento = Loadable({
   loader: () => import('./views/Actividades/RegistrarEvento/RegistrarEvento'),
   loading: Loading,
-})
+});
+
+const RegistrarNecesidades = Loadable({
+  loader: () => import('./views/Actividades/RegistrarNecesidades/RegistrarNecesidades'),
+  loading: Loading,
+});
 
 const Breadcrumbs = Loadable({
   loader: () => import('./views/Base/Breadcrumbs'),
@@ -184,6 +189,7 @@ const routes = [
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
 
   { path: '/actividades/registrar-evento', name: 'Registrar evento', component: RegistrarEvento },
+  { path: '/actividades/registrar-necesidades', name: 'Registrar necesidades', component: RegistrarNecesidades },
 
   { path: '/theme', exact: true, name: 'Theme', component: Colors },
   { path: '/theme/colors', name: 'Colors', component: Colors },

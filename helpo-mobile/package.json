@@ -15,15 +15,12 @@
     "flow-typed": "2.1.5",
     "husky": "0.14.3",
     "jest": "22.4.3",
-    "jest-expo": "25.0.0",
+    "jest-expo": "27.0.1",
     "jest-transform-stub": "^1.0.0",
     "prettier": "1.5.3",
     "react-native-scripts": "1.11.1",
     "react-test-renderer": "16.2.0",
-    "react-dom": "16.3.2",
-    "enzyme": "3.3.0",
-    "enzyme-adapter-react-16": "1.1.1",
-    "enzyme-to-json": "3.3.3"
+    "react-dom": "16.3.2"
   },
   "main": "./node_modules/react-native-scripts/build/bin/crna-entry.js",
   "scripts": {
@@ -39,9 +36,7 @@
     "transform": {
       ".+\\.(css|styl|less|sass|scss|png|jpg|ttf|woff|woff2)$": "jest-transform-stub"
     },
-    "setupFiles": [
-      "./setupTests.js"
-    ]
+    "transformIgnorePatterns": []
   },
   "dependencies": {
     "color": "1.0.3",

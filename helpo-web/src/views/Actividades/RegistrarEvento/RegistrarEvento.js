@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ListaRubrosEvento from './ListaRubrosEvento/ListaRubrosEvento';
 import SelectorUbicacion from './SelectorUbicacion/SelectorUbicacion';
+import RegistrarContacto from './RegistrarContacto/RegistrarContacto';
 import DateTimePicker from 'react-datetime-picker';
 import moment from 'moment';
 import api from '../../../api';
@@ -17,7 +18,14 @@ class RegistrarEvento extends Component {
         fecha_hora_fin: new Date(),
         //TODO: ubicacion que pasamos por defecto debería ser la de la ONG. Ahora, Córdoba.
         ubicacion: { latitud: -31.4201, longitud: -64.1888, notas: ''}, 
-        errors: {}
+        errors: {},
+        contactos: [{
+          nombre: 'example',
+          mail: 'example@mail.com',
+          telefono: '42',
+          id: '1',
+          nextId: '2',
+        }],
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -25,6 +33,8 @@ class RegistrarEvento extends Component {
     this.handleRubroChange = this.handleRubroChange.bind(this);
     this.handleFechaHoraInicioChange = this.handleFechaHoraInicioChange.bind(this);
     this.handleFechaHoraFinChange = this.handleFechaHoraFinChange.bind(this);
+    this.handleAddContact = this.handleAddContact.bind(this);
+    this.handleRemoveContact = this.handleRemoveContact.bind(this);
   }
 
   handleInputChange(event) {
@@ -39,7 +49,31 @@ class RegistrarEvento extends Component {
   handleRubroChange(r) {
     this.setState({rubro_id: r});
   }
+  handleAddContact() {
+    const newContact = {
+      nombre: 'example',
+      mail: 'example@mail.com',
+      telefono: '42',
+      id: this.nextId,
+    };
+    const newState = this.state.contactos.concat(newContact);
+    this.setState({
+      contactos: newState,
+      nextKey: this.state.nextId + 1,
+    });
+  }
+  handleRemoveContact(id) {
+    const oldContactos = this.state.contactos;
+    const indexOfRemove = oldContactos.map(e => e.id).indexOf(id);
+    const newContactos = oldContactos.splice(indexOfRemove);
+    this.setState({
+      contactos: newContactos,
+    });
+  }
 
+  handleOrganizacionChange(org) {
+    this.setState({ organizacion: org });
+  }
   handleUbicacionChange(ubi) {
     this.setState({ubicacion: ubi});
   }
@@ -167,9 +201,15 @@ class RegistrarEvento extends Component {
           name="selectorUbicacion"
           ubicacion={this.state.ubicacion}
           onUbicacionChange={this.handleUbicacionChange}/>
+          <RegistrarContacto
+          onClickAdd={this.handleAddContact}
+          onClickRemove={this.handleRemoveContact}
+          contacts={this.state.contactos}
+        />
         <div className="form-group">
           <input type="submit" className="btn btn-primary" value="Guardar evento" />
         </div>
+        
       </form>
     );
   }

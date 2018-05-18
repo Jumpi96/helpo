@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import { Text, View } from 'react-native';
-import { Button, FormLabel, FormInput } from 'react-native-elements';
-import DateTimePicker from 'react-native-modal-datetime-picker';
-import moment from 'moment';
+import React, { Component } from "react";
+import { Text, View } from "react-native";
+import { Button, FormLabel, FormInput } from "react-native-elements";
+import DateTimePicker from "react-native-modal-datetime-picker";
+import moment from "moment";
 
 class SelectorFechaHora extends Component {
   constructor(props){
@@ -22,12 +22,13 @@ class SelectorFechaHora extends Component {
   }
 
   convertDateToString(datetime) {
-    if (this.props.soloFecha)
-      return moment(datetime).format('DD/MM/YYYY');
-    else
-      return moment(datetime).format('DD/MM/YYYY HH:mm');
+    if (this.props.soloFecha) {
+      return moment(datetime).format("DD/MM/YYYY");
+    } else {
+      return moment(datetime).format("DD/MM/YYYY HH:mm");
+    }
   }
-    
+
   render () {
     return (
         <View>
@@ -39,11 +40,11 @@ class SelectorFechaHora extends Component {
             isVisible={this.state.isDateTimePickerVisible}
             onConfirm={this.handleDatePicked}
             onCancel={this.hideDateTimePicker}
-            mode={this.props.soloFecha ? 'date' : 'datetime'}
+            mode={this.props.soloFecha ? "date" : "datetime"}
             />
         </View>
     );
-  }   
+  }
 }
 
 export default SelectorFechaHora;

@@ -1,5 +1,6 @@
-import React from 'react';
-import SelectorUbicacion from './SelectorUbicacion';
+import React from "react";
+import { shallow } from "enzyme";
+import SelectorUbicacion from "./SelectorUbicacion";
 
 
 describe("SelectorUbicacion", () => {
@@ -16,13 +17,13 @@ describe("SelectorUbicacion", () => {
 
   beforeEach(() => {
     props = {
-      ubicacion: { latitud: -31.4201, longitud: -64.1888, notas: ''},
+      ubicacion: { latitud: -31.4201, longitud: -64.1888, notas: ""},
       onUbicacionChange: undefined
     };
     wrapperSelectorUbicacion = undefined;
   });
   
-  it('renders without crashing', () => {
+  it("renders without crashing", () => {
     expect(selectorUbicacion()).toMatchSnapshot();
   });
 
@@ -36,7 +37,7 @@ describe("SelectorUbicacion", () => {
 
   describe("when `ubicacion` is defined with 'notas'", () => {
     beforeEach(() => {
-      props.ubicacion = { latitud: -31.4201, longitud: -64.1888, notas: 'testing'};
+      props.ubicacion = { latitud: -31.4201, longitud: -64.1888, notas: "testing"};
     });
   
     it("sets the 'notas' value", () => {

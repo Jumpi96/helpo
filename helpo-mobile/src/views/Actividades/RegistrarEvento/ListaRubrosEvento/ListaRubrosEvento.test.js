@@ -1,5 +1,6 @@
-import React from 'react';
-import ListaRubrosEvento from './ListaRubrosEvento';
+import React from "react";
+import { shallow } from "enzyme";
+import ListaRubrosEvento from "./ListaRubrosEvento";
 
 
 describe("ListaRubrosEvento", () => {
@@ -22,7 +23,7 @@ describe("ListaRubrosEvento", () => {
     wrapperListaRubrosEvento = undefined;
   });
   
-  it('renders without crashing', () => {
+  it("renders without crashing", () => {
     expect(listaRubrosEvento()).toMatchSnapshot();
   });
 

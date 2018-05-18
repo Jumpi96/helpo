@@ -1,5 +1,6 @@
-import React from 'react';
-import SelectorFechaHora from './SelectorFechaHora';
+import React from "react";
+import { shallow } from "enzyme";
+import SelectorFechaHora from "./SelectorFechaHora";
 
 
 describe("SelectorFechaHora", () => {
@@ -23,8 +24,8 @@ describe("SelectorFechaHora", () => {
     };
     wrapperSelectorFechaHora = undefined;
   });
-  
-  it('renders without crashing', () => {
+
+  it("renders without crashing", () => {
     expect(selectorFechaHora()).toMatchSnapshot();
   });
 

@@ -1,9 +1,9 @@
-import React from 'react';
-import RegistrarEvento from './RegistrarEvento';
+import React from "react";
+import { shallow } from "enzyme";
+import RegistrarEvento from "./RegistrarEvento";
 
 
 describe("RegistrarEvento", () => {
-  let props;
   let wrapperRegistrarEvento;
   const registrarEvento = () => {
     if (!wrapperRegistrarEvento) {
@@ -12,14 +12,13 @@ describe("RegistrarEvento", () => {
       );
     }
     return wrapperRegistrarEvento;
-  }
+  };
 
   beforeEach(() => {
-    props = {};
     wrapperRegistrarEvento = undefined;
   });
-  
-  it('renders without crashing', () => {
+
+  it("renders without crashing", () => {
     expect(registrarEvento()).toMatchSnapshot();
   });
 });

@@ -1,8 +1,8 @@
-import React from 'react';
-import { View } from 'react-native';
-import { FormLabel, FormInput, Button } from 'react-native-elements';
-import RNGooglePlacePicker from 'react-native-google-place-picker';
-import styles from './SelectorUbicacionCSS';
+import React from "react";
+import { View } from "react-native";
+import { FormLabel, FormInput, Button } from "react-native-elements";
+import RNGooglePlacePicker from "react-native-google-place-picker";
+import styles from "./SelectorUbicacionCSS";
 
 class SelectorUbicacion extends React.Component {
   constructor(props){
@@ -43,9 +43,10 @@ class SelectorUbicacion extends React.Component {
 
   seleccionarUbicacion() {
     RNGooglePlacePicker.show((response) => {
-      if (!response.didCancel && !response.error)
+      if (!response.didCancel && !response.error) {
         this.handleCoordenadasChange(response);
-    })
+      }
+    });
   }
 
   render(){
@@ -53,7 +54,7 @@ class SelectorUbicacion extends React.Component {
       <View style={styles.container}>
         <FormLabel>Ubicación</FormLabel>
         <Button
-          title='Seleccionar ubicación' 
+          title="Seleccionar ubicación"
           onPress={this.seleccionarUbicacion.bind(this)}/>
         <FormInput
           placeholder="Notas (Calle, número, localidad, CP)"

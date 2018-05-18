@@ -121,9 +121,13 @@ import Segment from "./screens/segment";
 import NHToast from "./screens/toast/";
 import Actionsheet from "./screens/actionsheet";
 
+import Actividades from "./views/Actividades/Actividades";
+import RegistrarEvento from "./views/Actividades/RegistrarEvento/RegistrarEvento";
+
 const Drawer = DrawerNavigator(
   {
     Home: { screen: Home },
+    Actividades: { screen: Actividades },
     Anatomy: { screen: Anatomy },
     Header: { screen: Header },
     Footer: { screen: Footer },
@@ -172,6 +176,8 @@ const AppNavigator = StackNavigator(
     Header8: { screen: Header8 },
     HeaderSpan: { screen: HeaderSpan },
     HeaderNoShadow: { screen: HeaderNoShadow },
+
+    RegistrarEvento: { screen: RegistrarEvento },
 
     BasicFooter: { screen: BasicFooter },
     IconFooter: { screen: IconFooter },

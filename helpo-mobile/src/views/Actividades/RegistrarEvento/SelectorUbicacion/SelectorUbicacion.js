@@ -1,8 +1,12 @@
 import React from "react";
-import { View } from "react-native";
-import { FormLabel, FormInput, Button } from "react-native-elements";
+import {
+  Button,
+  Item,
+  Text,
+  Input,
+  Content
+} from "native-base";
 import RNGooglePlacePicker from "react-native-google-place-picker";
-import styles from "./SelectorUbicacionCSS";
 
 class SelectorUbicacion extends React.Component {
   constructor(props){
@@ -51,16 +55,20 @@ class SelectorUbicacion extends React.Component {
 
   render(){
     return (
-      <View style={styles.container}>
-        <FormLabel>Ubicación</FormLabel>
-        <Button
-          title="Seleccionar ubicación"
-          onPress={this.seleccionarUbicacion.bind(this)}/>
-        <FormInput
-          placeholder="Notas (Calle, número, localidad, CP)"
-          value={this.props.ubicacion.notas}
-          onChangeText={this.handleNotasChange} />
-      </View>
+      <Content>
+        <Item>
+          <Button block style={{marginBottom: 4}}
+            onPress={this.seleccionarUbicacion.bind(this)} >
+            <Text>Seleccionar ubicación</Text>
+          </Button>
+        </Item>
+        <Item>
+          <Input
+            placeholder="Notas (Calle, número, localidad, CP)"
+            value={this.props.ubicacion.notas}
+            onChangeText={this.handleNotasChange} />
+        </Item>
+      </Content>
     );
   }
 }

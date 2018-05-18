@@ -1,17 +1,34 @@
 import React from "react";
-import { Alert, View, ScrollView } from "react-native";
-import { FormInput, FormLabel, Button, FormValidationMessage } from "react-native-elements";
+import { Alert } from "react-native";
+import { FormValidationMessage } from "react-native-elements";
+import {
+  Container,
+  Header,
+  Title,
+  Content,
+  Button,
+  Item,
+  Label,
+  Input,
+  Body,
+  Left,
+  Right,
+  Icon,
+  Form,
+  Text
+} from "native-base";
 import SelectorUbicacion from "./SelectorUbicacion/SelectorUbicacion";
 import ListaRubrosEvento from "./ListaRubrosEvento/ListaRubrosEvento";
 import api from "../../../../api";
 import moment from "moment";
 import SelectorFechaHora from "./SelectorFechaHora/SelectorFechaHora";
+import styles from "./styles";
 
 
 class RegistrarEvento extends React.Component {
   constructor(props){
     super(props);
-    this.state = { 
+    this.state = {
         nombre: "",
         descripcion: "",
         rubro_id: 0,
@@ -100,54 +117,70 @@ class RegistrarEvento extends React.Component {
   handleFechaHoraInicioChange(f_h) {
     this.setState({fecha_hora_inicio: f_h, fecha_hora_fin: f_h});
   }
-  
+
   handleFechaHoraFinChange(f_h) {
     this.setState({fecha_hora_fin: f_h});
   }
 
   render(){
     return (
-      <ScrollView style={{height: 400}}>
-      <View style={{flex:1}} >
-        <FormLabel>Nombre</FormLabel>
-        <FormInput value={this.state.nombre}
-          onChangeText={(text) => this.setState({nombre: text})} />
-        <FormValidationMessage>{this.state.errors.nombre}</FormValidationMessage>
+      <Container style={styles.container}>
+        <Header>
+          <Left>
+            <Button transparent onPress={() => this.props.navigation.goBack()}>
+              <Icon name="arrow-back" />
+            </Button>
+          </Left>
+          <Body>
+            <Title>Registrar evento</Title>
+          </Body>
+          <Right />
+        </Header>
 
-        <FormLabel>Descripción</FormLabel>
-        <FormInput value={this.state.descripcion}
-          numberOfLines={2}
-          onChangeText={(text) => this.setState({descripcion: text})} />
+        <Content>
+          <Form>
+            <Item floatingLabel>
+              <Label>Nombre</Label>
+              <Input value={this.state.nombre}
+                onChangeText={(text) => this.setState({nombre: text})}/>
+            </Item>
+            <FormValidationMessage>{this.state.errors.nombre}</FormValidationMessage>
+            <Item floatingLabel>
+              <Label>Descripción</Label>
+              <Input value={this.state.descripcion}
+                onChangeText={(text) => this.setState({descripcion: text})}/>
+            </Item>
 
-        <FormLabel>Rubro</FormLabel>
-        <ListaRubrosEvento
-            name="listaRubros"
-            rubro_id={this.state.rubro_id}
-            onRubroChange={this.handleRubroChange} />
-        <FormValidationMessage>{this.state.errors.rubro}</FormValidationMessage>
+            <ListaRubrosEvento
+                name="listaRubros"
+                rubro_id={this.state.rubro_id}
+                onRubroChange={this.handleRubroChange} />
+            <FormValidationMessage>{this.state.errors.rubro}</FormValidationMessage>
 
-        <SelectorFechaHora
-          detalle="Inicio"
-          soloFecha={false}
-          value={this.state.fecha_hora_inicio}
-          handleChange={this.handleFechaHoraInicioChange}/>
-        <SelectorFechaHora
-          detalle="Fin"
-          soloFecha={false}
-          value={this.state.fecha_hora_fin}
-          handleChange={this.handleFechaHoraFinChange}/>
-        <FormValidationMessage>{this.state.errors.fechas}</FormValidationMessage>
+            <SelectorFechaHora
+              detalle="Inicio"
+              soloFecha={false}
+              value={this.state.fecha_hora_inicio}
+              handleChange={this.handleFechaHoraInicioChange}/>
+            <SelectorFechaHora
+              detalle="Fin"
+              soloFecha={false}
+              value={this.state.fecha_hora_fin}
+              handleChange={this.handleFechaHoraFinChange}/>
+            <FormValidationMessage>{this.state.errors.fechas}</FormValidationMessage>
 
-        <SelectorUbicacion
-          ubicacion={this.state.ubicacion}
-          onUbicacionChange={this.handleUbicacionChange} />
-
-        <Button
-          title="Guardar evento" 
-          onPress={this.handleSubmit}/>
-      </View>
-      </ScrollView>
-
+            <Item>
+              <SelectorUbicacion
+                ubicacion={this.state.ubicacion}
+                onUbicacionChange={this.handleUbicacionChange} />
+            </Item>
+            <Button block style={{ margin: 15, marginTop: 50 }}
+              onPress={this.handleSubmit} >
+              <Text>Guardar Evento</Text>
+            </Button>
+          </Form>
+        </Content>
+      </Container>
     );
   }
 }

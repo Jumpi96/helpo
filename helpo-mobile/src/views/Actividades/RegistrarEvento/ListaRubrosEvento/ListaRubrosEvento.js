@@ -1,5 +1,12 @@
 import React from "react";
-import { Picker } from "react-native";
+import {
+  Picker,
+  Item,
+  Body,
+  Left,
+  ListItem,
+  Text,
+} from "native-base";
 import api from "../../../../../api";
 
 
@@ -30,14 +37,24 @@ class ListaRubrosEvento extends React.Component {
 
   render(){
     const listaRubroEventos = this.state.rubros.map((r) =>
-      <Picker.Item value={r.id} key={r.id} label={r.nombre}/>
+      <Item value={r.id} key={r.id} label={r.nombre}/>
     );
     return (
-      <Picker
-        selectedValue={this.props.rubro_id}
-        onValueChange={this.handleChange}>
-          {listaRubroEventos}
-      </Picker>
+      <ListItem>
+        <Left>
+          <Text>Rubro</Text>
+        </Left>
+        <Body>
+          <Picker
+            note
+            mode="dropdown"
+            selectedValue={this.props.rubro_id}
+            onValueChange={this.handleChange}
+          >
+            {listaRubroEventos}
+          </Picker>
+        </Body>
+      </ListItem>
     );
   }
 }

@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { Text, View } from "react-native";
-import { Button, FormLabel, FormInput } from "react-native-elements";
+import { Input, Item, Label } from "native-base";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import moment from "moment";
 
@@ -13,7 +12,7 @@ class SelectorFechaHora extends Component {
     this.handleDatePicked = this.handleDatePicked.bind(this);
   }
   showDateTimePicker = () => this.setState({ isDateTimePickerVisible: true });
-   
+
   hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false }); 
 
   handleDatePicked(fecha_hora) {
@@ -31,9 +30,9 @@ class SelectorFechaHora extends Component {
 
   render () {
     return (
-        <View>
-          <FormLabel>{this.props.detalle}</FormLabel>
-          <FormInput onFocus={this.showDateTimePicker}
+        <Item>
+          <Label>{this.props.detalle}</Label>
+          <Input onFocus={this.showDateTimePicker}
             value={this.convertDateToString(this.props.value)}
             />
           <DateTimePicker
@@ -42,7 +41,7 @@ class SelectorFechaHora extends Component {
             onCancel={this.hideDateTimePicker}
             mode={this.props.soloFecha ? "date" : "datetime"}
             />
-        </View>
+        </Item>
     );
   }
 }

@@ -23,6 +23,12 @@ const datas = [
     bg: "#C5F442"
   },
   {
+    name: "Actividades",
+    route: "Actividades",
+    icon: "hand",
+    bg: "#C5F442"
+  },
+  {
     name: "Actionsheet",
     route: "Actionsheet",
     icon: "easel",

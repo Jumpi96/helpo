@@ -14,15 +14,12 @@
     "flow-bin": "0.52.0",
     "flow-typed": "2.1.5",
     "husky": "0.14.3",
-    "jest": "20.0.4",
+    "jest": "22.4.3",
     "jest-expo": "25.0.0",
     "jest-transform-stub": "^1.0.0",
     "prettier": "1.5.3",
     "react-native-scripts": "1.11.1",
     "react-test-renderer": "16.2.0",
-    "enzyme": "3.3.0",
-    "enzyme-adapter-react-16": "1.1.1",
-    "enzyme-to-json": "3.3.3",
     "react-dom": "16.3.2"
   },
   "main": "./node_modules/react-native-scripts/build/bin/crna-entry.js",
@@ -31,19 +28,11 @@
     "eject": "react-native-scripts eject",
     "android": "react-native-scripts android",
     "ios": "react-native-scripts ios",
-    "test": "jest"
+    "test": "node node_modules/jest/bin/jest.js --watch"
   },
   "jest": {
-    "preset": "react-native",
-    "transformIgnorePatterns": [
-      "node_modules/(?!react-native|react-router-native)/"
-    ],
-    "snapshotSerializers": [
-      "enzyme-to-json/serializer"
-    ],
-    "setupFiles": [
-      "./setupTests.js"
-    ],
+    "preset": "jest-expo",
+    "verbose": true,
     "transform": {
       ".+\\.(css|styl|less|sass|scss|png|jpg|ttf|woff|woff2)$": "jest-transform-stub"
     }
@@ -58,7 +47,7 @@
     "react-native": "0.52.0",
     "react-navigation": "1.5.0",
     "react-native-modal-datetime-picker": "5.1.0",
-    "react-native-google-place-picker": "1.2.1", 
+    "react-native-google-place-picker": "1.2.1",
     "react-native-elements": "0.19.1",
     "axios": "0.18.0"
   }

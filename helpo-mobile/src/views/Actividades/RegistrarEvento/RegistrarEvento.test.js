@@ -1,29 +1,9 @@
 import React from "react";
-import { shallow } from "enzyme";
 import RegistrarEvento from "./RegistrarEvento";
 
+import renderer from "react-test-renderer";
 
-describe("RegistrarEvento", () => {
-  let wrapperRegistrarEvento;
-  const registrarEvento = () => {
-    if (!wrapperRegistrarEvento) {
-      wrapperRegistrarEvento = shallow(
-        <RegistrarEvento />
-      );
-    }
-    return wrapperRegistrarEvento;
-  };
-
-  beforeEach(() => {
-    wrapperRegistrarEvento = undefined;
-  });
-
-  it("renders without crashing", () => {
-    expect(registrarEvento()).toMatchSnapshot();
-  });
+test("renders correctly", () => {
+  const tree = renderer.create(<RegistrarEvento />).toJSON();
+  expect(tree).toMatchSnapshot();
 });
-
-
-
-
-

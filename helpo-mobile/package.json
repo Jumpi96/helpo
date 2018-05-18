@@ -20,7 +20,10 @@
     "prettier": "1.5.3",
     "react-native-scripts": "1.11.1",
     "react-test-renderer": "16.2.0",
-    "react-dom": "16.3.2"
+    "react-dom": "16.3.2",
+    "enzyme": "3.3.0",
+    "enzyme-adapter-react-16": "1.1.1",
+    "enzyme-to-json": "3.3.3"
   },
   "main": "./node_modules/react-native-scripts/build/bin/crna-entry.js",
   "scripts": {
@@ -35,7 +38,10 @@
     "verbose": true,
     "transform": {
       ".+\\.(css|styl|less|sass|scss|png|jpg|ttf|woff|woff2)$": "jest-transform-stub"
-    }
+    },
+    "setupFiles": [
+      "./setupTests.js"
+    ]
   },
   "dependencies": {
     "color": "1.0.3",

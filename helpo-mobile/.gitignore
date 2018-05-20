@@ -16,6 +16,8 @@
 .env.test.local
 .env.production.local
 
-npm-debug.log*
+npm-debug.*
 yarn-debug.log*
 yarn-error.log*
+
+.DS_Store

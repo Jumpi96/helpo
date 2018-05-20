@@ -23,7 +23,7 @@ test:
   override:
     - cd helpo-web && npm run build
     - cd helpo-web && npm test
-    - cd helpo-mobile && npm test -- --runInBand --updateSnapshot
+    - cd helpo-mobile && npm test -- --runInBand --updateSnapshot:
         timeout: 1500
     - >-
       cd helpo-api

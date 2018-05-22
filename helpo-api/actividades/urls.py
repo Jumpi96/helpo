@@ -51,27 +51,27 @@ urlpatterns = [
         view=actividades_views.CategoriaRecursoReadUpdateDeleteView.as_view(),
         name="get_put_delete_categoria_recurso"
     ),
-    # {% url "api:recurso" %}
+    # {% url "api:recursos" %}
     url(
-        regex=r"^actividades/recurso/$",
+        regex=r"^actividades/recursos/$",
         view=actividades_views.RecursoCreateReadView.as_view(),
         name="get_post_recurso"
     ),
-    # {% url "api:recurso" evento.id %}
+    # {% url "api:recursos" evento.id %}
     url(
-        regex=r"^actividades/recurso/(?P<id>[-\w]+)/$",
+        regex=r"^actividades/recursos/(?P<id>[-\w]+)/$",
         view=actividades_views.RecursoReadUpdateDeleteView.as_view(),
         name="get_put_delete_recurso"
     ),
-    # {% url "api:recurso" %}
+    # {% url "api:necesidades" %}
     url(
-        regex=r"^actividades/necesidad/$",
+        regex=r"^actividades/necesidades/$",
         view=actividades_views.NecesidadCreateReadView.as_view(),
         name="get_post_necesidad"
     ),
-    # {% url "api:recurso" evento.id %}
+    # {% url "api:necesidades" evento.id %}
     url(
-        regex=r"^actividades/necesidad/(?P<id>[-\w]+)/$",
+        regex=r"^actividades/necesidades/(?P<id>[-\w]+)/$",
         view=actividades_views.NecesidadReadUpdateDeleteView.as_view(),
         name="get_put_delete_necesidad"
     ),

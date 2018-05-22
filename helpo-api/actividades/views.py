@@ -1,8 +1,9 @@
 from rest_framework import viewsets
 from rest_framework.generics import ListCreateAPIView
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
-from actividades.models import Evento, RubroEvento, Contacto
-from actividades.serializers import EventoSerializer, RubroEventoSerializer, ContactoSerializer
+from actividades.models import Evento, RubroEvento, CategoriaRecurso, Recurso, Necesidad, Contacto
+from actividades.serializers import EventoSerializer, RubroEventoSerializer, \
+    CategoriaRecursoSerializer, RecursoSerializer, NecesidadSerializer, ContactoSerializer
 
 class RubroEventoCreateReadView(ListCreateAPIView):
     """
@@ -47,4 +48,49 @@ class EventoReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     """
     queryset = Evento.objects.all()
     serializer_class = EventoSerializer
+    lookup_field = 'id'
+
+class CategoriaRecursoCreateReadView(ListCreateAPIView):
+    """
+    API endpoint para crear o ver todas las categorías de recurso
+    """
+    queryset = CategoriaRecurso.objects.all()
+    serializer_class = CategoriaRecursoSerializer
+
+class CategoriaRecursoReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
+    """
+    API endpoint para leer, actualizar o eliminar una categoría de recurso
+    """
+    queryset = CategoriaRecurso.objects.all()
+    serializer_class = CategoriaRecursoSerializer
+    lookup_field = 'id'
+
+class RecursoCreateReadView(ListCreateAPIView):
+    """
+    API endpoint para crear o ver todos los recursos
+    """
+    queryset = Recurso.objects.all()
+    serializer_class = RecursoSerializer
+
+class RecursoReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
+    """
+    API endpoint para leer, actualizar o eliminar un recurso
+    """
+    queryset = Recurso.objects.all()
+    serializer_class = RecursoSerializer
+    lookup_field = 'id'
+
+class NecesidadCreateReadView(ListCreateAPIView):
+    """
+    API endpoint para crear o ver todas las necesidades
+    """
+    queryset = Necesidad.objects.all()
+    serializer_class = NecesidadSerializer
+
+class NecesidadReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
+    """
+    API endpoint para leer, actualizar o eliminar una necesidad
+    """
+    queryset = Necesidad.objects.all()
+    serializer_class = NecesidadSerializer
     lookup_field = 'id'

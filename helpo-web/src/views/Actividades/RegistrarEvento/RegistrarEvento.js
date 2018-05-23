@@ -36,6 +36,7 @@ class RegistrarEvento extends Component {
     this.handleFechaHoraFinChange = this.handleFechaHoraFinChange.bind(this);
     this.handleAddContact = this.handleAddContact.bind(this);
     this.handleRemoveContact = this.handleRemoveContact.bind(this);
+    this.handlePhoneChange = this.handlePhoneChange.bind(this);
   }
 
   handleContactChange(event, contactId) {
@@ -47,6 +48,12 @@ class RegistrarEvento extends Component {
     this.setState({
       contactos: newContactos,
     });
+  }
+
+  handlePhoneChange(phone, contactId) {
+    const index = this.state.contactos.map(e => e.contactId).indexOf(contactId);
+    const newContactos = this.state.contactos;
+    newContactos[index].telefono = phone;
   }
 
   handleInputChange(event) {
@@ -75,10 +82,12 @@ class RegistrarEvento extends Component {
     });
   }
   handleRemoveContact(id) {
+    if (this.state.contactos.length === 1) {
+      return;
+    }
     const newContactos = this.state.contactos;
     const indexOfRemove = newContactos.map(e => e.contactId).indexOf(id);
     newContactos.splice(indexOfRemove, 1);
-    console.log(newContactos);
     this.setState({
       contactos: newContactos,
     });
@@ -120,6 +129,30 @@ class RegistrarEvento extends Component {
         });
     }
   }
+  // Devuelve True si no hay errores
+  validateContactos() {
+    const errors = {};
+    let isValid = true;
+    const { contactos } = this.state.contactos;
+    for (let i = 0; i <= contactos.length; i += 1) {
+      // Es valido no ingresar ningun contacto
+      if (contactos[i].nombre === '' &&
+      contactos[i].mail === '' &&
+      contactos[i].telefono === '' &&
+      contactos.length === 1) {
+        return isValid;
+      }
+      if (contactos[i].nombre === '') {
+        errors.contactoNombre = 'No puede ingresar un contacto sin nombre';
+        isValid = false;
+      }
+      if (contactos[i].mail === '' && contactos[i].telefono === '') {
+        errors.contactoContacto = 'Debe ingresar un mail o un telefono';
+        isValid = false;
+      }
+    }
+    return isValid;
+  }
 
   handleValidation(event) {
     let formIsValid = true;
@@ -150,7 +183,9 @@ class RegistrarEvento extends Component {
       formIsValid = false;
       errors.rubro = 'Hubo un problema al cargar los rubros.';
     } else { errors.rubro = undefined; }
-
+    if (!this.validateContactos()) {
+      formIsValid = false;
+    }
     this.setState({ errors });
     return formIsValid;
   }
@@ -219,6 +254,7 @@ class RegistrarEvento extends Component {
           onClickAdd={this.handleAddContact}
           onClickRemove={this.handleRemoveContact}
           onContactChange={this.handleContactChange}
+          onPhoneChange={this.handlePhoneChange}
           contacts={this.state.contactos}
         />
         <div className="form-group">

@@ -1,28 +1,33 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+// Fuente https://github.com/bl00mber/react-phone-input-2
+import ReactPhoneInput from 'react-phone-input-2';
+
 
 const inputPropTypes = {
   contactNum: PropTypes.number.isRequired,
   onClickRemove: PropTypes.func.isRequired,
   contactId: PropTypes.number.isRequired,
   onContactChange: PropTypes.func.isRequired,
+  onPhoneChange: PropTypes.func.isRequired,
   contactValues: PropTypes.shape({
     nombre: PropTypes.string,
     mail: PropTypes.string,
-    telefono: PropTypes.string,
+    telefono: PropTypes.number,
   }).isRequired,
 };
 
 function ContactoInput({
-  contactNum, onClickRemove, contactId, onContactChange, contactValues,
+  contactNum, onClickRemove, contactId, onContactChange, onPhoneChange, contactValues,
 }) {
   return (
     <div className="form-group">
-      <h3>Contacto {contactNum}</h3>
+      <h6>Contacto {contactNum}</h6>
       <label htmlFor={`nombre-contacto${contactNum}`}>
         Nombre<br />
         <input
           type="text"
+          placeholder="Nombre Apellido"
           id={`nombre-contacto${contactNum}`}
           className="form-control"
           name="nombre"
@@ -33,7 +38,8 @@ function ContactoInput({
       <label htmlFor={`mail-contacto${contactNum}`}>
         Mail<br />
         <input
-          type="text"
+          type="mail"
+          placeholder="ejemplo@mail.com"
           id={`mail-contacto${contactNum}`}
           className="form-control"
           name="mail"
@@ -43,18 +49,19 @@ function ContactoInput({
       </label> <br />
       <label htmlFor={`telefono-contacto${contactNum}`}>
         Telefono<br />
-        <input
-          type="text"
+        <ReactPhoneInput
           id={`telefono-contacto${contactNum}`}
+          placeholder="+543515555555"
           className="form-control"
           name="telefono"
-          onChange={e => onContactChange(e, contactId)}
+          onChange={str => onPhoneChange(str, contactId)}
           value={contactValues.telefono}
         />
       </label> <br />
       <input
         type="button"
         value="Remover Contacto"
+        className="btn btn-danger"
         onClick={() => onClickRemove(contactId)}
       />
     </div>
@@ -67,6 +74,7 @@ const registerPropTypes = {
   onClickAdd: PropTypes.func.isRequired,
   onClickRemove: PropTypes.func.isRequired,
   onContactChange: PropTypes.func.isRequired,
+  onPhoneChange: PropTypes.func.isRequired,
 };
 
 class RegistrarContacto extends React.Component {
@@ -79,6 +87,7 @@ class RegistrarContacto extends React.Component {
         onClickRemove={this.props.onClickRemove}
         contactId={this.props.contacts[i - 1].contactId}
         onContactChange={this.props.onContactChange}
+        onPhoneChange={this.props.onPhoneChange}
         contactValues={this.props.contacts[i - 1]}
       />);
     }
@@ -88,9 +97,13 @@ class RegistrarContacto extends React.Component {
   render() {
     return (
       <div className="form-group">
-        <h1>Registrar Contacto</h1>
         {this.displayInputs()}
-        <input type="button" value="Add" onClick={this.props.onClickAdd} />
+        <input
+          type="button"
+          className="btn btn-secondary"
+          value="Agregar Contacto"
+          onClick={this.props.onClickAdd}
+        />
       </div>
     );
   }

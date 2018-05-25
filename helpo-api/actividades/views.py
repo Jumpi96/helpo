@@ -69,8 +69,14 @@ class RecursoCreateReadView(ListCreateAPIView):
     """
     API endpoint para crear o ver todos los recursos
     """
-    queryset = Recurso.objects.all()
     serializer_class = RecursoSerializer
+
+    def get_queryset(self):
+        queryset = Recurso.objects.all()
+        categoria = self.request.query_params.get('categoria', None)
+        if categoria is not None:
+            queryset = queryset.filter(categoria_id=categoria)
+        return queryset
 
 class RecursoReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     """
@@ -84,8 +90,14 @@ class NecesidadCreateReadView(ListCreateAPIView):
     """
     API endpoint para crear o ver todas las necesidades
     """
-    queryset = Necesidad.objects.all()
     serializer_class = NecesidadSerializer
+
+    def get_queryset(self):
+        queryset = Necesidad.objects.all()
+        evento = self.request.query_params.get('evento', None)
+        if evento is not None:
+            queryset = queryset.filter(evento_id=evento)
+        return queryset
 
 class NecesidadReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     """

@@ -1,10 +1,7 @@
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-
 from common.models import IndexedTimeStampedModel
-
-#from .managers import UserManager
 
 
 class User(AbstractBaseUser, PermissionsMixin, IndexedTimeStampedModel):
@@ -29,8 +26,6 @@ class User(AbstractBaseUser, PermissionsMixin, IndexedTimeStampedModel):
         default=False
     )
 
-    #objects = UserManager()
-
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['nombre', 'user_type']
 
@@ -45,7 +40,7 @@ class User(AbstractBaseUser, PermissionsMixin, IndexedTimeStampedModel):
 
 
 class Profile(models.Model):
-    usuario = models.OneToOneField(User)#settings.AUTH_USER_MODEL)
+    usuario = models.OneToOneField(User)
 
     class Meta:
         abstract = True

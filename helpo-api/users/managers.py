@@ -1,4 +1,6 @@
 from django.contrib.auth.models import BaseUserManager
+from decouple import config
+from hashlib import sha256
 from django.core.mail import send_mail
 from users.models import VoluntarioProfile, OrganizacionProfile, EmpresaProfile
 
@@ -26,10 +28,12 @@ class UserManager(BaseUserManager):
         return user
 
     def send_confirmation_email(self, user):
-        content = ''
+        bash = sha256(user.id + user.email)
+        url_confirmation = '%sconfirm-email?bash=%s' % (config('URL_CLIENT', default=None), bash)
+        content = '<a href="%s">Confirma su cuenta aquí</a>' % (url_confirmation)
         send_mail(
             'Confirma tu cuenta de helpo.',
-            '',
+            url_confirmation,
             'helpo@helpo.com',
             user.email,
             fail_silently=True,

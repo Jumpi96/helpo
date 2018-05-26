@@ -23,34 +23,34 @@ function ContactoInput({
   return (
     <div className="form-group">
       <h6>Contacto {contactNum}</h6>
-      <label htmlFor={`nombre-contacto${contactNum}`}>
+      <label htmlFor={`nombre-contacto${contactId}`}>
         Nombre<br />
         <input
           type="text"
           placeholder="Nombre Apellido"
-          id={`nombre-contacto${contactNum}`}
+          id={`nombre-contacto${contactId}`}
           className="form-control"
           name="nombre"
           onChange={e => onContactChange(e, contactId)}
           value={contactValues.nombre}
         />
       </label> <br />
-      <label htmlFor={`mail-contacto${contactNum}`}>
+      <label htmlFor={`mail-contacto${contactId}`}>
         Mail<br />
         <input
           type="mail"
           placeholder="ejemplo@mail.com"
-          id={`mail-contacto${contactNum}`}
+          id={`mail-contacto${contactId}`}
           className="form-control"
           name="mail"
           onChange={e => onContactChange(e, contactId)}
           value={contactValues.mail}
         />
       </label> <br />
-      <label htmlFor={`telefono-contacto${contactNum}`}>
+      <label htmlFor={`telefono-contacto${contactId}`}>
         Telefono<br />
         <ReactPhoneInput
-          id={`telefono-contacto${contactNum}`}
+          id={`telefono-contacto${contactId}`}
           placeholder="+543515555555"
           className="form-control"
           name="telefono"

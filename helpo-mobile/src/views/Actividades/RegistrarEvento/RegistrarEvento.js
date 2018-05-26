@@ -22,6 +22,7 @@ import ListaRubrosEvento from "./ListaRubrosEvento/ListaRubrosEvento";
 import api from "../../../../api";
 import moment from "moment";
 import SelectorFechaHora from "./SelectorFechaHora/SelectorFechaHora";
+import RegistrarContacto from "./RegistrarContacto/RegistrarContacto";
 import styles from "./styles";
 
 
@@ -35,7 +36,14 @@ class RegistrarEvento extends React.Component {
         fecha_hora_inicio: new Date(),
         fecha_hora_fin: new Date(),
         //TODO: ubicacion que pasamos por defecto debería ser la de la ONG. Ahora, Córdoba.
-        ubicacion: { latitud: -31.4201, longitud: -64.1888, notas: ""}, 
+        ubicacion: { latitud: -31.4201, longitud: -64.1888, notas: ""},
+        contactos: [{
+          nombre: "",
+          mail: "",
+          telefono: "",
+          contactId: 1,
+        }],
+        nextId: 2,
         errors: {}
     };
     this.handleUbicacionChange = this.handleUbicacionChange.bind(this);
@@ -43,10 +51,17 @@ class RegistrarEvento extends React.Component {
     this.handleRubroChange = this.handleRubroChange.bind(this);
     this.handleFechaHoraInicioChange = this.handleFechaHoraInicioChange.bind(this);
     this.handleFechaHoraFinChange = this.handleFechaHoraFinChange.bind(this);
+    /* Metodos de contacto */
+    this.handleContactNombreChange = this.handleContactNombreChange.bind(this);
+    this.handleContactMailChange = this.handleContactMailChange.bind(this);
+    this.handleContactTelefonoChange = this.handleContactTelefonoChange.bind(this);
+    this.addContact = this.addContact.bind(this);
+    this.removeContact = this.removeContact.bind(this);
+    /* ------------------- */
   }
 
   handleRubroChange(r) {
-    this.setState({rubro_id: r});    
+    this.setState({rubro_id: r});
   }
 
   handleSubmit(event) {
@@ -106,8 +121,34 @@ class RegistrarEvento extends React.Component {
       errors.rubro = "Hubo un problema al cargar los rubros.";
     }
 
+    this.validateContactos();
+
     this.setState({errors: errors});
     return formIsValid;
+  }
+  // Devuelve True si no hay errores
+  validateContactos() {
+    const errors = {};
+    let isValid = true;
+    const { contactos } = this.state.contactos;
+    for (let i = 0; i <= contactos.length; i += 1) {
+      // Es valido no ingresar ningun contacto
+      if (contactos[i].nombre === "" &&
+      contactos[i].mail === "" &&
+      contactos[i].telefono === "" &&
+      contactos.length === 1) {
+        return isValid;
+      }
+      if (contactos[i].nombre === "") {
+        errors.contactoNombre = "No puede ingresar un contacto sin nombre";
+        isValid = false;
+      }
+      if (contactos[i].mail === "" && contactos[i].telefono === "") {
+        errors.contactoContacto = "Debe ingresar un mail o un telefono";
+        isValid = false;
+      }
+    }
+    return isValid;
   }
 
   handleUbicacionChange(ubi) {
@@ -120,6 +161,69 @@ class RegistrarEvento extends React.Component {
 
   handleFechaHoraFinChange(f_h) {
     this.setState({fecha_hora_fin: f_h});
+  }
+
+  handleContactNombreChange(value, contactId) {
+    const field = "nombre";
+    const index = this.state.contactos.map(e => e.contactId).indexOf(contactId);
+    const newContactos = this.state.contactos;
+    newContactos[index][field] = value;
+    this.setState({
+      contactos: newContactos,
+    });
+
+  }
+
+  handleContactMailChange(value, contactId) {
+    const field = "mail";
+    const index = this.state.contactos.map(e => e.contactId).indexOf(contactId);
+    const newContactos = this.state.contactos;
+    newContactos[index][field] = value;
+    this.setState({
+      contactos: newContactos,
+    });
+
+  }
+
+  handleContactTelefonoChange(value, contactId) {
+    //Si value es No Numerico, no se modifica el estado
+    if (isNaN(value)) {
+      return;
+    }
+    const field = "telefono";
+    const index = this.state.contactos.map(e => e.contactId).indexOf(contactId);
+    const newContactos = this.state.contactos;
+    newContactos[index][field] = value;
+    this.setState({
+      contactos: newContactos,
+    });
+
+  }
+
+  addContact() {
+    const newContact = {
+      nombre: "",
+      mail: "",
+      telefono: "",
+      contactId: this.state.nextId,
+    };
+    const newContactos = this.state.contactos.concat(newContact);
+    this.setState({
+      contactos: newContactos,
+      nextId: parseInt(this.state.nextId, 10) + 1,
+    });
+  }
+
+  removeContact(id) {
+    if (this.state.contactos.length === 1) {
+      return;
+    }
+    const newContactos = this.state.contactos;
+    const indexOfRemove = newContactos.map(e => e.contactId).indexOf(id);
+    newContactos.splice(indexOfRemove, 1);
+    this.setState({
+      contactos: newContactos,
+    });
   }
 
   render(){
@@ -174,6 +278,16 @@ class RegistrarEvento extends React.Component {
                 ubicacion={this.state.ubicacion}
                 onUbicacionChange={this.handleUbicacionChange} />
             </Item>
+            <RegistrarContacto
+                contactos={this.state.contactos}
+                onNombreChange={this.handleContactNombreChange}
+                onMailChange={this.handleContactMailChange}
+                onTelefonoChange={this.handleContactTelefonoChange}
+                onAddContact={this.addContact}
+                onRemoveContact={this.removeContact}
+             />
+             <FormValidationMessage>{this.state.errors.contactoNombre}</FormValidationMessage>
+             <FormValidationMessage>{this.state.errors.contactoContacto}</FormValidationMessage>
             <Button block style={{ margin: 15, marginTop: 50 }}
               onPress={this.handleSubmit} >
               <Text>Guardar Evento</Text>

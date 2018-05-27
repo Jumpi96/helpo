@@ -28,7 +28,7 @@ class ModalEliminarItem extends Component {
       <div className="animated fadeIn">
         <Modal isOpen={this.props.open}
           className='modal-danger'>
-          <ModalHeader>Eliminar recurso</ModalHeader>
+          <ModalHeader>Eliminar necesidad</ModalHeader>
           <ModalBody>
             <strong>¿Estás seguro que deseas eliminar el recurso {this.state.recurso}? </strong>
             Si lo confirmas, cualquier voluntario participante será notificado

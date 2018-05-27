@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from actividades.models import Evento, RubroEvento, Ubicacion
+from actividades.models import Evento, RubroEvento, Ubicacion, Contacto
 
 class RubroEventoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -10,6 +10,11 @@ class UbicacionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ubicacion
         fields = ('latitud', 'longitud', 'notas')
+
+class ContactoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Contacto
+        fields = ('nombre', 'mail', 'telefono')
 
 class EventoSerializer(serializers.ModelSerializer):
     ubicacion = UbicacionSerializer()

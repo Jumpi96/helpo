@@ -25,16 +25,18 @@ class ModalEditarItem extends Component {
   }
 
   componentDidUpdate() {
-    api.get('/actividades/necesidades/' + this.props.necesidad + '/')
+    if (this.props.necesidad) {
+      api.get('/actividades/necesidades/' + this.props.necesidad + '/')
       .then(res => {
         const necesidadData = res.data;
         this.setState({ necesidad: necesidadData});
       })
-      .catch(function (error) {
+      .catch((error) => {
         if (error.response){ console.log(error.response.status) }
         else { console.log('Error: ', error.message)}
         this.setState({ error: "Hubo un problema al cargar su información." });
       })
+    }
   }
 
   handleCantidadChange(cantidad) {

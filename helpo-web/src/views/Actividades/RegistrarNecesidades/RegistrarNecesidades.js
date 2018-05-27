@@ -5,13 +5,22 @@ import SelectorItem from './SelectorItem/SelectorItem';
 import NumericInput from 'react-numeric-input';
 import api from '../../../api';
 import ModalEliminarItem from './ModalEliminarItem/ModalEliminarItem';
-import ModalEditarItem from './ModalEditarItem/ModalEditarItem'
+import ModalEditarItem from './ModalEditarItem/ModalEditarItem';
 
 
 class RegistrarNecesidades extends Component {
   constructor(props){
     super(props);
+    let evento;
+    if(this.props.history.location.state &&
+      this.props.history.location.state.evento_id) {
+      evento = this.props.history.location.state.evento_id;
+    } else {
+      this.props.history.push('dashboard');
+    }
+    
     this.state = {
+      evento: evento,
       necesidades: [],
       necesidad: undefined,
       cantidad: undefined,
@@ -24,6 +33,8 @@ class RegistrarNecesidades extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleItemChange = this.handleItemChange.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.saveNecesidad = this.saveNecesidad.bind(this);
+    this.confirmDeleteNecesidad = this.confirmDeleteNecesidad.bind(this);
   }
 
   handleSubmit(event) {
@@ -33,7 +44,7 @@ class RegistrarNecesidades extends Component {
         recurso_id: this.state.recurso_id,
         descripcion: this.state.descripcion,
         cantidad: this.state.cantidad,
-        evento: 2 //this.props.evento
+        evento: this.state.evento
       }
       this.addNecesidad(necesidad);
     }
@@ -54,13 +65,13 @@ class RegistrarNecesidades extends Component {
   }
 
   saveNecesidad(cantidad) {
-    if (!cantidad) {
+    if (cantidad) {
       const nuevaNecesidad = {
         id: this.state.necesidadModificada.id,
         recurso_id: this.state.necesidadModificada.recurso.id,
         descripcion: this.state.necesidadModificada.descripcion,
         cantidad: cantidad,
-        evento: 2 //this.props.evento
+        evento: this.state.evento
       };
       api.put("/actividades/necesidades/" + nuevaNecesidad.id + "/", nuevaNecesidad)
         .then(res => {
@@ -144,12 +155,12 @@ class RegistrarNecesidades extends Component {
   }
 
   loadNecesidades() {
-    api.get('/actividades/necesidades/?evento=' + 2)//this.props.evento_id)
+    api.get('/actividades/necesidades/?evento=' + this.state.evento)
       .then(res => {
         const necesidadesData = res.data;
         this.setState({ necesidades: necesidadesData});
       })
-      .catch(function (error) {
+      .catch((error) => {
         if (error.response){ console.log(error.response.status) }
         else { console.log('Error: ', error.message)}
         this.setState({ error: "Hubo un problema al cargar su información." });
@@ -223,11 +234,11 @@ class RegistrarNecesidades extends Component {
               <thead>
                 <tr>
                   <th></th>
-                  <th></th>
                   <th>Categoría</th>
                   <th>Ítem</th>
                   <th>Descripción</th>
                   <th>Cantidad</th>
+                  <th></th>
                   <th></th>
                 </tr>
               </thead>

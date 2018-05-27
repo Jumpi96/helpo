@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import { Button, Table, Card, CardHeader, CardBody } from 'reactstrap';
 import './RegistrarNecesidades.css';
 import SelectorItem from './SelectorItem/SelectorItem';
+import NumericInput from 'react-numeric-input';
 import api from '../../../api';
 import ModalEliminarItem from './ModalEliminarItem/ModalEliminarItem';
+import ModalEditarItem from './ModalEditarItem/ModalEditarItem'
 
 
 class RegistrarNecesidades extends Component {
@@ -17,7 +19,7 @@ class RegistrarNecesidades extends Component {
       descripcion: undefined,
       error: undefined,
       showModalEliminar: false,
-      recursoEliminar: undefined
+      necesidadModificada: { recurso: {} }
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleItemChange = this.handleItemChange.bind(this);
@@ -33,12 +35,7 @@ class RegistrarNecesidades extends Component {
         cantidad: this.state.cantidad,
         evento: 2 //this.props.evento
       }
-      if (!this.state.necesidad){
-        this.addNecesidad(necesidad);
-      } else {
-        necesidad.id = this.state.necesidad;
-        this.saveNecesidad(necesidad);
-      }
+      this.addNecesidad(necesidad);
     }
   }
 
@@ -52,26 +49,40 @@ class RegistrarNecesidades extends Component {
       }).catch(function (error) {
         if (error.response){ console.log(error.response.status) }
         else { console.log('Error: ', error.message)}
+        this.setState({ error: "Hubo un problema al cargar su información." });
       });
   }
 
-  saveNecesidad(necesidad) {
-    api.put("/actividades/necesidades/" + necesidad.id + "/", necesidad)
-      .then(res => {
-        console.log(res);
-        console.log(res.data);
-        this.cleanNecesidad();
-        this.loadNecesidades();
-      }).catch(function (error) {
-        if (error.response){ console.log(error.response.status) }
-        else { console.log('Error: ', error.message)}
-      });
+  saveNecesidad(cantidad) {
+    if (!cantidad) {
+      const nuevaNecesidad = {
+        id: this.state.necesidadModificada.id,
+        recurso_id: this.state.necesidadModificada.recurso.id,
+        descripcion: this.state.necesidadModificada.descripcion,
+        cantidad: cantidad,
+        evento: 2 //this.props.evento
+      };
+      api.put("/actividades/necesidades/" + nuevaNecesidad.id + "/", nuevaNecesidad)
+        .then(res => {
+          console.log(res);
+          console.log(res.data);
+          this.cleanNecesidad();
+          this.loadNecesidades();
+        }).catch(function (error) {
+          if (error.response){ console.log(error.response.status) }
+          else { console.log('Error: ', error.message)}
+          this.setState({ error: "Hubo un problema al cargar su información." });
+        });
+    }
+    this.setState({
+      showModalEditar: false,
+      necesidadModificada: { recurso: {} }
+    });    
   }
 
   handleValidation() {
     let formIsValid = true;
     var error = this.state.error;
-
     if (this.state.recurso_id === 0 || 
       !this.state.recurso_id) {
       formIsValid = false;
@@ -85,10 +96,9 @@ class RegistrarNecesidades extends Component {
 
   editNecesidad(id) {
     const necesidad = this.state.necesidades.filter(n => n.id === id)[0];
-    console.log(necesidad.recurso.id);
     this.setState({ 
-      showModalEliminar: true,
-      recursoEliminar: necesidad.recurso.id
+      showModalEditar: true,
+      necesidadModificada: necesidad
     });
   }
 
@@ -101,17 +111,32 @@ class RegistrarNecesidades extends Component {
     });
   }
 
-  deleteNecesidad(necesidad) {
-    api.delete('/actividades/necesidades/' + necesidad)
+  deleteNecesidad(id) {
+    const necesidad = this.state.necesidades.filter(n => n.id === id)[0];
+    this.setState({ 
+      showModalEliminar: true,
+      necesidadModificada: necesidad
+    });
+    
+  }
+
+  confirmDeleteNecesidad(res) {
+    if (res) {
+      api.delete('/actividades/necesidades/' + this.state.necesidadModificada.id)
       .then(res => {
         console.log(res);
         console.log(res.data);
-        this.cleanNecesidad();
         this.loadNecesidades();
       }).catch(function (error) {
         if (error.response){ console.log(error.response.status) }
         else { console.log('Error: ', error.message)}
+        this.setState({ error: "Hubo un problema al cargar su información." });
       });
+    }
+    this.setState({
+      necesidadModificada: { recurso: {} },
+      showModalEliminar: false
+    })
   }
 
   componentDidMount() {
@@ -127,6 +152,7 @@ class RegistrarNecesidades extends Component {
       .catch(function (error) {
         if (error.response){ console.log(error.response.status) }
         else { console.log('Error: ', error.message)}
+        this.setState({ error: "Hubo un problema al cargar su información." });
       })
   }
 
@@ -144,18 +170,9 @@ class RegistrarNecesidades extends Component {
     });
   }
 
-  getSelectorClass(id){
-    if (this.state.necesidad === id) {
-      return "fa fa-arrow-circle-o-right";
-    } else {
-      return undefined;
-    }
-  }
-
   render() {
     const tablaNecesidades = this.state.necesidades.map((n) =>
       <tr>
-        <td><i className={this.getSelectorClass(n.id)}></i></td>
         <td><i className={n.recurso.categoria.icono}></i></td>
         <td>{n.recurso.categoria.nombre}</td>
         <td>{n.recurso.nombre}</td>
@@ -183,12 +200,9 @@ class RegistrarNecesidades extends Component {
                      onItemChange={this.handleItemChange}/>
                   </div>
                   <div className="col-md-2">
-                    <input type="text" 
-                      name="cantidad" className="form-control"
-                      placeholder="Cantidad"
+                    <NumericInput className="form-control" min="1" placeholder="Cantidad"
                       value={this.state.cantidad} 
-                      onChange={this.handleInputChange}
-                    />
+                      onChange={(num) => this.setState({ cantidad: num })}/>
                   </div>
                   <div className="col-md-4">
                     <input type="text" 
@@ -199,9 +213,7 @@ class RegistrarNecesidades extends Component {
                     />
                   </div>
                   <div className="col-md-2">
-                    <Button outline type="submit" color="success">
-                      { !this.state.necesidad ? "Agregar" : "Guardar" }
-                    </Button>
+                    <Button outline type="submit" color="success">Agregar</Button>
                   </div>
                 </div>
                 <span style={{color: "red"}}>{this.state.error}</span>
@@ -226,8 +238,10 @@ class RegistrarNecesidades extends Component {
             <Button color="primary">Guardar necesidades</Button>
           </CardBody>
         </Card>
-        <ModalEliminarItem open={this.state.showModalEliminar} recurso={this.state.recursoEliminar}
-          closeModal={(res) => alert(res)}/>
+        <ModalEliminarItem open={this.state.showModalEliminar} recurso={this.state.necesidadModificada.recurso.id}
+          closeModal={this.confirmDeleteNecesidad}/>
+        <ModalEditarItem open={this.state.showModalEditar} necesidad={this.state.necesidadModificada.id}
+          closeModal={this.saveNecesidad}/>
       </div>
     )
   }

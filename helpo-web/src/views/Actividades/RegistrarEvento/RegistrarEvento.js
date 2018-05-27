@@ -36,10 +36,7 @@ class RegistrarEvento extends Component {
     this.handleFechaHoraFinChange = this.handleFechaHoraFinChange.bind(this);
     this.handleAddContact = this.handleAddContact.bind(this);
     this.handleRemoveContact = this.handleRemoveContact.bind(this);
-<<<<<<< HEAD
     this.handlePhoneChange = this.handlePhoneChange.bind(this);
-=======
->>>>>>> 4ce2dc10b0e4e062d8965b0af23ddb9e3781892b
   }
 
   handleContactChange(event, contactId) {
@@ -51,15 +48,12 @@ class RegistrarEvento extends Component {
     this.setState({
       contactos: newContactos,
     });
-<<<<<<< HEAD
   }
 
   handlePhoneChange(phone, contactId) {
     const index = this.state.contactos.map(e => e.contactId).indexOf(contactId);
     const newContactos = this.state.contactos;
     newContactos[index].telefono = phone;
-=======
->>>>>>> 4ce2dc10b0e4e062d8965b0af23ddb9e3781892b
   }
 
   handleInputChange(event) {
@@ -88,19 +82,12 @@ class RegistrarEvento extends Component {
     });
   }
   handleRemoveContact(id) {
-<<<<<<< HEAD
     if (this.state.contactos.length === 1) {
       return;
     }
     const newContactos = this.state.contactos;
     const indexOfRemove = newContactos.map(e => e.contactId).indexOf(id);
     newContactos.splice(indexOfRemove, 1);
-=======
-    const newContactos = this.state.contactos;
-    const indexOfRemove = newContactos.map(e => e.contactId).indexOf(id);
-    newContactos.splice(indexOfRemove, 1);
-    console.log(newContactos);
->>>>>>> 4ce2dc10b0e4e062d8965b0af23ddb9e3781892b
     this.setState({
       contactos: newContactos,
     });
@@ -196,13 +183,9 @@ class RegistrarEvento extends Component {
       formIsValid = false;
       errors.rubro = 'Hubo un problema al cargar los rubros.';
     } else { errors.rubro = undefined; }
-<<<<<<< HEAD
     if (!this.validateContactos()) {
       formIsValid = false;
     }
-=======
-
->>>>>>> 4ce2dc10b0e4e062d8965b0af23ddb9e3781892b
     this.setState({ errors });
     return formIsValid;
   }
@@ -271,10 +254,7 @@ class RegistrarEvento extends Component {
           onClickAdd={this.handleAddContact}
           onClickRemove={this.handleRemoveContact}
           onContactChange={this.handleContactChange}
-<<<<<<< HEAD
           onPhoneChange={this.handlePhoneChange}
-=======
->>>>>>> 4ce2dc10b0e4e062d8965b0af23ddb9e3781892b
           contacts={this.state.contactos}
         />
         <div className="form-group">

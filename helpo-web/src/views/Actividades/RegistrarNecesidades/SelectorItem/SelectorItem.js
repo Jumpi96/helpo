@@ -7,7 +7,7 @@ class SelectorItem extends Component {
     super(props);
     this.state = {
         categorias: [{ id: 0, nombre: 'Sin categorías' }],
-        items: [{ id: 0, nombre: 'Sin ítems' }],
+        items: [{ id: 0, nombre: 'Sin ítems', categoria: {} }],
         categoria_id: 0
       };
     this.handleSelectItem = this.handleSelectItem.bind(this); 
@@ -27,7 +27,7 @@ class SelectorItem extends Component {
   handleChangeCategoria(e) {
     const selectedIndex = e.target.options.selectedIndex;
     const selectedId = e.target.options[selectedIndex].getAttribute('data-key');
-    this.setState({ categoria_id: selectedId});
+    this.setState({ categoria_id: selectedId });
   }
 
   getCategoriaByItem(item) {
@@ -77,25 +77,16 @@ class SelectorItem extends Component {
       })
   }
 
- 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    let selectedCategoria = prevState.categoria_id;
-    let listaItems = prevState.items;
-    if (prevState.categoria_id !== 0) {
-      api.get('/actividades/recursos/' + nextProps.item + '/')
-      .then(res => {
-        const recursoData = res.data;
-        selectedCategoria = recursoData.categoria.id;
-        api.get('/actividades/recursos/?categoria=' + selectedCategoria)
-          .then(res => {
-            listaItems = res.data;
-            return { categoria_id: selectedCategoria, items: listaItems, categorias: prevState.categorias };
-          })
-      });
-    } else {
-      return { categoria_id: selectedCategoria, items: listaItems, categorias: prevState.categorias };
+  componentDidUpdate() {
+    if (this.state.categoria_id !== 0) {
+      api.get('/actividades/recursos/?categoria=' + this.state.categoria_id)
+        .then(res => {
+          const listaItems = res.data;
+          this.setState({ items: listaItems });
+        });
     }
   }
+
 
   render() {
     const listaCategorias = this.state.categorias.map((r) =>

@@ -3,6 +3,8 @@ import { Button, Table, Card, CardHeader, CardBody } from 'reactstrap';
 import './RegistrarNecesidades.css';
 import SelectorItem from './SelectorItem/SelectorItem';
 import api from '../../../api';
+import ModalEliminarItem from './ModalEliminarItem/ModalEliminarItem';
+
 
 class RegistrarNecesidades extends Component {
   constructor(props){
@@ -13,7 +15,9 @@ class RegistrarNecesidades extends Component {
       cantidad: undefined,
       recurso_id: 0,
       descripcion: undefined,
-      error: undefined
+      error: undefined,
+      showModalEliminar: false,
+      recursoEliminar: undefined
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleItemChange = this.handleItemChange.bind(this);
@@ -81,11 +85,10 @@ class RegistrarNecesidades extends Component {
 
   editNecesidad(id) {
     const necesidad = this.state.necesidades.filter(n => n.id === id)[0];
+    console.log(necesidad.recurso.id);
     this.setState({ 
-      descripcion: necesidad.descripcion,
-      cantidad: necesidad.cantidad,
-      recurso_id: necesidad.recurso.id,
-      necesidad: necesidad.id
+      showModalEliminar: true,
+      recursoEliminar: necesidad.recurso.id
     });
   }
 
@@ -128,6 +131,7 @@ class RegistrarNecesidades extends Component {
   }
 
   handleItemChange(r) {
+    // eslint-disable-next-line
     this.setState({ recurso_id: parseInt(r) });
   }
 
@@ -157,10 +161,10 @@ class RegistrarNecesidades extends Component {
         <td>{n.recurso.nombre}</td>
         <td>{n.descripcion}</td>
         <td>{n.cantidad}</td>
-        <Button onClick={() => this.editNecesidad(n.id)} outline
-          disabled={this.state.necesidad} color="warning">Editar</Button>
-        <Button onClick={() => this.deleteNecesidad(n.id)} outline 
-          disabled={this.state.necesidad} color="danger">Eliminar</Button>
+        <td><Button onClick={() => this.editNecesidad(n.id)} outline
+          disabled={this.state.necesidad} color="warning">Editar</Button></td>
+        <td><Button onClick={() => this.deleteNecesidad(n.id)} outline 
+          disabled={this.state.necesidad} color="danger">Eliminar</Button></td>
       </tr>
     );
     return (
@@ -219,10 +223,11 @@ class RegistrarNecesidades extends Component {
                 {tablaNecesidades}
               </tbody>
             </Table>
-
             <Button color="primary">Guardar necesidades</Button>
           </CardBody>
         </Card>
+        <ModalEliminarItem open={this.state.showModalEliminar} recurso={this.state.recursoEliminar}
+          closeModal={(res) => alert(res)}/>
       </div>
     )
   }

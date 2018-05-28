@@ -16,7 +16,8 @@ class RegistrarNecesidades extends Component {
       this.props.history.location.state.evento_id) {
       evento = this.props.history.location.state.evento_id;
     } else {
-      this.props.history.push('dashboard');
+      //this.props.history.push('dashboard');
+      evento = 2; 
     }
     
     this.state = {
@@ -246,7 +247,8 @@ class RegistrarNecesidades extends Component {
                 {tablaNecesidades}
               </tbody>
             </Table>
-            <Button color="primary">Guardar necesidades</Button>
+            <Button onClick={() => this.props.history.push('dashboard')} 
+              color="primary">Guardar necesidades</Button>
           </CardBody>
         </Card>
         <ModalEliminarItem open={this.state.showModalEliminar} recurso={this.state.necesidadModificada.recurso.id}

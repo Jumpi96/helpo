@@ -16,8 +16,7 @@ class RegistrarNecesidades extends Component {
       this.props.history.location.state.evento_id) {
       evento = this.props.history.location.state.evento_id;
     } else {
-      //this.props.history.push('dashboard');
-      evento = 2; 
+      this.props.history.push('dashboard');
     }
     
     this.state = {

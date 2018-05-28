@@ -7,51 +7,26 @@ class SelectorItem extends Component {
     super(props);
     this.state = {
         categorias: [{ id: 0, nombre: 'Sin categorías' }],
-        items: [{ id: 0, nombre: 'Sin ítems', categoria: {} }],
+        items: [{ id: 0, nombre: 'Sin ítems', categoria: {
+          id: 0, nombre: 'Sin categorías' 
+         } }],
         categoria_id: 0
       };
-    this.handleSelectItem = this.handleSelectItem.bind(this); 
+    this.handleChangeItem = this.handleChangeItem.bind(this); 
     this.handleChangeCategoria = this.handleChangeCategoria.bind(this);
   }
 
-  handleSelectItem(e) {
+  handleChangeItem(e) {
     const selectedIndex = e.target.options.selectedIndex;
     const selectedId = e.target.options[selectedIndex].getAttribute('data-key');
-    this.handleChangeItem(selectedId);
-  }
-  
-  handleChangeItem(selectedId){
     this.props.onItemChange(selectedId);
   }
 
   handleChangeCategoria(e) {
     const selectedIndex = e.target.options.selectedIndex;
     const selectedId = e.target.options[selectedIndex].getAttribute('data-key');
-    this.setState({ categoria_id: selectedId });
-  }
-
-  getCategoriaByItem(item) {
-    api.get('/actividades/recursos/' + item + '/')
-      .then(res => {
-        const recursoData = res.data;
-        return recursoData.categoria.id;
-      })
-      .catch(function (error) {
-        if (error.response){ console.log(error.response.status) }
-        else { console.log('Error: ', error.message)}
-      })
-  }
-
-  getItems(categoria) {
-    api.get('/actividades/recursos/?categoria=' + categoria)
-      .then(res => {
-        const recursosData = res.data;
-        return recursosData;
-      })
-      .catch(function (error) {
-        if (error.response){ console.log(error.response.status) }
-        else { console.log('Error: ', error.message) };
-      })
+    // eslint-disable-next-line
+    this.setState({ categoria_id: parseInt(selectedId) });
   }
 
   componentDidMount() {
@@ -61,10 +36,14 @@ class SelectorItem extends Component {
         const categoriasData = res.data;
         listaCategorias = categoriasData;
         selectedCategoria = categoriasData[0].id;
-        api.get('/actividades/recursos/?categoria=' + selectedCategoria)
+        api.get('/actividades/recursos')
           .then(res => {
             const recursosData = res.data;
-            this.setState({ categorias:listaCategorias, categoria_id: selectedCategoria, items: recursosData});
+            this.setState({ 
+              categorias:listaCategorias, 
+              categoria_id: selectedCategoria, 
+              items: recursosData
+            });
           })
           .catch(function (error) {
             if (error.response){ console.log(error.response.status) }
@@ -77,25 +56,13 @@ class SelectorItem extends Component {
       })
   }
 
-  componentDidUpdate() {
-    if (this.state.categoria_id !== 0) {
-      api.get('/actividades/recursos/?categoria=' + this.state.categoria_id)
-        .then(res => {
-          const listaItems = res.data;
-          this.setState({ items: listaItems });
-        });
-    }
-  }
-
-
   render() {
     const listaCategorias = this.state.categorias.map((r) =>
       <option value={r.id} key={r.id} data-key={r.id}>{r.nombre}</option>
     );
-    const listaItems = this.state.items.map((i) =>
-      <option value={i.id} key={i.id} data-key={i.id}>{i.nombre}</option>
+    const listaItems = this.state.items.filter(i => i.categoria.id === this.state.categoria_id)
+      .map((i) => <option value={i.id} key={i.id} data-key={i.id}>{i.nombre}</option>
     );
-    //alert(this.state.categoria_id + "a" + this.props.item);
     return(
       <div className="row">
         <div className="col-md-6">
@@ -110,7 +77,7 @@ class SelectorItem extends Component {
           <select
             value={this.props.item}
             className="form-control"
-            onChange={this.handleSelectItem}>
+            onChange={this.handleChangeItem}>
             {listaItems}
           </select>
         </div>

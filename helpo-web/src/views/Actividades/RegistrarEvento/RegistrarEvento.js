@@ -50,10 +50,18 @@ class RegistrarEvento extends Component {
     });
   }
 
-  handlePhoneChange(phone, contactId) {
+  handlePhoneChange(event, contactId) {
+    const phone = event.target.value;
+    //Si value es No Numerico, no se modifica el estado
+    if (isNaN(phone)) {
+      return;
+    }
     const index = this.state.contactos.map(e => e.contactId).indexOf(contactId);
     const newContactos = this.state.contactos;
     newContactos[index].telefono = phone;
+    this.setState({
+      contactos: newContactos,
+    });
   }
 
   handleInputChange(event) {

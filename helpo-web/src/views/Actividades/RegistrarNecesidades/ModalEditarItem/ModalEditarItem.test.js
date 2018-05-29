@@ -17,7 +17,7 @@ describe("ModalEditarItem", () => {
 
   beforeEach(() => {
     props = {
-      necesidad: 1,
+      necesidad: undefined,
       open: true,
       closeModal: undefined
     };

@@ -1,42 +1,22 @@
 import React, { Component } from 'react';
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import NumericInput from 'react-numeric-input';
-import api from '../../../../api';
 
 class ModalEditarItem extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      cantidad: 1,
       error: undefined,
-      necesidad: {
-        descripcion: "Descripción",
-        recurso: {
-          nombre: "Recurso",
-          categoria: {
-            nombre: "Categoría"
-          }
-        }
-      }
+      cantidad: 1
     };
     this.handleCantidadChange = this.handleCantidadChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  componentDidUpdate() {
-    if (this.props.necesidad) {
-      api.get('/actividades/necesidades/' + this.props.necesidad + '/')
-      .then(res => {
-        const necesidadData = res.data;
-        this.setState({ necesidad: necesidadData});
-      })
-      .catch((error) => {
-        if (error.response){ console.log(error.response.status) }
-        else { console.log('Error: ', error.message)}
-        this.setState({ error: "Hubo un problema al cargar su información." });
-      })
-    }
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const cantidad = nextProps.necesidad ? nextProps.necesidad.cantidad : 1;
+    return {error: undefined, cantidad: cantidad};
   }
 
   handleCantidadChange(cantidad) {
@@ -54,6 +34,9 @@ class ModalEditarItem extends Component {
   }
 
   render() {
+    const categoria = this.props.necesidad ? this.props.necesidad.recurso.categoria.nombre : undefined;
+    const recurso = this.props.necesidad ? this.props.necesidad.recurso.nombre : undefined;
+    const descripcion = this.props.necesidad ? this.props.necesidad.descripcion : undefined;
     return (
       <div className="animated fadeIn">
         <Modal isOpen={this.props.open}
@@ -66,7 +49,7 @@ class ModalEditarItem extends Component {
                   <strong>Categoría</strong>
                 </div>
                 <div>
-                  <label>{this.state.necesidad.recurso.categoria.nombre}</label>
+                  <label>{categoria}</label>
                 </div>
               </div>
               <div className="col-md-6">
@@ -74,7 +57,7 @@ class ModalEditarItem extends Component {
                   <strong>Recurso</strong>
                 </div>
                 <div>
-                  <label>{this.state.necesidad.recurso.nombre}</label>
+                  <label>{recurso}</label>
                 </div>
               </div>
             </div>
@@ -84,7 +67,7 @@ class ModalEditarItem extends Component {
                   <strong>Descripción</strong>
                 </div>
                 <div>
-                  {this.state.necesidad.descripcion}
+                  {descripcion}
                 </div>
               </div>
             </div>
@@ -102,7 +85,7 @@ class ModalEditarItem extends Component {
             </div>
           </ModalBody>
           <ModalFooter>
-            <Button color="warning" onClick={this.handleSumbit}>Editar</Button>{' '}
+            <Button color="warning" onClick={this.handleSubmit}>Editar</Button>{' '}
             <Button color="secondary" onClick={() => this.props.closeModal(undefined)}>Cancelar</Button>
           </ModalFooter>
         </Modal>

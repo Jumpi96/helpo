@@ -28,7 +28,7 @@ class RegistrarNecesidades extends Component {
       descripcion: undefined,
       error: undefined,
       showModalEliminar: false,
-      necesidadModificada: { recurso: {} }
+      necesidadModificada: undefined
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleItemChange = this.handleItemChange.bind(this);
@@ -87,7 +87,7 @@ class RegistrarNecesidades extends Component {
     }
     this.setState({
       showModalEditar: false,
-      necesidadModificada: { recurso: {} }
+      necesidadModificada: undefined
     });    
   }
 
@@ -133,7 +133,7 @@ class RegistrarNecesidades extends Component {
 
   confirmDeleteNecesidad(res) {
     if (res) {
-      api.delete('/actividades/necesidades/' + this.state.necesidadModificada.id)
+      api.delete('/actividades/necesidades/' + this.state.necesidadModificada.id + '/')
       .then(res => {
         console.log(res);
         console.log(res.data);
@@ -141,11 +141,10 @@ class RegistrarNecesidades extends Component {
       }).catch(function (error) {
         if (error.response){ console.log(error.response.status) }
         else { console.log('Error: ', error.message)}
-        this.setState({ error: "Hubo un problema al cargar su información." });
       });
     }
     this.setState({
-      necesidadModificada: { recurso: {} },
+      necesidadModificada: undefined,
       showModalEliminar: false
     })
   }
@@ -250,9 +249,9 @@ class RegistrarNecesidades extends Component {
               color="primary">Guardar necesidades</Button>
           </CardBody>
         </Card>
-        <ModalEliminarItem open={this.state.showModalEliminar} recurso={this.state.necesidadModificada.recurso.id}
+        <ModalEliminarItem open={this.state.showModalEliminar} necesidad={this.state.necesidadModificada}
           closeModal={this.confirmDeleteNecesidad}/>
-        <ModalEditarItem open={this.state.showModalEditar} necesidad={this.state.necesidadModificada.id}
+        <ModalEditarItem open={this.state.showModalEditar} necesidad={this.state.necesidadModificada}
           closeModal={this.saveNecesidad}/>
       </div>
     )

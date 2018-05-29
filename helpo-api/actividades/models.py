@@ -22,4 +22,4 @@ class Contacto(models.Model):
     nombre = models.CharField(max_length=100)
     email = models.EmailField(max_length=100)
     telefono = models.IntegerField(max_length=100) 
-    evento = models.ForeignKey(Evento, null=False, on_delete=models.CASCADE)
+    evento = models.ForeignKey(Evento, related_name='contacto', null=False, on_delete=models.CASCADE)

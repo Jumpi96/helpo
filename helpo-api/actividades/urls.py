@@ -14,6 +14,19 @@ urlpatterns = [
         view=actividades_views.RubroEventoReadUpdateDeleteView.as_view(),
         name="get_put_delete_rubro_evento"
     ),
+    # {% url "api:contacto" %}
+    url(
+        regex=r"^actividades/contacto/$",
+        view=actividades_views.ContactoEventoCreateReadView.as_view(),
+        name="get_post_rubro_evento"
+    ),
+    # {% url "api:contacto" contacto.id %}
+    url(
+        regex=r"^actividades/contacto/(?P<id>[-\w]+)/$",
+        view=actividades_views.ContactoEventoReadUpdateDeleteView.as_view(),
+        name="get_put_delete_rubro_evento"
+    ),
+    
     # {% url "api:eventos" %}
     url(
         regex=r"^actividades/eventos/$",

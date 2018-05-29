@@ -53,3 +53,6 @@ tmp_email/
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/extensions.json
+
+# Linux
+.directory

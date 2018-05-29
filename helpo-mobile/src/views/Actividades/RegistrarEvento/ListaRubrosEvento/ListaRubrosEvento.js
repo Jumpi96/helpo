@@ -13,7 +13,7 @@ import api from "../../../../../api";
 class ListaRubrosEvento extends React.Component {
   constructor(props){
     super(props);
-    this.state = { 
+    this.state = {
       rubros: [{ id: 0, nombre: "Sin rubros" }]
     };
     this.handleChange = this.handleChange.bind(this);
@@ -32,7 +32,7 @@ class ListaRubrosEvento extends React.Component {
       .catch(function (error) {
         if (error.response){ console.log(error.response.status); }
         else { console.log("Error: ", error.message); }
-      })
+      });
   }
 
   render(){

@@ -19,6 +19,10 @@ const datas = [
   {
     route: "RegistrarEvento",
     text: "Registrar evento"
+  },
+  {
+    route: "RegistrarNecesidades",
+    text: "Registrar necesidades1"
   }
 ];
 
@@ -47,7 +51,7 @@ class Actividades extends Component {
             renderRow={data =>
               <ListItem
                 button
-                onPress={() => this.props.navigation.navigate(data.route)}
+                onPress={() => this.props.navigation.navigate(data.route, { evento: 2})}
               >
                 <Left>
                   <Text>

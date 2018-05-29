@@ -7,7 +7,7 @@ Created with [Django React Boilerplate](https://github.com/vintasoftware/django-
 ## Conventions
 ### Coding
 - **Python:** PEP 8 (https://www.python.org/dev/peps/pep-0008/)
-- **JavaScript:** AirBnb for React (https://github.com/airbnb/javascript/tree/master/react)
+- **JavaScript:** Create React App (https://www.npmjs.com/package/eslint-config-react-app)
 - **HTML:** CodeGuide by Mark Otto (http://codeguide.co/)
 - **CSS:** Idiomatic CSS (https://github.com/necolas/idiomatic-css)
 ### Documenting

@@ -25,7 +25,7 @@ describe("ModalEditarItem", () => {
   });
   
   it('renders without crashing', () => {
-    const divs = mountedModalEditarItem().find("select");
+    const divs = mountedModalEditarItem().find("button");
     expect(divs.length).toBeGreaterThan(0); 
   });
 });

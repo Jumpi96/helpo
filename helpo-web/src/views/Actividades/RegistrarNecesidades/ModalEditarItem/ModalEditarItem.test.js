@@ -6,7 +6,7 @@ import ModalEditarItem from './ModalEditarItem';
 describe("ModalEditarItem", () => {
   let props;
   let mountedModalEditarItem;
-  const ModalEditarItem = () => {
+  const modalEditarItem = () => {
     if (!mountedModalEditarItem) {
       mountedModalEditarItem = mount(
         <ModalEditarItem {...props} />
@@ -25,7 +25,7 @@ describe("ModalEditarItem", () => {
   });
   
   it('renders without crashing', () => {
-    const divs = mountedModalEditarItem().find("button");
+    const divs = modalEditarItem().find("button");
     expect(divs.length).toBeGreaterThan(0); 
   });
 });

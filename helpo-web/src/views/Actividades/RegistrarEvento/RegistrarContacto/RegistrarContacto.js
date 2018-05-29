@@ -1,7 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// Fuente https://github.com/bl00mber/react-phone-input-2
-import ReactPhoneInput from 'react-phone-input-2';
 
 
 const inputPropTypes = {
@@ -49,12 +47,13 @@ function ContactoInput({
       </label> <br />
       <label htmlFor={`telefono-contacto${contactId}`}>
         Telefono<br />
-        <ReactPhoneInput
+        <input
+          type="telefono"
+          placeholder="543515000555"
           id={`telefono-contacto${contactId}`}
-          placeholder="+543515555555"
           className="form-control"
           name="telefono"
-          onChange={str => onPhoneChange(str, contactId)}
+          onChange={e => onPhoneChange(e, contactId)}
           value={contactValues.telefono}
         />
       </label> <br />

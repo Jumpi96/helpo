@@ -25,7 +25,7 @@ describe("ModalEliminarItem", () => {
   });
   
   it('renders without crashing', () => {
-    const divs = modalEliminarItem().find("select");
+    const divs = modalEliminarItem().find("button");
     expect(divs.length).toBeGreaterThan(0); 
   });
 });

@@ -17,36 +17,85 @@ import {
   Form,
   Text
 } from "native-base";
-import SelectorUbicacion from "./SelectorUbicacion/SelectorUbicacion";
-import ListaRubrosEvento from "./ListaRubrosEvento/ListaRubrosEvento";
-import api from "../../../../api";
+import api from "../../../../../api";
 import moment from "moment";
-import SelectorFechaHora from "./SelectorFechaHora/SelectorFechaHora";
+import SelectorItem from "./SelectorItem/SelectorItem";
 import styles from "./styles";
 
 
-class RegistrarEvento extends React.Component {
+class AgregarNecesidad extends React.Component {
   constructor(props){
     super(props);
+    const evento = this.props.navigation.getParam("evento", undefined);
+    if (!evento) { this.props.navigation.goBack(); }
     this.state = {
-        nombre: "",
-        descripcion: "",
-        rubro_id: 0,
-        fecha_hora_inicio: new Date(),
-        fecha_hora_fin: new Date(),
-        //TODO: ubicacion que pasamos por defecto debería ser la de la ONG. Ahora, Córdoba.
-        ubicacion: { latitud: -31.4201, longitud: -64.1888, notas: ""}, 
-        errors: {}
+        cantidad: undefined,
+        recurso_id: 0,
+        descripcion: undefined,
+        error: undefined
     };
-    this.handleUbicacionChange = this.handleUbicacionChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleRubroChange = this.handleRubroChange.bind(this);
-    this.handleFechaHoraInicioChange = this.handleFechaHoraInicioChange.bind(this);
-    this.handleFechaHoraFinChange = this.handleFechaHoraFinChange.bind(this);
+    this.handleItemChange = this.handleItemChange.bind(this);
+    this.saveNecesidad = this.saveNecesidad.bind(this);
+  }
+
+  handleSubmit(event) {
+    event.preventDefault();
+    if (this.handleValidation()) {
+      const necesidad = {
+        recurso_id: this.state.recurso_id,
+        descripcion: this.state.descripcion,
+        cantidad: this.state.cantidad,
+        evento: this.state.evento
+      };
+      this.addNecesidad(necesidad);
+    }
+  }
+
+  addNecesidad(necesidad) {
+    api.post("/actividades/necesidades/", necesidad)
+      .then(res => {
+        console.log(res);
+        console.log(res.data);
+        this.cleanNecesidad();
+        this.loadNecesidades();
+      }).catch(function (error) {
+        if (error.response){ console.log(error.response.status); }
+        else { console.log("Error: ", error.message); }
+        this.setState({ error: "Hubo un problema al cargar su información." });
+      });
+  }
+
+  handleValidation() {
+    let formIsValid = true;
+    var error = this.state.error;
+    if (this.state.recurso_id === 0 ||
+      !this.state.recurso_id) {
+      formIsValid = false;
+      error = "Hubo un problema al cargar los recursos.";
+    } else {
+      error = undefined;
+    }
+    this.setState({error: error});
+    return formIsValid;
+  }
+
+  cleanNecesidad() {
+    this.setState({
+      descripcion: undefined,
+      cantidad: undefined,
+      recurso_id: undefined,
+      necesidad: undefined
+    });
+  }
+
+  handleItemChange(r) {
+    // eslint-disable-next-line
+    this.setState({ recurso_id: parseInt(r) });
   }
 
   handleRubroChange(r) {
-    this.setState({rubro_id: r});    
+    this.setState({rubro_id: r});
   }
 
   handleSubmit(event) {
@@ -133,51 +182,31 @@ class RegistrarEvento extends React.Component {
             </Button>
           </Left>
           <Body>
-            <Title>Registrar evento</Title>
+            <Title>Agregar necesidad</Title>
           </Body>
           <Right />
         </Header>
 
         <Content>
           <Form>
-            <Item floatingLabel>
-              <Label>Nombre</Label>
-              <Input value={this.state.nombre}
-                onChangeText={(text) => this.setState({nombre: text})}/>
-            </Item>
-            <FormValidationMessage>{this.state.errors.nombre}</FormValidationMessage>
+            <SelectorItem
+              item={this.state.recurso_id}
+              onItemChange={this.handleItemChange}/>
             <Item floatingLabel>
               <Label>Descripción</Label>
               <Input value={this.state.descripcion}
                 onChangeText={(text) => this.setState({descripcion: text})}/>
             </Item>
-
-            <ListaRubrosEvento
-                name="listaRubros"
-                rubro_id={this.state.rubro_id}
-                onRubroChange={this.handleRubroChange} />
-            <FormValidationMessage>{this.state.errors.rubro}</FormValidationMessage>
-
-            <SelectorFechaHora
-              detalle="Inicio"
-              soloFecha={false}
-              value={this.state.fecha_hora_inicio}
-              handleChange={this.handleFechaHoraInicioChange}/>
-            <SelectorFechaHora
-              detalle="Fin"
-              soloFecha={false}
-              value={this.state.fecha_hora_fin}
-              handleChange={this.handleFechaHoraFinChange}/>
-            <FormValidationMessage>{this.state.errors.fechas}</FormValidationMessage>
-
-            <Item>
-              <SelectorUbicacion
-                ubicacion={this.state.ubicacion}
-                onUbicacionChange={this.handleUbicacionChange} />
+            <Item floatingLabel>
+              <Label>Cantidad</Label>
+              <Input value={this.state.cantidad}
+                onChangeText={(text) => this.setState({cantidad: text})}/>
             </Item>
+
+            <FormValidationMessage>{this.state.error}</FormValidationMessage>
             <Button block style={{ margin: 15, marginTop: 50 }}
               onPress={this.handleSubmit} >
-              <Text>Guardar Evento</Text>
+              <Text>Guardar necesidad</Text>
             </Button>
           </Form>
         </Content>
@@ -186,4 +215,4 @@ class RegistrarEvento extends React.Component {
   }
 }
 
-export default RegistrarEvento;
+export default AgregarNecesidad;

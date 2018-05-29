@@ -118,6 +118,7 @@ class RegistrarEvento extends Component {
         fecha_hora_fin: this.state.fecha_hora_fin.toISOString(),
         rubro_id: this.state.rubro_id,
         ubicacion: this.state.ubicacion,
+        contacto: this.state.contactos,
       };
       api.post('/actividades/eventos/', evento)
         .then((res) => {
@@ -133,8 +134,8 @@ class RegistrarEvento extends Component {
   validateContactos() {
     const errors = {};
     let isValid = true;
-    const { contactos } = this.state.contactos;
-    for (let i = 0; i <= contactos.length; i += 1) {
+    const contactos = this.state.contactos;    
+    for (let i = 0; i < contactos.length; i += 1) {
       // Es valido no ingresar ningun contacto
       if (contactos[i].nombre === '' &&
       contactos[i].mail === '' &&

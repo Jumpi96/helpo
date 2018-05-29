@@ -39,4 +39,40 @@ urlpatterns = [
         view=actividades_views.EventoReadUpdateDeleteView.as_view(),
         name="get_put_delete_evento"
     ),
+    # {% url "api:categorias_recurso" %}
+    url(
+        regex=r"^actividades/categorias_recurso/$",
+        view=actividades_views.CategoriaRecursoCreateReadView.as_view(),
+        name="get_post_categoria_recurso"
+    ),
+    # {% url "api:categorias_recurso" evento.id %}
+    url(
+        regex=r"^actividades/categorias_recurso/(?P<id>[-\w]+)/$",
+        view=actividades_views.CategoriaRecursoReadUpdateDeleteView.as_view(),
+        name="get_put_delete_categoria_recurso"
+    ),
+    # {% url "api:recursos" %}
+    url(
+        regex=r"^actividades/recursos/$",
+        view=actividades_views.RecursoCreateReadView.as_view(),
+        name="get_post_recurso"
+    ),
+    # {% url "api:recursos" evento.id %}
+    url(
+        regex=r"^actividades/recursos/(?P<id>[-\w]+)/$",
+        view=actividades_views.RecursoReadUpdateDeleteView.as_view(),
+        name="get_put_delete_recurso"
+    ),
+    # {% url "api:necesidades" %}
+    url(
+        regex=r"^actividades/necesidades/$",
+        view=actividades_views.NecesidadCreateReadView.as_view(),
+        name="get_post_necesidad"
+    ),
+    # {% url "api:necesidades" evento.id %}
+    url(
+        regex=r"^actividades/necesidades/(?P<id>[-\w]+)/$",
+        view=actividades_views.NecesidadReadUpdateDeleteView.as_view(),
+        name="get_put_delete_necesidad"
+    ),
 ]

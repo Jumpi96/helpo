@@ -40,8 +40,9 @@ class RegistrarNecesidades extends React.Component {
   }
 
   handleConfirmDelete(b) {
-    if (b.Text === "Eliminar" ) {
-      api.delete("/actividades/necesidades/" + this.state.necesidadModificada.id)
+    console.log(b.text === "Eliminar");
+    if (b.text === "Eliminar" ) {
+      api.delete("/actividades/necesidades/" + this.state.necesidadModificada + "/")
       .then(res => {
         console.log(res);
         console.log(res.data);
@@ -121,7 +122,6 @@ class RegistrarNecesidades extends React.Component {
           <Body>
             <Title>Registrar necesidades</Title>
           </Body>
-          <Right />
         </Header>
         <Content>
           <Form>

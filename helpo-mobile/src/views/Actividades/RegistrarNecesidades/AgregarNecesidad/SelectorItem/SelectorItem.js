@@ -1,11 +1,12 @@
 import React from "react";
 import {
     Picker,
-    Item,
     ListItem,
+    Item,
     Left,
     Body,
-    Text
+    Text,
+    View
 }
 from "native-base";
 import api from "../../../../../../api";
@@ -62,37 +63,42 @@ class SelectorItem extends React.Component {
 
   render() {
     const listaCategorias = this.state.categorias.map((r) =>
-      <option value={r.id} key={r.id} data-key={r.id}>{r.nombre}</option>
+      <Item value={r.id} key={r.id} label={r.nombre}/>
     );
     const listaItems = this.state.items.filter(i => i.categoria.id === this.state.categoria_id)
-      .map((i) => <option value={i.id} key={i.id} data-key={i.id}>{i.nombre}</option>
+      .map((i) => <Item value={i.id} key={i.id} label={i.nombre}/>
     );
     return (
-      <Item>
+      <View>
         <ListItem>
-            <Left>
+          <Left>
             <Text>Categoría</Text>
-            </Left>
-            <Body>
+          </Left>
+          <Body>
             <Picker
-                note
-                mode="dropdown"
-                selectedValue={this.state.categoria_id}
-                onValueChange={this.handleChangeCategoria}>
+              note
+              mode="dropdown"
+              selectedValue={this.state.categoria_id}
+              onValueChange={this.handleChangeCategoria}>
                 {listaCategorias}
             </Picker>
-            </Body>
+          </Body>
         </ListItem>
         <ListItem>
+          <Left>
+            <Text>Recurso</Text>
+          </Left>
+          <Body>
             <Picker
-            note
-            mode="dropdown"
-            selectedValue={this.props.item}
-            onValueChange={this.handleChangeItem}>
-            {listaItems}
+              note
+              mode="dropdown"
+              selectedValue={this.props.item}
+              onValueChange={this.handleChangeItem}>
+                {listaItems}
             </Picker>
+          </Body>
         </ListItem>
-      </Item>
+      </View>
     );
   }
 }

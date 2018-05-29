@@ -35,7 +35,7 @@ class RegistrarEvento extends React.Component {
         fecha_hora_inicio: new Date(),
         fecha_hora_fin: new Date(),
         //TODO: ubicacion que pasamos por defecto debería ser la de la ONG. Ahora, Córdoba.
-        ubicacion: { latitud: -31.4201, longitud: -64.1888, notas: ""}, 
+        ubicacion: { latitud: -31.4201, longitud: -64.1888, notas: ""},
         errors: {}
     };
     this.handleUbicacionChange = this.handleUbicacionChange.bind(this);
@@ -46,7 +46,7 @@ class RegistrarEvento extends React.Component {
   }
 
   handleRubroChange(r) {
-    this.setState({rubro_id: r});    
+    this.setState({rubro_id: r});
   }
 
   handleSubmit(event) {

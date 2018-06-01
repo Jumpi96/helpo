@@ -123,6 +123,8 @@ import Actionsheet from "./screens/actionsheet";
 
 import Actividades from "./views/Actividades/Actividades";
 import RegistrarEvento from "./views/Actividades/RegistrarEvento/RegistrarEvento";
+import RegistrarNecesidades from "./views/Actividades/RegistrarNecesidades/RegistrarNecesidades";
+import AgregarNecesidad from "./views/Actividades/RegistrarNecesidades/AgregarNecesidad/AgregarNecesidad";
 
 const Drawer = DrawerNavigator(
   {
@@ -178,6 +180,8 @@ const AppNavigator = StackNavigator(
     HeaderNoShadow: { screen: HeaderNoShadow },
 
     RegistrarEvento: { screen: RegistrarEvento },
+    RegistrarNecesidades: { screen: RegistrarNecesidades },
+    AgregarNecesidad: { screen: AgregarNecesidad },
 
     BasicFooter: { screen: BasicFooter },
     IconFooter: { screen: IconFooter },

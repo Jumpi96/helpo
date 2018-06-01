@@ -8,6 +8,7 @@ from users import urls as users_urls
 
 urlpatterns = [ 
     url(r'^admin/', admin.site.urls),
+    url(r'api/auth/', include('knox.urls'))
 ]
 
 urlpatterns += actividades_urls.urlpatterns

@@ -17,6 +17,12 @@ class Evento(IndexedTimeStampedModel):
     rubro = models.ForeignKey(RubroEvento, null=True, on_delete=models.SET_NULL)
     ubicacion = models.ForeignKey(Ubicacion, null=True, on_delete=models.SET_NULL)
 
+class Contacto(models.Model):
+    nombre = models.CharField(max_length=100)
+    email = models.EmailField(max_length=100)
+    telefono = models.IntegerField() 
+    evento = models.ForeignKey(Evento, related_name='contacto', null=False, on_delete=models.CASCADE)
+
 class CategoriaRecurso(models.Model):
     nombre = models.CharField(max_length=100)
     icono = models.CharField(max_length=50, null=True)

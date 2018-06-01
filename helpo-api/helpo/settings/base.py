@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'import_export',
     
     'rest_framework',
+    'knox',
 
     'common',
     'users',
@@ -56,6 +57,10 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',),
+}
 
 ROOT_URLCONF = 'helpo.urls'
 

@@ -6,6 +6,20 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from common.models import IndexedTimeStampedModel
 
+class Profile(models.Model):
+    usuario = models.OneToOneField('User')
+
+    class Meta:
+        abstract = True
+
+class VoluntarioProfile(Profile):
+    apellido = models.CharField(max_length=50)
+
+class OrganizacionProfile(Profile):
+    verificada = models.BooleanField(default=False)
+    
+class EmpresaProfile(Profile):
+    telefono = models.IntegerField(null=True)
 
 class UserManager(BaseUserManager):
 
@@ -13,7 +27,7 @@ class UserManager(BaseUserManager):
         user = self.model(email=self.normalize_email(email), nombre=nombre, user_type=user_type)
         user.set_password(password)
         user.save(using=self._db)
-        '''
+        
         if user_type == 1:
             profile = OrganizacionProfile.objects.create(usuario=user)
         elif user_type == 2:
@@ -21,7 +35,7 @@ class UserManager(BaseUserManager):
         else:
             profile = EmpresaProfile.objects.create(usuario=user)
         self.send_confirmation_email(user)
-        '''
+        
         return user
 
     def create_superuser(self, **kwargs):
@@ -80,20 +94,3 @@ class User(AbstractBaseUser, PermissionsMixin, IndexedTimeStampedModel):
 
     def __str__(self):
         return self.email
-
-'''
-class Profile(models.Model):
-    usuario = models.OneToOneField(User)
-
-    class Meta:
-        abstract = True
-
-class VoluntarioProfile(Profile):
-    apellido = models.CharField(max_length=50)
-
-class OrganizacionProfile(Profile):
-    verificada = models.BooleanField(default=False)
-    
-class EmpresaProfile(Profile):
-    telefono = models.IntegerField(null=True)
-'''

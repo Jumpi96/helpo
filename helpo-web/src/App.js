@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
 import { HashRouter, Route, Switch } from 'react-router-dom';
-import './App.css';
+import { Provider, connect } from "react-redux";
+import { createStore, applyMiddleware } from "redux";
+import {auth} from "./actions";
+import {helpo} from "./reducers";
+import thunk from "redux-thunk";
+
 // Styles
+import './App.css';
 // CoreUI Icons Set
 import '@coreui/icons/css/coreui-icons.min.css';
 // Import Flag Icons Set
@@ -12,7 +18,6 @@ import 'font-awesome/css/font-awesome.min.css';
 import 'simple-line-icons/css/simple-line-icons.css';
 // Import Main styles for this application
 import './scss/style.css'
-
 // Containers
 import { DefaultLayout } from './containers';
 // Pages
@@ -20,7 +25,14 @@ import { Login, Page404, Page500, Register } from './views/Pages';
 
 // import { renderRoutes } from 'react-router-config';
 
-class App extends Component {
+let store = createStore(helpo, applyMiddleware(thunk));
+
+class RootContainerComponent extends Component {
+
+  componentDidMount() {
+    this.props.loadUser();
+  }
+
   render() {
     return (
       <HashRouter>
@@ -36,4 +48,28 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = state => {
+  return {
+    auth: state.auth,
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    loadUser: () => {
+      return dispatch(auth.loadUser());
+    }
+  }
+}
+
+let RootContainer = connect(mapStateToProps, mapDispatchToProps)(RootContainerComponent);
+
+export default class App extends Component {
+  render() {
+    return (
+      <Provider store={store}>
+        <RootContainer />
+      </Provider>
+    )
+  }
+}

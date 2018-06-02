@@ -16,11 +16,11 @@ export default function auth(state=initialState, action) {
       localStorage.setItem("token", action.data.token);
       return {...state, ...action.data, isAuthenticated: true, isLoading: false, errors: null};
     case 'AUTHENTICATION_ERROR':
-      break;
+      localStorage.removeItem("token");
+      return {...state, errors: action.data, token: null, user: null,
+        isAuthenticated: false, isLoading: false};
     case 'LOGIN_FAILED':
-      break;
     case 'REGISTRATION_FAILED':
-      break;
     case 'LOGOUT_SUCCESSFUL':
       localStorage.removeItem("token");
       return {...state, errors: action.data, token: null, user: null,

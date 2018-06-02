@@ -20,7 +20,7 @@ class Login extends Component {
 
   render() {
     if (this.props.isAuthenticated) {
-      return <Redirect to="/dashboard" />
+      return <Redirect to="/" />
     } else {
       return (
         <form onSubmit={this.onSubmit}>
@@ -70,13 +70,14 @@ class Login extends Component {
                           <Button onClick={() => this.props.history.push('register')} 
                             color="primary" className="mt-3" active>Regístrate!</Button>
                         </div>
+                        <br />
                         <div>
                           {this.props.errors.length > 0 && (
-                            <ul>
+                            <div>
                               {this.props.errors.map(error => (
-                                <li key={error.field}>{error.message}</li>
+                                <p key={error.field}>{error.message}</p>
                               ))}
-                            </ul>
+                            </div>
                           )}
                         </div>
                       </CardBody>

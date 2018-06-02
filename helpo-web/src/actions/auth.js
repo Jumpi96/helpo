@@ -15,20 +15,16 @@ export const loadUser = () => {
     }
     return api.get("/auth/user/", {headers})
       .then(res => {
-        if (res.status < 500) {
-          return {status: res.status, data: res.data};
+        dispatch({type: 'USER_LOADED', user: res.data });
+        return res.data;
+      })
+      .catch(e => {
+        if (e.response.status >= 400 && e.response.status < 500) {
+          dispatch({type: "AUTHENTICATION_ERROR", data: e.response.data});
+          throw e.response.data;
         } else {
           console.log("Server Error!");
-          throw res;
-        }
-      })
-      .then(res => {
-        if (res.status === 200) {
-          dispatch({type: 'USER_LOADED', user: res.data });
-          return res.data;
-        } else if (res.status >= 400 && res.status < 500) {
-          dispatch({type: "AUTHENTICATION_ERROR", data: res.data});
-          throw res.data;
+          throw e.response;
         }
       })
     }
@@ -41,23 +37,16 @@ export const login = (email, password) => {
 
     return api.post("/auth/log_in/", body, {headers})
       .then(res => {
-        if (res.status < 500) {
-          return {status: res.status, data: res.data};
-        } else {
-          console.log("Server Error!");
-          throw res;
-        }
+        dispatch({type: 'LOGIN_SUCCESSFUL', data: res.data });
+        return res.data;
       })
-      .then(res => {
-        if (res.status === 200) {
-          dispatch({type: 'LOGIN_SUCCESSFUL', data: res.data });
-          return res.data;
-        } else if (res.status === 403 || res.status === 401) {
-          dispatch({type: "AUTHENTICATION_ERROR", data: res.data});
-          throw res.data;
+      .catch(e => {
+        if (e.response.status === 403 || e.response.status === 401) {
+          dispatch({type: "AUTHENTICATION_ERROR", data: e.response.data});
+          throw e.response.data;
         } else {
-          dispatch({type: "LOGIN_FAILED", data: res.data});
-          throw res.data;
+          dispatch({type: "LOGIN_FAILED", data: e.response.data});
+          throw e.response.data;
         }
       })
   }
@@ -70,23 +59,37 @@ export const register = (email, password) => {
 
     return api.post("/auth/sign_up/", body, {headers})
       .then(res => {
-        if (res.status < 500) {
-          return {status: res.status, data: res.data};
+        dispatch({type: 'REGISTRATION_SUCCESSFUL', data: res.data });
+        return res.data;
+      })
+      .catch(e => {
+        if (e.response.status === 403 || e.response.status === 401) {
+          dispatch({type: "AUTHENTICATION_ERROR", data: e.response.data});
+          throw e.response.data;
         } else {
-          console.log("Server Error!");
-          throw res;
+          dispatch({type: "REGISTRATION_FAILED", data: e.response.data});
+          throw e.response.data;
         }
       })
+  }
+}
+
+export const logout = () => {
+  return (dispatch, getState) => {
+    let headers = {"Content-Type": "application/json"};
+
+    return api.post("/auth/logout/", JSON.stringify(""), {headers})
       .then(res => {
-        if (res.status === 200) {
-          dispatch({type: 'REGISTRATION_SUCCESSFUL', data: res.data });
-          return res.data;
-        } else if (res.status === 403 || res.status === 401) {
-          dispatch({type: "AUTHENTICATION_ERROR", data: res.data});
-          throw res.data;
+        dispatch({type: 'LOGOUT_SUCCESSFUL'});
+        return res.data;
+      })
+      .catch(e => {
+        if (e.response.status === 403 || e.response.status === 401) {
+          dispatch({type: "AUTHENTICATION_ERROR", data: e.response.data});
+          throw e.response.data;
         } else {
-          dispatch({type: "REGISTRATION_FAILED", data: res.data});
-          throw res.data;
+          console.log("Server Error!");
+          throw e.response;
         }
       })
   }

@@ -3,9 +3,14 @@ import { Redirect } from 'react-router-dom';
 import { Container } from 'reactstrap';
 
 import { 
-  AppBreadcrumb,
   AppFooter,
   AppHeader, 
+  AppSidebar,
+  AppSidebarFooter,
+  AppSidebarForm,
+  AppSidebarHeader,
+  AppSidebarMinimizer,
+  AppSidebarNav,
 } from '@coreui/react'; 
 import NoAuthFooter from './NoAuthFooter';
 import NoAuthHeader from './NoAuthHeader';
@@ -16,7 +21,7 @@ import {auth} from "../../../src/actions";
 class NoAuthLayout extends Component {
   render() {
     if (this.props.isAuthenticated) {
-      return <Redirect to="/dashboard" />
+      return <Redirect to="/" />
     } else {
       return(
         <div className="app">
@@ -24,8 +29,14 @@ class NoAuthLayout extends Component {
             <NoAuthHeader />
           </AppHeader>
           <div className="app-body">
+            <AppSidebar fixed display="lg">
+              <AppSidebarHeader />
+              <AppSidebarForm />
+              <AppSidebarNav {...this.props} />
+              <AppSidebarFooter />
+              <AppSidebarMinimizer />
+            </AppSidebar>
             <main className="main">
-              <AppBreadcrumb/>
               <Container fluid>
                 <h1>Bienvenidos a helpo</h1>
               </Container>

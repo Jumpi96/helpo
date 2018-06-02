@@ -62,3 +62,32 @@ export const login = (email, password) => {
       })
   }
 }
+
+export const register = (email, password) => {
+  return (dispatch, getState) => {
+    let headers = {"Content-Type": "application/json"};
+    let body = JSON.stringify({email, password});
+
+    return api.post("/auth/sign_up/", body, {headers})
+      .then(res => {
+        if (res.status < 500) {
+          return {status: res.status, data: res.data};
+        } else {
+          console.log("Server Error!");
+          throw res;
+        }
+      })
+      .then(res => {
+        if (res.status === 200) {
+          dispatch({type: 'REGISTRATION_SUCCESSFUL', data: res.data });
+          return res.data;
+        } else if (res.status === 403 || res.status === 401) {
+          dispatch({type: "AUTHENTICATION_ERROR", data: res.data});
+          throw res.data;
+        } else {
+          dispatch({type: "REGISTRATION_FAILED", data: res.data});
+          throw res.data;
+        }
+      })
+  }
+}

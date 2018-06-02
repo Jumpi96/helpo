@@ -1,7 +1,37 @@
 import React, { Component } from 'react';
 import { Button, Card, CardBody, CardFooter, Col, Container, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
+import { connect } from "react-redux";
+import {auth} from "../../../actions";
+
 
 class Register extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      nombre: "",
+      apellido: "",
+      user_type: "",
+      email: "",
+      password: "",
+      repeat: ""
+    }
+  }
+
+  onSubmit = (e) => {
+    e.preventDefault();
+    if (this.handleValidation()) {
+      this.props.register(this.state.nombre, this.state.email,
+                        this.state.user_type, this.state.password,
+                        this.state.apellido);
+    } else {
+      // TODO
+    }
+  }
+
+  handleValidation() {
+    return true; // TODO
+  }
+
   render() {
     return (
       <div className="app flex-row align-items-center">
@@ -43,6 +73,15 @@ class Register extends Component {
                     <Input type="password" placeholder="Repeat password" />
                   </InputGroup>
                   <Button color="success" block>Create Account</Button>
+                  <div>
+                    {this.props.errors.length > 0 && (
+                      <ul>
+                        {this.props.errors.map(error => (
+                          <li key={error.field}>{error.message}</li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
                 </CardBody>
                 <CardFooter className="p-4">
                   <Row>
@@ -63,4 +102,24 @@ class Register extends Component {
   }
 }
 
-export default Register;
+
+const mapStateToProps = state => {
+  let errors = [];
+  if (state.auth.errors) {
+    errors = Object.keys(state.auth.errors).map(field => {
+      return {field, message: state.auth.errors[field]};
+    });
+  }
+  return {
+    errors,
+    isAuthenticated: state.auth.isAuthenticated
+  };
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    register: (username, password) => dispatch(auth.register(username, password)),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Register);

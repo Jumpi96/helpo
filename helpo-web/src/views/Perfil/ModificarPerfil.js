@@ -7,35 +7,32 @@ import moment from 'moment';
 import api from '../../../api';
 
 
-class RegistrarEvento extends Component {
+class ModificarPerfil extends Component {
   constructor(props) {
-    super(props);
-    this.state = {
+    super(props); //Llama a las props del padre
+    this.state = { 
+
       nombre: '',
-      descripcion: '',
-      rubro_id: 0,
-      fecha_hora_inicio: new Date(),
-      fecha_hora_fin: new Date(),
+      cuit:'', 
       // TODO: ubicacion que pasamos por defecto debería ser la de la ONG. Ahora, Córdoba.
       ubicacion: { latitud: -31.4201, longitud: -64.1888, notas: '' },
+      mail: '',
+      telefono:'',
+      rubro_id:0,
+      foto_perfil:undefined,
+      descripcion:'',
       errors: {},
-      contactos: [{
-        nombre: '',
-        mail: '',
-        telefono: '',
-        contactId: '1',
-      }],
-      nextId: '2',
+      
     };
+
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleUbicacionChange = this.handleUbicacionChange.bind(this);
     this.handleRubroChange = this.handleRubroChange.bind(this);
-    this.handleContactChange = this.handleContactChange.bind(this);
+   
     this.handleFechaHoraInicioChange = this.handleFechaHoraInicioChange.bind(this);
     this.handleFechaHoraFinChange = this.handleFechaHoraFinChange.bind(this);
-    this.handleAddContact = this.handleAddContact.bind(this);
-    this.handleRemoveContact = this.handleRemoveContact.bind(this);
+  
     this.handlePhoneChange = this.handlePhoneChange.bind(this);
   }
 
@@ -276,4 +273,4 @@ class RegistrarEvento extends Component {
   }
 }
 
-export default RegistrarEvento;
+export default ModificarPerfil;

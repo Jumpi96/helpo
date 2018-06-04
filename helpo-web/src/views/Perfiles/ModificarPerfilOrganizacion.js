@@ -31,7 +31,7 @@ class ModificarPerfilOrganizacion extends Component {
     this.handleRubroChange = this.handleRubroChange.bind(this);
 
   }
-  
+
 
   handleInputChange(event) {
     const target = event.target;
@@ -92,12 +92,12 @@ class ModificarPerfilOrganizacion extends Component {
       formIsValid = false;
       errors.telefono = 'Debe ingresar un teléfono.';
     } else { errors.telefono = undefined; }
-   
+
     if (this.state.rubro_id === 0) { //Revisar cuando se cambie la lista de rubros
       formIsValid = false;
       errors.rubro = 'Hubo un problema al cargar los rubros.';
     } else { errors.rubro = undefined; }
-    
+
     this.setState({ errors });
     return formIsValid;
   }

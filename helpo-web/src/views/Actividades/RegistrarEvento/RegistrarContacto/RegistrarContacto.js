@@ -69,7 +69,7 @@ function ContactoInput({
 ContactoInput.propTypes = inputPropTypes;
 
 const registerPropTypes = {
-  contacts: PropTypes.arrayOf(PropTypes.object).isRequired,
+  contacts: PropTypes.arrayOf(PropTypes.object).isRequired,  
   onClickAdd: PropTypes.func.isRequired,
   onClickRemove: PropTypes.func.isRequired,
   onContactChange: PropTypes.func.isRequired,

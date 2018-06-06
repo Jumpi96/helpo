@@ -5,6 +5,7 @@ import RegistrarContacto from './RegistrarContacto/RegistrarContacto';
 import DateTimePicker from 'react-datetime-picker';
 import moment from 'moment';
 import api from '../../../api';
+import validateEmail from '../../../utils/ValidateEmail'
 
 
 class RegistrarEvento extends Component {
@@ -141,28 +142,28 @@ class RegistrarEvento extends Component {
   }
   // Devuelve True si no hay errores
   validateContactos() {
-    const errors = {};
-    let isValid = true;
+    const errors = {contactoNombre: "", contactoContacto: "", email: ""};    
     const contactos = this.state.contactos;    
     for (let i = 0; i < contactos.length; i += 1) {
       // Es valido no ingresar ningun contacto
-      if (contactos[i].nombre === '' &&
-      contactos[i].mail === '' &&
-      contactos[i].telefono === '' &&
+      if (contactos[i].nombre === "" &&
+      contactos[i].mail === "" &&
+      contactos[i].telefono === "" &&
       contactos.length === 1) {
-        return isValid;
+        return errors;
       }
-      if (contactos[i].nombre === '') {
-        errors.contactoNombre = 'No puede ingresar un contacto sin nombre';
-        isValid = false;
+      if (contactos[i].nombre === "") {
+        errors.contactoNombre = 'No puede ingresar un contacto sin nombre';        
       }
-      if (contactos[i].mail === '' && contactos[i].telefono === '') {
-        errors.contactoContacto = 'Debe ingresar un mail o un telefono';
-        isValid = false;
+      if (contactos[i].mail === "" && contactos[i].telefono === "") {
+        errors.contactoContacto = 'Debe ingresar un mail o un telefono';        
+      }
+      if (contactos[i].mail !== "" && !validateEmail(contactos[i].mail)) {
+        errors.email = 'Debe ingresar un mail valido';        
       }
     }
-    return isValid;
-  }
+    return errors;
+  }  
 
   handleValidation(event) {
     let formIsValid = true;
@@ -193,10 +194,14 @@ class RegistrarEvento extends Component {
       formIsValid = false;
       errors.rubro = 'Hubo un problema al cargar los rubros.';
     } else { errors.rubro = undefined; }
-    if (!this.validateContactos()) {
+
+    const contactErrors = this.validateContactos();
+    if (contactErrors !== {}) {
       formIsValid = false;
     }
-    this.setState({ errors });
+    //Concateno errors con contactErrors
+    const allErrors = Object.assign({}, errors, contactErrors)
+    this.setState({ errors: allErrors });
     return formIsValid;
   }
 
@@ -265,8 +270,11 @@ class RegistrarEvento extends Component {
           onClickRemove={this.handleRemoveContact}
           onContactChange={this.handleContactChange}
           onPhoneChange={this.handlePhoneChange}
-          contacts={this.state.contactos}
+          contacts={this.state.contactos}          
         />
+        <span style={{ color: 'red' }}>{this.state.errors.contactoNombre}</span><p>{"\n"}</p>
+        <span style={{ color: 'red' }}>{this.state.errors.contactoContacto}</span><p>{"\n"}</p>
+        <span style={{ color: 'red' }}>{this.state.errors.email}</span>
         <div className="form-group">
           <input type="submit" className="btn btn-primary" value="Guardar evento" />
         </div>

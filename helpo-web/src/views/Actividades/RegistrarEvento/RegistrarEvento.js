@@ -140,7 +140,7 @@ class RegistrarEvento extends Component {
         });
     }
   }
-  // Devuelve True si no hay errores
+  
   validateContactos() {
     const errors = {contactoNombre: "", contactoContacto: "", email: ""};    
     const contactos = this.state.contactos;    

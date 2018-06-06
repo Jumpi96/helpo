@@ -35,6 +35,10 @@ const datas = [
     text: "Icon Button and Text Button"
   },
   {
+    route: "Header5",
+    text: "Icon and Text Button"
+  },
+  {
     route: "Header6",
     text: "Multiple Icon Buttons"
   },
@@ -53,6 +57,10 @@ const datas = [
   {
     route: "HeaderNoShadow",
     text: "Header without shadow"
+  },
+  {
+    route: "HeaderNoLeft",
+    text: "Header noLeft"
   }
 ];
 

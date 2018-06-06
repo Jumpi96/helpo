@@ -1,6 +1,6 @@
 {
-  "name": "helpoApp",
-  "version": "0.1.0",
+  "name": "NativebaseKitchenSink",
+  "version": "2.5.0",
   "private": true,
   "devDependencies": {
     "babel-eslint": "7.2.3",
@@ -14,42 +14,28 @@
     "flow-bin": "0.52.0",
     "flow-typed": "2.1.5",
     "husky": "0.14.3",
-    "jest": "22.4.3",
-    "jest-expo": "27.0.1",
-    "jest-transform-stub": "^1.0.0",
+    "jest": "20.0.4",
+    "jest-expo": "25.0.0",
     "prettier": "1.5.3",
-    "react-native-scripts": "1.14.0",
-    "react-test-renderer": "16.2.0",
-    "react-dom": "16.3.2"
+    "react-test-renderer": "16.3.1"
   },
-  "main": "./node_modules/react-native-scripts/build/bin/crna-entry.js",
   "scripts": {
-    "start": "react-native-scripts start",
-    "eject": "react-native-scripts eject",
-    "android": "react-native-scripts android",
-    "ios": "react-native-scripts ios",
-    "test": "node node_modules/jest/bin/jest.js"
+    "start": "react-native start",
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
+    "test": "node node_modules/jest/bin/jest.js --watch"
   },
   "jest": {
-    "preset": "jest-expo",
-    "verbose": true,
-    "transform": {
-      ".+\\.(css|styl|less|sass|scss|png|jpg|ttf|woff|woff2)$": "jest-transform-stub"
-    },
-    "transformIgnorePatterns": []
+    "preset": "react-native"
   },
   "dependencies": {
     "color": "1.0.3",
-    "expo": "25.0.0",
     "lodash": "4.13.1",
-    "moment": "2.22.1",
-    "native-base": "2.4.1",
-    "react": "16.2.0",
-    "react-native": "0.52.0",
-    "react-navigation": "1.5.0",
-    "react-native-modal-datetime-picker": "5.1.0",
-    "react-native-google-place-picker": "1.2.1",
-    "react-native-elements": "0.19.1",
-    "axios": "0.18.0"
+    "moment": "2.13.0",
+    "native-base": "https://github.com/GeekyAnts/NativeBase#master",
+    "react": "16.3.1",
+    "react-native": "0.55.4",
+    "react-native-vector-icons": "4.5.0",
+    "react-navigation": "1.5.0"
   }
 }

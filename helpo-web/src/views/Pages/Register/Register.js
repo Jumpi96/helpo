@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Card, CardBody, CardFooter, Col, Container, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
+import { Button, Card, CardHeader, CardBody, CardFooter, Col, Container, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
 import { connect } from "react-redux";
 import {auth} from "../../../actions";
 
@@ -39,6 +39,19 @@ class Register extends Component {
           <Row className="justify-content-center">
             <Col md="6">
               <Card className="mx-4">
+                <CardHeader>
+                  <Row>
+                    <Col xs="12" sm="4">
+                      <Button className="btn-twitter" block><span>Voluntario</span></Button>
+                    </Col>
+                    <Col xs="12" sm="4">
+                      <Button className="btn-twitter" block><span>ONG</span></Button>
+                    </Col>
+                    <Col xs="12" sm="4">
+                      <Button className="btn-twitter" block><span>Empresa</span></Button>
+                    </Col>
+                  </Row>
+                </CardHeader>
                 <CardBody className="p-4">
                   <h1>Register</h1>
                   <p className="text-muted">Create your account</p>

@@ -1,4 +1,4 @@
-# NativeBase KitchenSink v2.5.0
+# NativeBase KitchenSink v2.1.0
 An example app with all the UI components of NativeBase
 
 > **NativeBase-KitchenSink** comes in four forms of app for you!
@@ -13,7 +13,14 @@ An example app with all the UI components of NativeBase
 
 iOS | Android
  :--:| :-----:
- ![ios-demo](https://github.com/GeekyAnts/NativeBase-KitchenSink/raw/master/screenshots/iOS.gif) | ![android-demo](https://github.com/GeekyAnts/NativeBase-KitchenSink/raw/master/screenshots/Android.gif)
+ ![ios-demo](./screenshots/iOS.gif) | ![android-demo](./screenshots/Android.gif)
+
+
+[NativeBase](http://nativebase.io/) is a free and open source framework that enables developers to build high-quality apps using [React Native](https://facebook.github.io/react-native/) for iOS and Android with a fusion of ES6. NativeBase builds a layer on top of React Native that provides you with basic set of components for mobile application development. This helps you to build world-class application experiences on native platforms.
+
+NativeBase without a doubt fits in well with mobile applications which cut downs one huge part of your app - The Front end.
+The applications stack of components is built using native UI components, so there are no compromises with the user experience.
+
 
 ## Installation
 
@@ -21,6 +28,7 @@ iOS | Android
 ```
 git clone git@github.com:GeekyAnts/NativeBase-KitchenSink.git
 cd NativeBase-KitchenSink
+git checkout RNRF
 yarn
 react-native link react-native-vector-icons
 ```
@@ -36,9 +44,3 @@ react-native link react-native-vector-icons
 *	**Run on Android**
 	*	Make sure you have an `Android emulator` installed and running
 	*	Run `react-native run-android` in your terminal
-
-
-
-## BuilderX
-
-Another major project by us is [BuilderX](https://builderx.io/?utm_source=github&utm_medium=kitchensink&utm_campaign=kitchensink), a screen design tool which codes React Native for you.

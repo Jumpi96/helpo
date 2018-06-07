@@ -13,7 +13,13 @@ class Register extends Component {
       user_type: "voluntario",
       email: "",
       password: "",
-      repeat: ""
+      repeat: "",
+      errors: {
+        nombre: "",
+        apellido: "",
+        email: "",
+        contraseña: "",
+      }
     }
     this.handleUserTypeSelect = this.handleUserTypeSelect.bind(this);
     this.renderNameField = this.renderNameField.bind(this); 
@@ -88,7 +94,34 @@ class Register extends Component {
   }
 
   handleValidation() {
-    return true; // TODO
+    const errors = {
+      nombre: "",
+      apellido: "",
+      email: "",
+      contraseña: "",
+    };
+    //Nombre
+    if (this.state.nombre === "") {
+      errors.nombre = "Debe ingresar un nombre";
+    }
+    //Apellido
+    if (this.state.user_type === "voluntario" && this.state.apellido === "") {
+      errors.apellido = "Debe ingresar un apellido";
+    }
+    //Mail
+    if (this.state.email === "") {
+      errors.email = "Debe ingresar un email";
+    }
+    if (errors.email === "" && !validateEmail(this.state.email)) {
+      errors.email = "Ingrese un email valido";
+    }
+    //Contraseña
+    if (this.state.password === "" || this.state.repeat === "") {
+      errors.contraseña = "Debe ingresar la contraseña en ambos campos";
+    }
+    if (errors.contraseña === "" && this.state.password !== this.state.repeat) {
+      errors.contraseña = "La contraseña no coincide en ambos campos";
+    }
   }
 
   render() {

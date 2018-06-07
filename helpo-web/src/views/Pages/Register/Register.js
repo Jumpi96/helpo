@@ -10,11 +10,13 @@ class Register extends Component {
     this.state = {
       nombre: "",
       apellido: "",
-      user_type: "",
+      user_type: "voluntario",
       email: "",
       password: "",
       repeat: ""
     }
+    this.handleUserTypeSelect = this.handleUserTypeSelect.bind(this);
+    this.renderNameField = this.renderNameField.bind(this); 
   }
 
   onSubmit = (e) => {
@@ -28,11 +30,69 @@ class Register extends Component {
     }
   }
 
+  handleUserTypeSelect(user_type) {
+    switch(user_type) {
+      case "voluntario": {
+        this.setState({ user_type: "voluntario" });
+        break;
+      }
+      case "ong": {
+        this.setState({ user_type: "ong" });
+        break;
+      }
+      case "empresa": {
+        this.setState({ user_type: "empresa" });
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  }
+
+  renderNameField() {
+    if (this.state.user_type === "voluntario") {
+      return (
+      <div>
+        <InputGroup className="mb-3">
+            <InputGroupAddon addonType="prepend">
+               <InputGroupText>
+                 <i className="icon-user"></i>
+               </InputGroupText>
+            </InputGroupAddon>
+          <Input type="text" placeholder="Nombre" />
+        </InputGroup>
+        <InputGroup className="mb-3">
+          <InputGroupAddon addonType="prepend">
+            <InputGroupText>
+               <i className="icon-user"></i>
+            </InputGroupText>
+          </InputGroupAddon>
+          <Input type="text" placeholder="Apellido" />
+        </InputGroup>    
+      </div>
+      );
+    }
+    else {
+      return (
+        <InputGroup className="mb-3">
+            <InputGroupAddon addonType="prepend">
+               <InputGroupText>
+                 <i className="icon-user"></i>
+               </InputGroupText>
+            </InputGroupAddon>
+          <Input type="text" placeholder="Nombre" />
+        </InputGroup>
+      )
+    }
+  }
+
   handleValidation() {
     return true; // TODO
   }
 
   render() {
+    const user_type = this.state.user_type;
     return (
       <div className="app flex-row align-items-center">
         <Container>
@@ -42,27 +102,35 @@ class Register extends Component {
                 <CardHeader>
                   <Row>
                     <Col xs="12" sm="4">
-                      <Button className="btn-twitter" block><span>Voluntario</span></Button>
+                      <Button className={user_type === "voluntario" ? "btn-twitter" : "btn-secondary"} 
+                              block
+                              onClick={() => this.handleUserTypeSelect("voluntario")}
+                              >
+                              <span>Voluntario</span>
+                      </Button>
                     </Col>
                     <Col xs="12" sm="4">
-                      <Button className="btn-twitter" block><span>ONG</span></Button>
+                      <Button className={user_type === "ong" ? "btn-twitter" : "btn-secondary"}  
+                              block
+                              onClick={() => this.handleUserTypeSelect("ong")}
+                              >
+                              <span>ONG</span>
+                      </Button>
                     </Col>
                     <Col xs="12" sm="4">
-                      <Button className="btn-twitter" block><span>Empresa</span></Button>
+                      <Button className={user_type === "empresa" ? "btn-twitter" : "btn-secondary"}  
+                              block
+                              onClick={() => this.handleUserTypeSelect("empresa")}
+                              >
+                              <span>Empresa</span>
+                      </Button>
                     </Col>
                   </Row>
                 </CardHeader>
                 <CardBody className="p-4">
                   <h1>Register</h1>
                   <p className="text-muted">Create your account</p>
-                  <InputGroup className="mb-3">
-                    <InputGroupAddon addonType="prepend">
-                      <InputGroupText>
-                        <i className="icon-user"></i>
-                      </InputGroupText>
-                    </InputGroupAddon>
-                    <Input type="text" placeholder="Username" />
-                  </InputGroup>
+                  {this.renderNameField()}
                   <InputGroup className="mb-3">
                     <InputGroupAddon addonType="prepend">
                       <InputGroupText>@</InputGroupText>

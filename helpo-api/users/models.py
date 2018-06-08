@@ -31,7 +31,7 @@ class UserManager(BaseUserManager):
         if user_type == 1:
             profile = OrganizacionProfile.objects.create(usuario=user)
         elif user_type == 2:
-            profile = VoluntarioProfile.objects.create(usuario=user, apellido=apellido)
+            profile = VoluntarioProfile.objects.create(usuario=user, apellido=kwargs["apellido"])
         else:
             profile = EmpresaProfile.objects.create(usuario=user)
         self.send_confirmation_email(user)
@@ -46,16 +46,18 @@ class UserManager(BaseUserManager):
         return user
 
     def send_confirmation_email(self, user):
-        bash = sha256(user.id + user.email)
+        str_to_encode = str(user.id) + user.email
+        str_encoded = str_to_encode.encode('utf-8')
+        bash = sha256(str_encoded)
         url_confirmation = '%sconfirm-email?bash=%s' % (config('URL_CLIENT', default=None), bash)
         content = '<a href="%s">Confirma su cuenta aquí</a>' % (url_confirmation)
         send_mail(
             'Confirma tu cuenta de helpo.',
             url_confirmation,
             'helpo@helpo.com',
-            user.email,
+            [user.email],
             fail_silently=True,
-            html_message=content
+            html_message=content,
         )
 
 
@@ -66,7 +68,7 @@ class User(AbstractBaseUser, PermissionsMixin, IndexedTimeStampedModel):
         (2, 'voluntario'),
         (3, 'empresa')
     )
-    nombre = models.CharField(max_length=140, unique=True)
+    nombre = models.CharField(max_length=140)
     user_type = models.PositiveSmallIntegerField(choices=USER_TYPE_CHOICES)
     email = models.EmailField(max_length=255, unique=True)
     is_staff = models.BooleanField(

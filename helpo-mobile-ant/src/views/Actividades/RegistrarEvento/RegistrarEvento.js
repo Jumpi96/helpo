@@ -24,7 +24,7 @@ import moment from "moment";
 import SelectorFechaHora from "./SelectorFechaHora/SelectorFechaHora";
 import RegistrarContacto from "./RegistrarContacto/RegistrarContacto";
 import styles from "./styles";
-
+import validateEmail from "../../../utils/ValidateEmail";
 
 class RegistrarEvento extends React.Component {
   constructor(props){
@@ -122,16 +122,18 @@ class RegistrarEvento extends React.Component {
       formIsValid = false;
       errors.rubro = "Hubo un problema al cargar los rubros.";
     }
-
-    this.validateContactos();
-
-    this.setState({errors: errors});
+    const contactErrors = this.validateContactos();
+    if (contactErrors !== {}) {
+      formIsValid = false;
+    }
+    //Concateno errors con contactErrors
+    const allErrors = Object.assign({}, errors, contactErrors);
+    this.setState({ errors: allErrors });
     return formIsValid;
   }
   // Devuelve True si no hay errores
   validateContactos() {
-    const errors = {};
-    let isValid = true;
+    const errors = {contactoNombre: "", contactoContacto: "", email: ""};
     const contactos = this.state.contactos;
     for (let i = 0; i < contactos.length; i += 1) {
       // Es valido no ingresar ningun contacto
@@ -139,18 +141,19 @@ class RegistrarEvento extends React.Component {
       contactos[i].mail === "" &&
       contactos[i].telefono === "" &&
       contactos.length === 1) {
-        return isValid;
+        return errors;
       }
       if (contactos[i].nombre === "") {
         errors.contactoNombre = "No puede ingresar un contacto sin nombre";
-        isValid = false;
       }
       if (contactos[i].mail === "" && contactos[i].telefono === "") {
         errors.contactoContacto = "Debe ingresar un mail o un telefono";
-        isValid = false;
+      }
+      if (contactos[i].mail !== "" && !validateEmail(contactos[i].mail)) {
+        errors.email = "Debe ingresar un mail valido";
       }
     }
-    return isValid;
+    return errors;
   }
 
   handleUbicacionChange(ubi) {
@@ -290,6 +293,7 @@ class RegistrarEvento extends React.Component {
              />
              <FormValidationMessage>{this.state.errors.contactoNombre}</FormValidationMessage>
              <FormValidationMessage>{this.state.errors.contactoContacto}</FormValidationMessage>
+             <FormValidationMessage>{this.state.errors.email}</FormValidationMessage>
             <Button block style={{ margin: 15, marginTop: 50 }}
               onPress={this.handleSubmit} >
               <Text>Guardar Evento</Text>

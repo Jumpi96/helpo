@@ -122,19 +122,19 @@ npm run start
 
 ## Running helpo-mobile
 ### Prerequisites
-- Expo (iOS/Android) in your phone.
+- Android: have a **Android emulator** working.
+  - TODO
+- iOS: be Luciano.
 ### Setup
 - Execute: `npm install`
 ### Run
-- Execute: `npm start`
-- Scan QR Code with your phone.
-### Using local API
+#### Android
+- Run `react-native run-android`
+#### iOS
+- Run `react-native run-ios`
+
+### Using local API --> TODO: check after Expo ejection
 - Add your *server* (your PC) IP to `base.py` configuration file.
   - Add to *ALLOWED_HOSTS* and *CORS_ORIGIN_WHITELIST*
 - Change IP of `api.js` configuration file in helpo-mobile.
-### Solving problems
-- Your phone has to be in the same network as your PC. 
-  - If it does not work, check if the React Native server IP is the same as the one of your PC in that network (it's possible that React Native choose the wrong one: a Docker, Hyper-V or VirtualBox network).
-    - To solve this, set this environment variable:
-      - In Windows PowerShell: `$env:REACT_NATIVE_PACKAGER_HOSTNAME = "<your_IP>"`
 

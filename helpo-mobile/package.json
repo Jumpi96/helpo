@@ -27,7 +27,8 @@
     "redux-form": "^6.2.0",
     "redux-persist": "^3.2.2",
     "redux-thunk": "^2.1.0",
-    "remote-redux-devtools": "^0.3.3"
+    "remote-redux-devtools": "^0.3.3",
+    "axios": "0.18.0"
   },
   "devDependencies": {
     "babel-eslint": "^6.1.2",

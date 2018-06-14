@@ -123,13 +123,14 @@ npm run start
 ## Running helpo-mobile
 ### Prerequisites
 - Android: have a **Android emulator** working.
-  - TODO
+  - Note: be creative, it is may not be fast and easy. I had many errors that were solved just searching in Google.
 - iOS: be Luciano.
 ### Setup
-- Execute: `npm install`
+- Execute: `react-native run-android`
 ### Run
 #### Android
-- Run `react-native run-android`
+- Run `react-native run-android` o `npm start`.
+  - Double R should reload the emulator with changes.
 #### iOS
 - Run `react-native run-ios`
 

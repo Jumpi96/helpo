@@ -166,111 +166,114 @@ class AppNavigator extends Component {
   }
 
   render() {
-    const cont = <SideBar navigator={this._navigator} />;
-    if (!this.props.auth.isAuthenticated) {
-      return (
-        <StyleProvider style={getTheme((this.props.themeState === 'material') ? material : undefined)}>
-          <Drawer
-            ref={(ref) => { this._drawer = ref; }}
-            content={cont}
-            onClose={() => this.closeDrawer()}
-          >
-            <StatusBar
-              hidden={(this.props.drawerState === 'opened' && Platform.OS === 'ios') ? true : false}
-              backgroundColor={statusBarColor.statusBarColor}
-            />
-            <RouterWithRedux>
-              <Scene key="root">
-                <Scene key="home" component={Home} hideNavBar initial={true} />
-                <Scene key="header" component={Header} />
-                <Scene key="header1" component={Header1} />
-                <Scene key="header2" component={Header2} />
-                <Scene key="header3" component={Header3} />
-                <Scene key="header4" component={Header4} />
-                <Scene key="header5" component={Header5} />
-                <Scene key="header6" component={Header6} />
-                <Scene key="header7" component={Header7} />
-                <Scene key="header8" component={Header8} />
-                <Scene key="anatomy" component={Anatomy} />
-                <Scene key="footer" component={Footer} />
-                <Scene key="basicFooter" component={BasicFooter} />
-                <Scene key="iconFooter" component={IconFooter} />
-                <Scene key="iconText" component={IconText} />
-                <Scene key="badgeFooter" component={BadgeFooter} />
-                <Scene key="badge" component={NHBadge} />
-                <Scene key="button" component={NHButton} />
-                <Scene key="outline" component={Outline} />
-                <Scene key="default" component={Default} />
-                <Scene key="rounded" component={Rounded} />
-                <Scene key="disabled" component={Disabled} />
-                <Scene key="block" component={Block} />
-                <Scene key="full" component={Full} />
-                <Scene key="custom" component={Custom} />
-                <Scene key="transparent" component={Transparent} />
-                <Scene key="iconBtn" component={IconBtn} />
-                <Scene key="card" component={NHCard} />
-                <Scene key="basic" component={BasicCard} />
-                <Scene key="cardImage" component={NHCardImage} />
-                <Scene key="cardShowcase" component={NHCardShowcase} />
-                <Scene key="cardList" component={NHCardList} />
-                <Scene key="cardHeaderAndFooter" component={NHCardHeaderAndFooter} />
-                <Scene key="checkbox" component={NHCheckbox} />
-                <Scene key="deckswiper" component={NHDeckSwiper} />
-                <Scene key="fab" component={NHFab} />
-                <Scene key="basicFab" component={BasicFab} />
-                <Scene key="multipleFab" component={MultipleFab} />
-                <Scene key="form" component={NHForm} />
-                <Scene key="fixedLabel" component={FixedLabel} />
-                <Scene key="inlineLabel" component={InlineLabel} />
-                <Scene key="floatingLabel" component={FloatingLabel} />
-                <Scene key="placeholderLabel" component={PlaceholderLabel} />
-                <Scene key="stackedLabel" component={StackedLabel} />
-                <Scene key="textArea" component={TextArea} />
-                <Scene key="basicIcon" component={BasicIcon} />
-                <Scene key="state" component={IconState} />
-                <Scene key="specific" component={SpecificIcon} />
-                <Scene key="icon" component={NHIcon} />
-                <Scene key="inputgroup" component={NHInputGroup} />
-                <Scene key="regularInput" component={RegularInput} />
-                <Scene key="underlineInput" component={UnderlineInput} />
-                <Scene key="roundedInput" component={RoundedInput} />
-                <Scene key="iconInput" component={IconInput} />
-                <Scene key="successInput" component={SuccessInput} />
-                <Scene key="errorInput" component={ErrorInput} />
-                <Scene key="disabledInput" component={DisabledInput} />
-                <Scene key="layout" component={NHLayout} />
-                <Scene key="row" component={RowNB} />
-                <Scene key="column" component={ColumnNB} />
-                <Scene key="nested" component={NestedGrid} />
-                <Scene key="customRow" component={CustomRow} />
-                <Scene key="customCol" component={CustomCol} />
-                <Scene key="list" component={NHList} />
-                <Scene key="basicList" component={NHBasicList} />
-                <Scene key="listDivider" component={NHListDivider} />
-                <Scene key="listSeparator" component={NHListSeparator} />
-                <Scene key="listHeader" component={NHListHeader} />
-                <Scene key="listIcon" component={NHListIcon} />
-                <Scene key="listAvatar" component={NHListAvatar} />
-                <Scene key="listThumbnail" component={NHListThumbnail} />
-                <Scene key="picker" component={NHPicker} />
-                <Scene key="radio" component={NHRadio} />
-                <Scene key="searchbar" component={NHSearchbar} />
-                <Scene key="spinner" component={NHSpinner} />
-                <Scene key="tab" component={NHTab} />
-                <Scene key="basicTab" component={BasicTab} />
-                <Scene key="configTab" component={ConfigTab} />
-                <Scene key="thumbnail" component={NHThumbnail} />
-                <Scene key="typography" component={NHTypography} />
-                <Scene key="segment" component={Segment} />
-                <Scene key="basicSeg" component={BasicSegment} />
-                <Scene key="advSeg" component={AdvSegment} />
-                <Scene key="toast" component={Toast} />
-              </Scene>
-            </RouterWithRedux>
-          </Drawer>
-        </StyleProvider>
-      );
+    let contentDrawer;
+    if (this.props.auth.isAuthenticated) {
+      contentDrawer = <SideBar navigator={this._navigator} />;
+    } else {
+      contentDrawer = <SideBarNoAuth navigator={this._navigator} />;
     }
+    return (
+      <StyleProvider style={getTheme((this.props.themeState === 'material') ? material : undefined)}>
+        <Drawer
+          ref={(ref) => { this._drawer = ref; }}
+          content={contentDrawer}
+          onClose={() => this.closeDrawer()}
+        >
+          <StatusBar
+            hidden={(this.props.drawerState === 'opened' && Platform.OS === 'ios') ? true : false}
+            backgroundColor={statusBarColor.statusBarColor}
+          />
+          <RouterWithRedux>
+            <Scene key="root">
+              <Scene key="home" component={Home} hideNavBar initial={true} />
+              <Scene key="header" component={Header} />
+              <Scene key="header1" component={Header1} />
+              <Scene key="header2" component={Header2} />
+              <Scene key="header3" component={Header3} />
+              <Scene key="header4" component={Header4} />
+              <Scene key="header5" component={Header5} />
+              <Scene key="header6" component={Header6} />
+              <Scene key="header7" component={Header7} />
+              <Scene key="header8" component={Header8} />
+              <Scene key="anatomy" component={Anatomy} />
+              <Scene key="footer" component={Footer} />
+              <Scene key="basicFooter" component={BasicFooter} />
+              <Scene key="iconFooter" component={IconFooter} />
+              <Scene key="iconText" component={IconText} />
+              <Scene key="badgeFooter" component={BadgeFooter} />
+              <Scene key="badge" component={NHBadge} />
+              <Scene key="button" component={NHButton} />
+              <Scene key="outline" component={Outline} />
+              <Scene key="default" component={Default} />
+              <Scene key="rounded" component={Rounded} />
+              <Scene key="disabled" component={Disabled} />
+              <Scene key="block" component={Block} />
+              <Scene key="full" component={Full} />
+              <Scene key="custom" component={Custom} />
+              <Scene key="transparent" component={Transparent} />
+              <Scene key="iconBtn" component={IconBtn} />
+              <Scene key="card" component={NHCard} />
+              <Scene key="basic" component={BasicCard} />
+              <Scene key="cardImage" component={NHCardImage} />
+              <Scene key="cardShowcase" component={NHCardShowcase} />
+              <Scene key="cardList" component={NHCardList} />
+              <Scene key="cardHeaderAndFooter" component={NHCardHeaderAndFooter} />
+              <Scene key="checkbox" component={NHCheckbox} />
+              <Scene key="deckswiper" component={NHDeckSwiper} />
+              <Scene key="fab" component={NHFab} />
+              <Scene key="basicFab" component={BasicFab} />
+              <Scene key="multipleFab" component={MultipleFab} />
+              <Scene key="form" component={NHForm} />
+              <Scene key="fixedLabel" component={FixedLabel} />
+              <Scene key="inlineLabel" component={InlineLabel} />
+              <Scene key="floatingLabel" component={FloatingLabel} />
+              <Scene key="placeholderLabel" component={PlaceholderLabel} />
+              <Scene key="stackedLabel" component={StackedLabel} />
+              <Scene key="textArea" component={TextArea} />
+              <Scene key="basicIcon" component={BasicIcon} />
+              <Scene key="state" component={IconState} />
+              <Scene key="specific" component={SpecificIcon} />
+              <Scene key="icon" component={NHIcon} />
+              <Scene key="inputgroup" component={NHInputGroup} />
+              <Scene key="regularInput" component={RegularInput} />
+              <Scene key="underlineInput" component={UnderlineInput} />
+              <Scene key="roundedInput" component={RoundedInput} />
+              <Scene key="iconInput" component={IconInput} />
+              <Scene key="successInput" component={SuccessInput} />
+              <Scene key="errorInput" component={ErrorInput} />
+              <Scene key="disabledInput" component={DisabledInput} />
+              <Scene key="layout" component={NHLayout} />
+              <Scene key="row" component={RowNB} />
+              <Scene key="column" component={ColumnNB} />
+              <Scene key="nested" component={NestedGrid} />
+              <Scene key="customRow" component={CustomRow} />
+              <Scene key="customCol" component={CustomCol} />
+              <Scene key="list" component={NHList} />
+              <Scene key="basicList" component={NHBasicList} />
+              <Scene key="listDivider" component={NHListDivider} />
+              <Scene key="listSeparator" component={NHListSeparator} />
+              <Scene key="listHeader" component={NHListHeader} />
+              <Scene key="listIcon" component={NHListIcon} />
+              <Scene key="listAvatar" component={NHListAvatar} />
+              <Scene key="listThumbnail" component={NHListThumbnail} />
+              <Scene key="picker" component={NHPicker} />
+              <Scene key="radio" component={NHRadio} />
+              <Scene key="searchbar" component={NHSearchbar} />
+              <Scene key="spinner" component={NHSpinner} />
+              <Scene key="tab" component={NHTab} />
+              <Scene key="basicTab" component={BasicTab} />
+              <Scene key="configTab" component={ConfigTab} />
+              <Scene key="thumbnail" component={NHThumbnail} />
+              <Scene key="typography" component={NHTypography} />
+              <Scene key="segment" component={Segment} />
+              <Scene key="basicSeg" component={BasicSegment} />
+              <Scene key="advSeg" component={AdvSegment} />
+              <Scene key="toast" component={Toast} />
+            </Scene>
+          </RouterWithRedux>
+        </Drawer>
+      </StyleProvider>
+    );
   }
 }
 

@@ -134,8 +134,8 @@ npm run start
 #### iOS
 - Run `react-native run-ios`
 
-### Using local API --> TODO: check after Expo ejection
-- Add your *server* (your PC) IP to `base.py` configuration file.
-  - Add to *ALLOWED_HOSTS* and *CORS_ORIGIN_WHITELIST*
+### Using local API
+- Add your *server* (the IP where the JS bundler is working) IP to `base.py` configuration file. For example, 10.0.2.2.
+  - Add to *ALLOWED_HOSTS* (without the port) and *CORS_ORIGIN_WHITELIST* (with its port --> 10.0.2.2:8000).
 - Change IP of `api.js` configuration file in helpo-mobile.
 

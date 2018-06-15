@@ -22,6 +22,12 @@ const datas = [
     bg: '#C5F442',
   },
   {
+    name: 'Actividades',
+    route: 'actividades',
+    icon: 'hand',
+    bg: '#C5F442',
+  },
+  {
     name: 'Header',
     route: 'header',
     icon: 'phone-portrait',

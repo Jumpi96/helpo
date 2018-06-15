@@ -100,6 +100,9 @@ import AdvSegment from './components/segment/segmentTab';
 import Toast from './components/toast';
 import statusBarColor from './themes/variables';
 
+import Actividades from './views/Actividades/Actividades';
+import RegistrarEvento from './views/Actividades/RegistrarEvento/RegistrarEvento';
+
 const {
   popRoute,
 } = actions;
@@ -167,7 +170,7 @@ class AppNavigator extends Component {
 
   render() {
     let contentDrawer;
-    if (this.props.auth.isAuthenticated) {
+    if (!this.props.auth.isAuthenticated) { //TODO: CHANGE AFTER MAKING LOGIN
       contentDrawer = <SideBar navigator={this._navigator} />;
     } else {
       contentDrawer = <SideBarNoAuth navigator={this._navigator} />;
@@ -186,6 +189,8 @@ class AppNavigator extends Component {
           <RouterWithRedux>
             <Scene key="root">
               <Scene key="home" component={Home} hideNavBar initial={true} />
+              <Scene key="actividades" component={Actividades} />
+              <Scene key="registrarEvento" component={RegistrarEvento} />
               <Scene key="header" component={Header} />
               <Scene key="header1" component={Header1} />
               <Scene key="header2" component={Header2} />

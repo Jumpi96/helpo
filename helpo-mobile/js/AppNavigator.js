@@ -102,6 +102,8 @@ import statusBarColor from './themes/variables';
 
 import Actividades from './views/Actividades/Actividades';
 import RegistrarEvento from './views/Actividades/RegistrarEvento/RegistrarEvento';
+import RegistrarNecesidades from './views/Actividades/RegistrarNecesidades/RegistrarNecesidades';
+import AgregarNecesidad from './views/Actividades/RegistrarNecesidades/AgregarNecesidad/AgregarNecesidad';
 
 const {
   popRoute,
@@ -191,6 +193,8 @@ class AppNavigator extends Component {
               <Scene key="home" component={Home} hideNavBar initial={true} />
               <Scene key="actividades" component={Actividades} />
               <Scene key="registrarEvento" component={RegistrarEvento} />
+              <Scene key="registrarNecesidades" component={RegistrarNecesidades} />
+              <Scene key="agregarNecesidad" component={AgregarNecesidad} />
               <Scene key="header" component={Header} />
               <Scene key="header1" component={Header1} />
               <Scene key="header2" component={Header2} />

@@ -30,6 +30,11 @@ const datas = [
     route: 'registrarEvento',
     text: 'Registrar evento',
   },
+  {
+    route: 'registrarNecesidades',
+    text: 'Registrar necesidades 1',
+    id: '1',
+  },
 ];
 
 class Actividades extends Component {
@@ -67,7 +72,7 @@ class Actividades extends Component {
             renderRow={data =>
               <ListItem
                 button
-                onPress={() => { Actions[data.route](); this.props.closeDrawer() }}
+                onPress={() => { Actions[data.route]({ id: data.id }); this.props.closeDrawer() }}
               >
                 <Left>
                   <Text>

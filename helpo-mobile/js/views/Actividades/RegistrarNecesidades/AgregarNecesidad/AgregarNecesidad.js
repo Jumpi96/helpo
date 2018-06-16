@@ -1,4 +1,7 @@
 import React from "react";
+import { connect } from 'react-redux';
+import { Actions } from 'react-native-router-flux';
+import { actions } from 'react-native-navigation-redux-helpers';
 import { FormValidationMessage } from "react-native-elements";
 import {
   Container,
@@ -15,15 +18,29 @@ import {
   Form,
   Text
 } from "native-base";
-import api from "../../../../../api";
-import SelectorItem from "./SelectorItem/SelectorItem";
+import { openDrawer } from '../../../../actions/drawer';
+import api from '../../../../api';
+import SelectorItem from './SelectorItem/SelectorItem';
+
+const {
+  popRoute,
+} = actions;
 
 
 class AgregarNecesidad extends React.Component {
+
+  static propTypes = {
+    openDrawer: React.PropTypes.func,
+    popRoute: React.PropTypes.func,
+    navigation: React.PropTypes.shape({
+      key: React.PropTypes.string,
+    }),
+    evento: React.PropTypes.number,
+  }
+
   constructor(props){
     super(props);
-    const evento = this.props.navigation.getParam("evento", undefined);
-    if (!evento) { this.props.navigation.goBack(); }
+    const evento = this.props.evento;
     this.state = {
         evento: evento,
         cantidad: undefined,
@@ -54,7 +71,7 @@ class AgregarNecesidad extends React.Component {
       .then(res => {
         console.log(res);
         console.log(res.data);
-        this.props.navigation.navigate("RegistrarNecesidades", { evento: this.state.evento });
+        Actions.registrarNecesidades({ id: this.state.evento });
       }).catch(function (error) {
         if (error.response){ console.log(error.response.status); }
         else { console.log("Error: ", error.message); }
@@ -89,7 +106,7 @@ class AgregarNecesidad extends React.Component {
       <Container>
         <Header>
           <Left>
-            <Button transparent onPress={() => this.props.navigation.goBack()}>
+            <Button transparent onPress={() => Actions.pop()}>
               <Icon name="arrow-back" />
             </Button>
           </Left>
@@ -126,4 +143,16 @@ class AgregarNecesidad extends React.Component {
   }
 }
 
-export default AgregarNecesidad;
+function bindAction(dispatch) {
+  return {
+    openDrawer: () => dispatch(openDrawer()),
+    popRoute: key => dispatch(popRoute(key)),
+  };
+}
+
+const mapStateToProps = state => ({
+  navigation: state.cardNavigation,
+  themeState: state.drawer.themeState,
+});
+
+export default connect(mapStateToProps, bindAction)(AgregarNecesidad);

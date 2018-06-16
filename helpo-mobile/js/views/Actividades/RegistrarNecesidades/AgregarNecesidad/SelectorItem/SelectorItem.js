@@ -9,7 +9,7 @@ import {
     View
 }
 from "native-base";
-import api from "../../../../../../api";
+import api from '../../../../../api';
 
 
 class SelectorItem extends React.Component {

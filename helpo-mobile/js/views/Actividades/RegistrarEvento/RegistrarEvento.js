@@ -104,7 +104,7 @@ class RegistrarEvento extends React.Component {
             "Registrar evento",
             "Se registró el evento con éxito."
           );
-          this.props.navigation("RegistrarNecesidades", {evento: res.data.id});
+          Actions.registrarNecesidades({ id: res.data.id });
         }).catch(function (error) {
           if (error.response) { console.log(error.response); }
           else { console.log("Error: ", error.message); }

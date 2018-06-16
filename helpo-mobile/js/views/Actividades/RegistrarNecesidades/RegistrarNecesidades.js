@@ -1,4 +1,7 @@
-import React from "react";
+import React from 'react';
+import { connect } from 'react-redux';
+import { Actions } from 'react-native-router-flux';
+import { actions } from 'react-native-navigation-redux-helpers';
 import {
   Button,
   Container,
@@ -15,17 +18,18 @@ import {
   ActionSheet,
   Fab,
   IconNB,
-  View
-} from "native-base";
-import styles from "./styles";
-import api from "../../../../api";
+  View,
+} from 'native-base';
+import { openDrawer } from '../../../actions/drawer';
+import styles from './styles';
+import api from '../../../api';
 
 class RegistrarNecesidades extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
-    const evento = this.props.navigation.getParam("evento", undefined);
+    const idEvento = this.props.id;
     this.state = {
-      evento: evento,
+      evento: idEvento,
       necesidades: [],
       error: undefined
     };
@@ -115,7 +119,7 @@ class RegistrarNecesidades extends React.Component {
       <Container style={styles.container}>
         <Header>
           <Left>
-            <Button transparent onPress={() => this.props.navigation.goBack()}>
+            <Button transparent onPress={() => Actions.pop()}>
               <Icon name="arrow-back" />
             </Button>
           </Left>
@@ -134,7 +138,7 @@ class RegistrarNecesidades extends React.Component {
             containerStyle={{}}
             style={{ backgroundColor: "#5067FF" }}
             position="bottomRight"
-            onPress={() => this.props.navigation.navigate("AgregarNecesidad", {evento: this.state.evento})}
+            onPress={() => Actions.agregarNecesidad({ evento: this.state.evento })}
           >
             <IconNB name="md-add" />
           </Fab>
@@ -144,4 +148,16 @@ class RegistrarNecesidades extends React.Component {
   }
 }
 
-export default RegistrarNecesidades;
+function bindAction(dispatch) {
+  return {
+    openDrawer: () => dispatch(openDrawer()),
+    popRoute: key => dispatch(popRoute(key)),
+  };
+}
+
+const mapStateToProps = state => ({
+  navigation: state.cardNavigation,
+  themeState: state.drawer.themeState,
+});
+
+export default connect(mapStateToProps, bindAction)(RegistrarNecesidades);

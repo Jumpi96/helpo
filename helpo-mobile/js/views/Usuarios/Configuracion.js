@@ -39,9 +39,6 @@ class Configuracion extends Component {
   }
 
   render() {
-    if (!this.props.auth.isAuthenticated) {
-      Actions.home();
-    }
     return (
       <Container style={styles.container}>
         <Header>

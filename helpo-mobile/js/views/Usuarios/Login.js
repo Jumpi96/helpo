@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { actions } from 'react-native-navigation-redux-helpers';
 import { Container, Header, Title, Content, Button, Item, Label, Input, Body, Left, Right, Icon, Form, Text } from 'native-base';
 import { Actions } from 'react-native-router-flux';
+import { FormValidationMessage } from 'react-native-elements';
 
 import styles from './styles';
 import { login } from '../../actions/auth';
@@ -44,9 +45,6 @@ class Login extends Component {
   }
 
   render() {
-    if (this.props.auth.isAuthenticated) {
-      Actions.home();
-    }
     return (
       <Container style={styles.container}>
         <Header>
@@ -77,6 +75,13 @@ class Login extends Component {
             onPress={this.handleSubmit} >
             <Text>Ingresar</Text>
           </Button>
+          {this.props.errors.length > 0 && (
+            <Item>
+              {this.props.errors.map(error => (
+                <FormValidationMessage key={error.field}>{error.message}</FormValidationMessage>
+              ))}
+            </Item>
+          )}
         </Content>
       </Container>
     );
@@ -90,10 +95,19 @@ function bindAction(dispatch) {
   };
 }
 
-const mapStateToProps = state => ({
-  navigation: state.cardNavigation,
-  themeState: state.drawer.themeState,
-  auth: state.auth,
-});
+const mapStateToProps = (state) => {
+  let errors = [];
+  if (state.auth.errors) {
+    errors = Object.keys(state.auth.errors).map((field) => {
+      return { field, message: state.auth.errors[field] };
+    });
+  }
+  return {
+    errors,
+    navigation: state.cardNavigation,
+    themeState: state.drawer.themeState,
+    auth: state.auth,
+  };
+};
 
 export default connect(mapStateToProps, bindAction)(Login);

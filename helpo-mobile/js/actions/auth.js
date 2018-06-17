@@ -1,3 +1,4 @@
+import { Actions } from 'react-native-router-flux';
 import api from '../api';
 
 export function loadUser() {
@@ -19,10 +20,8 @@ export function loadUser() {
       .catch((e) => {
         if (e.response.status >= 400 && e.response.status < 500) {
           dispatch({ type: 'AUTHENTICATION_ERROR', data: e.response.data });
-          //throw e.response.data;
         } else {
           console.log('Server Error!');
-          //throw e.response;
         }
       })
       .done();
@@ -37,15 +36,14 @@ export function login(email, password) {
     return api.post('/auth/log_in/', body, { headers })
       .then((res) => {
         dispatch({ type: 'LOGIN_SUCCESSFUL', data: res.data });
+        Actions.home();
         return res.data;
       })
       .catch((e) => {
         if (e.response.status === 403 || e.response.status === 401) {
           dispatch({ type: 'AUTHENTICATION_ERROR', data: e.response.data });
-          //throw e.response.data;
         } else {
           dispatch({ type: 'LOGIN_FAILED', data: e.response.data });
-          //throw e.response.data;
         }
       })
       .done();
@@ -81,15 +79,14 @@ export function logout() {
     return api.post('/auth/logout/', JSON.stringify(''), { headers })
       .then((res) => {
         dispatch({ type: 'LOGOUT_SUCCESSFUL' });
+        Actions.home();
         return res.data;
       })
       .catch((e) => {
         if (e.response.status === 403 || e.response.status === 401) {
-          dispatch({ type: 'AUTHENTICATION_ERROR', data: e.response.data });
-          //throw e.response.data;
+          dispatch({ type: 'AUTHENTICATION_ERROR', data: e.response.data });          
         } else {
           console.log('Server Error!');
-          //throw e.response;
         }
       })
       .done();

@@ -104,6 +104,8 @@ import Actividades from './views/Actividades/Actividades';
 import RegistrarEvento from './views/Actividades/RegistrarEvento/RegistrarEvento';
 import RegistrarNecesidades from './views/Actividades/RegistrarNecesidades/RegistrarNecesidades';
 import AgregarNecesidad from './views/Actividades/RegistrarNecesidades/AgregarNecesidad/AgregarNecesidad';
+import Login from './views/Usuarios/Login';
+import Configuracion from './views/Usuarios/Configuracion';
 
 const {
   popRoute,
@@ -172,7 +174,7 @@ class AppNavigator extends Component {
 
   render() {
     let contentDrawer;
-    if (!this.props.auth.isAuthenticated) { //TODO: CHANGE AFTER MAKING LOGIN
+    if (this.props.auth.isAuthenticated) { //TODO: CHANGE AFTER MAKING LOGIN
       contentDrawer = <SideBar navigator={this._navigator} />;
     } else {
       contentDrawer = <SideBarNoAuth navigator={this._navigator} />;
@@ -191,6 +193,8 @@ class AppNavigator extends Component {
           <RouterWithRedux>
             <Scene key="root">
               <Scene key="home" component={Home} hideNavBar initial={true} />
+              <Scene key="login" component={Login} />
+              <Scene key="configuracion" component={Configuracion} />
               <Scene key="actividades" component={Actividades} />
               <Scene key="registrarEvento" component={RegistrarEvento} />
               <Scene key="registrarNecesidades" component={RegistrarNecesidades} />

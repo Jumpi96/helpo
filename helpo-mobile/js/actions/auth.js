@@ -19,12 +19,13 @@ export function loadUser() {
       .catch((e) => {
         if (e.response.status >= 400 && e.response.status < 500) {
           dispatch({ type: 'AUTHENTICATION_ERROR', data: e.response.data });
-          throw e.response.data;
+          //throw e.response.data;
         } else {
           console.log('Server Error!');
-          throw e.response;
+          //throw e.response;
         }
-      });
+      })
+      .done();
   };
 }
 
@@ -41,12 +42,13 @@ export function login(email, password) {
       .catch((e) => {
         if (e.response.status === 403 || e.response.status === 401) {
           dispatch({ type: 'AUTHENTICATION_ERROR', data: e.response.data });
-          throw e.response.data;
+          //throw e.response.data;
         } else {
           dispatch({ type: 'LOGIN_FAILED', data: e.response.data });
-          throw e.response.data;
+          //throw e.response.data;
         }
-      });
+      })
+      .done();
   };
 }
 
@@ -84,11 +86,12 @@ export function logout() {
       .catch((e) => {
         if (e.response.status === 403 || e.response.status === 401) {
           dispatch({ type: 'AUTHENTICATION_ERROR', data: e.response.data });
-          throw e.response.data;
+          //throw e.response.data;
         } else {
           console.log('Server Error!');
-          throw e.response;
+          //throw e.response;
         }
-      });
+      })
+      .done();
   };
 }

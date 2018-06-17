@@ -28,6 +28,12 @@ const datas = [
     bg: '#C5F442',
   },
   {
+    name: 'Configuración',
+    route: 'configuracion',
+    icon: 'lock',
+    bg: '#C5F442',
+  },
+  {
     name: 'Header',
     route: 'header',
     icon: 'phone-portrait',

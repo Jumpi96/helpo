@@ -17,14 +17,14 @@ const drawerImage = require('../../../img/logo-kitchen-sink.png');
 const datas = [
   {
     name: 'Login',
-    route: 'form',
-    icon: 'phone-portrait',
+    route: 'login',
+    icon: 'key',
     bg: '#C5F442',
   },
   {
     name: 'Register',
     route: 'form',
-    icon: 'phone-portrait',
+    icon: 'lock',
     bg: '#C5F442',
   },
 ];

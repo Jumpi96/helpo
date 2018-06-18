@@ -85,6 +85,7 @@ export function logout() {
       .catch((e) => {
         if (e.response.status === 403 || e.response.status === 401) {
           dispatch({ type: 'AUTHENTICATION_ERROR', data: e.response.data });          
+          Actions.home();
         } else {
           console.log('Server Error!');
         }

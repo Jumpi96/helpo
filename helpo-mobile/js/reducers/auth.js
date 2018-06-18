@@ -20,12 +20,13 @@ export default function auth(state = initialState, action) {
     case 'AUTHENTICATION_ERROR':
       AsyncStorage.removeItem('token');
       return { ...state,
-        errors: action.data,
+        errors: null,
         token: null,
         user: null,
         isAuthenticated: false,
         isLoading: false };
     case 'LOGIN_FAILED':
+      return { ...state, errors: { detail: 'Los datos ingresados no son correctos.' } };
     case 'REGISTRATION_FAILED':
     case 'LOGOUT_SUCCESSFUL':
       AsyncStorage.removeItem('token');

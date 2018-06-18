@@ -77,12 +77,15 @@ pip install pipenv
 ### Setup
 - On pgAdmin, open Servers, PostgreSQL 10, right click on Databases and create db with name: `db-helpo`
 - On project folder `helpo-api/`:
-  - Create file with name `.env` and text `DJANGO_SETTINGS="helpo.settings.local"`
+  - Create file with name `.env` and text: 
+```
+DJANGO_SETTINGS="helpo.settings.local"
+URL_CLIENT="http://localhost:3000/"
+```
 - Run on `helpo-api/`: 
 ```
 pipenv install --dev
 pipenv shell
-python manage.py makemigrations
 python manage.py migrate
 python manage.py runserver
 ```
@@ -119,19 +122,20 @@ npm run start
 
 ## Running helpo-mobile
 ### Prerequisites
-- Expo (iOS/Android) in your phone.
+- Android: have a **Android emulator** working.
+  - Note: be creative, it is may not be fast and easy. I had many errors that were solved just searching in Google.
+- iOS: be Luciano.
 ### Setup
-- Execute: `npm install`
+- Execute: `react-native run-android`
 ### Run
-- Execute: `npm start`
-- Scan QR Code with your phone.
+#### Android
+- Run `react-native run-android` o `npm start`.
+  - Double R should reload the emulator with changes.
+#### iOS
+- Run `react-native run-ios`
+
 ### Using local API
-- Add your *server* (your PC) IP to `base.py` configuration file.
-  - Add to *ALLOWED_HOSTS* and *CORS_ORIGIN_WHITELIST*
+- Add your *server* (the IP where the JS bundler is working) IP to `base.py` configuration file. For example, 10.0.2.2.
+  - Add to *ALLOWED_HOSTS* (without the port) and *CORS_ORIGIN_WHITELIST* (with its port --> 10.0.2.2:8000).
 - Change IP of `api.js` configuration file in helpo-mobile.
-### Solving problems
-- Your phone has to be in the same network as your PC. 
-  - If it does not work, check if the React Native server IP is the same as the one of your PC in that network (it's possible that React Native choose the wrong one: a Docker, Hyper-V or VirtualBox network).
-    - To solve this, set this environment variable:
-      - In Windows PowerShell: `$env:REACT_NATIVE_PACKAGER_HOSTNAME = "<your_IP>"`
 

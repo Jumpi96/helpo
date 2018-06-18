@@ -1,7 +1,7 @@
 @charset "UTF-8";
 /*!
  * CoreUI - Open Source Dashboard UI Kit
- * @version v2.0.1
+ * @version v2.0.2
  * @link https://coreui.io
  * Copyright (c) 2018 creativeLabs Łukasz Holeczek
  * Licensed under MIT (https://coreui.io/license)
@@ -1324,7 +1324,7 @@ select.form-control:focus::-ms-value {
 .col-form-label-sm {
   padding-top: calc(0.25rem + 1px);
   padding-bottom: calc(0.25rem + 1px);
-  font-size: 0.76563rem;
+  font-size: 0.76562rem;
   line-height: 1.5; }
 
 .form-control-plaintext {
@@ -1356,7 +1356,7 @@ select.form-control:focus::-ms-value {
 .input-group-sm > .input-group-prepend > .btn,
 .input-group-sm > .input-group-append > .btn {
   padding: 0.25rem 0.5rem;
-  font-size: 0.76563rem;
+  font-size: 0.76562rem;
   line-height: 1.5;
   border-radius: 0.2rem; }
 
@@ -1382,7 +1382,7 @@ select.form-control-lg:not([size]):not([multiple]), .input-group-lg > select.for
 .input-group-lg > .input-group-append > select.input-group-text:not([size]):not([multiple]),
 .input-group-lg > .input-group-prepend > select.btn:not([size]):not([multiple]),
 .input-group-lg > .input-group-append > select.btn:not([size]):not([multiple]) {
-  height: calc(2.64063rem + 2px); }
+  height: calc(2.64062rem + 2px); }
 
 .form-group {
   margin-bottom: 1rem; }
@@ -2060,7 +2060,7 @@ fieldset:disabled a.btn {
 
 .btn-sm, .btn-group-sm > .btn {
   padding: 0.25rem 0.5rem;
-  font-size: 0.76563rem;
+  font-size: 0.76562rem;
   line-height: 1.5;
   border-radius: 0.2rem; }
 
@@ -2260,7 +2260,7 @@ input[type="button"].btn-block {
   display: block;
   padding: 0 1.5rem;
   margin-bottom: 0;
-  font-size: 0.76563rem;
+  font-size: 0.76562rem;
   color: #73818f;
   white-space: nowrap; }
 
@@ -2595,7 +2595,7 @@ input[type="button"].btn-block {
   font-size: 75%; }
 
 .custom-select-lg {
-  height: calc(2.64063rem + 2px);
+  height: calc(2.64062rem + 2px);
   padding-top: 0.375rem;
   padding-bottom: 0.375rem;
   font-size: 125%; }
@@ -3328,7 +3328,7 @@ input[type="button"].btn-block {
 
 .pagination-sm .page-link {
   padding: 0.25rem 0.5rem;
-  font-size: 0.76563rem;
+  font-size: 0.76562rem;
   line-height: 1.5; }
 
 .pagination-sm .page-item:first-child .page-link {
@@ -3870,7 +3870,7 @@ button.close {
   word-spacing: normal;
   white-space: normal;
   line-break: auto;
-  font-size: 0.76563rem;
+  font-size: 0.76562rem;
   word-wrap: break-word;
   opacity: 0; }
   .tooltip.show {
@@ -3955,7 +3955,7 @@ button.close {
   word-spacing: normal;
   white-space: normal;
   line-break: auto;
-  font-size: 0.76563rem;
+  font-size: 0.76562rem;
   word-wrap: break-word;
   background-color: #fff;
   background-clip: padding-box;
@@ -6609,9 +6609,9 @@ a.text-dark:hover, a.text-dark:focus {
   .btn-brand i + span {
     margin-left: 1.5rem; }
   .btn-brand.btn-lg i, .btn-group-lg > .btn-brand.btn i {
-    width: 2.64063rem;
+    width: 2.64062rem;
     margin: -0.5rem -1rem;
-    line-height: 2.64063rem;
+    line-height: 2.64062rem;
     border-radius: 0.3rem; }
   .btn-brand.btn-lg i + span, .btn-group-lg > .btn-brand.btn i + span {
     margin-left: 2rem; }
@@ -7663,12 +7663,12 @@ canvas {
   .chartjs-tooltip .tooltip-header {
     margin-bottom: 0.5rem; }
   .chartjs-tooltip .tooltip-header-item {
-    font-size: 0.76563rem;
+    font-size: 0.76562rem;
     font-weight: 700; }
   .chartjs-tooltip .tooltip-body-item {
     display: flex;
     align-items: center;
-    font-size: 0.76563rem;
+    font-size: 0.76562rem;
     white-space: nowrap; }
   .chartjs-tooltip .tooltip-body-item-color {
     display: inline-block;
@@ -8003,7 +8003,7 @@ canvas {
   font-size: 1.09375rem; }
 
 .progress-group-text {
-  font-size: 0.76563rem;
+  font-size: 0.76562rem;
   color: #73818f; }
 
 .progress-group-header {

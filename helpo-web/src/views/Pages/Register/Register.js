@@ -3,6 +3,7 @@ import { Button, Card, CardHeader, CardBody, CardFooter, Col, Container, Input, 
 import { connect } from "react-redux";
 import {auth} from "../../../actions";
 import validateEmail from "../../../utils/ValidateEmail";
+import api from "../../../api"
 
 
 class Register extends Component {
@@ -33,6 +34,9 @@ class Register extends Component {
       this.props.register(this.state.nombre, this.state.email,
                         this.state.user_type, this.state.password,
                         this.state.apellido);
+      const usuario = this.props.register;
+      api.post('/auth/sign_up/', usuario)
+      .then((res) => {console.log(res)})
     } else {
       // TODO
     }

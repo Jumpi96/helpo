@@ -48,8 +48,10 @@ class UserManager(BaseUserManager):
     def send_confirmation_email(self, user):
         str_to_encode = str(user.id) + user.email
         str_encoded = str_to_encode.encode('utf-8')
-        bash = sha256(str_encoded)
-        url_confirmation = '%sconfirm-email?bash=%s' % (config('URL_CLIENT', default=None), bash)
+        uncutbash = str(sha256(str_encoded))
+        bash = uncutbash[22:36]
+        self.create_user_verification(user, bash)
+        url_confirmation = '%s/confirmMail/%s' % (config('URL_CLIENT', default=None), bash)
         content = '<a href="%s">Confirma su cuenta aquí</a>' % (url_confirmation)
         send_mail(
             'Confirma tu cuenta de helpo.',
@@ -60,6 +62,8 @@ class UserManager(BaseUserManager):
             html_message=content,
         )
 
+    def create_user_verification(self, user, token):
+        UserVerification.objects.create(usuario=user, verificationToken=token)
 
 class User(AbstractBaseUser, PermissionsMixin, IndexedTimeStampedModel):
     USER_TYPE_CHOICES = (
@@ -96,6 +100,20 @@ class User(AbstractBaseUser, PermissionsMixin, IndexedTimeStampedModel):
 
     def __str__(self):
         return self.email
+    
+    def validate_mail(self, token):        
+        uv_object = UserVerification.objects.get(usuario=self)
+        if (uv_object.verificationToken == token):
+            self.is_confirmed=True
+            self.save()
+            uv_object.delete()
+            return True
+        return False
+
+
+class UserVerification(IndexedTimeStampedModel):
+    usuario = models.OneToOneField('User')
+    verificationToken = models.CharField(max_length=2000)
 
 
 class Profile(models.Model):

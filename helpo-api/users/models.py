@@ -51,7 +51,8 @@ class UserManager(BaseUserManager):
         uncutbash = str(sha256(str_encoded))
         bash = uncutbash[22:36]
         self.create_user_verification(user, bash)
-        url_confirmation = '%s/confirmMail/%s' % (config('URL_CLIENT', default=None), bash)
+        """url_confirmation = '%s/confirmMail/%s' % (config('URL_CLIENT', default=None), bash)"""
+        url_confirmation = '%s/confirmMail/%s' % ('localhost:3000/#', bash)
         content = '<a href="%s">Confirma su cuenta aquí</a>' % (url_confirmation)
         send_mail(
             'Confirma tu cuenta de helpo.',

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import api from '../../../../api';
+import api from '../../../api';
 
 
 class ListaRubrosEvento extends Component { //esperar a que juan cambie esta lista rubros

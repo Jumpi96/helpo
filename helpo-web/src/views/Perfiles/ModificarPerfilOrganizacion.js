@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import ListaRubrosOrganizacion from './ListaRubrosOrganizacion/ListaRubrosOrganizacion';
-import SelectorUbicacion from '../Actividades/SelectorUbicacion/SelectorUbicacion';
-import RegistrarContacto from './RegistrarContacto/RegistrarContacto';
+import ListaRubrosOrganizacion from './ListaRubrosOrganizacion/ListaRubrosOrganizaciones';
+import SelectorUbicacion from '../Actividades/RegistrarEvento/SelectorUbicacion/SelectorUbicacion';
+import RegistrarContacto from '../Actividades/RegistrarEvento/RegistrarContacto/RegistrarContacto';
 import DateTimePicker from 'react-datetime-picker';
 import moment from 'moment';
-import api from '../../../api';
+import api from '../../api';
 
 
 class ModificarPerfilOrganizacion extends Component {
@@ -183,4 +183,4 @@ class ModificarPerfilOrganizacion extends Component {
   }
 }
 
-export default ModificarPerfil;
+export default ModificarPerfilOrganizacion;

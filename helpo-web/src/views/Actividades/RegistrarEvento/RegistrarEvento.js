@@ -117,6 +117,27 @@ class RegistrarEvento extends Component {
     this.setState({ fecha_hora_fin: fecha_hora });
   }
 
+  getContactosInfo() {
+    const contactos = this.state.contactos;
+    let info_contactos = [];
+    //Si no hay contactos, retorno array vacio    
+    if (contactos[0].nombre === "") {
+      return info_contactos;
+    }
+    for (let i = 0; i < contactos.length; i += 1) {
+      const telefono_info = contactos[i].telefono !== "" ? contactos[i].telefono : null;
+      const email_info = contactos[i].email !== "" ? contactos[i].email : null;  
+      
+      const cto = {
+        nombre: contactos[i].nombre,
+        mail: email_info,
+        telefono: telefono_info,
+      }
+      info_contactos[i] = cto;
+    }
+    return info_contactos;
+  }
+
   handleSubmit(event) {
     event.preventDefault();
     if (this.handleValidation()) {
@@ -127,7 +148,7 @@ class RegistrarEvento extends Component {
         fecha_hora_fin: this.state.fecha_hora_fin.toISOString(),
         rubro_id: this.state.rubro_id,
         ubicacion: this.state.ubicacion,
-        contacto: this.state.contactos,
+        contacto: this.getContactosInfo(),
       };
       api.post('/actividades/eventos/', evento)
         .then((res) => {

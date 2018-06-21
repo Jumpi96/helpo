@@ -32,7 +32,7 @@ class EventoSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         ubicacion_data = validated_data.pop('ubicacion')
         ubicacion = Ubicacion.objects.create(**ubicacion_data)
-        contactos_data = validate_data.pop('contacto')        
+        contactos_data = validated_data.pop('contacto')        
         evento = Evento.objects.create(ubicacion=ubicacion, **validated_data)
         for contacto_data in contactos_data:
             Contacto.objects.create(evento=evento, **contacto_data) 

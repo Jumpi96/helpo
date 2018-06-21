@@ -94,7 +94,7 @@ class RegistrarEvento extends React.Component {
         fecha_hora_fin: this.state.fecha_hora_fin.toISOString(),
         rubro_id: this.state.rubro_id,
         ubicacion: this.state.ubicacion,
-        contacto: this.state.contactos,
+        contacto: this.getContactosInfo(),
       };
       api.post('/actividades/eventos/', evento)
         .then((res) => {
@@ -109,6 +109,27 @@ class RegistrarEvento extends React.Component {
           if (error.response) { console.log(error.response); } else { console.log('Error: ', error.message); }
         });
     }
+  }
+
+  getContactosInfo() {
+    const contactos = this.state.contactos;
+    const infoContactos = [];
+    // Si no hay contactos, retorno array vacio
+    if (contactos[0].nombre === '') {
+      return infoContactos;
+    }
+    for (let i = 0; i < contactos.length; i += 1) {
+      const telefonoInfo = contactos[i].telefono !== '' ? contactos[i].telefono : null;
+      const emailInfo = contactos[i].email !== '' ? contactos[i].email : null;
+
+      const cto = {
+        nombre: contactos[i].nombre,
+        mail: emailInfo,
+        telefono: telefonoInfo,
+      };
+      infoContactos[i] = cto;
+    }
+    return infoContactos;
   }
 
   handleValidation(event) {

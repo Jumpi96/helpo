@@ -142,7 +142,8 @@ class RegistrarEvento extends Component {
   }
   
   validateContactos() {
-    const errors = {contactoNombre: "", contactoContacto: "", email: ""};    
+    let errors = {contactoNombre: "", contactoContacto: "", email: ""};    
+    let validacion = {is_valid: true, errors: errors};
     const contactos = this.state.contactos;    
     for (let i = 0; i < contactos.length; i += 1) {
       // Es valido no ingresar ningun contacto
@@ -150,19 +151,23 @@ class RegistrarEvento extends Component {
       contactos[i].mail === "" &&
       contactos[i].telefono === "" &&
       contactos.length === 1) {
-        return errors;
+        return validacion;
       }
       if (contactos[i].nombre === "") {
         errors.contactoNombre = 'No puede ingresar un contacto sin nombre';        
+        validacion.is_valid = false;
       }
       if (contactos[i].mail === "" && contactos[i].telefono === "") {
         errors.contactoContacto = 'Debe ingresar un mail o un telefono';        
+        validacion.is_valid = false;
       }
       if (contactos[i].mail !== "" && !validateEmail(contactos[i].mail)) {
         errors.email = 'Debe ingresar un mail valido';        
+        validacion.is_valid = false;
       }
     }
-    return errors;
+    validacion.errors = errors;
+    return validacion;
   }  
 
   handleValidation(event) {
@@ -195,8 +200,9 @@ class RegistrarEvento extends Component {
       errors.rubro = 'Hubo un problema al cargar los rubros.';
     } else { errors.rubro = undefined; }
 
-    const contactErrors = this.validateContactos();
-    if (contactErrors !== {}) {
+    const contactValidation = this.validateContactos();
+    const contactErrors = contactValidation.errors;
+    if (!contactValidation.is_valid) {
       formIsValid = false;
     }
     //Concateno errors con contactErrors

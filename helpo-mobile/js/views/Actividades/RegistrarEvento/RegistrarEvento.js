@@ -45,21 +45,21 @@ class RegistrarEvento extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-        nombre: "",
-        descripcion: "",
-        rubro_id: 0,
-        fecha_hora_inicio: new Date(),
-        fecha_hora_fin: new Date(),
-        //TODO: ubicacion que pasamos por defecto debería ser la de la ONG. Ahora, Córdoba.
-        ubicacion: { latitud: -31.4201, longitud: -64.1888, notas: ""},
-        contactos: [{
-          nombre: "",
-          mail: "",
-          telefono: "",
-          contactId: 1,
-        }],
-        nextId: 2,
-        errors: {}
+      nombre: '',
+      descripcion: '',
+      rubro_id: 0,
+      fecha_hora_inicio: new Date(),
+      fecha_hora_fin: new Date(),
+        // TODO: ubicacion que pasamos por defecto debería ser la de la ONG. Ahora, Córdoba.
+      ubicacion: { latitud: -31.4201, longitud: -64.1888, notas: '' },
+      contactos: [{
+        nombre: '',
+        mail: '',
+        telefono: '',
+        contactId: 1,
+      }],
+      nextId: 2,
+      errors: {},
     };
     this.handleUbicacionChange = this.handleUbicacionChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -80,7 +80,7 @@ class RegistrarEvento extends React.Component {
   }
 
   handleRubroChange(r) {
-    this.setState({rubro_id: r});
+    this.setState({ rubro_id: r });
   }
 
   handleSubmit(event) {
@@ -96,35 +96,34 @@ class RegistrarEvento extends React.Component {
         ubicacion: this.state.ubicacion,
         contacto: this.state.contactos,
       };
-      api.post("/actividades/eventos/", evento)
-        .then(res => {
+      api.post('/actividades/eventos/', evento)
+        .then((res) => {
           console.log(res);
           console.log(res.data);
           Alert.alert(
-            "Registrar evento",
-            "Se registró el evento con éxito."
+            'Registrar evento',
+            'Se registró el evento con éxito.'
           );
           Actions.registrarNecesidades({ id: res.data.id });
-        }).catch(function (error) {
-          if (error.response) { console.log(error.response); }
-          else { console.log("Error: ", error.message); }
+        }).catch((error) => {
+          if (error.response) { console.log(error.response); } else { console.log('Error: ', error.message); }
         });
     }
   }
 
   handleValidation(event) {
     let formIsValid = true;
-    var errors = this.state.errors;
+    const errors = this.state.errors;
 
     if (!this.state.nombre) {
       formIsValid = false;
-      errors.nombre = "Debe ingresar un nombre.";
+      errors.nombre = 'Debe ingresar un nombre.';
     }
 
     if (isNaN(Date.parse(this.state.fecha_hora_inicio)) ||
         isNaN(Date.parse(this.state.fecha_hora_fin))) {
       formIsValid = false;
-      errors.fechas = "Las fechas ingresadas no son válidas.";
+      errors.fechas = 'Las fechas ingresadas no son válidas.';
     } else {
       const inicio = moment(this.state.fecha_hora_inicio);
       const fin = moment(this.state.fecha_hora_fin);
@@ -133,102 +132,105 @@ class RegistrarEvento extends React.Component {
           inicio < ahora ||
           moment.duration(fin.diff(inicio)).asHours() < 0) {
         formIsValid = false;
-        errors.fechas = "Las fecha de fin debe ser mayor a la de inicio y " +
-          "la actividad no durar más de 24 horas.";
+        errors.fechas = 'Las fecha de fin debe ser mayor a la de inicio y ' +
+          'la actividad no durar más de 24 horas.';
       }
     }
     if (this.state.rubro_id === 0) {
       formIsValid = false;
-      errors.rubro = "Hubo un problema al cargar los rubros.";
+      errors.rubro = 'Hubo un problema al cargar los rubros.';
     }
-    const contactErrors = this.validateContactos();
-    if (contactErrors !== {}) {
+    const contactValidation = this.validateContactos();
+    const contactErrors = contactValidation.errors;
+    if (!contactValidation.is_valid) {
       formIsValid = false;
     }
-    //Concateno errors con contactErrors
+    // Concateno errors con contactErrors
     const allErrors = Object.assign({}, errors, contactErrors);
     this.setState({ errors: allErrors });
     return formIsValid;
   }
   // Devuelve True si no hay errores
   validateContactos() {
-    const errors = {contactoNombre: "", contactoContacto: "", email: ""};
+    const errors = { contactoNombre: '', contactoContacto: '', email: '' };
+    const validacion = { is_valid: true, errors };
     const contactos = this.state.contactos;
     for (let i = 0; i < contactos.length; i += 1) {
       // Es valido no ingresar ningun contacto
-      if (contactos[i].nombre === "" &&
-      contactos[i].mail === "" &&
-      contactos[i].telefono === "" &&
+      if (contactos[i].nombre === '' &&
+      contactos[i].mail === '' &&
+      contactos[i].telefono === '' &&
       contactos.length === 1) {
-        return errors;
+        return validacion;
       }
-      if (contactos[i].nombre === "") {
-        errors.contactoNombre = "No puede ingresar un contacto sin nombre";
+      if (contactos[i].nombre === '') {
+        errors.contactoNombre = 'No puede ingresar un contacto sin nombre';
+        validacion.is_valid = false;
       }
-      if (contactos[i].mail === "" && contactos[i].telefono === "") {
-        errors.contactoContacto = "Debe ingresar un mail o un telefono";
+      if (contactos[i].mail === '' && contactos[i].telefono === '') {
+        errors.contactoContacto = 'Debe ingresar un mail o un telefono';
+        validacion.is_valid = false;
       }
-      if (contactos[i].mail !== "") {
-        errors.email = "Debe ingresar un mail valido";
+      if (contactos[i].mail !== '' && !validateEmail(contactos[i].mail)) {
+        errors.email = 'Debe ingresar un mail valido';
+        validacion.is_valid = false;
       }
     }
-    return errors;
+    validacion.errors = errors;
+    return validacion;
   }
 
   handleUbicacionChange(ubi) {
-    this.setState({ubicacion: ubi});
+    this.setState({ ubicacion: ubi });
   }
 
   handleFechaHoraInicioChange(f_h) {
-    this.setState({fecha_hora_inicio: f_h, fecha_hora_fin: f_h});
+    this.setState({ fecha_hora_inicio: f_h, fecha_hora_fin: f_h });
   }
 
   handleFechaHoraFinChange(f_h) {
-    this.setState({fecha_hora_fin: f_h});
+    this.setState({ fecha_hora_fin: f_h });
   }
 
   handleContactNombreChange(value, contactId) {
-    const field = "nombre";
+    const field = 'nombre';
     const index = this.state.contactos.map(e => e.contactId).indexOf(contactId);
     const newContactos = this.state.contactos;
     newContactos[index][field] = value;
     this.setState({
       contactos: newContactos,
     });
-
   }
 
   handleContactMailChange(value, contactId) {
-    const field = "mail";
+    const field = 'mail';
     const index = this.state.contactos.map(e => e.contactId).indexOf(contactId);
     const newContactos = this.state.contactos;
     newContactos[index][field] = value;
     this.setState({
       contactos: newContactos,
     });
-
   }
 
   handleContactTelefonoChange(value, contactId) {
-    //Si value es No Numerico, no se modifica el estado
+    // Si value es No Numerico, no se modifica el estado
     if (isNaN(value)) {
       return;
     }
-    const field = "telefono";
+    const field = 'telefono';
     const index = this.state.contactos.map(e => e.contactId).indexOf(contactId);
     const newContactos = this.state.contactos;
     newContactos[index][field] = value;
     this.setState({
       contactos: newContactos,
     });
-
   }
 
   addContact() {
     const newContact = {
-      nombre: "",
-      mail: "",
-      telefono: "",
+      nombre: '',
+      mail: '',
+      telefono: '',
       contactId: this.state.nextId,
     };
     const newContactos = this.state.contactos.concat(newContact);
@@ -250,7 +252,7 @@ class RegistrarEvento extends React.Component {
     });
   }
 
-  render(){
+  render() {
     return (
       <Container style={styles.container}>
         <Header>
@@ -269,52 +271,62 @@ class RegistrarEvento extends React.Component {
           <Form>
             <Item floatingLabel>
               <Label>Nombre</Label>
-              <Input value={this.state.nombre}
-                onChangeText={(text) => this.setState({nombre: text})}/>
+              <Input
+                value={this.state.nombre}
+                onChangeText={text => this.setState({ nombre: text })}
+              />
             </Item>
             <FormValidationMessage>{this.state.errors.nombre}</FormValidationMessage>
             <Item floatingLabel>
               <Label>Descripción</Label>
-              <Input value={this.state.descripcion}
-                onChangeText={(text) => this.setState({descripcion: text})}/>
+              <Input
+                value={this.state.descripcion}
+                onChangeText={text => this.setState({ descripcion: text })}
+              />
             </Item>
 
             <ListaRubrosEvento
               name="listaRubros"
               rubro_id={this.state.rubro_id}
-              onRubroChange={this.handleRubroChange} />
+              onRubroChange={this.handleRubroChange}
+            />
             <FormValidationMessage>{this.state.errors.rubro}</FormValidationMessage>
 
             <SelectorFechaHora
               detalle="Inicio"
               soloFecha={false}
               value={this.state.fecha_hora_inicio}
-              handleChange={this.handleFechaHoraInicioChange}/>
+              handleChange={this.handleFechaHoraInicioChange}
+            />
             <SelectorFechaHora
               detalle="Fin"
               soloFecha={false}
               value={this.state.fecha_hora_fin}
-              handleChange={this.handleFechaHoraFinChange}/>
+              handleChange={this.handleFechaHoraFinChange}
+            />
             <FormValidationMessage>{this.state.errors.fechas}</FormValidationMessage>
 
             <Item>
               <SelectorUbicacion
                 ubicacion={this.state.ubicacion}
-                onUbicacionChange={this.handleUbicacionChange} />
+                onUbicacionChange={this.handleUbicacionChange}
+              />
             </Item>
             <RegistrarContacto
-                contactos={this.state.contactos}
-                onNombreChange={this.handleContactNombreChange}
-                onMailChange={this.handleContactMailChange}
-                onTelefonoChange={this.handleContactTelefonoChange}
-                onAddContact={this.addContact}
-                onRemoveContact={this.removeContact}
-             />
-             <FormValidationMessage>{this.state.errors.contactoNombre}</FormValidationMessage>
-             <FormValidationMessage>{this.state.errors.contactoContacto}</FormValidationMessage>
-             <FormValidationMessage>{this.state.errors.email}</FormValidationMessage>
-            <Button block style={{ margin: 15, marginTop: 50 }}
-              onPress={this.handleSubmit} >
+              contactos={this.state.contactos}
+              onNombreChange={this.handleContactNombreChange}
+              onMailChange={this.handleContactMailChange}
+              onTelefonoChange={this.handleContactTelefonoChange}
+              onAddContact={this.addContact}
+              onRemoveContact={this.removeContact}
+            />
+            <FormValidationMessage>{this.state.errors.contactoNombre}</FormValidationMessage>
+            <FormValidationMessage>{this.state.errors.contactoContacto}</FormValidationMessage>
+            <FormValidationMessage>{this.state.errors.email}</FormValidationMessage>
+            <Button
+              block style={{ margin: 15, marginTop: 50 }}
+              onPress={this.handleSubmit}
+            >
               <Text>Guardar Evento</Text>
             </Button>
           </Form>

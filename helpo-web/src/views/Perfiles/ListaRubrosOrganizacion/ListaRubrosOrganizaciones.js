@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import api from '../../../api';
 
 
-class ListaRubrosEvento extends Component { //esperar a que juan cambie esta lista rubros
+class ListaRubrosOrganizacion extends Component { //esperar a que juan cambie esta lista rubros
   constructor(props){
     super(props);
     this.state = { 
@@ -17,7 +17,7 @@ class ListaRubrosEvento extends Component { //esperar a que juan cambie esta lis
   }
 
   componentDidMount(){
-    api.get('/actividades/rubros_evento')
+    api.get('/perfiles/rubros_organizacion')
       .then(res => {
         const rubrosData = res.data;
         this.setState({ rubros: rubrosData});
@@ -30,7 +30,7 @@ class ListaRubrosEvento extends Component { //esperar a que juan cambie esta lis
   }
 
   render(){
-    const listaRubroEventos = this.state.rubros.map((r) =>
+    const listaRubrosOrganizacion = this.state.rubros.map((r) =>
       <option key={r.id} data-key={r.id}>{r.nombre}</option>
     );
     const rubro = this.props.rubro_id;
@@ -39,10 +39,10 @@ class ListaRubrosEvento extends Component { //esperar a que juan cambie esta lis
         value={rubro}
         className="form-control"
         onChange={this.handleChange}>
-          {listaRubroEventos}
+          {listaRubrosOrganizacion}
       </select>
     )
   }
 }
 
-export default ListaRubrosEvento;
+export default ListaRubrosOrganizacion;

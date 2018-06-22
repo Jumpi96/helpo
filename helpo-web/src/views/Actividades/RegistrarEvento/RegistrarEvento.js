@@ -117,6 +117,27 @@ class RegistrarEvento extends Component {
     this.setState({ fecha_hora_fin: fecha_hora });
   }
 
+  getContactosInfo() {
+    const contactos = this.state.contactos;
+    let info_contactos = [];
+    //Si no hay contactos, retorno array vacio    
+    if (contactos[0].nombre === "") {
+      return info_contactos;
+    }
+    for (let i = 0; i < contactos.length; i += 1) {
+      const telefono_info = contactos[i].telefono !== "" ? contactos[i].telefono : null;
+      const email_info = contactos[i].email !== "" ? contactos[i].email : null;  
+      
+      const cto = {
+        nombre: contactos[i].nombre,
+        mail: email_info,
+        telefono: telefono_info,
+      }
+      info_contactos[i] = cto;
+    }
+    return info_contactos;
+  }
+
   handleSubmit(event) {
     event.preventDefault();
     if (this.handleValidation()) {
@@ -127,13 +148,16 @@ class RegistrarEvento extends Component {
         fecha_hora_fin: this.state.fecha_hora_fin.toISOString(),
         rubro_id: this.state.rubro_id,
         ubicacion: this.state.ubicacion,
-        contacto: this.state.contactos,
+        contacto: this.getContactosInfo(),
       };
       api.post('/actividades/eventos/', evento)
         .then((res) => {
           console.log(res);
           console.log(res.data);
-          this.props.history.push('registrar-necesidades', { evento_id: res.id });
+          this.props.history.push({ 
+            pathname: 'registrar-necesidades', 
+            search: '?evento=' + res.data.id, //{ evento_id: res.data.id }
+          });
         }).catch(function (error) {
           if (error.response){ console.log(error.response.status) }
           else { console.log('Error: ', error.message)}
@@ -142,7 +166,8 @@ class RegistrarEvento extends Component {
   }
   
   validateContactos() {
-    const errors = {contactoNombre: "", contactoContacto: "", email: ""};    
+    let errors = {contactoNombre: "", contactoContacto: "", email: ""};    
+    let validacion = {is_valid: true, errors: errors};
     const contactos = this.state.contactos;    
     for (let i = 0; i < contactos.length; i += 1) {
       // Es valido no ingresar ningun contacto
@@ -150,19 +175,23 @@ class RegistrarEvento extends Component {
       contactos[i].mail === "" &&
       contactos[i].telefono === "" &&
       contactos.length === 1) {
-        return errors;
+        return validacion;
       }
       if (contactos[i].nombre === "") {
         errors.contactoNombre = 'No puede ingresar un contacto sin nombre';        
+        validacion.is_valid = false;
       }
       if (contactos[i].mail === "" && contactos[i].telefono === "") {
         errors.contactoContacto = 'Debe ingresar un mail o un telefono';        
+        validacion.is_valid = false;
       }
       if (contactos[i].mail !== "" && !validateEmail(contactos[i].mail)) {
         errors.email = 'Debe ingresar un mail valido';        
+        validacion.is_valid = false;
       }
     }
-    return errors;
+    validacion.errors = errors;
+    return validacion;
   }  
 
   handleValidation(event) {
@@ -195,8 +224,9 @@ class RegistrarEvento extends Component {
       errors.rubro = 'Hubo un problema al cargar los rubros.';
     } else { errors.rubro = undefined; }
 
-    const contactErrors = this.validateContactos();
-    if (contactErrors !== {}) {
+    const contactValidation = this.validateContactos();
+    const contactErrors = contactValidation.errors;
+    if (!contactValidation.is_valid) {
       formIsValid = false;
     }
     //Concateno errors con contactErrors

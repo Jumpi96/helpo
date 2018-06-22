@@ -11,14 +11,14 @@ import ModalEditarItem from './ModalEditarItem/ModalEditarItem';
 class RegistrarNecesidades extends Component {
   constructor(props){
     super(props);
+    const urlParams = new URLSearchParams(this.props.location.search)
+    const parametro = urlParams.get('evento')
     let evento;
-    if(this.props.history.location.state &&
-      this.props.history.location.state.evento_id) {
-      evento = this.props.history.location.state.evento_id;
+    if (parametro) {
+      evento = parametro;
     } else {
-      this.props.history.push('dashboard');
+      this.props.history.push({ pathname: '/dashboard' });
     }
-    
     this.state = {
       evento: evento,
       necesidades: [],

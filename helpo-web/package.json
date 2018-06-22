@@ -34,8 +34,7 @@
     "react-numeric-input": "2.2.3",
     "redux": "4.0.0",
     "react-redux": "5.0.7",
-    "redux-thunk": "2.3.0",
-    "query-string": "6.1.0"
+    "redux-thunk": "2.3.0"
   },
   "devDependencies": {
     "eslint": "^4.1.1",

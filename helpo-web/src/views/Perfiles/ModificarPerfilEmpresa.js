@@ -183,4 +183,4 @@ class ModificarPerfilEmpresa extends Component {
   }
 }
 
-export default ModificarPerfil;
+export default ModificarPerfilEmpresa;

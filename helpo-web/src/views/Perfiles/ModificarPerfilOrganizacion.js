@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ListaRubrosOrganizacion from './ListaRubrosOrganizacion/ListaRubrosOrganizacion';
-import SelectorUbicacion from '../Actividades/SelectorUbicacion/SelectorUbicacion';
+import SelectorUbicacion from '../Actividades/RegistrarEvento/SelectorUbicacion/SelectorUbicacion';
 import api from '../../../../api';
 
 

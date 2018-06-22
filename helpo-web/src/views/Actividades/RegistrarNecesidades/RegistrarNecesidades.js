@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Table, Card, CardHeader, CardBody } from 'reactstrap';
+import queryString from 'query-string';
 import './RegistrarNecesidades.css';
 import SelectorItem from './SelectorItem/SelectorItem';
 import NumericInput from 'react-numeric-input';
@@ -11,14 +12,13 @@ import ModalEditarItem from './ModalEditarItem/ModalEditarItem';
 class RegistrarNecesidades extends Component {
   constructor(props){
     super(props);
+    const params = queryString.parse(props.location.search);
     let evento;
-    if(this.props.history.location.state &&
-      this.props.history.location.state.evento_id) {
-      evento = this.props.history.location.state.evento_id;
+    if (params.evento) {
+      evento = params.evento;
     } else {
-      this.props.history.push('dashboard');
+      this.props.history.push({ pathname: '/dashboard' });
     }
-    
     this.state = {
       evento: evento,
       necesidades: [],

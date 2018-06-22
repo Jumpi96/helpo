@@ -154,7 +154,7 @@ class RegistrarEvento extends Component {
         .then((res) => {
           console.log(res);
           console.log(res.data);
-          this.props.history.push('registrar-necesidades', { evento_id: res.id });
+          this.props.history.push('registrar-necesidades', { evento_id: res.data.id });
         }).catch(function (error) {
           if (error.response){ console.log(error.response.status) }
           else { console.log('Error: ', error.message)}

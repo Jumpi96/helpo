@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
-import ListaRubrosOrganizacion from './ListaRubrosOrganizacion/ListaRubrosOrganizaciones';
-import SelectorUbicacion from '../Actividades/RegistrarEvento/SelectorUbicacion/SelectorUbicacion';
-import RegistrarContacto from '../Actividades/RegistrarEvento/RegistrarContacto/RegistrarContacto';
-import DateTimePicker from 'react-datetime-picker';
-import moment from 'moment';
-import api from '../../api';
+import ListaRubrosOrganizacion from './ListaRubrosOrganizacion/ListaRubrosOrganizacion';
+import SelectorUbicacion from '../Actividades/SelectorUbicacion/SelectorUbicacion';
+import api from '../../../api';
 
 
 class ModificarPerfilOrganizacion extends Component {
@@ -74,7 +71,7 @@ class ModificarPerfilOrganizacion extends Component {
     }
   }
 
-  handleValidation(event) {
+  handleValidation() {
     let formIsValid = true;
     const errors = this.state.errors;
 
@@ -163,7 +160,7 @@ class ModificarPerfilOrganizacion extends Component {
         />
 
         <div className="form-group">
-          <label htmlFor="descripcion">FOTO</label> //VER COMO SE RESUELVE FOTO DE PERFIL
+          <label htmlFor="descripcion">FOTO</label> [//VER COMO SE RESUELVE FOTO DE PERFIL]
           <textarea
             name="descripcion"
             rows="9"

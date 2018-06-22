@@ -7,7 +7,7 @@ class RubroEvento(models.Model):
 class Ubicacion(models.Model):
     latitud = models.FloatField()
     longitud = models.FloatField()
-    notas = models.CharField(max_length=140)
+    notas = models.CharField(max_length=140, null=True)
 
 class Evento(IndexedTimeStampedModel):
     nombre = models.CharField(max_length=100)

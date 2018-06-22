@@ -20,4 +20,16 @@ urlpatterns = [
         view=users_views.UserView.as_view(),
         name="user"
     ),
+    # {% url "api:rubros_organizacion" %}
+    url(
+        regex=r"^perfiles/rubros_organizacion/$",
+        view=users_views.RubroOrganizacionCreateReadView.as_view(),
+        name="get_post_rubro_organizacion"
+    ),
+    # {% url "api:rubros_organizacion" rubro_organizacion.id %}
+    url(
+        regex=r"^perfiles/rubros_organizacion/(?P<id>[-\w]+)/$",
+        view=users_views.RubroOrganizacionReadUpdateDeleteView.as_view(),
+        name="get_put_delete_rubro_organizacion"
+    ),
 ]

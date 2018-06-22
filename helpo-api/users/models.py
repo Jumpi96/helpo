@@ -105,6 +105,9 @@ class Profile(models.Model):
 class VoluntarioProfile(Profile):
     apellido = models.CharField(max_length=50)
 
+class RubroOrganizacion(models.Model):
+    nombre = models.CharField(max_length=100)
+
 class OrganizacionProfile(Profile):
     verificada = models.BooleanField(default=False)
     

@@ -12,6 +12,16 @@ const RegistrarEvento = Loadable({
   loading: Loading,
 });
 
+const EditarEvento = Loadable({
+  loader: () => import('./views/Actividades/EditarEvento/EditarEvento'),
+  loading: Loading,
+});
+
+const EventoPage = Loadable({
+  loader: () => import('./views/Eventos/EventoPage.js'),
+  loading: Loading,
+})
+
 const RegistrarNecesidades = Loadable({
   loader: () => import('./views/Actividades/RegistrarNecesidades/RegistrarNecesidades'),
   loading: Loading,
@@ -188,7 +198,9 @@ const routes = [
   { path: '/', exact: true, name: 'Home', component: DefaultLayout },
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
 
+  { path: '/actividades/evento', name: 'Evento', component: EventoPage },
   { path: '/actividades/registrar-evento', name: 'Registrar evento', component: RegistrarEvento },
+  { path: '/actividades/editar-evento', name: 'Editar evento', component: EditarEvento },
   { path: '/actividades/registrar-necesidades', name: 'Registrar necesidades', component: RegistrarNecesidades },
 
   { path: '/theme', exact: true, name: 'Theme', component: Colors },

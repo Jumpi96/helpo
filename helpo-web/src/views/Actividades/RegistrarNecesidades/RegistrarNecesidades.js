@@ -12,7 +12,7 @@ class RegistrarNecesidades extends Component {
   constructor(props){
     super(props);
     const urlParams = new URLSearchParams(this.props.location.search)
-    const parametro = urlParams.get('evento')
+    const parametro = urlParams.get('evento');
     let evento;
     if (parametro) {
       evento = parametro;

@@ -1,4 +1,4 @@
 export default {  
   eventos: [],
-  //hobbies: []
+  rubrosEvento: []
 }

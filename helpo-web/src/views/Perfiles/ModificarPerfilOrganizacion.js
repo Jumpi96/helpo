@@ -52,17 +52,15 @@ class ModificarPerfilOrganizacion extends Component {
     if (this.handleValidation()) {
       const perfil = {
         nombre: this.state.nombre,
-        descripcion: this.state.descripcion,
         rubro_id: this.state.rubro_id,
         ubicacion: this.state.ubicacion,
         cuit: this.state.cuit,
         mail: this.state.mail,
         telefono: this.state.telefono,
-        rubro_id: this.state.rubro_id,
         foto_perfil: undefined,
         descripcion: this.state.descripcion,
       };
-      api.post('/actividades/eventos/', evento) // cambiar esto, que poner?
+      api.post('/actividades/eventos/', perfil) // cambiar esto, que poner?
         .then((res) => {
           console.log(res);
           console.log(res.data);

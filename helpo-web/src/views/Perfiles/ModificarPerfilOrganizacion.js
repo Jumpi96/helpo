@@ -50,16 +50,19 @@ class ModificarPerfilOrganizacion extends Component {
   handleSubmit(event) {
     event.preventDefault();
     if (this.handleValidation()) {
-      const evento = {
+      const perfil = {
         nombre: this.state.nombre,
         descripcion: this.state.descripcion,
-        fecha_hora_inicio: this.state.fecha_hora_inicio.toISOString(),
-        fecha_hora_fin: this.state.fecha_hora_fin.toISOString(),
         rubro_id: this.state.rubro_id,
         ubicacion: this.state.ubicacion,
-        contacto: this.state.contactos,
+        cuit: this.state.cuit,
+        mail: this.state.mail,
+        telefono: this.state.telefono,
+        rubro_id: this.state.rubro_id,
+        foto_perfil: undefined,
+        descripcion: this.state.descripcion,
       };
-      api.post('/actividades/eventos/', evento)
+      api.post('/actividades/eventos/', evento) // cambiar esto, que poner?
         .then((res) => {
           console.log(res);
           console.log(res.data);

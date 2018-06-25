@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ListaRubrosOrganizacion from './ListaRubrosOrganizacion/ListaRubrosOrganizaciones';
 import SelectorUbicacion from '../Actividades/RegistrarEvento/SelectorUbicacion/SelectorUbicacion';
-import api from '../../../../api';
+import api from '../../api';
 
 
 class ModificarPerfilOrganizacion extends Component {
@@ -172,7 +172,7 @@ class ModificarPerfilOrganizacion extends Component {
         </div>
 
         <div className="form-group">
-          <input type="submit" className="btn btn-primary" value="Guardar perfil" />
+          <input type="submit" className="btn btn-primary" value="Guardar" />
         </div>
 
       </form>

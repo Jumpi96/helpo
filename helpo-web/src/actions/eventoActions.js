@@ -11,6 +11,20 @@ export function loadEventos() {
   };
 }
 
+export function updateEvento(evento) {  
+  return function(dispatch) {
+    return eventoApi.updateEvento(evento).then(responseEvento => {
+      dispatch(updateEventoSuccess(responseEvento));
+    }).catch(error => {
+      throw(error);
+    });
+  };
+}
+
 export function loadEventosSuccess(eventos) {  
   return {type: types.LOAD_EVENTOS_SUCCESS, eventos};
+}
+
+export function updateEventoSuccess(evento) {  
+  return {type: types.UPDATE_EVENTOS_SUCCESS, evento}
 }

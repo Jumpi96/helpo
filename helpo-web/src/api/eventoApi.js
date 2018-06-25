@@ -8,5 +8,8 @@ class EventoApi {
       return error;
     });
   }
+  static updateEvento(evento) {
+    api.put(`/actividades/eventos/${evento.id}/`, evento);
+  }
 }
 export default EventoApi;

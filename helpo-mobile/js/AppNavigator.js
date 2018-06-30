@@ -106,6 +106,7 @@ import RegistrarNecesidades from './views/Actividades/RegistrarNecesidades/Regis
 import AgregarNecesidad from './views/Actividades/RegistrarNecesidades/AgregarNecesidad/AgregarNecesidad';
 import Login from './views/Usuarios/Login';
 import Configuracion from './views/Usuarios/Configuracion';
+import SignUp from './views/Usuarios/SignUp';
 
 const {
   popRoute,
@@ -174,7 +175,7 @@ class AppNavigator extends Component {
 
   render() {
     let contentDrawer;
-    if (this.props.auth.isAuthenticated) { //TODO: CHANGE AFTER MAKING LOGIN
+    if (this.props.auth.isAuthenticated) { // TODO: CHANGE AFTER MAKING LOGIN
       contentDrawer = <SideBar navigator={this._navigator} />;
     } else {
       contentDrawer = <SideBarNoAuth navigator={this._navigator} />;
@@ -187,13 +188,14 @@ class AppNavigator extends Component {
           onClose={() => this.closeDrawer()}
         >
           <StatusBar
-            hidden={(this.props.drawerState === 'opened' && Platform.OS === 'ios') ? true : false}
+            hidden={!!((this.props.drawerState === 'opened' && Platform.OS === 'ios'))}
             backgroundColor={statusBarColor.statusBarColor}
           />
           <RouterWithRedux>
             <Scene key="root">
-              <Scene key="home" component={Home} hideNavBar initial={true} />
+              <Scene key="home" component={Home} hideNavBar initial />
               <Scene key="login" component={Login} />
+              <Scene key="signUp" component={SignUp} />
               <Scene key="configuracion" component={Configuracion} />
               <Scene key="actividades" component={Actividades} />
               <Scene key="registrarEvento" component={RegistrarEvento} />

@@ -75,4 +75,10 @@ urlpatterns = [
         view=actividades_views.NecesidadReadUpdateDeleteView.as_view(),
         name="get_put_delete_necesidad"
     ),
+    # {% url "api:eventos_organizacion" %}
+    url(
+        regex=r"^organizaciones/eventos/$",
+        view=actividades_views.EventoOrganizacionCreateReadView.as_view(),
+        name="get_post_evento_organizacion"
+    ),
 ]

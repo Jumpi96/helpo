@@ -1,7 +1,8 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, permissions
 from rest_framework.generics import ListCreateAPIView
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
 from actividades.models import Evento, RubroEvento, CategoriaRecurso, Recurso, Necesidad, Contacto
+from knox.models import AuthToken
 from actividades.serializers import EventoSerializer, RubroEventoSerializer, \
     CategoriaRecursoSerializer, RecursoSerializer, NecesidadSerializer, ContactoSerializer
 
@@ -106,3 +107,19 @@ class NecesidadReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     queryset = Necesidad.objects.all()
     serializer_class = NecesidadSerializer
     lookup_field = 'id'
+
+class EventoOrganizacionCreateReadView(ListCreateAPIView):
+    """
+    API endpoint para crear o ver todos los eventos de la organización
+    """
+    permission_classes = [permissions.IsAuthenticated, ]
+    serializer_class = EventoSerializer
+
+    def get_queryset(self):
+        token = self.request.META.get('HTTP_AUTHORIZATION', None)
+        objeto_token = AuthToken.objects.get(token_key=token[6:14])
+        """
+        queryset = Evento.objects.get(organizacion_id=objeto_token.user_id)
+        """
+        queryset = Evento.objects.all()
+        return queryset

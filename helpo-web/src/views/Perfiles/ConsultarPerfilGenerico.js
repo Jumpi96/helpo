@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
 import ListaRubrosOrganizacion from './ListaRubrosOrganizacion/ListaRubrosOrganizaciones';
 import SelectorUbicacion from '../Actividades/RegistrarEvento/SelectorUbicacion/SelectorUbicacion';
-import RegistrarContacto from './RegistrarContacto/RegistrarContacto';
-import DateTimePicker from 'react-datetime-picker';
-import moment from 'moment';
-import api from '../../../api';
+import api from '../../api';
 
 
-class ModificarPerfilEmpresa extends Component {
+class ModificarPerfilOrganizacion extends Component {
   constructor(props) {
     super(props); //Llama a las props del padre
     this.state = {
@@ -53,16 +50,17 @@ class ModificarPerfilEmpresa extends Component {
   handleSubmit(event) {
     event.preventDefault();
     if (this.handleValidation()) {
-      const evento = {
+      const perfil = {
         nombre: this.state.nombre,
-        descripcion: this.state.descripcion,
-        fecha_hora_inicio: this.state.fecha_hora_inicio.toISOString(),
-        fecha_hora_fin: this.state.fecha_hora_fin.toISOString(),
         rubro_id: this.state.rubro_id,
         ubicacion: this.state.ubicacion,
-        contacto: this.state.contactos,
+        cuit: this.state.cuit,
+        mail: this.state.mail,
+        telefono: this.state.telefono,
+        foto_perfil: undefined,
+        descripcion: this.state.descripcion,
       };
-      api.post('/actividades/eventos/', evento)
+      api.post('/actividades/eventos/', perfil) // cambiar esto, que poner?
         .then((res) => {
           console.log(res);
           console.log(res.data);
@@ -74,7 +72,7 @@ class ModificarPerfilEmpresa extends Component {
     }
   }
 
-  handleValidation(event) {
+  handleValidation() {
     let formIsValid = true;
     const errors = this.state.errors;
 
@@ -163,7 +161,7 @@ class ModificarPerfilEmpresa extends Component {
         />
 
         <div className="form-group">
-          <label htmlFor="descripcion">FOTO</label> {/*VER COMO SE RESUELVE FOTO DE PERFIL*/}
+          <label htmlFor="descripcion">FOTO</label> [//VER COMO SE RESUELVE FOTO DE PERFIL]
           <textarea
             name="descripcion"
             rows="9"
@@ -175,7 +173,7 @@ class ModificarPerfilEmpresa extends Component {
         </div>
 
         <div className="form-group">
-          <input type="submit" className="btn btn-primary" value="Guardar perfil" />
+          <input type="submit" className="btn btn-primary" value="Guardar" />
         </div>
 
       </form>
@@ -183,4 +181,4 @@ class ModificarPerfilEmpresa extends Component {
   }
 }
 
-export default ModificarPerfilEmpresa;
+export default ModificarPerfilOrganizacion;

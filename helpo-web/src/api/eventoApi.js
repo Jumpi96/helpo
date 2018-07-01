@@ -8,6 +8,13 @@ class EventoApi {
       return error;
     });
   }
+  static getEventosOrganizacion() {
+    return api.get('/organizaciones/eventos/').then(response => {
+      return response.data;
+    }).catch(error => {
+      return error;
+    });
+  }
   static updateEvento(evento) {
     api.put(`/actividades/eventos/${evento.id}/`, evento);
   }

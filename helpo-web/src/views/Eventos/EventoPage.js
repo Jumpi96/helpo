@@ -12,7 +12,7 @@ class EventoPage extends React.Component {
   constructor(props) {
     super(props);
     this.props.loadRubrosEvento();
-    this.props.loadEventos();
+    this.props.loadEventosOrganizacion();
   }
 
   render() {
@@ -24,12 +24,11 @@ class EventoPage extends React.Component {
             <i className="fa fa-align-justify"></i> Mis eventos
           </CardHeader>
           <CardBody>
-            <div className="col-md-12">
-              <h1><Link to={'/actividades/registrar-evento'} className="btn btn-primary">+ Nuevo evento</Link></h1>
-              <div className="col-md-4">
+            <div className="row">
+              <div className="col-md-3">
                 <EventoList eventos={eventos} />
               </div>
-              <div className="col-md-8">
+              <div className="col-md-9">
                 <Route path={`${this.props.match.url}/:id`} component={EventoView}/>
               </div>
             </div>
@@ -41,8 +40,7 @@ class EventoPage extends React.Component {
 }
 
 EventoPage.propTypes = {
-  eventos: PropTypes.array.isRequired,
-  rubrosEvento: PropTypes.array.isRequired
+  eventos: PropTypes.array.isRequired
 };
 
 function mapStateToProps(state, ownProps) {
@@ -54,8 +52,8 @@ function mapStateToProps(state, ownProps) {
 
 const mapDispatchToProps = dispatch => {
     return {
-      loadEventos: () => {
-        return dispatch(eventoActions.loadEventos());
+      loadEventosOrganizacion: () => {
+        return dispatch(eventoActions.loadEventosOrganizacion());
       },
       loadRubrosEvento: () => {
         return dispatch(rubrosEventoActions.loadRubrosEvento());

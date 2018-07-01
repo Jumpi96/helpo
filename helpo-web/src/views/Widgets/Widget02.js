@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { Card, CardBody, CardFooter } from 'reactstrap';
 import classNames from 'classnames';
 import { mapToCssModules } from 'reactstrap/lib/utils';
@@ -31,7 +32,7 @@ class Widget02 extends Component {
     const { className, cssModule, header, mainText, icon, color, footer, link, children, variant, ...attributes } = this.props;
 
     // demo purposes only
-    const padding = (variant === '0' ? { card: 'p-3', icon: 'p-3', lead: 'mt-2' } : (variant === '1' ? {
+    const padding = (variant === '0' ? { card: 'p-3', icon: 'p-1', lead: 'mt-2' } : (variant === '1' ? {
       card: 'p-0', icon: 'p-4', lead: 'pt-3',
     } : { card: 'p-0', icon: 'p-4 px-5', lead: 'pt-3' }));
 
@@ -50,8 +51,8 @@ class Widget02 extends Component {
       if (footer) {
         return (
           <CardFooter className="px-3 py-2">
-            <a className="font-weight-bold font-xs btn-block text-muted" href={link}>View More
-              <i className="fa fa-angle-right float-right font-lg"></i></a>
+            <Link className="font-weight-bold font-xs btn-block text-muted" to={link}>Ver más
+              <i className="fa fa-angle-right float-right font-lg"></i></Link>
           </CardFooter>
         );
       }

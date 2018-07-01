@@ -1,6 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import moment from 'moment';
 import { PropTypes } from 'prop-types';
+import Widget02 from '../Widgets/Widget02';
 
 class EventoList extends React.Component {
   
@@ -9,7 +10,13 @@ class EventoList extends React.Component {
     return (
       <ul className="list-group">
         {eventos.map(evento => 
-          <li className="list-group-item" key={evento.id}><Link to={'/actividades/evento/' + evento.id}>{evento.nombre}</Link></li>
+          <Widget02 
+            header={moment(evento.fecha_hora_inicio).format('DD/MM/YYYY')} 
+            key={evento.id} footer
+            mainText={evento.nombre} 
+            icon="fa fa-hand-stop-o" color="primary" 
+            link={'/actividades/evento/' + evento.id}
+          />
         )}
       </ul>
     );

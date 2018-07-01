@@ -48,6 +48,7 @@ class EventoView extends React.Component {
           <h1>Editar evento</h1>
           <EventoForm 
             evento={this.state.evento} 
+            rubros={this.props.rubrosEvento}
             onSave={this.saveEvento} 
             onChange={this.updateEventoState} 
             saving={this.state.saving}
@@ -55,10 +56,51 @@ class EventoView extends React.Component {
         </div>
       )
     }
+    const evento = this.state.evento;
     return (
       <div className="col-md-8 col-md-offset-2">
-        <h1>{this.state.evento.nombre}</h1>
-        <button onClick={this.toggleEdit}>Editar</button>
+        <h2>{evento.nombre}</h2>
+        <div className="row">
+          <div className="form-group col-md-6">
+            <b>Descripción</b>
+          </div>
+          <div className="form-group col-md-6">
+            <p>{evento.descripcion}</p>
+          </div>
+        </div>
+        <div className="row">
+          <div className="form-group col-md-6">
+            <b>Rubro</b>
+          </div>
+          <div className="form-group col-md-6">
+            <p>{evento.rubro.nombre}</p>
+          </div>
+        </div>
+        <div className="row">
+          <div className="form-group col-md-6">
+            <b>Fecha de inicio</b>
+          </div>
+          <div className="form-group col-md-6">
+            <p>{evento.rubro.nombre}</p>
+          </div>
+        </div>
+        <div className="row">
+          <div className="form-group col-md-6">
+            <b>Fecha de finalización</b>
+          </div>
+          <div className="form-group col-md-6">
+            <p>{evento.nombre}</p>
+          </div>
+        </div>
+        <div className="row">
+          <div className="form-group col-md-6">
+            <b>Contactos</b>
+          </div>
+          <div className="form-group col-md-6">
+            <p>{evento.nombre}</p>
+          </div>
+        </div>
+        <button onClick={this.toggleEdit} className="btn btn-default">Editar evento</button>
       </div>
     );
   }
@@ -66,6 +108,7 @@ class EventoView extends React.Component {
 
 EventoView.propTypes = {  
   evento: PropTypes.object.isRequired,
+  rubrosEvento: PropTypes.array.isRequired,
   actions: PropTypes.object.isRequired
 };
 
@@ -73,17 +116,24 @@ function mapStateToProps(state, ownProps) {
   let evento = {
     nombre: '',
     descripcion: '',
-    rubro_id: 0,
+    rubro: {},
     fecha_hora_inicio: new Date(),
     fecha_hora_fin: new Date(),
     ubicacion: { latitud: '', longitud: '', notas: '' },
-    contactos: []
+    contactos: [{
+      nombre: '',
+      mail: '',
+      telefono: '',
+      contactId: '1',
+    }],
+    nextId: '2'
   };
   const eventoId = ownProps.match.params.id;
   if (state.eventos.length > 0) {
     evento = Object.assign({}, state.eventos.find(evento => "" + evento.id === eventoId))
+    evento.nextId = evento.contacto.length + 1;
   }
-  return {evento: evento};
+  return {evento: evento, rubrosEvento: state.rubrosEvento};
 }
 
 function mapDispatchToProps(dispatch) {  

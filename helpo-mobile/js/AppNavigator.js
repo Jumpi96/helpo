@@ -91,7 +91,6 @@ import BasicTab from './components/tab/basicTab';
 import ConfigTab from './components/tab/configTab';
 import NHThumbnail from './components/thumbnail/';
 import NHTypography from './components/typography/';
-import SplashPage from './components/splashscreen/';
 import SideBar from './components/sidebar';
 import SideBarNoAuth from './components/sidebarnoauth';
 import Segment from './components/segment';

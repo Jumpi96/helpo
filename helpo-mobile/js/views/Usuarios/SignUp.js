@@ -47,18 +47,18 @@ class SignUp extends Component {
     }
   }
 
-  handleUserTypeSelect(userType) {
-    switch (userType) {
+  handleUserTypeSelect(user_type) {
+    switch (user_type) {
       case 'voluntario': {
-        this.setState({ userType: '2', apellido: '' });
+        this.setState({ user_type: '2', apellido: '' });
         break;
       }
       case 'ong': {
-        this.setState({ userType: '1', apellido: 'ong' });
+        this.setState({ user_type: '1', apellido: 'ong' });
         break;
       }
       case 'empresa': {
-        this.setState({ userType: '3', apellido: 'empresa' });
+        this.setState({ user_type: '3', apellido: 'empresa' });
         break;
       }
       default: {

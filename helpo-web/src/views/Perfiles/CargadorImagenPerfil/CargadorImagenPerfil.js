@@ -5,7 +5,7 @@ class MyEditor extends React.Component {
   render() {
     return (
       <AvatarEditor
-        image="http://example.com/initialimage.jpg" {/*que foto le ponemos por defecto? y despues configurar las props*/}
+        image="http://example.com/initialimage.jpg"
         width={250}
         height={250}
         border={50}

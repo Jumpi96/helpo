@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ListaRubrosOrganizacion from './ListaRubrosOrganizacion/ListaRubrosOrganizaciones';
 import SelectorUbicacion from '../Actividades/RegistrarEvento/SelectorUbicacion/SelectorUbicacion';
 import api from '../../api';
+import CargadorImagenPerfil from './CargadorImagenPerfil/CargadorImagenPerfil';
 
 
 class ConsultarPerfilOrganizacion extends Component {
@@ -120,14 +121,7 @@ class ConsultarPerfilOrganizacion extends Component {
         />
 
         <div className="form-group">
-          <label htmlFor="foto">FOTO</label> [//VER COMO SE RESUELVE FOTO DE PERFIL]
-          <textarea
-            name="foto"
-            rows="9"
-            className="form-control"
-            htmlFor="disabled-input" 
-            value={this.state.descripcion}
-          />
+          <CargadorImagenPerfil />
         </div>
 
         <div className="form-group">

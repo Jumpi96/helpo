@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import ListaRubrosOrganizacion from './ListaRubrosOrganizacion/ListaRubrosOrganizaciones';
-import SelectorUbicacion from '../Actividades/RegistrarEvento/SelectorUbicacion/SelectorUbicacion';
 import api from '../../api';
 import ReactDOM from 'react-dom'
+
 
 
 class ConsultarPerfilGenerico extends Component {
@@ -33,17 +32,17 @@ componentDidMount() {
     if(this.state.usuario.tipo === 1){ {/*VER QUE PREGUNTA HACER*/}
     return (
       
-      <ConsultarPerfilOrganizacion organizacion=this.state.usuario />
+      <ConsultarPerfilOrganizacion organizacion />
     );
   }
   if(component.isVoluntario){ {/*VER QUE PREGUNTA HACER*/}
     return (
-      <ConsultarPerfilVoluntario voluntario=this.prop />
+      <ConsultarPerfilVoluntario voluntario />
     );
   }
   if(component.isOrganizacion){ {/*VER QUE PREGUNTA HACER*/}
     return (
-      <ConsultarPerfilEmpresa organizacion=this.prop />
+      <ConsultarPerfilEmpresa organizacion />
     );
   }
   }

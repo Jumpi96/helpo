@@ -9,10 +9,12 @@ class ConsultarPerfilGenerico extends Component {
   constructor(props) {
     super(props); //Llama a las props del padre
     this.state = {
-    };
 
-    componentDidMount() {
-      api.get('/actividades/recursos')
+    };
+  }
+
+componentDidMount() {
+      api.get('/auth/usuario')
       .then(res => {
         const recursosData = res.data;
         this.setState({ 
@@ -26,13 +28,12 @@ class ConsultarPerfilGenerico extends Component {
         else { console.log('Error: ', error.message) };
       })    
   };
- 
-  }
 
   render() {
-    if(component.isOrganizacion){ {/*VER QUE PREGUNTA HACER*/}
+    if(this.state.usuario.tipo === 1){ {/*VER QUE PREGUNTA HACER*/}
     return (
-      <ConsultarPerfilOrganizacion organizacion=this.prop />
+      
+      <ConsultarPerfilOrganizacion organizacion=this.state.usuario />
     );
   }
   if(component.isVoluntario){ {/*VER QUE PREGUNTA HACER*/}

@@ -10,7 +10,7 @@ import {
 import api from "../../../../../api";
 
 
-class ListaRubrosEvento extends React.Component {
+class ListaRubrosOrganizacion extends React.Component {
   constructor(props){
     super(props);
     this.state = {
@@ -23,7 +23,7 @@ class ListaRubrosEvento extends React.Component {
   }
 
   componentDidMount(){
-    api.get("/actividades/rubros_evento")
+    api.get("/perfiles/rubros_organizacion")
       .then(res => {
         const rubrosData = res.data;
         this.setState({ rubros: rubrosData });
@@ -36,7 +36,7 @@ class ListaRubrosEvento extends React.Component {
   }
 
   render(){
-    const listaRubroEventos = this.state.rubros.map((r) =>
+    const ListaRubrosOrganizacion = this.state.rubros.map((r) =>
       <Item value={r.id} key={r.id} label={r.nombre}/>
     );
     return (
@@ -51,7 +51,7 @@ class ListaRubrosEvento extends React.Component {
             selectedValue={this.props.rubro_id}
             onValueChange={this.handleChange}
           >
-            {listaRubroEventos}
+            {ListaRubrosOrganizacion}
           </Picker>
         </Body>
       </ListItem>
@@ -59,4 +59,4 @@ class ListaRubrosEvento extends React.Component {
   }
 }
 
-export default ListaRubrosEvento;
+export default ListaRubrosOrganizacion;

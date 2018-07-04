@@ -11,7 +11,7 @@ class ConfirmMail extends Component {
         this.state = {
             isLoaded: false,
             isConfirmed: false,
-            error: null,
+            error: '',
         }
     }
 
@@ -36,13 +36,17 @@ class ConfirmMail extends Component {
             token            
         })
         .then((res) => {console.log(res);this.checkConfirmation(res.data.verification);})
-        .catch((error) => this.setState({ error: error }))
+        .catch((error) => {
+            //TODO: Handle error better
+            this.setState({ error: JSON.stringify(error) }) 
+        }
+     )
     }
 
     render() {
         const {error, isLoaded, isConfirmed} = this.state
-        if (error) {
-            return (<div>Error: {error}</div>)
+        if (error !== '') {
+            return (<div><p>Error: {error}</p></div>)
         }
         else if (!isLoaded) {
             return (<Loading/>)

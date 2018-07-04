@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import api from '../../api';
 import ReactDOM from 'react-dom'
 
+
+
 class ConsultarPerfilGenerico extends Component {
   constructor(props) {
     super(props); //Llama a las props del padre
@@ -27,17 +29,18 @@ componentDidMount() {
   };
 
   render() {
-  if(this.state.usuario.tipo === 1){ {/*VER QUE PREGUNTA HACER*/}
+    if(this.state.usuario.tipo === 1){ {/*VER QUE PREGUNTA HACER*/}
     return (
+      
       <ConsultarPerfilOrganizacion organizacion />
     );
   }
-  else if(component.isVoluntario){ {/*VER QUE PREGUNTA HACER*/}
+  if(component.isVoluntario){ {/*VER QUE PREGUNTA HACER*/}
     return (
       <ConsultarPerfilVoluntario voluntario />
     );
   }
-  else(component.isOrganizacion){ {/*VER QUE PREGUNTA HACER*/}
+  if(component.isOrganizacion){ {/*VER QUE PREGUNTA HACER*/}
     return (
       <ConsultarPerfilEmpresa organizacion />
     );

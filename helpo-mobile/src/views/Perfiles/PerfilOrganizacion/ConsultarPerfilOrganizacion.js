@@ -24,6 +24,7 @@ class ConsultarPerfilOrganizacion extends Component {
     };
   }
 
+
   handleSubmit(event) {
     event.preventDefault();
     if (this.handleValidation()) {
@@ -48,6 +49,7 @@ class ConsultarPerfilOrganizacion extends Component {
         });
     }
   }
+
  
   render() {
     return (
@@ -55,52 +57,76 @@ class ConsultarPerfilOrganizacion extends Component {
         <div className="row">
           <div className="form-group col-md-6">
             <label htmlFor="nombre">Nombre</label>
-            <text>{this.state.nombre}</text>
-          </div>
-          
-          <div className="form-group col-md-6">
-          <CargadorImagenPerfil imagen />
+            <input
+              type="text"
+              name="nombre"
+              className="form-control"
+              placeholder="Nombre"
+              htmlFor="disabled-input"
+              value={this.state.nombre}
+            />
           </div>
 
           <div className="form-group col-md-6">
             <label htmlFor="cuit">CUIT</label>
-            <text>{this.state.cuit}</text>
+            <input
+              type="text"
+              name="cuit"
+              className="form-control"
+              placeholder="CUIT"
+              htmlFor="disabled-input"
+              value={this.state.cuit}
+     
+            />
+            <span style={{ color: 'red' }}>{this.state.errors.cuit}</span>
           </div>
 
           <div className="form-group col-md-6">
             <label htmlFor="telefono">Teléfono</label>
-            <text>{this.state.telefono}</text>          
+            <input
+              type="text"
+              name="telefono"
+              className="form-control"
+              placeholder="Teléfono"
+              htmlFor="disabled-input"
+              value={this.state.telefono}            
+            />           
           </div>
 
           <div className="form-group col-md-6">
-              <label htmlFor="listaRubros">Rubro</label>
-              <select
-                value={this.state.rubro_id}
-                className="form-control"
-              >
-                  {ListaRubrosOrganizacion}
-              </select>
-            </div>
+            <label htmlFor="telefono">Rubro</label>
+            <input
+              type="text"
+              name="rubro"
+              className="form-control"
+              placeholder="Rubro"
+              htmlFor="disabled-input"
+              value={this.state.rubro_id}            
+            />           
+          </div>
 
           <div className="form-group col-md-6">
-            <SelectorUbicacion
-              name="selectorUbicacion"
-              ubicacion={this.state.ubicacion}
-            />        
-          </div>    
+            <label htmlFor="listaRubros">Rubro</label>
+            <ListaRubrosOrganizacion
+              name="listaRubros"
+              rubro={this.state.rubro_id}             
+            />
+            <span style={{ color: 'red' }}>{this.state.errors.rubro}</span>
+          </div>
+          </div>
 
-          <div className="form-group">
-          <label htmlFor="descripcion">Descripcion</label> 
-          <text>{this.state.descripcion}</text>          
-          </div>        
-            
+        <SelectorUbicacion
+          name="selectorUbicacion"
+          ubicacion={this.state.ubicacion}
+        />
 
+        <div className="form-group">
+          <CargadorImagenPerfil />
         </div>
 
         <div className="form-group">
           <input type="submit" className="btn btn-primary" value="Modificar perfil" />
         </div>
-
       </form>
     );
   }

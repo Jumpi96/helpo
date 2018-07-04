@@ -73,16 +73,14 @@ class ConsultarPerfilOrganizacion extends Component {
           </div>
 
           <div className="form-group col-md-6">
-            <label htmlFor="rubro">Rubro</label>
-            <input
-              type="text"
-              name="rubro"
-              className="form-control"
-              placeholder="Rubro"
-              htmlFor="disabled-input"
-              value={this.state.rubro_id}            
-            />           
-          </div>         
+              <label htmlFor="listaRubros">Rubro</label>
+              <select
+                value={this.state.rubro_id}
+                className="form-control"
+              >
+                  {ListaRubrosOrganizacion}
+              </select>
+            </div>
 
           <div className="form-group col-md-6">
             <SelectorUbicacion

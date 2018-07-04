@@ -18,7 +18,7 @@ const RegistrarNecesidades = Loadable({
 });
 
 const ModificarPerfilOrganizacion = Loadable({
-  loader: () => import('./views/Perfiles/ModificarPerfilOrganizacion'),
+  loader: () => import('./views/Perfiles/PerfilOrganizacion/ModificarPerfilOrganizacion'),
   loading: Loading,
 });
 

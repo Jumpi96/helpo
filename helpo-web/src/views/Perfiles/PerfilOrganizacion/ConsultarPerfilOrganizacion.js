@@ -24,7 +24,6 @@ class ConsultarPerfilOrganizacion extends Component {
     };
   }
 
-
   handleSubmit(event) {
     event.preventDefault();
     if (this.handleValidation()) {
@@ -49,7 +48,6 @@ class ConsultarPerfilOrganizacion extends Component {
         });
     }
   }
-
  
   render() {
     return (
@@ -59,6 +57,10 @@ class ConsultarPerfilOrganizacion extends Component {
             <label htmlFor="nombre">Nombre</label>
             <text>{this.state.nombre}</text>
           </div>
+          
+          <div className="form-group col-md-6">
+          <CargadorImagenPerfil />
+        </div>
 
           <div className="form-group col-md-6">
             <label htmlFor="cuit">CUIT</label>
@@ -80,18 +82,15 @@ class ConsultarPerfilOrganizacion extends Component {
               htmlFor="disabled-input"
               value={this.state.rubro_id}            
             />           
-          </div>
+          </div>         
 
-          
-          </div>
+          <div className="form-group col-md-6">
+            <SelectorUbicacion
+              name="selectorUbicacion"
+              ubicacion={this.state.ubicacion}
+            />        
+          </div>      
 
-        <SelectorUbicacion
-          name="selectorUbicacion"
-          ubicacion={this.state.ubicacion}
-        />
-
-        <div className="form-group">
-          <CargadorImagenPerfil />
         </div>
 
         <div className="form-group">

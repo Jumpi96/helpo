@@ -57,44 +57,21 @@ class ConsultarPerfilOrganizacion extends Component {
         <div className="row">
           <div className="form-group col-md-6">
             <label htmlFor="nombre">Nombre</label>
-            <input
-              type="text"
-              name="nombre"
-              className="form-control"
-              placeholder="Nombre"
-              htmlFor="disabled-input"
-              value={this.state.nombre}
-            />
+            <text>{this.state.nombre}</text>
           </div>
 
           <div className="form-group col-md-6">
             <label htmlFor="cuit">CUIT</label>
-            <input
-              type="text"
-              name="cuit"
-              className="form-control"
-              placeholder="CUIT"
-              htmlFor="disabled-input"
-              value={this.state.cuit}
-     
-            />
-            <span style={{ color: 'red' }}>{this.state.errors.cuit}</span>
+            <text>{this.state.cuit}</text>
           </div>
 
           <div className="form-group col-md-6">
             <label htmlFor="telefono">Teléfono</label>
-            <input
-              type="text"
-              name="telefono"
-              className="form-control"
-              placeholder="Teléfono"
-              htmlFor="disabled-input"
-              value={this.state.telefono}            
-            />           
+            <text>{this.state.telefono}</text>          
           </div>
 
           <div className="form-group col-md-6">
-            <label htmlFor="telefono">Rubro</label>
+            <label htmlFor="rubro">Rubro</label>
             <input
               type="text"
               name="rubro"
@@ -105,14 +82,7 @@ class ConsultarPerfilOrganizacion extends Component {
             />           
           </div>
 
-          <div className="form-group col-md-6">
-            <label htmlFor="listaRubros">Rubro</label>
-            <ListaRubrosOrganizacion
-              name="listaRubros"
-              rubro={this.state.rubro_id}             
-            />
-            <span style={{ color: 'red' }}>{this.state.errors.rubro}</span>
-          </div>
+          
           </div>
 
         <SelectorUbicacion
@@ -127,6 +97,7 @@ class ConsultarPerfilOrganizacion extends Component {
         <div className="form-group">
           <input type="submit" className="btn btn-primary" value="Modificar perfil" />
         </div>
+
       </form>
     );
   }

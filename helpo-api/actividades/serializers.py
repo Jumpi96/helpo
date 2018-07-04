@@ -10,6 +10,12 @@ class UbicacionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ubicacion
         fields = ('latitud', 'longitud', 'notas')
+        extra_kwargs = {
+            'notas': {
+                'required': False,
+                'allow_blank': True,
+            }
+        }
 
 class ContactoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -28,11 +34,17 @@ class EventoSerializer(serializers.ModelSerializer):
         model = Evento
         fields = ('id', 'nombre', 'descripcion', 'fecha_hora_inicio',
             'fecha_hora_fin', 'rubro', 'rubro_id', 'ubicacion', 'contacto')
+        extra_kwargs = {
+            'descripcion': {
+                'required': False,
+                'allow_blank': True,
+            }
+        }
 
     def create(self, validated_data):
         ubicacion_data = validated_data.pop('ubicacion')
         ubicacion = Ubicacion.objects.create(**ubicacion_data)
-        contactos_data = validate_data.pop('contacto')        
+        contactos_data = validated_data.pop('contacto')        
         evento = Evento.objects.create(ubicacion=ubicacion, **validated_data)
         for contacto_data in contactos_data:
             Contacto.objects.create(evento=evento, **contacto_data) 

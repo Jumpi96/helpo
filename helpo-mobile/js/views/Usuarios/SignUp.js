@@ -41,9 +41,10 @@ class SignUp extends Component {
         apellido: this.state.apellido,
       };
       api.post('/auth/sign_up/', usuario)
-      .then((res) => { console.log(res); }); // TODO - IR a HOME o Pantalla Logeate pa
+      .then((res) => { this.setState({ errors: { ...this.state.errors, nombre: 'Se registro' } }); });
+       // TODO: UX, rta 200 => "Su cuenta se registro, verificar mail, otra => Hubo problemas"
     } else {
-     // TODO IR a pagina error
+     //
     }
   }
 

@@ -59,8 +59,8 @@ class ConsultarPerfilOrganizacion extends Component {
           </div>
           
           <div className="form-group col-md-6">
-          <CargadorImagenPerfil />
-        </div>
+          <CargadorImagenPerfil imagen />
+          </div>
 
           <div className="form-group col-md-6">
             <label htmlFor="cuit">CUIT</label>
@@ -87,7 +87,13 @@ class ConsultarPerfilOrganizacion extends Component {
               name="selectorUbicacion"
               ubicacion={this.state.ubicacion}
             />        
-          </div>      
+          </div>    
+
+          <div className="form-group">
+          <label htmlFor="descripcion">Descripcion</label> 
+          <text>{this.state.descripcion}</text>          
+          </div>        
+            
 
         </div>
 

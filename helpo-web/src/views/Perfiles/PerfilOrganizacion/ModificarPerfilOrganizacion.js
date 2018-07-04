@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ListaRubrosOrganizacion from './ListaRubrosOrganizacion/ListaRubrosOrganizaciones';
 import SelectorUbicacion from '../Actividades/RegistrarEvento/SelectorUbicacion/SelectorUbicacion';
 import api from '../../api';
+import CargadorImagenPerfil from './CargadorImagenPerfil/CargadorImagenPerfil';
 
 
 class ModificarPerfilOrganizacion extends Component {
@@ -118,6 +119,12 @@ class ModificarPerfilOrganizacion extends Component {
           </div>
 
           <div className="form-group col-md-6">
+          <CargadorImagenPerfil imagen />
+          </div>
+
+
+
+          <div className="form-group col-md-6">
             <label htmlFor="cuit">CUIT</label>
             <input
               type="text"
@@ -161,7 +168,7 @@ class ModificarPerfilOrganizacion extends Component {
         />
 
         <div className="form-group">
-          <label htmlFor="descripcion">FOTO</label> [//VER COMO SE RESUELVE FOTO DE PERFIL]
+          <label htmlFor="descripcion">Descripcion</label>
           <textarea
             name="descripcion"
             rows="9"

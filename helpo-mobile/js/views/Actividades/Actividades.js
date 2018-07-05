@@ -35,6 +35,10 @@ const datas = [
     text: 'Registrar necesidades 1',
     id: '1',
   },
+  {
+    route: 'misEventos',
+    text: 'Mis eventos',
+  },
 ];
 
 class Actividades extends Component {

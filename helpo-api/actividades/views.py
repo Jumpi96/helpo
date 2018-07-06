@@ -5,13 +5,20 @@ from actividades.models import Evento, RubroEvento, CategoriaRecurso, Recurso, N
 from knox.models import AuthToken
 from actividades.serializers import EventoSerializer, RubroEventoSerializer, \
     CategoriaRecursoSerializer, RecursoSerializer, NecesidadSerializer, ContactoSerializer
+from common.functions import get_token_user
 
 class RubroEventoCreateReadView(ListCreateAPIView):
     """
     API endpoint para crear o ver todos los rubros de evento
     """
     queryset = RubroEvento.objects.all()
-    serializer_class = RubroEventoSerializer
+
+    def create(self, request):
+        serializer = RubroEventoSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(organizacion_id=get_token_user(self.request))
+            return Response(serializer.data, status=HTTP_201_CREATED)
+        return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
 class ContactoEventoCreateReadView(ListCreateAPIView):
     """
@@ -116,10 +123,6 @@ class EventoOrganizacionCreateReadView(ListCreateAPIView):
     serializer_class = EventoSerializer
 
     def get_queryset(self):
-        token = self.request.META.get('HTTP_AUTHORIZATION', None)
-        objeto_token = AuthToken.objects.get(token_key=token[6:14])
-        """
-        queryset = Evento.objects.get(organizacion_id=objeto_token.user_id)
-        """
         queryset = Evento.objects.all()
+        queryset = queryset.filter(organizacion_id=get_token_user(self.request))
         return queryset

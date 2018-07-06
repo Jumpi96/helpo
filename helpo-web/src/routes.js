@@ -17,11 +17,6 @@ const EventoPage = Loadable({
   loading: Loading,
 })
 
-const EventoView = Loadable({
-  loader: () => import('./views/Eventos/EventoView.js'),
-  loading: Loading,
-})
-
 const RegistrarNecesidades = Loadable({
   loader: () => import('./views/Actividades/RegistrarNecesidades/RegistrarNecesidades'),
   loading: Loading,

@@ -1,6 +1,6 @@
 import React from 'react';  
 import { PropTypes } from 'prop-types';
-import { Link, Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import { Card, CardHeader, CardBody } from 'reactstrap';
 import {connect} from 'react-redux';  
 import * as eventoActions from '../../actions/eventoActions';

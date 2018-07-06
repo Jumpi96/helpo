@@ -9,5 +9,5 @@ it('renders without crashing', () => {
     <RegistrarEvento />
   );
   const result = renderer.getRenderOutput();
-  expect(result.type).toBe('form');
+  expect(result.type).toBe('div');
 });

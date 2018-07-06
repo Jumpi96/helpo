@@ -20,6 +20,11 @@
       icon: 'icon-pencil',
     },
     {
+      name: 'Mis eventos',
+      url: '/actividades/evento',
+      icon: 'icon-star'
+    },
+    {
       title: true,
       name: 'Perfil',
       wrapper: {            // optional wrapper object

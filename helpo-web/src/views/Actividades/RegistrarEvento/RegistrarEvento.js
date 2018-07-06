@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Card, CardHeader, CardBody } from 'reactstrap';
 import ListaRubrosEvento from './ListaRubrosEvento/ListaRubrosEvento';
 import SelectorUbicacion from './SelectorUbicacion/SelectorUbicacion';
 import RegistrarContacto from './RegistrarContacto/RegistrarContacto';
@@ -17,7 +18,6 @@ class RegistrarEvento extends Component {
       rubro_id: 0,
       fecha_hora_inicio: new Date(),
       fecha_hora_fin: new Date(),
-      // TODO: ubicacion que pasamos por defecto debería ser la de la ONG. Ahora, Córdoba.
       ubicacion: { latitud: -31.4201, longitud: -64.1888, notas: '' },
       errors: {},
       contactos: [{
@@ -237,79 +237,87 @@ class RegistrarEvento extends Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <div className="row">
-          <div className="form-group col-md-6">
-            <label htmlFor="nombre">Nombre</label>
-            <input
-              type="text"
-              name="nombre"
-              className="form-control"
-              placeholder="Nombre"
-              value={this.state.nombre}
-              onChange={this.handleInputChange}
-            />
-            <span style={{ color: 'red' }}>{this.state.errors.nombre}</span>
-          </div>
-          <div className="form-group col-md-6">
-            <label htmlFor="listaRubros">Rubro</label>
-            <ListaRubrosEvento
-              name="listaRubros"
-              rubro={this.state.rubro_id}
-              onRubroChange={this.handleRubroChange}
-            />
-            <span style={{ color: 'red' }}>{this.state.errors.rubro}</span>
-          </div>
-        </div>
-        <div className="form-group">
-          <label>Fecha</label>
-          <div className="form-group">
-            <DateTimePicker
-              name="inicio"
-              onChange={this.handleFechaHoraInicioChange}
-              isClockOpen={false}
-              value={this.state.fecha_hora_inicio}
-            />
-            <DateTimePicker
-              name="fin"
-              onChange={this.handleFechaHoraFinChange}
-              isClockOpen={false}
-              value={this.state.fecha_hora_fin}
-            />
-          </div>
-          <span style={{ color: 'red' }}>{this.state.errors.fechas}</span>
-        </div>
-        <div className="form-group">
-          <label htmlFor="descripcion">Descripción</label>
-          <textarea
-            name="descripcion"
-            rows="9"
-            className="form-control"
-            placeholder="Escriba una breve descripcion del evento."
-            value={this.state.descripcion}
-            onChange={this.handleInputChange}
-          />
-        </div>
-        <SelectorUbicacion
-          name="selectorUbicacion"
-          ubicacion={this.state.ubicacion}
-          onUbicacionChange={this.handleUbicacionChange}
-        />
-        <RegistrarContacto
-          onClickAdd={this.handleAddContact}
-          onClickRemove={this.handleRemoveContact}
-          onContactChange={this.handleContactChange}
-          onPhoneChange={this.handlePhoneChange}
-          contacts={this.state.contactos}          
-        />
-        <span style={{ color: 'red' }}>{this.state.errors.contactoNombre}</span><p>{"\n"}</p>
-        <span style={{ color: 'red' }}>{this.state.errors.contactoContacto}</span><p>{"\n"}</p>
-        <span style={{ color: 'red' }}>{this.state.errors.email}</span>
-        <div className="form-group">
-          <input type="submit" className="btn btn-primary" value="Guardar evento" />
-        </div>
-
-      </form>
+      <div className="animated fadeIn">
+        <Card>
+          <CardHeader>
+            <i className="fa fa-align-justify"></i> Complete las necesidades del evento
+          </CardHeader>
+          <CardBody>
+            <form onSubmit={this.handleSubmit}>
+              <div className="row">
+                <div className="form-group col-md-6">
+                  <label htmlFor="nombre">Nombre</label>
+                  <input
+                    type="text"
+                    name="nombre"
+                    className="form-control"
+                    placeholder="Nombre"
+                    value={this.state.nombre}
+                    onChange={this.handleInputChange}
+                  />
+                  <span style={{ color: 'red' }}>{this.state.errors.nombre}</span>
+                </div>
+                <div className="form-group col-md-6">
+                  <label htmlFor="listaRubros">Rubro</label>
+                  <ListaRubrosEvento
+                    name="listaRubros"
+                    rubro={this.state.rubro_id}
+                    onRubroChange={this.handleRubroChange}
+                  />
+                  <span style={{ color: 'red' }}>{this.state.errors.rubro}</span>
+                </div>
+              </div>
+              <div className="form-group">
+                <label>Fecha</label>
+                <div className="form-group">
+                  <DateTimePicker
+                    name="inicio"
+                    onChange={this.handleFechaHoraInicioChange}
+                    isClockOpen={false}
+                    value={this.state.fecha_hora_inicio}
+                  />
+                  <DateTimePicker
+                    name="fin"
+                    onChange={this.handleFechaHoraFinChange}
+                    isClockOpen={false}
+                    value={this.state.fecha_hora_fin}
+                  />
+                </div>
+                <span style={{ color: 'red' }}>{this.state.errors.fechas}</span>
+              </div>
+              <div className="form-group">
+                <label htmlFor="descripcion">Descripción</label>
+                <textarea
+                  name="descripcion"
+                  rows="9"
+                  className="form-control"
+                  placeholder="Escriba una breve descripcion del evento."
+                  value={this.state.descripcion}
+                  onChange={this.handleInputChange}
+                />
+              </div>
+              <SelectorUbicacion
+                name="selectorUbicacion"
+                ubicacion={this.state.ubicacion}
+                onUbicacionChange={this.handleUbicacionChange}
+              />
+              <RegistrarContacto
+                onClickAdd={this.handleAddContact}
+                onClickRemove={this.handleRemoveContact}
+                onContactChange={this.handleContactChange}
+                onPhoneChange={this.handlePhoneChange}
+                contacts={this.state.contactos}          
+              />
+              <span style={{ color: 'red' }}>{this.state.errors.contactoNombre}</span><p>{"\n"}</p>
+              <span style={{ color: 'red' }}>{this.state.errors.contactoContacto}</span><p>{"\n"}</p>
+              <span style={{ color: 'red' }}>{this.state.errors.email}</span>
+              <div className="form-group">
+                <input type="submit" className="btn btn-primary" value="Guardar evento" />
+              </div>
+            </form>
+          </CardBody>
+        </Card>
+      </div>
     );
   }
 }

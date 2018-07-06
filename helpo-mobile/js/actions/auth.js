@@ -2,16 +2,13 @@ import { Actions } from 'react-native-router-flux';
 import api from '../api';
 
 export function loadUser() {
-  return (dispatch, getState) => {
+  return (dispatch) => {
     dispatch({ type: 'USER_LOADING' });
-    const token = getState().auth.token;
+
     const headers = {
       'Content-Type': 'application/json',
     };
 
-    if (token) {
-      headers.Authorization = `Token ${token}`;
-    }
     return api.get('/auth/user/', { headers })
       .then((res) => {
         dispatch({ type: 'USER_LOADED', user: res.data });
@@ -19,9 +16,10 @@ export function loadUser() {
       })
       .catch((e) => {
         if (e.response.status >= 400 && e.response.status < 500) {
-          dispatch({ type: 'AUTHENTICATION_ERROR', data: e.response.data });
+          dispatch({ type: "AUTHENTICATION_ERROR", data: e.response.data });
+          throw e.response.data;
         } else {
-          console.log('Server Error!');
+          throw e.response;
         }
       })
       .done();

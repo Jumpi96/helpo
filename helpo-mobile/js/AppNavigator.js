@@ -91,7 +91,6 @@ import BasicTab from './components/tab/basicTab';
 import ConfigTab from './components/tab/configTab';
 import NHThumbnail from './components/thumbnail/';
 import NHTypography from './components/typography/';
-import SplashPage from './components/splashscreen/';
 import SideBar from './components/sidebar';
 import SideBarNoAuth from './components/sidebarnoauth';
 import Segment from './components/segment';
@@ -104,6 +103,8 @@ import Actividades from './views/Actividades/Actividades';
 import RegistrarEvento from './views/Actividades/RegistrarEvento/RegistrarEvento';
 import RegistrarNecesidades from './views/Actividades/RegistrarNecesidades/RegistrarNecesidades';
 import AgregarNecesidad from './views/Actividades/RegistrarNecesidades/AgregarNecesidad/AgregarNecesidad';
+import MisEventos from './views/Actividades/MisEventos/MisEventos';
+import VerEvento from './views/Actividades/VerEvento/VerEvento';
 import Login from './views/Usuarios/Login';
 import Configuracion from './views/Usuarios/Configuracion';
 
@@ -198,6 +199,8 @@ class AppNavigator extends Component {
               <Scene key="actividades" component={Actividades} />
               <Scene key="registrarEvento" component={RegistrarEvento} />
               <Scene key="registrarNecesidades" component={RegistrarNecesidades} />
+              <Scene key="misEventos" component={MisEventos} />
+              <Scene key="verEvento" component={VerEvento} />
               <Scene key="agregarNecesidad" component={AgregarNecesidad} />
               <Scene key="header" component={Header} />
               <Scene key="header1" component={Header1} />

@@ -46,7 +46,7 @@ class EventoTests(TestCase):
     def setUp(self):
         self.salud = RubroEvento.objects.create(
             nombre = "Salud"
-        )        
+        )     
         self.ubicacion = Ubicacion.objects.create(
             latitud = -10.0,
             longitud = -10.0,
@@ -58,7 +58,8 @@ class EventoTests(TestCase):
             fecha_hora_inicio = timezone.now(),
             fecha_hora_fin = timezone.now(),
             rubro_id = self.salud.id,
-            ubicacion = self.ubicacion
+            ubicacion = self.ubicacion,
+            organizacion_id = 1
         )
         
     def test_get_todos(self):
@@ -128,7 +129,8 @@ class EventoTests(TestCase):
             fecha_hora_inicio = timezone.now(),
             fecha_hora_fin = timezone.now(),
             rubro_id = self.salud.id,
-            ubicacion = self.ubicacion
+            ubicacion = self.ubicacion,
+            organizacion_id = 1
         )
         
     def test_get_todos(self):
@@ -190,6 +192,7 @@ class NecesidadTests(TestCase):
             descripcion = "Esta es una jornada de prueba",
             fecha_hora_inicio = timezone.now(),
             fecha_hora_fin = timezone.now(),
+            organizacion_id = 1
         )
         self.ropa = CategoriaRecurso.objects.create(
             nombre = "Sweater"

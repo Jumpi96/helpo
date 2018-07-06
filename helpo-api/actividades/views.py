@@ -11,14 +11,8 @@ class RubroEventoCreateReadView(ListCreateAPIView):
     """
     API endpoint para crear o ver todos los rubros de evento
     """
+    serializer_class = RubroEventoSerializer
     queryset = RubroEvento.objects.all()
-
-    def create(self, request):
-        serializer = RubroEventoSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save(organizacion_id=get_token_user(self.request))
-            return Response(serializer.data, status=HTTP_201_CREATED)
-        return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
 class ContactoEventoCreateReadView(ListCreateAPIView):
     """
@@ -49,6 +43,13 @@ class EventoCreateReadView(ListCreateAPIView):
     """
     queryset = Evento.objects.all()
     serializer_class = EventoSerializer
+
+    def create(self, request):
+        serializer = EventoSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(organizacion_id=get_token_user(self.request))
+            return Response(serializer.data, status=HTTP_201_CREATED)
+        return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
 class EventoReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     """

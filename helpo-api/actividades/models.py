@@ -1,5 +1,6 @@
 from django.db import models
 from common.models import IndexedTimeStampedModel
+from users.models import User
 
 class RubroEvento(models.Model):
     nombre = models.CharField(max_length=100)
@@ -16,6 +17,7 @@ class Evento(IndexedTimeStampedModel):
     fecha_hora_fin = models.DateTimeField()
     rubro = models.ForeignKey(RubroEvento, null=True, on_delete=models.SET_NULL)
     ubicacion = models.ForeignKey(Ubicacion, null=True, on_delete=models.SET_NULL)
+    organizacion = models.ForeignKey(User, null=False)
 
 class Contacto(models.Model):
     nombre = models.CharField(max_length=100)

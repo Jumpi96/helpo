@@ -31,6 +31,16 @@ export function updateEvento(evento) {
   };
 }
 
+export function deleteEvento(evento) {  
+  return function(dispatch) {
+    return eventoApi.deleteEvento(evento).then(responseEvento => {
+      dispatch(updateEventoSuccess(responseEvento));
+    }).catch(error => {
+      throw(error);
+    });
+  };
+}
+
 export function loadEventosSuccess(eventos) {  
   return {type: types.LOAD_EVENTOS_SUCCESS, eventos};
 }
@@ -41,4 +51,8 @@ export function loadEventosOrganizacionSuccess(eventos) {
 
 export function updateEventoSuccess(evento) {  
   return {type: types.UPDATE_EVENTOS_SUCCESS, evento}
+}
+
+export function deleteEventoSuccess(evento) {  
+  return {type: types.DELETE_EVENTOS_SUCCESS, evento}
 }

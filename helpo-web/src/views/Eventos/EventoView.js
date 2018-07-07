@@ -3,6 +3,8 @@ import { PropTypes } from 'prop-types';
 import * as eventoActions from '../../actions/eventoActions';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import moment from 'moment';
+import ModalEliminarItem from '../common/ModalEliminarItem/ModalEliminarItem';
 import EventoForm from './EventoForm';
 
 class EventoView extends React.Component {  
@@ -11,15 +13,40 @@ class EventoView extends React.Component {
     this.state = { 
       isEditing: false,
       evento: this.props.evento,
-      saving: false
+      saving: false,
+      showModalEliminar: false
     }
     this.updateEventoState = this.updateEventoState.bind(this);
     this.saveEvento = this.saveEvento.bind(this);
     this.toggleEdit = this.toggleEdit.bind(this);
+    this.toggleEditNecesidades = this.toggleEditNecesidades.bind(this);
+    this.toggleDelete = this.toggleDelete.bind(this);
+    this.confirmDeleteNecesidad = this.confirmDeleteNecesidad.bind(this);
   }
 
   toggleEdit() {
     this.setState({ isEditing: true });
+  }
+
+  toggleEditNecesidades() {
+    this.props.history.push({ 
+      pathname: '/actividades/registrar-necesidades', 
+      search: '?evento=' + this.state.evento.id,  
+    });
+  }
+
+  confirmDeleteNecesidad(del) {
+    if (del) {
+      this.props.actions.deleteEvento(this.state.evento);
+      this.props.history.push({
+        pathname: '/dashboard',
+      });
+    }
+    this.setState({ showModalEliminar: false })
+  }
+
+  toggleDelete() {
+    this.setState({ showModalEliminar: true });
   }
 
   saveEvento(e) {
@@ -55,54 +82,92 @@ class EventoView extends React.Component {
           /> 
         </div>
       )
+    } else if (this.state.evento.nombre) {
+      const evento = this.state.evento;
+      let listaContactos;
+      if (evento.contacto.length > 0) {
+        listaContactos = evento.contacto.map((contacto) => 
+          <li>contacto.nombre</li>
+        );
+      }
+      return (
+        <div className="col-md-8 col-md-offset-2">
+          <h1>{evento.nombre}</h1>
+          <div className="row">
+            <div className="form-group col-md-6">
+              <b className="float-right">Descripción</b>
+            </div>
+            <div className="form-group col-md-6">
+              <p>{evento.descripcion}</p>
+            </div>
+          </div>
+          <div className="row">
+            <div className="form-group col-md-6">
+              <b className="float-right">Rubro</b>
+            </div>
+            <div className="form-group col-md-6">
+              <p>{evento.rubro.nombre}</p>
+            </div>
+          </div>
+          <div className="row">
+            <div className="form-group col-md-6">
+              <b className="float-right">Fecha de inicio</b>
+            </div>
+            <div className="form-group col-md-6">
+              <p>{moment(evento.fecha_hora_inicio).format('DD/MM/YYYY HH:mm')}</p>
+            </div>
+          </div>
+          <div className="row">
+            <div className="form-group col-md-6">
+              <b className="float-right">Fecha de finalización</b>
+            </div>
+            <div className="form-group col-md-6">
+            <p>{moment(evento.fecha_hora_fin).format('DD/MM/YYYY HH:mm')}</p>
+            </div>
+          </div>
+          {listaContactos ? (
+            <div className="row">
+              <div className="form-group col-md-6">
+                <b className="float-right">Contactos</b>
+              </div>
+              <div className="form-group col-md-6">
+                <ul>{listaContactos}</ul>
+              </div>
+            </div>
+            ) : undefined
+          }
+          <div class="btn-group form-group" role="group">
+            <button 
+              onClick={this.toggleEdit} 
+              hidden={moment(evento.fecha_hora_inicio)<=moment()}
+              className="btn btn-warning"
+            >
+              Editar evento
+            </button>
+            <button 
+              onClick={this.toggleEditNecesidades} 
+              hidden={moment(evento.fecha_hora_inicio)<=moment()}
+              className="btn btn-warning"
+            >
+              Editar necesidades
+            </button>
+          </div>
+          <div class="form-group">
+            <button 
+              onClick={this.toggleDelete} 
+              hidden={moment(evento.fecha_hora_inicio)<=moment()}
+              className="btn btn-danger"
+            >
+              Eliminar evento
+            </button>
+          </div>
+          <ModalEliminarItem open={this.state.showModalEliminar} nombre={this.state.evento.nombre}
+            closeModal={this.confirmDeleteNecesidad}/>
+        </div>
+      );
+    } else {
+      return <p>Cargando...</p>
     }
-    const evento = this.state.evento;
-    return (
-      <div className="col-md-8 col-md-offset-2">
-        <h2>{evento.nombre}</h2>
-        <div className="row">
-          <div className="form-group col-md-6">
-            <b>Descripción</b>
-          </div>
-          <div className="form-group col-md-6">
-            <p>{evento.descripcion}</p>
-          </div>
-        </div>
-        <div className="row">
-          <div className="form-group col-md-6">
-            <b>Rubro</b>
-          </div>
-          <div className="form-group col-md-6">
-            <p>{evento.rubro.nombre}</p>
-          </div>
-        </div>
-        <div className="row">
-          <div className="form-group col-md-6">
-            <b>Fecha de inicio</b>
-          </div>
-          <div className="form-group col-md-6">
-            <p>{evento.rubro.nombre}</p>
-          </div>
-        </div>
-        <div className="row">
-          <div className="form-group col-md-6">
-            <b>Fecha de finalización</b>
-          </div>
-          <div className="form-group col-md-6">
-            <p>{evento.nombre}</p>
-          </div>
-        </div>
-        <div className="row">
-          <div className="form-group col-md-6">
-            <b>Contactos</b>
-          </div>
-          <div className="form-group col-md-6">
-            <p>{evento.nombre}</p>
-          </div>
-        </div>
-        <button onClick={this.toggleEdit} className="btn btn-default">Editar evento</button>
-      </div>
-    );
   }
 };
 
@@ -120,7 +185,7 @@ function mapStateToProps(state, ownProps) {
     fecha_hora_inicio: new Date(),
     fecha_hora_fin: new Date(),
     ubicacion: { latitud: '', longitud: '', notas: '' },
-    contactos: [{
+    contacto: [{
       nombre: '',
       mail: '',
       telefono: '',

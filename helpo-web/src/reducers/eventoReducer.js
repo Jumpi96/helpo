@@ -12,6 +12,12 @@ export default function eventoReducer(state = initialState.eventos, action) {
         ...state.filter(evento => evento.id !== action.evento.id),
         Object.assign({}, action.evento)
       ]
+    case types.DELETE_EVENTOS_SUCCESS: {
+      const newState = Object.assign([], state);
+      const indexOfEventoToDelete = state.findIndex(evento => {return evento.id === action.evento.id})
+      newState.splice(indexOfEventoToDelete, 1);
+      return newState;
+      }      
     default: 
       return state;
   }

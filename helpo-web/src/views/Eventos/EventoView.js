@@ -87,7 +87,7 @@ class EventoView extends React.Component {
       let listaContactos;
       if (evento.contacto.length > 0) {
         listaContactos = evento.contacto.map((contacto) => 
-          <li>contacto.nombre</li>
+          <li>{contacto.nombre}</li>
         );
       }
       return (

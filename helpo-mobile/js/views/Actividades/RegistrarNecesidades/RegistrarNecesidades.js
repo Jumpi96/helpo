@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Actions } from 'react-native-router-flux';
-import { actions } from 'react-native-navigation-redux-helpers';
+import { Actions } from 'react-native-router-flux'; 
 import {
   Button,
   Container,

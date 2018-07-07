@@ -1,6 +1,8 @@
 from rest_framework import viewsets, permissions
 from rest_framework.generics import ListCreateAPIView
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
+from rest_framework.response import Response
+from rest_framework import status
 from actividades.models import Evento, RubroEvento, CategoriaRecurso, Recurso, Necesidad, Contacto
 from knox.models import AuthToken
 from actividades.serializers import EventoSerializer, RubroEventoSerializer, \
@@ -48,8 +50,8 @@ class EventoCreateReadView(ListCreateAPIView):
         serializer = EventoSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(organizacion_id=get_token_user(self.request))
-            return Response(serializer.data, status=HTTP_201_CREATED)
-        return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class EventoReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     """
@@ -126,4 +128,5 @@ class EventoOrganizacionCreateReadView(ListCreateAPIView):
     def get_queryset(self):
         queryset = Evento.objects.all()
         queryset = queryset.filter(organizacion_id=get_token_user(self.request))
+        queryset = queryset.order_by('-fecha_hora_inicio')
         return queryset

@@ -8,7 +8,10 @@ const api = axios.create({
 
 api.interceptors.request.use(
   async (config) => {
-    config.headers.Authorization = `Token ${await AsyncStorage.getItem('token')}`;
+    const token = await AsyncStorage.getItem('token');
+    if (token !== null) {
+      config.headers.Authorization = `Token ${token}`;
+    }
     return config;
   },
   error => Promise.reject(error)

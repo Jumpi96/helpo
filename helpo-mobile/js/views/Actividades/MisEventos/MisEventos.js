@@ -72,7 +72,7 @@ class MisEventos extends React.Component {
             {listaEventos}
           </Form>
         </Content>
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 0.5 }}>
           <Fab
             direction="up"
             containerStyle={{}}

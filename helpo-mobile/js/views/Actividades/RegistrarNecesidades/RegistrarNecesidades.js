@@ -43,7 +43,6 @@ class RegistrarNecesidades extends React.Component {
   }
 
   handleConfirmDelete(b) {
-    console.log(b.text === "Eliminar");
     if (b.text === "Eliminar" ) {
       api.delete("/actividades/necesidades/" + this.state.necesidadModificada + "/")
       .then(res => {

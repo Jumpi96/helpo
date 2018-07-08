@@ -18,5 +18,12 @@ class EventoApi {
   static updateEvento(evento) {
     api.put(`/actividades/eventos/${evento.id}/`, evento);
   }
+  static deleteEvento(evento) {
+    return api.delete(`/actividades/eventos/${evento.id}/`, evento).then(response => {
+      return response.data;
+    }).catch(error => {
+      return error;
+    });
+  }
 }
 export default EventoApi;

@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
+import moment from 'moment';
 import {
   Button,
   Container,
@@ -9,16 +10,70 @@ import {
   Body,
   Title,
   Content,
-  Form,
+  Separator,
+  ListItem,
   Icon,
   Text,
+  Label,
+  View,
+  Fab,
+  IconNB,
+  ActionSheet,
+  Toast,
 } from 'native-base';
 import { openDrawer } from '../../../actions/drawer';
+import api from '../../../api';
 import styles from './styles';
 
 class VerEvento extends React.Component {
 
+  static propTypes = {
+    evento: React.PropTypes.object,
+  }
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      fabActive: false,
+    };
+  }
+
+  handleConfirmDelete(b) {
+    if (b.text === 'Eliminar') {
+      const evento = this.props.evento;
+      if (moment(evento.fecha_hora_inicio) > moment()) {
+        api.delete('/actividades/eventos/' + evento.id + '/')
+          .then((res) => {
+            console.log(res);
+            console.log(res.data);
+            Actions.misEventos();
+          }).catch(function (error) {
+            if (error.response){ console.log(error.response.status); }
+            else { console.log('Error: ', error.message); }
+            this.setState({ error: 'Hubo un problema al cargar su información.' });
+          });
+      } else {
+        Toast.show({
+          text: 'No se pueden eliminar eventos ya finalizados.',
+          position: 'bottom',
+          buttonText: 'OK',
+        });
+      }
+    }
+  }
+
   render() {
+    const deleteButtons = [
+      { text: 'Eliminar', icon: 'trash', iconColor: '#fa213b' },
+      { text: 'Cancelar', icon: 'close', iconColor: '#25de5b' },
+    ];
+    const evento = this.props.evento;
+    let listaContactos;
+    if (evento.contacto.length > 0) {
+      listaContactos = evento.contacto.map(contacto =>
+        <li>{contacto.nombre}</li>
+      );
+    }
     return (
       <Container style={styles.container}>
         <Header>
@@ -28,14 +83,78 @@ class VerEvento extends React.Component {
             </Button>
           </Left>
           <Body>
-            <Title>Ver evento</Title>
+            <Title>Evento - {evento.nombre}</Title>
           </Body>
         </Header>
         <Content>
-          <Form>
-            <Text>{this.props.evento.nombre}</Text>
-          </Form>
+          <Separator bordered noTopBorder>
+            <Text>Información</Text>
+          </Separator>
+          <ListItem>
+            <Label style={styles.label}>Nombre</Label>
+            <Text>{evento.nombre}</Text>
+          </ListItem>
+          <ListItem>
+            <Label style={styles.label}>Descripción</Label>
+            <Text>{evento.descripcion}</Text>
+          </ListItem>
+          <ListItem>
+            <Label style={styles.label}>Rubro</Label>
+            <Text>{evento.rubro.nombre}</Text>
+          </ListItem>
+          <Separator bordered noTopBorder>
+            <Text>Fecha</Text>
+          </Separator>
+          <ListItem>
+            <Label style={styles.label}>Inicio</Label>
+            <Text>{moment(evento.fecha_hora_inicio).format('DD/MM/YYYY HH:mm')}</Text>
+          </ListItem>
+          <ListItem>
+            <Label style={styles.label}>Fin</Label>
+            <Text>{moment(evento.fecha_hora_fin).format('DD/MM/YYYY HH:mm')}</Text>
+          </ListItem>
+          {listaContactos ? (
+            <Content>
+              <Separator bordered noTopBorder>
+                <Text>Contactos</Text>
+              </Separator>
+              {listaContactos}
+            </Content>
+            ) : undefined
+          }
         </Content>
+        <View style={{ flex: 0.5 }}>
+          <Fab
+            direction="left"
+            containerStyle={{}}
+            active={this.state.fabActive}
+            style={{ backgroundColor: '#5067FF' }}
+            position="bottomRight"
+            onPress={() => this.setState({ fabActive: !this.state.fabActive })}
+          >
+            <IconNB name="md-add" />
+            <Button style={{ backgroundColor: '#34A34F' }}>
+              <Icon name="color-filter" />
+            </Button>
+            <Button
+              style={{ backgroundColor: '#FD3C2D' }}
+              onPress={() => {
+                ActionSheet.show(
+                  {
+                    options: deleteButtons,
+                    cancelButtonIndex: 1,
+                    destructiveButtonIndex: 0,
+                    title: '¿Está seguro que desea eliminar el evento?',
+                  },
+                  (buttonIndex) => {
+                    this.handleConfirmDelete(deleteButtons[buttonIndex]);
+                  });
+              }}
+            >
+              <Icon name="trash" />
+            </Button>
+          </Fab>
+        </View>
       </Container>
     );
   }

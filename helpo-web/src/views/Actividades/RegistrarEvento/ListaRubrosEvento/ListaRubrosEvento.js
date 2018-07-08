@@ -17,7 +17,7 @@ class ListaRubrosEvento extends Component {
   }
 
   componentDidMount(){
-    api.get('/actividades/rubros_evento')
+    api.get('/actividades/rubros_evento/')
       .then(res => {
         const rubrosData = res.data;
         this.setState({ rubros: rubrosData});

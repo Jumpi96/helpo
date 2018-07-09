@@ -5,8 +5,8 @@ from rest_framework.generics import ListCreateAPIView
 from rest_framework.generics import RetrieveUpdateDestroyAPIView, RetrieveUpdateAPIView
 from knox.models import AuthToken
 from django.contrib.auth import get_user_model
-from users.models import RubroOrganizacion, OrganizacionProfile
-from users.serializers import CreateUserSerializer, UserSerializer, LoginUserSerializer, RubroOrganizacionSerializer, OrganizacionProfileSerializer
+from users.models import RubroOrganizacion, OrganizacionProfile, VoluntarioProfile, EmpresaProfile
+from users.serializers import CreateUserSerializer, UserSerializer, LoginUserSerializer, RubroOrganizacionSerializer, OrganizacionProfileSerializer, VoluntarioProfileSerializer, EmpresaProfileSerializer
 
 
 class CreateUserView(generics.GenericAPIView):
@@ -61,4 +61,20 @@ class OrgProfileReadUpdateDeleteView(RetrieveUpdateAPIView):
     """
     queryset = OrganizacionProfile.objects.all()
     serializer_class = OrganizacionProfileSerializer
+    lookup_field = 'usuario'
+
+class EmpresaProfileReadUpdateDeleteView(RetrieveUpdateAPIView):
+    """
+    API endpoint para leer, actualizar o eliminar un perfil de empresa
+    """
+    queryset = EmpresaProfile.objects.all()
+    serializer_class = EmpresaProfileSerializer
+    lookup_field = 'usuario'
+
+class VoluntarioProfileReadUpdateDeleteView(RetrieveUpdateAPIView):
+    """
+    API endpoint para leer, actualizar o eliminar un perfil de voluntario
+    """
+    queryset = VoluntarioProfile.objects.all()
+    serializer_class = VoluntarioProfileSerializer
     lookup_field = 'usuario'

@@ -36,10 +36,21 @@ class OrganizacionProfile(Profile):
     descripcion = models.TextField(blank=True, null=True)
 
 class VoluntarioProfile(Profile):
-    apellido = models.CharField(max_length=50)
+    sexo = models.TextField(blank=True, null=True)
+    apellido = models.CharField(max_length=140, default="no apellido")
+    telefono = models.BigIntegerField(blank=True, null=True)
+    dni = models.BigIntegerField(blank=True, null=True)
+    avatar = models.ForeignKey(Imagen, on_delete=models.SET_NULL, blank=True, null=True)
+    gustos = models.TextField(blank=True, null=True)
+    habilidades = models.TextField(blank=True, null=True)
 
 class EmpresaProfile(Profile):
     telefono = models.IntegerField(null=True)
+    cuit = models.BigIntegerField(blank=True, null=True)
+    rubro = models.ForeignKey(RubroOrganizacion, on_delete=models.SET_NULL, blank=True, null=True)
+    avatar = models.ForeignKey(Imagen, on_delete=models.SET_NULL, blank=True, null=True)
+    ubicacion = models.ForeignKey(Ubicacion, on_delete=models.SET_NULL,blank=True, null=True)
+    descripcion = models.TextField(blank=True, null=True)
 
 class UserManager(BaseUserManager):
 

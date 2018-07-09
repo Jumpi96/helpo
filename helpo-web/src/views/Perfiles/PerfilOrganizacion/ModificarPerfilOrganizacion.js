@@ -103,6 +103,7 @@ class ModificarPerfilOrganizacion extends Component {
 
   render() {
     return (
+      <Card>
       <form onSubmit={this.handleSubmit}>
         <div className="row">
           <div className="form-group col-md-6">
@@ -184,6 +185,7 @@ class ModificarPerfilOrganizacion extends Component {
         </div>
         
       </form>
+      </Card>
     );
   }
 }

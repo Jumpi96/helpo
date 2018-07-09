@@ -40,7 +40,7 @@ class ConsultarPerfilOrganizacion extends Component {
             </Button>
           </Left>
           <Body>
-            <Title>Ver Perfil</Title>
+            <Title>Perfil</Title>
           </Body>
           <Right />
         </Header>
@@ -53,6 +53,17 @@ class ConsultarPerfilOrganizacion extends Component {
                 value={this.state.nombre}
               />
             </Item>
+
+            <Item floatingLabel>
+              <Label>CUIT</Label>
+              <Text
+                value={this.state.cuit}
+              />
+            </Item>
+            
+
+
+          
 
             <Item floatingLabel>
               <Label>Descripción</Label>

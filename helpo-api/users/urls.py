@@ -50,4 +50,9 @@ urlpatterns = [
         view=users_views.VoluntarioProfileReadUpdateDeleteView.as_view(),
         name="get_put_delete_perfil_voluntario"
     ),
+    url(
+        regex=r"^verify_email/$",
+        view=users_views.VerifyMailView.as_view(),
+        name="user"
+    ),    
 ]

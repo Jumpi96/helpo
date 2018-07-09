@@ -64,7 +64,7 @@ class UserManager(BaseUserManager):
         if user_type == 1:
             profile = OrganizacionProfile.objects.create(usuario=user,imagen=avatar)
         elif user_type == 2:
-            profile = VoluntarioProfile.objects.create(usuario=user, apellido=apellido)
+            profile = VoluntarioProfile.objects.create(usuario=user, apellido=kwargs["apellido"])
         else:
             profile = EmpresaProfile.objects.create(usuario=user)
         self.send_confirmation_email(user)
@@ -79,18 +79,25 @@ class UserManager(BaseUserManager):
         return user
 
     def send_confirmation_email(self, user):
-        bash = sha256(user.id + user.email)
-        url_confirmation = '%sconfirm-email?bash=%s' % (config('URL_CLIENT', default=None), bash)
+        str_to_encode = str(user.id) + user.email
+        str_encoded = str_to_encode.encode('utf-8')
+        uncutbash = str(sha256(str_encoded))
+        bash = uncutbash[22:36]
+        self.create_user_verification(user, bash)
+        """url_confirmation = '%s/confirmMail/%s' % (config('URL_CLIENT', default=None), bash)"""
+        url_confirmation = '%s/confirmMail/%s' % ('localhost:3000/#', bash)
         content = '<a href="%s">Confirma su cuenta aquí</a>' % (url_confirmation)
         send_mail(
             'Confirma tu cuenta de helpo.',
             url_confirmation,
             'helpo@helpo.com',
-            user.email,
+            [user.email],
             fail_silently=True,
-            html_message=content
+            html_message=content,
         )
 
+    def create_user_verification(self, user, token):
+        UserVerification.objects.create(usuario=user, verificationToken=token)
 
 class User(AbstractBaseUser, PermissionsMixin, IndexedTimeStampedModel):
     USER_TYPE_CHOICES = (
@@ -99,7 +106,7 @@ class User(AbstractBaseUser, PermissionsMixin, IndexedTimeStampedModel):
         (2, 'voluntario'),
         (3, 'empresa')
     )
-    nombre = models.CharField(max_length=140, unique=True)
+    nombre = models.CharField(max_length=140)
     user_type = models.PositiveSmallIntegerField(choices=USER_TYPE_CHOICES)
     email = models.EmailField(max_length=255, unique=True)
     is_staff = models.BooleanField(
@@ -127,3 +134,33 @@ class User(AbstractBaseUser, PermissionsMixin, IndexedTimeStampedModel):
 
     def __str__(self):
         return self.email
+    
+    def validate_mail(self, token):        
+        uv_object = UserVerification.objects.get(usuario=self)
+        if (uv_object.verificationToken == token):
+            self.is_confirmed=True
+            self.save()
+            uv_object.delete()
+            return True
+        return False
+
+
+class UserVerification(IndexedTimeStampedModel):
+    usuario = models.OneToOneField('User')
+    verificationToken = models.CharField(max_length=2000)
+
+
+class Profile(models.Model):
+    usuario = models.OneToOneField(User)
+
+    class Meta:
+        abstract = True
+
+class VoluntarioProfile(Profile):
+    apellido = models.CharField(max_length=50)
+
+class OrganizacionProfile(Profile):
+    verificada = models.BooleanField(default=False)
+    
+class EmpresaProfile(Profile):
+    telefono = models.IntegerField(null=True)

@@ -23,7 +23,7 @@ const datas = [
   },
   {
     name: 'Register',
-    route: 'form',
+    route: 'signUp',
     icon: 'lock',
     bg: '#C5F442',
   },
@@ -66,7 +66,7 @@ class SideBarNoAuth extends Component {
           </Image>
           <List
             dataArray={datas} renderRow={data =>
-              <ListItem button noBorder onPress={() => { Actions[data.route](); this.props.closeDrawer() }} >
+              <ListItem button noBorder onPress={() => { Actions[data.route](); this.props.closeDrawer(); }} >
                 <Left>
                   <Icon active name={data.icon} style={{ color: '#777', fontSize: 26, width: 30 }} />
                   <Text style={styles.text}>{data.name}</Text>

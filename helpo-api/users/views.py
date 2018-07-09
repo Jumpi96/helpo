@@ -6,7 +6,7 @@ from rest_framework.generics import RetrieveUpdateDestroyAPIView, RetrieveUpdate
 from knox.models import AuthToken
 from django.contrib.auth import get_user_model
 from users.models import RubroOrganizacion, OrganizacionProfile, VoluntarioProfile, EmpresaProfile
-from users.serializers import CreateUserSerializer, UserSerializer, LoginUserSerializer, RubroOrganizacionSerializer, OrganizacionProfileSerializer, VoluntarioProfileSerializer, EmpresaProfileSerializer
+from users.serializers import CreateUserSerializer, UserSerializer, LoginUserSerializer, RubroOrganizacionSerializer, OrganizacionProfileSerializer, VoluntarioProfileSerializer, EmpresaProfileSerializer, VerificationMailSerializer
 
 
 class CreateUserView(generics.GenericAPIView):
@@ -78,3 +78,16 @@ class VoluntarioProfileReadUpdateDeleteView(RetrieveUpdateAPIView):
     queryset = VoluntarioProfile.objects.all()
     serializer_class = VoluntarioProfileSerializer
     lookup_field = 'usuario'
+
+class VerifyMailView(generics.GenericAPIView):
+    serializer_class = VerificationMailSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            return Response({
+                "verification": "Success"
+             })
+        return Response({
+            "verification": "Failed"
+        })

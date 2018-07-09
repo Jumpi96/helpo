@@ -37,7 +37,7 @@ class MisEventos extends React.Component {
           <Left>
             <Button
               style={{ backgroundColor: "#ffe859" }}
-              onPress={() => Actions.verEvento({ evento: n })}
+              onPress={() => Actions.verEvento({ evento: n, rubros: this.props.rubrosEvento })}
             >
               <Icon name="hand" />
             </Button>

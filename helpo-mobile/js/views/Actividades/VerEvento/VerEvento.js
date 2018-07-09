@@ -29,6 +29,7 @@ class VerEvento extends React.Component {
 
   static propTypes = {
     evento: React.PropTypes.object,
+    rubrosEvento: React.PropTypes.object,
   }
 
   constructor(props) {
@@ -62,6 +63,19 @@ class VerEvento extends React.Component {
     }
   }
 
+  handleEdit() {
+    const evento = this.props.evento;
+    if (moment(evento.fecha_hora_inicio) > moment()) {
+      Actions.editarEvento({ evento, rubros: this.props.rubrosEvento });
+    } else {
+      Toast.show({
+        text: 'No se pueden modificar eventos ya finalizados.',
+        position: 'bottom',
+        buttonText: 'OK',
+      });
+    }
+  }
+
   render() {
     const deleteButtons = [
       { text: 'Eliminar', icon: 'trash', iconColor: '#fa213b' },
@@ -71,7 +85,7 @@ class VerEvento extends React.Component {
     let listaContactos;
     if (evento.contacto.length > 0) {
       listaContactos = evento.contacto.map(contacto =>
-        <li>{contacto.nombre}</li>
+        <ListItem><Text>{contacto.nombre} - {contacto.telefono}</Text></ListItem>
       );
     }
     return (
@@ -114,16 +128,16 @@ class VerEvento extends React.Component {
             <Text>{moment(evento.fecha_hora_fin).format('DD/MM/YYYY HH:mm')}</Text>
           </ListItem>
           {listaContactos ? (
-            <Content>
+            <View>
               <Separator bordered noTopBorder>
                 <Text>Contactos</Text>
               </Separator>
               {listaContactos}
-            </Content>
+            </View>
             ) : undefined
           }
         </Content>
-        <View style={{ flex: 0.5 }}>
+        <View style={{ flex: 0.1 }}>
           <Fab
             direction="left"
             containerStyle={{}}
@@ -133,7 +147,9 @@ class VerEvento extends React.Component {
             onPress={() => this.setState({ fabActive: !this.state.fabActive })}
           >
             <IconNB name="md-add" />
-            <Button style={{ backgroundColor: '#34A34F' }}>
+            <Button style={{ backgroundColor: '#34A34F' }}
+              onPress={() => {this.handleEdit()}}
+            >
               <Icon name="color-filter" />
             </Button>
             <Button

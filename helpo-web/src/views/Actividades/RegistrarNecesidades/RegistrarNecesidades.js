@@ -4,7 +4,7 @@ import './RegistrarNecesidades.css';
 import SelectorItem from './SelectorItem/SelectorItem';
 import NumericInput from 'react-numeric-input';
 import api from '../../../api';
-import ModalEliminarItem from './ModalEliminarItem/ModalEliminarItem';
+import ModalEliminarItem from '../../common/ModalEliminarItem/ModalEliminarItem';
 import ModalEditarItem from './ModalEditarItem/ModalEditarItem';
 
 
@@ -12,7 +12,7 @@ class RegistrarNecesidades extends Component {
   constructor(props){
     super(props);
     const urlParams = new URLSearchParams(this.props.location.search)
-    const parametro = urlParams.get('evento')
+    const parametro = urlParams.get('evento');
     let evento;
     if (parametro) {
       evento = parametro;
@@ -126,7 +126,7 @@ class RegistrarNecesidades extends Component {
     const necesidad = this.state.necesidades.filter(n => n.id === id)[0];
     this.setState({ 
       showModalEliminar: true,
-      necesidadModificada: necesidad
+      necesidadModificada: necesidad.recurso.nombre
     });
     
   }
@@ -251,7 +251,7 @@ class RegistrarNecesidades extends Component {
         </Card>
         <ModalEliminarItem open={this.state.showModalEliminar} necesidad={this.state.necesidadModificada}
           closeModal={this.confirmDeleteNecesidad}/>
-        <ModalEditarItem open={this.state.showModalEditar} necesidad={this.state.necesidadModificada}
+        <ModalEditarItem open={this.state.showModalEditar} nombre={this.state.necesidadModificada}
           closeModal={this.saveNecesidad}/>
       </div>
     )

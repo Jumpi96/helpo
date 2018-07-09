@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Actions } from 'react-native-router-flux';
-import { actions } from 'react-native-navigation-redux-helpers';
+import { Actions } from 'react-native-router-flux'; 
 import {
   Button,
   Container,
@@ -44,7 +43,6 @@ class RegistrarNecesidades extends React.Component {
   }
 
   handleConfirmDelete(b) {
-    console.log(b.text === "Eliminar");
     if (b.text === "Eliminar" ) {
       api.delete("/actividades/necesidades/" + this.state.necesidadModificada + "/")
       .then(res => {

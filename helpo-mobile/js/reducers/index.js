@@ -5,6 +5,8 @@ import drawer from './drawer';
 import routes from './routes';
 import auth from './auth';
 import cardNavigation from './cardNavigation';
+import eventos from './eventoReducer';
+import rubrosEvento from './rubrosEventoReducer';
 
 export default combineReducers({
 
@@ -12,4 +14,6 @@ export default combineReducers({
   cardNavigation,
   routes,
   auth,
+  eventos,
+  rubrosEvento,
 });

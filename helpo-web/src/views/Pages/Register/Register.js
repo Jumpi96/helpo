@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { Button, Card, CardHeader, CardBody, CardFooter, Col, Container, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
 import { connect } from "react-redux";
-import {auth} from "../../../actions";
+//import {auth} from "../../../actions"; SE USA ABAJO - COMENTADO
 import validateEmail from "../../../utils/ValidateEmail";
+import api from "../../../api"
 
 
 class Register extends Component {
@@ -11,7 +12,7 @@ class Register extends Component {
     this.state = {
       nombre: "",
       apellido: "",
-      user_type: "voluntario",
+      user_type: "2",
       email: "",
       password: "",
       repeat: "",
@@ -28,11 +29,23 @@ class Register extends Component {
     this.renderErrorList = this.renderErrorList.bind(this);
   }
 
-  onSubmitData() {    
+  onSubmitData() {        
     if (this.handleValidation()) {
-      this.props.register(this.state.nombre, this.state.email,
+      const usuario = {
+        nombre: this.state.nombre,
+        email: this.state.email,
+        password: this.state.password,
+        user_type: this.state.user_type,
+        apellido: this.state.apellido,
+      }
+      console.log("------------")
+      console.log(usuario)
+      console.log("------------")
+      /*this.props.register(this.state.nombre, this.state.email,
                         this.state.user_type, this.state.password,
-                        this.state.apellido);
+                        this.state.apellido);*/
+      api.post('/auth/sign_up/', usuario)
+      .then((res) => {console.log(res)})
     } else {
       // TODO
     }
@@ -41,15 +54,15 @@ class Register extends Component {
   handleUserTypeSelect(user_type) {
     switch(user_type) {
       case "voluntario": {
-        this.setState({ user_type: "voluntario" });
+        this.setState({ user_type: "2", apellido: "" });
         break;
       }
       case "ong": {
-        this.setState({ user_type: "ong" });
+        this.setState({ user_type: "1", apellido: "ong"  });
         break;
       }
       case "empresa": {
-        this.setState({ user_type: "empresa" });
+        this.setState({ user_type: "3", apellido: "empresa" });
         break;
       }
       default: {
@@ -87,7 +100,7 @@ class Register extends Component {
   }
 
   renderNameField() {
-    if (this.state.user_type === "voluntario") {
+    if (this.state.user_type === "2") {
       return (
       <div>
         <InputGroup className="mb-3">
@@ -149,40 +162,42 @@ class Register extends Component {
       email: "",
       contraseña: "",
     };
-    const noErrors = {
-      nombre: "",
-      apellido: "",
-      email: "",
-      contraseña: "",
-    }; //Uso para chequear que no hubo errores
+    let isValid = true;
+    
     //Nombre
     if (this.state.nombre === "") {
       errors.nombre = "Debe ingresar un nombre";
+      isValid = false;
     }
     //Apellido
     if (this.state.user_type === "voluntario" && this.state.apellido === "") {
       errors.apellido = "Debe ingresar un apellido";
+      isValid = false;
     }
     //Mail
     if (this.state.email === "") {
       errors.email = "Debe ingresar un email";
+      isValid = false;
     }
     if (errors.email === "" && !validateEmail(this.state.email)) {
       errors.email = "Ingrese un email valido";
+      isValid = false;
     }
     //Contraseña
     if (this.state.password === "" || this.state.repeat === "") {
       errors.contraseña = "Debe ingresar la contraseña en ambos campos";
+      isValid = false;
     }
     if (errors.contraseña === "" && this.state.password !== this.state.repeat) {
       errors.contraseña = "La contraseña no coincide en ambos campos";
-    }
+      isValid = false;
+    }    
     //End
-    if (errors === noErrors) {
-      return true;
+    if (isValid) {
+      return isValid;
     }
     this.setState({ errors: errors})
-    return false;
+    return isValid;
   }
 
   render() {
@@ -196,7 +211,7 @@ class Register extends Component {
                 <CardHeader>
                   <Row>
                     <Col xs="12" sm="4">
-                      <Button className={user_type === "voluntario" ? "btn-twitter" : "btn-secondary"} 
+                      <Button className={user_type === "2" ? "btn-twitter" : "btn-secondary"} 
                               block
                               onClick={() => this.handleUserTypeSelect("voluntario")}
                               >
@@ -204,7 +219,7 @@ class Register extends Component {
                       </Button>
                     </Col>
                     <Col xs="12" sm="4">
-                      <Button className={user_type === "ong" ? "btn-twitter" : "btn-secondary"}  
+                      <Button className={user_type === "1" ? "btn-twitter" : "btn-secondary"}  
                               block
                               onClick={() => this.handleUserTypeSelect("ong")}
                               >
@@ -212,7 +227,7 @@ class Register extends Component {
                       </Button>
                     </Col>
                     <Col xs="12" sm="4">
-                      <Button className={user_type === "empresa" ? "btn-twitter" : "btn-secondary"}  
+                      <Button className={user_type === "3" ? "btn-twitter" : "btn-secondary"}  
                               block
                               onClick={() => this.handleUserTypeSelect("empresa")}
                               >
@@ -301,10 +316,11 @@ const mapStateToProps = state => {
   };
 }
 
-const mapDispatchToProps = dispatch => {
+//NO SACAR POR LAS DUDAS
+/*const mapDispatchToProps = dispatch => {
   return {
     register: (username, password) => dispatch(auth.register(username, password)),
   };
-}
+}*/
 
-export default connect(mapStateToProps, mapDispatchToProps)(Register);
+export default connect(mapStateToProps/*, mapDispatchToProps*/)(Register);

@@ -5,6 +5,7 @@ import { createStore, applyMiddleware } from "redux";
 import {auth} from "./actions";
 import {helpo} from "./reducers";
 import thunk from "redux-thunk";
+import ComponentRenderer from './utils/ComponentRenderer'
 
 // Styles
 import './App.css';
@@ -22,7 +23,7 @@ import './scss/style.css'
 import { DefaultLayout } from './containers';
 import { NoAuthLayout } from './containers';
 // Pages
-import { Login, Page404, Page500, Register } from './views/Pages';
+import { Login, Page404, Page500, Register, ConfirmMail } from './views/Pages';
 
 // import { renderRoutes } from 'react-router-config';
 
@@ -56,6 +57,8 @@ class RootContainerComponent extends Component {
           <Route exact path="/register" name="Register Page" component={Register} />
           <Route exact path="/404" name="Page 404" component={Page404} />
           <Route exact path="/500" name="Page 500" component={Page500} />
+          <Route exact path="/prueba" name="PRUEBA" component={ComponentRenderer} />
+          <Route path="/confirmMail/:token" name="Confirmar Email" component={ConfirmMail} />
           <PrivateRoute path="/" name="Dashboard" component={DefaultLayout} />
         </Switch>
       </HashRouter>

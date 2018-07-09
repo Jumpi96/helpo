@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import authenticate
-from users.models import User
+from users.models import User, UserVerification
+from django.core.exceptions import ObjectDoesNotExist
 
 
 class CreateUserSerializer(serializers.ModelSerializer):
@@ -30,3 +31,19 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'email')
+
+class VerificationMailSerializer(serializers.Serializer):    
+    token = serializers.CharField()
+
+    def validate(self, data):
+        print(data)
+        try:
+            user_verification = UserVerification.objects.get(verificationToken=data["token"])
+            user = user_verification.usuario
+            if user.validate_mail(user_verification.verificationToken):
+                return True
+        except ObjectDoesNotExist:
+            raise serializers.ValidationError("Verification token does not match any")
+
+
+    

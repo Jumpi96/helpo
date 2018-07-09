@@ -15,7 +15,7 @@ class Evento(IndexedTimeStampedModel):
     descripcion = models.CharField(max_length=1000, null=True)
     fecha_hora_inicio = models.DateTimeField()
     fecha_hora_fin = models.DateTimeField()
-    rubro = models.ForeignKey(RubroEvento, null=True, on_delete=models.SET_NULL)
+    rubro = models.ForeignKey(RubroEvento, null=True, on_delete=models.SET_NULL)  
     ubicacion = models.ForeignKey(Ubicacion, null=True, on_delete=models.SET_NULL)
     organizacion = models.ForeignKey(User, null=False)
 

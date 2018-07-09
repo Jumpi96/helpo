@@ -24,7 +24,7 @@ ADMINS = (
 
 AUTH_USER_MODEL = 'users.User'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['10.0.2.2','localhost','127.0.0.1']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -118,5 +118,7 @@ CELERY_RESULT_SERIALIZER = 'json'
 
 # CORS
 CORS_ORIGIN_WHITELIST = (
-    'localhost:3000'
+    'localhost:3000',
+    '10.0.2.2:8000',
+    '10.0.2.2:8001'
 )

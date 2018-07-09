@@ -3,7 +3,7 @@ from rest_framework import generics, permissions
 from rest_framework.response import Response
 from knox.models import AuthToken
 from django.contrib.auth import get_user_model
-from users.serializers import CreateUserSerializer, UserSerializer, LoginUserSerializer
+from users.serializers import CreateUserSerializer, UserSerializer, LoginUserSerializer, VerificationMailSerializer
 
 
 class CreateUserView(generics.GenericAPIView):
@@ -36,3 +36,16 @@ class UserView(generics.RetrieveAPIView):
 
     def get_object(self):
         return self.request.user
+
+class VerifyMailView(generics.GenericAPIView):
+    serializer_class = VerificationMailSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            return Response({
+                "verification": "Success"
+             })
+        return Response({
+            "verification": "Failed"
+        })

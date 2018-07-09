@@ -20,4 +20,9 @@ urlpatterns = [
         view=users_views.UserView.as_view(),
         name="user"
     ),
+    url(
+        regex=r"^verify_email/$",
+        view=users_views.VerifyMailView.as_view(),
+        name="user"
+    ),    
 ]

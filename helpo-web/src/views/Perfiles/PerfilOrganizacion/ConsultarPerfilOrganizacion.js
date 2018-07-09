@@ -9,17 +9,15 @@ class ConsultarPerfilOrganizacion extends Component {
   constructor(props) {
     super(props); //Llama a las props del padre
     this.state = {
-
-      nombre: this.props.nombre,
+      nombre: 'organizacion',
       cuit: '',
-      ubicacion: '',
+      ubicacion: { latitud: 0, longitud: 0, notas:'#!None#!'},
       mail: '',
       telefono: '',
-      rubro_id: 0,
-      avatar_url: '',
+      rubro: { id: 0, nombre: "none"},
+      avatar_url: 'assets/user.png',
       descripcion: '',
       errors: {},
-
     };
   }
 
@@ -40,8 +38,7 @@ class ConsultarPerfilOrganizacion extends Component {
         descripcion: res.descripcion,
         rubro_id: rubro.id,
         rubro_nombre: rubro.nombre,
-        avatar_url: res.avatar.url,
-        
+        avatar_url: res.avatar.url,        
       })
     })
   }  
@@ -70,9 +67,12 @@ class ConsultarPerfilOrganizacion extends Component {
         });
     }
   }
+
+
  
   render() {
     return (
+      <Card>
       <form onSubmit={this.handleSubmit}>
         <div className="row">
           <div className="form-group col-md-6">
@@ -124,6 +124,8 @@ class ConsultarPerfilOrganizacion extends Component {
         </div>
 
       </form>
+      </Card>
+
     );
   }
 }

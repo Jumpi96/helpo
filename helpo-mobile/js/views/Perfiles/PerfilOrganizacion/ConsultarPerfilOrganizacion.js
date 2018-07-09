@@ -34,19 +34,31 @@ class ConsultarPerfilOrganizacion extends Component {
     return (
       <Container style={styles.container}>
         <Header>
+
           <Left>
             <Button transparent onPress={() => Actions.pop()}>
               <Icon name="arrow-back" />
             </Button>
           </Left>
+
           <Body>
             <Title>Perfil</Title>
           </Body>
           <Right />
+
         </Header>
 
         <Content>
+
           <Form>
+
+            <Item>
+              <Image
+               style={{width: 50, height: 50}}
+               source={{uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png'}}
+              />
+            </Item>
+
             <Item floatingLabel>
               <Label>Nombre</Label>
               <Text
@@ -55,33 +67,46 @@ class ConsultarPerfilOrganizacion extends Component {
             </Item>
 
             <Item floatingLabel>
+              <Label>Mail</Label>
+              <Text
+                value={this.state.mail}
+              />
+            </Item>
+
+            <Item floatingLabel>
+              <Label>Teléfono</Label>
+              <Text
+                value={this.state.telefono}
+              />
+            </Item>
+            
+            <Item floatingLabel>
               <Label>CUIT</Label>
               <Text
                 value={this.state.cuit}
               />
             </Item>
-            
 
+            <Item floatingLabel>
+              <Label>Rubro</Label>
+              <ListaRubrosOrganizacion
+              name="listaRubros"
+              rubro_id={this.state.rubro_id}              
+            />               
+            </Item>
 
-          
+            <Item>
+              <SelectorUbicacion
+                ubicacion={this.state.ubicacion}              
+              />
+            </Item>              
 
             <Item floatingLabel>
               <Label>Descripción</Label>
               <Input
                 value={this.state.descripcion}
               />
-            </Item>
-
-            <ListaRubrosOrganizacion
-              name="listaRubros"
-              rubro_id={this.state.rubro_id}              
-            />           
-           
-            <Item>
-              <SelectorUbicacion
-                ubicacion={this.state.ubicacion}              
-              />
-            </Item>
+            </Item>     
             
             <Button
               block style={{ margin: 15, marginTop: 50 }}
@@ -91,89 +116,12 @@ class ConsultarPerfilOrganizacion extends Component {
             </Button>
 
           </Form>
+
         </Content>
+
       </Container>
     );
   }
 
-  render() {
-    return (
-      <form onSubmit={this.handleSubmit}>
-        <div className="row">
-          <div className="form-group col-md-6">
-            <label htmlFor="nombre">Nombre</label>
-            <input
-              type="text"
-              name="nombre"
-              className="form-control"
-              placeholder="Nombre"
-              htmlFor="disabled-input"
-              value={this.state.nombre}
-            />
-          </div>
-
-          <div className="form-group col-md-6">
-            <label htmlFor="cuit">CUIT</label>
-            <input
-              type="text"
-              name="cuit"
-              className="form-control"
-              placeholder="CUIT"
-              htmlFor="disabled-input"
-              value={this.state.cuit}
-     
-            />
-            <span style={{ color: 'red' }}>{this.state.errors.cuit}</span>
-          </div>
-
-          <div className="form-group col-md-6">
-            <label htmlFor="telefono">Teléfono</label>
-            <input
-              type="text"
-              name="telefono"
-              className="form-control"
-              placeholder="Teléfono"
-              htmlFor="disabled-input"
-              value={this.state.telefono}            
-            />           
-          </div>
-
-          <div className="form-group col-md-6">
-            <label htmlFor="telefono">Rubro</label>
-            <input
-              type="text"
-              name="rubro"
-              className="form-control"
-              placeholder="Rubro"
-              htmlFor="disabled-input"
-              value={this.state.rubro_id}            
-            />           
-          </div>
-
-          <div className="form-group col-md-6">
-            <label htmlFor="listaRubros">Rubro</label>
-            <ListaRubrosOrganizacion
-              name="listaRubros"
-              rubro={this.state.rubro_id}             
-            />
-            <span style={{ color: 'red' }}>{this.state.errors.rubro}</span>
-          </div>
-          </div>
-
-        <SelectorUbicacion
-          name="selectorUbicacion"
-          ubicacion={this.state.ubicacion}
-        />
-
-        <div className="form-group">
-          <CargadorImagenPerfil />
-        </div>
-
-        <div className="form-group">
-          <input type="submit" className="btn btn-primary" value="Modificar perfil" />
-        </div>
-      </form>
-    );
-  }
 }
 export default ConsultarPerfilOrganizacion;

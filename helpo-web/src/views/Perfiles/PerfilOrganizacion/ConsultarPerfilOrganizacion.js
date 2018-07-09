@@ -10,14 +10,13 @@ class ConsultarPerfilOrganizacion extends Component {
     super(props); //Llama a las props del padre
     this.state = {
 
-      nombre: '',
+      nombre: 'organizacion',
       cuit: '',
-      // TODO: ubicacion que pasamos por defecto debería ser la de la ONG. Ahora, Córdoba.
-      ubicacion: { latitud: -31.4201, longitud: -64.1888, notas: '' },
+      ubicacion: { latitud: 0, longitud: 0, notas:'#!None#!'},
       mail: '',
       telefono: '',
-      rubro_id: 0,
-      foto_perfil: undefined,
+      rubro: { id: 0, nombre: "none"},
+      avatar_url: 'assets/user.png',
       descripcion: '',
       errors: {},
 
@@ -48,9 +47,12 @@ class ConsultarPerfilOrganizacion extends Component {
         });
     }
   }
+
+
  
   render() {
     return (
+      <Card>
       <form onSubmit={this.handleSubmit}>
         <div className="row">
           <div className="form-group col-md-6">
@@ -102,6 +104,8 @@ class ConsultarPerfilOrganizacion extends Component {
         </div>
 
       </form>
+      </Card>
+
     );
   }
 }

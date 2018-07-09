@@ -39,6 +39,11 @@
       icon: 'icon-pencil',
     },
     {
+      name: 'Consultar perfil',
+      url: '/perfil',
+      icon: 'icon-pencil',
+    },
+    {
       title: true,
       name: 'Theme',
       wrapper: {            // optional wrapper object

@@ -1,47 +1,59 @@
 import React, { Component } from 'react';
 import api from '../../api';
 import ReactDOM from 'react-dom'
+import ConsultarPerfilOrganizacion from './PerfilOrganizacion/ConsultarPerfilOrganizacion'
+import ConsultarPerfilEmpresa from './PerfilEmpresa/ConsultarPerfilEmpresa'
+import ConsultarPerfilVoluntario from './PerfilVoluntario/ConsultarPerfilVoluntario'
 
 class ConsultarPerfilGenerico extends Component {
   constructor(props) {
     super(props); //Llama a las props del padre
     this.state = {
-
+      userId: 0,
+      userType: 0,     
+      email: '' 
     };
+    this.renderConsultar = this.renderConsultar.bind(this)
   }
 
-componentDidMount() {
-      api.get('/auth/usuario')
-      .then(res => {
-        const recursosData = res.data;
-        this.setState({ 
-          categorias:listaCategorias, 
-          categoria_id: selectedCategoria, 
-          items: recursosData
-        });
+  componentDidMount() {
+      api.get('/auth/user/')
+      .then(res => { 
+          this.setState({
+            userId: res.data.id,
+            email: res.data.email,
+            userType: res.data.user_type
+          })
+        }) 
+      .catch( error => {
+        console.log(error)
       })
-      .catch(function (error) {
-        if (error.response){ console.log(error.response.status) }
-        else { console.log('Error: ', error.message) };
-      })    
-  };
+  }    
+
+  renderConsultar() {    
+    switch (this.state.userType){
+
+      case 1:
+        return <ConsultarPerfilOrganizacion/>
+
+      case 2:
+        return <ConsultarPerfilVoluntario/>
+
+      case 3:
+        return <ConsultarPerfilEmpresa/>
+
+      default:
+        return ( <p>Error</p> )        
+    }
+  }
+  
 
   render() {
-  if(this.state.usuario.tipo === 1){ {/*VER QUE PREGUNTA HACER*/}
     return (
-      <ConsultarPerfilOrganizacion organizacion />
+    <div>
+      {this.renderConsultar()}
+    </div>
     );
-  }
-  else if(component.isVoluntario){ {/*VER QUE PREGUNTA HACER*/}
-    return (
-      <ConsultarPerfilVoluntario voluntario />
-    );
-  }
-  else(component.isOrganizacion){ {/*VER QUE PREGUNTA HACER*/}
-    return (
-      <ConsultarPerfilEmpresa organizacion />
-    );
-  }
   }
 }
 

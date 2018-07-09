@@ -27,6 +27,11 @@ const ModificarPerfilOrganizacion = Loadable({
   loading: Loading,
 });
 
+const ConsultarPerfil = Loadable({
+  loader: () => import('./views/Perfiles/ConsultarPerfilGenerico'),
+  loading: Loading,
+});
+
 const Breadcrumbs = Loadable({
   loader: () => import('./views/Base/Breadcrumbs'),
   loading: Loading,
@@ -202,6 +207,7 @@ const routes = [
   { path: '/actividades/registrar-evento', name: 'Registrar evento', component: RegistrarEvento },
   { path: '/actividades/registrar-necesidades', name: 'Registrar necesidades', component: RegistrarNecesidades },
   { path: '/perfiles/perfil-organizacion', name: 'Perfil organizacion', component: ModificarPerfilOrganizacion },
+  { path: '/perfil', name: 'Mi perfil', component: ConsultarPerfil },
   { path: '/theme', exact: true, name: 'Theme', component: Colors },
   { path: '/theme/colors', name: 'Colors', component: Colors },
   { path: '/theme/typography', name: 'Typography', component: Typography },

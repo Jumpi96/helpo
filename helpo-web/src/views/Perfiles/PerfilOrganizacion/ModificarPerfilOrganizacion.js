@@ -3,6 +3,7 @@ import ListaRubrosOrganizacion from '../ListaRubrosOrganizacion/ListaRubrosOrgan
 import SelectorUbicacion from '../../Actividades/RegistrarEvento/SelectorUbicacion/SelectorUbicacion';
 import api from '../../../api';
 import CargadorImagenPerfil from '../CargadorImagenPerfil/CargadorImagenPerfil';
+import { Card } from 'reactstrap';
 
 
 class ModificarPerfilOrganizacion extends Component {

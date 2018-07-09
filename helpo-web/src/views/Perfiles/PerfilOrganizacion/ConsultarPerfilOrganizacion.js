@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import ListaRubrosOrganizacion from './ListaRubrosOrganizacion/ListaRubrosOrganizaciones';
-import SelectorUbicacion from '../Actividades/RegistrarEvento/SelectorUbicacion/SelectorUbicacion';
-import api from '../../api';
+import ListaRubrosOrganizacion from '../ListaRubrosOrganizacion/ListaRubrosOrganizaciones';
+import SelectorUbicacion from '../../Actividades/RegistrarEvento/SelectorUbicacion/SelectorUbicacion';
+import api from '../../../api';
 import CargadorImagenPerfil from '../CargadorImagenPerfil/CargadorImagenPerfil';
+import { Card } from 'reactstrap';
 
 
 class ConsultarPerfilOrganizacion extends Component {
@@ -79,7 +80,7 @@ class ConsultarPerfilOrganizacion extends Component {
             <label htmlFor="nombre">Nombre</label>
             <text>{this.state.nombre}</text>
           </div>
-          
+          <text>{JSON.stringify(this.state)}</text>
           <div className="form-group col-md-6">
           <CargadorImagenPerfil imagen />
           </div>

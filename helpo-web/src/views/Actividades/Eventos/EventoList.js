@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import { PropTypes } from 'prop-types';
-import Widget02 from '../Widgets/Widget02';
+import Widget02 from '../../Widgets/Widget02';
 
 class EventoList extends React.Component {
   

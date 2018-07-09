@@ -27,30 +27,64 @@ class ConsultarPerfilOrganizacion extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    if (this.handleValidation()) {
-      const perfil = {
-        nombre: this.state.nombre,
-        rubro_id: this.state.rubro_id,
-        ubicacion: this.state.ubicacion,
-        cuit: this.state.cuit,
-        mail: this.state.mail,
-        telefono: this.state.telefono,
-        foto_perfil: undefined,
-        descripcion: this.state.descripcion,
-      };
-      api.post('/actividades/eventos/', perfil) // cambiar esto, que poner?
-        .then((res) => {
-          console.log(res);
-          console.log(res.data);
-          this.props.history.push('dashboard');
-        }).catch(function (error) {
-          if (error.response) { console.log(error.response.status) }
-          else { console.log('Error: ', error.message) }
-        });
-    }
+        
   }
 
- 
+  render() {
+    return (
+      <Container style={styles.container}>
+        <Header>
+          <Left>
+            <Button transparent onPress={() => Actions.pop()}>
+              <Icon name="arrow-back" />
+            </Button>
+          </Left>
+          <Body>
+            <Title>Ver Perfil</Title>
+          </Body>
+          <Right />
+        </Header>
+
+        <Content>
+          <Form>
+            <Item floatingLabel>
+              <Label>Nombre</Label>
+              <Text
+                value={this.state.nombre}
+              />
+            </Item>
+
+            <Item floatingLabel>
+              <Label>Descripción</Label>
+              <Input
+                value={this.state.descripcion}
+              />
+            </Item>
+
+            <ListaRubrosOrganizacion
+              name="listaRubros"
+              rubro_id={this.state.rubro_id}              
+            />           
+           
+            <Item>
+              <SelectorUbicacion
+                ubicacion={this.state.ubicacion}              
+              />
+            </Item>
+            
+            <Button
+              block style={{ margin: 15, marginTop: 50 }}
+              onPress={this.handleSubmit}
+            >
+              <Text>ModificarPerfilOrganizacion</Text>
+            </Button>
+
+          </Form>
+        </Content>
+      </Container>
+    );
+  }
+
   render() {
     return (
       <form onSubmit={this.handleSubmit}>

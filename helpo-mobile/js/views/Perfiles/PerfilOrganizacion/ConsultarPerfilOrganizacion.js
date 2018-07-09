@@ -25,9 +25,17 @@ class ConsultarPerfilOrganizacion extends Component {
   }
 
 
-  handleSubmit(event) {
-    event.preventDefault();
-        
+  componentDidMount(){
+    api.get("/perfiles/perfil_organizacion/"+ this.id_usuario) //ATENCION ESTO
+      .then(res => {
+        const rubrosData = res.data;
+        this.setState({ rubros: rubrosData });
+        this.props.rubro_id = rubrosData[0].id;
+      })
+      .catch(function (error) {
+        if (error.response){ console.log(error.response.status); }
+        else { console.log("Error: ", error.message); }
+      });
   }
 
   render() {
@@ -110,9 +118,9 @@ class ConsultarPerfilOrganizacion extends Component {
             
             <Button
               block style={{ margin: 15, marginTop: 50 }}
-              onPress={this.handleSubmit}
-            >
-              <Text>ModificarPerfilOrganizacion</Text>
+              onPress={<ModificarPerfilOrganizacion />}            
+              title="Modificar Perfil"
+              >
             </Button>
 
           </Form>

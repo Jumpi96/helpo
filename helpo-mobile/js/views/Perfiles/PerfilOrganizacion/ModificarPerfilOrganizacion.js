@@ -46,15 +46,7 @@ class RegistrarEvento extends React.Component {
     this.handleUbicacionChange = this.handleUbicacionChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleRubroChange = this.handleRubroChange.bind(this);
-    this.handleFechaHoraInicioChange = this.handleFechaHoraInicioChange.bind(this);
-    this.handleFechaHoraFinChange = this.handleFechaHoraFinChange.bind(this);
-    /* Metodos de contacto */
-    this.handleContactNombreChange = this.handleContactNombreChange.bind(this);
-    this.handleContactMailChange = this.handleContactMailChange.bind(this);
-    this.handleContactTelefonoChange = this.handleContactTelefonoChange.bind(this);
-    this.addContact = this.addContact.bind(this);
-    this.removeContact = this.removeContact.bind(this);
-    /* ------------------- */
+   
   }
 
   handleRubroChange(r) {
@@ -63,7 +55,6 @@ class RegistrarEvento extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-
     if (this.handleValidation()) {
       const evento = {
         nombre: this.state.nombre,
@@ -87,7 +78,8 @@ class RegistrarEvento extends React.Component {
           if (error.response) { console.log(error.response); }
           else { console.log("Error: ", error.message); }
         });
-    }
+        <ConsultarPerfilOrganizacion/>
+    }  
   }
 
   handleValidation(event) {
@@ -146,13 +138,22 @@ class RegistrarEvento extends React.Component {
           <Right />
         </Header>
 
+        <PhotoUpload> // de aca hay que ver como implementar el componente https://github.com/malsapp/react-native-photo-upload
+          <Image
+            source={{
+            uri: 'https://www.sparklabs.com/forum/styles/comboot/theme/images/default_avatar.jpg'
+            }}
+          />
+        </PhotoUpload>
+
         <Content>
           <Form>
-
             <Item floatingLabel>
               <Label>Nombre</Label>
-              <Input value={this.state.nombre}
-                onChangeText={(text) => this.setState({ nombre: text })} />
+              <Input 
+                value={this.state.nombre}
+                onChangeText={(text) => this.setState({ nombre: text })} 
+              />
             </Item>
             <FormValidationMessage>{this.state.errors.nombre}</FormValidationMessage>
 

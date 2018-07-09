@@ -6,6 +6,7 @@ import {connect} from 'react-redux';
 import moment from 'moment';
 import ModalEliminarItem from '../common/ModalEliminarItem/ModalEliminarItem';
 import EventoForm from './EventoForm';
+import './Eventos.css';
 
 class EventoView extends React.Component {  
   constructor(props) {
@@ -54,10 +55,10 @@ class EventoView extends React.Component {
     this.props.actions.updateEvento(this.state.evento);
   }
 
-  updateEventoState(e) {
-    const field = e.target.name;
+  updateEventoState(field, value) {
     const evento = this.state.evento;
-    evento[field] = e.target.value;
+    evento[field] = value;
+    console.log(evento);
     return this.setState({evento: evento});
   }
 
@@ -87,7 +88,7 @@ class EventoView extends React.Component {
       let listaContactos;
       if (evento.contacto.length > 0) {
         listaContactos = evento.contacto.map((contacto) => 
-          <li>{contacto.nombre}</li>
+          <li class="list-group-item">{contacto.nombre} - {contacto.telefono}</li>
         );
       }
       return (
@@ -128,10 +129,10 @@ class EventoView extends React.Component {
           {listaContactos ? (
             <div className="row">
               <div className="form-group col-md-6">
-                <b className="float-right">Contactos</b>
+                <b name="contactos" className="float-right">Contactos</b>
               </div>
               <div className="form-group col-md-6">
-                <ul>{listaContactos}</ul>
+                <ul class="list-group">{listaContactos}</ul>
               </div>
             </div>
             ) : undefined
@@ -196,7 +197,11 @@ function mapStateToProps(state, ownProps) {
   const eventoId = ownProps.match.params.id;
   if (state.eventos.length > 0) {
     evento = Object.assign({}, state.eventos.find(evento => "" + evento.id === eventoId))
+    evento.rubro_id = evento.rubro.id;
     evento.nextId = evento.contacto.length + 1;
+    for (let i=0; i < evento.contacto.length; i++) {
+      evento.contacto[i].contactId = i+1;
+    }
   }
   return {evento: evento, rubrosEvento: state.rubrosEvento};
 }

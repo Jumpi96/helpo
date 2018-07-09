@@ -50,15 +50,14 @@ class EventoView extends React.Component {
     this.setState({ showModalEliminar: true });
   }
 
-  saveEvento(e) {
-    e.preventDefault();
+  saveEvento() {
     this.props.actions.updateEvento(this.state.evento);
+    this.setState({ isEditing: false });
   }
 
   updateEventoState(field, value) {
     const evento = this.state.evento;
     evento[field] = value;
-    console.log(evento);
     return this.setState({evento: evento});
   }
 

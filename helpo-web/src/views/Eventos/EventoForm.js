@@ -4,6 +4,7 @@ import { PropTypes } from 'prop-types';
 import moment from 'moment';
 import SelectorUbicacion from '../Actividades/RegistrarEvento/SelectorUbicacion/SelectorUbicacion';
 import RegistrarContacto from '../Actividades/RegistrarEvento/RegistrarContacto/RegistrarContacto';
+import validateEmail from '../../utils/ValidateEmail';
 
 
 class EventoForm extends React.Component {  
@@ -19,6 +20,7 @@ class EventoForm extends React.Component {
     this.handleRubroChange = this.handleRubroChange.bind(this);
     this.handleFechaHoraInicioChange = this.handleFechaHoraInicioChange.bind(this);
     this.handleFechaHoraFinChange = this.handleFechaHoraFinChange.bind(this);
+    this.handleSave = this.handleSave.bind(this);
   }
 
   handleContactChange(event, contactId) {
@@ -133,8 +135,37 @@ class EventoForm extends React.Component {
     return formIsValid;
   }
 
+  validateContactos() {
+    let errors = {contactoNombre: "", contactoContacto: "", email: ""};    
+    let validacion = {is_valid: true, errors: errors};
+    const contactos = this.props.evento.contacto;
+    for (let i = 0; i < contactos.length; i += 1) {
+      // Es valido no ingresar ningun contacto
+      if (contactos[i].nombre === "" &&
+      contactos[i].mail === "" &&
+      contactos[i].telefono === "" &&
+      contactos.length === 1) {
+        return validacion;
+      }
+      if (contactos[i].nombre === "") {
+        errors.contactoNombre = 'No puede ingresar un contacto sin nombre';        
+        validacion.is_valid = false;
+      }
+      if (contactos[i].mail === "" && contactos[i].telefono === "") {
+        errors.contactoContacto = 'Debe ingresar un mail o un telefono';        
+        validacion.is_valid = false;
+      }
+      if (contactos[i].mail !== "" && !validateEmail(contactos[i].mail)) {
+        errors.email = 'Debe ingresar un mail valido';        
+        validacion.is_valid = false;
+      }
+    }
+    validacion.errors = errors;
+    return validacion;
+  }
+
   parseISOString(s) {
-    if (s.length === 20) {
+    if (s[s.length-1] === 'Z') {
       var b = s.split(/\D+/);
       return new Date(Date.UTC(b[0], --b[1], b[2], b[3], b[4], b[5], b[6]));
     } else {

@@ -1,10 +1,10 @@
 import React from 'react';  
 import { PropTypes } from 'prop-types';
-import * as eventoActions from '../../actions/eventoActions';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import moment from 'moment';
-import ModalEliminarItem from '../common/ModalEliminarItem/ModalEliminarItem';
+import ModalEliminarItem from '../../common/ModalEliminarItem/ModalEliminarItem';
+import * as eventoActions from '../../../actions/eventoActions';
 import EventoForm from './EventoForm';
 import './Eventos.css';
 

@@ -2,9 +2,9 @@ import React from 'react';
 import DateTimePicker from 'react-datetime-picker';
 import { PropTypes } from 'prop-types';
 import moment from 'moment';
-import SelectorUbicacion from '../Actividades/RegistrarEvento/SelectorUbicacion/SelectorUbicacion';
-import RegistrarContacto from '../Actividades/RegistrarEvento/RegistrarContacto/RegistrarContacto';
-import validateEmail from '../../utils/ValidateEmail';
+import SelectorUbicacion from '../RegistrarEvento/SelectorUbicacion/SelectorUbicacion';
+import RegistrarContacto from '../RegistrarEvento/RegistrarContacto/RegistrarContacto';
+import validateEmail from '../../../utils/ValidateEmail';
 
 
 class EventoForm extends React.Component {  

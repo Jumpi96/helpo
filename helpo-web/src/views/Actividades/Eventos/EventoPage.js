@@ -3,8 +3,8 @@ import { PropTypes } from 'prop-types';
 import { Route } from 'react-router-dom';
 import { Card, CardHeader, CardBody } from 'reactstrap';
 import {connect} from 'react-redux';  
-import * as eventoActions from '../../actions/eventoActions';
-import * as rubrosEventoActions from '../../actions/rubroEventoActions';
+import * as eventoActions from '../../../actions/eventoActions';
+import * as rubrosEventoActions from '../../../actions/rubroEventoActions';
 import EventoList from './EventoList';
 import EventoView from './EventoView';
 

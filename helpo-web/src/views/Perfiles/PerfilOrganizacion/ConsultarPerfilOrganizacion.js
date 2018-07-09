@@ -10,19 +10,41 @@ class ConsultarPerfilOrganizacion extends Component {
     super(props); //Llama a las props del padre
     this.state = {
 
-      nombre: '',
+      nombre: this.props.nombre,
       cuit: '',
-      // TODO: ubicacion que pasamos por defecto debería ser la de la ONG. Ahora, Córdoba.
-      ubicacion: { latitud: -31.4201, longitud: -64.1888, notas: '' },
+      ubicacion: '',
       mail: '',
       telefono: '',
       rubro_id: 0,
-      foto_perfil: undefined,
+      avatar_url: '',
       descripcion: '',
       errors: {},
 
     };
   }
+
+  componentDidMount() {
+    api.get(`/perfiles/perfil_organizacion/${this.props.usuarioId}`)
+    .then( (res) => {
+      let rubro = res.rubro
+      let ubicacion = res.ubicacion
+      if ( rubro == null ) {
+        rubro = { id: 0, nombre: 'none'}
+      }
+      if ( ubicacion == null ) {
+        ubicacion = { latitud: 0, longitud: 0, notas:'#!None#!'}
+      }
+      this.setState({
+        cuit: res.cuit,
+        telefono: res.telefono,
+        descripcion: res.descripcion,
+        rubro_id: rubro.id,
+        rubro_nombre: rubro.nombre,
+        avatar_url: res.avatar.url,
+        
+      })
+    })
+  }  
 
   handleSubmit(event) {
     event.preventDefault();

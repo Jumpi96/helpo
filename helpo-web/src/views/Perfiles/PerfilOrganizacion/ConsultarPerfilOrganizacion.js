@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ListaRubrosOrganizacion from './ListaRubrosOrganizacion/ListaRubrosOrganizaciones';
 import SelectorUbicacion from '../Actividades/RegistrarEvento/SelectorUbicacion/SelectorUbicacion';
 import api from '../../api';
-import CargadorImagenPerfil from './CargadorImagenPerfil/CargadorImagenPerfil';
+import CargadorImagenPerfil from '../CargadorImagenPerfil/CargadorImagenPerfil';
 
 
 class ConsultarPerfilOrganizacion extends Component {

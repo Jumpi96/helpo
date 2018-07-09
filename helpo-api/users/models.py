@@ -12,12 +12,32 @@ class Profile(models.Model):
     class Meta:
         abstract = True
 
-class VoluntarioProfile(Profile):
-    apellido = models.CharField(max_length=50)
+class Imagen(models.Model):
+    isExternal = models.BooleanField()
+    url = models.TextField()    
+
+class RubroOrganizacion(models.Model):
+    # nombre deberia ser Unique=True, pero me da problemas en el serializer para hacer update
+    # TODO: Ver como arreglar eso, por ahora workaround -> Sacar Unique=True
+    nombre = models.CharField(max_length=100)
+
+class Ubicacion(models.Model):
+    latitud = models.FloatField()
+    longitud = models.FloatField()
+    notas = models.CharField(max_length=140, null=True)    
 
 class OrganizacionProfile(Profile):
     verificada = models.BooleanField(default=False)
-    
+    telefono = models.BigIntegerField(blank=True, null=True)
+    cuit = models.BigIntegerField(blank=True, null=True)
+    rubro = models.ForeignKey(RubroOrganizacion, on_delete=models.SET_NULL, blank=True, null=True)
+    avatar = models.ForeignKey(Imagen, on_delete=models.SET_NULL, blank=True, null=True)
+    ubicacion = models.ForeignKey(Ubicacion, on_delete=models.SET_NULL,blank=True, null=True)
+    descripcion = models.TextField(blank=True, null=True)
+
+class VoluntarioProfile(Profile):
+    apellido = models.CharField(max_length=50)
+
 class EmpresaProfile(Profile):
     telefono = models.IntegerField(null=True)
 
@@ -27,9 +47,11 @@ class UserManager(BaseUserManager):
         user = self.model(email=self.normalize_email(email), nombre=nombre, user_type=user_type)
         user.set_password(password)
         user.save(using=self._db)
+
+        avatar = Imagen.objects.get(id=1)
         
         if user_type == 1:
-            profile = OrganizacionProfile.objects.create(usuario=user)
+            profile = OrganizacionProfile.objects.create(usuario=user,imagen=avatar)
         elif user_type == 2:
             profile = VoluntarioProfile.objects.create(usuario=user, apellido=apellido)
         else:
@@ -94,22 +116,3 @@ class User(AbstractBaseUser, PermissionsMixin, IndexedTimeStampedModel):
 
     def __str__(self):
         return self.email
-
-
-class Profile(models.Model):
-    usuario = models.OneToOneField(User)
-
-    class Meta:
-        abstract = True
-
-class VoluntarioProfile(Profile):
-    apellido = models.CharField(max_length=50)
-
-class RubroOrganizacion(models.Model):
-    nombre = models.CharField(max_length=100)
-
-class OrganizacionProfile(Profile):
-    verificada = models.BooleanField(default=False)
-    
-class EmpresaProfile(Profile):
-    telefono = models.IntegerField(null=True)

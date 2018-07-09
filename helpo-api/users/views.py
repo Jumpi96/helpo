@@ -2,11 +2,11 @@ from django.shortcuts import render  # noqa
 from rest_framework import generics, permissions
 from rest_framework.response import Response
 from rest_framework.generics import ListCreateAPIView
-from rest_framework.generics import RetrieveUpdateDestroyAPIView
+from rest_framework.generics import RetrieveUpdateDestroyAPIView, RetrieveUpdateAPIView
 from knox.models import AuthToken
 from django.contrib.auth import get_user_model
-from users.models import RubroOrganizacion
-from users.serializers import CreateUserSerializer, UserSerializer, LoginUserSerializer, RubroOrganizacionSerializer
+from users.models import RubroOrganizacion, OrganizacionProfile
+from users.serializers import CreateUserSerializer, UserSerializer, LoginUserSerializer, RubroOrganizacionSerializer, OrganizacionProfileSerializer
 
 
 class CreateUserView(generics.GenericAPIView):
@@ -54,3 +54,11 @@ class RubroOrganizacionReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     queryset = RubroOrganizacion.objects.all()
     serializer_class = RubroOrganizacionSerializer
     lookup_field = 'id'
+
+class OrgProfileReadUpdateDeleteView(RetrieveUpdateAPIView):
+    """
+    API endpoint para leer, actualizar o eliminar un perfil de organizacion
+    """
+    queryset = OrganizacionProfile.objects.all()
+    serializer_class = OrganizacionProfileSerializer
+    lookup_field = 'usuario'

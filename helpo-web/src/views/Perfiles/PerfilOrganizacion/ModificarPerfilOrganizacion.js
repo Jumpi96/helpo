@@ -21,7 +21,7 @@ class ModificarPerfilOrganizacion extends Component {
     errors: {},
     };
 
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.guardar = this.guardar.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleUbicacionChange = this.handleUbicacionChange.bind(this);
     this.handleRubroChange = this.handleRubroChange.bind(this);
@@ -170,6 +170,34 @@ class ModificarPerfilOrganizacion extends Component {
           />
           </div>
 
+
+          <div className="form-group col-md-6">
+            <label htmlFor="mail">Mail</label>
+            <input
+              type="text"
+              name="mail"
+              className="form-control"
+              placeholder="Mail"
+              value={this.state.mail}
+              onChange={this.handleInputChange}
+            />
+            <span style={{ color: 'red' }}>{this.state.errors.mail}</span>
+          </div>
+
+
+           <div className="form-group col-md-6">
+            <label htmlFor="telefono">Teléfono</label>
+            <input
+              type="text"
+              name="telefono"
+              className="form-control"
+              placeholder="Teléfono"
+              value={this.state.telefono}
+              onChange={this.handleInputChange}
+            />
+            <span style={{ color: 'red' }}>{this.state.errors.telefono}</span>
+          </div>
+
           <div className="form-group col-md-6">
             <label htmlFor="cuit">CUIT</label>
             <input
@@ -183,18 +211,7 @@ class ModificarPerfilOrganizacion extends Component {
             <span style={{ color: 'red' }}>{this.state.errors.cuit}</span>
           </div>
 
-          <div className="form-group col-md-6">
-            <label htmlFor="telefono">Teléfono</label>
-            <input
-              type="text"
-              name="telefono"
-              className="form-control"
-              placeholder="Teléfono"
-              value={this.state.telefono}
-              onChange={this.handleInputChange}
-            />
-            <span style={{ color: 'red' }}>{this.state.errors.telefono}</span>
-          </div>
+         
 
           <div className="form-group col-md-6">
             <label htmlFor="listaRubros">Rubro</label>

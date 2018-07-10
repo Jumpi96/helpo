@@ -18,111 +18,134 @@ import {
   Text
 } from "native-base";
 import SelectorUbicacion from "./SelectorUbicacion/SelectorUbicacion"; //Preguntas si hace falta copiar y pegar el selecctor siempre o referenciarlomediante la rua en donde esta creado
-import ListaRubrosEvento from "./ListaRubrosEvento/ListaRubrosEvento";
+import ListaRubrosOrganizacion from "./ListaRubrosOrganizacion/ListaRubrosOrganizacion";
 import api from "../../../../api";
 import moment from "moment";
-import SelectorFechaHora from "./SelectorFechaHora/SelectorFechaHora";
-import RegistrarContacto from "./RegistrarContacto/RegistrarContacto";
 import styles from "./styles";
+import ListaRubrosOrganizacion from "../../../../../helpo-web/src/views/Perfiles/ListaRubrosOrganizacion/ListaRubrosOrganizaciones";
 
 
-class RegistrarEvento extends React.Component {
+class ModificarPerfilOrganizacion extends Component {
   constructor(props) {
-    super(props);
+    super(props); //Llama a las props del padre
     this.state = {
-
-      nombre: "",
-      cuit: "",
-      // TODO: ubicacion que pasamos por defecto debería ser la de la ONG. Ahora, Córdoba.
-      ubicacion: { latitud: -31.4201, longitud: -64.1888, notas: "" },
-      mail: "",
-      telefono: "",
-      rubro_id: 0,
-      foto_perfil: undefined,
-      descripcion: "",
-      errors: {},
-
+    nombre: 'organizacion',
+    cuit: '',
+    ubicacion: { latitud: 0, longitud: 0, notas:'#!None#!'},
+    mail: '',
+    telefono: '',
+    rubro: { id: 0, nombre: "none"},
+    avatar_url: 'assets/user.png',
+    descripcion: '',
+    errors: {},
     };
+
+    this.guardar = this.guardar.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
     this.handleUbicacionChange = this.handleUbicacionChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
     this.handleRubroChange = this.handleRubroChange.bind(this);
-   
+
+  }
+
+  componentDidMount() {
+    api.get(`/perfiles/perfil_organizacion/${this.props.usuarioId}`)
+    .then( (res) => {
+      let rubro = res.rubro
+      let ubicacion = res.ubicacion
+      if ( rubro == null ) {
+        rubro = { id: 0, nombre: 'none'}
+      }
+      if ( ubicacion == null ) {
+        ubicacion = { latitud: 0, longitud: 0, notas:'#!None#!'}
+      }
+      this.setState({
+        cuit: res.cuit,
+        telefono: res.telefono,
+        descripcion: res.descripcion,
+        rubro_id: rubro.id,
+        rubro_nombre: rubro.nombre,
+        avatar_url: res.avatar.url,        
+      })
+    })
+  }  
+
+  handleInputChange(event) {
+    const target = event.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
+    this.setState({
+      [name]: value,
+    });
   }
 
   handleRubroChange(r) {
     this.setState({ rubro_id: r });
   }
 
-  handleSubmit(event) {
-    event.preventDefault();
-    if (this.handleValidation()) {
-      const evento = {
-        nombre: this.state.nombre,
-        descripcion: this.state.descripcion,
-        fecha_hora_inicio: this.state.fecha_hora_inicio.toISOString(),
-        fecha_hora_fin: this.state.fecha_hora_fin.toISOString(),
-        rubro_id: this.state.rubro_id,
-        ubicacion: this.state.ubicacion,
-        contacto: this.state.contactos,
-      };
-      api.post("/actividades/eventos/", evento)
-        .then(res => {
-          console.log(res);
-          console.log(res.data);
-          Alert.alert(
-            "Registrar evento",
-            "Se registró el evento con éxito."
-          );
-          this.props.navigation("RegistrarNecesidades", { evento: res.data.id });
-        }).catch(function (error) {
-          if (error.response) { console.log(error.response); }
-          else { console.log("Error: ", error.message); }
-        });
-        <ConsultarPerfilOrganizacion/>
-    }  
-  }
-
-  handleValidation(event) {
-    let formIsValid = true;
-    var errors = this.state.errors;
-
-    if (!this.state.nombre) {
-      formIsValid = false;
-      errors.nombre = "Debe ingresar un nombre.";
-    }
-
-    if (isNaN(Date.parse(this.state.fecha_hora_inicio)) ||
-      isNaN(Date.parse(this.state.fecha_hora_fin))) {
-      formIsValid = false;
-      errors.fechas = "Las fechas ingresadas no son válidas.";
-    } else {
-      const inicio = moment(this.state.fecha_hora_inicio);
-      const fin = moment(this.state.fecha_hora_fin);
-      const ahora = moment(new Date());
-      if (moment.duration(fin.diff(inicio)).asHours() > 24 ||
-        inicio < ahora ||
-        moment.duration(fin.diff(inicio)).asHours() < 0) {
-        formIsValid = false;
-        errors.fechas = "Las fecha de fin debe ser mayor a la de inicio y " +
-          "la actividad no durar más de 24 horas.";
-      }
-    }
-    if (this.state.rubro_id === 0) {
-      formIsValid = false;
-      errors.rubro = "Hubo un problema al cargar los rubros.";
-    }
-
-    this.validateContactos();
-
-    this.setState({ errors: errors });
-    return formIsValid;
-  }
-  // Devuelve True si no hay errores
-
   handleUbicacionChange(ubi) {
     this.setState({ ubicacion: ubi });
   }
 
+  guardar(){
+    event.preventDefault();
+    if (this.handleValidation()) {
+      
+      const perfil = {};
+        perfil.nombre = this.state.nombre;
+
+        if(this.state.rubro.id != 0){
+          perfil.rubro_id = this.state.rubro_id;
+        }
+        if(this.state.ubicacion.latitud != 0){
+          perfil.ubicacion = this.state.ubicacion;
+        }        
+        perfil.cuit =  this.state.cuit;
+        perfil.mail =  this.state.mail;
+        perfil.telefono =  this.state.telefono;
+        perfil.avatar_url = this.state.avatar_url;
+        perfil.descripcion =  this.state.descripcion;
+     
+      api.put(`/perfiles/perfil_organizacion/${this.props.usuarioId}`, perfil)
+        .then((res) => {
+          console.log(res);
+          console.log(res.data);
+          this.props.history.push('dashboard'); //Fijarse que pasa con la ruta
+        }).catch(function (error) {
+          if (error.response) { console.log(error.response.status) }
+          else { console.log('Error: ', error.message) }
+        });
+    }
+  }
+
+  handleValidation() {
+    let formIsValid = true;
+    const errors = this.state.errors;
+
+    if (!this.state.nombre) {
+      formIsValid = false;
+      errors.nombre = 'Debe ingresar un nombre.';
+    } else { errors.nombre = undefined; }
+
+    {/* if (!this.state.cuit) {
+      formIsValid = false;
+      errors.cuit = 'Debe ingresar un cuit.';
+    } else { errors.cuit = undefined; }
+
+    if (!this.state.telefono) {
+      formIsValid = false;
+      errors.telefono = 'Debe ingresar un teléfono.';
+    } else { errors.telefono = undefined; }
+    */}
+
+    if (this.state.rubro.id === 0) { //Revisar cuando se cambie la lista de rubros
+      formIsValid = false;
+      errors.rubro = 'Hubo un problema al cargar el rubro.';
+    } else { errors.rubro = undefined; }
+
+    this.setState({ errors });
+    return formIsValid;
+  }
+  
   render() {
     return (
       <Container style={styles.container}>
@@ -136,15 +159,7 @@ class RegistrarEvento extends React.Component {
             <Title>Modificar perfil</Title>
           </Body>
           <Right />
-        </Header>
-
-        <PhotoUpload> // de aca hay que ver como implementar el componente https://github.com/malsapp/react-native-photo-upload
-          <Image
-            source={{
-            uri: 'https://www.sparklabs.com/forum/styles/comboot/theme/images/default_avatar.jpg'
-            }}
-          />
-        </PhotoUpload>
+        </Header>   
 
         <Content>
           <Form>
@@ -156,24 +171,63 @@ class RegistrarEvento extends React.Component {
               />
             </Item>
             <FormValidationMessage>{this.state.errors.nombre}</FormValidationMessage>
+            
+            <PhotoUpload> // de aca hay que ver como implementar el componente https://github.com/malsapp/react-native-photo-upload
+             <Image
+              source={{
+              uri: 'https://www.sparklabs.com/forum/styles/comboot/theme/images/default_avatar.jpg'
+              }}
+             />
+            </PhotoUpload>
+            
+            <Item floatingLabel>
+              <Label>Mail</Label>
+              <Input 
+                value={this.state.mail}
+                onChangeText={(text) => this.setState({ mail: text })} 
+              />
+            </Item>
+            <FormValidationMessage>{this.state.errors.mail}</FormValidationMessage>
 
             <Item floatingLabel>
-              <Label>Descripción</Label>
-              <Input value={this.state.descripcion}
-                onChangeText={(text) => this.setState({ descripcion: text })} />
+              <Label>Teléfono</Label>
+              <Input 
+                value={this.state.telefono}
+                onChangeText={(text) => this.setState({ telefono: text })} 
+              />
             </Item>
+            <FormValidationMessage>{this.state.errors.telefono}</FormValidationMessage>
 
-            <ListaRubrosEvento
+            <Item floatingLabel>
+              <Label>CUIT</Label>
+              <Input 
+                value={this.state.cuit}
+                onChangeText={(text) => this.setState({ cuit: text })} 
+              />
+            </Item>
+            <FormValidationMessage>{this.state.errors.cuit}</FormValidationMessage>
+
+
+
+            <ListaRubrosOrganizacion
               name="listaRubros"
-              rubro_id={this.state.rubro_id}
+              rubro_id={this.state.rubro.id}
               onRubroChange={this.handleRubroChange} />
             <FormValidationMessage>{this.state.errors.rubro}</FormValidationMessage>
+
 
             <Item>
               <SelectorUbicacion
                 ubicacion={this.state.ubicacion}
                 onUbicacionChange={this.handleUbicacionChange} />
             </Item>
+
+            <Item floatingLabel>
+              <Label>Descripción</Label>
+              <Input value={this.state.descripcion}
+                onChangeText={(text) => this.setState({ descripcion: text })} />
+            </Item>
+            
 
             <Button block style={{ margin: 15, marginTop: 50 }}
               onPress={this.handleSubmit} >

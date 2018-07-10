@@ -67,6 +67,7 @@ class ConsultarPerfilOrganizacion extends Component {
       <Card>
       <form onSubmit={this.handleSubmit}>
         <div className="row">
+        
           <div className="form-group col-md-6">
             <label htmlFor="nombre">Nombre</label>
             <text>{this.state.nombre}</text>
@@ -84,8 +85,8 @@ class ConsultarPerfilOrganizacion extends Component {
           </div>
 
           <div className="form-group col-md-6">
-            <label htmlFor="cuit">CUIT</label>
-            <text>{this.state.cuit}</text>
+            <label htmlFor="mail">Mail</label>
+            <text>{this.state.mail}</text>
           </div>
 
           <div className="form-group col-md-6">
@@ -93,6 +94,12 @@ class ConsultarPerfilOrganizacion extends Component {
             <text>{this.state.telefono}</text>          
           </div>
 
+          <div className="form-group col-md-6">
+            <label htmlFor="cuit">CUIT</label>
+            <text>{this.state.cuit}</text>
+          </div>
+
+          
          <div className="form-group col-md-6">
             <label htmlFor="telefono">Rubro</label>
             <text>{this.state.rubro.nombre}</text>          
@@ -105,15 +112,14 @@ class ConsultarPerfilOrganizacion extends Component {
           <div className="form-group">
           <label htmlFor="descripcion">Descripcion</label> 
           <text>{this.state.descripcion}</text>          
-          </div>        
-            
+          </div>      
 
         </div>
 
         <div className="btn btn-primary">
           <button onclick={modificarPerfil()}>
           Modificar Perfil 
-          </button>          
+          </button>                
         </div>
 
       </form>

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import api from '../../api';
-import ReactDOM from 'react-dom'
 import ConsultarPerfilOrganizacion from './PerfilOrganizacion/ConsultarPerfilOrganizacion'
 import ConsultarPerfilEmpresa from './PerfilEmpresa/ConsultarPerfilEmpresa'
 import ConsultarPerfilVoluntario from './PerfilVoluntario/ConsultarPerfilVoluntario'
@@ -45,8 +44,7 @@ class ConsultarPerfilGenerico extends Component {
       default:
         return ( <p>Error</p> )        
     }
-  }
-  
+  }  
 
   render() {
     return (

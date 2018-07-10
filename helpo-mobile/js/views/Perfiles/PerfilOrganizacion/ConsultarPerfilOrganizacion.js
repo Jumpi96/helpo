@@ -4,38 +4,54 @@ import SelectorUbicacion from '../Actividades/RegistrarEvento/SelectorUbicacion/
 import api from '../../api';
 import CargadorImagenPerfil from './CargadorImagenPerfil/CargadorImagenPerfil';
 
-
 class ConsultarPerfilOrganizacion extends Component {
   constructor(props) {
     super(props); //Llama a las props del padre
-    this.state = {
-
-      nombre: '',
-      cuit: '',
-      // TODO: ubicacion que pasamos por defecto debería ser la de la ONG. Ahora, Córdoba.
-      ubicacion: { latitud: -31.4201, longitud: -64.1888, notas: '' },
-      mail: '',
-      telefono: '',
-      rubro_id: 0,
-      foto_perfil: undefined,
-      descripcion: '',
-      errors: {},
-
+    this.state = {nombre: 'organizacion',
+    cuit: '',
+    ubicacion: { latitud: 0, longitud: 0, notas:'#!None#!'},
+    mail: '',
+    telefono: '',
+    rubro: { id: 0, nombre: "none"},
+    avatar_url: 'assets/user.png',
+    descripcion: '',
+    errors: {},
     };
   }
 
 
-  componentDidMount(){
-    api.get("/perfiles/perfil_organizacion/"+ this.id_usuario) //ATENCION ESTO
-      .then(res => {
-        const rubrosData = res.data;
-        this.setState({ rubros: rubrosData });
-        this.props.rubro_id = rubrosData[0].id;
+  componentDidMount() {
+    api.get(`/perfiles/perfil_organizacion/${this.props.usuarioId}`)
+    .then( (res) => {
+      let rubro = res.rubro
+      let ubicacion = res.ubicacion
+      if ( rubro == null ) {
+        rubro = { id: 0, nombre: 'none'}
+      }
+      if ( ubicacion == null ) {
+        ubicacion = { latitud: 0, longitud: 0, notas:'#!None#!'}
+      }
+      this.setState({
+        cuit: res.cuit,
+        telefono: res.telefono,
+        descripcion: res.descripcion,
+        rubro_id: rubro.id,
+        rubro_nombre: rubro.nombre,
+        avatar_url: res.avatar.url,        
       })
-      .catch(function (error) {
-        if (error.response){ console.log(error.response.status); }
-        else { console.log("Error: ", error.message); }
-      });
+    })
+  }  
+
+  mostrarUbicacion(){
+    if(this.state.ubicacion.latitud === 0 && this.state.ubicacion.longitud === 0){
+    }
+    else{
+      return      
+        <SelectorUbicacion
+        name="selectorUbicacion"
+        ubicacion={this.state.ubicacion}
+      />             
+    }
   }
 
   render() {
@@ -60,19 +76,19 @@ class ConsultarPerfilOrganizacion extends Component {
 
           <Form>
 
-            <Item>
-              <Image
-               style={{width: 50, height: 50}}
-               source={{uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png'}}
-              />
-            </Item>
-
             <Item floatingLabel>
               <Label>Nombre</Label>
               <Text
                 value={this.state.nombre}
               />
             </Item>
+
+            <Item>
+              <Image
+               style={{width: 50, height: 50}}
+               source={this.avatar_url}
+              />
+            </Item>            
 
             <Item floatingLabel>
               <Label>Mail</Label>
@@ -97,16 +113,13 @@ class ConsultarPerfilOrganizacion extends Component {
 
             <Item floatingLabel>
               <Label>Rubro</Label>
-              <ListaRubrosOrganizacion
-              name="listaRubros"
-              rubro_id={this.state.rubro_id}              
-            />               
+              <Text
+                value={this.state.rubor.nombre}
+              />         
             </Item>
 
             <Item>
-              <SelectorUbicacion
-                ubicacion={this.state.ubicacion}              
-              />
+            {this.mostrarUbicacion()} 
             </Item>              
 
             <Item floatingLabel>

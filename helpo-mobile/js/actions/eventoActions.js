@@ -40,5 +40,5 @@ export function loadEventosOrganizacionSuccess(eventos) {
 }
 
 export function updateEventoSuccess(evento) {  
-  return {type: types.UPDATE_EVENTOS_SUCCESS, evento}
+  return {type: types.UPDATE_EVENTOS_SUCCESS, evento};
 }

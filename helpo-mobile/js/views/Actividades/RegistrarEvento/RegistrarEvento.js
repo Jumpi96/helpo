@@ -132,7 +132,7 @@ class RegistrarEvento extends React.Component {
     return infoContactos;
   }
 
-  handleValidation(event) {
+  handleValidation() {
     let formIsValid = true;
     const errors = this.state.errors;
 
@@ -192,13 +192,18 @@ class RegistrarEvento extends React.Component {
         errors.contactoContacto = 'Debe ingresar un mail o un telefono';
         validacion.is_valid = false;
       }
-      if (contactos[i].mail !== '' && !validateEmail(contactos[i].mail)) {
+      if (contactos[i].mail !== '' && !(this.validateEmail(contactos[i].mail))) {
         errors.email = 'Debe ingresar un mail valido';
         validacion.is_valid = false;
       }
     }
     validacion.errors = errors;
     return validacion;
+  }
+
+  validateEmail(email) {
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
   }
 
   handleUbicacionChange(ubi) {
@@ -333,14 +338,16 @@ class RegistrarEvento extends React.Component {
                 onUbicacionChange={this.handleUbicacionChange}
               />
             </Item>
-            <RegistrarContacto
-              contactos={this.state.contactos}
-              onNombreChange={this.handleContactNombreChange}
-              onMailChange={this.handleContactMailChange}
-              onTelefonoChange={this.handleContactTelefonoChange}
-              onAddContact={this.addContact}
-              onRemoveContact={this.removeContact}
-            />
+            <Item>
+              <RegistrarContacto
+                contactos={this.state.contactos}
+                onNombreChange={this.handleContactNombreChange}
+                onMailChange={this.handleContactMailChange}
+                onTelefonoChange={this.handleContactTelefonoChange}
+                onAddContact={this.addContact}
+                onRemoveContact={this.removeContact}
+              />
+            </Item>
             <FormValidationMessage>{this.state.errors.contactoNombre}</FormValidationMessage>
             <FormValidationMessage>{this.state.errors.contactoContacto}</FormValidationMessage>
             <FormValidationMessage>{this.state.errors.email}</FormValidationMessage>

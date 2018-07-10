@@ -66,7 +66,7 @@ class VerEvento extends React.Component {
   handleEdit() {
     const evento = this.props.evento;
     if (moment(evento.fecha_hora_inicio) > moment()) {
-      Actions.editarEvento({ evento, rubros: this.props.rubrosEvento });
+      Actions.editarEvento({ evento, rubros: this.props.rubros });
     } else {
       Toast.show({
         text: 'No se pueden modificar eventos ya finalizados.',

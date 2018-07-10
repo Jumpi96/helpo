@@ -67,8 +67,7 @@ class ModificarPerfilOrganizacion extends Component {
     this.setState({ ubicacion: ubi });
   }
 
-  guardar(){
-    event.preventDefault();
+  guardar(){    
     if (this.handleValidation()) {
       
       const perfil = {};
@@ -243,14 +242,12 @@ class ModificarPerfilOrganizacion extends Component {
         </div>
 
         <div className="btn btn-primary"> 
-          <button onclick={guardar()}> //Elegir un boton guardar
-          Guardar
+          <button> 
           </button>          
         </div>
 
         <div className="form-group">
-          <input type="submit" className="btn btn-primary" value="Guardar" />
-          {guardar()} //Elegir un boton guardar 
+          <input type="submit" className="btn btn-primary" value="Guardar" />           
         </div>        
 
       </Card>

@@ -8,6 +8,7 @@ class ConsultarPerfilGenerico extends Component {
   constructor(props) {
     super(props); //Llama a las props del padre
     this.state = {
+      nombre: '',
       userId: 0,
       userType: 0,     
       email: '' 
@@ -33,13 +34,22 @@ class ConsultarPerfilGenerico extends Component {
     switch (this.state.userType){
 
       case 1:
-        return <ConsultarPerfilOrganizacion {...this.props.usuarioId}/>
+        return (<ConsultarPerfilOrganizacion 
+                  usuarioId={this.state.userId}
+                  email={this.state.email}
+                  />)
 
       case 2:
-        return <ConsultarPerfilVoluntario {...this.props.usuarioId}/>
+        return ( <ConsultarPerfilVoluntario 
+                  usuarioId={this.state.userId}
+                  email={this.state.email}
+                  /> )
 
       case 3:
-        return <ConsultarPerfilEmpresa {...this.props.usuarioId}/>
+        return ( <ConsultarPerfilEmpresa 
+                  usuarioId={this.state.userId}
+                  email={this.state.email}
+                  /> )
 
       default:
         return ( <p>Error</p> )        

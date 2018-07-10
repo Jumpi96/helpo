@@ -1,9 +1,7 @@
 import React, { Component, View } from 'react';
-import ListaRubrosOrganizacion from '../ListaRubrosOrganizacion/ListaRubrosOrganizaciones';
 import ModificarPerfilOrganizacion from './ModificarPerfilOrganizacion';
 import SelectorUbicacion from '../../Actividades/RegistrarEvento/SelectorUbicacion/SelectorUbicacion';
 import api from '../../../api';
-import CargadorImagenPerfil from '../CargadorImagenPerfil/CargadorImagenPerfil';
 import { Card } from 'reactstrap';
 
 
@@ -11,22 +9,25 @@ class ConsultarPerfilOrganizacion extends Component {
   constructor(props) {
     super(props); //Llama a las props del padre
     this.state = {
-      nombre: 'organizacion',
+      nombre: 'this.props.nombre',
       cuit: '',
       ubicacion: { latitud: 0, longitud: 0, notas:'#!None#!'},
-      mail: '',
+      mail: this.props.email,
       telefono: '',
       rubro: { id: 0, nombre: "none"},
       avatar_url: 'assets/user.png',
       descripcion: '',
       errors: {},
     };
+    this.modificarPerfil = this.modificarPerfil.bind(this);
+    this.mostrarUbicacion = this.mostrarUbicacion.bind(this);
   }
 
   
   componentDidMount() {
     api.get(`/perfiles/perfil_organizacion/${this.props.usuarioId}`)
     .then( (res) => {
+      console.log(res)
       let rubro = res.rubro
       let ubicacion = res.ubicacion
       if ( rubro == null ) {
@@ -46,26 +47,29 @@ class ConsultarPerfilOrganizacion extends Component {
     })
   }  
 
-  mostrarUbicacion(){
+  mostrarUbicacion() {
     if(this.state.ubicacion.latitud === 0 && this.state.ubicacion.longitud === 0){
     }
     else{
-      return      
+      return (      
         <SelectorUbicacion
-        name="selectorUbicacion"
-        ubicacion={this.state.ubicacion}
-      />             
+          name="selectorUbicacion"
+          ubicacion={this.state.ubicacion}
+      /> )         
     }
   }
 
   modificarPerfil(){
-    return <ModificarPerfilOrganizacion {...this.props.usuarioId}/>
+    return <ModificarPerfilOrganizacion 
+            nombre={this.props.nombre}
+            usuarioId={this.props.userId}
+            email={this.props.email}
+            />
   }
 
-  render() {
-    return (
+  render() { return (<p>Actividades</p>)
+    /*return (
       <Card>
-      <form onSubmit={this.handleSubmit}>
         <div className="row">
         
           <div className="form-group col-md-6">
@@ -78,6 +82,7 @@ class ConsultarPerfilOrganizacion extends Component {
           <View>
             <img
               src={this.avatar_url}
+              alt="avatar"
               width="100" 
               height="100"
             />
@@ -117,15 +122,15 @@ class ConsultarPerfilOrganizacion extends Component {
         </div>
 
         <div className="btn btn-primary">
-          <button onclick={modificarPerfil()}>
+          <button onclick={this.modificarPerfil}>
           Modificar Perfil 
           </button>                
         </div>
-
-      </form>
+      
       </Card>
 
     );
-  }
+  */}
 }
+
 export default ConsultarPerfilOrganizacion;

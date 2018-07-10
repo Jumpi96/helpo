@@ -97,9 +97,14 @@ class ConsultarPerfilOrganizacion extends Component {
 
           <text>{JSON.stringify(this.state)}</text>
           <div className="form-group col-md-6">
-          <CargadorImagenPerfil
-            image={this.avatar_url}
-          />
+          <View>
+            <img
+              style={}
+              src={this.avatar_url}
+              width="100" 
+              height="50"
+            />
+          </View>
           </div>
 
           <div className="form-group col-md-6">

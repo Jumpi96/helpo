@@ -69,8 +69,22 @@ class ConsultarPerfilOrganizacion extends Component {
     }
   }
 
+  mostrarUbicacion(){
+    if(this.state.ubicacion.latitud == 0 && this.state.ubicacion.longitud == 0){
+    }
+    else{
+      return      
+        <SelectorUbicacion
+        name="selectorUbicacion"
+        ubicacion={this.state.ubicacion}
+      />             
+    }
+  }
 
- 
+  modificarPerfil(){
+    return <ModificarPerfilOrganizacion />
+  }
+
   render() {
     return (
       <Card>
@@ -80,9 +94,12 @@ class ConsultarPerfilOrganizacion extends Component {
             <label htmlFor="nombre">Nombre</label>
             <text>{this.state.nombre}</text>
           </div>
+
           <text>{JSON.stringify(this.state)}</text>
           <div className="form-group col-md-6">
-          <CargadorImagenPerfil imagen />
+          <CargadorImagenPerfil
+            image={this.avatar_url}
+          />
           </div>
 
           <div className="form-group col-md-6">
@@ -105,12 +122,9 @@ class ConsultarPerfilOrganizacion extends Component {
               </select>
             </div>
 
-          <div className="form-group col-md-6">
-            <SelectorUbicacion
-              name="selectorUbicacion"
-              ubicacion={this.state.ubicacion}
-            />        
-          </div>    
+            <div className="form-group col-md-6">
+              {this.mostrarUbicacion()}       
+            </div>              
 
           <div className="form-group">
           <label htmlFor="descripcion">Descripcion</label> 
@@ -120,8 +134,10 @@ class ConsultarPerfilOrganizacion extends Component {
 
         </div>
 
-        <div className="form-group">
-          <input type="submit" className="btn btn-primary" value="Modificar perfil" />
+        <div className="btn btn-primary">
+          <button onclick="modificarPerfil()">
+          Modificar Perfil 
+          </button>          
         </div>
 
       </form>

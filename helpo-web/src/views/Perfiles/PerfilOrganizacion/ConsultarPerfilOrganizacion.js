@@ -93,19 +93,14 @@ class ConsultarPerfilOrganizacion extends Component {
             <text>{this.state.telefono}</text>          
           </div>
 
-          <div className="form-group col-md-6">
-              <label htmlFor="listaRubros">Rubro</label>
-              <select
-                value={this.state.rubro_id}
-                className="form-control"
-              >
-                  {ListaRubrosOrganizacion}
-              </select>
-            </div>
+         <div className="form-group col-md-6">
+            <label htmlFor="telefono">Rubro</label>
+            <text>{this.state.rubro.nombre}</text>          
+          </div>
 
-            <div className="form-group col-md-6">
-              {this.mostrarUbicacion()}       
-            </div>              
+          <div className="form-group col-md-6">
+            {this.mostrarUbicacion()}       
+          </div>              
 
           <div className="form-group">
           <label htmlFor="descripcion">Descripcion</label> 

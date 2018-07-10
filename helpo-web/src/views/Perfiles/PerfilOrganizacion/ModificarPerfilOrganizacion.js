@@ -9,9 +9,10 @@ import { Card } from 'reactstrap';
 class ModificarPerfilOrganizacion extends Component {
   constructor(props) {
     super(props); //Llama a las props del padre
-    this.state = {nombre: 'organizacion',
+    this.state = {
+    nombre: 'organizacion',
     cuit: '',
-    ubicacion: { latitud: -31.4201, longitud: -64.1888, notas: '' },
+    ubicacion: { latitud: 0, longitud: 0, notas:'#!None#!'},
     mail: '',
     telefono: '',
     rubro: { id: 0, nombre: "none"},
@@ -106,7 +107,7 @@ class ModificarPerfilOrganizacion extends Component {
       errors.nombre = 'Debe ingresar un nombre.';
     } else { errors.nombre = undefined; }
 
-    if (!this.state.cuit) {
+    {/* if (!this.state.cuit) {
       formIsValid = false;
       errors.cuit = 'Debe ingresar un cuit.';
     } else { errors.cuit = undefined; }
@@ -115,10 +116,11 @@ class ModificarPerfilOrganizacion extends Component {
       formIsValid = false;
       errors.telefono = 'Debe ingresar un teléfono.';
     } else { errors.telefono = undefined; }
+    */}
 
-    if (this.state.rubro_id === 0) { //Revisar cuando se cambie la lista de rubros
+    if (this.state.rubro.id === 0) { //Revisar cuando se cambie la lista de rubros
       formIsValid = false;
-      errors.rubro = 'Hubo un problema al cargar los rubros.';
+      errors.rubro = 'Hubo un problema al cargar el rubro.';
     } else { errors.rubro = undefined; }
 
     this.setState({ errors });
@@ -144,6 +146,19 @@ class ModificarPerfilOrganizacion extends Component {
           </div>
 
           <div className="form-group col-md-6">
+            <label htmlFor="telefono">Mail</label>
+            <input
+              type="text"
+              name="mail"
+              className="form-control"
+              placeholder="Mail"
+              value={this.state.mail}
+              onChange={this.handleInputChange}
+            />
+            <span style={{ color: 'red' }}>{this.state.errors.mail}</span>
+          </div>
+
+          <div className="form-group col-md-6">
           <CargadorImagenPerfil 
             image = {this.state.avatar_url}
             width={250}
@@ -154,8 +169,6 @@ class ModificarPerfilOrganizacion extends Component {
             rotate={0} 
           />
           </div>
-
-
 
           <div className="form-group col-md-6">
             <label htmlFor="cuit">CUIT</label>
@@ -212,16 +225,16 @@ class ModificarPerfilOrganizacion extends Component {
           />
         </div>
 
-        <div className="btn btn-primary">
-          <button onclick={guardar()}>
+        <div className="btn btn-primary"> 
+          <button onclick={guardar()}> //Elegir un boton guardar
           Guardar
           </button>          
         </div>
 
         <div className="form-group">
           <input type="submit" className="btn btn-primary" value="Guardar" />
-          {guardar()}
-        </div>       
+          {guardar()} //Elegir un boton guardar 
+        </div>        
 
       </Card>
     );

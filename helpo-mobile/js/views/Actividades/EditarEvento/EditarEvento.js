@@ -1,72 +1,55 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
-import { actions } from 'react-native-navigation-redux-helpers';
-import { Alert } from 'react-native';
-import { FormValidationMessage } from 'react-native-elements';
+import moment from 'moment';
 import {
+  Button,
   Container,
   Header,
-  Title,
-  Content,
-  Button,
-  Item,
-  Label,
-  Input,
-  Body,
   Left,
   Right,
-  Icon,
+  Body,
+  Title,
+  Content,
   Form,
+  Icon,
   Text,
+  Item,
+  Picker,
+  Label,
+  Input,
+  ListItem,
 } from 'native-base';
-import moment from 'moment';
+import { FormValidationMessage } from 'react-native-elements';
+import SelectorUbicacion from '../RegistrarEvento/SelectorUbicacion/SelectorUbicacion';
+import SelectorFechaHora from '../RegistrarEvento/SelectorFechaHora/SelectorFechaHora';
+import RegistrarContacto from '../RegistrarEvento/RegistrarContacto/RegistrarContacto';
+import * as eventoActions from '../../../actions/eventoActions';
 import { openDrawer } from '../../../actions/drawer';
-import SelectorUbicacion from './SelectorUbicacion/SelectorUbicacion';
-import ListaRubrosEvento from './ListaRubrosEvento/ListaRubrosEvento';
-import api from '../../../api';
-import SelectorFechaHora from './SelectorFechaHora/SelectorFechaHora';
-import RegistrarContacto from './RegistrarContacto/RegistrarContacto';
 import validateEmail from '../../../utils/ValidateEmail';
 import styles from './styles';
 
-const {
-  popRoute,
-} = actions;
+class EditarEvento extends React.Component {
 
-class RegistrarEvento extends React.Component {
-
-  static propTypes = {
-    openDrawer: React.PropTypes.func,
-    popRoute: React.PropTypes.func,
-    navigation: React.PropTypes.shape({
-      key: React.PropTypes.string,
-    }),
-  }
   constructor(props) {
     super(props);
+    const evento = props.evento;
+    for (let i = 0; i < evento.contacto.length; i += 1) {
+      evento.contacto[i].contactId = i + 1;
+    }
+    evento.nextId = evento.contacto.length + 1;
+    evento.rubro_id = evento.rubro.id;
     this.state = {
-      nombre: '',
-      descripcion: '',
-      rubro_id: 0,
-      fecha_hora_inicio: new Date(),
-      fecha_hora_fin: new Date(),
-        // TODO: ubicacion que pasamos por defecto debería ser la de la ONG. Ahora, Córdoba.
-      ubicacion: { latitud: -31.4201, longitud: -64.1888, notas: '' },
-      contactos: [{
-        nombre: '',
-        mail: '',
-        telefono: '',
-        contactId: 1,
-      }],
-      nextId: 2,
+      evento,
       errors: {},
     };
     this.handleUbicacionChange = this.handleUbicacionChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleSave = this.handleSave.bind(this);
     this.handleRubroChange = this.handleRubroChange.bind(this);
     this.handleFechaHoraInicioChange = this.handleFechaHoraInicioChange.bind(this);
     this.handleFechaHoraFinChange = this.handleFechaHoraFinChange.bind(this);
+    this.handleNombreChange = this.handleNombreChange.bind(this);
+    this.handleDescripcionChange = this.handleDescripcionChange.bind(this);
     /* Metodos de contacto */
     this.handleContactNombreChange = this.handleContactNombreChange.bind(this);
     this.handleContactMailChange = this.handleContactMailChange.bind(this);
@@ -76,79 +59,31 @@ class RegistrarEvento extends React.Component {
     /* ------------------- */
   }
 
-  popRoute() {
-    this.props.popRoute(this.props.navigation.key);
-  }
 
-  handleRubroChange(r) {
-    this.setState({ rubro_id: r });
-  }
-
-  handleSubmit(event) {
-    event.preventDefault();
-
+  handleSave() {
     if (this.handleValidation()) {
-      const evento = {
-        nombre: this.state.nombre,
-        descripcion: this.state.descripcion,
-        fecha_hora_inicio: this.state.fecha_hora_inicio.toISOString(),
-        fecha_hora_fin: this.state.fecha_hora_fin.toISOString(),
-        rubro_id: this.state.rubro_id,
-        ubicacion: this.state.ubicacion,
-        contacto: this.getContactosInfo(),
-      };
-      api.post('/actividades/eventos/', evento)
-        .then((res) => {
-          console.log(res);
-          console.log(res.data);
-          Alert.alert(
-            'Registrar evento',
-            'Se registró el evento con éxito.'
-          );
-          Actions.registrarNecesidades({ id: res.data.id });
-        }).catch((error) => {
-          if (error.response) { console.log(error.response); } else { console.log('Error: ', error.message); }
-        });
+      const evento = this.state.evento;
+      this.props.updateEvento(evento);
+      Actions.verEvento({ evento, rubros: this.props.rubros });
     }
-  }
-
-  getContactosInfo() {
-    const contactos = this.state.contactos;
-    const infoContactos = [];
-    // Si no hay contactos, retorno array vacio
-    if (contactos[0].nombre === '') {
-      return infoContactos;
-    }
-    for (let i = 0; i < contactos.length; i += 1) {
-      const telefonoInfo = contactos[i].telefono !== '' ? contactos[i].telefono : null;
-      const emailInfo = contactos[i].email !== '' ? contactos[i].email : null;
-
-      const cto = {
-        nombre: contactos[i].nombre,
-        email: emailInfo,
-        telefono: telefonoInfo,
-      };
-      infoContactos[i] = cto;
-    }
-    return infoContactos;
   }
 
   handleValidation() {
     let formIsValid = true;
     const errors = this.state.errors;
 
-    if (!this.state.nombre) {
+    if (!this.state.evento.nombre) {
       formIsValid = false;
       errors.nombre = 'Debe ingresar un nombre.';
     }
 
-    if (isNaN(Date.parse(this.state.fecha_hora_inicio)) ||
-        isNaN(Date.parse(this.state.fecha_hora_fin))) {
+    if (isNaN(Date.parse(this.state.evento.fecha_hora_inicio)) ||
+        isNaN(Date.parse(this.state.evento.fecha_hora_fin))) {
       formIsValid = false;
       errors.fechas = 'Las fechas ingresadas no son válidas.';
     } else {
-      const inicio = moment(this.state.fecha_hora_inicio);
-      const fin = moment(this.state.fecha_hora_fin);
+      const inicio = moment(this.state.evento.fecha_hora_inicio);
+      const fin = moment(this.state.evento.fecha_hora_fin);
       const ahora = moment(new Date());
       if (moment.duration(fin.diff(inicio)).asHours() > 24 ||
           inicio < ahora ||
@@ -158,7 +93,7 @@ class RegistrarEvento extends React.Component {
           'la actividad no durar más de 24 horas.';
       }
     }
-    if (this.state.rubro_id === 0) {
+    if (this.state.evento.rubro_id === 0) {
       formIsValid = false;
       errors.rubro = 'Hubo un problema al cargar los rubros.';
     }
@@ -176,7 +111,7 @@ class RegistrarEvento extends React.Component {
   validateContactos() {
     const errors = { contactoNombre: '', contactoContacto: '', email: '' };
     const validacion = { is_valid: true, errors };
-    const contactos = this.state.contactos;
+    const contactos = this.state.evento.contacto;
     for (let i = 0; i < contactos.length; i += 1) {
       // Es valido no ingresar ningun contacto
       if (contactos[i].nombre === '' &&
@@ -193,7 +128,7 @@ class RegistrarEvento extends React.Component {
         errors.contactoContacto = 'Debe ingresar un mail o un telefono';
         validacion.is_valid = false;
       }
-      if (contactos[i].email !== '' && !(validateEmail(contactos[i].email))) {
+      if (contactos[i].email !== '' && !validateEmail(contactos[i].email)) {
         errors.email = 'Debe ingresar un mail valido';
         validacion.is_valid = false;
       }
@@ -202,36 +137,61 @@ class RegistrarEvento extends React.Component {
     return validacion;
   }
 
+  handleNombreChange(text) {
+    const evento = this.state.evento;
+    evento.nombre = text;
+    this.setState({ evento });
+  }
+
+  handleDescripcionChange(text) {
+    const evento = this.state.evento;
+    evento.descripcion = text;
+    this.setState({ evento });
+  }
+
   handleUbicacionChange(ubi) {
-    this.setState({ ubicacion: ubi });
+    const evento = this.state.evento;
+    evento.ubicacion = ubi;
+    this.setState({ evento });
   }
 
-  handleFechaHoraInicioChange(f_h) {
-    this.setState({ fecha_hora_inicio: f_h, fecha_hora_fin: f_h });
+  handleRubroChange(r) {
+    const evento = this.state.evento;
+    evento.rubro_id = r;
+    this.setState({ evento });
   }
 
-  handleFechaHoraFinChange(f_h) {
-    this.setState({ fecha_hora_fin: f_h });
+  handleFechaHoraInicioChange(fechaHora) {
+    const evento = this.state.evento;
+    evento.fecha_hora_inicio = fechaHora;
+    evento.fecha_hora_fin = fechaHora;
+    this.setState({ evento });
+  }
+
+  handleFechaHoraFinChange(fechaHora) {
+    const evento = this.state.evento;
+    evento.fecha_hora_fin = fechaHora;
+    this.setState({ evento });
   }
 
   handleContactNombreChange(value, contactId) {
     const field = 'nombre';
-    const index = this.state.contactos.map(e => e.contactId).indexOf(contactId);
-    const newContactos = this.state.contactos;
+    const index = this.state.evento.contacto.map(e => e.contactId).indexOf(contactId);
+    const newContactos = this.state.evento.contacto;
     newContactos[index][field] = value;
-    this.setState({
-      contactos: newContactos,
-    });
+    const evento = this.state.evento;
+    evento.contacto = newContactos;
+    this.setState({ evento });
   }
 
   handleContactMailChange(value, contactId) {
     const field = 'email';
-    const index = this.state.contactos.map(e => e.contactId).indexOf(contactId);
-    const newContactos = this.state.contactos;
+    const index = this.state.evento.contacto.map(e => e.contactId).indexOf(contactId);
+    const newContactos = this.state.evento.contacto;
     newContactos[index][field] = value;
-    this.setState({
-      contactos: newContactos,
-    });
+    const evento = this.state.evento;
+    evento.contacto = newContactos;
+    this.setState({ evento });
   }
 
   handleContactTelefonoChange(value, contactId) {
@@ -240,12 +200,12 @@ class RegistrarEvento extends React.Component {
       return;
     }
     const field = 'telefono';
-    const index = this.state.contactos.map(e => e.contactId).indexOf(contactId);
-    const newContactos = this.state.contactos;
+    const index = this.state.evento.contacto.map(e => e.contactId).indexOf(contactId);
+    const newContactos = this.state.evento.contacto;
     newContactos[index][field] = value;
-    this.setState({
-      contactos: newContactos,
-    });
+    const evento = this.state.evento;
+    evento.contacto = newContactos;
+    this.setState({ evento });
   }
 
   addContact() {
@@ -253,28 +213,33 @@ class RegistrarEvento extends React.Component {
       nombre: '',
       email: '',
       telefono: '',
-      contactId: this.state.nextId,
+      contactId: this.state.evento.nextId,
     };
-    const newContactos = this.state.contactos.concat(newContact);
+    const newContactos = this.state.evento.contacto.concat(newContact);
+    const evento = this.state.evento;
+    evento.contacto = newContactos;
     this.setState({
-      contactos: newContactos,
-      nextId: parseInt(this.state.nextId, 10) + 1,
+      evento,
+      nextId: parseInt(this.state.evento.nextId, 10) + 1,
     });
   }
 
   removeContact(id) {
-    if (this.state.contactos.length === 1) {
+    if (this.state.evento.contacto.length === 1) {
       return;
     }
-    const newContactos = this.state.contactos;
+    const newContactos = this.state.evento.contacto;
     const indexOfRemove = newContactos.map(e => e.contactId).indexOf(id);
     newContactos.splice(indexOfRemove, 1);
-    this.setState({
-      contactos: newContactos,
-    });
+    const evento = this.state.evento;
+    evento.contacto = newContactos;
+    this.setState({ evento });
   }
 
   render() {
+    const listaRubroEventos = this.props.rubros.map((r) =>
+      <Item value={r.id} key={r.id} label={r.nombre} />
+    );
     return (
       <Container style={styles.container}>
         <Header>
@@ -284,72 +249,87 @@ class RegistrarEvento extends React.Component {
             </Button>
           </Left>
           <Body>
-            <Title>Registrar evento</Title>
+            <Title>Editar evento</Title>
           </Body>
-          <Right />
+          <Right>
+            <Button
+              transparent
+              onPress={() => Actions.registrarNecesidades({ id: this.state.evento.id })}>
+              <Text>Necesidades</Text>
+            </Button>
+          </Right>
         </Header>
-
         <Content>
           <Form>
-            <Item floatingLabel>
+            <Item>
               <Label>Nombre</Label>
               <Input
-                value={this.state.nombre}
-                onChangeText={text => this.setState({ nombre: text })}
+                value={this.state.evento.nombre}
+                onChangeText={this.handleNombreChange}
               />
             </Item>
             <FormValidationMessage>{this.state.errors.nombre}</FormValidationMessage>
-            <Item floatingLabel>
+            <Item>
               <Label>Descripción</Label>
               <Input
-                value={this.state.descripcion}
-                onChangeText={text => this.setState({ descripcion: text })}
+                value={this.state.evento.descripcion}
+                onChangeText={this.handleDescripcionChange}
               />
             </Item>
-
-            <ListaRubrosEvento
-              name="listaRubros"
-              rubro_id={this.state.rubro_id}
-              onRubroChange={this.handleRubroChange}
-            />
+            <ListItem>
+              <Left>
+                <Text>Rubro</Text>
+              </Left>
+              <Body>
+                <Picker
+                  note
+                  mode="dropdown"
+                  selectedValue={this.state.evento.rubro_id}
+                  onValueChange={this.handleRubroChange}
+                >
+                  {listaRubroEventos}
+                </Picker>
+              </Body>
+            </ListItem>
             <FormValidationMessage>{this.state.errors.rubro}</FormValidationMessage>
-
             <SelectorFechaHora
               detalle="Inicio"
               soloFecha={false}
-              value={this.state.fecha_hora_inicio}
+              value={this.state.evento.fecha_hora_inicio}
               handleChange={this.handleFechaHoraInicioChange}
             />
             <SelectorFechaHora
               detalle="Fin"
               soloFecha={false}
-              value={this.state.fecha_hora_fin}
+              value={this.state.evento.fecha_hora_fin}
               handleChange={this.handleFechaHoraFinChange}
             />
             <FormValidationMessage>{this.state.errors.fechas}</FormValidationMessage>
 
-            <Item>
+            <ListItem>
+              <Label>Ubicación</Label>
               <SelectorUbicacion
-                ubicacion={this.state.ubicacion}
+                ubicacion={this.state.evento.ubicacion}
                 onUbicacionChange={this.handleUbicacionChange}
               />
-            </Item>
-            <Item>
+            </ListItem>
+
+            <ListItem>
               <RegistrarContacto
-                contactos={this.state.contactos}
+                contactos={this.state.evento.contacto}
                 onNombreChange={this.handleContactNombreChange}
                 onMailChange={this.handleContactMailChange}
                 onTelefonoChange={this.handleContactTelefonoChange}
                 onAddContact={this.addContact}
                 onRemoveContact={this.removeContact}
               />
-            </Item>
-            <FormValidationMessage>{this.state.errors.contactoNombre}</FormValidationMessage>
-            <FormValidationMessage>{this.state.errors.contactoContacto}</FormValidationMessage>
-            <FormValidationMessage>{this.state.errors.email}</FormValidationMessage>
+              <FormValidationMessage>{this.state.errors.contactoNombre}</FormValidationMessage>
+              <FormValidationMessage>{this.state.errors.contactoContacto}</FormValidationMessage>
+              <FormValidationMessage>{this.state.errors.email}</FormValidationMessage>
+            </ListItem>
             <Button
               block style={{ margin: 15, marginTop: 50 }}
-              onPress={this.handleSubmit}
+              onPress={this.handleSave}
             >
               <Text>Guardar Evento</Text>
             </Button>
@@ -364,6 +344,7 @@ function bindAction(dispatch) {
   return {
     openDrawer: () => dispatch(openDrawer()),
     popRoute: key => dispatch(popRoute(key)),
+    updateEvento: evento => dispatch(eventoActions.updateEvento(evento)),
   };
 }
 
@@ -372,4 +353,4 @@ const mapStateToProps = state => ({
   themeState: state.drawer.themeState,
 });
 
-export default connect(mapStateToProps, bindAction)(RegistrarEvento);
+export default connect(mapStateToProps, bindAction)(EditarEvento);

@@ -105,6 +105,7 @@ import RegistrarNecesidades from './views/Actividades/RegistrarNecesidades/Regis
 import AgregarNecesidad from './views/Actividades/RegistrarNecesidades/AgregarNecesidad/AgregarNecesidad';
 import MisEventos from './views/Actividades/MisEventos/MisEventos';
 import VerEvento from './views/Actividades/VerEvento/VerEvento';
+import EditarEvento from './views/Actividades/EditarEvento/EditarEvento';
 import Login from './views/Usuarios/Login';
 import Configuracion from './views/Usuarios/Configuracion';
 import SignUp from './views/Usuarios/SignUp';
@@ -203,6 +204,7 @@ class AppNavigator extends Component {
               <Scene key="registrarNecesidades" component={RegistrarNecesidades} />
               <Scene key="misEventos" component={MisEventos} />
               <Scene key="verEvento" component={VerEvento} />
+              <Scene key="editarEvento" component={EditarEvento} />
               <Scene key="agregarNecesidad" component={AgregarNecesidad} />
               <Scene key="header" component={Header} />
               <Scene key="header1" component={Header1} />

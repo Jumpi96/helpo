@@ -36,12 +36,12 @@ class SelectorItem extends React.Component {
 
   componentDidMount() {
     let listaCategorias, selectedCategoria;
-    api.get("/actividades/categorias_recurso")
+    api.get("/actividades/categorias_recurso/")
       .then(res => {
         const categoriasData = res.data;
         listaCategorias = categoriasData;
         selectedCategoria = categoriasData[0].id;
-        api.get("/actividades/recursos")
+        api.get("/actividades/recursos/")
           .then(re => {
             const recursosData = re.data;
             this.setState({

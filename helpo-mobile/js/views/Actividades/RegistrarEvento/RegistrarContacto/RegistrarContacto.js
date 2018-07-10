@@ -18,7 +18,7 @@ const inputPropTypes = {
     onTelefonoChange: PropTypes.func.isRequired,
     contactos: PropTypes.shape({
       nombre: PropTypes.string,
-      mail: PropTypes.string,
+      email: PropTypes.string,
       telefono: PropTypes.string,
     }).isRequired,
   };
@@ -29,7 +29,7 @@ function ContactoInput({
     return (
       <View>
           <Text>Contacto {contactNum}</Text>
-          <Item floatingLabel>
+          <Item>
               <Label>Nombre</Label>
               <Input
                 id={`nombre-contacto${id}`}
@@ -38,15 +38,15 @@ function ContactoInput({
                 //value={contactValues.nombre}
                 />
           </Item>
-          <Item floatingLabel>
+          <Item>
               <Label>Mail</Label>
               <Input
-                id={`mail-contacto${id}`}
-                value={contactos.mail}
+                id={`email-contacto${id}`}
+                value={contactos.email}
                 onChangeText={text => onMailChange(text, id)}
                 />
           </Item>
-          <Item floatingLabel>
+          <Item>
               <Label>Telefono</Label>
               <Input
                 id={`telefono-contacto${id}`}

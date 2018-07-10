@@ -61,7 +61,7 @@ class RegistrarNecesidades extends React.Component {
   }
 
   loadNecesidades() {
-    api.get("/actividades/necesidades/?evento=" + this.state.evento)
+    api.get("/actividades/necesidades/?evento=" + this.state.evento + "/")
       .then(res => {
         const necesidadesData = res.data;
         this.setState({ necesidades: necesidadesData});
@@ -122,7 +122,7 @@ class RegistrarNecesidades extends React.Component {
             </Button>
           </Left>
           <Body>
-            <Title>Registrar necesidades</Title>
+            <Title>Administrar necesidades</Title>
           </Body>
         </Header>
         <Content>

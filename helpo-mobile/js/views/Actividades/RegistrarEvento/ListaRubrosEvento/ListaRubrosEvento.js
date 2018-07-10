@@ -19,8 +19,8 @@ class ListaRubrosEvento extends React.Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
-  componentDidMount(){
-    api.get('/actividades/rubros_evento')
+  componentDidMount() {
+    api.get('/actividades/rubros_evento/')
       .then(res => {
         const rubrosData = res.data;
         this.setState({ rubros: rubrosData });

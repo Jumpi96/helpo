@@ -62,11 +62,11 @@ class UserManager(BaseUserManager):
         avatar = Imagen.objects.get(id=1)
         
         if user_type == 1:
-            profile = OrganizacionProfile.objects.create(usuario=user,imagen=avatar)
+            profile = OrganizacionProfile.objects.create(usuario=user, avatar=avatar)
         elif user_type == 2:
-            profile = VoluntarioProfile.objects.create(usuario=user, apellido=kwargs["apellido"])
+            profile = VoluntarioProfile.objects.create(usuario=user, apellido=kwargs["apellido"], avatar=avatar)
         else:
-            profile = EmpresaProfile.objects.create(usuario=user)
+            profile = EmpresaProfile.objects.create(usuario=user, avatar=avatar)
         self.send_confirmation_email(user)
         
         return user
@@ -155,12 +155,3 @@ class Profile(models.Model):
 
     class Meta:
         abstract = True
-
-class VoluntarioProfile(Profile):
-    apellido = models.CharField(max_length=50)
-
-class OrganizacionProfile(Profile):
-    verificada = models.BooleanField(default=False)
-    
-class EmpresaProfile(Profile):
-    telefono = models.IntegerField(null=True)

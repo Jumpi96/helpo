@@ -5,7 +5,6 @@ import { createStore, applyMiddleware } from "redux";
 import {auth} from "./actions";
 import {helpo} from "./reducers";
 import thunk from "redux-thunk";
-import ComponentRenderer from './utils/ComponentRenderer'
 
 // Styles
 import './App.css';

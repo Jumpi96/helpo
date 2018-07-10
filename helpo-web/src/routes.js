@@ -13,7 +13,7 @@ const RegistrarEvento = Loadable({
 });
 
 const EventoPage = Loadable({
-  loader: () => import('./views/Eventos/EventoPage.js'),
+  loader: () => import('./views/Actividades/Eventos/EventoPage.js'),
   loading: Loading,
 })
 

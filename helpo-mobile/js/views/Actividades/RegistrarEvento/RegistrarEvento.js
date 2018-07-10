@@ -27,6 +27,7 @@ import ListaRubrosEvento from './ListaRubrosEvento/ListaRubrosEvento';
 import api from '../../../api';
 import SelectorFechaHora from './SelectorFechaHora/SelectorFechaHora';
 import RegistrarContacto from './RegistrarContacto/RegistrarContacto';
+import validateEmail from '../../../utils/ValidateEmail';
 import styles from './styles';
 
 const {
@@ -124,7 +125,7 @@ class RegistrarEvento extends React.Component {
 
       const cto = {
         nombre: contactos[i].nombre,
-        mail: emailInfo,
+        email: emailInfo,
         telefono: telefonoInfo,
       };
       infoContactos[i] = cto;
@@ -179,7 +180,7 @@ class RegistrarEvento extends React.Component {
     for (let i = 0; i < contactos.length; i += 1) {
       // Es valido no ingresar ningun contacto
       if (contactos[i].nombre === '' &&
-      contactos[i].mail === '' &&
+      contactos[i].email === '' &&
       contactos[i].telefono === '' &&
       contactos.length === 1) {
         return validacion;
@@ -188,22 +189,17 @@ class RegistrarEvento extends React.Component {
         errors.contactoNombre = 'No puede ingresar un contacto sin nombre';
         validacion.is_valid = false;
       }
-      if (contactos[i].mail === '' && contactos[i].telefono === '') {
+      if (contactos[i].email === '' && contactos[i].telefono === '') {
         errors.contactoContacto = 'Debe ingresar un mail o un telefono';
         validacion.is_valid = false;
       }
-      if (contactos[i].mail !== '' && !(this.validateEmail(contactos[i].mail))) {
+      if (contactos[i].email !== '' && !(validateEmail(contactos[i].email))) {
         errors.email = 'Debe ingresar un mail valido';
         validacion.is_valid = false;
       }
     }
     validacion.errors = errors;
     return validacion;
-  }
-
-  validateEmail(email) {
-    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(email).toLowerCase());
   }
 
   handleUbicacionChange(ubi) {
@@ -229,7 +225,7 @@ class RegistrarEvento extends React.Component {
   }
 
   handleContactMailChange(value, contactId) {
-    const field = 'mail';
+    const field = 'email';
     const index = this.state.contactos.map(e => e.contactId).indexOf(contactId);
     const newContactos = this.state.contactos;
     newContactos[index][field] = value;
@@ -255,7 +251,7 @@ class RegistrarEvento extends React.Component {
   addContact() {
     const newContact = {
       nombre: '',
-      mail: '',
+      email: '',
       telefono: '',
       contactId: this.state.nextId,
     };

@@ -85,7 +85,9 @@ class VerEvento extends React.Component {
     let listaContactos;
     if (evento.contacto.length > 0) {
       listaContactos = evento.contacto.map(contacto =>
-        <ListItem><Text>{contacto.nombre} - {contacto.telefono}</Text></ListItem>
+        <ListItem key={contacto.nombre}>
+          <Text>{contacto.nombre} - {contacto.telefono}</Text>
+        </ListItem>
       );
     }
     return (

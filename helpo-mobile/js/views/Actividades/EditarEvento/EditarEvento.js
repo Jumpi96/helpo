@@ -7,6 +7,7 @@ import {
   Container,
   Header,
   Left,
+  Right,
   Body,
   Title,
   Content,
@@ -25,6 +26,7 @@ import SelectorFechaHora from '../RegistrarEvento/SelectorFechaHora/SelectorFech
 import RegistrarContacto from '../RegistrarEvento/RegistrarContacto/RegistrarContacto';
 import * as eventoActions from '../../../actions/eventoActions';
 import { openDrawer } from '../../../actions/drawer';
+import validateEmail from '../../../utils/ValidateEmail';
 import styles from './styles';
 
 class EditarEvento extends React.Component {
@@ -33,7 +35,7 @@ class EditarEvento extends React.Component {
     super(props);
     const evento = props.evento;
     for (let i = 0; i < evento.contacto.length; i += 1) {
-      evento.contacts[i].contactId = i + 1;
+      evento.contacto[i].contactId = i + 1;
     }
     evento.nextId = evento.contacto.length + 1;
     evento.rubro_id = evento.rubro.id;
@@ -42,7 +44,7 @@ class EditarEvento extends React.Component {
       errors: {},
     };
     this.handleUbicacionChange = this.handleUbicacionChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleSave = this.handleSave.bind(this);
     this.handleRubroChange = this.handleRubroChange.bind(this);
     this.handleFechaHoraInicioChange = this.handleFechaHoraInicioChange.bind(this);
     this.handleFechaHoraFinChange = this.handleFechaHoraFinChange.bind(this);
@@ -60,8 +62,9 @@ class EditarEvento extends React.Component {
 
   handleSave() {
     if (this.handleValidation()) {
-      this.props.updateEvento(this.state.evento);
-      Actions.misEventos();
+      const evento = this.state.evento;
+      this.props.updateEvento(evento);
+      Actions.verEvento({ evento, rubros: this.props.rubros });
     }
   }
 
@@ -108,11 +111,11 @@ class EditarEvento extends React.Component {
   validateContactos() {
     const errors = { contactoNombre: '', contactoContacto: '', email: '' };
     const validacion = { is_valid: true, errors };
-    const contactos = this.state.evento.contactos;
+    const contactos = this.state.evento.contacto;
     for (let i = 0; i < contactos.length; i += 1) {
       // Es valido no ingresar ningun contacto
       if (contactos[i].nombre === '' &&
-      contactos[i].mail === '' &&
+      contactos[i].email === '' &&
       contactos[i].telefono === '' &&
       contactos.length === 1) {
         return validacion;
@@ -121,22 +124,17 @@ class EditarEvento extends React.Component {
         errors.contactoNombre = 'No puede ingresar un contacto sin nombre';
         validacion.is_valid = false;
       }
-      if (contactos[i].mail === '' && contactos[i].telefono === '') {
+      if (contactos[i].email === '' && contactos[i].telefono === '') {
         errors.contactoContacto = 'Debe ingresar un mail o un telefono';
         validacion.is_valid = false;
       }
-      if (contactos[i].mail !== '' && !this.validateEmail(contactos[i].mail)) {
+      if (contactos[i].email !== '' && !validateEmail(contactos[i].email)) {
         errors.email = 'Debe ingresar un mail valido';
         validacion.is_valid = false;
       }
     }
     validacion.errors = errors;
     return validacion;
-  }
-
-  validateEmail(email) {
-    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(email).toLowerCase());
   }
 
   handleNombreChange(text) {
@@ -157,6 +155,11 @@ class EditarEvento extends React.Component {
     this.setState({ evento });
   }
 
+  handleRubroChange(r) {
+    const evento = this.state.evento;
+    evento.rubro_id = r;
+    this.setState({ evento });
+  }
 
   handleFechaHoraInicioChange(fechaHora) {
     const evento = this.state.evento;
@@ -182,7 +185,7 @@ class EditarEvento extends React.Component {
   }
 
   handleContactMailChange(value, contactId) {
-    const field = 'mail';
+    const field = 'email';
     const index = this.state.evento.contacto.map(e => e.contactId).indexOf(contactId);
     const newContactos = this.state.evento.contacto;
     newContactos[index][field] = value;
@@ -208,7 +211,7 @@ class EditarEvento extends React.Component {
   addContact() {
     const newContact = {
       nombre: '',
-      mail: '',
+      email: '',
       telefono: '',
       contactId: this.state.evento.nextId,
     };
@@ -235,7 +238,7 @@ class EditarEvento extends React.Component {
 
   render() {
     const listaRubroEventos = this.props.rubros.map((r) =>
-      <Item value={r.id} key={r.id} label={r.nombre}/>
+      <Item value={r.id} key={r.id} label={r.nombre} />
     );
     return (
       <Container style={styles.container}>
@@ -248,6 +251,13 @@ class EditarEvento extends React.Component {
           <Body>
             <Title>Editar evento</Title>
           </Body>
+          <Right>
+            <Button
+              transparent
+              onPress={() => Actions.registrarNecesidades({ id: this.state.evento.id })}>
+              <Text>Necesidades</Text>
+            </Button>
+          </Right>
         </Header>
         <Content>
           <Form>
@@ -275,7 +285,7 @@ class EditarEvento extends React.Component {
                   note
                   mode="dropdown"
                   selectedValue={this.state.evento.rubro_id}
-                  onValueChange={this.handleChange}
+                  onValueChange={this.handleRubroChange}
                 >
                   {listaRubroEventos}
                 </Picker>
@@ -319,7 +329,7 @@ class EditarEvento extends React.Component {
             </ListItem>
             <Button
               block style={{ margin: 15, marginTop: 50 }}
-              onPress={this.handleSubmit}
+              onPress={this.handleSave}
             >
               <Text>Guardar Evento</Text>
             </Button>

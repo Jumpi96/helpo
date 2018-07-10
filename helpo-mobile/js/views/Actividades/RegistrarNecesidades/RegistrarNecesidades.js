@@ -122,7 +122,7 @@ class RegistrarNecesidades extends React.Component {
             </Button>
           </Left>
           <Body>
-            <Title>Registrar necesidades</Title>
+            <Title>Administrar necesidades</Title>
           </Body>
         </Header>
         <Content>

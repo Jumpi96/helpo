@@ -1,5 +1,6 @@
-import React, { Component } from 'react';
+import React, { Component, View } from 'react';
 import ListaRubrosOrganizacion from '../ListaRubrosOrganizacion/ListaRubrosOrganizaciones';
+import ModificarPerfilOrganizacion from './ModificarPerfilOrganizacion';
 import SelectorUbicacion from '../../Actividades/RegistrarEvento/SelectorUbicacion/SelectorUbicacion';
 import api from '../../../api';
 import CargadorImagenPerfil from '../CargadorImagenPerfil/CargadorImagenPerfil';
@@ -70,7 +71,7 @@ class ConsultarPerfilOrganizacion extends Component {
   }
 
   mostrarUbicacion(){
-    if(this.state.ubicacion.latitud == 0 && this.state.ubicacion.longitud == 0){
+    if(this.state.ubicacion.latitud === 0 && this.state.ubicacion.longitud === 0){
     }
     else{
       return      
@@ -99,10 +100,9 @@ class ConsultarPerfilOrganizacion extends Component {
           <div className="form-group col-md-6">
           <View>
             <img
-              style={}
               src={this.avatar_url}
               width="100" 
-              height="50"
+              height="100"
             />
           </View>
           </div>

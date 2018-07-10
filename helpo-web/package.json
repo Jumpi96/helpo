@@ -36,7 +36,6 @@
     "redux-thunk": "2.3.0",
     "simple-line-icons": "^2.4.1",
     "react-avatar-editor": "11.0.4"
-
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",

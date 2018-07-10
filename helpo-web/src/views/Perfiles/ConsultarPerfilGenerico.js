@@ -34,7 +34,7 @@ class ConsultarPerfilGenerico extends Component {
     switch (this.state.userType){
 
       case 1:
-        return <ConsultarPerfilOrganizacion/>
+        return <ConsultarPerfilOrganizacion {...this.state}/>
 
       case 2:
         return <ConsultarPerfilVoluntario/>

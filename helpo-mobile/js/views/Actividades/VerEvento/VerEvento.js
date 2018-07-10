@@ -43,7 +43,7 @@ class VerEvento extends React.Component {
     if (b.text === 'Eliminar') {
       const evento = this.props.evento;
       if (moment(evento.fecha_hora_inicio) > moment()) {
-        api.delete('/actividades/eventos/' + evento.id + '/')
+        api.delete("/actividades/eventos/" + evento.id + "/")
           .then((res) => {
             console.log(res);
             console.log(res.data);

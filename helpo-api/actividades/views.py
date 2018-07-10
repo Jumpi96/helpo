@@ -57,6 +57,7 @@ class EventoReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     """
     API endpoint para leer, actualizar o eliminar un evento
     """
+    permission_classes = [permissions.IsAuthenticated, ]
     queryset = Evento.objects.all()
     serializer_class = EventoSerializer
     lookup_field = 'id'

@@ -23,6 +23,7 @@ class ConsultarPerfilOrganizacion extends Component {
     };
   }
 
+  
   componentDidMount() {
     api.get(`/perfiles/perfil_organizacion/${this.props.usuarioId}`)
     .then( (res) => {
@@ -45,31 +46,6 @@ class ConsultarPerfilOrganizacion extends Component {
     })
   }  
 
-  handleSubmit(event) {
-    event.preventDefault();
-    if (this.handleValidation()) {
-      const perfil = {
-        nombre: this.state.nombre,
-        rubro_id: this.state.rubro_id,
-        ubicacion: this.state.ubicacion,
-        cuit: this.state.cuit,
-        mail: this.state.mail,
-        telefono: this.state.telefono,
-        foto_perfil: undefined,
-        descripcion: this.state.descripcion,
-      };
-      api.post('/actividades/eventos/', perfil) // cambiar esto, que poner?
-        .then((res) => {
-          console.log(res);
-          console.log(res.data);
-          this.props.history.push('dashboard');
-        }).catch(function (error) {
-          if (error.response) { console.log(error.response.status) }
-          else { console.log('Error: ', error.message) }
-        });
-    }
-  }
-
   mostrarUbicacion(){
     if(this.state.ubicacion.latitud === 0 && this.state.ubicacion.longitud === 0){
     }
@@ -83,7 +59,7 @@ class ConsultarPerfilOrganizacion extends Component {
   }
 
   modificarPerfil(){
-    return <ModificarPerfilOrganizacion />
+    return <ModificarPerfilOrganizacion {...this.props.usuarioId}/>
   }
 
   render() {
@@ -140,7 +116,7 @@ class ConsultarPerfilOrganizacion extends Component {
         </div>
 
         <div className="btn btn-primary">
-          <button onclick="modificarPerfil()">
+          <button onclick={modificarPerfil()}>
           Modificar Perfil 
           </button>          
         </div>

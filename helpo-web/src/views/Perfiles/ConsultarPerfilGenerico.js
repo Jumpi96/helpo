@@ -34,13 +34,13 @@ class ConsultarPerfilGenerico extends Component {
     switch (this.state.userType){
 
       case 1:
-        return <ConsultarPerfilOrganizacion {...this.state}/>
+        return <ConsultarPerfilOrganizacion {...this.props.usuarioId}/>
 
       case 2:
-        return <ConsultarPerfilVoluntario/>
+        return <ConsultarPerfilVoluntario {...this.props.usuarioId}/>
 
       case 3:
-        return <ConsultarPerfilEmpresa/>
+        return <ConsultarPerfilEmpresa {...this.props.usuarioId}/>
 
       default:
         return ( <p>Error</p> )        

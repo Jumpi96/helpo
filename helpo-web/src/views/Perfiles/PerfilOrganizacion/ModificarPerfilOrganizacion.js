@@ -9,19 +9,15 @@ import { Card } from 'reactstrap';
 class ModificarPerfilOrganizacion extends Component {
   constructor(props) {
     super(props); //Llama a las props del padre
-    this.state = {
-
-      nombre: '',
-      cuit: '',
-      // TODO: ubicacion que pasamos por defecto debería ser la de la ONG. Ahora, Córdoba.
-      ubicacion: { latitud: -31.4201, longitud: -64.1888, notas: '' },
-      mail: '',
-      telefono: '',
-      rubro_id: 0,
-      foto_perfil: undefined,
-      descripcion: '',
-      errors: {},
-
+    this.state = {nombre: 'organizacion',
+    cuit: '',
+    ubicacion: { latitud: -31.4201, longitud: -64.1888, notas: '' },
+    mail: '',
+    telefono: '',
+    rubro: { id: 0, nombre: "none"},
+    avatar_url: 'assets/user.png',
+    descripcion: '',
+    errors: {},
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -31,6 +27,27 @@ class ModificarPerfilOrganizacion extends Component {
 
   }
 
+  componentDidMount() {
+    api.get(`/perfiles/perfil_organizacion/${this.props.usuarioId}`)
+    .then( (res) => {
+      let rubro = res.rubro
+      let ubicacion = res.ubicacion
+      if ( rubro == null ) {
+        rubro = { id: 0, nombre: 'none'}
+      }
+      if ( ubicacion == null ) {
+        ubicacion = { latitud: 0, longitud: 0, notas:'#!None#!'}
+      }
+      this.setState({
+        cuit: res.cuit,
+        telefono: res.telefono,
+        descripcion: res.descripcion,
+        rubro_id: rubro.id,
+        rubro_nombre: rubro.nombre,
+        avatar_url: res.avatar.url,        
+      })
+    })
+  }  
 
   handleInputChange(event) {
     const target = event.target;
@@ -49,24 +66,30 @@ class ModificarPerfilOrganizacion extends Component {
     this.setState({ ubicacion: ubi });
   }
 
-  handleSubmit(event) {
+  guardar(){
     event.preventDefault();
     if (this.handleValidation()) {
-      const perfil = {
-        nombre: this.state.nombre,
-        rubro_id: this.state.rubro_id,
-        ubicacion: this.state.ubicacion,
-        cuit: this.state.cuit,
-        mail: this.state.mail,
-        telefono: this.state.telefono,
-        foto_perfil: undefined,
-        descripcion: this.state.descripcion,
-      };
-      api.post('/actividades/eventos/', perfil) // cambiar esto, que poner?
+      
+      const perfil = {};
+        perfil.nombre = this.state.nombre;
+
+        if(this.state.rubro.id != 0){
+          perfil.rubro_id = this.state.rubro_id;
+        }
+        if(this.state.ubicacion.latitud != 0){
+          perfil.ubicacion = this.state.ubicacion;
+        }        
+        perfil.cuit =  this.state.cuit;
+        perfil.mail =  this.state.mail;
+        perfil.telefono =  this.state.telefono;
+        perfil.avatar_url = this.state.avatar_url;
+        perfil.descripcion =  this.state.descripcion;
+     
+      api.put(`/perfiles/perfil_organizacion/${this.props.usuarioId}`, perfil)
         .then((res) => {
           console.log(res);
           console.log(res.data);
-          this.props.history.push('dashboard');
+          this.props.history.push('dashboard'); //Fijarse que pasa con la ruta
         }).catch(function (error) {
           if (error.response) { console.log(error.response.status) }
           else { console.log('Error: ', error.message) }
@@ -105,7 +128,7 @@ class ModificarPerfilOrganizacion extends Component {
   render() {
     return (
       <Card>
-      <form onSubmit={this.handleSubmit}>
+
         <div className="row">
           <div className="form-group col-md-6">
             <label htmlFor="nombre">Nombre</label>
@@ -121,7 +144,15 @@ class ModificarPerfilOrganizacion extends Component {
           </div>
 
           <div className="form-group col-md-6">
-          <CargadorImagenPerfil imagen />
+          <CargadorImagenPerfil 
+            image = {this.state.avatar_url}
+            width={250}
+            height={250}
+            border={50}
+            color={[255, 255, 255, 0.6]} // RGBA
+            scale={1.2}
+            rotate={0} 
+          />
           </div>
 
 
@@ -181,11 +212,17 @@ class ModificarPerfilOrganizacion extends Component {
           />
         </div>
 
+        <div className="btn btn-primary">
+          <button onclick={guardar()}>
+          Guardar
+          </button>          
+        </div>
+
         <div className="form-group">
           <input type="submit" className="btn btn-primary" value="Guardar" />
-        </div>
-        
-      </form>
+          {guardar()}
+        </div>       
+
       </Card>
     );
   }

@@ -10,8 +10,8 @@ export default function eventoReducer(state = initialState.eventos, action) {
     case types.UPDATE_EVENTOS_SUCCESS:
       return [
         ...state.filter(evento => evento.id !== action.evento.id),
-        Object.assign({}, action.evento)
-      ]
+        Object.assign({}, action.evento),
+      ];
     default: 
       return state;
   }

@@ -3,6 +3,7 @@ from rest_framework.generics import ListCreateAPIView
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
 from rest_framework.response import Response
 from rest_framework import status
+from datetime import datetime
 from actividades.models import Evento, RubroEvento, CategoriaRecurso, Recurso, Necesidad, Contacto
 from knox.models import AuthToken
 from actividades.serializers import EventoSerializer, RubroEventoSerializer, \
@@ -129,5 +130,17 @@ class EventoOrganizacionCreateReadView(ListCreateAPIView):
     def get_queryset(self):
         queryset = Evento.objects.all()
         queryset = queryset.filter(organizacion_id=get_token_user(self.request))
+        queryset = queryset.order_by('-fecha_hora_inicio')
+        return queryset
+
+class ConsultaEventosOrganizacionCreateReadView(ListCreateAPIView):
+    """
+    API endpoint para ver todos los eventos próximos
+    """
+    serializer_class = EventoSerializer
+
+    def get_queryset(self):
+        queryset = Evento.objects.all()
+        queryset = queryset.filter(fecha_hora_inicio__gte=datetime.today())
         queryset = queryset.order_by('-fecha_hora_inicio')
         return queryset

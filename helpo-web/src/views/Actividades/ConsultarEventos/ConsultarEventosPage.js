@@ -8,7 +8,7 @@ import ConsultarEventosList from './ConsultarEventosList';
 class ConsultarEventosPage extends React.Component {
   constructor(props) {
     super(props);
-    this.props.loadEventos();
+    this.props.loadEventosProximos();
   }
 
   render() {
@@ -42,8 +42,8 @@ function mapStateToProps(state, ownProps) {
 
 const mapDispatchToProps = dispatch => {
     return {
-      loadEventos: () => {
-        return dispatch(eventoActions.loadEventos());
+      loadEventosProximos: () => {
+        return dispatch(eventoActions.loadEventosProximos());
       }
     }
   }

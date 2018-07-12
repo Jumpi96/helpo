@@ -15,6 +15,11 @@
       class: ''             // optional class names space delimited list for title item ex: "text-center"
     },
     {
+      name: 'Eventos',
+      url: '/actividades/consultar-eventos',
+      icon: 'icon-pencil'
+    },
+    {
       name: 'Nuevo evento',
       url: '/actividades/registrar-evento',
       icon: 'icon-pencil',

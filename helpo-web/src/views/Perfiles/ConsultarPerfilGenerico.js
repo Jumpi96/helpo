@@ -9,22 +9,43 @@ class ConsultarPerfilGenerico extends Component {
     super(props); //Llama a las props del padre
     this.state = {
       nombre: '',
-      userId: 0,
+      userId: 0, // 1: ONG, 2: Vol, 3: Empresa
       userType: 0,     
-      email: '' 
+      email: '',
+      data: {},
     };
     this.renderConsultar = this.renderConsultar.bind(this)
   }
 
+  getApiCall(userType) {
+    switch (userType) {
+      case 1:
+        return 'perfil_organizacion'
+      case 2: 
+        return 'perfil_voluntario'
+      case 3:
+        return 'perfil_empresa'
+      default:
+        return ''        
+    }
+  }
+
   componentDidMount() {
       api.get('/auth/user/')
-      .then(res => { 
+      .then(res => {           
           this.setState({
+            nombre: res.data.nombre,
             userId: res.data.id,
             email: res.data.email,
             userType: res.data.user_type
           })
-        }) 
+          return api.get(`/perfiles/${this.getApiCall(this.state.userType)}/${this.state.userId}`)
+        })
+      .then(res => {
+        this.setState({
+          data: res.data
+        })
+      })   
       .catch( error => {
         console.log(error)
       })
@@ -32,22 +53,21 @@ class ConsultarPerfilGenerico extends Component {
 
   renderConsultar() {    
     switch (this.state.userType){
-
+      //sdasd
       case 1:
         return (<ConsultarPerfilOrganizacion 
-                  usuarioId={this.state.userId}
+                  nombre={this.state.nombre}
                   email={this.state.email}
+                  data={this.state.data}
                   />)
 
       case 2:
         return ( <ConsultarPerfilVoluntario 
-                  usuarioId={this.state.userId}
                   email={this.state.email}
                   /> )
 
       case 3:
         return ( <ConsultarPerfilEmpresa 
-                  usuarioId={this.state.userId}
                   email={this.state.email}
                   /> )
 

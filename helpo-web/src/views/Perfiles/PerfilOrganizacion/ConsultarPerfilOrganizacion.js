@@ -1,136 +1,161 @@
-import React, { Component, View } from 'react';
-import ModificarPerfilOrganizacion from './ModificarPerfilOrganizacion';
+import React, { Component } from 'react';
 import SelectorUbicacion from '../../Actividades/RegistrarEvento/SelectorUbicacion/SelectorUbicacion';
-import api from '../../../api';
+import PropTypes from 'prop-types'
 import { Card } from 'reactstrap';
+import user_avatar from '../../../assets/user.svg'
+import {Gmaps, Marker} from 'react-gmaps';
+//https://github.com/MicheleBertoli/react-gmaps
 
+const perfilPropTypes = {
+  email: PropTypes.string.isRequired,
+  data: PropTypes.shape({
+    verificada: PropTypes.bool,
+    telefono: PropTypes.number,
+    cuit: PropTypes.number,
+    descripcion: PropTypes.string,
+    rubro: PropTypes.shape({
+      id: PropTypes.number,
+      nombre: PropTypes.string,
+    }),
+    avatar: PropTypes.shape({
+      id: PropTypes.number,
+      url: PropTypes.string,
+    }),
+    ubicacion: PropTypes.shape({
+      latitud: PropTypes.number,
+      longitud: PropTypes.number,
+      notas: PropTypes.string,
+    }),
+    usuario: PropTypes.number,//User Id
+  })
+}
 
 class ConsultarPerfilOrganizacion extends Component {
   constructor(props) {
-    super(props); //Llama a las props del padre
-    this.state = {
-      nombre: 'this.props.nombre',
-      cuit: '',
-      ubicacion: { latitud: 0, longitud: 0, notas:'#!None#!'},
-      mail: this.props.email,
-      telefono: '',
-      rubro: { id: 0, nombre: "none"},
-      avatar_url: 'assets/user.png',
-      descripcion: '',
-      errors: {},
-    };
-    this.modificarPerfil = this.modificarPerfil.bind(this);
+    super(props); 
     this.mostrarUbicacion = this.mostrarUbicacion.bind(this);
+    this.renderCuit = this.renderCuit.bind(this);
+    this.renderDescripcion = this.renderDescripcion.bind(this);
+    this.renderRubro = this.renderRubro.bind(this);
+    this.renderTelefono = this.renderTelefono.bind(this);
   }
 
-  
-  componentDidMount() {
-    api.get(`/perfiles/perfil_organizacion/${this.props.usuarioId}`)
-    .then( (res) => {
-      console.log(res)
-      let rubro = res.rubro
-      let ubicacion = res.ubicacion
-      if ( rubro == null ) {
-        rubro = { id: 0, nombre: 'none'}
-      }
-      if ( ubicacion == null ) {
-        ubicacion = { latitud: 0, longitud: 0, notas:'#!None#!'}
-      }
-      this.setState({
-        cuit: res.cuit,
-        telefono: res.telefono,
-        descripcion: res.descripcion,
-        rubro_id: rubro.id,
-        rubro_nombre: rubro.nombre,
-        avatar_url: res.avatar.url,        
-      })
-    })
-  }  
+  renderTelefono() {
+    //Si uso == va a dar True para null y undefined
+    if (this.props.data.telefono == null) {
+      return <p class='text-muted'> No hay valor ingresado</p>
+    }
+    return <p> {this.props.data.telefono}</p>      
+  }
+
+  renderCuit() {
+    if (this.props.data.cuit == null) {
+      return <p class='text-muted'> No hay valor ingresado</p>
+    }
+    return <p> {this.props.data.cuit}</p>      
+  }
+
+  renderRubro() {
+    if (this.props.data.rubro == null) {
+      return <p class='text-muted'> No hay valor ingresado</p>
+    }
+    return <p> {this.props.data.rubro.nombre}</p>      
+  }
+
+  renderDescripcion() {
+    if (this.props.data.descripcion == null) {
+      return <p class='text-muted'> No hay valor ingresado</p>
+    }
+    return <p> {this.props.data.descripcion}</p>      
+  }
 
   mostrarUbicacion() {
-    if(this.state.ubicacion.latitud === 0 && this.state.ubicacion.longitud === 0){
+    if(this.props.data.ubicacion == null || (this.props.data.ubicacion.latitud === 0 && this.props.data.ubicacion.longitud === 0)){
     }
     else{
+      const params = {v: '3.exp', key: 'AIzaSyCoVxw2X9Nc5xzsa5kwm8_dgvzgjS7sG9I'}
       return (      
-        <SelectorUbicacion
-          name="selectorUbicacion"
-          ubicacion={this.state.ubicacion}
-      /> )         
-    }
-  }
+        <div class='row' style={{ marginBottom: '20px'}} >   
+        <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center'}} class='col'>
+        <p style={{ textAlign: 'right'}} class='font-weight-bold' htmlFor="descripcion">Ubicacion</p>
+        </div>
 
-  modificarPerfil(){
-    return <ModificarPerfilOrganizacion 
-            nombre={this.props.nombre}
-            usuarioId={this.props.userId}
-            email={this.props.email}
-            />
-  }
-
-  render() { return (<p>Actividades</p>)
-    /*return (
-      <Card>
-        <div className="row">
+        <div class='col'>
+        <Gmaps
+          width={'300px'}
+          height={'300px'}
+          lat={this.props.data.ubicacion.latitud}
+          lng={this.props.data.ubicacion.longitud}
+          zoom={12}
+          params={params}>
+          <Marker
+            lat={this.props.data.ubicacion.latitud}
+            lng={this.props.data.ubicacion.longitud}
+          />
+        </Gmaps>
         
-          <div className="form-group col-md-6">
-            <label htmlFor="nombre">Nombre</label>
-            <text>{this.state.nombre}</text>
-          </div>
+        <p style={{ marginTop: '10px' }}>Predio san carlos</p>
+        </div>
+      </div>
+       )         
+    }
+  }  
+  
 
-          <text>{JSON.stringify(this.state)}</text>
-          <div className="form-group col-md-6">
-          <View>
+  render() {    
+    console.log(JSON.stringify(this.props))
+    return (      
+      <Card>
+        <div class='container'>
+        
+        <div style={{ alignItems: 'center' }} class='row'>
+          <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', height: '150px'}} class='col'>            
+            <p style={{ textAlign: 'right' }} 
+               class='h4'>{this.props.nombre}</p>
+          </div>
+          <div class='col'>
             <img
-              src={this.avatar_url}
+              class='rounded-circle'
+              src={user_avatar}
               alt="avatar"
               width="100" 
               height="100"
             />
-          </View>
           </div>
-
-          <div className="form-group col-md-6">
-            <label htmlFor="mail">Mail</label>
-            <text>{this.state.mail}</text>
-          </div>
-
-          <div className="form-group col-md-6">
-            <label htmlFor="telefono">Teléfono</label>
-            <text>{this.state.telefono}</text>          
-          </div>
-
-          <div className="form-group col-md-6">
-            <label htmlFor="cuit">CUIT</label>
-            <text>{this.state.cuit}</text>
-          </div>
-
+        </div>
           
-         <div className="form-group col-md-6">
-            <label htmlFor="telefono">Rubro</label>
-            <text>{this.state.rubro.nombre}</text>          
-          </div>
-
-          <div className="form-group col-md-6">
-            {this.mostrarUbicacion()}       
-          </div>              
-
-          <div className="form-group">
-          <label htmlFor="descripcion">Descripcion</label> 
-          <text>{this.state.descripcion}</text>          
-          </div>      
-
+        <div class='row'>
+            <p style={{ textAlign: 'right' }} class='font-weight-bold col' htmlFor="mail">Mail</p>
+            <div class='col'><p>{this.props.email}</p></div>
         </div>
 
-        <div className="btn btn-primary">
-          <button onclick={this.modificarPerfil}>
-          Modificar Perfil 
-          </button>                
+        <div class='row'>
+            <p style={{ textAlign: 'right' }} class='font-weight-bold col' htmlFor="telefono">Teléfono</p>
+            <div class='col'>{this.renderTelefono()}</div>
         </div>
-      
+
+        <div class='row'>          
+            <p style={{ textAlign: 'right' }} class='font-weight-bold col' htmlFor="cuit">CUIT</p>
+            <div class='col'>{this.renderCuit()}</div>
+        </div>
+
+        <div class='row'>        
+            <p style={{ textAlign: 'right' }} class='font-weight-bold col' htmlFor="telefono">Rubro</p>
+            <div class='col'>{this.renderRubro()}</div>    
+        </div>                       
+
+        <div class='row'>          
+          <p style={{ textAlign: 'right' }} class='font-weight-bold col' htmlFor="descripcion">Descripcion</p> 
+          <div class='col'>{this.renderDescripcion()}</div>    
+        </div>      
+
+       {this.mostrarUbicacion()}
+
+        </div>      
       </Card>
-
     );
-  */}
+  }
 }
+ConsultarPerfilOrganizacion.propTypes = perfilPropTypes;
 
 export default ConsultarPerfilOrganizacion;

@@ -30,7 +30,7 @@ class LoginUserSerializer(serializers.Serializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'email', 'user_type', 'is_confirmed')
+        fields = ('id', 'email', 'user_type', 'is_confirmed', 'nombre')
 
 ## TODO: Ver de no repetir UbicacionSerializer del de actividades
 class UbicacionSerializer(serializers.ModelSerializer):

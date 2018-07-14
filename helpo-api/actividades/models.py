@@ -22,7 +22,7 @@ class Evento(IndexedTimeStampedModel):
 class Contacto(models.Model):
     nombre = models.CharField(max_length=100)
     email = models.EmailField(max_length=100,blank=True,null=True)
-    telefono = models.IntegerField(blank=True,null=True) 
+    telefono = models.BigIntegerField(blank=True,null=True) 
     evento = models.ForeignKey(Evento, related_name='contacto', null=False, on_delete=models.CASCADE)
 
 class CategoriaRecurso(models.Model):

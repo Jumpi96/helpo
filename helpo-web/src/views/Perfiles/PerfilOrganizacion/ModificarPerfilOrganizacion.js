@@ -36,47 +36,131 @@ class ModificarPerfilOrganizacion extends Component {
     super(props); 
     this.state = {
       nombre: this.props.nombre,
-      telefono: this.props.telefono,
-      cuit: this.props.cuit,
-      
+      telefono: this.props.data.telefono,
+      cuit: this.props.data.cuit,
+      descripcion: this.props.data.descripcion,
+      avatar_url: this.props.data.avatar.url,
+      ubicacion: this.props.data.ubicacion,
+      rubro_id: this.props.data.rubro.id,
     }
-    this.mostrarUbicacion = this.mostrarUbicacion.bind(this);
+    this.renderNombre  = this.renderNombre.bind(this);
+    this.renderUbicacion = this.renderUbicacion.bind(this);
     this.renderCuit = this.renderCuit.bind(this);
     this.renderDescripcion = this.renderDescripcion.bind(this);
     this.renderRubro = this.renderRubro.bind(this);
     this.renderTelefono = this.renderTelefono.bind(this);
+    this.handleNombreChange = this.handleNombreChange.bind(this);
+    this.handleCuitChange = this.handleCuitChange.bind(this);
+    this.handleTelefonoChange = this.handleTelefonoChange.bind(this);
+    this.handleDescripcionChange = this.handleDescripcionChange.bind(this);
+    this.handleRubroChange = this.handleRubroChange.bind(this);
+
   }
 
-  renderTelefono() {
-    //Si uso == va a dar True para null y undefined
-    if (this.props.data.telefono == null) {
-      return <p class='text-muted'> No hay valor ingresado</p>
+  renderNombre() {
+    return (
+      <input
+        type="text"
+        name="nombre"
+        className="form-control"
+        placeholder="Nombre"
+        value={this.state.nombre}
+        onChange={this.handleNombreChange}
+      />)    
     }
-    return <p> {this.props.data.telefono}</p>      
+  
+  handleNombreChange(event) {
+    this.setState({
+      nombre: event.target.value
+    })
+  }
+  
+
+  renderTelefono() {
+    return (
+      <input
+        type="text"
+        name="telefono"
+        className="form-control"
+        placeholder="Telefono"
+        value={this.state.telefono}
+        onChange={this.handleTelefonoChange}
+      />)    
+    }
+
+  handleTelefonoChange(event) {
+      if (isNaN(event.target.value)) {
+        return;
+      }
+      this.setState({
+        telefono: event.target.value
+      });
   }
 
   renderCuit() {
-    if (this.props.data.cuit == null) {
-      return <p class='text-muted'> No hay valor ingresado</p>
+    return (
+    <input
+      type="text"
+      name="cuit"
+      className="form-control"
+      placeholder="Cuit"
+      value={this.state.cuit}
+      onChange={this.handleCuitChange}
+    />)
+  }
+
+  handleCuitChange(event) {
+    if (isNaN(event.target.value)) {
+      return;
     }
-    return <p> {this.props.data.cuit}</p>      
+    this.setState({
+      cuit: event.target.value
+    });
   }
 
   renderRubro() {
-    if (this.props.data.rubro == null) {
-      return <p class='text-muted'> No hay valor ingresado</p>
-    }
-    return <p> {this.props.data.rubro.nombre}</p>      
+    const listaRubroEventos = this.props.rubros.map((r) =>
+      <option key={r.id} data-key={r.id}>{r.nombre}</option>
+    );
+    const rubro = this.state.rubro_id;
+    return(
+      <select
+        value={rubro}
+        className="form-control"
+        onChange={this.handleRubroChange}>
+          {listaRubroEventos}
+      </select>
+    )    
+  }
+
+  handleRubroChange(event) {
+    const selectedIndex = event.target.options.selectedIndex;
+    const selectedId = event.target.options[selectedIndex].getAttribute('data-key');
+    console.log(selectedId)
+    this.setState({
+      rubro_id: selectedId
+    })
+    console.log(this.state)
   }
 
   renderDescripcion() {
-    if (this.props.data.descripcion == null) {
-      return <p class='text-muted'> No hay valor ingresado</p>
-    }
-    return <p> {this.props.data.descripcion}</p>      
+    return (
+      <textarea
+        rows= '5'
+        cols='30'
+        className='form-control'
+        value={this.state.descripcion}
+        onChange={this.handleDescripcionChange}
+      />)
   }
 
-  mostrarUbicacion() {
+  handleDescripcionChange(event) {
+    this.setState({
+      descripcion: event.target.value
+    });
+  }
+
+  renderUbicacion() {
     if(this.props.data.ubicacion == null || (this.props.data.ubicacion.latitud === 0 && this.props.data.ubicacion.longitud === 0)){
     }
     else{
@@ -110,15 +194,15 @@ class ModificarPerfilOrganizacion extends Component {
   
 
   render() {    
-    console.log(JSON.stringify(this.props))
     return (      
       <Card>
+      <form>
         <div class='container'>
         
         <div style={{ alignItems: 'center' }} class='row'>
           <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', height: '150px'}} class='col'>            
             <p style={{ textAlign: 'right' }} 
-               class='h4'>{this.props.nombre}</p>
+               class='h4'>{this.renderNombre()}</p>
           </div>
           <div class='col'>
             <img
@@ -137,12 +221,12 @@ class ModificarPerfilOrganizacion extends Component {
         </div>
 
         <div class='row'>
-            <p style={{ textAlign: 'right' }} class='font-weight-bold col' htmlFor="telefono">Teléfono</p>
+            <p style={{ paddingTop: '8px',textAlign: 'right' }} class='font-weight-bold col' htmlFor="telefono">Teléfono</p>
             <div class='col'>{this.renderTelefono()}</div>
         </div>
 
-        <div class='row'>          
-            <p style={{ textAlign: 'right' }} class='font-weight-bold col' htmlFor="cuit">CUIT</p>
+        <div class='row'>   
+            <p style={{ paddingTop: '8px',textAlign: 'right' }} class='font-weight-bold col'           htmlFor="cuit">CUIT</p>            
             <div class='col'>{this.renderCuit()}</div>
         </div>
 
@@ -156,9 +240,10 @@ class ModificarPerfilOrganizacion extends Component {
           <div class='col'>{this.renderDescripcion()}</div>    
         </div>      
 
-       {this.mostrarUbicacion()}
+       {this.renderUbicacion()}
 
         </div>      
+      </form>
       </Card>
     );
   }

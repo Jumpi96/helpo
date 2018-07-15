@@ -17,8 +17,13 @@ class ConsultarPerfilGenerico extends Component {
       email: '',
       data: {},
       rubros: [], // [{ id: , nombre: },]
+      modificar: true,
+      loggedUser: true,
     };
     this.renderConsultar = this.renderConsultar.bind(this)
+    this.renderModificar = this.renderModificar.bind(this)
+    this.renderConsultarOtro = this.renderConsultarOtro.bind(this)
+    this.renderComponente = this.renderComponente.bind(this)
   }
 
   getApiCall(userType) {
@@ -35,30 +40,43 @@ class ConsultarPerfilGenerico extends Component {
   }
 
   componentDidMount() {
+    // TODO: Otro
+    let initialState = {};
       api.get('/auth/user/')
-      .then(res => {           
-          this.setState({
-            nombre: res.data.nombre,
-            userId: res.data.id,
-            email: res.data.email,
-            userType: res.data.user_type
-          })
-          return api.get(`/perfiles/${this.getApiCall(this.state.userType)}/${this.state.userId}`)
+      .then(res => {        
+
+            initialState.nombre = res.data.nombre
+            initialState.userId = res.data.id
+            initialState.email = res.data.email
+            initialState.userType = res.data.user_type          
+
+          return api.get(`/perfiles/${this.getApiCall(initialState.userType)}/${initialState.userId}`)
         })
       .then(res => {
-        this.setState({
-          data: res.data
-        })
+        
+        initialState.data = res.data
+        
         return api.get('/perfiles/rubros_organizacion/')
       })   
       .then( res => {
+        
+        initialState.rubros = res.data
+        
+      })
+      .then(() => {
+        // Cambio estado aca para asegurarme que se llame todo lo anterior
         this.setState({
-          rubros: res.data
+          nombre: initialState.nombre,
+          userId: initialState.userId,
+          email: initialState.email,
+          userType: initialState.userType,
+          data: initialState.data,
+          rubros: initialState.rubros
         })
       })
       .catch( error => {
         console.log(error)
-      })
+      })      
   }    
 
   renderModificar() {    
@@ -86,6 +104,30 @@ class ConsultarPerfilGenerico extends Component {
     }
   }  
 
+  renderConsultarOtro() {    
+    switch (this.state.userType) {
+      case 1:
+        return (<ConsultarPerfilOrganizacion 
+                  nombre={this.state.nombre}
+                  email={this.state.email}
+                  data={this.state.data}
+                  />)
+
+      case 2:
+        return ( <ConsultarPerfilVoluntario 
+                  email={this.state.email}
+                  /> )
+
+      case 3:
+        return ( <ConsultarPerfilEmpresa 
+                  email={this.state.email}
+                  /> )
+
+      default:
+        return ( <p>Error</p> )        
+    }
+  }
+
   renderConsultar() {    
     switch (this.state.userType) {
       case 1:
@@ -110,10 +152,20 @@ class ConsultarPerfilGenerico extends Component {
     }
   }  
 
+  renderComponente() {
+    if (this.state.loggedUser && this.state.modificar) {
+      return this.renderModificar()
+    }
+    else if (this.state.loggedUser && !this.state.modificar) {
+      return this.renderConsultar()
+    }
+    else { return this.renderConsultarOtro()}
+  }
+
   render() {
     return (
     <div>
-      {this.renderConsultar()}
+      {this.renderComponente()}
     </div>
     );
   }

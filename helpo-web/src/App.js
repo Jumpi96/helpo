@@ -5,7 +5,6 @@ import { createStore, applyMiddleware } from "redux";
 import {auth} from "./actions";
 import {helpo} from "./reducers";
 import thunk from "redux-thunk";
-import ComponentRenderer from './utils/ComponentRenderer'
 
 // Styles
 import './App.css';
@@ -24,6 +23,8 @@ import { DefaultLayout } from './containers';
 import { NoAuthLayout } from './containers';
 // Pages
 import { Login, Page404, Page500, Register, ConfirmMail } from './views/Pages';
+//ComponentRenderer
+import ComponentRenderer from './utils/ComponentRenderer';
 
 // import { renderRoutes } from 'react-router-config';
 

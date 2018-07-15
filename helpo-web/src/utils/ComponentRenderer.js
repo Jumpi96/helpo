@@ -1,11 +1,11 @@
 import React from 'react'
-import FailedPresentation from '../views/Pages/ConfirmMail/FailedPresentation'
+import ConsultarPerfilOrganizacion from '../views/Perfiles/PerfilOrganizacion/ConsultarPerfilOrganizacion'
 
 class ComponentRenderer extends React.Component {
     render() {
         return (
             <div>
-              <FailedPresentation/>
+              <ConsultarPerfilOrganizacion usuarioId='32'/>
             </div>
         )
     }

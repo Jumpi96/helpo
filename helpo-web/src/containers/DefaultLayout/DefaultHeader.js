@@ -8,6 +8,7 @@ import sygnet from '../../assets/img/brand/sygnet.svg'
 import { Link } from 'react-router-dom'
 import { connect } from "react-redux";
 import {auth} from "../../../src/actions";
+import ConsultarPerfilGenerico from "../../../src/views/Perfiles/ConsultarPerfilGenerico"
 
 const propTypes = {
   children: PropTypes.node,
@@ -63,7 +64,7 @@ class DefaultHeader extends Component {
               <DropdownItem><i className="fa fa-tasks"></i> Tasks<Badge color="danger">42</Badge></DropdownItem>
               <DropdownItem><i className="fa fa-comments"></i> Comments<Badge color="warning">42</Badge></DropdownItem>
               <DropdownItem header tag="div" className="text-center"><strong>Settings</strong></DropdownItem>
-              <DropdownItem onClick={<Link to="../../views/Perfiles/ConsultarPerfilGenerico  ">Perfil</Link>}><i className="fa fa-user"></i> Perfil</DropdownItem> {/*Deberia rutear a la consulta de perfil generico*/}
+              <DropdownItem onClick={<ConsultarPerfilGenerico /> }><i className="fa fa-user"></i> Perfil</DropdownItem> {
               <DropdownItem><i className="fa fa-wrench"></i> Settings</DropdownItem>
               <DropdownItem><i className="fa fa-usd">
               </i> Payments<Badge color="secondary">42</Badge></DropdownItem>

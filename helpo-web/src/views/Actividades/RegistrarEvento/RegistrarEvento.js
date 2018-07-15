@@ -281,23 +281,17 @@ class RegistrarEvento extends Component {
                   <span style={{ color: 'red' }}>{this.state.errors.rubro}</span>
                 </div>
               </div>
-
-              <div className="row">                              
-                <div className="form-group col-md-1">
-                  <label>Inicio:  </label>
-                </div>
-                <div className="form-group col-md-3">
+              <div className="form-group">
+                
+                <div className="form-group">
+                <label>Fecha y hora de inicio</label>
                   <DateTimePicker
                       name="inicio"
                       onChange={this.handleFechaHoraInicioChange}
                       isClockOpen={false}
                       value={this.state.fecha_hora_inicio}
                   />
-                </div>
-                <div className="form-group col-md-1">
-                  <label>Fin:  </label>
-                </div>
-                <div className="form-group col-md-3">
+                  <label>Fecha y hora de fin</label>
                   <DateTimePicker
                     name="fin"
                     onChange={this.handleFechaHoraFinChange}

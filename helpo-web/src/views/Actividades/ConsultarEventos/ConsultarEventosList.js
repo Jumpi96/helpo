@@ -1,5 +1,4 @@
 import React from 'react';
-import moment from 'moment';
 import { Col, Row } from 'reactstrap';
 import { PropTypes } from 'prop-types';
 import EventoCard from './EventoCard/EventoCard';
@@ -24,12 +23,10 @@ class ConsultarEventosList extends React.Component {
           <Row>
             <Col>
               <EventoCard
-                header={moment(evento.fecha_hora_inicio).format('DD/MM/YYYY')} 
+                evento={evento}
                 key={evento.id} footer
                 mainText={evento.nombre + ' - Nombre de ONG'} 
-                smallText={evento.descripcion}
-                value={100}
-                icon="fa fa-hand-stop-o" color="primary" 
+                color="primary" 
                 link={'/actividades/consultar-evento/' + evento.id}
               />
             </Col>

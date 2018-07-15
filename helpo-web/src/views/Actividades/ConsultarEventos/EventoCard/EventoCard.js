@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
+import moment from 'moment';
 import PropTypes from 'prop-types';
 import { Card, CardBody, Progress } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import { mapToCssModules } from 'reactstrap/lib/utils';
+import ong from '../../../../assets/img/ong.png';
 
 const propTypes = {
   header: PropTypes.string,
@@ -18,22 +20,21 @@ const propTypes = {
   link: PropTypes.string,
 };
 
-const defaultProps = {
-  header: '89.9%',
-  mainText: 'Lorem ipsum...',
-  smallText: 'Lorem ipsum dolor sit amet enim.',
-  // color: '',
-  link: '#',
-  value: '25',
-  variant: '',
-};
-
 class EventoCard extends Component {
   render() {
-    const { className, cssModule, header, mainText, smallText, color, value, children, variant, link, ...attributes } = this.props;
+    const { 
+      evento,
+      className, 
+      cssModule, 
+      children, 
+      variant, 
+      link,
+      color,
+      ...attributes } 
+      = this.props;
 
     // demo purposes only
-    const progress = { style: '', color: color, value: value };
+    const progress = { style: '', color: color, value: evento.porcentaje };
     const card = { style: '', bgColor: '' };
 
     if (variant === 'inverse') {
@@ -50,14 +51,15 @@ class EventoCard extends Component {
       <Card className={classes} {...attributes}>
         <CardBody>
         <div>
-          <img 
-              src="https://i1.wp.com/alianzaong.org.do/wp-content/uploads/2018/02/Dise%C3%B1o-sin-t%C3%ADtulo-1.png" alt="Girl in a jacket" 
-              style={{width:'100px', height:'100px'}} 
+          <img
+            src={ong}
+            alt="ONG"
+            style={{width:'100px', height:'100px'}} 
           />
-          <div className="h4 m-0">{header}</div>
-          <div>{mainText}</div>
+          <div className="h4 m-0">{moment(evento.fecha_hora_inicio).format('DD/MM/YYYY')}</div>
+          <div>{evento.nombre + ' - ' + evento.organizacion}</div>
           <Progress className={progress.style} color={progress.color} value={progress.value} />
-          <small className="text-muted">{smallText}</small>
+          <small className="text-muted">{evento.descripcion}</small>
           <Link to={link}>
             <button className="btn btn-primary pull-right">
               Ver más
@@ -71,6 +73,5 @@ class EventoCard extends Component {
 }
 
 EventoCard.propTypes = propTypes;
-EventoCard.defaultProps = defaultProps;
 
 export default EventoCard;

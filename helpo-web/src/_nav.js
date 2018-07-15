@@ -17,7 +17,7 @@
     {
       name: 'Eventos',
       url: '/actividades/consultar-eventos',
-      icon: 'icon-pencil'
+      icon: 'icon-cursor'
     },
     {
       name: 'Nuevo evento',

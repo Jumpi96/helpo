@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Row } from 'reactstrap';
+import { Col, Row, Badge } from 'reactstrap';
 import { PropTypes } from 'prop-types';
 import EventoCard from './EventoCard/EventoCard';
 
@@ -18,24 +18,26 @@ class ConsultarEventosList extends React.Component {
   render() {
     const eventos = this.sortEventos(this.props.eventos);
     return (
-      <div className="offset-md-3">
-        {eventos.map(evento => 
-          <Row>
-            <Col>
-              <EventoCard
-                evento={evento}
-                key={evento.id} footer
-                mainText={evento.nombre + ' - Nombre de ONG'} 
-                color="primary" 
-                link={'/actividades/consultar-evento/' + evento.id}
-              />
-            </Col>
-          </Row>
-        )}
-      </div>
+      <Row>
+        <div className="col-md-3">
+          <Badge color="warning">Próximamente...</Badge>
+        </div>
+        <div className="col-md-9">
+          {eventos.map(evento =>       
+              <Col>
+                <EventoCard
+                  evento={evento}
+                  key={evento.id} footer
+                  mainText={evento.nombre + ' - Nombre de ONG'} 
+                  color="primary" 
+                  link={'/actividades/consultar-evento/' + evento.id}
+                />
+              </Col>
+          )}
+        </div>
+      </Row>
     );
   }
-  
 };
 
 ConsultarEventosList.propTypes = {  

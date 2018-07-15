@@ -5,19 +5,20 @@ import styles from './styles';
 
 const logo = require('../../../../../img/logo.png');
 
-function recortarDescripcion(descripcion) {
-  const recorte = 100;
-  if (descripcion.length > recorte) {
-    return `${descripcion.substring(0, 100)}...'`;
-  }
-  return descripcion;
-}
 
 class EventoCard extends Component {
 
   static propTypes = {
     evento: React.PropTypes.object,
   };
+
+  getNecesidades() {
+    const arrayNecesidades = this.props.evento.necesidades ? this.props.evento.necesidades : [];
+    const necesidades = arrayNecesidades.slice(0, 3).map((necesidad) => {
+      return <li>{necesidad.nombre}</li>;
+    });
+    return necesidades;
+  }
 
   render() {
     const evento = this.props.evento;
@@ -37,9 +38,7 @@ class EventoCard extends Component {
             <Text style={{ fontWeight: '600' }}>
               {evento.nombre}
             </Text>
-            <Text>
-              {recortarDescripcion(evento.descripcion)}
-            </Text>
+            <Text>{this.getNecesidades()}</Text>
           </Body>
         </CardItem>
         <CardItem style={{ paddingVertical: 0 }}>

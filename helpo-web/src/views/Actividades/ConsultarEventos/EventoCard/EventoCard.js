@@ -21,6 +21,15 @@ const propTypes = {
 };
 
 class EventoCard extends Component {
+
+  getNecesidades() {
+    const arrayNecesidades = this.props.evento.necesidades ? this.props.evento.necesidades : [];
+    const necesidades = arrayNecesidades.slice(0, 3).map((necesidad) => {
+      return <li>{necesidad.nombre}</li>
+    });
+    return necesidades;
+  }
+
   render() {
     const { 
       evento,
@@ -54,15 +63,15 @@ class EventoCard extends Component {
           <img
             src={ong}
             alt="ONG"
-            style={{width:'100px', height:'100px'}} 
+            style={{width:'75px', height:'75px'}} 
           />
           <div className="h4 m-0">{moment(evento.fecha_hora_inicio).format('DD/MM/YYYY')}</div>
           <div>{evento.nombre + ' - ' + evento.organizacion}</div>
           <Progress className={progress.style} color={progress.color} value={progress.value} />
-          <small className="text-muted">{evento.descripcion}</small>
+          {this.getNecesidades()}
           <Link to={link}>
             <button className="btn btn-primary pull-right">
-              Ver más
+              + Ver más
             </button>
           </Link>
         </div>

@@ -73,7 +73,7 @@ class ConsultarPerfilOrganizacion extends Component {
     if(this.props.data.ubicacion == null || (this.props.data.ubicacion.latitud === 0 && this.props.data.ubicacion.longitud === 0)){
     }
     else{
-      const params = {v: '3.exp', key: 'AIzaSyCoVxw2X9Nc5xzsa5kwm8_dgvzgjS7sG9I'}
+      const params = {v: '3.exp', key: process.env.GOOGLE_API_KEY}
       return (      
         <div class='row' style={{ marginBottom: '20px'}} >   
         <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center'}} class='col'>

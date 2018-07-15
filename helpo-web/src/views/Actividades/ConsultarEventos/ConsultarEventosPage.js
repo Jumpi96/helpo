@@ -20,9 +20,7 @@ class ConsultarEventosPage extends React.Component {
             <i className="fa fa-align-justify"></i> Mis eventos
           </CardHeader>
           <CardBody>
-            <div className="row">
-              <ConsultarEventosList eventos={eventos} />
-            </div>
+            <ConsultarEventosList eventos={eventos} />
           </CardBody>
         </Card>
       </div>

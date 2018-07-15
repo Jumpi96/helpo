@@ -1,7 +1,8 @@
 import React from 'react';
 import moment from 'moment';
+import { Col, Row } from 'reactstrap';
 import { PropTypes } from 'prop-types';
-import Widget02 from '../../Widgets/Widget02';
+import EventoCard from './EventoCard/EventoCard';
 
 class ConsultarEventosList extends React.Component {
   
@@ -18,17 +19,23 @@ class ConsultarEventosList extends React.Component {
   render() {
     const eventos = this.sortEventos(this.props.eventos);
     return (
-      <ul className="list-group">
+      <div className="offset-md-3">
         {eventos.map(evento => 
-          <Widget02 
-            header={moment(evento.fecha_hora_inicio).format('DD/MM/YYYY')} 
-            key={evento.id} footer
-            mainText={evento.nombre} 
-            icon="fa fa-hand-stop-o" color="primary" 
-            link={'/actividades/consultar-evento/' + evento.id}
-          />
+          <Row>
+            <Col>
+              <EventoCard
+                header={moment(evento.fecha_hora_inicio).format('DD/MM/YYYY')} 
+                key={evento.id} footer
+                mainText={evento.nombre + ' - Nombre de ONG'} 
+                smallText={evento.descripcion}
+                value={100}
+                icon="fa fa-hand-stop-o" color="primary" 
+                link={'/actividades/consultar-evento/' + evento.id}
+              />
+            </Col>
+          </Row>
         )}
-      </ul>
+      </div>
     );
   }
   

@@ -284,14 +284,14 @@ class RegistrarEvento extends Component {
               <div className="form-group">
                 
                 <div className="form-group">
-                <label>Fecha y hora de inicio</label>
+                <label>Inicio:  </label>
                   <DateTimePicker
                       name="inicio"
                       onChange={this.handleFechaHoraInicioChange}
                       isClockOpen={false}
                       value={this.state.fecha_hora_inicio}
                   />
-                  <label>Fecha y hora de fin</label>
+                  <label>Fin:  </label>
                   <DateTimePicker
                     name="fin"
                     onChange={this.handleFechaHoraFinChange}

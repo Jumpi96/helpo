@@ -109,6 +109,7 @@ import EditarEvento from './views/Actividades/EditarEvento/EditarEvento';
 import Login from './views/Usuarios/Login';
 import Configuracion from './views/Usuarios/Configuracion';
 import SignUp from './views/Usuarios/SignUp';
+import ConsultarEventos from './views/Actividades/ConsultarEventos/ConsultarEventos';
 
 const {
   popRoute,
@@ -200,6 +201,7 @@ class AppNavigator extends Component {
               <Scene key="signUp" component={SignUp} />
               <Scene key="configuracion" component={Configuracion} />
               <Scene key="actividades" component={Actividades} />
+              <Scene key="consultarEventos" component={ConsultarEventos} />
               <Scene key="registrarEvento" component={RegistrarEvento} />
               <Scene key="registrarNecesidades" component={RegistrarNecesidades} />
               <Scene key="misEventos" component={MisEventos} />

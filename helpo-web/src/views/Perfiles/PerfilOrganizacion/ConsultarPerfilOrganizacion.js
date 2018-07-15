@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import SelectorUbicacion from '../../Actividades/RegistrarEvento/SelectorUbicacion/SelectorUbicacion';
 import PropTypes from 'prop-types'
 import { Card } from 'reactstrap';
 import user_avatar from '../../../assets/user.svg'
 import {Gmaps, Marker} from 'react-gmaps';
+import getImagen from '../../../utils/GetImagen'
 //https://github.com/MicheleBertoli/react-gmaps
 
 const perfilPropTypes = {
+  nombre: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
   data: PropTypes.shape({
     verificada: PropTypes.bool,
@@ -116,7 +117,7 @@ class ConsultarPerfilOrganizacion extends Component {
           <div class='col'>
             <img
               class='rounded-circle'
-              src={user_avatar}
+              src={getImagen(user_avatar)}
               alt="avatar"
               width="100" 
               height="100"

@@ -3,6 +3,9 @@ import api from '../../api';
 import ConsultarPerfilOrganizacion from './PerfilOrganizacion/ConsultarPerfilOrganizacion'
 import ConsultarPerfilEmpresa from './PerfilEmpresa/ConsultarPerfilEmpresa'
 import ConsultarPerfilVoluntario from './PerfilVoluntario/ConsultarPerfilVoluntario'
+import ModificarPerfilOrganizacion from './PerfilOrganizacion/ModificarPerfilOrganizacion'
+import ModificarPerfilEmpresa from './PerfilEmpresa/ModificarPerfilEmpresa'
+import ModificarPerfilVoluntario from './PerfilVoluntario/ModificarPerfilVoluntario'
 
 class ConsultarPerfilGenerico extends Component {
   constructor(props) {
@@ -13,6 +16,7 @@ class ConsultarPerfilGenerico extends Component {
       userType: 0,     
       email: '',
       data: {},
+      rubros: [], // [{ id: , nombre: },]
     };
     this.renderConsultar = this.renderConsultar.bind(this)
   }
@@ -45,15 +49,45 @@ class ConsultarPerfilGenerico extends Component {
         this.setState({
           data: res.data
         })
+        return api.get('/perfiles/rubros_organizacion/')
       })   
+      .then( res => {
+        this.setState({
+          rubros: res.data
+        })
+      })
       .catch( error => {
         console.log(error)
       })
   }    
 
+  renderModificar() {    
+    switch (this.state.userType) {
+      case 1:
+        return (<ModificarPerfilOrganizacion 
+                  nombre={this.state.nombre}
+                  email={this.state.email}
+                  data={this.state.data}
+                  rubros={this.state.rubros}
+                  />)
+
+      case 2:
+        return ( <ModificarPerfilVoluntario 
+                  email={this.state.email}
+                  /> )
+
+      case 3:
+        return ( <ModificarPerfilEmpresa 
+                  email={this.state.email}
+                  /> )
+
+      default:
+        return ( <p>Error</p> )        
+    }
+  }  
+
   renderConsultar() {    
-    switch (this.state.userType){
-      //sdasd
+    switch (this.state.userType) {
       case 1:
         return (<ConsultarPerfilOrganizacion 
                   nombre={this.state.nombre}

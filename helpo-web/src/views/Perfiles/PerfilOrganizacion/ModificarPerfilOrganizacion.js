@@ -1,258 +1,168 @@
 import React, { Component } from 'react';
-import ListaRubrosOrganizacion from '../ListaRubrosOrganizacion/ListaRubrosOrganizaciones';
-import SelectorUbicacion from '../../Actividades/RegistrarEvento/SelectorUbicacion/SelectorUbicacion';
-import api from '../../../api';
-import CargadorImagenPerfil from '../CargadorImagenPerfil/CargadorImagenPerfil';
+import PropTypes from 'prop-types'
 import { Card } from 'reactstrap';
+import user_avatar from '../../../assets/user.svg'
+import {Gmaps, Marker} from 'react-gmaps';
+//https://github.com/MicheleBertoli/react-gmaps
 
+const perfilPropTypes = {
+  nombre: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
+  data: PropTypes.shape({
+    verificada: PropTypes.bool,
+    telefono: PropTypes.number,
+    cuit: PropTypes.number,
+    descripcion: PropTypes.string,
+    rubro: PropTypes.shape({
+      id: PropTypes.number,
+      nombre: PropTypes.string,
+    }),
+    avatar: PropTypes.shape({
+      id: PropTypes.number,
+      url: PropTypes.string,
+    }),
+    ubicacion: PropTypes.shape({
+      latitud: PropTypes.number,
+      longitud: PropTypes.number,
+      notas: PropTypes.string,
+    }),
+    usuario: PropTypes.number,//User Id
+    rubros: PropTypes.array.isRequired,
+  })
+}
 
 class ModificarPerfilOrganizacion extends Component {
   constructor(props) {
-    super(props); //Llama a las props del padre
+    super(props); 
     this.state = {
-    nombre: 'organizacion',
-    cuit: '',
-    ubicacion: { latitud: 0, longitud: 0, notas:'#!None#!'},
-    mail: '',
-    telefono: '',
-    rubro: { id: 0, nombre: "none"},
-    avatar_url: 'assets/user.png',
-    descripcion: '',
-    errors: {},
-    };
-
-    this.guardar = this.guardar.bind(this);
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleUbicacionChange = this.handleUbicacionChange.bind(this);
-    this.handleRubroChange = this.handleRubroChange.bind(this);
-
-  }
-
-  componentDidMount() {
-    api.get(`/perfiles/perfil_organizacion/${this.props.usuarioId}`)
-    .then( (res) => {
-      let rubro = res.rubro
-      let ubicacion = res.ubicacion
-      if ( rubro == null ) {
-        rubro = { id: 0, nombre: 'none'}
-      }
-      if ( ubicacion == null ) {
-        ubicacion = { latitud: 0, longitud: 0, notas:'#!None#!'}
-      }
-      this.setState({
-        cuit: res.cuit,
-        telefono: res.telefono,
-        descripcion: res.descripcion,
-        rubro_id: rubro.id,
-        rubro_nombre: rubro.nombre,
-        avatar_url: res.avatar.url,        
-      })
-    })
-  }  
-
-  handleInputChange(event) {
-    const target = event.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
-    const name = target.name;
-    this.setState({
-      [name]: value,
-    });
-  }
-
-  handleRubroChange(r) {
-    this.setState({ rubro_id: r });
-  }
-
-  handleUbicacionChange(ubi) {
-    this.setState({ ubicacion: ubi });
-  }
-
-  guardar(){    
-    if (this.handleValidation()) {
+      nombre: this.props.nombre,
+      telefono: this.props.telefono,
+      cuit: this.props.cuit,
       
-      const perfil = {};
-        perfil.nombre = this.state.nombre;
-
-        if(this.state.rubro.id != 0){
-          perfil.rubro_id = this.state.rubro_id;
-        }
-        if(this.state.ubicacion.latitud != 0){
-          perfil.ubicacion = this.state.ubicacion;
-        }        
-        perfil.cuit =  this.state.cuit;
-        perfil.mail =  this.state.mail;
-        perfil.telefono =  this.state.telefono;
-        perfil.avatar_url = this.state.avatar_url;
-        perfil.descripcion =  this.state.descripcion;
-     
-      api.put(`/perfiles/perfil_organizacion/${this.props.usuarioId}`, perfil)
-        .then((res) => {
-          console.log(res);
-          console.log(res.data);
-          this.props.history.push('dashboard'); //Fijarse que pasa con la ruta
-        }).catch(function (error) {
-          if (error.response) { console.log(error.response.status) }
-          else { console.log('Error: ', error.message) }
-        });
     }
+    this.mostrarUbicacion = this.mostrarUbicacion.bind(this);
+    this.renderCuit = this.renderCuit.bind(this);
+    this.renderDescripcion = this.renderDescripcion.bind(this);
+    this.renderRubro = this.renderRubro.bind(this);
+    this.renderTelefono = this.renderTelefono.bind(this);
   }
 
-  handleValidation() {
-    let formIsValid = true;
-    const errors = this.state.errors;
-
-    if (!this.state.nombre) {
-      formIsValid = false;
-      errors.nombre = 'Debe ingresar un nombre.';
-    } else { errors.nombre = undefined; }
-
-    {/* if (!this.state.cuit) {
-      formIsValid = false;
-      errors.cuit = 'Debe ingresar un cuit.';
-    } else { errors.cuit = undefined; }
-
-    if (!this.state.telefono) {
-      formIsValid = false;
-      errors.telefono = 'Debe ingresar un teléfono.';
-    } else { errors.telefono = undefined; }
-    */}
-
-    if (this.state.rubro.id === 0) { //Revisar cuando se cambie la lista de rubros
-      formIsValid = false;
-      errors.rubro = 'Hubo un problema al cargar el rubro.';
-    } else { errors.rubro = undefined; }
-
-    this.setState({ errors });
-    return formIsValid;
+  renderTelefono() {
+    //Si uso == va a dar True para null y undefined
+    if (this.props.data.telefono == null) {
+      return <p class='text-muted'> No hay valor ingresado</p>
+    }
+    return <p> {this.props.data.telefono}</p>      
   }
 
-  render() {
-    return (
+  renderCuit() {
+    if (this.props.data.cuit == null) {
+      return <p class='text-muted'> No hay valor ingresado</p>
+    }
+    return <p> {this.props.data.cuit}</p>      
+  }
+
+  renderRubro() {
+    if (this.props.data.rubro == null) {
+      return <p class='text-muted'> No hay valor ingresado</p>
+    }
+    return <p> {this.props.data.rubro.nombre}</p>      
+  }
+
+  renderDescripcion() {
+    if (this.props.data.descripcion == null) {
+      return <p class='text-muted'> No hay valor ingresado</p>
+    }
+    return <p> {this.props.data.descripcion}</p>      
+  }
+
+  mostrarUbicacion() {
+    if(this.props.data.ubicacion == null || (this.props.data.ubicacion.latitud === 0 && this.props.data.ubicacion.longitud === 0)){
+    }
+    else{
+      const params = {v: '3.exp', key: process.env.GOOGLE_API_KEY}
+      return (      
+        <div class='row' style={{ marginBottom: '20px'}} >   
+        <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center'}} class='col'>
+        <p style={{ textAlign: 'right'}} class='font-weight-bold' htmlFor="descripcion">Ubicacion</p>
+        </div>
+
+        <div class='col'>
+        <Gmaps
+          width={'300px'}
+          height={'300px'}
+          lat={this.props.data.ubicacion.latitud}
+          lng={this.props.data.ubicacion.longitud}
+          zoom={12}
+          params={params}>
+          <Marker
+            lat={this.props.data.ubicacion.latitud}
+            lng={this.props.data.ubicacion.longitud}
+          />
+        </Gmaps>
+        
+        <p style={{ marginTop: '10px' }}>Predio san carlos</p>
+        </div>
+      </div>
+       )         
+    }
+  }  
+  
+
+  render() {    
+    console.log(JSON.stringify(this.props))
+    return (      
       <Card>
-
-        <div className="row">
-          <div className="form-group col-md-6">
-            <label htmlFor="nombre">Nombre</label>
-            <input
-              type="text"
-              name="nombre"
-              className="form-control"
-              placeholder="Nombre"
-              value={this.state.nombre}
-              onChange={this.handleInputChange}
-            />
-            <span style={{ color: 'red' }}>{this.state.errors.nombre}</span>
+        <div class='container'>
+        
+        <div style={{ alignItems: 'center' }} class='row'>
+          <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', height: '150px'}} class='col'>            
+            <p style={{ textAlign: 'right' }} 
+               class='h4'>{this.props.nombre}</p>
           </div>
-
-          <div className="form-group col-md-6">
-            <label htmlFor="telefono">Mail</label>
-            <input
-              type="text"
-              name="mail"
-              className="form-control"
-              placeholder="Mail"
-              value={this.state.mail}
-              onChange={this.handleInputChange}
+          <div class='col'>
+            <img
+              class='rounded-circle'
+              src={user_avatar}
+              alt="avatar"
+              width="100" 
+              height="100"
             />
-            <span style={{ color: 'red' }}>{this.state.errors.mail}</span>
-          </div>
-
-          <div className="form-group col-md-6">
-          <CargadorImagenPerfil 
-            image = {this.state.avatar_url}
-            width={250}
-            height={250}
-            border={50}
-            color={[255, 255, 255, 0.6]} // RGBA
-            scale={1.2}
-            rotate={0} 
-          />
-          </div>
-
-
-          <div className="form-group col-md-6">
-            <label htmlFor="mail">Mail</label>
-            <input
-              type="text"
-              name="mail"
-              className="form-control"
-              placeholder="Mail"
-              value={this.state.mail}
-              onChange={this.handleInputChange}
-            />
-            <span style={{ color: 'red' }}>{this.state.errors.mail}</span>
-          </div>
-
-
-           <div className="form-group col-md-6">
-            <label htmlFor="telefono">Teléfono</label>
-            <input
-              type="text"
-              name="telefono"
-              className="form-control"
-              placeholder="Teléfono"
-              value={this.state.telefono}
-              onChange={this.handleInputChange}
-            />
-            <span style={{ color: 'red' }}>{this.state.errors.telefono}</span>
-          </div>
-
-          <div className="form-group col-md-6">
-            <label htmlFor="cuit">CUIT</label>
-            <input
-              type="text"
-              name="cuit"
-              className="form-control"
-              placeholder="CUIT"
-              value={this.state.cuit}
-              onChange={this.handleInputChange}
-            />
-            <span style={{ color: 'red' }}>{this.state.errors.cuit}</span>
-          </div>
-
-         
-
-          <div className="form-group col-md-6">
-            <label htmlFor="listaRubros">Rubro</label>
-            <ListaRubrosOrganizacion
-              name="listaRubros"
-              rubro={this.state.rubro_id}
-              onRubroChange={this.handleRubroChange}
-            />
-            <span style={{ color: 'red' }}>{this.state.errors.rubro}</span>
           </div>
         </div>
-
-        <SelectorUbicacion
-          name="selectorUbicacion"
-          ubicacion={this.state.ubicacion}
-          onUbicacionChange={this.handleUbicacionChange}
-        />
-
-        <div className="form-group">
-          <label htmlFor="descripcion">Descripcion</label>
-          <textarea
-            name="descripcion"
-            rows="9"
-            className="form-control"
-            placeholder="Escriba una breve descripcion de la organización."
-            value={this.state.descripcion}
-            onChange={this.handleInputChange}
-          />
+          
+        <div class='row'>
+            <p style={{ textAlign: 'right' }} class='font-weight-bold col' htmlFor="mail">Mail</p>
+            <div class='col'><p>{this.props.email}</p></div>
         </div>
 
-        <div className="btn btn-primary"> 
-          <button> 
-          </button>          
+        <div class='row'>
+            <p style={{ textAlign: 'right' }} class='font-weight-bold col' htmlFor="telefono">Teléfono</p>
+            <div class='col'>{this.renderTelefono()}</div>
         </div>
 
-        <div className="form-group">
-          <input type="submit" className="btn btn-primary" value="Guardar" />           
-        </div>        
+        <div class='row'>          
+            <p style={{ textAlign: 'right' }} class='font-weight-bold col' htmlFor="cuit">CUIT</p>
+            <div class='col'>{this.renderCuit()}</div>
+        </div>
 
+        <div class='row'>        
+            <p style={{ textAlign: 'right' }} class='font-weight-bold col' htmlFor="telefono">Rubro</p>
+            <div class='col'>{this.renderRubro()}</div>    
+        </div>                       
+
+        <div class='row'>          
+          <p style={{ textAlign: 'right' }} class='font-weight-bold col' htmlFor="descripcion">Descripcion</p> 
+          <div class='col'>{this.renderDescripcion()}</div>    
+        </div>      
+
+       {this.mostrarUbicacion()}
+
+        </div>      
       </Card>
     );
   }
 }
+ModificarPerfilOrganizacion.propTypes = perfilPropTypes;
 
 export default ModificarPerfilOrganizacion;

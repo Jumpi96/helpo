@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import authenticate
-from users.models import User, UserVerification
+from users.models import User, RubroOrganizacion, OrganizacionProfile, Ubicacion, Imagen, VoluntarioProfile, EmpresaProfile, UserVerification
 from django.core.exceptions import ObjectDoesNotExist
 
 
@@ -30,8 +30,180 @@ class LoginUserSerializer(serializers.Serializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'email')
+        fields = ('id', 'email', 'user_type', 'is_confirmed', 'nombre')
 
+## TODO: Ver de no repetir UbicacionSerializer del de actividades
+class UbicacionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ubicacion
+        fields = ('latitud', 'longitud', 'notas')
+        extra_kwargs = {
+            'notas': {
+                'required': False,
+                'allow_blank': True,
+            }
+        }
+
+class RubroOrganizacionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RubroOrganizacion
+        fields = ('id', 'nombre')
+
+class ImagenSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Imagen
+        fields = ('id', 'url')
+
+class OrganizacionProfileSerializer(serializers.ModelSerializer):
+    rubro = RubroOrganizacionSerializer(required=False)
+    ubicacion = UbicacionSerializer(required=False)
+    avatar = ImagenSerializer(required=False)    
+
+    class Meta:
+        model = OrganizacionProfile
+        fields = ('verificada', 'telefono', 'cuit', 'descripcion', 'rubro', 'avatar', 'ubicacion', 'usuario')
+        read_only_fields = ('usuario','verificada')
+
+    def update(self, instance, validated_data):
+        rubro_data = None
+        avatar_data = None
+        ubicacion_data = None
+
+        try:
+            rubro_data = validated_data.pop('rubro')
+        except KeyError:
+            # Repito asginar None porque python me hace poner algo en la excepcion
+            rubro_data = None
+
+        try:
+            avatar_data = validated_data.pop('avatar')
+        except KeyError:
+            avatar_data = None
+
+        try:
+            ubicacion_data = validated_data.pop('ubicacion')
+        except KeyError:       
+            ubicacion_data = None
+
+        instance.telefono = validated_data.get('telefono', instance.telefono)
+        instance.cuit = validated_data.get('cuit', instance.cuit)
+        instance.descripcion = validated_data.get('descripcion', instance.descripcion) 
+
+        if rubro_data != None:
+            nuevoRubro = RubroOrganizacion.objects.get(nombre=rubro_data["nombre"])
+            instance.rubro = nuevoRubro       
+        
+        if ubicacion_data != None:
+            nuevaUbicacion = Ubicacion(**ubicacion_data)           
+            nuevaUbicacion.save()
+            instance.ubicacion = nuevaUbicacion        
+
+        #TODO: Ver si hay que cambiar cuando se haga mejor manejo de imagenes
+        if avatar_data != None:
+            try:    
+                nuevaImagen = Imagen.objects.get(url=avatar_data["url"])
+                instance.avatar = nuevaImagen
+            except Exception: # Imagen.DoesNotExist
+                ## TODO: Sacar isExternal hardcodeado
+                nuevaImagen = Imagen(**avatar_data, isExternal=False)
+                nuevaImagen.save()
+                instance.avatar = nuevaImagen
+        instance.save()
+        return instance
+
+class EmpresaProfileSerializer(serializers.ModelSerializer):
+    rubro = RubroOrganizacionSerializer(required=False)
+    ubicacion = UbicacionSerializer(required=False)
+    avatar = ImagenSerializer(required=False)    
+
+    class Meta:
+        model = EmpresaProfile
+        fields = ( 'telefono', 'cuit', 'descripcion', 'rubro', 'avatar', 'ubicacion', 'usuario')
+        read_only_fields = ('usuario',)
+
+    def update(self, instance, validated_data):
+        rubro_data = None
+        avatar_data = None
+        ubicacion_data = None
+
+        try:
+            rubro_data = validated_data.pop('rubro')
+        except KeyError:
+            # Repito asginar None porque python me hace poner algo en la excepcion
+            rubro_data = None
+
+        try:
+            avatar_data = validated_data.pop('avatar')
+        except KeyError:
+            avatar_data = None
+
+        try:
+            ubicacion_data = validated_data.pop('ubicacion')
+        except KeyError:       
+            ubicacion_data = None
+
+        instance.telefono = validated_data.get('telefono', instance.telefono)
+        instance.cuit = validated_data.get('cuit', instance.cuit)
+        instance.descripcion = validated_data.get('descripcion', instance.descripcion) 
+
+        if rubro_data != None:
+            nuevoRubro = RubroOrganizacion.objects.get(nombre=rubro_data["nombre"])
+            instance.rubro = nuevoRubro       
+        
+        if ubicacion_data != None:
+            nuevaUbicacion = Ubicacion(**ubicacion_data)           
+            nuevaUbicacion.save()
+            instance.ubicacion = nuevaUbicacion        
+
+        #TODO: Ver si hay que cambiar cuando se haga mejor manejo de imagenes
+        if avatar_data != None:
+            try:    
+                nuevaImagen = Imagen.objects.get(url=avatar_data["url"])
+                instance.avatar = nuevaImagen
+            except Exception: # Imagen.DoesNotExist
+                ## TODO: Sacar isExternal hardcodeado
+                nuevaImagen = Imagen(**avatar_data, isExternal=False)
+                nuevaImagen.save()
+                instance.avatar = nuevaImagen
+        instance.save()
+        return instance
+
+class VoluntarioProfileSerializer(serializers.ModelSerializer):
+    avatar = ImagenSerializer(required=False)    
+
+    class Meta:
+        model = VoluntarioProfile
+        fields = ( 'telefono', 'apellido', 'dni', 'sexo', 'gustos', 'habilidades', 'avatar', 'usuario')
+        read_only_fields = ('usuario',)
+
+    def update(self, instance, validated_data):
+        avatar_data = None
+        
+        try:
+            avatar_data = validated_data.pop('avatar')
+        except KeyError:
+            avatar_data = None
+
+        instance.telefono = validated_data.get('telefono', instance.telefono)
+        instance.apellido = validated_data.get('apellido', instance.apellido)
+        instance.dni = validated_data.get('dni', instance.dni)
+        instance.sexo = validated_data.get('sexo', instance.sexo)         
+        instance.gustos = validated_data.get('gustos', instance.gustos)         
+        instance.habilidades = validated_data.get('habilidades', instance.habilidades)    
+
+        #TODO: Ver si hay que cambiar cuando se haga mejor manejo de imagenes
+        if avatar_data != None:
+            try:    
+                nuevaImagen = Imagen.objects.get(url=avatar_data["url"])
+                instance.avatar = nuevaImagen
+            except Exception: # Imagen.DoesNotExist
+                ## TODO: Sacar isExternal hardcodeado
+                nuevaImagen = Imagen(**avatar_data, isExternal=False)
+                nuevaImagen.save()
+                instance.avatar = nuevaImagen
+        instance.save()
+        return instance
+        
 class VerificationMailSerializer(serializers.Serializer):    
     token = serializers.CharField()
 
@@ -44,6 +216,3 @@ class VerificationMailSerializer(serializers.Serializer):
                 return True
         except ObjectDoesNotExist:
             raise serializers.ValidationError("Verification token does not match any")
-
-
-    

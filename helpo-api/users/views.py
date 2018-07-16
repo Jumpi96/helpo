@@ -1,9 +1,12 @@
 from django.shortcuts import render  # noqa
 from rest_framework import generics, permissions
 from rest_framework.response import Response
+from rest_framework.generics import ListCreateAPIView
+from rest_framework.generics import RetrieveUpdateDestroyAPIView, RetrieveUpdateAPIView
 from knox.models import AuthToken
 from django.contrib.auth import get_user_model
-from users.serializers import CreateUserSerializer, UserSerializer, LoginUserSerializer, VerificationMailSerializer
+from users.models import RubroOrganizacion, OrganizacionProfile, VoluntarioProfile, EmpresaProfile
+from users.serializers import CreateUserSerializer, UserSerializer, LoginUserSerializer, RubroOrganizacionSerializer, OrganizacionProfileSerializer, VoluntarioProfileSerializer, EmpresaProfileSerializer, VerificationMailSerializer
 
 
 class CreateUserView(generics.GenericAPIView):
@@ -36,6 +39,45 @@ class UserView(generics.RetrieveAPIView):
 
     def get_object(self):
         return self.request.user
+
+class RubroOrganizacionCreateReadView(ListCreateAPIView):
+    """
+    API endpoint para crear o ver todos los rubros de organización
+    """
+    queryset = RubroOrganizacion.objects.all()
+    serializer_class = RubroOrganizacionSerializer
+
+class RubroOrganizacionReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
+    """
+    API endpoint para leer, actualizar o eliminar un rubro de organización
+    """
+    queryset = RubroOrganizacion.objects.all()
+    serializer_class = RubroOrganizacionSerializer
+    lookup_field = 'id'
+
+class OrgProfileReadUpdateDeleteView(RetrieveUpdateAPIView):
+    """
+    API endpoint para leer, actualizar o eliminar un perfil de organizacion
+    """
+    queryset = OrganizacionProfile.objects.all()
+    serializer_class = OrganizacionProfileSerializer
+    lookup_field = 'usuario'
+
+class EmpresaProfileReadUpdateDeleteView(RetrieveUpdateAPIView):
+    """
+    API endpoint para leer, actualizar o eliminar un perfil de empresa
+    """
+    queryset = EmpresaProfile.objects.all()
+    serializer_class = EmpresaProfileSerializer
+    lookup_field = 'usuario'
+
+class VoluntarioProfileReadUpdateDeleteView(RetrieveUpdateAPIView):
+    """
+    API endpoint para leer, actualizar o eliminar un perfil de voluntario
+    """
+    queryset = VoluntarioProfile.objects.all()
+    serializer_class = VoluntarioProfileSerializer
+    lookup_field = 'usuario'
 
 class VerifyMailView(generics.GenericAPIView):
     serializer_class = VerificationMailSerializer

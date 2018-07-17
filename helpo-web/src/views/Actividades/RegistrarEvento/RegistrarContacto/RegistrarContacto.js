@@ -110,98 +110,113 @@ class RegistrarContacto extends React.Component {
 RegistrarContacto.propTypes = registerPropTypes;
 
 export default RegistrarContacto;
-*/
 
 
 
 import React, { Component } from 'react';
 import { Button, Table, Card, CardHeader, CardBody } from 'reactstrap';
 import './RegistrarContactos.css';
-import api from '../../../../api';
-import ModalEliminarItem from './ModalEliminarItem';
-import ModalEditarItem from './ModalEditarItem';
-import validateEmail from '../../../../utils/ValidateEmail'
+import SelectorItem from './SelectorItem/SelectorItem';
+import NumericInput from 'react-numeric-input';
+import api from '../../../api';
+import ModalEliminarItem from '../../common/ModalEliminarItem/ModalEliminarItem';
+import ModalEditarItem from './ModalEditarItem/ModalEditarItem';
+
 
 class RegistrarContactos extends Component {
   constructor(props){
     super(props);
-    /*const urlParams = new URLSearchParams(this.props.location.search)
+    const urlParams = new URLSearchParams(this.props.location.search)
     const parametro = urlParams.get('evento');
     let evento;
     if (parametro) {
       evento = parametro;
     } else {
       this.props.history.push({ pathname: '/dashboard' });
-    }*/
+    }
     this.state = {
+      evento: evento,
       contactos: [],
-      nombre: '',
-      email:'',
-      telefo:'',
       contacto: undefined,      
       contactId: '1',    
       nextId: '2',
       showModalEliminar: false,
-      showModalEditar: false,
-      contactoModificado: {nombre: '', email: '', telefono: '' },
+      contactoModificado: undefined,
       contactoModificadoId: undefined
     };
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleItemChange = this.handleItemChange.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.saveCntacto = this.saveCntacto.bind(this);
     this.confirmDeleteContacto = this.confirmDeleteContacto.bind(this);
-    this.deleteContacto = this.deleteContacto.bind(this);
   }
 
   handleSubmit(event) {
     event.preventDefault();
-    var contacto = undefined;
     if (this.handleValidation()) {
-      contacto = {        
+      const contacto = {        
         nombre: this.state.nombre,
         email: this.state.email,
         telefono: this.state.telefono,
+        evento: this.state.evento
       }
+      this.contactos.push(contacto); // Agregamos elcontactos al array
     }
+  }
 
-    var contacts = this.state.contactos;
-    var cont = contacts.push(contacto);
-
-      this.setState({
-        contactos: contacts, // Y seteamos estado
-        contacto:cont
+  addContacto(contacto) {
+    api.post('/actividades/contactos/', contacto)
+      .then(res => {
+        console.log(res);
+        console.log(res.data);
+        this.cleancontacto();
+        this.loadContactos();
+      }).catch(function (error) {
+        if (error.response){ console.log(error.response.status) }
+        else { console.log('Error: ', error.message)}
+        this.setState({ error: "Hubo un problema al cargar su información." });
       });
-        
-      this.props.actualizarContactos(this.state.contactos);
   }
 
-  saveCntacto(cont) { 
-    
-    if (cont !== undefined) {
-      var contactosModificados = this.state.contactos;
-      contactosModificados[this.state.contactoModificadoId]= cont;
-      
-      this.setState({
-        showModalEditar: false,
-        contactoModificado: undefined,
-        contactos: contactosModificados
-      });   
-    this.props.actualizarContactos(this.state.contactos);      
+  saveCntacto(telefono) {
+    if (telefono) {
+      const nuevoContacto = {
+        id: this.state.contactoModificado.id,
+        email: this.state.contactoModificado.recurso.id,
+        nombre: this.state.contactoModificado.nombre,
+        telefono: telefono,
+        evento: this.state.evento
+      };
+      api.put("/actividades/contactos/" + nuevoContacto.id + "/", nuevoContacto) //atento aca elcontacto tiene id?
+        .then(res => {
+          console.log(res);
+          console.log(res.data);
+          this.cleancontacto();
+          this.loadContactos();
+        }).catch(function (error) {
+          if (error.response){ console.log(error.response.status) }
+          else { console.log('Error: ', error.message)}
+          this.setState({ error: "Hubo un problema al cargar su información." });
+        });
     }
+    this.setState({
+      showModalEditar: false,
+      contactoModificado: undefined
+    });    
   }
 
-  handleValidation() { 
+  handleValidation() { //DONE
     let formIsValid = true;
     var error = this.state.error;    
     if (this.state.nombre === "") {
         error = 'No puede ingresar un contacto sin nombre';        
         formIsValid = false;
       }
-    if (this.state.email === "" && this.state.telefono === "") {
+    if (contactos[i].mail === "" && contactos[i].telefono === "") {
         error += ' Debe ingresar un mail o un telefono';        
         formIsValid = false;
       }
-    if (this.state.email !== "" && !validateEmail(this.state.email)) {
+    if (contactos[i].mail !== "" && !validateEmail(contactos[i].mail)) {
         error += ' Debe ingresar un mail valido';        
         formIsValid = false;
     }
@@ -211,8 +226,8 @@ class RegistrarContactos extends Component {
 
   
 
-  editContacto(id) { 
-    var contacto = this.state.contactos.filter(n => n.id === id)[0];
+  editContacto(id) { //hace falta id
+    const contacto = this.state.contactos.filter(n => n.id === id)[0];
     this.setState({ 
       showModalEditar: true,
       contactoModificado: contacto
@@ -221,9 +236,9 @@ class RegistrarContactos extends Component {
 
   cleancontacto() {
     this.setState({
-      nombre: '',
-      telefono: '',
-      email: '',
+      nombre: undefined,
+      telefono: undefined,
+      email: undefined,
       contacto: undefined
     });
   }
@@ -236,20 +251,11 @@ class RegistrarContactos extends Component {
       showModalEliminar: true,
       contactoModificado: contacto
     });
-    this.props.actualizarContactos(this.state.contactos);    
+    
   }
 
-  confirmDeleteContacto(res) {
-    if (res){;
-      var contactosModificados = this.state.contactos;
-      var contactoMod = contactosModificados.splice(this.state.contactoModificadoId, 1);
-
-      this.setState({ 
-        contactos: contactosModificados,
-        contactoModificado: contactoMod
-      });
-      this.props.actualizarContactos(this.state.contactos);
-    }    
+  confirmDeleteContacto() {
+    contactoModificado = contactos.splice(contactoModificadoId, 1);
   }
 
   /*
@@ -274,7 +280,7 @@ class RegistrarContactos extends Component {
   // Carga de contactos 
 
   componentDidMount() {
-    // this.loadContactos(); esto hacerlo para EDITAR EVENTO para registrar evento no hace falta
+    this.loadContactos();
   }
 
   loadContactos() {
@@ -305,16 +311,17 @@ class RegistrarContactos extends Component {
   }
 
   render() {
-    var tablaContactos = undefined;
+    const tablaContactos = undefined;
     for (let c = 0; c <= this.props.contacts.length; c += 1) {
       tablaContactos +=
       <tr>
         <td>{c.nombre}</td>
         <td>{c.email}</td>
         <td>{c.telefono}</td>
-        <td><Button onClick={() => this.editContacto(c)} outline // Atento a que no falle acá, porqu puede que tome elvalorde c para todas las filas y siempre edite el mismo contacto
+      {contactoModificadoId == c}
+        <td><Button onClick={() => this.editContacto(contactoModificadoId)} outline // Atento a que no falle acá, porqu puede que tome elvalorde c para todas las filas y siempre edite el mismo contacto
           disabled={this.state.contacto} color="warning">Editar</Button></td>
-        <td><Button onClick={() => this.deleteContacto(c)} outline  // Antes se usaba contactoModificadoId
+        <td><Button onClick={() => this.deleteContacto(contactoModificadoId)} outline 
           disabled={this.state.contacto} color="danger">Eliminar</Button></td>
       </tr>
     }
@@ -340,7 +347,7 @@ class RegistrarContactos extends Component {
                   <div className="col-md-3">
                   <input type="text" 
                       name="email" className="form-control"
-                      placeholder="Email"
+                      placeholder="email"
                       value={this.state.email} 
                       onChange={this.handleInputChange}
                     />
@@ -354,7 +361,7 @@ class RegistrarContactos extends Component {
                     />
                   </div>
                   <div className="col-md-3">
-                    <Button outline type="submit" color="success" >Agregar</Button>
+                    <Button outline type="submit" color="success">Agregar</Button>
                   </div>
                 </div>
                 <span style={{color: "red"}}>{this.state.error}</span>
@@ -364,7 +371,7 @@ class RegistrarContactos extends Component {
               <thead>
                 <tr>
                   <th>Nombre</th>
-                  <th>Email</th>
+                  <th>email</th>
                   <th>Teléfono</th>                  
                   <th></th>
                   <th></th>
@@ -380,7 +387,7 @@ class RegistrarContactos extends Component {
         </Card>
         <ModalEliminarItem open={this.state.showModalEliminar} contactoId={this.state.contactoModificadoId} contactos={this.state.contactos}
           closeModal={this.confirmDeleteContacto}/>
-        <ModalEditarItem open={this.state.showModalEditar} contacto={this.state.contactoModificado} 
+        <ModalEditarItem open={this.state.showModalEditar} contacto={this.state.contactoModificado}
           closeModal={this.saveCntacto}/>
       </div>
     )

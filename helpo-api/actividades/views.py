@@ -7,7 +7,8 @@ from datetime import datetime
 from actividades.models import Evento, RubroEvento, CategoriaRecurso, Recurso, Necesidad, Contacto
 from knox.models import AuthToken
 from actividades.serializers import EventoSerializer, RubroEventoSerializer, \
-    CategoriaRecursoSerializer, RecursoSerializer, NecesidadSerializer, ContactoSerializer
+    CategoriaRecursoSerializer, RecursoSerializer, NecesidadSerializer, ContactoSerializer, \
+    ConsultaEventoSerializer
 from common.functions import get_token_user
 
 class RubroEventoCreateReadView(ListCreateAPIView):
@@ -137,7 +138,7 @@ class ConsultaEventosOrganizacionCreateReadView(ListCreateAPIView):
     """
     API endpoint para ver todos los eventos próximos
     """
-    serializer_class = EventoSerializer
+    serializer_class = ConsultaEventoSerializer
 
     def get_queryset(self):
         queryset = Evento.objects.all()

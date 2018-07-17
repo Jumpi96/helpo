@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from actividades.models import Evento, RubroEvento, Ubicacion, CategoriaRecurso, Recurso, Necesidad, Contacto
+from users.serializers import UserSerializer
 
 class RubroEventoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -89,3 +90,19 @@ class NecesidadSerializer(serializers.ModelSerializer):
     class Meta:
         model = Necesidad
         fields = '__all__'
+
+class ConsultaEventoSerializer(serializers.ModelSerializer):
+    ubicacion = UbicacionSerializer()
+    rubro = RubroEventoSerializer(read_only=True)
+    rubro_id = serializers.PrimaryKeyRelatedField(
+        queryset=RubroEvento.objects.all(), source='rubro', write_only=True
+    )
+    contacto = ContactoSerializer(many=True)
+    necesidades = NecesidadSerializer(many=True)
+    organizacion = UserSerializer()
+
+    class Meta:
+        model = Evento
+        fields = ('id', 'nombre', 'descripcion', 'fecha_hora_inicio',
+            'fecha_hora_fin', 'rubro', 'rubro_id', 'ubicacion', 'contacto', 'organizacion_id',
+            'necesidades', 'organizacion')

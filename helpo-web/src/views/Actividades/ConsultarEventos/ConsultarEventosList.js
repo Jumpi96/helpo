@@ -28,7 +28,6 @@ class ConsultarEventosList extends React.Component {
                 <EventoCard
                   evento={evento}
                   key={evento.id} footer
-                  mainText={evento.nombre + ' - Nombre de ONG'} 
                   color="primary" 
                   link={'/actividades/consultar-evento/' + evento.id}
                 />

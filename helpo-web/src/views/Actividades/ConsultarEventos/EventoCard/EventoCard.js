@@ -24,8 +24,17 @@ class EventoCard extends Component {
 
   getNecesidades() {
     const arrayNecesidades = this.props.evento.necesidades ? this.props.evento.necesidades : [];
+    console.log(arrayNecesidades);
     const necesidades = arrayNecesidades.slice(0, 3).map((necesidad) => {
-      return <li>{necesidad.nombre}</li>
+      return (
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          {
+            necesidad.recurso.categoria.nombre + ' - ' +
+            necesidad.recurso.nombre
+          }
+          <span class="badge badge-primary badge-pill">{necesidad.cantidad}</span>
+        </li>
+      )
     });
     return necesidades;
   }
@@ -43,7 +52,7 @@ class EventoCard extends Component {
       = this.props;
 
     // demo purposes only
-    const progress = { style: '', color: color, value: evento.porcentaje };
+    const progress = { style: '', color: color, value: 50};//evento.porcentaje };
     const card = { style: '', bgColor: '' };
 
     if (variant === 'inverse') {
@@ -66,9 +75,14 @@ class EventoCard extends Component {
             style={{width:'75px', height:'75px'}} 
           />
           <div className="h4 m-0">{moment(evento.fecha_hora_inicio).format('DD/MM/YYYY')}</div>
-          <div>{evento.nombre + ' - ' + evento.organizacion}</div>
+          <div>{evento.nombre + ' - ' + evento.organizacion.nombre}</div>
           <Progress className={progress.style} color={progress.color} value={progress.value} />
-          {this.getNecesidades()}
+          <div className="col-md-6">
+            <ul className="list-group">
+              {this.getNecesidades()}
+            </ul>
+          </div>
+          
           <Link to={link}>
             <button className="btn btn-primary pull-right">
               + Ver más

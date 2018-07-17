@@ -1,19 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { mount } from "enzyme";
-import ListaRubrosEvento from './ListaRubrosEvento';
+import ListaRubrosOrganizaciones from './ListaRubrosOrganizaciones';
 
 
-describe("ListaRubrosEvento", () => {
+describe("ListaRubrosOrganizaciones", () => {
   let props;
-  let mountedListaRubrosEvento;
-  const listaRubrosEvento = () => {
-    if (!mountedListaRubrosEvento) {
-      mountedListaRubrosEvento = mount(
-        <ListaRubrosEvento {...props} />
+  let mountedListaRubrosOrganizaciones;
+  const listaRubrosOrganizaciones = () => {
+    if (!mountedListaRubrosOrganizaciones) {
+      mountedListaRubrosOrganizaciones = mount(
+        <ListaRubrosOrganizaciones {...props} />
       );
     }
-    return mountedListaRubrosEvento;
+    return mountedListaRubrosOrganizaciones;
   }
 
   beforeEach(() => {
@@ -21,20 +21,20 @@ describe("ListaRubrosEvento", () => {
       rubro_id: 1,
       onRubroChange: undefined
     };
-    mountedListaRubrosEvento = undefined;
+    mountedListaRubrosOrganizaciones = undefined;
   });
   
   it('renders without crashing', () => {
-    const divs = listaRubrosEvento().find("select");
+    const divs = listaRubrosOrganizaciones().find("select");
     expect(divs.length).toBeGreaterThan(0); 
   });
 
   it("always renders a select", () => {
-    expect(listaRubrosEvento().find("select").length).toBe(1);
+    expect(listaRubrosOrganizaciones().find("select").length).toBe(1);
   });
 
   it("when 'rubro' is defined sets the value", () => {
-    const select = listaRubrosEvento().find("select");
+    const select = listaRubrosOrganizaciones().find("select");
     expect(select.props().value).toBe(props.rubro_id);
   });
 });

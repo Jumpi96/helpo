@@ -37,4 +37,4 @@ class Necesidad(models.Model):
     descripcion = models.CharField(max_length=140, null=True)
     cantidad = models.IntegerField()
     recurso = models.ForeignKey(Recurso, null=False, on_delete=models.PROTECT)
-    evento = models.ForeignKey(Evento, null=False, on_delete=models.CASCADE)
+    evento = models.ForeignKey(Evento, related_name='necesidades', null=False, on_delete=models.CASCADE)

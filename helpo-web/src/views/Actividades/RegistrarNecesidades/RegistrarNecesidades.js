@@ -154,7 +154,7 @@ class RegistrarNecesidades extends Component {
   }
 
   loadNecesidades() {
-    api.get('/actividades/necesidades/?evento=' + this.state.evento + '/')
+    api.get('/actividades/necesidades/?evento=' + this.state.evento)
       .then(res => {
         const necesidadesData = res.data;
         this.setState({ necesidades: necesidadesData});

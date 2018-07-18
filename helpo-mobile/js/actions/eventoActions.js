@@ -21,6 +21,16 @@ export function loadEventosOrganizacion() {
   };
 }
 
+export function loadEventosProximos() {  
+  return function(dispatch) {
+    return eventoApi.getEventosProximos().then(eventos => {
+      dispatch(loadEventosProximosSuccess(eventos));
+    }).catch(error => {
+      throw(error);
+    });
+  };
+}
+
 export function updateEvento(evento) {  
   return function(dispatch) {
     return eventoApi.updateEvento(evento).then(responseEvento => {
@@ -33,6 +43,10 @@ export function updateEvento(evento) {
 
 export function loadEventosSuccess(eventos) {  
   return {type: types.LOAD_EVENTOS_SUCCESS, eventos};
+}
+
+export function loadEventosProximosSuccess(eventos) {  
+  return {type: types.LOAD_EVENTOS_PROXIMOS_SUCCESS, eventos};
 }
 
 export function loadEventosOrganizacionSuccess(eventos) {  

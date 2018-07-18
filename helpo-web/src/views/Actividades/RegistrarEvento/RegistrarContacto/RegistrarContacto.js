@@ -1,3 +1,4 @@
+/*
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -109,16 +110,15 @@ class RegistrarContacto extends React.Component {
 RegistrarContacto.propTypes = registerPropTypes;
 
 export default RegistrarContacto;
+*/
 
 
 
 import React, { Component } from 'react';
 import { Button, Table, Card, CardHeader, CardBody } from 'reactstrap';
 import './RegistrarContactos.css';
-import SelectorItem from './SelectorItem/SelectorItem';
-import NumericInput from 'react-numeric-input';
 import api from '../../../api';
-import ModalEliminarItem from '../../common/ModalEliminarItem/ModalEliminarItem';
+import ModalEliminarItem from './ModalEliminarItem/ModalEliminarItem';
 import ModalEditarItem from './ModalEditarItem/ModalEditarItem';
 
 
@@ -148,6 +148,7 @@ class RegistrarContactos extends Component {
     this.handleInputChange = this.handleInputChange.bind(this);
     this.saveCntacto = this.saveCntacto.bind(this);
     this.confirmDeleteContacto = this.confirmDeleteContacto.bind(this);
+    this.deleteContacto = this.deleteContacto.bind(this);
   }
 
   handleSubmit(event) {
@@ -159,11 +160,16 @@ class RegistrarContactos extends Component {
         telefono: this.state.telefono,
         evento: this.state.evento
       }
-      this.contactos.push(contacto); // Agregamos elcontactos al array
     }
+      const contactosNuevo = this.state.contactos.push(contacto);// Agregamos elcontactos al array
+      this.setState({
+        contactos: contactosNuevo // Y seteamos estado
+      });
+        
+      this.props.actualizarContactos(this.state.contactos);
   }
 
-  addContacto(contacto) {
+  /*addContacto(contacto) {
     api.post('/actividades/contactos/', contacto)
       .then(res => {
         console.log(res);
@@ -175,16 +181,22 @@ class RegistrarContactos extends Component {
         else { console.log('Error: ', error.message)}
         this.setState({ error: "Hubo un problema al cargar su información." });
       });
-  }
+  }*/
 
-  saveCntacto(cont) { // Prestar atencion aca, ver que responde Juan
+  saveCntacto(cont) { 
+    
     if (cont != undefined) {
-            this.state.contactos[contactoModificadoId] == cont;
-    }
-    this.setState({
+      var contactosModificados = this.state.contactos;
+      contactosModificados[contactoModificadoId]= cont;
+      
+      this.setState({
       showModalEditar: false,
-      contactoModificado: undefined
-    });    
+      contactoModificado: undefined,
+      contactos: contactosModificados
+    });   
+    this.props.actualizarContactos(this.state.contactos);      
+    }
+     
   }
 
   handleValidation() { //DONE
@@ -233,12 +245,17 @@ class RegistrarContactos extends Component {
       showModalEliminar: true,
       contactoModificado: contacto
     });
-    
+    this.props.actualizarContactos(this.state.contactos);    
   }
 
   confirmDeleteContacto(res) {
     if (res){
       contactoModificado = contactos.splice(contactoModificadoId, 1);
+      contactosModificados = contactos;
+      this.setState({ 
+        contactos: contactosModificados
+      });
+      this.props.actualizarContactos(this.state.contactos);
     }    
   }
 
@@ -302,7 +319,7 @@ class RegistrarContactos extends Component {
         <td>{c.nombre}</td>
         <td>{c.email}</td>
         <td>{c.telefono}</td>
-      {contactoModificadoId == c}
+      {contactoModificadoId = c}
         <td><Button onClick={() => this.editContacto(contactoModificadoId)} outline // Atento a que no falle acá, porqu puede que tome elvalorde c para todas las filas y siempre edite el mismo contacto
           disabled={this.state.contacto} color="warning">Editar</Button></td>
         <td><Button onClick={() => this.deleteContacto(contactoModificadoId)} outline 
@@ -345,7 +362,7 @@ class RegistrarContactos extends Component {
                     />
                   </div>
                   <div className="col-md-3">
-                    <Button outline type="submit" color="success">Agregar</Button>
+                    <Button outline type="submit" color="success" >Agregar</Button>
                   </div>
                 </div>
                 <span style={{color: "red"}}>{this.state.error}</span>

@@ -20,13 +20,7 @@ class RegistrarEvento extends Component {
       fecha_hora_fin: new Date(),
       ubicacion: { latitud: -31.4201, longitud: -64.1888, notas: '' },
       errors: {},
-      contactos: [{
-        nombre: '',
-        mail: '',
-        telefono: '',
-        contactId: '1',
-      }],
-      nextId: '2',
+      contactos: [],
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -39,6 +33,17 @@ class RegistrarEvento extends Component {
     this.handleRemoveContact = this.handleRemoveContact.bind(this);
     this.handlePhoneChange = this.handlePhoneChange.bind(this);
   }
+
+  /*handleContactChange(event, contactId) {
+    const { value } = event.target;
+    const field = event.target.name;
+    const index = this.state.contactos.map(e => e.contactId).indexOf(contactId);
+    const newContactos = this.state.contactos;
+    newContactos[index][field] = value;
+    this.setState({
+      contactos: newContactos,
+    });
+  }*/
 
   handleContactChange(event, contactId) {
     const { value } = event.target;
@@ -62,6 +67,12 @@ class RegistrarEvento extends Component {
     newContactos[index].telefono = phone;
     this.setState({
       contactos: newContactos,
+    });
+  }
+
+  handleActualizacionContactos(nuevosContactos){
+    this.setState({
+      contactos : nuevosContactos
     });
   }
 
@@ -311,6 +322,7 @@ class RegistrarEvento extends Component {
                 onUbicacionChange={this.handleUbicacionChange}
               />
               <RegistrarContacto
+                actualizarContactos={this.handleActualizacionContactos}
                 onClickAdd={this.handleAddContact}
                 onClickRemove={this.handleRemoveContact}
                 onContactChange={this.handleContactChange}

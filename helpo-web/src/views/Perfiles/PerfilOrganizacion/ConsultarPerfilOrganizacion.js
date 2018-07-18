@@ -95,7 +95,7 @@ class ConsultarPerfilOrganizacion extends Component {
           />
         </Gmaps>
         
-        <p style={{ marginTop: '10px' }}>{this.props.data.ubicacion.notas}}</p>
+        <p style={{ marginTop: '10px' }}>{this.props.data.ubicacion.notas}</p>
         </div>
       </div>
        )         

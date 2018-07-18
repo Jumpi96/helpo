@@ -51,7 +51,7 @@ class EventoCard extends Component {
         </CardItem>
         <CardItem style={{ paddingVertical: 0 }}>
           <Right>
-            <Button>
+            <Button onPress={() => this.props.openEvento()}>
               <Icon name="navigate" />
               <Text>Ver más</Text>
             </Button>

@@ -50,6 +50,7 @@ class ConsultarEventos extends Component {
           {eventos.map(evento =>
             <EventoCard
               evento={evento}
+              openEvento={() => Actions.consultarEvento({ evento })}
             />
             )}
         </Content>

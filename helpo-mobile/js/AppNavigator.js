@@ -101,6 +101,7 @@ import statusBarColor from './themes/variables';
 
 import Actividades from './views/Actividades/Actividades';
 import RegistrarEvento from './views/Actividades/RegistrarEvento/RegistrarEvento';
+import ConsultarEvento from './views/Actividades/ConsultarEventos/ConsultarEvento';
 import RegistrarNecesidades from './views/Actividades/RegistrarNecesidades/RegistrarNecesidades';
 import AgregarNecesidad from './views/Actividades/RegistrarNecesidades/AgregarNecesidad/AgregarNecesidad';
 import MisEventos from './views/Actividades/MisEventos/MisEventos';
@@ -202,6 +203,7 @@ class AppNavigator extends Component {
               <Scene key="configuracion" component={Configuracion} />
               <Scene key="actividades" component={Actividades} />
               <Scene key="consultarEventos" component={ConsultarEventos} />
+              <Scene key="consultarEvento" component={ConsultarEvento} />
               <Scene key="registrarEvento" component={RegistrarEvento} />
               <Scene key="registrarNecesidades" component={RegistrarNecesidades} />
               <Scene key="misEventos" component={MisEventos} />

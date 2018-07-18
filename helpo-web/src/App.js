@@ -41,7 +41,7 @@ class RootContainerComponent extends Component {
       if (this.props.auth.isLoading) {
         return <em>Cargando...</em>;
       } else if (!this.props.auth.isAuthenticated) {
-        return <Redirect from="/" to="/home" />;
+        return <Redirect from="/" to="/noAuth" />;
       } else {
         return <ChildComponent {...props} />
       }
@@ -53,13 +53,13 @@ class RootContainerComponent extends Component {
     return (
       <HashRouter>
         <Switch>
-          <Route exact path="/home" name="Login Page" component={NoAuthLayout} />
           <Route exact path="/login" name="Login Page" component={Login} />
           <Route exact path="/register" name="Register Page" component={Register} />
           <Route exact path="/404" name="Page 404" component={Page404} />
           <Route exact path="/500" name="Page 500" component={Page500} />
           <Route exact path="/prueba" name="PRUEBA" component={ComponentRenderer} />
           <Route path="/confirmMail/:token" name="Confirmar Email" component={ConfirmMail} />
+          <Route path="/noAuth" name="Home" component={NoAuthLayout} />
           <PrivateRoute path="/" name="Dashboard" component={DefaultLayout} />
         </Switch>
       </HashRouter>

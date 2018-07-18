@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import { Container } from 'reactstrap';
 
 import { 
   AppFooter,
+  AppBreadcrumb,
   AppHeader, 
   AppSidebar,
   AppSidebarFooter,
@@ -16,6 +17,7 @@ import NoAuthFooter from './NoAuthFooter';
 import NoAuthHeader from './NoAuthHeader';
 
 import { connect } from "react-redux";
+import routes from '../../routesNoAuth';
 import {auth} from "../../../src/actions";
 
 class NoAuthLayout extends Component {
@@ -32,13 +34,23 @@ class NoAuthLayout extends Component {
             <AppSidebar fixed display="lg">
               <AppSidebarHeader />
               <AppSidebarForm />
-              <AppSidebarNav {...this.props} />
+              <AppSidebarNav navConfig={navigation}  {...this.props} />
               <AppSidebarFooter />
               <AppSidebarMinimizer />
             </AppSidebar>
             <main className="main">
+              <AppBreadcrumb appRoutes={routes}/>
               <Container fluid>
-                <h1>Bienvenidos a helpo</h1>
+                <Switch>
+                  {routes.map((route, idx) => {
+                      return route.component ? (<Route key={idx} path={route.path} exact={route.exact} name={route.name} render={props => (
+                          <route.component {...props} />
+                        )} />)
+                        : (null);
+                    },
+                  )}
+                  <Redirect from="/noAuth/" to="/noAuth/dashboard" />
+                </Switch>
               </Container>
             </main>
           </div>
@@ -49,6 +61,21 @@ class NoAuthLayout extends Component {
       );
     }
   }
+}
+
+const navigation = {
+  items: [
+    {
+      name: 'Dashboard',
+      url: '/noAuth/dashboard',
+      icon: 'icon-speedometer'
+    },
+    {
+      name: 'Eventos',
+      url: '/noAuth/actividades/consultar-eventos',
+      icon: 'icon-cursor'
+    },
+  ]
 }
 
 

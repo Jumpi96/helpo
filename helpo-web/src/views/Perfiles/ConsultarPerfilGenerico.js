@@ -24,6 +24,8 @@ class ConsultarPerfilGenerico extends Component {
     this.renderModificar = this.renderModificar.bind(this)
     this.renderConsultarOtro = this.renderConsultarOtro.bind(this)
     this.renderComponente = this.renderComponente.bind(this)
+    this.switchToConsultar = this.switchToConsultar.bind(this)
+    this.switchToModificar = this.switchToModificar.bind(this)
   }
 
   getApiCall(userType) {
@@ -40,7 +42,7 @@ class ConsultarPerfilGenerico extends Component {
   }
 
   componentDidMount() {
-    // TODO: Otro
+    // TODO: Other user (No usuario logeado)
     let initialState = {};
       api.get('/auth/user/')
       .then(res => {        
@@ -79,6 +81,19 @@ class ConsultarPerfilGenerico extends Component {
       })      
   }    
 
+  switchToConsultar() {
+    this.componentDidMount()
+    this.setState({
+      modificar: false
+    })
+  }
+
+  switchToModificar() {
+    this.setState({
+      modificar: true
+    })
+  }
+
   renderModificar() {    
     switch (this.state.userType) {
       case 1:
@@ -87,6 +102,7 @@ class ConsultarPerfilGenerico extends Component {
                   email={this.state.email}
                   data={this.state.data}
                   rubros={this.state.rubros}
+                  switchToConsultar={this.switchToConsultar}
                   />)
 
       case 2:
@@ -111,6 +127,7 @@ class ConsultarPerfilGenerico extends Component {
                   nombre={this.state.nombre}
                   email={this.state.email}
                   data={this.state.data}
+                  switchToModificar={this.switchToModificar}
                   />)
 
       case 2:
@@ -135,6 +152,7 @@ class ConsultarPerfilGenerico extends Component {
                   nombre={this.state.nombre}
                   email={this.state.email}
                   data={this.state.data}
+                  switchToModificar={this.switchToModificar}
                   />)
 
       case 2:

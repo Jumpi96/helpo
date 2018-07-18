@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
-import { Card } from 'reactstrap';
+import { Card, Button } from 'reactstrap';
 import user_avatar from '../../../assets/user.svg'
 import {Gmaps, Marker} from 'react-gmaps';
 import getImagen from '../../../utils/GetImagen'
@@ -95,7 +95,7 @@ class ConsultarPerfilOrganizacion extends Component {
           />
         </Gmaps>
         
-        <p style={{ marginTop: '10px' }}>Predio san carlos</p>
+        <p style={{ marginTop: '10px' }}>{this.props.data.ubicacion.notas}}</p>
         </div>
       </div>
        )         
@@ -104,7 +104,6 @@ class ConsultarPerfilOrganizacion extends Component {
   
 
   render() {    
-    console.log(JSON.stringify(this.props))
     return (      
       <Card>
         <div class='container'>
@@ -148,10 +147,13 @@ class ConsultarPerfilOrganizacion extends Component {
         <div class='row'>          
           <p style={{ textAlign: 'right' }} class='font-weight-bold col' htmlFor="descripcion">Descripcion</p> 
           <div class='col'>{this.renderDescripcion()}</div>    
-        </div>      
+        </div>             
 
-       {this.mostrarUbicacion()}
+        {this.mostrarUbicacion()}
 
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '10px' }} class='row'>          
+          <Button onClick={this.props.switchToModificar} color='primary'>Modificar Datos</Button>
+        </div>  
         </div>      
       </Card>
     );

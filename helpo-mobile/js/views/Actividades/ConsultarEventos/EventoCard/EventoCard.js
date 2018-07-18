@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { Button, Icon, Card, CardItem, Text, Thumbnail, Right, Left, Body } from 'native-base';
+import { Button, Icon, Card, CardItem, Text, Thumbnail, Right, Left, Body,
+  ListItem, List,
+ } from 'native-base';
 import moment from 'moment';
 import styles from './styles';
 
@@ -15,7 +17,7 @@ class EventoCard extends Component {
   getNecesidades() {
     const arrayNecesidades = this.props.evento.necesidades ? this.props.evento.necesidades : [];
     const necesidades = arrayNecesidades.slice(0, 3).map((necesidad) => {
-      return <li>{necesidad.nombre}</li>;
+      return <ListItem>{necesidad.nombre}</ListItem>;
     });
     return necesidades;
   }
@@ -38,7 +40,7 @@ class EventoCard extends Component {
             <Text style={{ fontWeight: '600' }}>
               {evento.nombre}
             </Text>
-            <Text>{this.getNecesidades()}</Text>
+            <List>{this.getNecesidades()}</List>
           </Body>
         </CardItem>
         <CardItem style={{ paddingVertical: 0 }}>

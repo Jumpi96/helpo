@@ -120,7 +120,7 @@ import './RegistrarContactos.css';
 import api from '../../../api';
 import ModalEliminarItem from './ModalEliminarItem/ModalEliminarItem';
 import ModalEditarItem from './ModalEditarItem/ModalEditarItem';
-
+import validateEmail from '../../../../utils/ValidateEmail'
 
 class RegistrarContactos extends Component {
   constructor(props){
@@ -153,15 +153,16 @@ class RegistrarContactos extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
+    var contacto = undefined;
     if (this.handleValidation()) {
-      const contacto = {        
+      contacto = {        
         nombre: this.state.nombre,
         email: this.state.email,
         telefono: this.state.telefono,
         evento: this.state.evento
       }
     }
-      const contactosNuevo = this.state.contactos.push(contacto);// Agregamos elcontactos al array
+      const contactosNuevo = this.state.contactos.push(contacto);// Agregamos elcontactos al array ESTA MAL ESTO HACER DE NUEVO
       this.setState({
         contactos: contactosNuevo // Y seteamos estado
       });
@@ -169,34 +170,19 @@ class RegistrarContactos extends Component {
       this.props.actualizarContactos(this.state.contactos);
   }
 
-  /*addContacto(contacto) {
-    api.post('/actividades/contactos/', contacto)
-      .then(res => {
-        console.log(res);
-        console.log(res.data);
-        this.cleancontacto();
-        this.loadContactos();
-      }).catch(function (error) {
-        if (error.response){ console.log(error.response.status) }
-        else { console.log('Error: ', error.message)}
-        this.setState({ error: "Hubo un problema al cargar su información." });
-      });
-  }*/
-
   saveCntacto(cont) { 
     
-    if (cont != undefined) {
+    if (cont !== undefined) {
       var contactosModificados = this.state.contactos;
-      contactosModificados[contactoModificadoId]= cont;
+      contactosModificados[this.state.contactoModificadoId]= cont;
       
       this.setState({
-      showModalEditar: false,
-      contactoModificado: undefined,
-      contactos: contactosModificados
-    });   
+        showModalEditar: false,
+        contactoModificado: undefined,
+        contactos: contactosModificados
+      });   
     this.props.actualizarContactos(this.state.contactos);      
     }
-     
   }
 
   handleValidation() { //DONE
@@ -206,11 +192,11 @@ class RegistrarContactos extends Component {
         error = 'No puede ingresar un contacto sin nombre';        
         formIsValid = false;
       }
-    if (contactos[i].mail === "" && contactos[i].telefono === "") {
+    if (this.state.mail === "" && this.state.telefono === "") {
         error += ' Debe ingresar un mail o un telefono';        
         formIsValid = false;
       }
-    if (contactos[i].mail !== "" && !validateEmail(contactos[i].mail)) {
+    if (this.state.mail !== "" && !validateEmail(this.state.mail)) {
         error += ' Debe ingresar un mail valido';        
         formIsValid = false;
     }
@@ -249,11 +235,13 @@ class RegistrarContactos extends Component {
   }
 
   confirmDeleteContacto(res) {
-    if (res){
-      contactoModificado = contactos.splice(contactoModificadoId, 1);
-      contactosModificados = contactos;
+    if (res){;
+      var contactosModificados = this.state.contactos;
+      var contactoMod = contactosModificados.splice(this.state.contactoModificadoId, 1);
+
       this.setState({ 
-        contactos: contactosModificados
+        contactos: contactosModificados,
+        contactoModificado: contactoMod
       });
       this.props.actualizarContactos(this.state.contactos);
     }    
@@ -312,17 +300,16 @@ class RegistrarContactos extends Component {
   }
 
   render() {
-    const tablaContactos = undefined;
+    var tablaContactos = undefined;
     for (let c = 0; c <= this.props.contacts.length; c += 1) {
       tablaContactos +=
       <tr>
         <td>{c.nombre}</td>
         <td>{c.email}</td>
         <td>{c.telefono}</td>
-      {contactoModificadoId = c}
-        <td><Button onClick={() => this.editContacto(contactoModificadoId)} outline // Atento a que no falle acá, porqu puede que tome elvalorde c para todas las filas y siempre edite el mismo contacto
+        <td><Button onClick={() => this.editContacto(c)} outline // Atento a que no falle acá, porqu puede que tome elvalorde c para todas las filas y siempre edite el mismo contacto
           disabled={this.state.contacto} color="warning">Editar</Button></td>
-        <td><Button onClick={() => this.deleteContacto(contactoModificadoId)} outline 
+        <td><Button onClick={() => this.deleteContacto(c)} outline  // Antes se usaba contactoModificadoId
           disabled={this.state.contacto} color="danger">Eliminar</Button></td>
       </tr>
     }

@@ -177,26 +177,9 @@ class RegistrarContactos extends Component {
       });
   }
 
-  saveCntacto(telefono) {
-    if (telefono) {
-      const nuevoContacto = {
-        id: this.state.contactoModificado.id,
-        email: this.state.contactoModificado.recurso.id,
-        nombre: this.state.contactoModificado.nombre,
-        telefono: telefono,
-        evento: this.state.evento
-      };
-      api.put("/actividades/contactos/" + nuevoContacto.id + "/", nuevoContacto) //atento aca elcontacto tiene id?
-        .then(res => {
-          console.log(res);
-          console.log(res.data);
-          this.cleancontacto();
-          this.loadContactos();
-        }).catch(function (error) {
-          if (error.response){ console.log(error.response.status) }
-          else { console.log('Error: ', error.message)}
-          this.setState({ error: "Hubo un problema al cargar su información." });
-        });
+  saveCntacto(cont) { // Prestar atencion aca, ver que responde Juan
+    if (cont != undefined) {
+            this.state.contactos[contactoModificadoId] == cont;
     }
     this.setState({
       showModalEditar: false,
@@ -253,8 +236,10 @@ class RegistrarContactos extends Component {
     
   }
 
-  confirmDeleteContacto() {
-    contactoModificado = contactos.splice(contactoModificadoId, 1);
+  confirmDeleteContacto(res) {
+    if (res){
+      contactoModificado = contactos.splice(contactoModificadoId, 1);
+    }    
   }
 
   /*
@@ -386,7 +371,7 @@ class RegistrarContactos extends Component {
         </Card>
         <ModalEliminarItem open={this.state.showModalEliminar} contactoId={this.state.contactoModificadoId} contactos={this.state.contactos}
           closeModal={this.confirmDeleteContacto}/>
-        <ModalEditarItem open={this.state.showModalEditar} contacto={this.state.contactoModificado}
+        <ModalEditarItem open={this.state.showModalEditar} contacto={this.state.contactoModificado} contactos={this.state.contactos}
           closeModal={this.saveCntacto}/>
       </div>
     )

@@ -17,7 +17,7 @@ class ConsultarPerfilGenerico extends Component {
       email: '',
       data: {},
       rubros: [], // [{ id: , nombre: },]
-      modificar: true,
+      modificar: false,
       loggedUser: true,
     };
     this.renderConsultar = this.renderConsultar.bind(this)

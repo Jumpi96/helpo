@@ -84,7 +84,7 @@ class EventoCard extends Component {
           </div>
           
           <Link to={link}>
-            <button disabled className="btn btn-primary pull-right">
+            <button className="btn btn-primary pull-right">
               + Ver más
             </button>
           </Link>

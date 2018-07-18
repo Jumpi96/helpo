@@ -24,9 +24,12 @@ class SelectorItem extends Component {
 
   handleChangeCategoria(e) {
     const selectedIndex = e.target.options.selectedIndex;
-    const selectedId = e.target.options[selectedIndex].getAttribute('data-key');
+    let selectedId = e.target.options[selectedIndex].getAttribute('data-key');
     // eslint-disable-next-line
-    this.setState({ categoria_id: parseInt(selectedId) });
+    selectedId = parseInt(selectedId);
+    this.setState({ categoria_id: selectedId });
+    const listaItems = this.state.items.filter(i => i.categoria.id === selectedId);
+    this.props.onItemChange(listaItems[0].id);
   }
 
   componentDidMount() {
@@ -44,6 +47,7 @@ class SelectorItem extends Component {
               categoria_id: selectedCategoria, 
               items: recursosData
             });
+            this.props.onItemChange(recursosData[0].id);
           })
           .catch(function (error) {
             if (error.response){ console.log(error.response.status) }

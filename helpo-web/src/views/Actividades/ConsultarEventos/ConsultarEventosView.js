@@ -14,6 +14,26 @@ class ConsultarEventosView extends React.Component {
     if (this.props.evento.nombre) {
       const evento = this.props.evento;
       let listaContactos, listaNecesidades, listaVoluntarios;
+      if (evento.necesidades.length > 0) {
+        listaNecesidades = evento.necesidades.map((n) => 
+          <tr>
+            <td><i className={n.recurso.categoria.icono}></i></td>
+            <td>{n.recurso.categoria.nombre}</td>
+            <td>{n.recurso.nombre}</td>
+            <td>{n.descripcion}</td>
+            <td>{n.cantidad}</td>
+          </tr> 
+        );
+      }
+      if (evento.voluntarios.length > 0) {
+        listaVoluntarios = evento.necesidades.map((n) => 
+          <tr>
+            <td>{n.funcion.nombre}</td>
+            <td>{n.descripcion}</td>
+            <td>{n.cantidad}</td>
+          </tr> 
+        );
+      }
       if (evento.contacto.length > 0) {
         listaContactos = evento.contacto.map((contacto) => 
           <li class="col-md-6 list-group-item">{contacto.nombre} - {contacto.email} - {contacto.telefono}</li>
@@ -94,7 +114,7 @@ class ConsultarEventosView extends React.Component {
                       </tr>
                     </thead>
                     <tbody>
-                      {undefined}
+                      {listaNecesidades}
                     </tbody>
                   </Table>
                 </div>
@@ -117,20 +137,23 @@ class ConsultarEventosView extends React.Component {
                       </tr>
                     </thead>
                     <tbody>
-                      {undefined}
+                      {listaVoluntarios}
                     </tbody>
                   </Table>
                 </div>
               </div>
               ) : undefined
             }
-            <button 
-              onClick={this.toggleEdit} 
-              hidden={moment(evento.fecha_hora_inicio)<=moment()}
-              className="btn btn-warning offset-md-10"
-            >
-              Colaborar
-            </button>            
+            {listaNecesidades || listaVoluntarios ? (
+              <button 
+                onClick={this.toggleEdit} 
+                hidden={moment(evento.fecha_hora_inicio)<=moment()}
+                className="btn btn-warning offset-md-10"
+              >
+                Colaborar
+              </button>
+              ) : undefined
+            }
           </CardBody>
         </Card>
       </div>

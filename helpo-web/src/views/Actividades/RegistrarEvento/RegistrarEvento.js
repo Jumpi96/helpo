@@ -32,6 +32,9 @@ class RegistrarEvento extends Component {
     this.handleAddContact = this.handleAddContact.bind(this);
     this.handleRemoveContact = this.handleRemoveContact.bind(this);
     this.handlePhoneChange = this.handlePhoneChange.bind(this);
+    this.handleActualizacionContactos = this.handleActualizacionContactos.bind(this);
+
+    
   }
 
   /*handleContactChange(event, contactId) {
@@ -132,7 +135,7 @@ class RegistrarEvento extends Component {
     const contactos = this.state.contactos;
     let info_contactos = [];
     //Si no hay contactos, retorno array vacio    
-    if (contactos[0].nombre === "") {
+    if (contactos[0].nombre === "" || contactos[0] === undefined) {
       return info_contactos;
     }
     for (let i = 0; i < contactos.length; i += 1) {

@@ -163,9 +163,13 @@ class RegistrarContactos extends Component {
         telefono: this.state.telefono,
       }
     }
-      const contactosNuevo = this.state.contactos.push(contacto);// Agregamos elcontactos al array ESTA MAL ESTO HACER DE NUEVO
+
+    var contacts = this.state.contactos;
+    var cont = contacts.push(contacto);
+
       this.setState({
-        contactos: contactosNuevo // Y seteamos estado
+        contactos: contacts, // Y seteamos estado
+        contacto:cont
       });
         
       this.props.actualizarContactos(this.state.contactos);
@@ -193,11 +197,11 @@ class RegistrarContactos extends Component {
         error = 'No puede ingresar un contacto sin nombre';        
         formIsValid = false;
       }
-    if (this.state.mail === "" && this.state.telefono === "") {
+    if (this.state.email === "" && this.state.telefono === "") {
         error += ' Debe ingresar un mail o un telefono';        
         formIsValid = false;
       }
-    if (this.state.mail !== "" && !validateEmail(this.state.mail)) {
+    if (this.state.email !== "" && !validateEmail(this.state.email)) {
         error += ' Debe ingresar un mail valido';        
         formIsValid = false;
     }

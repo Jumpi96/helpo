@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
-import NumericInput from 'react-numeric-input';
+import validateEmail from '../../../../utils/ValidateEmail'
 
 class ModalEditarItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
       error: undefined,
-      contactoModificado: this.props.contacto,
       contactos: this.props.contactos
     };
     this.handleCantidadChange = this.handleCantidadChange.bind(this);
@@ -29,18 +28,18 @@ class ModalEditarItem extends Component {
     }
   }
 
-  handleValidation() {
+  handleValidation() { 
     let formIsValid = true;
     var error = this.state.error;    
     if (this.state.nombre === "") {
         error = 'No puede ingresar un contacto sin nombre';        
         formIsValid = false;
       }
-    if (contactos[i].mail === "" && contactos[i].telefono === "") {
+    if (this.state.mail === "" && this.state.telefono === "") {
         error += ' Debe ingresar un mail o un telefono';        
         formIsValid = false;
       }
-    if (contactos[i].mail !== "" && !validateEmail(contactos[i].mail)) {
+    if (this.state.mail !== "" && !validateEmail(this.state.mail)) {
         error += ' Debe ingresar un mail valido';        
         formIsValid = false;
     }
@@ -74,7 +73,7 @@ class ModalEditarItem extends Component {
                   <input type="text" 
                       name="nombre" className="form-control"
                       placeholder="Nombre"
-                      value={this.state.contactoModificado.nombre} 
+                      value={this.props.contacto.nombre} 
                       onChange={this.handleInputChange}
                     />
                   </div>
@@ -82,7 +81,7 @@ class ModalEditarItem extends Component {
                   <input type="text" 
                       name="email" className="form-control"
                       placeholder="email"
-                      value={this.state.contactoModificado.email} 
+                      value={this.props.contacto.email} 
                       onChange={this.handleInputChange}
                     />
                   </div>
@@ -90,7 +89,7 @@ class ModalEditarItem extends Component {
                     <input type="text" 
                       name="telefono" className="form-control"
                       placeholder="Teléfono"
-                      value={this.state.contactoModificado.telefono} 
+                      value={this.props.contacto.telefono} 
                       onChange={this.handleInputChange}
                     />
                   </div>

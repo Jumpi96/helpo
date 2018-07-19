@@ -38,3 +38,12 @@ class Necesidad(models.Model):
     cantidad = models.IntegerField()
     recurso = models.ForeignKey(Recurso, null=False, on_delete=models.PROTECT)
     evento = models.ForeignKey(Evento, related_name='necesidades', null=False, on_delete=models.CASCADE)
+
+class Funcion(models.Model):
+    nombre = models.CharField(max_length=50)
+
+class Voluntario(models.Model):
+    descripcion = models.CharField(max_length=140, null=True)
+    cantidad = models.IntegerField()
+    funcion = models.ForeignKey(Funcion, null=False, on_delete=models.PROTECT)
+    evento = models.ForeignKey(Evento, related_name='voluntarios', null=False, on_delete=models.CASCADE)

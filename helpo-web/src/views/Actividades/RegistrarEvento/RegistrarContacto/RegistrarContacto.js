@@ -117,34 +117,36 @@ export default RegistrarContacto;
 import React, { Component } from 'react';
 import { Button, Table, Card, CardHeader, CardBody } from 'reactstrap';
 import './RegistrarContactos.css';
-import api from '../../../api';
-import ModalEliminarItem from './ModalEliminarItem/ModalEliminarItem';
-import ModalEditarItem from './ModalEditarItem/ModalEditarItem';
+import api from '../../../../api';
+import ModalEliminarItem from './ModalEliminarItem';
+import ModalEditarItem from './ModalEditarItem';
 import validateEmail from '../../../../utils/ValidateEmail'
 
 class RegistrarContactos extends Component {
   constructor(props){
     super(props);
-    const urlParams = new URLSearchParams(this.props.location.search)
+    /*const urlParams = new URLSearchParams(this.props.location.search)
     const parametro = urlParams.get('evento');
     let evento;
     if (parametro) {
       evento = parametro;
     } else {
       this.props.history.push({ pathname: '/dashboard' });
-    }
+    }*/
     this.state = {
-      evento: evento,
       contactos: [],
+      nombre: '',
+      email:'',
+      telefo:'',
       contacto: undefined,      
       contactId: '1',    
       nextId: '2',
       showModalEliminar: false,
-      contactoModificado: undefined,
+      showModalEditar: false,
+      contactoModificado: {nombre: '', email: '', telefono: '' },
       contactoModificadoId: undefined
     };
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleItemChange = this.handleItemChange.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.saveCntacto = this.saveCntacto.bind(this);
     this.confirmDeleteContacto = this.confirmDeleteContacto.bind(this);
@@ -159,7 +161,6 @@ class RegistrarContactos extends Component {
         nombre: this.state.nombre,
         email: this.state.email,
         telefono: this.state.telefono,
-        evento: this.state.evento
       }
     }
       const contactosNuevo = this.state.contactos.push(contacto);// Agregamos elcontactos al array ESTA MAL ESTO HACER DE NUEVO
@@ -185,7 +186,7 @@ class RegistrarContactos extends Component {
     }
   }
 
-  handleValidation() { //DONE
+  handleValidation() { 
     let formIsValid = true;
     var error = this.state.error;    
     if (this.state.nombre === "") {
@@ -206,8 +207,8 @@ class RegistrarContactos extends Component {
 
   
 
-  editContacto(id) { //hace falta id
-    const contacto = this.state.contactos.filter(n => n.id === id)[0];
+  editContacto(id) { 
+    var contacto = this.state.contactos.filter(n => n.id === id)[0];
     this.setState({ 
       showModalEditar: true,
       contactoModificado: contacto
@@ -216,9 +217,9 @@ class RegistrarContactos extends Component {
 
   cleancontacto() {
     this.setState({
-      nombre: undefined,
-      telefono: undefined,
-      email: undefined,
+      nombre: '',
+      telefono: '',
+      email: '',
       contacto: undefined
     });
   }
@@ -269,7 +270,7 @@ class RegistrarContactos extends Component {
   // Carga de contactos 
 
   componentDidMount() {
-    this.loadContactos();
+    // this.loadContactos(); esto hacerlo para EDITAR EVENTO para registrar evento no hace falta
   }
 
   loadContactos() {
@@ -335,7 +336,7 @@ class RegistrarContactos extends Component {
                   <div className="col-md-3">
                   <input type="text" 
                       name="email" className="form-control"
-                      placeholder="email"
+                      placeholder="Email"
                       value={this.state.email} 
                       onChange={this.handleInputChange}
                     />
@@ -359,7 +360,7 @@ class RegistrarContactos extends Component {
               <thead>
                 <tr>
                   <th>Nombre</th>
-                  <th>email</th>
+                  <th>Email</th>
                   <th>Teléfono</th>                  
                   <th></th>
                   <th></th>
@@ -375,7 +376,7 @@ class RegistrarContactos extends Component {
         </Card>
         <ModalEliminarItem open={this.state.showModalEliminar} contactoId={this.state.contactoModificadoId} contactos={this.state.contactos}
           closeModal={this.confirmDeleteContacto}/>
-        <ModalEditarItem open={this.state.showModalEditar} contacto={this.state.contactoModificado} contactos={this.state.contactos}
+        <ModalEditarItem open={this.state.showModalEditar} contacto={this.state.contactoModificado} 
           closeModal={this.saveCntacto}/>
       </div>
     )

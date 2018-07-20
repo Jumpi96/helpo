@@ -4,11 +4,11 @@ from rest_framework.generics import RetrieveUpdateDestroyAPIView
 from rest_framework.response import Response
 from rest_framework import status
 from datetime import datetime
-from actividades.models import Evento, RubroEvento, CategoriaRecurso, Recurso, Necesidad, Contacto
+from actividades.models import Evento, RubroEvento, CategoriaRecurso, Recurso, Necesidad, Contacto, Voluntario
 from knox.models import AuthToken
 from actividades.serializers import EventoSerializer, RubroEventoSerializer, \
     CategoriaRecursoSerializer, RecursoSerializer, NecesidadSerializer, ContactoSerializer, \
-    ConsultaEventoSerializer
+    ConsultaEventoSerializer, VoluntarioSerializer
 from common.functions import get_token_user
 
 class RubroEventoCreateReadView(ListCreateAPIView):
@@ -120,6 +120,28 @@ class NecesidadReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     queryset = Necesidad.objects.all()
     serializer_class = NecesidadSerializer
     lookup_field = 'id'
+
+class VoluntarioCreateReadView(ListCreateAPIView):
+    """
+    API endpoint para crear o ver todas las necesidades de voluntario
+    """
+    serializer_class = VoluntarioSerializer
+
+    def get_queryset(self):
+        queryset = Voluntario.objects.all()
+        evento = self.request.query_params.get('evento', None)
+        if evento is not None:
+            queryset = queryset.filter(evento_id=evento)
+        return queryset
+
+class VoluntarioReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
+    """
+    API endpoint para leer, actualizar o eliminar una necesidad de voluntario
+    """
+    queryset = Voluntario.objects.all()
+    serializer_class = VoluntarioSerializer
+    lookup_field = 'id'
+
 
 class EventoOrganizacionCreateReadView(ListCreateAPIView):
     """

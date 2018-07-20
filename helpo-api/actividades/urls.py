@@ -75,6 +75,18 @@ urlpatterns = [
         view=actividades_views.NecesidadReadUpdateDeleteView.as_view(),
         name="get_put_delete_necesidad"
     ),
+    # {% url "api:voluntarios" %}
+    url(
+        regex=r"^actividades/voluntarios/$",
+        view=actividades_views.VoluntarioCreateReadView.as_view(),
+        name="get_post_voluntario"
+    ),
+    # {% url "api:voluntarios" evento.id %}
+    url(
+        regex=r"^actividades/voluntarios/(?P<id>[-\w]+)/$",
+        view=actividades_views.VoluntarioReadUpdateDeleteView.as_view(),
+        name="get_put_delete_voluntario"
+    ),
     # {% url "api:eventos_organizacion" %}
     url(
         regex=r"^organizaciones/eventos/$",

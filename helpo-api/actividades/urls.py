@@ -63,6 +63,18 @@ urlpatterns = [
         view=actividades_views.RecursoReadUpdateDeleteView.as_view(),
         name="get_put_delete_recurso"
     ),
+    # {% url "api:funciones" %}
+    url(
+        regex=r"^actividades/funciones/$",
+        view=actividades_views.FuncionCreateReadView.as_view(),
+        name="get_post_funcion"
+    ),
+    # {% url "api:funciones" evento.id %}
+    url(
+        regex=r"^actividades/funciones/(?P<id>[-\w]+)/$",
+        view=actividades_views.FuncionReadUpdateDeleteView.as_view(),
+        name="get_put_delete_funcion"
+    ),
     # {% url "api:necesidades" %}
     url(
         regex=r"^actividades/necesidades/$",

@@ -18,7 +18,7 @@ class EventoCard extends Component {
     const arrayNecesidades = this.props.evento.necesidades ? this.props.evento.necesidades : [];
     const necesidades = arrayNecesidades.slice(0, 3).map((necesidad) => {
       return (
-        <Item>
+        <Item key={necesidad.id}>
           <Text>
             {'-' + necesidad.recurso.categoria.nombre + ' - ' + necesidad.recurso.nombre}
           </Text>

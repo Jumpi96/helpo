@@ -7,6 +7,7 @@ import {
   Container,
   Header,
   Left,
+  Right,
   Body,
   Title,
   Content,
@@ -16,9 +17,6 @@ import {
   Text,
   Label,
   View,
-  Fab,
-  IconNB,
-  ActionSheet,
 } from 'native-base';
 import { openDrawer } from '../../../actions/drawer';
 import styles from './styles';
@@ -29,17 +27,53 @@ class ConsultaEvento extends React.Component {
     evento: React.PropTypes.object,
   }
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      fabActive: false,
-    };
+  getListaNecesidades() {
+    return this.props.evento.necesidades.map(n =>
+      <ListItem icon key={n.id}>
+        <Left>
+          <Button style={{ backgroundColor: '#ffe859' }}>
+            <Icon active name="hand" />
+          </Button>
+        </Left>
+        <Body>
+          <Text>
+            {n.recurso.nombre} - {n.recurso.categoria.nombre}
+          </Text>
+          <Text numberOfLines={1} note>
+            {n.descripcion}
+          </Text>
+        </Body>
+        <Right>
+          <Text>{n.cantidad}</Text>
+        </Right>
+      </ListItem>
+    );
+  }
+
+  getListaVoluntarios() {
+    return this.props.evento.necesidades.map(n =>
+      <ListItem icon key={n.id}>
+        <Left>
+          <Button style={{ backgroundColor: '#ffe859' }}>
+            <Icon active name="hand" />
+          </Button>
+        </Left>
+        <Body>
+          <Text>
+            {n.funcion.nombre}
+          </Text>
+          <Text numberOfLines={1} note>
+            {n.descripcion}
+          </Text>
+        </Body>
+        <Right>
+          <Text>{n.cantidad}</Text>
+        </Right>
+      </ListItem>
+    );
   }
 
   render() {
-    const deleteButtons = [
-      { text: 'Colaborar', icon: 'trash', iconColor: '#fa213b' },
-    ];
     const evento = this.props.evento;
     let listaContactos;
     if (evento.contacto.length > 0) {
@@ -70,6 +104,10 @@ class ConsultaEvento extends React.Component {
             <Text>{evento.nombre}</Text>
           </ListItem>
           <ListItem>
+            <Label style={styles.label}>Organización</Label>
+            <Text>{evento.organizacion.nombre}</Text>
+          </ListItem>
+          <ListItem>
             <Label style={styles.label}>Descripción</Label>
             <Text>{evento.descripcion}</Text>
           </ListItem>
@@ -97,41 +135,25 @@ class ConsultaEvento extends React.Component {
             </View>
             ) : undefined
           }
+          {evento.necesidades.length > 0 ? (
+            <View>
+              <Separator bordered noTopBorder>
+                <Text>Necesidades materiales</Text>
+              </Separator>
+              {this.getListaNecesidades()}
+            </View>
+            ) : undefined
+          }
+          {evento.voluntarios.length > 0 ? (
+            <View>
+              <Separator bordered noTopBorder>
+                <Text>Voluntarios</Text>
+              </Separator>
+              {this.getListaVoluntarios()}
+            </View>
+            ) : undefined
+          }
         </Content>
-        <View style={{ flex: 0.1 }}>
-          <Fab
-            direction="left"
-            containerStyle={{}}
-            active={this.state.fabActive}
-            style={{ backgroundColor: '#5067FF' }}
-            position="bottomRight"
-            onPress={() => this.setState({ fabActive: !this.state.fabActive })}
-          >
-            <IconNB name="md-add" />
-            <Button style={{ backgroundColor: '#34A34F' }}
-              onPress={() => {this.handleEdit()}}
-            >
-              <Icon name="color-filter" />
-            </Button>
-            <Button
-              style={{ backgroundColor: '#FD3C2D' }}
-              onPress={() => {
-                ActionSheet.show(
-                  {
-                    options: deleteButtons,
-                    cancelButtonIndex: 1,
-                    destructiveButtonIndex: 0,
-                    title: '¿Está seguro que desea eliminar el evento?',
-                  },
-                  (buttonIndex) => {
-                    this.handleConfirmDelete(deleteButtons[buttonIndex]);
-                  });
-              }}
-            >
-              <Icon name="trash" />
-            </Button>
-          </Fab>
-        </View>
       </Container>
     );
   }

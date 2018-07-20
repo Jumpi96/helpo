@@ -49,6 +49,7 @@ class ConsultarEventos extends Component {
         <Content padder>
           {eventos.map(evento =>
             <EventoCard
+              key={evento.id}
               evento={evento}
               openEvento={() => Actions.consultarEvento({ evento })}
             />

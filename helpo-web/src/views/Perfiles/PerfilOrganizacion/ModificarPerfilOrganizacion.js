@@ -253,7 +253,7 @@ class ModificarPerfilOrganizacion extends Component {
     if (this.validateData()) {
       api.put(`/perfiles/perfil_organizacion/${this.props.data.usuario}/`, submitData)
       .then(res => {
-        if (res.status == 200) {
+        if (res.status === 200) {
           this.setState({
             showModal: true,
             modalType: 'success'

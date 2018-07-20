@@ -5,7 +5,7 @@ import SelectorItem from './SelectorItem/SelectorItem';
 import ListaFunciones from './ListaFunciones/ListaFunciones';
 import NumericInput from 'react-numeric-input';
 import api from '../../../api';
-import ModalEliminarItem from '../../common/ModalEliminarItem/ModalEliminarItem';
+import ModalEliminarNecesidad from './ModalEliminarNecesidad/ModalEliminarNecesidad';
 import ModalEditarItem from './ModalEditarItem/ModalEditarItem';
 
 
@@ -195,22 +195,31 @@ class RegistrarNecesidades extends Component {
     const necesidad = this.state.necesidades.filter(n => n.id === id)[0];
     this.setState({ 
       showModalEliminar: true,
-      necesidadModificada: necesidad.recurso.nombre
+      necesidadModificada: necesidad
     });
-    
+  }
+
+  deleteVoluntario(id) {
+    const voluntario = this.state.voluntarios.filter(n => n.id === id)[0];
+    this.setState({ 
+      showModalEliminar: true,
+      necesidadModificada: voluntario
+    });
   }
 
   confirmDeleteNecesidad(res) {
-    if (res) {
-      api.delete('/actividades/necesidades/' + this.state.necesidadModificada.id + '/')
-      .then(res => {
-        console.log(res);
-        console.log(res.data);
-        this.loadNecesidadesYVoluntarios();
-      }).catch(function (error) {
-        if (error.response){ console.log(error.response.status) }
-        else { console.log('Error: ', error.message)}
-      });
+    if (res > 0) {
+      const ruta = this.state.necesidadModificada.funcion ? 
+        '/actividades/voluntarios/' : '/actividades/necesidades/';
+      api.delete(ruta + res + '/')
+        .then(res => {
+          console.log(res);
+          console.log(res.data);
+          this.loadNecesidadesYVoluntarios();
+        }).catch(function (error) {
+          if (error.response){ console.log(error.response.status) }
+          else { console.log('Error: ', error.message)}
+        });
     }
     this.setState({
       necesidadModificada: undefined,
@@ -407,7 +416,7 @@ class RegistrarNecesidades extends Component {
             </form>
           </CardBody>
         </Card>
-        <ModalEliminarItem open={this.state.showModalEliminar} necesidad={this.state.necesidadModificada}
+        <ModalEliminarNecesidad open={this.state.showModalEliminar} necesidad={this.state.necesidadModificada}
           closeModal={this.confirmDeleteNecesidad}/>
         <ModalEditarItem open={this.state.showModalEditar} nombre={this.state.necesidadModificada}
           closeModal={this.saveNecesidad}/>

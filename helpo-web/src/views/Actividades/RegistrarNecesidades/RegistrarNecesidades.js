@@ -99,24 +99,46 @@ class RegistrarNecesidades extends Component {
 
   saveNecesidad(cantidad) {
     if (cantidad) {
-      const nuevaNecesidad = {
-        id: this.state.necesidadModificada.id,
-        recurso_id: this.state.necesidadModificada.recurso.id,
-        descripcion: this.state.necesidadModificada.descripcion,
-        cantidad: cantidad,
-        evento: this.state.evento
-      };
-      api.put("/actividades/necesidades/" + nuevaNecesidad.id + "/", nuevaNecesidad)
-        .then(res => {
-          console.log(res);
-          console.log(res.data);
-          this.cleanNecesidad();
-          this.loadNecesidadesYVoluntarios();
-        }).catch(function (error) {
-          if (error.response){ console.log(error.response.status) }
-          else { console.log('Error: ', error.message)}
-          this.setState({ error: "Hubo un problema al cargar su información." });
-        });
+      if (this.state.necesidadModificada.funcion) {
+        const nuevoVoluntario = {
+          id: this.state.necesidadModificada.id,
+          funcion_id: this.state.necesidadModificada.funcion.id,
+          descripcion: this.state.necesidadModificada.descripcion,
+          cantidad: cantidad,
+          evento: this.state.evento
+        }
+        api.put("/actividades/voluntarios/" + nuevoVoluntario.id + '/', nuevoVoluntario)
+          .then(res => {
+            console.log(res);
+            console.log(res.data);
+            this.cleanVoluntario();
+            this.loadNecesidadesYVoluntarios();
+          }).catch(function (error) {
+            if (error.response){ console.log(error.response.status) }
+            else { console.log('Error: ', error.message)}
+            this.setState({ error: "Hubo un problema al cargar su información." });
+          });
+      } else {
+        const nuevaNecesidad = {
+          id: this.state.necesidadModificada.id,
+          recurso_id: this.state.necesidadModificada.recurso.id,
+          descripcion: this.state.necesidadModificada.descripcion,
+          cantidad: cantidad,
+          evento: this.state.evento
+        };
+        api.put("/actividades/necesidades/" + nuevaNecesidad.id + "/", nuevaNecesidad)
+          .then(res => {
+            console.log(res);
+            console.log(res.data);
+            this.cleanNecesidad();
+            this.loadNecesidadesYVoluntarios();
+          }).catch(function (error) {
+            if (error.response){ console.log(error.response.status) }
+            else { console.log('Error: ', error.message)}
+            this.setState({ error: "Hubo un problema al cargar su información." });
+          });
+      }
+      
     }
     this.setState({
       showModalEditar: false,
@@ -164,12 +186,19 @@ class RegistrarNecesidades extends Component {
     return formIsValid;
   }
 
-
   editNecesidad(id) {
     const necesidad = this.state.necesidades.filter(n => n.id === id)[0];
     this.setState({ 
       showModalEditar: true,
       necesidadModificada: necesidad
+    });
+  }
+
+  editVoluntario(id) {
+    const voluntario = this.state.voluntarios.filter(n => n.id === id)[0];
+    this.setState({ 
+      showModalEditar: true,
+      necesidadModificada: voluntario
     });
   }
 
@@ -418,7 +447,7 @@ class RegistrarNecesidades extends Component {
         </Card>
         <ModalEliminarNecesidad open={this.state.showModalEliminar} necesidad={this.state.necesidadModificada}
           closeModal={this.confirmDeleteNecesidad}/>
-        <ModalEditarItem open={this.state.showModalEditar} nombre={this.state.necesidadModificada}
+        <ModalEditarItem open={this.state.showModalEditar} necesidad={this.state.necesidadModificada}
           closeModal={this.saveNecesidad}/>
       </div>
     )

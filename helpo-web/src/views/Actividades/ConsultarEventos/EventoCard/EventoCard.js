@@ -75,7 +75,11 @@ class EventoCard extends Component {
             style={{width:'75px', height:'75px'}} 
           />
           <div className="h4 m-0">{moment(evento.fecha_hora_inicio).format('DD/MM/YYYY')}</div>
-          <div>{evento.nombre + ' - ' + evento.organizacion.nombre}</div>
+          <div>
+            {evento.organizacion ?
+              evento.nombre + ' - ' + evento.organizacion.nombre : undefined
+            }
+          </div>
           <Progress className={progress.style} color={progress.color} value={progress.value} />
           <div className="col-md-6">
             <ul className="list-group">

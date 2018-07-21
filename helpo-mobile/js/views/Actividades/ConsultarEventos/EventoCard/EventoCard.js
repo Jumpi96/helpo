@@ -16,7 +16,7 @@ class EventoCard extends Component {
 
   getNecesidades() {
     const arrayNecesidades = this.props.evento.necesidades ? this.props.evento.necesidades : [];
-    const necesidades = arrayNecesidades.slice(0, 3).map((necesidad) => {
+    const necesidades = arrayNecesidades.slice(0, 2).map((necesidad) => {
       return (
         <Item key={necesidad.id}>
           <Text>
@@ -26,6 +26,20 @@ class EventoCard extends Component {
       )
     });
     return necesidades;
+  }
+
+  getVoluntarios() {
+    const arrayVoluntarios = this.props.evento.voluntarios ? this.props.evento.voluntarios : [];
+    const voluntarios = arrayVoluntarios.slice(0, 2).map((voluntario) => {
+      return (
+        <Item key={voluntario.id}>
+          <Text>
+            {'-' + voluntario.funcion.nombre}
+          </Text>
+        </Item>
+      );
+    });
+    return voluntarios;
   }
 
   render() {

@@ -51,7 +51,7 @@ class ConsultaEvento extends React.Component {
   }
 
   getListaVoluntarios() {
-    return this.props.evento.necesidades.map(n =>
+    return this.props.evento.voluntarios.map(n =>
       <ListItem icon key={n.id}>
         <Left>
           <Button style={{ backgroundColor: '#ffe859' }}>

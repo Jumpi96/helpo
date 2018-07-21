@@ -25,7 +25,7 @@ class EventoCard extends Component {
   getNecesidades() {
     const arrayNecesidades = this.props.evento.necesidades ? this.props.evento.necesidades : [];
     console.log(arrayNecesidades);
-    const necesidades = arrayNecesidades.slice(0, 3).map((necesidad) => {
+    const necesidades = arrayNecesidades.slice(0, 2).map((necesidad) => {
       return (
         <li class="list-group-item d-flex justify-content-between align-items-center">
           {
@@ -33,6 +33,19 @@ class EventoCard extends Component {
             necesidad.recurso.nombre
           }
           <span class="badge badge-primary badge-pill">{necesidad.cantidad}</span>
+        </li>
+      )
+    });
+    return necesidades;
+  }
+
+  getVoluntarios() {
+    const arrayVoluntarios = this.props.evento.voluntarios ? this.props.evento.voluntarios : [];
+    const necesidades = arrayVoluntarios.slice(0, 2).map((voluntario) => {
+      return (
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          {voluntario.funcion.nombre}
+          <span class="badge badge-primary badge-pill">{voluntario.cantidad}</span>
         </li>
       )
     });
@@ -84,6 +97,7 @@ class EventoCard extends Component {
           <div className="col-md-6">
             <ul className="list-group">
               {this.getNecesidades()}
+              {this.getVoluntarios()}
             </ul>
           </div>
           

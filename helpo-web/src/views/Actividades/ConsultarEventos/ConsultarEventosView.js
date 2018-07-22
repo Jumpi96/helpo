@@ -9,6 +9,19 @@ import './Eventos.css';
 import ong from '../../../assets/img/ong.png';
 
 class ConsultarEventosView extends React.Component {  
+
+  constructor(props) {
+    super(props);
+    this.toggleColaborar = this.toggleColaborar.bind(this);
+  }
+
+  toggleColaborar() {
+    this.props.history.push({ 
+      pathname: '/actividades/registrar-colaboraciones', 
+      search: '?evento=' + this.props.evento.id,
+    });
+  }
+
   render() {
     if (this.props.evento.nombre) {
       const evento = this.props.evento;
@@ -146,7 +159,7 @@ class ConsultarEventosView extends React.Component {
             }
             {listaNecesidades || listaVoluntarios ? (
               <button 
-                onClick={this.toggleEdit} 
+                onClick={this.toggleColaborar} 
                 hidden={moment(evento.fecha_hora_inicio)<=moment()}
                 className="btn btn-warning offset-md-10"
               >

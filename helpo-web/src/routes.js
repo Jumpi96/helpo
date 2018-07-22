@@ -23,12 +23,17 @@ const ConsultarEventosPage = Loadable({
 })
 
 const ConsultarEventosView = Loadable({
-  loader: () => import('./views/Actividades/ConsultarEventos/ConsultarEventosView.js'),
+  loader: () => import('./views/Actividades/ConsultarEventos/ConsultarEventosView'),
   loading: Loading,
 })
 
 const RegistrarNecesidades = Loadable({
   loader: () => import('./views/Actividades/RegistrarNecesidades/RegistrarNecesidades'),
+  loading: Loading,
+});
+
+const RegistrarColaboraciones = Loadable({
+  loader: () => import('./views/Actividades/ConsultarEventos/RegistrarColaboraciones/RegistrarColaboraciones'),
   loading: Loading,
 });
 
@@ -218,6 +223,7 @@ const routes = [
   { path: '/actividades/consultar-evento/:id', name: 'Consultar evento', component: ConsultarEventosView },
   { path: '/actividades/registrar-evento', name: 'Registrar evento', component: RegistrarEvento },
   { path: '/actividades/registrar-necesidades', name: 'Registrar necesidades', component: RegistrarNecesidades },
+  { path: '/actividades/registrar-colaboraciones', name: 'Registrar colaboraciones', component: RegistrarColaboraciones },
   { path: '/perfiles/perfil-organizacion', name: 'Perfil organizacion', component: ModificarPerfilOrganizacion },
   { path: '/perfil', name: 'Mi perfil', component: ConsultarPerfil },
   { path: '/theme', exact: true, name: 'Theme', component: Colors },

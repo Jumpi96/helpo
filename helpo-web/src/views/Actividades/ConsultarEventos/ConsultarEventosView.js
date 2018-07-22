@@ -25,8 +25,9 @@ class ConsultarEventosView extends React.Component {
         );
       }
       if (evento.voluntarios.length > 0) {
-        listaVoluntarios = evento.necesidades.map((n) => 
+        listaVoluntarios = evento.voluntarios.map((n) => 
           <tr>
+            <td><i className="cui-user"></i></td>
             <td>{n.funcion.nombre}</td>
             <td>{n.descripcion}</td>
             <td>{n.cantidad}</td>
@@ -130,7 +131,7 @@ class ConsultarEventosView extends React.Component {
                     <thead>
                       <tr>
                         <th></th>
-                        <th>Ítem</th>
+                        <th>Función</th>
                         <th>Descripción</th>
                         <th>Cantidad</th>
                       </tr>

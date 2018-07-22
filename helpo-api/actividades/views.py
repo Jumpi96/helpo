@@ -4,11 +4,11 @@ from rest_framework.generics import RetrieveUpdateDestroyAPIView
 from rest_framework.response import Response
 from rest_framework import status
 from datetime import datetime
-from actividades.models import Evento, RubroEvento, CategoriaRecurso, Recurso, Necesidad, Contacto
+from actividades.models import Evento, RubroEvento, CategoriaRecurso, Recurso, Necesidad, Contacto, Voluntario, Funcion
 from knox.models import AuthToken
 from actividades.serializers import EventoSerializer, RubroEventoSerializer, \
     CategoriaRecursoSerializer, RecursoSerializer, NecesidadSerializer, ContactoSerializer, \
-    ConsultaEventoSerializer
+    ConsultaEventoSerializer, VoluntarioSerializer, FuncionSerializer
 from common.functions import get_token_user
 
 class RubroEventoCreateReadView(ListCreateAPIView):
@@ -18,12 +18,12 @@ class RubroEventoCreateReadView(ListCreateAPIView):
     serializer_class = RubroEventoSerializer
     queryset = RubroEvento.objects.all()
 
-class ContactoEventoCreateReadView(ListCreateAPIView):
+class FuncionCreateReadView(ListCreateAPIView):
     """
-    API endpoint para crear o ver todos los contactos de evento
+    API endpoint para crear o ver todas las funciones de voluntariado
     """
-    queryset = Contacto.objects.all()
-    serializer_class = ContactoSerializer
+    serializer_class = FuncionSerializer
+    queryset = Funcion.objects.all()
 
 class RubroEventoReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     """
@@ -32,6 +32,28 @@ class RubroEventoReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     queryset = RubroEvento.objects.all()
     serializer_class = RubroEventoSerializer
     lookup_field = 'id'
+
+class FuncionCreateReadView(ListCreateAPIView):
+    """
+    API endpoint para crear o ver todas las funciones de voluntariado
+    """
+    serializer_class = FuncionSerializer
+    queryset = Funcion.objects.all()
+
+class FuncionReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
+    """
+    API endpoint para leer, actualizar o eliminar una función de voluntariado
+    """
+    queryset = Funcion.objects.all()
+    serializer_class = FuncionSerializer
+    lookup_field = 'id'
+
+class ContactoEventoCreateReadView(ListCreateAPIView):
+    """
+    API endpoint para crear o ver todos los contactos de evento
+    """
+    queryset = Contacto.objects.all()
+    serializer_class = ContactoSerializer
 
 class ContactoEventoReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     """
@@ -120,6 +142,28 @@ class NecesidadReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     queryset = Necesidad.objects.all()
     serializer_class = NecesidadSerializer
     lookup_field = 'id'
+
+class VoluntarioCreateReadView(ListCreateAPIView):
+    """
+    API endpoint para crear o ver todas las necesidades de voluntario
+    """
+    serializer_class = VoluntarioSerializer
+
+    def get_queryset(self):
+        queryset = Voluntario.objects.all()
+        evento = self.request.query_params.get('evento', None)
+        if evento is not None:
+            queryset = queryset.filter(evento_id=evento)
+        return queryset
+
+class VoluntarioReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
+    """
+    API endpoint para leer, actualizar o eliminar una necesidad de voluntario
+    """
+    queryset = Voluntario.objects.all()
+    serializer_class = VoluntarioSerializer
+    lookup_field = 'id'
+
 
 class EventoOrganizacionCreateReadView(ListCreateAPIView):
     """

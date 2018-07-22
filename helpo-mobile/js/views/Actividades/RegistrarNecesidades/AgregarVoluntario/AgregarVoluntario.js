@@ -10,17 +10,18 @@ import {
   Content,
   Button,
   Item,
+  ListItem,
   Label,
   Input,
   Body,
   Left,
   Icon,
   Form,
-  Text
+  Text,
+  Picker,
 } from "native-base";
 import { openDrawer } from '../../../../actions/drawer';
 import api from '../../../../api';
-import SelectorItem from './SelectorItem/SelectorItem';
 
 const {
   popRoute,
@@ -38,43 +39,48 @@ class AgregarNecesidad extends React.Component {
     evento: React.PropTypes.number,
   }
 
-  constructor(props){
+  constructor(props) {
     super(props);
     const evento = this.props.evento;
     this.state = {
-        evento: evento,
-        cantidad: undefined,
-        recurso_id: 0,
-        descripcion: undefined,
-        error: undefined
+      evento: evento,
+      cantidad: undefined,
+      funcion_id: 0,
+      descripcion: undefined,
+      funciones: [],
+      error: undefined
     };
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleItemChange = this.handleItemChange.bind(this);
-    this.addNecesidad = this.addNecesidad.bind(this);
+    this.handleFuncionChange = this.handleFuncionChange.bind(this);
+    this.addVoluntario = this.addVoluntario.bind(this);
   }
 
+  componentDidMount() {
+    api.get("/actividades/funciones/")
+      .then(res => {
+        const funcionesData = res.data;
+        this.setState({ funciones: funcionesData, funcion_id: funcionesData[0].id });
+      }
+    );
+  }
   handleSubmit(event) {
     event.preventDefault();
     if (this.handleValidation()) {
-      const necesidad = {
+      const voluntario = {
         evento: this.state.evento,
-        recurso_id: this.state.recurso_id,
+        funcion_id: this.state.funcion_id,
         descripcion: this.state.descripcion,
-        cantidad: this.state.cantidad
+        cantidad: this.state.cantidad,
       };
-      this.addNecesidad(necesidad);
+      this.addVoluntario(voluntario);
     }
   }
 
-  addNecesidad(necesidad) {
-    api.post("/actividades/necesidades/", necesidad)
-      .then(res => {
-        console.log(res);
-        console.log(res.data);
+  addVoluntario(voluntario) {
+    api.post("/actividades/voluntarios/", voluntario)
+      .then(() => {
         Actions.registrarNecesidades({ id: this.state.evento });
-      }).catch(function (error) {
-        if (error.response){ console.log(error.response.status); }
-        else { console.log("Error: ", error.message); }
+      }).catch(() => {
         this.setState({ error: "Hubo un problema al cargar su información." });
       });
   }
@@ -82,10 +88,10 @@ class AgregarNecesidad extends React.Component {
   handleValidation() {
     let formIsValid = true;
     let error = "";
-    if (this.state.recurso_id === 0 ||
-      !this.state.recurso_id) {
+    if (this.state.funcion_id === 0 ||
+      !this.state.funcion_id) {
       formIsValid = false;
-      error = "Hubo un problema al cargar los recursos.";
+      error = "Hubo un problema al cargar las funciones.";
     }
     // eslint-disable-next-line
     if (!isNaN(this.state.cantidad) && parseInt(this.state.cantidad)<=0) {
@@ -96,16 +102,21 @@ class AgregarNecesidad extends React.Component {
       formIsValid = false;
       error = "La descripción ingresada no es válida.";
     }
-    this.setState({error: error});
+    this.setState({ error });
     return formIsValid;
   }
 
-  handleItemChange(r) {
-    // eslint-disable-next-line
-    this.setState({ recurso_id: parseInt(r) });
+  handleFuncionChange(f) {
+    this.setState({ funcion_id: f });
   }
 
-  render(){
+  getListaFunciones() {
+    return this.state.funciones.map(r =>
+      <Item value={r.id} key={r.id} label={r.nombre} />
+    );
+  }
+
+  render() {
     return (
       <Container>
         <Header>
@@ -115,15 +126,27 @@ class AgregarNecesidad extends React.Component {
             </Button>
           </Left>
           <Body>
-            <Title>Agregar necesidad</Title>
+            <Title>Agregar voluntario</Title>
           </Body>
         </Header>
 
         <Content>
           <Form>
-            <SelectorItem
-              item={this.state.recurso_id}
-              onItemChange={this.handleItemChange}/>
+            <ListItem>
+              <Left>
+                <Text>Función</Text>
+              </Left>
+              <Body>
+                <Picker
+                  note
+                  mode="dropdown"
+                  selectedValue={this.state.funcion_id}
+                  onValueChange={this.handleFuncionChange}
+                >
+                  {this.getListaFunciones()}
+                </Picker>
+              </Body>
+            </ListItem>
             <Item floatingLabel>
               <Label>Descripción</Label>
               <Input value={this.state.descripcion}
@@ -138,7 +161,7 @@ class AgregarNecesidad extends React.Component {
             <FormValidationMessage>{this.state.error}</FormValidationMessage>
             <Button block style={{ margin: 15, marginTop: 50 }}
               onPress={this.handleSubmit} >
-              <Text>Guardar necesidad</Text>
+              <Text>Guardar voluntario</Text>
             </Button>
           </Form>
         </Content>

@@ -8,23 +8,65 @@ class ModalEditarItem extends Component {
     super(props);
     this.state = {
       error: undefined,
-      cantidad: 1
+      cantidad: undefined,
     };
     this.handleCantidadChange = this.handleCantidadChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  static getDerivedStateFromProps(nextProps, prevState) {
-    const cantidad = nextProps.necesidad ? nextProps.necesidad.cantidad : 1;
-    return {error: undefined, cantidad: cantidad};
   }
 
   handleCantidadChange(cantidad) {
     this.setState({ cantidad: cantidad });
   }
 
+  componentDidUpdate() {
+    if (!this.state.cantidad && this.props.necesidad) {
+      this.setState({ cantidad: this.props.necesidad.cantidad })
+    }
+  }
+
+  getInfoCategorias() {
+    if (this.props.necesidad) {
+      if (this.props.necesidad.funcion) {
+        return (
+          <div className="row">
+            <div className="col-md-6">
+              <div>
+                <strong>Función</strong>
+              </div>
+              <div>
+                <label>{this.props.necesidad.funcion.nombre}</label>
+              </div>
+            </div>
+          </div>
+        );
+      } else {
+        return (
+          <div className="row">
+            <div className="col-md-6">
+              <div>
+                <strong>Categoría</strong>
+              </div>
+              <div>
+                <label>{this.props.necesidad.recurso.categoria.nombre}</label>
+              </div>
+            </div>
+            <div className="col-md-6">
+              <div>  
+                <strong>Recurso</strong>
+              </div>
+              <div>
+                <label>{this.props.necesidad.recurso.nombre}</label>
+              </div>
+            </div>
+          </div>
+        )
+      }
+    }
+  }
+
   handleSubmit() {
     if (this.handleValidation()) {
+      this.setState({cantidad: undefined});
       this.props.closeModal(this.state.cantidad);
     }
   }
@@ -34,33 +76,14 @@ class ModalEditarItem extends Component {
   }
 
   render() {
-    const categoria = this.props.necesidad ? this.props.necesidad.recurso.categoria.nombre : undefined;
-    const recurso = this.props.necesidad ? this.props.necesidad.recurso.nombre : undefined;
-    const descripcion = this.props.necesidad ? this.props.necesidad.descripcion : undefined;
+    const descripcion = this.props.necesidad ? this.props.necesidad.descripcion : undefined;    
     return (
       <div className="animated fadeIn">
         <Modal isOpen={this.props.open}
           className='modal-warning'>
           <ModalHeader>Editar necesidad</ModalHeader>
           <ModalBody>
-            <div className="row">
-              <div className="col-md-6">
-                <div>
-                  <strong>Categoría</strong>
-                </div>
-                <div>
-                  <label>{categoria}</label>
-                </div>
-              </div>
-              <div className="col-md-6">
-                <div>  
-                  <strong>Recurso</strong>
-                </div>
-                <div>
-                  <label>{recurso}</label>
-                </div>
-              </div>
-            </div>
+            {this.getInfoCategorias()}
             <div className="row">
               <div className="col-md-12">
                 <div>

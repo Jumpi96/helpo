@@ -36,7 +36,7 @@ class MisEventos extends React.Component {
       <ListItem icon key={n.id}>
         <Left>
           <Button
-            style={{ backgroundColor: "#ffe859" }}
+            style={{ backgroundColor: '#ffe859' }}
             onPress={() => Actions.verEvento({ evento: n, rubros: this.props.rubrosEvento })}
           >
             <Icon name="hand" />

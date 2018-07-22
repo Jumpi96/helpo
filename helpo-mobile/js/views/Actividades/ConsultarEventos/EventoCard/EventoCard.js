@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Icon, Card, CardItem, Text, Thumbnail, Right, Left, Body,
-  ListItem, List,
+  Item,
  } from 'native-base';
 import moment from 'moment';
 import styles from './styles';
@@ -16,10 +16,30 @@ class EventoCard extends Component {
 
   getNecesidades() {
     const arrayNecesidades = this.props.evento.necesidades ? this.props.evento.necesidades : [];
-    const necesidades = arrayNecesidades.slice(0, 3).map((necesidad) => {
-      return <ListItem>{necesidad.nombre}</ListItem>;
+    const necesidades = arrayNecesidades.slice(0, 2).map((necesidad) => {
+      return (
+        <Item key={necesidad.id}>
+          <Text>
+            {'-' + necesidad.recurso.categoria.nombre + ' - ' + necesidad.recurso.nombre}
+          </Text>
+        </Item>
+      )
     });
     return necesidades;
+  }
+
+  getVoluntarios() {
+    const arrayVoluntarios = this.props.evento.voluntarios ? this.props.evento.voluntarios : [];
+    const voluntarios = arrayVoluntarios.slice(0, 2).map((voluntario) => {
+      return (
+        <Item key={voluntario.id}>
+          <Text>
+            {'-' + voluntario.funcion.nombre}
+          </Text>
+        </Item>
+      );
+    });
+    return voluntarios;
   }
 
   render() {
@@ -40,12 +60,12 @@ class EventoCard extends Component {
             <Text style={{ fontWeight: '600' }}>
               {evento.nombre}
             </Text>
-            <List>{this.getNecesidades()}</List>
+            {this.getNecesidades()}
           </Body>
         </CardItem>
         <CardItem style={{ paddingVertical: 0 }}>
           <Right>
-            <Button>
+            <Button onPress={() => this.props.openEvento()}>
               <Icon name="navigate" />
               <Text>Ver más</Text>
             </Button>

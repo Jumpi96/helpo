@@ -238,14 +238,14 @@ class RegistrarEvento extends Component {
       errors.rubro = 'Hubo un problema al cargar los rubros.';
     } else { errors.rubro = undefined; }
 
-    const contactValidation = this.validateContactos();
-    const contactErrors = contactValidation.errors;
-    if (!contactValidation.is_valid) {
+    //const contactValidation = this.();
+    //const contactErrors = contactValidation.errors;
+    /*if (!contactValidation.is_valid) {
       formIsValid = false;
-    }
+    }*/
     //Concateno errors con contactErrors
-    const allErrors = Object.assign({}, errors, contactErrors)
-    this.setState({ errors: allErrors });
+    //const allErrors = Object.assign({}, errors, contactErrors)
+    //this.setState({ errors: allErrors });
     return formIsValid;
   }
 

@@ -144,7 +144,8 @@ class RegistrarContactos extends Component {
       showModalEliminar: false,
       showModalEditar: false,
       contactoModificado: {nombre: '', email: '', telefono: '' },
-      contactoModificadoId: undefined
+      contactoModificadoId: undefined,
+      error:''
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -155,24 +156,22 @@ class RegistrarContactos extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
+    this.setState({error: ''});
     var contacto = undefined;
     if (this.handleValidation()) {
       contacto = {        
         nombre: this.state.nombre,
         email: this.state.email,
-        telefono: this.state.telefono,
-      }
-    }
-
-    var contacts = this.state.contactos;
-    var cont = contacts.push(contacto);
-
-      this.setState({
-        contactos: contacts, // Y seteamos estado
-        contacto:cont
-      });
-        
+        telefono: this.state.telefono
+      };
+      var contacts = this.state.contactos;
+      var cont = contacts.push(contacto);
+        this.setState({
+          contactos: contacts, // Y seteamos estado
+          contacto:cont
+        });
       this.props.actualizarContactos(this.state.contactos);
+    }
   }
 
   saveCntacto(cont) { 
@@ -304,20 +303,28 @@ class RegistrarContactos extends Component {
     });
   }
 
-  render() {
-    var tablaContactos = undefined;
-    for (let c = 0; c <= this.props.contacts.length; c += 1) {
-      tablaContactos +=
-      <tr>
-        <td>{c.nombre}</td>
-        <td>{c.email}</td>
-        <td>{c.telefono}</td>
-        <td><Button onClick={() => this.editContacto(c)} outline // Atento a que no falle acá, porqu puede que tome elvalorde c para todas las filas y siempre edite el mismo contacto
-          disabled={this.state.contacto} color="warning">Editar</Button></td>
-        <td><Button onClick={() => this.deleteContacto(c)} outline  // Antes se usaba contactoModificadoId
-          disabled={this.state.contacto} color="danger">Eliminar</Button></td>
-      </tr>
+  getTablaContactos() {
+    var contacts = this.state.contactos;
+    if(contacts.length > 0){
+      var tablaContactos = undefined;
+      for (let c = 0; c <= contacts.length; c += 1) {
+        tablaContactos +=
+        <tr>
+          <td>{contacts[c].nombre}</td>
+          <td>{contacts[c].email}</td>
+          <td>{contacts[c].telefono}</td>
+          <td><Button onClick={() => this.editContacto(c)} outline // Atento a que no falle acá, porqu puede que tome elvalorde c para todas las filas y siempre edite el mismo contacto
+            disabled={this.state.contacto} color="warning">Editar</Button></td>
+          <td><Button onClick={() => this.deleteContacto(c)} outline  // Antes se usaba contactoModificadoId
+            disabled={this.state.contacto} color="danger">Eliminar</Button></td>
+        </tr>
+      }
+      return tablaContactos;
     }
+  }
+
+  render() {
+    
 
     return (
       <div className="animated fadeIn">
@@ -371,7 +378,7 @@ class RegistrarContactos extends Component {
                 </tr>
               </thead>
               <tbody>
-                {tablaContactos}
+                  {this.getTablaVoluntarios()}
               </tbody>
             </Table>
             {/*<Button onClick={() => this.props.history.push('dashboard')} 

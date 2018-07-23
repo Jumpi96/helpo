@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from actividades.models import Evento, RubroEvento, Ubicacion, CategoriaRecurso, Recurso, Necesidad, Contacto, Funcion, Voluntario
+from actividades.models import Evento, RubroEvento, Ubicacion, CategoriaRecurso, \
+    Recurso, Necesidad, Contacto, Funcion, Voluntario, Participacion, Colaboracion
 from users.serializers import UserSerializer
 
 class RubroEventoSerializer(serializers.ModelSerializer):
@@ -123,3 +124,45 @@ class ConsultaEventoSerializer(serializers.ModelSerializer):
         fields = ('id', 'nombre', 'descripcion', 'fecha_hora_inicio',
             'fecha_hora_fin', 'rubro', 'rubro_id', 'ubicacion', 'contacto', 'organizacion_id',
             'necesidades', 'organizacion', 'voluntarios')
+
+class ColaboracionSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Colaboracion
+        fields = '__all__'
+
+class ConsultaNecesidadSerializer(serializers.ModelSerializer):
+    colaboraciones = ColaboracionSerializer(many=True)
+    recurso = RecursoSerializer(read_only=True)
+    recurso_id = serializers.PrimaryKeyRelatedField(
+        queryset=Recurso.objects.all(), source='recurso', write_only=True
+    )
+
+    class Meta:
+        model = Necesidad
+        fields = ('id', 'descripcion', 'cantidad', 'recurso', 'recurso_id', 'colaboraciones')
+
+class ParticipacionSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Voluntario
+        fields = '__all__'
+
+class ConsultaVoluntarioSerializer(serializers.ModelSerializer):
+    participaciones = VoluntarioSerializer(many=True)
+    funcion = FuncionSerializer(read_only=True)
+    funcion_id = serializers.PrimaryKeyRelatedField(
+        queryset=Funcion.objects.all(), source='funcion', write_only=True
+    )
+
+    class Meta:
+        model = Voluntario
+        fields = ('id', 'descripcion', 'cantidad', 'funcion', 'funcion_id', 'participaciones')
+
+class ConsultaNecesidadesSerializer(serializers.ModelSerializer):
+    necesidades = ConsultaNecesidadSerializer(many=True)
+    voluntarios = ConsultaVoluntarioSerializer(many=True)
+
+    class Meta:
+        model = Evento
+        fields = ('id', 'nombre', 'necesidades', 'voluntarios')

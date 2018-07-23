@@ -307,9 +307,9 @@ class RegistrarColaboraciones extends Component {
         <td>{n.recurso.nombre}</td>
         <td>{n.descripcion}</td>
         <td>{n.cantidad}</td>
-        <td><Button onClick={() => this.editNecesidad(n.id)} outline
-          disabled={this.state.necesidad} color="warning">Editar</Button></td>
-        <td><Button onClick={() => this.deleteNecesidad(n.id)} outline 
+        <td><Button onClick={() => this.editNecesidad(n.id)}
+        disabled={this.state.necesidad} color="warning">Modificar</Button></td>
+        <td><Button onClick={() => this.deleteNecesidad(n.id)}
           disabled={this.state.necesidad} color="danger">Eliminar</Button></td>
       </tr>
     );
@@ -324,21 +324,35 @@ class RegistrarColaboraciones extends Component {
           <td>{this.state.voluntarios[i].funcion.nombre}</td>
           <td>{this.state.voluntarios[i].descripcion}</td>
           <td>{this.state.voluntarios[i].cantidad}</td>
-          <input type="radio" name="voluntario" value={this.state.voluntarios[i].id}></input>
+          <td><input type="radio" name="voluntario" value={this.state.voluntarios[i].id}></input></td>
+          <td></td>
         </tr>
       )
     }
     return (
-      <div>
-        {voluntarios}
-        <tr>
-          <td></td>
-          <td>Ninguna</td>
-          <td></td>
-          <td></td>
-          <input type="radio" name="voluntario" value={0}></input>
-        </tr>
-      </div>
+      <Table responsive striped>
+        <thead>
+          <tr>
+            <th></th>
+            <th>Función</th>
+            <th>Descripción</th>
+            <th>Cantidad</th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {voluntarios}
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>No participa</td>
+            <td><input type="radio" name="voluntario" value={0}></input></td>
+            <td><Button color="primary">Ofrecer</Button></td>
+          </tr>
+        </tbody>
+      </Table>
     );
   }
 
@@ -368,21 +382,7 @@ class RegistrarColaboraciones extends Component {
                 </tbody>
               </Table>
               <hr />
-              <Table responsive striped>
-                <thead>
-                  <tr>
-                    <th></th>
-                    <th>Función</th>
-                    <th>Descripción</th>
-                    <th>Cantidad</th>
-                    
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {this.getTablaVoluntarios()}
-                </tbody>
-              </Table>
+              {this.getTablaVoluntarios()}
             </form>
           </CardBody>
         </Card>

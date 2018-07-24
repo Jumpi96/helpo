@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { Button, Table, Card, CardHeader, CardBody } from 'reactstrap';
+import { connect } from "react-redux";
+import { auth } from '../../../../actions';
 import './RegistrarColaboraciones.css';
-import SelectorItem from '../../RegistrarNecesidades/SelectorItem/SelectorItem';
-import ListaFunciones from '../../RegistrarNecesidades/ListaFunciones/ListaFunciones';
-import NumericInput from 'react-numeric-input';
 import api from '../../../../api';
 
 
@@ -22,257 +21,29 @@ class RegistrarColaboraciones extends Component {
       evento: evento,
       necesidades: [],
       voluntarios: [],
-      necesidad: undefined,
-      voluntario: undefined,
-      cantidad_necesidad: undefined,
-      cantidad_voluntario: undefined,
-      recurso_id: 0,
-      descripcion_necesidad: undefined,
-      descripcion_voluntario: undefined,
-      error_voluntario: undefined,
-      error_necesidad: undefined,
-      showModalEliminar: false,
-      necesidadModificada: undefined
+      funcionVoluntario: undefined,
     };
-    this.handleSubmitNecesidad = this.handleSubmitNecesidad.bind(this);
-    this.handleSubmitVoluntario = this.handleSubmitVoluntario.bind(this);
-    this.handleFuncionChange = this.handleFuncionChange.bind(this);
-    this.handleItemChange = this.handleItemChange.bind(this);
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.saveNecesidad = this.saveNecesidad.bind(this);
-    this.confirmDeleteNecesidad = this.confirmDeleteNecesidad.bind(this);
-  }
-
-  handleSubmitNecesidad() {
-    if (this.handleValidationNecesidad()) {
-      const necesidad = {
-        recurso_id: this.state.recurso_id,
-        descripcion: this.state.descripcion_necesidad,
-        cantidad: this.state.cantidad_necesidad,
-        evento: this.state.evento
-      }
-      this.addNecesidad(necesidad);
-    }
-  }
-
-  handleSubmitVoluntario() {
-    if (this.handleValidationVoluntario()) {
-      const voluntario = {
-        funcion_id: this.state.funcion_id,
-        descripcion: this.state.descripcion_voluntario,
-        cantidad: this.state.cantidad_voluntario,
-        evento: this.state.evento
-      }
-      this.addVoluntario(voluntario);
-    }
-  }
-
-  addNecesidad(necesidad) {
-    api.post('/actividades/necesidades/', necesidad)
-      .then(res => {
-        console.log(res);
-        console.log(res.data);
-        this.cleanNecesidad();
-        this.loadNecesidadesYVoluntarios();
-      }).catch(function (error) {
-        if (error.response){ console.log(error.response.status) }
-        else { console.log('Error: ', error.message)}
-        this.setState({ error_necesidad: "Hubo un problema al cargar su información." });
-      });
-  }
-
-  addVoluntario(voluntario) {
-    api.post('/actividades/voluntarios/', voluntario)
-      .then(res => {
-        console.log(res);
-        console.log(res.data);
-        this.cleanVoluntario();
-        this.loadNecesidadesYVoluntarios();
-      }).catch(function (error) {
-        if (error.response){ console.log(error.response.status) }
-        else { console.log('Error: ', error.message)}
-        this.setState({ error_voluntario: "Hubo un problema al cargar su información." });
-      });
-  }
-
-  saveNecesidad(cantidad) {
-    if (cantidad) {
-      if (this.state.necesidadModificada.funcion) {
-        const nuevoVoluntario = {
-          id: this.state.necesidadModificada.id,
-          funcion_id: this.state.necesidadModificada.funcion.id,
-          descripcion: this.state.necesidadModificada.descripcion,
-          cantidad: cantidad,
-          evento: this.state.evento
-        }
-        api.put("/actividades/voluntarios/" + nuevoVoluntario.id + '/', nuevoVoluntario)
-          .then(res => {
-            console.log(res);
-            console.log(res.data);
-            this.cleanVoluntario();
-            this.loadNecesidadesYVoluntarios();
-          }).catch(function (error) {
-            if (error.response){ console.log(error.response.status) }
-            else { console.log('Error: ', error.message)}
-            this.setState({ error: "Hubo un problema al cargar su información." });
-          });
-      } else {
-        const nuevaNecesidad = {
-          id: this.state.necesidadModificada.id,
-          recurso_id: this.state.necesidadModificada.recurso.id,
-          descripcion: this.state.necesidadModificada.descripcion,
-          cantidad: cantidad,
-          evento: this.state.evento
-        };
-        api.put("/actividades/necesidades/" + nuevaNecesidad.id + "/", nuevaNecesidad)
-          .then(res => {
-            console.log(res);
-            console.log(res.data);
-            this.cleanNecesidad();
-            this.loadNecesidadesYVoluntarios();
-          }).catch(function (error) {
-            if (error.response){ console.log(error.response.status) }
-            else { console.log('Error: ', error.message)}
-            this.setState({ error: "Hubo un problema al cargar su información." });
-          });
-      }
-      
-    }
-    this.setState({
-      showModalEditar: false,
-      necesidadModificada: undefined
-    });    
-  }
-
-  handleValidationNecesidad() {
-    let formIsValid = true;
-    var error = this.state.error_necesidad;
-    if (this.state.recurso_id === 0 || 
-      !this.state.recurso_id) {
-      formIsValid = false;
-      error = "Hubo un problema al cargar los recursos.";
-    } else {
-      error = undefined;
-    }
-    if (!this.state.descripcion_necesidad) {
-      formIsValid = false;
-      error = "Debe ingresar una descripción para la necesidad.";
-    } else {
-      error = undefined;
-    }
-    this.setState({error_necesidad: error});
-    return formIsValid;
-  }
-
-  handleValidationVoluntario() {
-    let formIsValid = true;
-    var error = this.state.error_voluntario;
-    if (this.state.funcion_id === 0 || 
-      !this.state.funcion_id) {
-      formIsValid = false;
-      error = "Hubo un problema al cargar las funciones.";
-    } else {
-      error = undefined;
-    }
-    if (!this.state.descripcion_voluntario) {
-      formIsValid = false;
-      error = "Debe ingresar una descripción para la necesidad de voluntario.";
-    } else {
-      error = undefined;
-    }
-    this.setState({error_voluntario: error});
-    return formIsValid;
-  }
-
-  editNecesidad(id) {
-    const necesidad = this.state.necesidades.filter(n => n.id === id)[0];
-    this.setState({ 
-      showModalEditar: true,
-      necesidadModificada: necesidad
-    });
-  }
-
-  editVoluntario(id) {
-    const voluntario = this.state.voluntarios.filter(n => n.id === id)[0];
-    this.setState({ 
-      showModalEditar: true,
-      necesidadModificada: voluntario
-    });
-  }
-
-  cleanNecesidad() {
-    this.setState({
-      descripcion_necesidad: undefined,
-      cantidad_necesidad: undefined,
-      recurso_id: undefined,
-      necesidad: undefined
-    });
-  }
-
-  cleanVoluntario() {
-    this.setState({
-      descripcion_voluntario: undefined,
-      cantidad_voluntario: undefined,
-      funcion_id: undefined,
-      voluntario: undefined
-    });
-  }
-
-  deleteNecesidad(id) {
-    const necesidad = this.state.necesidades.filter(n => n.id === id)[0];
-    this.setState({ 
-      showModalEliminar: true,
-      necesidadModificada: necesidad
-    });
-  }
-
-  deleteVoluntario(id) {
-    const voluntario = this.state.voluntarios.filter(n => n.id === id)[0];
-    this.setState({ 
-      showModalEliminar: true,
-      necesidadModificada: voluntario
-    });
-  }
-
-  confirmDeleteNecesidad(res) {
-    if (res > 0) {
-      const ruta = this.state.necesidadModificada.funcion ? 
-        '/actividades/voluntarios/' : '/actividades/necesidades/';
-      api.delete(ruta + res + '/')
-        .then(res => {
-          console.log(res);
-          console.log(res.data);
-          this.loadNecesidadesYVoluntarios();
-        }).catch(function (error) {
-          if (error.response){ console.log(error.response.status) }
-          else { console.log('Error: ', error.message)}
-        });
-    }
-    this.setState({
-      necesidadModificada: undefined,
-      showModalEliminar: false
-    })
+    this.selectFuncion = this.selectFuncion.bind(this);
   }
 
   componentDidMount() {
     this.loadNecesidadesYVoluntarios();
   }
 
+  getUserId() {
+    return this.props.auth.user.id;
+  }
+
   loadNecesidadesYVoluntarios() {
-    api.get('/actividades/necesidades/?evento=' + this.state.evento)
+    api.get('/actividades/consulta_necesidades/' + this.state.evento + '/')
       .then(res => {
         const necesidadesData = res.data;
-        api.get('/actividades/voluntarios/?evento=' + this.state.evento)
-          .then(res => {
-            const voluntariosData = res.data;
-            this.setState({ voluntarios: voluntariosData, necesidades: necesidadesData });
-          })
-          .catch((error) => {
-            if (error.response){ console.log(error.response.status) }
-            else { console.log('Error: ', error.message)}
-            this.setState({ error: "Hubo un problema al cargar su información." });
-          })
-        this.setState({ necesidades: necesidadesData});
+        this.setState({ 
+          necesidades: necesidadesData.necesidades,
+          voluntarios: necesidadesData.voluntarios,
+          evento: necesidadesData,
+          funcionVoluntario: this.getParticipacionVoluntario(necesidadesData.voluntarios),
+        });
       })
       .catch((error) => {
         if (error.response){ console.log(error.response.status) }
@@ -280,23 +51,18 @@ class RegistrarColaboraciones extends Component {
         this.setState({ error: "Hubo un problema al cargar su información." });
       })
   }
-
-  handleItemChange(r) {
-    // eslint-disable-next-line
-    this.setState({ recurso_id: parseInt(r) });
-  }
-
-  handleInputChange(event) {
-    const target = event.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
-    const name = target.name;
-    this.setState({
-        [name]: value
+  
+  getParticipacionVoluntario(necesidades) {
+    necesidades.forEach(function(v){
+      if (v.participaciones.filter(c => c.voluntario_id === this.getUserId())){
+        return v.id;
+      }
     });
+    return 0;
   }
 
-  handleFuncionChange(f) {
-    this.setState({ funcion_id: f });
+  existeColaboracion(n) {
+    return n.colaboraciones.filter(c => c.voluntario_id === this.getUserId()).length > 0;
   }
 
   getTablaNecesidades() {
@@ -306,16 +72,45 @@ class RegistrarColaboraciones extends Component {
         <td>{n.recurso.categoria.nombre}</td>
         <td>{n.recurso.nombre}</td>
         <td>{n.descripcion}</td>
-        <td>{n.cantidad}</td>
-        <td><Button onClick={() => this.editNecesidad(n.id)}
-        disabled={this.state.necesidad} color="warning">Modificar</Button></td>
-        <td><Button onClick={() => this.deleteNecesidad(n.id)}
-          disabled={this.state.necesidad} color="danger">Eliminar</Button></td>
+        <td>{this.getCantidadNecesidades(n)}</td>
+        {this.getBotonesNecesidad(n)}
       </tr>
     );
   }
 
+  getBotonesNecesidad(n) {
+    if (this.existeColaboracion(n)) {
+      return (
+        <td>
+          <Button onClick={() => this.editNecesidad(n.id)}
+            color="warning">Modificar</Button>
+          <Button onClick={() => this.deleteNecesidad(n.id)}
+            color="danger">Eliminar</Button>
+        </td>
+      );
+    } else {
+      return (
+        <td>
+          <Button onClick={() => undefined} color="primary">Ofrecer</Button>
+        </td>
+      );
+    }
+  }
+
+  selectFuncion(e) {
+    this.setState({ funcionVoluntario: e.target.value });
+  }
+
+  getCantidadNecesidades(n) {
+    return '' + n.colaboraciones.length + '/'+ n.cantidad;
+  }
+
+  getCantidadVoluntarios(v) {
+    return '' + v.participaciones.length + '/'+ v.cantidad;
+  }
+
   getTablaVoluntarios() {
+    const funcion = this.state.funcionVoluntario;
     const voluntarios = [];
     for (let i = 0; i < this.state.voluntarios.length; i++) {
       voluntarios.push(
@@ -323,8 +118,15 @@ class RegistrarColaboraciones extends Component {
           <td><i className="cui-user"></i></td>
           <td>{this.state.voluntarios[i].funcion.nombre}</td>
           <td>{this.state.voluntarios[i].descripcion}</td>
-          <td>{this.state.voluntarios[i].cantidad}</td>
-          <td><input type="radio" name="voluntario" value={this.state.voluntarios[i].id}></input></td>
+          <td>{this.getCantidadVoluntarios(this.state.voluntarios[i])}</td>
+          <td>
+            <input 
+              type="radio" name="voluntario" 
+              value={this.state.voluntarios[i].id}
+              checked={funcion == this.state.voluntarios[i].id}
+              onClick={this.selectFuncion}
+            />
+          </td>
           <td></td>
         </tr>
       )
@@ -336,7 +138,7 @@ class RegistrarColaboraciones extends Component {
             <th></th>
             <th>Función</th>
             <th>Descripción</th>
-            <th>Cantidad</th>
+            <th>Participando</th>
             <th></th>
             <th></th>
           </tr>
@@ -348,7 +150,13 @@ class RegistrarColaboraciones extends Component {
             <td></td>
             <td></td>
             <td>No participa</td>
-            <td><input type="radio" name="voluntario" value={0}></input></td>
+            <td>
+              <input 
+                type="radio" name="voluntario" 
+                value={0} checked={funcion == 0}
+                onClick={this.selectFuncion}
+              />
+            </td>
             <td><Button color="primary">Ofrecer</Button></td>
           </tr>
         </tbody>
@@ -357,11 +165,12 @@ class RegistrarColaboraciones extends Component {
   }
 
   render() {
+    const nombreEvento = this.state.evento ? this.state.evento.nombre : undefined;
     return (
       <div className="animated fadeIn">
         <Card>
           <CardHeader>
-            <i className="fa fa-align-justify"></i> Complete sus colaboraciones para
+            <i className="fa fa-align-justify"></i> Complete sus colaboraciones para {nombreEvento}
           </CardHeader>
           <CardBody>
             <form>
@@ -372,8 +181,7 @@ class RegistrarColaboraciones extends Component {
                     <th>Categoría</th>
                     <th>Ítem</th>
                     <th>Descripción</th>
-                    <th>Cantidad</th>
-                    <th></th>
+                    <th>Colaborando</th>
                     <th></th>
                   </tr>
                 </thead>
@@ -390,5 +198,19 @@ class RegistrarColaboraciones extends Component {
     )
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    auth: state.auth,
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    loadUser: () => {
+      return dispatch(auth.loadUser());
+    }
+  }
+}
   
-  export default RegistrarColaboraciones;
+export default connect(mapStateToProps, mapDispatchToProps)(RegistrarColaboraciones);

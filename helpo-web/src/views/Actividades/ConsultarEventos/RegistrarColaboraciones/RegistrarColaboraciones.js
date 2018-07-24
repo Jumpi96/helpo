@@ -45,7 +45,7 @@ class RegistrarColaboraciones extends Component {
           necesidades: necesidadesData.necesidades,
           voluntarios: necesidadesData.voluntarios,
           evento: necesidadesData,
-          funcionVoluntario: this.getParticipacionVoluntario(necesidadesData.voluntarios),
+          funcionVoluntario: this.getNecesidadVoluntario(necesidadesData.voluntarios),
         });
       })
       .catch((error) => {
@@ -55,7 +55,7 @@ class RegistrarColaboraciones extends Component {
       })
   }
   
-  getParticipacionVoluntario(necesidades) {
+  getNecesidadVoluntario(necesidades) {
     const usuario = this.getUserId();
     for (let i=0; i < necesidades.length; i++) {
       if (necesidades[i].participaciones.filter(c => c.voluntario_id === usuario).length > 0){
@@ -170,7 +170,7 @@ class RegistrarColaboraciones extends Component {
 
   openModalParticipacion() {
     const voluntario = this.state.voluntarios.filter(v => v.id == this.state.funcionVoluntario)[0];
-    const participacionVoluntario = this.getParticipacionVoluntario(this.state.voluntarios) === this.state.funcionVoluntario;
+    const participacionVoluntario = this.getNecesidadVoluntario(this.state.voluntarios) === this.state.funcionVoluntario;
     if (!participacionVoluntario) {
       if (this.state.funcionVoluntario != 0) {
         const participacion = {
@@ -201,10 +201,41 @@ class RegistrarColaboraciones extends Component {
     })
   }
 
+  getIdParticipacionVoluntario() {
+    const necesidades = this.state.voluntarios;
+    const usuario = this.getUserId();
+    let participaciones;
+    for (let i=0; i < necesidades.length; i++) {
+      participaciones = necesidades[i].participaciones.filter(c => c.voluntario_id === usuario);
+      if (participaciones.length > 0){
+        return participaciones[0].id;
+      }
+    }
+    return undefined  ;
+  }
+
+  deleteParticipacion() {
+    const participacionAEliminar = this.getIdParticipacionVoluntario();
+    api.delete('/actividades/participaciones/' + participacionAEliminar + '/')
+      .then(res => {
+        console.log(res);
+        console.log(res.data);
+        this.loadNecesidadesYVoluntarios();
+      }).catch(function (error) {
+        if (error.response){ console.log(error.response.status) }
+        else { console.log('Error: ', error.message)}
+        this.setState({ error_necesidad: "Hubo un problema al cargar su información." });
+      });
+    
+  }
+
   saveParticipacion(participacion) {
     const nuevaParticipacion = {
       comentario: participacion.comentarios,
       necesidad_voluntario_id: participacion.id,
+    };
+    if (this.getNecesidadVoluntario(this.state.voluntarios) !== this.state.funcionVoluntario) {
+      this.deleteParticipacion();
     }
     api.post('/actividades/participaciones/', nuevaParticipacion)
       .then(res => {
@@ -217,6 +248,8 @@ class RegistrarColaboraciones extends Component {
         this.setState({ error_necesidad: "Hubo un problema al cargar su información." });
       });
   }
+
+  
 
   handleModalChange(colaboracion) {
     this.setState({ colaboracionModificada: colaboracion });

@@ -217,14 +217,16 @@ class ParticipacionCreateReadView(ListCreateAPIView):
     """
     API endpoint para crear o ver todas las participaciones de voluntario
     """
+    queryset = Participacion.objects.all()
     serializer_class = ParticipacionSerializer
 
-    def get_queryset(self):
-        queryset = Voluntario.objects.all()
-        evento = self.request.query_params.get('evento', None)
-        if evento is not None:
-            queryset = queryset.filter(evento_id=evento)
-        return queryset
+    def create(self, request):
+        serializer = ParticipacionSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(voluntario_id=get_token_user(self.request))
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class ParticipacionReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     """

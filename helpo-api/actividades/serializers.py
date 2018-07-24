@@ -145,8 +145,20 @@ class ConsultaNecesidadSerializer(serializers.ModelSerializer):
 class ParticipacionSerializer(serializers.ModelSerializer):
     
     class Meta:
-        model = Voluntario
+        model = Participacion
         fields = '__all__'
+
+    def create(self, validated_data):
+        ubicacion_data = validated_data.pop('ubicacion')
+        ubicacion = Ubicacion.objects.create(**ubicacion_data)
+        contactos_data = validated_data.pop('contacto')
+        participaciones = Participacion.objects.filter(necesidad_voluntario_id=validated_data.get('necesidad_voluntario'))
+        necesidad_voluntario = Voluntario.objects.get(pk=validated_data.get('necesidad_voluntario'))
+        if len(participaciones) < necesidad_voluntario.cantidad:
+            participacion = Participacion.objects.create(**validated_data)
+            return participacion
+        else:
+            raise serializers.ValidationError()
 
 class ConsultaVoluntarioSerializer(serializers.ModelSerializer):
     participaciones = VoluntarioSerializer(many=True)

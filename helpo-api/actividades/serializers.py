@@ -126,6 +126,23 @@ class ConsultaEventoSerializer(serializers.ModelSerializer):
             'necesidades', 'organizacion', 'voluntarios')
 
 class ColaboracionSerializer(serializers.ModelSerializer):
+    necesidad_material_id = serializers.PrimaryKeyRelatedField(
+        queryset=Necesidad.objects.all(), source='necesidad_material'
+    )
+
+    class Meta:
+        model = Participacion
+        fields = ('id', 'comentario', 'cantidad', 'necesidad_material_id', 'voluntario_id')
+
+    def create(self, validated_data):
+        necesidad_material = validated_data.get('necesidad_material')
+        colaboraciones = Colaboracion.objects.filter(necesidad_material_id=necesidad_material.id)
+        cantidad = validated_data.get('cantidad')
+        if (len(colaboraciones) + cantidad) <= necesidad_material.cantidad:
+            colaboracion = Colaboracion.objects.create(necesidad_material_id=necesidad_material.id, **validated_data)
+            return colaboracion
+        else:
+            raise serializers.ValidationError()
 
     class Meta:
         model = Colaboracion

@@ -196,14 +196,15 @@ class ColaboracionCreateReadView(ListCreateAPIView):
     """
     API endpoint para crear o ver todas las colaboraciones de voluntario
     """
+    queryset = Colaboracion.objects.all()
     serializer_class = ColaboracionSerializer
 
-    def get_queryset(self):
-        queryset = Voluntario.objects.all()
-        evento = self.request.query_params.get('evento', None)
-        if evento is not None:
-            queryset = queryset.filter(evento_id=evento)
-        return queryset
+    def create(self, request):
+        serializer = ColaboracionSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(voluntario_id=get_token_user(self.request))
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class ColaboracionReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     """

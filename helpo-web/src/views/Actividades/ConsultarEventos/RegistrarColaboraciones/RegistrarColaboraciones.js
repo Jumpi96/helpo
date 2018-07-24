@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { auth } from '../../../../actions';
 import './RegistrarColaboraciones.css';
 import api from '../../../../api';
+import ModalRegistrarColaboracion from './ModalRegistrarColaboracion/ModalRegistrarColaboracion';
 
 
 class RegistrarColaboraciones extends Component {
@@ -18,12 +19,14 @@ class RegistrarColaboraciones extends Component {
       this.props.history.push({ pathname: '/dashboard' });
     }
     this.state = {
-      evento: evento,
+      evento: {id: evento},
       necesidades: [],
       voluntarios: [],
       funcionVoluntario: undefined,
     };
     this.selectFuncion = this.selectFuncion.bind(this);
+    this.handleModalChange = this.handleModalChange.bind(this);
+    this.saveColaboracionModal = this.saveColaboracionModal.bind(this);
   }
 
   componentDidMount() {
@@ -35,7 +38,7 @@ class RegistrarColaboraciones extends Component {
   }
 
   loadNecesidadesYVoluntarios() {
-    api.get('/actividades/consulta_necesidades/' + this.state.evento + '/')
+    api.get('/actividades/consulta_necesidades/' + this.state.evento.id + '/')
       .then(res => {
         const necesidadesData = res.data;
         this.setState({ 
@@ -53,11 +56,12 @@ class RegistrarColaboraciones extends Component {
   }
   
   getParticipacionVoluntario(necesidades) {
-    necesidades.forEach(function(v){
-      if (v.participaciones.filter(c => c.voluntario_id === this.getUserId())){
-        return v.id;
+    const usuario = this.getUserId();
+    for (let i=0; i < necesidades.length; i++) {
+      if (necesidades[i].participaciones.filter(c => c.voluntario_id === usuario).length > 0){
+        return necesidades[i].id;
       }
-    });
+    }
     return 0;
   }
 
@@ -157,11 +161,65 @@ class RegistrarColaboraciones extends Component {
                 onClick={this.selectFuncion}
               />
             </td>
-            <td><Button color="primary">Ofrecer</Button></td>
+            <td><Button color="primary" onClick={() => this.openModalParticipacion()}>Ofrecer</Button></td>
           </tr>
         </tbody>
       </Table>
     );
+  }
+
+  openModalParticipacion() {
+    const voluntario = this.state.voluntarios.filter(v => v.id == this.state.funcionVoluntario)[0];
+    const participacionVoluntario = this.getParticipacionVoluntario(this.state.voluntarios) === this.state.funcionVoluntario;
+    if (!participacionVoluntario) {
+      if (this.state.funcionVoluntario != 0) {
+        const participacion = {
+          id: this.state.funcionVoluntario,
+          cantidad_anterior: participacionVoluntario,
+          cantidad: participacionVoluntario,
+          funcion: voluntario.funcion,
+          descripcion: voluntario.descripcion,
+          comentarios: undefined,
+        }
+        this.setState({ colaboracionModificada: participacion });
+      } else {
+        this.deleteParticipacion();
+      }
+    }
+  }
+
+  saveColaboracionModal(guardar) {
+    if (guardar) {
+      if (!this.state.colaboracionModificada.funcion) {
+        this.saveColaboracion(this.state.colaboracionModificada);
+      } else {
+        this.saveParticipacion(this.state.colaboracionModificada);
+      }
+    }
+    this.setState({
+      colaboracionModificada: undefined,
+    })
+  }
+
+  saveParticipacion(participacion) {
+    const nuevaParticipacion = {
+      comentario: participacion.comentarios,
+      necesidad_voluntario_id: participacion.id,
+    }
+    api.post('/actividades/participaciones/', nuevaParticipacion)
+      .then(res => {
+        console.log(res);
+        console.log(res.data);
+        this.loadNecesidadesYVoluntarios();
+      }).catch(function (error) {
+        if (error.response){ console.log(error.response.status) }
+        else { console.log('Error: ', error.message)}
+        this.setState({ error_necesidad: "Hubo un problema al cargar su información." });
+      });
+  }
+
+  handleModalChange(colaboracion) {
+    this.setState({ colaboracionModificada: colaboracion });
   }
 
   render() {
@@ -194,6 +252,10 @@ class RegistrarColaboraciones extends Component {
             </form>
           </CardBody>
         </Card>
+        <ModalRegistrarColaboracion 
+          open={this.state.colaboracionModificada} handleChange={this.handleModalChange}
+          colaboracion={this.state.colaboracionModificada} closeModal={this.saveColaboracionModal} 
+        />
       </div>
     )
   }

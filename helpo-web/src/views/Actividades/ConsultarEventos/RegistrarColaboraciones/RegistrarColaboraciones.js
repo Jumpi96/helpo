@@ -86,16 +86,16 @@ class RegistrarColaboraciones extends Component {
     if (this.existeColaboracion(n)) {
       return (
         <td>
-          <Button onClick={() => this.editNecesidad(n.id)}
-            color="warning">Modificar</Button>
-          <Button onClick={() => this.deleteNecesidad(n.id)}
+          <Button onClick={() => this.editColaboracion(n.id)}
+            color="warning" style={{marginRight: 10}}>Modificar</Button>
+          <Button onClick={() => this.deleteColaboracion(n.id)}
             color="danger">Eliminar</Button>
         </td>
       );
     } else {
       return (
         <td>
-          <Button onClick={() => undefined} color="primary">Ofrecer</Button>
+          <Button onClick={() => this.newColaboracion(n.id)} color="primary">Ofrecer</Button>
         </td>
       );
     }
@@ -106,7 +106,9 @@ class RegistrarColaboraciones extends Component {
   }
 
   getCantidadNecesidades(n) {
-    return '' + n.colaboraciones.length + '/'+ n.cantidad;
+    let contador = 0;
+    n.colaboraciones.forEach((c) => { contador += c.cantidad});
+    return '' + contador + '/'+ n.cantidad;
   }
 
   getCantidadVoluntarios(v) {
@@ -168,6 +170,46 @@ class RegistrarColaboraciones extends Component {
     );
   }
 
+  newColaboracion(idNecesidad) {
+    const necesidad = this.state.necesidades.filter(v => v.id === idNecesidad)[0];
+    const colaboracion = {
+      id: idNecesidad,
+      cantidad_anterior: 0,
+      cantidad: undefined,
+      cantidad_restante: this.getCantidadRestante(necesidad, 0),
+      recurso: necesidad.recurso,
+      descripcion: necesidad.descripcion,
+      comentarios: undefined,
+    }
+    this.setState({ colaboracionModificada: colaboracion });
+  }
+
+  getCantidadRestante(necesidad, aportado) {
+    let contador = 0;
+    if (!necesidad.funcion) {
+      necesidad.colaboraciones.forEach((c) => { contador += c.cantidad});
+    } else {
+      contador = necesidad.participaciones.length;
+    }
+    return necesidad.cantidad - contador + aportado;
+  }
+
+  editColaboracion(idNecesidad) {
+    const necesidad = this.state.necesidades.filter(v => v.id === idNecesidad)[0];
+    const colaboracionAnterior = necesidad.colaboraciones.filter(c => c.voluntario_id === this.getUserId())[0];
+    const colaboracion = {
+      id: idNecesidad,
+      cantidad_anterior: colaboracionAnterior.cantidad,
+      cantidad: colaboracionAnterior.cantidad,
+      cantidad_restante: this.getCantidadRestante(necesidad, colaboracionAnterior.cantidad),
+      recurso: necesidad.recurso,
+      descripcion: necesidad.descripcion,
+      comentarios: colaboracionAnterior.comentario,
+    }
+    this.setState({ colaboracionModificada: colaboracion });
+  }
+
+
   openModalParticipacion() {
     const voluntario = this.state.voluntarios.filter(v => v.id == this.state.funcionVoluntario)[0];
     const participacionVoluntario = this.getNecesidadVoluntario(this.state.voluntarios) === this.state.funcionVoluntario;
@@ -177,6 +219,7 @@ class RegistrarColaboraciones extends Component {
           id: this.state.funcionVoluntario,
           cantidad_anterior: participacionVoluntario,
           cantidad: participacionVoluntario,
+          cantidad_restante: this.getCantidadRestante(voluntario, participacionVoluntario),
           funcion: voluntario.funcion,
           descripcion: voluntario.descripcion,
           comentarios: undefined,
@@ -200,6 +243,7 @@ class RegistrarColaboraciones extends Component {
       colaboracionModificada: undefined,
     })
   }
+  
 
   getIdParticipacionVoluntario() {
     const necesidades = this.state.voluntarios;
@@ -229,6 +273,67 @@ class RegistrarColaboraciones extends Component {
     
   }
 
+  saveColaboracion(colaboracion) {
+    if (colaboracion.cantidad_anterior > 0) {
+      this.saveEditColaboracion(colaboracion);
+    } else {
+      const nuevaColaboracion = {
+        cantidad: colaboracion.cantidad,
+        comentario: colaboracion.comentarios,
+        necesidad_material_id: colaboracion.id,
+      }
+      api.post('/actividades/colaboraciones/', nuevaColaboracion)
+        .then(res => {
+          console.log(res);
+          console.log(res.data);
+          this.loadNecesidadesYVoluntarios();
+        }).catch(function (error) {
+          if (error.response){ console.log(error.response.status) }
+          else { console.log('Error: ', error.message)}
+          this.setState({ error_necesidad: "Hubo un problema al cargar su información." });
+        });
+    }
+  }
+
+  saveEditColaboracion(colaboracion) {
+    const colaboracionAnterior = this.getColaboracionAnterior(colaboracion.id);
+    const nuevaColaboracion = {
+      id: colaboracionAnterior,
+      cantidad: colaboracion.cantidad,
+      comentario: colaboracion.comentarios,
+      necesidad_material_id: colaboracion.id,
+    }
+    api.put('/actividades/colaboraciones/' + colaboracionAnterior + '/', nuevaColaboracion)
+      .then(res => {
+        console.log(res);
+        console.log(res.data);
+        this.loadNecesidadesYVoluntarios();
+      }).catch(function (error) {
+        if (error.response){ console.log(error.response.status) }
+        else { console.log('Error: ', error.message)}
+        this.setState({ error_necesidad: "Hubo un problema al cargar su información." });
+      });
+  }
+
+  deleteColaboracion(idNecesidad) {
+    const colaboracionAnterior = this.getColaboracionAnterior(idNecesidad);
+    api.delete('/actividades/colaboraciones/' + colaboracionAnterior + '/')
+      .then(res => {
+        console.log(res);
+        console.log(res.data);
+        this.loadNecesidadesYVoluntarios();
+      }).catch(function (error) {
+        if (error.response){ console.log(error.response.status) }
+        else { console.log('Error: ', error.message)}
+        this.setState({ error_necesidad: "Hubo un problema al cargar su información." });
+      });
+  }
+
+  getColaboracionAnterior(necesidadId) {
+    const necesidad = this.state.necesidades.filter(n => n.id === necesidadId)[0];
+    return necesidad.colaboraciones.filter(c => c.voluntario_id === this.getUserId())[0].id;
+  }
+
   saveParticipacion(participacion) {
     const nuevaParticipacion = {
       comentario: participacion.comentarios,
@@ -248,8 +353,6 @@ class RegistrarColaboraciones extends Component {
         this.setState({ error_necesidad: "Hubo un problema al cargar su información." });
       });
   }
-
-  
 
   handleModalChange(colaboracion) {
     this.setState({ colaboracionModificada: colaboracion });

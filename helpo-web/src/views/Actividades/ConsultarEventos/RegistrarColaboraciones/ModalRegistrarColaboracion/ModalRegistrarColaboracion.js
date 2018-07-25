@@ -12,6 +12,7 @@ class ModalRegistrarColaboracion extends Component {
     this.handleCantidadChange = this.handleCantidadChange.bind(this);
     this.handleComentariosChange = this.handleComentariosChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleCancel = this.handleCancel.bind(this);
   }
 
   handleCantidadChange(cantidad) {
@@ -69,11 +70,35 @@ class ModalRegistrarColaboracion extends Component {
   handleSubmit() {
     if (this.handleValidation()) {
       this.props.closeModal(true);
+      this.setState({ error: undefined });
     }
   }
 
+  handleCancel() {
+    this.props.closeModal(false);
+    this.setState({ error: undefined });
+  }
+
   handleValidation() {
-    return true;
+    let formIsValid = true;
+    let error = this.state.error;
+
+    if (this.props.colaboracion.funcion) {
+      if (this.props.colaboracion.cantidad_restante === 0) {
+        formIsValid = false;
+        error = 'El cupo para participar se encuentra ocupado.';
+      }
+    } else {
+      if (this.props.colaboracion.cantidad <= 0) {
+        formIsValid = false;
+        error = 'La cantidad ingresada no es válida.';
+      } else if (this.props.colaboracion.cantidad_restante < this.props.colaboracion.cantidad) {
+        formIsValid = false;
+        error = 'La cantidad ingresada es mayor al cupo disponible';
+      }
+    }
+    this.setState({ error });
+    return formIsValid;
   }
 
   getTitulo() {
@@ -117,7 +142,7 @@ class ModalRegistrarColaboracion extends Component {
                     </div>
                     <div>
                       <NumericInput className="form-control" min="1"
-                        value={this.state.cantidad} onChange={this.handleCantidadChange}/>
+                        value={this.props.colaboracion.cantidad} onChange={this.handleCantidadChange}/>
                     </div>
                   </div>
                 </div> : undefined
@@ -129,7 +154,7 @@ class ModalRegistrarColaboracion extends Component {
                   </div>
                   <div>
                     <input className="form-control"
-                      value={this.state.comentarios} onChange={this.handleComentariosChange}/>
+                      value={this.props.colaboracion.comentarios} onChange={this.handleComentariosChange}/>
                     <span style={{color: "red"}}>{this.state.error}</span>
                   </div>
                 </div>
@@ -137,7 +162,7 @@ class ModalRegistrarColaboracion extends Component {
             </ModalBody>
             <ModalFooter>
               <Button color="warning" onClick={this.handleSubmit}>Guardar</Button>{' '}
-              <Button color="secondary" onClick={() => this.props.closeModal(false)}>Cancelar</Button>
+              <Button color="secondary" onClick={this.handleCancel}>Cancelar</Button>
             </ModalFooter>
           </Modal>
         </div>

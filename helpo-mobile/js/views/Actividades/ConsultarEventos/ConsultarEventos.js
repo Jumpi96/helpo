@@ -36,7 +36,7 @@ class ConsultarEventos extends Component {
       <Container style={styles.container}>
         <Header>
           <Left>
-            <Button transparent onPress={() => Actions.pop()}>
+            <Button transparent onPress={() => Actions.home()}>
               <Icon name="arrow-back" />
             </Button>
           </Left>

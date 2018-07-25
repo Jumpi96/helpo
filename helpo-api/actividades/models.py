@@ -51,7 +51,7 @@ class Voluntario(models.Model):
 class Colaboracion(models.Model):
     cantidad = models.IntegerField()
     comentario = models.CharField(max_length=140, null=True)
-    necesidad = models.ForeignKey(Necesidad, related_name='colaboraciones', null=False, on_delete=models.CASCADE)
+    necesidad_material = models.ForeignKey(Necesidad, related_name='colaboraciones', null=False, on_delete=models.CASCADE)
     voluntario = models.ForeignKey(User, null=False)
 
 class Participacion(models.Model):

@@ -131,22 +131,21 @@ class ColaboracionSerializer(serializers.ModelSerializer):
     )
 
     class Meta:
-        model = Participacion
+        model = Colaboracion
         fields = ('id', 'comentario', 'cantidad', 'necesidad_material_id', 'voluntario_id')
-
+    
     def create(self, validated_data):
         necesidad_material = validated_data.get('necesidad_material')
         colaboraciones = Colaboracion.objects.filter(necesidad_material_id=necesidad_material.id)
         cantidad = validated_data.get('cantidad')
-        if (len(colaboraciones) + cantidad) <= necesidad_material.cantidad:
+        suma_colaboraciones = 0
+        for c in colaboraciones:
+            suma_colaboraciones += c.cantidad
+        if (suma_colaboraciones + cantidad) <= necesidad_material.cantidad:
             colaboracion = Colaboracion.objects.create(necesidad_material_id=necesidad_material.id, **validated_data)
             return colaboracion
         else:
             raise serializers.ValidationError()
-
-    class Meta:
-        model = Colaboracion
-        fields = '__all__'
 
 class ConsultaNecesidadSerializer(serializers.ModelSerializer):
     colaboraciones = ColaboracionSerializer(many=True)

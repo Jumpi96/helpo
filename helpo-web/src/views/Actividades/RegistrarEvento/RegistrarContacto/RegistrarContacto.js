@@ -308,7 +308,7 @@ class RegistrarContactos extends Component {
     });
   }
 
-  getTablaContactos() {
+  getTablaContactos() { // Ver ayuda de juan del dia martes 24 de Julio con foto 
     var contacts = this.state.contactos;
     if(contacts.length > 0){
       var tablaContactos = undefined;

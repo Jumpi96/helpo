@@ -129,7 +129,7 @@ class RegistrarColaboraciones extends Component {
             <input 
               type="radio" name="voluntario" 
               value={this.state.voluntarios[i].id}
-              checked={funcion == this.state.voluntarios[i].id}
+              checked={funcion === this.state.voluntarios[i].id}
               onClick={this.selectFuncion}
             />
           </td>
@@ -159,7 +159,7 @@ class RegistrarColaboraciones extends Component {
             <td>
               <input 
                 type="radio" name="voluntario" 
-                value={0} checked={funcion == 0}
+                value={0} checked={funcion === 0}
                 onClick={this.selectFuncion}
               />
             </td>
@@ -211,10 +211,10 @@ class RegistrarColaboraciones extends Component {
 
 
   openModalParticipacion() {
-    const voluntario = this.state.voluntarios.filter(v => v.id == this.state.funcionVoluntario)[0];
+    const voluntario = this.state.voluntarios.filter(v => v.id === this.state.funcionVoluntario)[0];
     const participacionVoluntario = this.getNecesidadVoluntario(this.state.voluntarios) === this.state.funcionVoluntario;
     if (!participacionVoluntario) {
-      if (this.state.funcionVoluntario != 0) {
+      if (this.state.funcionVoluntario !== 0) {
         const participacion = {
           id: this.state.funcionVoluntario,
           cantidad_anterior: participacionVoluntario,

@@ -31,8 +31,8 @@ class ConsultaEvento extends React.Component {
     return this.props.evento.necesidades.map(n =>
       <ListItem icon key={n.id}>
         <Left>
-          <Button style={{ backgroundColor: '#ffe859' }}>
-            <Icon active name="hand" />
+          <Button style={{ backgroundColor: '#4286f4' }}>
+            <Icon active name="archive" />
           </Button>
         </Left>
         <Body>
@@ -54,8 +54,8 @@ class ConsultaEvento extends React.Component {
     return this.props.evento.voluntarios.map(n =>
       <ListItem icon key={n.id}>
         <Left>
-          <Button style={{ backgroundColor: '#ffe859' }}>
-            <Icon active name="hand" />
+          <Button style={{ backgroundColor: '#ea8f3a' }}>
+            <Icon active name="person" />
           </Button>
         </Left>
         <Body>
@@ -92,8 +92,13 @@ class ConsultaEvento extends React.Component {
             </Button>
           </Left>
           <Body>
-            <Title>Evento - {evento.nombre}</Title>
+            <Title>{evento.nombre}</Title>
           </Body>
+          <Right>
+            <Button transparent onPress={() => Actions.registrarColaboraciones({ evento: evento.id })}>
+              <Text>Colaborar</Text>
+            </Button>
+          </Right>
         </Header>
         <Content>
           <Separator bordered noTopBorder>

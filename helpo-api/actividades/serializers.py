@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from actividades.models import Evento, RubroEvento, Ubicacion, CategoriaRecurso, Recurso, Necesidad, Contacto, Funcion, Voluntario
+from actividades.models import Evento, RubroEvento, Ubicacion, CategoriaRecurso, \
+    Recurso, Necesidad, Contacto, Funcion, Voluntario, Participacion, Colaboracion
 from users.serializers import UserSerializer
 
 class RubroEventoSerializer(serializers.ModelSerializer):
@@ -123,3 +124,73 @@ class ConsultaEventoSerializer(serializers.ModelSerializer):
         fields = ('id', 'nombre', 'descripcion', 'fecha_hora_inicio',
             'fecha_hora_fin', 'rubro', 'rubro_id', 'ubicacion', 'contacto', 'organizacion_id',
             'necesidades', 'organizacion', 'voluntarios')
+
+class ColaboracionSerializer(serializers.ModelSerializer):
+    necesidad_material_id = serializers.PrimaryKeyRelatedField(
+        queryset=Necesidad.objects.all(), source='necesidad_material'
+    )
+
+    class Meta:
+        model = Colaboracion
+        fields = ('id', 'comentario', 'cantidad', 'necesidad_material_id', 'voluntario_id')
+    
+    def create(self, validated_data):
+        necesidad_material = validated_data.get('necesidad_material')
+        colaboraciones = Colaboracion.objects.filter(necesidad_material_id=necesidad_material.id)
+        cantidad = validated_data.get('cantidad')
+        suma_colaboraciones = 0
+        for c in colaboraciones:
+            suma_colaboraciones += c.cantidad
+        if (suma_colaboraciones + cantidad) <= necesidad_material.cantidad:
+            colaboracion = Colaboracion.objects.create(necesidad_material_id=necesidad_material.id, **validated_data)
+            return colaboracion
+        else:
+            raise serializers.ValidationError()
+
+class ConsultaNecesidadSerializer(serializers.ModelSerializer):
+    colaboraciones = ColaboracionSerializer(many=True)
+    recurso = RecursoSerializer(read_only=True)
+    recurso_id = serializers.PrimaryKeyRelatedField(
+        queryset=Recurso.objects.all(), source='recurso', write_only=True
+    )
+
+    class Meta:
+        model = Necesidad
+        fields = ('id', 'descripcion', 'cantidad', 'recurso', 'recurso_id', 'colaboraciones')
+
+class ParticipacionSerializer(serializers.ModelSerializer):
+    necesidad_voluntario_id = serializers.PrimaryKeyRelatedField(
+        queryset=Voluntario.objects.all(), source='necesidad_voluntario'
+    )
+    
+    class Meta:
+        model = Participacion
+        fields = ('id', 'comentario', 'necesidad_voluntario_id', 'voluntario_id')
+
+    def create(self, validated_data):
+        necesidad_voluntario = validated_data.get('necesidad_voluntario')
+        participaciones = Participacion.objects.filter(necesidad_voluntario_id=necesidad_voluntario.id)
+        if len(participaciones) < necesidad_voluntario.cantidad:
+            participacion = Participacion.objects.create(necesidad_voluntario_id=necesidad_voluntario.id, **validated_data)
+            return participacion
+        else:
+            raise serializers.ValidationError()
+
+class ConsultaVoluntarioSerializer(serializers.ModelSerializer):
+    participaciones = ParticipacionSerializer(many=True)
+    funcion = FuncionSerializer(read_only=True)
+    funcion_id = serializers.PrimaryKeyRelatedField(
+        queryset=Funcion.objects.all(), source='funcion', write_only=True
+    )
+
+    class Meta:
+        model = Voluntario
+        fields = ('id', 'descripcion', 'cantidad', 'funcion', 'funcion_id', 'participaciones')
+
+class ConsultaNecesidadesSerializer(serializers.ModelSerializer):
+    necesidades = ConsultaNecesidadSerializer(many=True)
+    voluntarios = ConsultaVoluntarioSerializer(many=True)
+
+    class Meta:
+        model = Evento
+        fields = ('id', 'nombre', 'necesidades', 'voluntarios')

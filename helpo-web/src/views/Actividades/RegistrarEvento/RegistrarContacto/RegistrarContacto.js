@@ -134,24 +134,25 @@ class RegistrarContactos extends Component {
       this.props.history.push({ pathname: '/dashboard' });
     }*/
     this.state = {
-      contactos: [],
+      contactos: this.props.contacts,
       nombre: '',
-      email:'',
-      telefo:'',
+      email: '',
+      telefo: '',
       contacto: undefined,      
       contactId: '1',    
       nextId: '2',
       showModalEliminar: false,
       showModalEditar: false,
-      contactoModificado: {nombre: '', email: '', telefono: '' },
+      contactoModificado: {nombre: '', email: '', telefono: ''},
       contactoModificadoId: undefined,
-      error:''
+      error: ''
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.saveCntacto = this.saveCntacto.bind(this);
     this.confirmDeleteContacto = this.confirmDeleteContacto.bind(this);
     this.deleteContacto = this.deleteContacto.bind(this);
+    this.handleValidation = this.handleValidation.bind(this);
   }
 
   handleSubmit(event) {
@@ -311,19 +312,23 @@ class RegistrarContactos extends Component {
   getTablaContactos() { // Ver ayuda de juan del dia martes 24 de Julio con foto 
     var contacts = this.state.contactos;
     if(contacts.length > 0){
-      var tablaContactos = undefined;
+      var tablaContactos = [];
       for (let c = 0; c <= contacts.length; c += 1) {
-        tablaContactos += 
-        <tr> 
-        <td>{contacts[c].nombre}</td>
-        <td>{contacts[c].email}</td>
-        <td>{contacts[c].telefono}</td>
-        <td><Button onClick={() => this.editContacto(c)} outline // Atento a que no falle acá, porqu puede que tome elvalorde c para todas las filas y siempre edite el mismo contacto
-          disabled={this.state.contacto} color="warning">Editar</Button></td>
-        <td><Button onClick={() => this.deleteContacto(c)} outline  // Antes se usaba contactoModificadoId
-          disabled={this.state.contacto} color="danger">Eliminar</Button></td>
-      </tr>  
-        return tablaContactos;
+        tablaContactos.push(
+          <tr> 
+            <td>{contacts[c].nombre}</td>
+            <td>{contacts[c].email}</td>
+            <td>{contacts[c].telefono}</td>
+            <td><Button onClick={() => this.editContacto(c)} outline // Atento a que no falle acá, porqu puede que tome elvalorde c para todas las filas y siempre edite el mismo contacto
+              disabled={this.state.contacto} color="warning">Editar</Button></td>
+            <td><Button onClick={() => this.deleteContacto(c)} outline  // Antes se usaba contactoModificadoId
+              disabled={this.state.contacto} color="danger">Eliminar</Button></td>
+          </tr>   
+        )
+        return
+        <div>
+        {tablaContactos}
+        </div>;
       }
       
     }

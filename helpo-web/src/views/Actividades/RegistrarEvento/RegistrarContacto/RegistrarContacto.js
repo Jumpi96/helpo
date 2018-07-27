@@ -116,13 +116,13 @@ export default RegistrarContacto;
 
 import React, { Component } from 'react';
 import { Button, Table, Card, CardHeader, CardBody } from 'reactstrap';
-import './RegistrarContactos.css';
+import './RegistrarContacto.css';
 import api from '../../../../api';
 import ModalEliminarItem from './ModalEliminarItem';
 import ModalEditarItem from './ModalEditarItem';
 import validateEmail from '../../../../utils/ValidateEmail'
 
-class RegistrarContactos extends Component {
+class RegistrarContacto extends Component {
   constructor(props){
     super(props);
     /*const urlParams = new URLSearchParams(this.props.location.search)
@@ -409,4 +409,4 @@ class RegistrarContactos extends Component {
     )
   }
 }  
-export default RegistrarContactos;
+export default RegistrarContacto;

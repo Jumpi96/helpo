@@ -326,10 +326,12 @@ class RegistrarContactos extends Component {
               disabled={this.state.contacto} color="danger">Eliminar</Button></td>
           </tr>   
         )
-        return
-        <div>
-        {tablaContactos}
-        </div>;
+        return(
+          <div>
+          {tablaContactos}
+          </div>
+        )
+        
       }
       
     }

@@ -317,6 +317,7 @@ class RegistrarContactos extends Component {
       for (let c = 0; c <= contacts.length; c += 1) {
         tablaContactos.push(
           <tr> 
+            <td><i></i></td>
             <td>{contacts[c].nombre}</td>
             <td>{contacts[c].email}</td>
             <td>{contacts[c].telefono}</td>
@@ -384,6 +385,7 @@ class RegistrarContactos extends Component {
             <Table responsive striped>
               <thead>
                 <tr>
+                  <th></th>
                   <th>Nombre</th>
                   <th>Email</th>
                   <th>Teléfono</th>                  

@@ -48,7 +48,7 @@ class RegistrarEvento extends Component {
     });
   }*/
 
-  handleContactChange(event, contactId) {
+  handleContactChange(event, contactId) { //  Puede servir para actualizar los contacto en el padre (RegistrarEvento)
     const { value } = event.target;
     const field = event.target.name;
     const index = this.state.contactos.map(e => e.contactId).indexOf(contactId);
@@ -152,7 +152,7 @@ class RegistrarEvento extends Component {
     return info_contactos;
   }
 
-  handleSubmit(event) {
+  handleSubmit(event) { //Atencion a como se postean los contactos como contacto sin "S"
     event.preventDefault();
     if (this.handleValidation()) {
       const evento = {

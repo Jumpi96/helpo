@@ -153,6 +153,8 @@ class RegistrarContactos extends Component {
     this.confirmDeleteContacto = this.confirmDeleteContacto.bind(this);
     this.deleteContacto = this.deleteContacto.bind(this);
     this.handleValidation = this.handleValidation.bind(this);
+    this.editContacto = this.editContacto.bind(this);
+    this.cleancontacto = this.cleancontacto.bind(this);
   }
 
   handleSubmit(event) {
@@ -198,7 +200,6 @@ class RegistrarContactos extends Component {
   }
 
   saveCntacto(cont) { 
-    
     if (cont !== undefined) {
       var contactosModificados = this.state.contactos;
       contactosModificados[this.state.contactoModificadoId]= cont;

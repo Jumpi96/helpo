@@ -213,12 +213,9 @@ class RegistrarContacto extends Component {
     }
   }
 
-  
-
-  
-
   editContacto(id) { 
-    var contacto = this.state.contactos.filter(n => n.id === id)[0];
+    var contacts = this.state.contactos;
+    var contacto = contacts[id];
     this.setState({ 
       showModalEditar: true,
       contactoModificado: contacto
@@ -237,7 +234,8 @@ class RegistrarContacto extends Component {
   // Delete contacto
 
   deleteContacto(id) {
-    const contacto = this.state.contactos.filter(n => n.id === id)[0];
+    var contacts = this.state.contactos;
+    var contacto = contacts[id];
     this.setState({ 
       showModalEliminar: true,
       contactoModificado: contacto
@@ -296,11 +294,6 @@ class RegistrarContacto extends Component {
       })
   }
 
-  /*handleItemChange(r) {
-    // eslint-disable-next-line
-    this.setState({ email: parseInt(r) });
-  }*/
-
   handleInputChange(event) {
     const target = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
@@ -314,27 +307,25 @@ class RegistrarContacto extends Component {
     var contacts = this.state.contactos;
     if(contacts.length > 0){
       var tablaContactos = [];
-      for (let c = 0; c <= contacts.length; c += 1) {
+      for (let c = 0; c < contacts.length; c += 1) {
         tablaContactos.push(
           <tr> 
             <td><i></i></td>
             <td>{contacts[c].nombre}</td>
             <td>{contacts[c].email}</td>
             <td>{contacts[c].telefono}</td>
-            <td><Button onClick={() => this.editContacto(c)} outline // Atento a que no falle acá, porqu puede que tome elvalorde c para todas las filas y siempre edite el mismo contacto
-              disabled={this.state.contacto} color="warning">Editar</Button></td>
-            <td><Button onClick={() => this.deleteContacto(c)} outline  // Antes se usaba contactoModificadoId
-              disabled={this.state.contacto} color="danger">Eliminar</Button></td>
+            <td><Button onClick={() => this.editContacto(c)} outline
+               color="warning">Editar</Button></td>
+            <td><Button onClick={() => this.deleteContacto(c)} outline 
+               color="danger">Eliminar</Button></td>
           </tr>   
         )
-        return(
-          <div>
-          {tablaContactos}
-          </div>
-        )
-        
       }
-      
+      return(
+        <tbody>
+          {tablaContactos}
+        </tbody>
+        )
     }
   }
 
@@ -368,7 +359,7 @@ class RegistrarContacto extends Component {
                     />
                   </div>
                   <div className="col-md-3">
-                    <input type="text" 
+                    <input type="text"
                       name="telefono" className="form-control"
                       placeholder="Teléfono"
                       value={this.state.telefono} 
@@ -393,17 +384,17 @@ class RegistrarContacto extends Component {
                   <th></th>
                 </tr>
               </thead>
-              <tbody>
+              
                   {this.getTablaContactos()}
-              </tbody>
+              
             </Table>
             {/*<Button onClick={() => this.props.history.push('dashboard')} 
               color="primary">Guardar contactos</Button>*/}
           </CardBody>
         </Card>
-        <ModalEliminarItem open={this.state.showModalEliminar} contactoId={this.state.contactoModificadoId} contactos={this.state.contactos}
+        <ModalEliminarItem open={this.state.showModalEliminar} contacto={this.state.contactoModificado} contactoId={this.state.contactoModificadoId} contactos={this.state.contactos}
           closeModal={this.confirmDeleteContacto}/>
-        <ModalEditarItem open={this.state.showModalEditar} contacto={this.state.contactoModificado} 
+        <ModalEditarItem open={this.state.showModalEditar} contacto={this.state.contactoModificado} contactoId={this.state.contactoModificadoId} contactos={this.state.contactos}
           closeModal={this.saveCntacto}/>
       </div>
     )

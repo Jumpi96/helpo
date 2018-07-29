@@ -33,8 +33,6 @@ class RegistrarEvento extends Component {
     this.handleRemoveContact = this.handleRemoveContact.bind(this);
     this.handlePhoneChange = this.handlePhoneChange.bind(this);
     this.handleActualizacionContactos = this.handleActualizacionContactos.bind(this);
-
-    
   }
 
   /*handleContactChange(event, contactId) {

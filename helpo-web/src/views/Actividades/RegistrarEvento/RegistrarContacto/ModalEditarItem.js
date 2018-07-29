@@ -7,23 +7,29 @@ class ModalEditarItem extends Component {
     super(props);
     this.state = {
       error: undefined,
-      contactos: this.props.contactos
+      nombre: this.props.contacto.nombre,
+      email: this.props.contacto.email,
+      telefono: this.props.contacto.telefono, 
+      contactoModificado: {
+        nombre:'',
+        email:'',
+        telefono:'',
+      }
     };
-    this.handleCantidadChange = this.handleCantidadChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  static getDerivedStateFromProps(nextProps, prevState) {
-    const cantidad = nextProps.contacto ? nextProps.contacto.cantidad : 1;
-    return {error: undefined, cantidad: cantidad};
-  }
-
-  handleCantidadChange(cantidad) {
-    this.setState({ cantidad: cantidad });
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleValidation = this.handleValidation.bind(this);
   }
 
   handleSubmit() {
     if (this.handleValidation()) {
+      this.setState({
+        contactoModificado:{
+          nombre:this.state.nombre,
+          email:this.state.email,
+          telefono:this.state.telefono
+        }
+      })
       this.props.closeModal(this.state.contactoModificado);
     }
   }
@@ -57,9 +63,6 @@ class ModalEditarItem extends Component {
   }
 
   render() {
-    //const nombre = this.props.contacto ? this.props.contacto.nombre : undefined;
-    //const email = this.props.contacto ? this.props.contacto.email : undefined;
-    //const telefono = this.props.contacto ? this.props.contacto.telefono : undefined;
     return (
       <div className="animated fadeIn">
         <Modal isOpen={this.props.open}
@@ -73,15 +76,15 @@ class ModalEditarItem extends Component {
                   <input type="text" 
                       name="nombre" className="form-control"
                       placeholder="Nombre"
-                      value={this.props.contacto.nombre} 
+                      value={this.state.nombre} 
                       onChange={this.handleInputChange}
                     />
                   </div>
                   <div className="col-md-3">
                   <input type="text" 
                       name="email" className="form-control"
-                      placeholder="email"
-                      value={this.props.contacto.email} 
+                      placeholder="Email"
+                      value={this.state.email} 
                       onChange={this.handleInputChange}
                     />
                   </div>
@@ -89,7 +92,7 @@ class ModalEditarItem extends Component {
                     <input type="text" 
                       name="telefono" className="form-control"
                       placeholder="Teléfono"
-                      value={this.props.contacto.telefono} 
+                      value={this.state.telefono} 
                       onChange={this.handleInputChange}
                     />
                   </div>

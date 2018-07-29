@@ -15,15 +15,39 @@ import {
   AppSidebarNav,
 } from '@coreui/react';
 // sidebar nav config
-import navigation from '../../_nav';
+import navOrganizacion from '../../_navOrganizacion';
+import navVoluntario from '../../_navVoluntario';
 // routes config
-import routes from '../../routes';
+import routesOrganizacion from '../../routesOrganizacion';
+import routesVoluntario from '../../routesVoluntario';
 import DefaultAside from './DefaultAside';
 import DefaultFooter from './DefaultFooter';
 import DefaultHeader from './DefaultHeader';
 
+import { connect } from "react-redux";
+import {auth} from "../../../src/actions";
+
 class DefaultLayout extends Component {
+
+  getNavigation() {
+    if (this.props.auth.user.user_type === 1) {
+      return navOrganizacion;
+    } else {
+      return navVoluntario;
+    }
+  }
+
+  getRoutes() {
+    if (this.props.auth.user.user_type === 1) {
+      return routesOrganizacion;
+    } else {
+      return routesVoluntario;
+    }
+  }
+
+
   render() {
+    const routes = this.getRoutes();
     return (
       <div className="app">
         <AppHeader fixed>
@@ -33,7 +57,7 @@ class DefaultLayout extends Component {
           <AppSidebar fixed display="lg">
             <AppSidebarHeader />
             <AppSidebarForm />
-            <AppSidebarNav navConfig={navigation} {...this.props} />
+            <AppSidebarNav navConfig={this.getNavigation()} {...this.props} />
             <AppSidebarFooter />
             <AppSidebarMinimizer />
           </AppSidebar>
@@ -64,4 +88,19 @@ class DefaultLayout extends Component {
   }
 }
 
-export default DefaultLayout;
+
+const mapStateToProps = state => {
+  return {
+    auth: state.auth,
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    loadUser: () => {
+      return dispatch(auth.loadUser());
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(DefaultLayout);

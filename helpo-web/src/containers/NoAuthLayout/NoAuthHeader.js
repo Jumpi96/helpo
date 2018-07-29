@@ -25,23 +25,12 @@ class NoAuthHeader extends Component {
           full={{ src: logo, width: 89, height: 25, alt: 'CoreUI Logo' }}
           minimized={{ src: sygnet, width: 30, height: 30, alt: 'CoreUI Logo' }}
         />
-        <Nav className="d-md-down-none" navbar>
-          <NavItem className="px-3">
-            <NavLink href="/">Dashboard</NavLink>
-          </NavItem>
-          <NavItem className="px-3">
-            <NavLink href="/">Users</NavLink>
-          </NavItem>
-          <NavItem className="px-3">
-            <NavLink href="/">Settings</NavLink>
-          </NavItem>
-        </Nav>
         <Nav className="ml-auto" navbar>
           <NavItem className="px-3">
-            <Link to="/login">Iniciar sesión</Link>
+            <Link className="btn btn-primary" to="/login">Iniciar sesión</Link>
           </NavItem>
           <NavItem className="px-3">
-            <Link to="/register">Registrarse</Link>
+            <Link className="btn btn-primary" to="/register">Registrarse</Link>
           </NavItem>
         </Nav>
       </React.Fragment>

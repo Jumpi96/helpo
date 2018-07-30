@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { Card, Button } from 'reactstrap';
 import user_avatar from '../../../assets/user.svg'
 import {Gmaps, Marker} from 'react-gmaps';
-import getImagen from '../../../utils/GetImagen'
+import { getImagen } from '../../../utils/Imagen'
 //https://github.com/MicheleBertoli/react-gmaps
 
 const perfilPropTypes = {
@@ -116,7 +116,7 @@ class ConsultarPerfilOrganizacion extends Component {
           <div class='col'>
             <img
               class='rounded-circle'
-              src={getImagen(user_avatar)}
+              src={getImagen(this.props.data.avatar.url)}
               alt="avatar"
               width="100" 
               height="100"

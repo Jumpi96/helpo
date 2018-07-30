@@ -5,6 +5,7 @@ import user_avatar from '../../../assets/user.svg'
 import SelectorUbicacion from '../../../utils/SelectorUbicacionGenerico'
 import api from '../../../api'
 import ModalGenerico from '../ModalGenerico'
+import { uploadImage } from '../../../utils/Imagen'
 
 const perfilPropTypes = {
   nombre: PropTypes.string.isRequired,
@@ -44,12 +45,13 @@ class ModificarPerfilOrganizacion extends Component {
       telefono: this.props.data.telefono == null ? '' : this.props.data.telefono,
       cuit: this.props.data.cuit == null ? '' : this.props.data.cuit,
       descripcion: this.props.data.descripcion == null ? '' : this.props.data.descripcion,
-      avatar_url: user_avatar,//this.props.data.avatar.url,
+      avatar_url: this.props.data.avatar.url,
       ubicacion: this.fakeProps.ubicacion,
       rubro_id: this.fakeProps.rubro.id,
       rubros: this.rubros,   
       showModal: false,
       modalType: 'success',
+      errors: []
     }
     this.renderNombre  = this.renderNombre.bind(this);
     this.renderUbicacion = this.renderUbicacion.bind(this);
@@ -66,6 +68,7 @@ class ModificarPerfilOrganizacion extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.onSelectFile = this.onSelectFile.bind(this);
     this.showModal = this.showModal.bind(this);
+    this.handleAvatarChange = this.handleAvatarChange.bind(this);
   }
 
   //Checkeo si hay nulls en los props antes meterlos en state
@@ -94,6 +97,7 @@ class ModificarPerfilOrganizacion extends Component {
         false
       )
       reader.readAsDataURL(event.target.files[0])
+      console.log(this.state.avatar_url)
     }
   }
 
@@ -183,6 +187,12 @@ class ModificarPerfilOrganizacion extends Component {
     })
   }
 
+  handleAvatarChange(avatar_url) {
+    this.setState({
+      avatar_url: avatar_url
+    })
+  }
+
   renderDescripcion() {
     return (
       <textarea
@@ -213,7 +223,7 @@ class ModificarPerfilOrganizacion extends Component {
     this.setState({ ubicacion: ubi });
   }  
 
-  prepareSubmitData() {
+  async prepareSubmitData() {
     const oldData = {
       nombre: this.props.nombre,
       telefono: this.props.data.telefono,
@@ -224,9 +234,18 @@ class ModificarPerfilOrganizacion extends Component {
       rubro_id: this.fakeProps.rubro.id,
     }
     const newData = this.state
+
+    const rx = /\/9j\/.*/gm
+    const encondedAvatar = rx.exec(this.state.avatar_url)[0]
+    let avatar_url = await uploadImage(encondedAvatar)
+    if (avatar_url === 'recall') {
+      avatar_url = await uploadImage(encondedAvatar)
+    }
+    console.log("Avatar Url")
+    console.log(avatar_url)
     const submitData = {      
       descripcion: newData.descripcion,
-      avatar: {id: 2, url: this.state.avatar_url},
+      avatar: {url: avatar_url},
       usuario: this.props.data.usuario,
     }    
     if (newData.cuit !== "") {
@@ -244,29 +263,41 @@ class ModificarPerfilOrganizacion extends Component {
     return submitData
   }
 
-  validateData() {
+  validateData(submitData) {
+    if (submitData.avatar.url === 'error' || submitData.avatar.url == null) {
+      let errors = this.state.errors
+      errors.push("Imagen upload failure")
+      this.setState({
+        errors: errors
+      })
+      return false
+    }
     return true
   }
 
   handleSubmit() {
-    const submitData = this.prepareSubmitData()
-    if (this.validateData()) {
-      api.put(`/perfiles/perfil_organizacion/${this.props.data.usuario}/`, submitData)
-      .then(res => {
-        if (res.status === 200) {
-          this.setState({
-            showModal: true,
-            modalType: 'success'
-          })
-        }
-        else {
-          this.setState({
-            showModal: true,
-            modalType: 'failure'
-          })
-        }
-      })
-    }
+    this.prepareSubmitData().then( submitData => {
+      console.log("DATA")
+      console.log(submitData)
+      if (this.validateData(submitData)) {
+        api.put(`/perfiles/perfil_organizacion/${this.props.data.usuario}/`, submitData)
+        .then(res => {
+          if (res.status === 200) {
+            this.setState({
+              showModal: true,
+              modalType: 'success'
+            })
+          }
+          else {
+            this.setState({
+              showModal: true,
+              modalType: 'failure'
+            })
+          }
+        })
+      }
+      console.log(this.state.errors)
+    }) 
   }
 
   renderModal() {

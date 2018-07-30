@@ -6,7 +6,7 @@ class ModalEditarItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      error: undefined,
+      error: '',
       nombre: this.props.contacto.nombre,
       email: this.props.contacto.email,
       telefono: this.props.contacto.telefono, 
@@ -22,12 +22,14 @@ class ModalEditarItem extends Component {
   }
 
   handleSubmit() {
+    this.setState({error: ''});
     if (this.handleValidation()) {
+      
       this.setState({
         contactoModificado:{
-          nombre:this.state.nombre,
-          email:this.state.email,
-          telefono:this.state.telefono
+        nombre:this.state.nombre,
+        email:this.state.email,
+        telefono:this.state.telefono
         }
       })
       this.props.closeModal(this.state.contactoModificado);

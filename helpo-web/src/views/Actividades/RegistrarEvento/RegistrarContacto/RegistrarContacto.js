@@ -143,7 +143,7 @@ class RegistrarContacto extends Component {
       nextId: '2',
       showModalEliminar: false,
       showModalEditar: false,
-      contactoModificado: {nombre: '', email: '', telefono: ''},
+      contactoModificado: undefined,
       contactoModificadoId: undefined,
       error: ''
     };
@@ -211,14 +211,20 @@ class RegistrarContacto extends Component {
       });   
     this.props.actualizarContactos(this.state.contactos);      
     }
+    else{
+      this.setState({
+        showModalEditar:false,
+        contactoModificado: undefined
+      })
+    }
   }
 
   editContacto(id) { 
     var contacts = this.state.contactos;
     var contacto = contacts[id];
     this.setState({ 
-      showModalEditar: true,
-      contactoModificado: contacto
+      contactoModificado: contacto,
+      showModalEditar: true
     });
   }
 

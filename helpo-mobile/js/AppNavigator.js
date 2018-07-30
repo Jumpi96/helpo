@@ -91,8 +91,9 @@ import BasicTab from './components/tab/basicTab';
 import ConfigTab from './components/tab/configTab';
 import NHThumbnail from './components/thumbnail/';
 import NHTypography from './components/typography/';
-import SideBar from './components/sidebar';
 import SideBarNoAuth from './components/sidebarnoauth';
+import SideBarOrganizacion from './components/sidebarorganizacion';
+import SideBarVoluntario from './components/sidebarvoluntario';
 import Segment from './components/segment';
 import BasicSegment from './components/segment/SegmentHeader';
 import AdvSegment from './components/segment/segmentTab';
@@ -183,7 +184,12 @@ class AppNavigator extends Component {
   render() {
     let contentDrawer;
     if (this.props.auth.isAuthenticated) { // TODO: CHANGE AFTER MAKING LOGIN
-      contentDrawer = <SideBar navigator={this._navigator} />;
+      if (this.props.auth.user.user_type === 1) {
+        contentDrawer = <SideBarOrganizacion navigator={this._navigator} />;
+      } else {
+        contentDrawer = <SideBarVoluntario navigator={this._navigator} />;
+      }
+      
     } else {
       contentDrawer = <SideBarNoAuth navigator={this._navigator} />;
     }

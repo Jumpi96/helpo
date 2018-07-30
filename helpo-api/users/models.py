@@ -155,3 +155,19 @@ class Profile(models.Model):
 
     class Meta:
         abstract = True
+
+"""
+AppValues se va utilizar como diccionario clave-valor para
+almacenar valores generales.
+
+Precaucion: Asegurarse que la entrada este inicializada (campo creado en BD),
+por ahora hay que hacerlo manual
+
+Estructura (Mantener actualizado para saber que contiene):
+    imgurAccessToken: [TOKEN]
+    imgurRefreshToken: [TOKEN]
+    imgurLastRefresh: (time in seconds)
+"""
+class AppValues(models.Model):
+    key = models.TextField(primary_key=True)
+    value = models.TextField()   

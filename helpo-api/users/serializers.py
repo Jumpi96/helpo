@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import authenticate
-from users.models import User, RubroOrganizacion, OrganizacionProfile, Ubicacion, Imagen, VoluntarioProfile, EmpresaProfile, UserVerification
+from users.models import User, RubroOrganizacion, OrganizacionProfile, Ubicacion, Imagen, VoluntarioProfile, EmpresaProfile, UserVerification, AppValues
 from django.core.exceptions import ObjectDoesNotExist
 
 
@@ -216,3 +216,8 @@ class VerificationMailSerializer(serializers.Serializer):
                 return True
         except ObjectDoesNotExist:
             raise serializers.ValidationError("Verification token does not match any")
+
+class AppValuesSerializer(serializers.ModelSerializer):
+  class Meta:
+        model = AppValues
+        fields = ('key', 'value')

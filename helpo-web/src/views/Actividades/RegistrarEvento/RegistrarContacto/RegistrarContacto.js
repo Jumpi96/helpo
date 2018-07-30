@@ -143,7 +143,11 @@ class RegistrarContacto extends Component {
       nextId: '2',
       showModalEliminar: false,
       showModalEditar: false,
-      contactoModificado: undefined,
+      contactoModificado: {
+        nombre:'',
+        email:'',
+        telefono:''
+      },
       contactoModificadoId: undefined,
       error: ''
     };
@@ -223,7 +227,11 @@ class RegistrarContacto extends Component {
     var contacts = this.state.contactos;
     var contacto = contacts[id];
     this.setState({ 
-      contactoModificado: contacto,
+      contactoModificado:{
+        nombre: contacto.nombre,
+        email: contacto.email,
+        telefono: contacto.telefono
+      },
       showModalEditar: true
     });
   }
@@ -250,16 +258,22 @@ class RegistrarContacto extends Component {
   }
 
   confirmDeleteContacto(res) {
-    if (res){;
+    if (res){
       var contactosModificados = this.state.contactos;
       var contactoMod = contactosModificados.splice(this.state.contactoModificadoId, 1);
 
       this.setState({ 
         contactos: contactosModificados,
-        contactoModificado: contactoMod
+        contactoModificado: contactoMod,
+        showModalEliminar: false
       });
       this.props.actualizarContactos(this.state.contactos);
-    }    
+    } 
+    else{
+      this.setState({ 
+        showModalEliminar: false
+      });
+    }   
   }
 
   /*

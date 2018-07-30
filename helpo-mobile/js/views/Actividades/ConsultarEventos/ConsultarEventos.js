@@ -6,7 +6,7 @@ import { Container, Header, Title, Content, Button, Icon, Left, Right, Body, Ico
 import { Actions } from 'react-native-router-flux';
 import * as eventoActions from '../../../actions/eventoActions';
 import EventoCard from './EventoCard/EventoCard';
-import styles from '../styles';
+import styles from './styles';
 
 const {
   popRoute,

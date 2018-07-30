@@ -18,13 +18,19 @@ const datas = [
   {
     name: 'Consultar eventos',
     route: 'consultarEventos',
-    icon: 'home',
+    icon: 'paper',
     bg: '#C5F442',
   },
   {
-    name: 'Actividades',
-    route: 'actividades',
+    name: 'Nuevo evento',
+    route: 'registrarEvento',
     icon: 'hand',
+    bg: '#C5F442',
+  },
+  {
+    name: 'Mis eventos',
+    route: 'misEventos',
+    icon: 'calculator',
     bg: '#C5F442',
   },
   {

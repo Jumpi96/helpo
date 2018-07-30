@@ -100,7 +100,6 @@ import AdvSegment from './components/segment/segmentTab';
 import Toast from './components/toast';
 import statusBarColor from './themes/variables';
 
-import Actividades from './views/Actividades/Actividades';
 import RegistrarEvento from './views/Actividades/RegistrarEvento/RegistrarEvento';
 import ConsultarEvento from './views/Actividades/ConsultarEventos/ConsultarEvento';
 import RegistrarNecesidades from './views/Actividades/RegistrarNecesidades/RegistrarNecesidades';
@@ -210,7 +209,6 @@ class AppNavigator extends Component {
               <Scene key="login" component={Login} />
               <Scene key="signUp" component={SignUp} />
               <Scene key="configuracion" component={Configuracion} />
-              <Scene key="actividades" component={Actividades} />
               <Scene key="consultarEventos" component={ConsultarEventos} />
               <Scene key="consultarEvento" component={ConsultarEvento} />
               <Scene key="registrarEvento" component={RegistrarEvento} />

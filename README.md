@@ -19,7 +19,6 @@ Created with [Django React Boilerplate](https://github.com/vintasoftware/django-
 - Prototyping: [JustInMind](https://www.justinmind.com/)
 - UML Modelling: [Enterprise Architect](http://www.sparxsystems.com/products/ea/) 
   - It's recommended to follow this [instructions](https://docs.google.com/document/d/1aiTtPPE9bWLdNnu2MVhimmbW6wWmoZtIJilpCCdZZQQ/edit?usp=sharing)
-- Screenshots: [ScreenPresso](https://www.screenpresso.com/)
 
 ### Git
 - Every time you start coding you should follow this workflow:
@@ -89,7 +88,7 @@ pipenv shell
 python manage.py migrate
 python manage.py runserver
 ```
-- On projec folder `helpo-web/`:
+- On project folder `helpo-web/`:
   - Create file with name `.env` and text `REACT_APP_API_URL="http://localhost:8000"`
 - Run on `helpo-web/`: 
 ```
@@ -101,15 +100,25 @@ npm run start
 ## Running with Docker
 ### Prerequisites
 - Install Docker.
+### Setup
 - From root: `docker-compose build`
 - On project folder `helpo-api/`:
-  - Create file with name `.env` and text `DJANGO_SETTINGS="helpo.settings.docker"`
+  - Create file with name `.env` and text:
+```
+DJANGO_SETTINGS="helpo.settings.docker"
+URL_CLIENT="http://localhost:3000/"
+```
+- On project folder `helpo-web/`:
+  - Create file with name `.env` and text `REACT_APP_API_URL="http://localhost:8000"`
 ### Run
 - From root: `docker-compose up`
   - For using pgAdmin4 (http://localhost:5050), *Create Server*.
     - Name: postgres
     - Host name: db
     - Password: postgres
+  - If you get `db-helpo does not exist` error and api container exits:
+    - Right click on new postgres server and *Create DB* with name `db-helpo`
+    - From root: `docker-compose up api`
 ### Migrations and Docker
 - We have a problem with our optional use of Docker and migrations. **If you want to create or modify models in Django**, you have to:
   - Do not use Docker to *makemigrations* and *migrate*.
@@ -123,7 +132,7 @@ npm run start
 ## Running helpo-mobile
 ### Prerequisites
 - Android: have a **Android emulator** working.
-  - Note: be creative, it is may not be fast and easy. I had many errors that were solved just searching in Google.
+  - Note: be a magician, it is not fast and easy. I had many errors that were solved just being JPL.
 - iOS: be Luciano.
 ### Setup
 - Execute: `react-native run-android`
@@ -131,6 +140,7 @@ npm run start
 #### Android
 - Run `react-native run-android` o `npm start`.
   - Double R should reload the emulator with changes.
+  - `npm install` and `npm start` is the easiest and safest approach.
 #### iOS
 - Run `react-native run-ios`
 

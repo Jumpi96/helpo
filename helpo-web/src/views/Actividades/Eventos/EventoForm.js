@@ -27,7 +27,7 @@ class EventoForm extends React.Component {
     const { value } = event.target;
     const field = event.target.name;
     const index = this.props.evento.contacto.map(e => e.contactId).indexOf(contactId);
-    const newContactos = this.props.evento.contacto;
+    const newContactos = this.props.evento.contactos;
     newContactos[index][field] = value;
     this.props.onChange('contacto', newContactos);
   }
@@ -86,6 +86,12 @@ class EventoForm extends React.Component {
     const newContactos = this.props.evento.contacto;
     newContactos[index].telefono = phone;
     this.props.onChange('contacto', newContactos);
+  }
+
+  handleActualizacionContactos(nuevosContactos){
+    this.setState({ //Fijarse que hacer aca
+      contactos : nuevosContactos
+    });
   }
 
   handleSave() {
@@ -172,6 +178,8 @@ class EventoForm extends React.Component {
       return s;
     }
   }
+
+
   
   render() {
     const listaRubroEventos = this.props.rubros.map((r) =>
@@ -241,6 +249,7 @@ class EventoForm extends React.Component {
             onUbicacionChange={this.handleUbicacionChange}
           />
           <RegistrarContacto
+            actualizarContactos={this.handleActualizacionContactos}
             onClickAdd={this.handleAddContact}
             onClickRemove={this.handleRemoveContact}
             onContactChange={this.handleContactChange}

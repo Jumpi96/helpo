@@ -82,17 +82,7 @@ class EventoForm extends React.Component {
       formIsValid = false;
       errors.rubro = 'Hubo un problema al cargar los rubros.';
     } else { errors.rubro = undefined; }
-
-    /*const contactValidation = this.validateContactos();
-    const contactErrors = contactValidation.errors;
-    if (!contactValidation.is_valid) {
-      formIsValid = false;
-    }
-    //Concateno errors con contactErrors
-    const allErrors = Object.assign({}, errors, contactErrors)
-    this.setState({ errors: allErrors });
-    */
-   this.setState({ errors });
+    this.setState({ errors });
     return formIsValid;
   }
 

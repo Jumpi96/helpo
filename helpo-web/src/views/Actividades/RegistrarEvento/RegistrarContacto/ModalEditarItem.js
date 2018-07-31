@@ -5,16 +5,9 @@ import validateEmail from '../../../../utils/ValidateEmail'
 class ModalEditarItem extends Component {
   constructor(props) {
     super(props);
+    // vos me estas tirando como props el contacto, por lo tanto no necesitas mantener el estado. Es una prop, podrias hacerlo con algun otro sentido pero en este caso
     this.state = {
       error: '',
-      nombre: this.props.contacto.nombre,
-      email: this.props.contacto.email,
-      telefono: this.props.contacto.telefono, 
-      contactoModificado: {
-        nombre:'',
-        email:'',
-        telefono:'',
-      }
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -78,7 +71,7 @@ class ModalEditarItem extends Component {
                   <input type="text" 
                       name="nombre" className="form-control"
                       placeholder="Nombre"
-                      value={this.state.nombre} 
+                      value={this.props.contacto.nombre} 
                       onChange={this.handleInputChange}
                     />
                   </div>
@@ -86,7 +79,7 @@ class ModalEditarItem extends Component {
                   <input type="text" 
                       name="email" className="form-control"
                       placeholder="Email"
-                      value={this.state.email} 
+                      value={this.props.contacto.email} 
                       onChange={this.handleInputChange}
                     />
                   </div>
@@ -94,7 +87,7 @@ class ModalEditarItem extends Component {
                     <input type="text" 
                       name="telefono" className="form-control"
                       placeholder="Teléfono"
-                      value={this.state.telefono} 
+                      value={this.props.contacto.telefono} 
                       onChange={this.handleInputChange}
                     />
                   </div>

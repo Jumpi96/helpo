@@ -77,7 +77,7 @@ class EventoView extends React.Component {
             evento={this.state.evento} 
             rubros={this.props.rubrosEvento}
             onSave={this.saveEvento} 
-              ange={this.updateEventoState} 
+            onChange={this.updateEventoState} 
             saving={this.state.saving}
           /> 
         </div>

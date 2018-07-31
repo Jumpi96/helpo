@@ -19,49 +19,13 @@ Created with [Django React Boilerplate](https://github.com/vintasoftware/django-
 - Prototyping: [JustInMind](https://www.justinmind.com/)
 - UML Modelling: [Enterprise Architect](http://www.sparxsystems.com/products/ea/) 
   - It's recommended to follow this [instructions](https://docs.google.com/document/d/1aiTtPPE9bWLdNnu2MVhimmbW6wWmoZtIJilpCCdZZQQ/edit?usp=sharing)
-
 ### Git
-- Every time you start coding you should follow this workflow:
-```
-# Pull everything from all branches
-git pull -a
-# Check your selected branch
-git branch
-# Switch to your branch
-git checkout your_branch
-# Do your work and
-git status
-git add some_files
-git commit -m "What you change"
-git push
-```
-- Before making a Pull Request:
-```
-# Switch to master branch and pull
-git checkout master
-git pull
-# Switch to your branch and update it
-git checkout your_branch
-git rebase master
-```
-- How to create, update and delete branches:
-```
-# If you want to create and switch to a new branch 
-git checkout -b new_branch
-# If you want to update your SELECTED branch from master after PULLING 
-git rebase master
-# If you want to delete your branch
-git branch -d your_branch
-```
-- Useful tips:
-```
-# Rollback a commit you made on YOUR SELECTED branch
-git revert commit_id
-# Compare modified file
-git diff your_file
-# For more info visit:
-https://gist.github.com/Chaser324/ce0505fbed06b947d962
-```
+To know how to:
+- Start coding
+- Prepare for a Pull Request
+- Create, update and delete branches
+
+Go to our [Git wiki](https://github.com/Jumpi96/helpo/wiki/Git-hints)
 
 ## Running without Docker
 ### Prerequisites
@@ -97,11 +61,11 @@ npm update --save
 npm install
 npm run start
 ```
+
 ## Running with Docker
 ### Prerequisites
 - Install Docker.
 ### Setup
-- From root: `docker-compose build`
 - On project folder `helpo-api/`:
   - Create file with name `.env` and text:
 ```
@@ -111,14 +75,10 @@ URL_CLIENT="http://localhost:3000/"
 - On project folder `helpo-web/`:
   - Create file with name `.env` and text `REACT_APP_API_URL="http://localhost:8000"`
 ### Run
+- From root: `docker-compose build`
 - From root: `docker-compose up`
-  - For using pgAdmin4 (http://localhost:5050), *Create Server*.
-    - Name: postgres
-    - Host name: db
-    - Password: postgres
-  - If you get `db-helpo does not exist` error and api container exits:
-    - Right click on new postgres server and *Create DB* with name `db-helpo`
-    - From root: `docker-compose up api`
+  - If you need pgAdmin4 (http://localhost:5050) instead of previous command, run:
+    - `docker-compose -f docker-compose.yml -f pgadmin.yml up`
 ### Migrations and Docker
 - We have a problem with our optional use of Docker and migrations. **If you want to create or modify models in Django**, you have to:
   - Do not use Docker to *makemigrations* and *migrate*.
@@ -126,8 +86,11 @@ URL_CLIENT="http://localhost:3000/"
     - Use *pipenv* to run your environment and run your Django *locally*.
     - Run `python manage.py makemigrations` and `python manage.py migrate` on your shell. 
   - To use Docker again, change your .env file, build your Docker image and run with *docker-compose*.
+  
 ## Testing your deployment
-- Open a browser and go to `localhost:8000`
+- Open a browser and go to:
+    - Helpo-api: `localhost:8000`
+    - Helpo-web: `localhost:3000`
 
 ## Running helpo-mobile
 ### Prerequisites
@@ -143,9 +106,7 @@ URL_CLIENT="http://localhost:3000/"
   - `npm install` and `npm start` is the easiest and safest approach.
 #### iOS
 - Run `react-native run-ios`
-
 ### Using local API
 - Add your *server* (the IP where the JS bundler is working) IP to `base.py` configuration file. For example, 10.0.2.2.
   - Add to *ALLOWED_HOSTS* (without the port) and *CORS_ORIGIN_WHITELIST* (with its port --> 10.0.2.2:8000).
 - Change IP of `api.js` configuration file in helpo-mobile.
-

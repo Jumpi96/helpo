@@ -12,35 +12,32 @@ class ModalEditarItem extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleValidation = this.handleValidation.bind(this);
+    this.handleNombreChange = this.handleNombreChange.bind(this);
+    this.handleEmailChange = this.handleEmailChange.bind(this);
+    this.handleTelefonoChange = this.handleTelefonoChange.bind(this);
+
   }
 
   handleSubmit() {
-    this.setState({error: ''});
+    this.setState({error:''});
     if (this.handleValidation()) {
-      
-      this.setState({
-        contactoModificado:{
-        nombre:this.state.nombre,
-        email:this.state.email,
-        telefono:this.state.telefono
-        }
-      })
-      this.props.closeModal(this.state.contactoModificado);
-    }
+     this.props.closeModal(true);
+    } 
   }
 
   handleValidation() { 
+    this.setState({error:''});
     let formIsValid = true;
     var error = this.state.error;    
-    if (this.state.nombre === "") {
+    if (this.props.contacto.nombre === "") {
         error = 'No puede ingresar un contacto sin nombre';        
         formIsValid = false;
       }
-    if (this.state.mail === "" && this.state.telefono === "") {
+    if (this.props.contacto.email === "" && this.props.contacto.telefono === "") {
         error += ' Debe ingresar un mail o un telefono';        
         formIsValid = false;
       }
-    if (this.state.mail !== "" && !validateEmail(this.state.mail)) {
+    if (this.props.contacto.email !== "" && !validateEmail(this.props.contacto.email)) {
         error += ' Debe ingresar un mail valido';        
         formIsValid = false;
     }
@@ -55,6 +52,24 @@ class ModalEditarItem extends Component {
     this.setState({
         [name]: value
     });
+  }
+
+  handleNombreChange(event) {
+    const contacto = this.props.contacto;
+    contacto.nombre = event.target.value;
+    this.props.handleChange(contacto);
+  }
+
+  handleEmailChange(event) {
+    const contacto = this.props.contacto;
+    contacto.email = event.target.value;
+    this.props.handleChange(contacto);
+  }
+
+  handleTelefonoChange(event) {
+    const contacto = this.props.contacto;
+    contacto.telefono = event.target.value;
+    this.props.handleChange(contacto);
   }
 
   render() {
@@ -72,7 +87,7 @@ class ModalEditarItem extends Component {
                       name="nombre" className="form-control"
                       placeholder="Nombre"
                       value={this.props.contacto.nombre} 
-                      onChange={this.handleInputChange}
+                      onChange={this.handleNombreChange}
                     />
                   </div>
                   <div className="col-md-3">
@@ -80,7 +95,7 @@ class ModalEditarItem extends Component {
                       name="email" className="form-control"
                       placeholder="Email"
                       value={this.props.contacto.email} 
-                      onChange={this.handleInputChange}
+                      onChange={this.handleEmailChange}
                     />
                   </div>
                   <div className="col-md-3">
@@ -88,7 +103,7 @@ class ModalEditarItem extends Component {
                       name="telefono" className="form-control"
                       placeholder="Teléfono"
                       value={this.props.contacto.telefono} 
-                      onChange={this.handleInputChange}
+                      onChange={this.handleTelefonoChange}
                     />
                   </div>
                 <div>
@@ -98,8 +113,8 @@ class ModalEditarItem extends Component {
           </ModalBody>
 
           <ModalFooter>
-            <Button color="warning" onClick={this.handleSubmit}>Editar</Button>{' '}
-            <Button color="secondary" onClick={() => this.props.closeModal(undefined)}>Cancelar</Button>
+            <Button color="warning" onClick={this.handleSubmit}>Guardar</Button>{' '}
+            <Button color="secondary" onClick={() => this.props.closeModal(false)}>Cancelar</Button>
           </ModalFooter>
 
         </Modal>

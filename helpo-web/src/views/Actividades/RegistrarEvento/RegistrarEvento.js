@@ -72,6 +72,7 @@ class RegistrarEvento extends Component {
   }
 
   handleActualizacionContactos(nuevosContactos){
+    event.preventDefault();
     this.setState({
       contactos : nuevosContactos
     });

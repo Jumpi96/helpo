@@ -1,119 +1,3 @@
-/*
-import React from 'react';
-import PropTypes from 'prop-types';
-
-
-const inputPropTypes = {
-  contactNum: PropTypes.number.isRequired,
-  onClickRemove: PropTypes.func.isRequired,
-  contactId: PropTypes.number.isRequired,
-  onContactChange: PropTypes.func.isRequired,
-  onPhoneChange: PropTypes.func.isRequired,
-  contactValues: PropTypes.shape({
-    nombre: PropTypes.string,
-    email: PropTypes.string,
-    telefono: PropTypes.number,
-  }).isRequired,
-};
-
-function ContactoInput({
-  contactNum, onClickRemove, contactId, onContactChange, onPhoneChange, contactValues,
-}) {
-  return (
-    <div className="form-group">
-      <h6>Contacto {contactNum}</h6>
-      <label htmlFor={`nombre-contacto${contactId}`}>
-        Nombre<br />
-        <input
-          type="text"
-          placeholder="Nombre Apellido"
-          id={`nombre-contacto${contactId}`}
-          className="form-control"
-          name="nombre"
-          onChange={e => onContactChange(e, contactId)}
-          value={contactValues.nombre}
-        />
-      </label> <br />
-      <label htmlFor={`email-contacto${contactId}`}>
-        email<br />
-        <input
-          type="email"
-          placeholder="ejemplo@email.com"
-          id={`email-contacto${contactId}`}
-          className="form-control"
-          name="email"
-          onChange={e => onContactChange(e, contactId)}
-          value={contactValues.email}
-        />
-      </label> <br />
-      <label htmlFor={`telefono-contacto${contactId}`}>
-        Telefono<br />
-        <input
-          type="telefono"
-          placeholder="543515000555"
-          id={`telefono-contacto${contactId}`}
-          className="form-control"
-          name="telefono"
-          onChange={e => onPhoneChange(e, contactId)}
-          value={contactValues.telefono}
-        />
-      </label> <br />
-      <input
-        type="button"
-        value="Remover Contacto"
-        className="btn btn-danger"
-        onClick={() => onClickRemove(contactId)}
-      />
-    </div>
-  );
-}
-ContactoInput.propTypes = inputPropTypes;
-
-const registerPropTypes = {
-  contacts: PropTypes.arrayOf(PropTypes.object).isRequired,  
-  onClickAdd: PropTypes.func.isRequired,
-  onClickRemove: PropTypes.func.isRequired,
-  onContactChange: PropTypes.func.isRequired,
-  onPhoneChange: PropTypes.func.isRequired,
-};
-
-class RegistrarContacto extends React.Component {
-  displayInputs() {
-    const inputs = [];
-    for (let i = 1; i <= this.props.contacts.length; i += 1) {
-      inputs.push(<ContactoInput
-        contactNum={i}
-        onClickRemove={this.props.onClickRemove}
-        contactId={this.props.contacts[i - 1].contactId}
-        onContactChange={this.props.onContactChange}
-        onPhoneChange={this.props.onPhoneChange}
-        contactValues={this.props.contacts[i - 1]}
-      />);
-    }
-    return inputs || null;
-  }
-
-  render() {
-    return (
-      <div className="row">
-        {this.displayInputs()}
-        <input
-          type="button"
-          className="btn btn-secondary"
-          value="Agregar Contacto"
-          onClick={this.props.onClickAdd}
-        />
-      </div>
-    );
-  }
-}
-RegistrarContacto.propTypes = registerPropTypes;
-
-export default RegistrarContacto;
-*/
-
-
-
 import React, { Component } from 'react';
 import { Button, Table, Card, CardHeader, CardBody } from 'reactstrap';
 import './RegistrarContacto.css';
@@ -143,12 +27,12 @@ class RegistrarContacto extends Component {
       nextId: '2',
       showModalEliminar: false,
       showModalEditar: false,
+      contactoModificadoId: undefined,
       contactoModificado: {
         nombre:'',
         email:'',
-        telefono:''
+        telefono:''  
       },
-      contactoModificadoId: undefined,
       error: ''
     };
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -159,11 +43,12 @@ class RegistrarContacto extends Component {
     this.handleValidation = this.handleValidation.bind(this);
     this.editContacto = this.editContacto.bind(this);
     this.cleancontacto = this.cleancontacto.bind(this);
+    this.handleModalChange = this.handleModalChange.bind(this);
   }
 
   handleSubmit(event) {
     event.preventDefault();
-    this.setState({error: ''});
+    this.setState({error:''});
     var contacto = undefined;
     if (this.handleValidation()) {
       contacto = {        
@@ -184,7 +69,8 @@ class RegistrarContacto extends Component {
     }
   }
 
-  handleValidation() { 
+  handleValidation() {
+    this.setState({error:''}); 
     let formIsValid = true;
     var error = this.state.error;    
     if (this.state.nombre === "") {
@@ -203,22 +89,31 @@ class RegistrarContacto extends Component {
     return formIsValid;      
   }
 
-  saveCntacto(cont) { 
-    if (cont !== undefined) {
+  saveCntacto(guardar) { 
+    if (guardar) {
       var contactosModificados = this.state.contactos;
-      contactosModificados[this.state.contactoModificadoId]= cont;
-      
+      var id = this.state.contactoModificadoId
+      var contactoAModificar = this.state.contactoModificado;
+      contactosModificados[id]= contactoAModificar;      
       this.setState({
+        contactos: contactosModificados,
         showModalEditar: false,
-        contactoModificado: undefined,
-        contactos: contactosModificados
+        contactoModificado:{
+          nombre:'',
+          email:'',
+          telefono:''
+        },        
       });   
     this.props.actualizarContactos(this.state.contactos);      
     }
     else{
       this.setState({
         showModalEditar:false,
-        contactoModificado: undefined
+        contactoModificado:{
+          nombre:'',
+          email:'',
+          telefono:''
+        }
       })
     }
   }
@@ -227,10 +122,11 @@ class RegistrarContacto extends Component {
     var contacts = this.state.contactos;
     var contacto = contacts[id];
     this.setState({ 
+      contactoModificadoId:id,
       contactoModificado:{
-        nombre: contacto.nombre,
-        email: contacto.email,
-        telefono: contacto.telefono
+        nombre:contacto.nombre,
+        email:contacto.email,
+        telefono:contacto.telefono
       },
       showModalEditar: true
     });
@@ -252,7 +148,8 @@ class RegistrarContacto extends Component {
     var contacto = contacts[id];
     this.setState({ 
       showModalEliminar: true,
-      contactoModificado: contacto
+      contactoModificado: contacto,
+      contactoModificadoId: id
     });
     this.props.actualizarContactos(this.state.contactos);    
   }
@@ -265,6 +162,7 @@ class RegistrarContacto extends Component {
       this.setState({ 
         contactos: contactosModificados,
         contactoModificado: contactoMod,
+        contactoModificadoId: undefined,
         showModalEliminar: false
       });
       this.props.actualizarContactos(this.state.contactos);
@@ -323,6 +221,10 @@ class RegistrarContacto extends Component {
     });
   }
 
+  handleModalChange(contacto) {
+    this.setState({ contactoModificado: contacto });
+  }
+
   getTablaContactos() { // Ver ayuda de juan del dia martes 24 de Julio con foto 
     var contacts = this.state.contactos;
     if(contacts.length > 0){
@@ -350,8 +252,6 @@ class RegistrarContacto extends Component {
   }
 
   render() {
-    
-
     return (
       <div className="animated fadeIn">
         <Card>
@@ -414,7 +314,7 @@ class RegistrarContacto extends Component {
         </Card>
         <ModalEliminarItem open={this.state.showModalEliminar} contacto={this.state.contactoModificado} contactoId={this.state.contactoModificadoId} contactos={this.state.contactos}
           closeModal={this.confirmDeleteContacto}/>
-        <ModalEditarItem open={this.state.showModalEditar} contacto={this.state.contactoModificado} contactoId={this.state.contactoModificadoId} contactos={this.state.contactos}
+        <ModalEditarItem open={this.state.showModalEditar} contacto={this.state.contactoModificado}  handleChange={this.handleModalChange}
           closeModal={this.saveCntacto}/>
       </div>
     )

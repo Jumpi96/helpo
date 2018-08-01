@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Table, Card, CardHeader, CardBody } from 'reactstrap';
 import './RegistrarContacto.css';
-import api from '../../../../api';
 import ModalEliminarItem from './ModalEliminarItem';
 import ModalEditarItem from './ModalEditarItem';
 import validateEmail from '../../../../utils/ValidateEmail'
@@ -21,7 +20,7 @@ class RegistrarContacto extends Component {
       contactos: this.props.contacts,
       nombre: '',
       email: '',
-      telefo: '',
+      telefono: '',
       contacto: undefined,      
       contactId: '1',    
       nextId: '2',
@@ -35,7 +34,7 @@ class RegistrarContacto extends Component {
       },
       error: ''
     };
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleAgregar = this.handleAgregar.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.saveCntacto = this.saveCntacto.bind(this);
     this.confirmDeleteContacto = this.confirmDeleteContacto.bind(this);
@@ -46,7 +45,7 @@ class RegistrarContacto extends Component {
     this.handleModalChange = this.handleModalChange.bind(this);
   }
 
-  handleSubmit(event) {
+  handleAgregar(event) {
     event.preventDefault();
     this.setState({error:''});
     var contacto = undefined;
@@ -178,42 +177,9 @@ class RegistrarContacto extends Component {
     }   
   }
 
-  /*
-    if (res) {
-      api.delete('/actividades/contactos/' + this.state.contactoModificado.id + '/') //atento con el id
-      .then(res => {
-        console.log(res);
-        console.log(res.data);
-        this.loadContactos();
-      }).catch(function (error) {
-        if (error.response){ console.log(error.response.status) }
-        else { console.log('Error: ', error.message)}
-      });
-    }
-    this.setState({
-      contactoModificado: undefined,
-      showModalEliminar: false
-    })
-  */
-
-
   // Carga de contactos 
-
   componentDidMount() {
     // this.loadContactos(); esto hacerlo para EDITAR EVENTO para registrar evento no hace falta
-  }
-
-  loadContactos() {
-    api.get('/actividades/contactos/?evento=' + this.state.evento + '/') // ver si esta bien
-      .then(res => {
-        const contactosData = res.data;
-        this.setState({ contactos: contactosData});
-      })
-      .catch((error) => {
-        if (error.response){ console.log(error.response.status) }
-        else { console.log('Error: ', error.message)}
-        this.setState({ error: "Hubo un problema al cargar su información." });
-      })
   }
 
   handleInputChange(event) {
@@ -264,7 +230,7 @@ class RegistrarContacto extends Component {
           </CardHeader>
           <CardBody>
             <div className="form-group">
-              <form onSubmit={this.handleSubmit}>
+              <form onSubmit={this.handleAgregar}>
                 <div className="row">
                   <div className="col-md-3">
                   <input type="text" 

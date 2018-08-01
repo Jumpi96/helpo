@@ -8,14 +8,6 @@ import validateEmail from '../../../../utils/ValidateEmail'
 class RegistrarContacto extends Component {
   constructor(props){
     super(props);
-    /*const urlParams = new URLSearchParams(this.props.location.search)
-    const parametro = urlParams.get('evento');
-    let evento;
-    if (parametro) {
-      evento = parametro;
-    } else {
-      this.props.history.push({ pathname: '/dashboard' });
-    }*/
     this.state = {
       contactos: this.props.contacts,
       nombre: '',
@@ -257,7 +249,7 @@ class RegistrarContacto extends Component {
                     />
                   </div>
                   <div className="col-md-3">
-                    <Button outline type="submit" color="success" >Agregar</Button>
+                    <Button outline type="button" onClick={this.handleAgregar} color="success" >Agregar</Button>
                   </div>
                 </div>
                 <span style={{color: "red"}}>{this.state.error}</span>

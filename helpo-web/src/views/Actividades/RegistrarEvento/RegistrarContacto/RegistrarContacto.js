@@ -85,7 +85,7 @@ class RegistrarContacto extends Component {
         error += ' Debe ingresar un mail valido';        
         formIsValid = false;
     }
-    else if (this.state.telefo !== '' && isNaN(this.state.telefono)) {
+    else if (this.state.telefono !== '' && isNaN(this.state.telefono)) {
       error += ' Debe ingresar solo números en el teléfono';        
       formIsValid = false;
     }

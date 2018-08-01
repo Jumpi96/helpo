@@ -12,26 +12,15 @@ class EventoForm extends React.Component {
     super(props);
     this.state = { errors: [] };
     this.handleChange = this.handleChange.bind(this);
-    this.handleContactChange = this.handleContactChange.bind(this);
-    this.handleAddContact = this.handleAddContact.bind(this);
-    this.handleRemoveContact = this.handleRemoveContact.bind(this);
-    this.handlePhoneChange = this.handlePhoneChange.bind(this);
     this.handleUbicacionChange = this.handleUbicacionChange.bind(this);
     this.handleRubroChange = this.handleRubroChange.bind(this);
     this.handleFechaHoraInicioChange = this.handleFechaHoraInicioChange.bind(this);
     this.handleFechaHoraFinChange = this.handleFechaHoraFinChange.bind(this);
     this.handleSave = this.handleSave.bind(this);
+    this.handleActualizacionContactos = this.handleActualizacionContactos.bind(this);
   }
 
-  handleContactChange(event, contactId) {
-    const { value } = event.target;
-    const field = event.target.name;
-    const index = this.props.evento.contacto.map(e => e.contactId).indexOf(contactId);
-    const newContactos = this.props.evento.contactos;
-    newContactos[index][field] = value;
-    this.props.onChange('contacto', newContactos);
-  }
-  
+ 
   handleChange(e) {
     this.props.onChange(e.target.name, e.target.value);
   }
@@ -54,44 +43,8 @@ class EventoForm extends React.Component {
     this.props.onChange('fecha_hora_fin', fecha_hora);
   }
 
-  handleAddContact() {
-    const newContact = {
-      nombre: '',
-      mail: '',
-      telefono: '',
-      contactId: this.props.evento.nextId,
-    };
-    const newContactos = this.props.evento.contacto.concat(newContact);
-    this.props.onChange('contacto', newContactos);
-    this.props.onChange('nextId', parseInt(this.state.nextId, 10) + 1);
-  }
-
-  handleRemoveContact(id) {
-    if (this.props.evento.contacto.length === 1) {
-      return;
-    }
-    const newContactos = this.props.evento.contacto;
-    const indexOfRemove = newContactos.map(e => e.contactId).indexOf(id);
-    newContactos.splice(indexOfRemove, 1);
-    this.props.onChange('contacto', newContactos);
-  }
-
-  handlePhoneChange(event, contactId) {
-    const phone = event.target.value;
-    //Si value es No Numerico, no se modifica el estado
-    if (isNaN(phone)) {
-      return;
-    }
-    const index = this.props.evento.contacto.map(e => e.contactId).indexOf(contactId);
-    const newContactos = this.props.evento.contacto;
-    newContactos[index].telefono = phone;
-    this.props.onChange('contacto', newContactos);
-  }
-
   handleActualizacionContactos(nuevosContactos){
-    this.setState({ //Fijarse que hacer aca
-      contactos : nuevosContactos
-    });
+    this.props.onChange('contacto', nuevosContactos);
   }
 
   handleSave() {
@@ -129,15 +82,7 @@ class EventoForm extends React.Component {
       formIsValid = false;
       errors.rubro = 'Hubo un problema al cargar los rubros.';
     } else { errors.rubro = undefined; }
-
-    const contactValidation = this.validateContactos();
-    const contactErrors = contactValidation.errors;
-    if (!contactValidation.is_valid) {
-      formIsValid = false;
-    }
-    //Concateno errors con contactErrors
-    const allErrors = Object.assign({}, errors, contactErrors)
-    this.setState({ errors: allErrors });
+    this.setState({ errors });
     return formIsValid;
   }
 
@@ -250,10 +195,6 @@ class EventoForm extends React.Component {
           />
           <RegistrarContacto
             actualizarContactos={this.handleActualizacionContactos}
-            onClickAdd={this.handleAddContact}
-            onClickRemove={this.handleRemoveContact}
-            onContactChange={this.handleContactChange}
-            onPhoneChange={this.handlePhoneChange}
             contacts={this.props.evento.contacto}
           />
           <span style={{ color: 'red' }}>{this.state.errors.contactoNombre}</span><p>{"\n"}</p>

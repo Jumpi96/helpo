@@ -47,8 +47,8 @@ class ConsultarEventosView extends React.Component {
           </tr> 
         );
       }
-      if (evento.contactos.length > 0) {
-        listaContactos = evento.contactos.map((contacto) => 
+      if (evento.contacto.length > 0) {
+        listaContactos = evento.contacto.map((contacto) => 
           <li class="col-md-6 list-group-item">{contacto.nombre} - {contacto.email} - {contacto.telefono}</li>
         );
       }

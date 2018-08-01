@@ -5,7 +5,6 @@ import validateEmail from '../../../../utils/ValidateEmail'
 class ModalEditarItem extends Component {
   constructor(props) {
     super(props);
-    // vos me estas tirando como props el contacto, por lo tanto no necesitas mantener el estado. Es una prop, podrias hacerlo con algun otro sentido pero en este caso
     this.state = {
       error: '',
     };
@@ -41,7 +40,7 @@ class ModalEditarItem extends Component {
         error += ' Debe ingresar un mail valido';        
         formIsValid = false;
     }
-    else if (this.state.telefono !== '' && isNaN(this.state.telefono)) {
+    else if (this.props.contacto.telefono !== '' && isNaN(this.props.contacto.telefono)) {
       error += ' Debe ingresar solo números en el teléfono';        
       formIsValid = false;
     }

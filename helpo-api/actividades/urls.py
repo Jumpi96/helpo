@@ -111,4 +111,34 @@ urlpatterns = [
         view=actividades_views.ConsultaEventosOrganizacionCreateReadView.as_view(),
         name="get_post_consulta_evento"
     ),
+    # {% url "api:colaboraciones" %}
+    url(
+        regex=r"^actividades/colaboraciones/$",
+        view=actividades_views.ColaboracionCreateReadView.as_view(),
+        name="get_post_colaboracion"
+    ),
+    # {% url "api:colaboraciones" evento.id %}
+    url(
+        regex=r"^actividades/colaboraciones/(?P<id>[-\w]+)/$",
+        view=actividades_views.ColaboracionReadUpdateDeleteView.as_view(),
+        name="get_put_delete_colaboracion"
+    ),
+    # {% url "api:participaciones" %}
+    url(
+        regex=r"^actividades/participaciones/$",
+        view=actividades_views.ParticipacionCreateReadView.as_view(),
+        name="get_post_participacion"
+    ),
+    # {% url "api:participaciones" evento.id %}
+    url(
+        regex=r"^actividades/participaciones/(?P<id>[-\w]+)/$",
+        view=actividades_views.ParticipacionReadUpdateDeleteView.as_view(),
+        name="get_put_delete_participacion"
+    ),
+    # {% url "api:consulta_necesidades" %}
+    url(
+        regex=r"^actividades/consulta_necesidades/(?P<id>[-\w]+)/$",
+        view=actividades_views.ConsultaNecesidadesReadUpdateDeleteView.as_view(),
+        name="get_post_consulta_necesidades"
+    ),
 ]

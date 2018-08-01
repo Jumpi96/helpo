@@ -112,6 +112,8 @@ import Login from './views/Usuarios/Login';
 import Configuracion from './views/Usuarios/Configuracion';
 import SignUp from './views/Usuarios/SignUp';
 import ConsultarEventos from './views/Actividades/ConsultarEventos/ConsultarEventos';
+import RegistrarColaboraciones from './views/Actividades/RegistrarColaboraciones/RegistrarColaboraciones';
+import AgregarColaboracion from './views/Actividades/RegistrarColaboraciones/AgregarColaboracion';
 
 const {
   popRoute,
@@ -212,6 +214,8 @@ class AppNavigator extends Component {
               <Scene key="editarEvento" component={EditarEvento} />
               <Scene key="agregarNecesidad" component={AgregarNecesidad} />
               <Scene key="agregarVoluntario" component={AgregarVoluntario} />
+              <Scene key="registrarColaboraciones" component={RegistrarColaboraciones} />
+              <Scene key="agregarColaboracion" component={AgregarColaboracion} />
               <Scene key="header" component={Header} />
               <Scene key="header1" component={Header1} />
               <Scene key="header2" component={Header2} />

@@ -320,7 +320,7 @@ class RegistrarNecesidades extends Component {
   getTablaVoluntarios() {
     return this.state.voluntarios.map((n) =>
       <tr>
-        <td><i></i></td>
+        <td><i className="cui-user"></i></td>
         <td>{n.funcion.nombre}</td>
         <td>{n.descripcion}</td>
         <td>{n.cantidad}</td>

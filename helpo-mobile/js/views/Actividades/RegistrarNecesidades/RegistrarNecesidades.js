@@ -15,9 +15,6 @@ import {
   Text,
   ListItem,
   ActionSheet,
-  Fab,
-  IconNB,
-  View,
   Separator,
 } from 'native-base';
 import { openDrawer } from '../../../actions/drawer';
@@ -122,10 +119,14 @@ class RegistrarNecesidades extends React.Component {
           </Text>
         </Body>
         <Right>
-          <Text>{n.cantidad}</Text>
+          <Text>{this.getCantidadVoluntarios(n)}</Text>
         </Right>
       </ListItem>
     );
+  }
+
+  getCantidadVoluntarios(v) {
+    return '' + v.participaciones.length + '/' + v.cantidad;
   }
 
   render() {
@@ -176,49 +177,26 @@ class RegistrarNecesidades extends React.Component {
             </Button>
           </Left>
           <Body>
-            <Title>Administrar necesidades</Title>
+            <Title>Colaborar en {this.state.evento.nombre}</Title>
           </Body>
         </Header>
         <Content>
           <Form>
             <Separator bordered noTopBorder>
-              <Text>Fecha</Text>
+              <Text>Necesidades materiales</Text>
             </Separator>
             {listaNecesidades}
             <Separator bordered noTopBorder>
-              <Text>Fecha</Text>
+              <Text>Voluntarios</Text>
             </Separator>
             {this.getListaVoluntarios()}
           </Form>
         </Content>
-        <View style={{ flex: 0.1 }}>
-          <Fab
-            direction="left"
-            containerStyle={{}}
-            style={{ backgroundColor: "#5067FF" }}
-            position="bottomRight"
-            onPress={() => this.setState({ fabActive: !this.state.fabActive })}
-          >
-            <IconNB name="md-add" />
-            <Button
-              style={{ backgroundColor: '#34A34F' }}
-              onPress={() => Actions.agregarNecesidad({ evento: this.state.evento })}
-            >
-              <Icon name="clipboard" />
-            </Button>
-            <Button
-              style={{ backgroundColor: '#eef442' }}
-              onPress={() => Actions.agregarVoluntario({ evento: this.state.evento })}
-            >
-              <Icon name="person" />
-            </Button>
-          </Fab>
-        </View>
       </Container>
     );
   }
 }
-//onPress={() => Actions.agregarNecesidad({ evento: this.state.evento })}
+
 function bindAction(dispatch) {
   return {
     openDrawer: () => dispatch(openDrawer()),

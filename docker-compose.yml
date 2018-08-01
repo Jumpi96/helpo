@@ -2,29 +2,22 @@ version: '3'
 
 services:
   db:
-    image: postgres
+    image: postgres:10.4-alpine
     restart: always
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: db-helpo
     ports:
       - "5432:5432"
-  pgadmin:
-    image: thajeztah/pgadmin4
-    ports:
-      - "5050:5050"
-    restart: always
-    depends_on:
-      - db
   api:
     build: helpo-api/.
-    command: >
-      bash -c "python manage.py migrate && 
-          python manage.py runserver 0.0.0.0:8000"
-    volumes:
-      - .:/helpo-api/code
+    command: ["./wait-for-it.sh", "db:5432", "--", "bash", "-c", 
+      "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]
     ports:
       - "8000:8000"
+    volumes:
+      - .:/helpo-api/code
     depends_on:
       - db
   web:
@@ -33,3 +26,7 @@ services:
     - "3000:3000"
     volumes:
       - .:/helpo-web/
+    depends_on:
+      - db
+      - api
+    

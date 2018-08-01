@@ -4,11 +4,13 @@ from rest_framework.generics import RetrieveUpdateDestroyAPIView
 from rest_framework.response import Response
 from rest_framework import status
 from datetime import datetime
-from actividades.models import Evento, RubroEvento, CategoriaRecurso, Recurso, Necesidad, Contacto, Voluntario, Funcion
+from actividades.models import Evento, RubroEvento, CategoriaRecurso, Recurso, Necesidad, \
+    Contacto, Voluntario, Funcion, Participacion, Colaboracion
 from knox.models import AuthToken
 from actividades.serializers import EventoSerializer, RubroEventoSerializer, \
     CategoriaRecursoSerializer, RecursoSerializer, NecesidadSerializer, ContactoSerializer, \
-    ConsultaEventoSerializer, VoluntarioSerializer, FuncionSerializer
+    ConsultaEventoSerializer, VoluntarioSerializer, FuncionSerializer, ConsultaNecesidadesSerializer, \
+    ParticipacionSerializer, ColaboracionSerializer
 from common.functions import get_token_user
 
 class RubroEventoCreateReadView(ListCreateAPIView):
@@ -189,3 +191,56 @@ class ConsultaEventosOrganizacionCreateReadView(ListCreateAPIView):
         queryset = queryset.filter(fecha_hora_inicio__gte=datetime.today())
         queryset = queryset.order_by('-fecha_hora_inicio')
         return queryset
+
+class ColaboracionCreateReadView(ListCreateAPIView):
+    """
+    API endpoint para crear o ver todas las colaboraciones de voluntario
+    """
+    queryset = Colaboracion.objects.all()
+    serializer_class = ColaboracionSerializer
+
+    def create(self, request):
+        serializer = ColaboracionSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(voluntario_id=get_token_user(self.request))
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class ColaboracionReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
+    """
+    API endpoint para leer, actualizar o eliminar una colaboración de voluntario
+    """
+    queryset = Colaboracion.objects.all()
+    serializer_class = ColaboracionSerializer
+    lookup_field = 'id'
+
+class ParticipacionCreateReadView(ListCreateAPIView):
+    """
+    API endpoint para crear o ver todas las participaciones de voluntario
+    """
+    queryset = Participacion.objects.all()
+    serializer_class = ParticipacionSerializer
+
+    def create(self, request):
+        serializer = ParticipacionSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(voluntario_id=get_token_user(self.request))
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ParticipacionReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
+    """
+    API endpoint para leer, actualizar o eliminar una participación de voluntario
+    """
+    queryset = Participacion.objects.all()
+    serializer_class = ParticipacionSerializer
+    lookup_field = 'id'
+
+class ConsultaNecesidadesReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
+    """
+    API endpoint para ver consultar el estado de necesidades de un evento
+    """
+    serializer_class = ConsultaNecesidadesSerializer
+    queryset = Evento.objects.all()
+    lookup_field = 'id'

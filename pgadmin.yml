@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  pgadmin:
+    image: thajeztah/pgadmin4
+    ports:
+      - "5050:5050"
+    restart: always
+    depends_on:
+      - db

@@ -35,17 +35,6 @@ class RegistrarEvento extends Component {
     this.handleActualizacionContactos = this.handleActualizacionContactos.bind(this);
   }
 
-  /*handleContactChange(event, contactId) {
-    const { value } = event.target;
-    const field = event.target.name;
-    const index = this.state.contactos.map(e => e.contactId).indexOf(contactId);
-    const newContactos = this.state.contactos;
-    newContactos[index][field] = value;
-    this.setState({
-      contactos: newContactos,
-    });
-  }*/
-
   handleContactChange(event, contactId) { //  Puede servir para actualizar los contacto en el padre (RegistrarEvento)
     const { value } = event.target;
     const field = event.target.name;

@@ -26,12 +26,8 @@ class RegistrarEvento extends Component {
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleUbicacionChange = this.handleUbicacionChange.bind(this);
     this.handleRubroChange = this.handleRubroChange.bind(this);
-    this.handleContactChange = this.handleContactChange.bind(this);
     this.handleFechaHoraInicioChange = this.handleFechaHoraInicioChange.bind(this);
     this.handleFechaHoraFinChange = this.handleFechaHoraFinChange.bind(this);
-    this.handleAddContact = this.handleAddContact.bind(this);
-    this.handleRemoveContact = this.handleRemoveContact.bind(this);
-    this.handlePhoneChange = this.handlePhoneChange.bind(this);
     this.handleActualizacionContactos = this.handleActualizacionContactos.bind(this);
   }
 
@@ -67,7 +63,7 @@ class RegistrarEvento extends Component {
     const contactos = this.state.contactos;
     let info_contactos = [];
     //Si no hay contactos, retorno array vacio    
-    if (contactos[0].nombre === "" || contactos[0] === undefined) {
+    if (contactos[0] === undefined || contactos[0].nombre === "") {
       return info_contactos;
     }
     for (let i = 0; i < contactos.length; i += 1) {
@@ -82,6 +78,15 @@ class RegistrarEvento extends Component {
       info_contactos[i] = cto;
     }
     return info_contactos;
+  }
+
+  handleInputChange(event) {
+    const target = event.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
+    this.setState({
+        [name]: value
+    });
   }
 
   handleSubmit(event) { //Atencion a como se postean los contactos como contacto sin "S"
@@ -169,15 +174,7 @@ class RegistrarEvento extends Component {
       formIsValid = false;
       errors.rubro = 'Hubo un problema al cargar los rubros.';
     } else { errors.rubro = undefined; }
-
-    //const contactValidation = this.();
-    //const contactErrors = contactValidation.errors;
-    /*if (!contactValidation.is_valid) {
-      formIsValid = false;
-    }*/
-    //Concateno errors con contactErrors
-    //const allErrors = Object.assign({}, errors, contactErrors)
-    //this.setState({ errors: allErrors });
+    this.setState({ errors: errors });
     return formIsValid;
   }
 
@@ -258,10 +255,6 @@ class RegistrarEvento extends Component {
               />
               <RegistrarContacto
                 actualizarContactos={this.handleActualizacionContactos}
-                onClickAdd={this.handleAddContact}
-                onClickRemove={this.handleRemoveContact}
-                onContactChange={this.handleContactChange}
-                onPhoneChange={this.handlePhoneChange}
                 contacts={this.state.contactos}          
               />
               <span style={{ color: 'red' }}>{this.state.errors.contactoNombre}</span><p>{"\n"}</p>

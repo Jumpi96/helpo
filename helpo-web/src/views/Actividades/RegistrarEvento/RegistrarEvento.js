@@ -35,30 +35,7 @@ class RegistrarEvento extends Component {
     this.handleActualizacionContactos = this.handleActualizacionContactos.bind(this);
   }
 
-  handleContactChange(event, contactId) { //  Puede servir para actualizar los contacto en el padre (RegistrarEvento)
-    const { value } = event.target;
-    const field = event.target.name;
-    const index = this.state.contactos.map(e => e.contactId).indexOf(contactId);
-    const newContactos = this.state.contactos;
-    newContactos[index][field] = value;
-    this.setState({
-      contactos: newContactos,
-    });
-  }
-
-  handlePhoneChange(event, contactId) {
-    const phone = event.target.value;
-    //Si value es No Numerico, no se modifica el estado
-    if (isNaN(phone)) {
-      return;
-    }
-    const index = this.state.contactos.map(e => e.contactId).indexOf(contactId);
-    const newContactos = this.state.contactos;
-    newContactos[index].telefono = phone;
-    this.setState({
-      contactos: newContactos,
-    });
-  }
+  
 
   handleActualizacionContactos(nuevosContactos){
     this.setState({
@@ -66,41 +43,9 @@ class RegistrarEvento extends Component {
     });
   }
 
-  handleInputChange(event) {
-    const target = event.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
-    const name = target.name;
-    this.setState({
-      [name]: value,
-    });
-  }
 
   handleRubroChange(r) {
     this.setState({ rubro_id: r });
-  }
-  handleAddContact() {
-    const newContact = {
-      nombre: '',
-      mail: '',
-      telefono: '',
-      contactId: this.state.nextId,
-    };
-    const newContactos = this.state.contactos.concat(newContact);
-    this.setState({
-      contactos: newContactos,
-      nextId: parseInt(this.state.nextId, 10) + 1,
-    });
-  }
-  handleRemoveContact(id) {
-    if (this.state.contactos.length === 1) {
-      return;
-    }
-    const newContactos = this.state.contactos;
-    const indexOfRemove = newContactos.map(e => e.contactId).indexOf(id);
-    newContactos.splice(indexOfRemove, 1);
-    this.setState({
-      contactos: newContactos,
-    });
   }
 
   handleOrganizacionChange(org) {

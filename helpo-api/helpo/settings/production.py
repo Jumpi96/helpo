@@ -1,17 +1,21 @@
 from decouple import Csv, config
-from dj_database_url import parse as db_url
-
 from .base import *  # noqa
 
 
-DEBUG = False
+DEBUG = True
 
 SECRET_KEY = config('SECRET_KEY')
 
 DATABASES = {
-    'default': config('DATABASE_URL', cast=db_url),
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "db-helpo",
+        "USER": "postgres",
+        "PASSWORD": "postgres",
+        "HOST": "db",
+        "PORT": "5432",
+    }
 }
-DATABASES['default']['ATOMIC_REQUESTS'] = True
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 
@@ -21,6 +25,19 @@ STATIC_URL = '/static/'
 MEDIA_ROOT = base_dir_join('mediafiles')
 MEDIA_URL = '/media/'
 
+DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+
+AUTH_PASSWORD_VALIDATORS = []  # allow easy passwords only on local
+
+# Celery
+CELERY_TASK_ALWAYS_EAGER = True
+
+# Email
+INSTALLED_APPS += ('naomi',)
+EMAIL_BACKEND = 'naomi.mail.backends.naomi.NaomiBackend'
+EMAIL_FILE_PATH = base_dir_join('tmp_email')
+
 SERVER_EMAIL = 'foo@example.com'
 
 EMAIL_HOST = 'smtp.sendgrid.net'
@@ -29,71 +46,44 @@ EMAIL_HOST_PASSWORD = config('SENDGRID_PASSWORD')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
-# Security
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-SECURE_SSL_REDIRECT = True
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
-SECURE_HSTS_SECONDS = 3600
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+# django-debug-toolbar and django-debug-toolbar-request-history
+INSTALLED_APPS += ('debug_toolbar',)
+MIDDLEWARE += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
+INTERNAL_IPS = ['127.0.0.1', '::1']
 
-SECURE_CONTENT_TYPE_NOSNIFF = True
-SECURE_BROWSER_XSS_FILTER = True
-X_FRAME_OPTIONS = 'DENY'
-CSRF_COOKIE_HTTPONLY = True
+DEBUG_TOOLBAR_PANELS = [
+    'ddt_request_history.panels.request_history.RequestHistoryPanel',
+    'debug_toolbar.panels.versions.VersionsPanel',
+    'debug_toolbar.panels.timer.TimerPanel',
+    'debug_toolbar.panels.settings.SettingsPanel',
+    'debug_toolbar.panels.headers.HeadersPanel',
+    'debug_toolbar.panels.request.RequestPanel',
+    'debug_toolbar.panels.sql.SQLPanel',
+    'debug_toolbar.panels.staticfiles.StaticFilesPanel',
+    'debug_toolbar.panels.templates.TemplatesPanel',
+    'debug_toolbar.panels.cache.CachePanel',
+    'debug_toolbar.panels.signals.SignalsPanel',
+    'debug_toolbar.panels.logging.LoggingPanel',
+    'debug_toolbar.panels.redirects.RedirectsPanel',
+]
 
-# Celery
-CELERY_BROKER_URL = config('REDIS_URL')
-CELERY_RESULT_BACKEND = config('REDIS_URL')
-CELERY_SEND_TASK_ERROR_EMAILS = True
+# Fix My Django
+INSTALLED_APPS += ('fixmydjango',)
+FIX_MY_DJANGO_ADMIN_MODE = True
 
-# Whitenoise
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-MIDDLEWARE.insert(  # insert WhiteNoiseMiddleware right after SecurityMiddleware
-    MIDDLEWARE.index('django.middleware.security.SecurityMiddleware') + 1,
-    'whitenoise.middleware.WhiteNoiseMiddleware')
-
-# django-log-request-id
-MIDDLEWARE.insert(  # insert RequestIDMiddleware on the top
-    0, 'log_request_id.middleware.RequestIDMiddleware')
-
-LOG_REQUEST_ID_HEADER = 'HTTP_X_REQUEST_ID'
-LOG_REQUESTS = True
-
-# Opbeat
-INSTALLED_APPS += ['opbeat.contrib.django']
-MIDDLEWARE.insert(  # insert OpbeatAPMMiddleware on the top
-    0, 'opbeat.contrib.django.middleware.OpbeatAPMMiddleware')
-
+# Logging
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
-    'filters': {
-        'require_debug_false': {
-            '()': 'django.utils.log.RequireDebugFalse'
-        },
-        'request_id': {
-            '()': 'log_request_id.filters.RequestIDFilter'
-        },
-    },
     'formatters': {
         'standard': {
-            'format': '%(levelname)-8s [%(asctime)s] [%(request_id)s] %(name)s: %(message)s'
+            'format': '%(levelname)-8s [%(asctime)s] %(name)s: %(message)s'
         },
     },
     'handlers': {
-        'null': {
-            'class': 'logging.NullHandler',
-        },
-        'mail_admins': {
-            'level': 'ERROR',
-            'class': 'django.utils.log.AdminEmailHandler',
-            'filters': ['require_debug_false'],
-        },
         'console': {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
-            'filters': ['request_id'],
             'formatter': 'standard',
         },
     },
@@ -102,21 +92,11 @@ LOGGING = {
             'handlers': ['console'],
             'level': 'INFO'
         },
-        'django.security.DisallowedHost': {
-            'handlers': ['null'],
-            'propagate': False,
-        },
-        'django.request': {
-            'handlers': ['mail_admins'],
-            'level': 'ERROR',
-            'propagate': True,
-        },
-        'log_request_id.middleware': {
+        'celery': {
             'handlers': ['console'],
-            'level': 'DEBUG',
-            'propagate': False,
-        },
+            'level': 'INFO'
+        }
     }
 }
 
-JS_REVERSE_EXCLUDE_NAMESPACES = ['admin']
+JS_REVERSE_JS_MINIFY = False

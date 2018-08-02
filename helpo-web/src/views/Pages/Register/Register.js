@@ -52,6 +52,14 @@ class Register extends Component {
   }
 
   handleUserTypeSelect(user_type) {
+    this.setState({
+      errors:{
+        nombre:'',
+        apellido:'',
+        email:'',
+        contraseña:''
+      },
+    })
     switch(user_type) {
       case "voluntario": {
         this.setState({ user_type: "2", apellido: "" });

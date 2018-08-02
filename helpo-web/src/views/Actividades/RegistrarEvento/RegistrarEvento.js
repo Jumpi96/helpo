@@ -183,7 +183,7 @@ class RegistrarEvento extends Component {
       <div className="animated fadeIn">
         <Card>
           <CardHeader>
-            <i className="fa fa-align-justify"></i> Complete las necesidades del evento
+            <i className="fa fa-align-justify"></i> Complete los datos del evento
           </CardHeader>
           <CardBody>
             <form onSubmit={this.handleSubmit}>
@@ -200,6 +200,9 @@ class RegistrarEvento extends Component {
                   />
                   <span style={{ color: 'red' }}>{this.state.errors.nombre}</span>
                 </div>
+              </div>
+
+              <div className="row">
                 <div className="form-group col-md-6">
                   <label htmlFor="listaRubros">Rubro</label>
                   <ListaRubrosEvento

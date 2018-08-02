@@ -29,8 +29,8 @@
       icon: 'icon-cursor'
     },
     {
-      name: 'Eventos',
-      url: '/actividades/mis-contribuciones',
+      name: 'Mis colaboraciones',
+      url: '/actividades/mis-colaboraciones',
       icon: 'icon-star'
     },
     {

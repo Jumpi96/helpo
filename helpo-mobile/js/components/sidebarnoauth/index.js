@@ -12,17 +12,17 @@ import styles from './style';
 
 const drawerCover = require('../../../img/drawer-cover.png');
 
-const drawerImage = require('../../../img/logo-kitchen-sink.png');
+const drawerImage = require('../../../img/logo-kitchen-sink-white.png');
 
 const datas = [
   {
-    name: 'Login',
+    name: 'Iniciar sesión',
     route: 'login',
     icon: 'key',
     bg: '#C5F442',
   },
   {
-    name: 'Register',
+    name: 'Registráte',
     route: 'signUp',
     icon: 'lock',
     bg: '#C5F442',

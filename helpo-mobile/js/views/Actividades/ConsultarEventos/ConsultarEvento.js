@@ -31,7 +31,7 @@ class ConsultaEvento extends React.Component {
     return this.props.evento.necesidades.map(n =>
       <ListItem icon key={n.id}>
         <Left>
-          <Button style={{ backgroundColor: '#4286f4' }}>
+          <Button style={{ backgroundColor: '#F9DA1B' }}>
             <Icon active name="archive" />
           </Button>
         </Left>

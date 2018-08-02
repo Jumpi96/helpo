@@ -3,10 +3,7 @@ version: '3'
 services:
   api:
     restart: always
-    environment: 
-      - DJANGO_SETTINGS=helpo.settings.docker
-      # - DJANGO_SETTINGS=helpo.settings.production
-      # Exited with error: SECRET_KEY undefined
+    env_file: ./helpo-api/production.env
   web:
     build:
       context: helpo-web/.

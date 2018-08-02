@@ -27,6 +27,11 @@ const ConsultarPerfil = Loadable({
   loading: Loading,
 });
 
+const MisColaboraciones = Loadable({
+  loader: () => import('./views/Actividades/MisContribuciones/EventoPage.js'),
+  loading: Loading,
+})
+
 const Dashboard = Loadable({
   loader: () => import('./views/Home/Home'),
   loading: Loading,
@@ -40,6 +45,7 @@ const routes = [
   { path: '/actividades/consultar-eventos', name: 'Consultar eventos', component: ConsultarEventosPage },
   { path: '/actividades/consultar-evento/:id', name: 'Consultar evento', component: ConsultarEventosView },
   { path: '/actividades/registrar-colaboraciones', name: 'Registrar colaboraciones', component: RegistrarColaboraciones },
+  { path: '/actividades/mis-colaboraciones', name: 'Mis colaboraciones', component: MisColaboraciones },
   { path: '/perfil', name: 'Mi perfil', component: ConsultarPerfil },
 ];
 

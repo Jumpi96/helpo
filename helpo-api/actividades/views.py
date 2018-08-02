@@ -180,6 +180,35 @@ class EventoOrganizacionCreateReadView(ListCreateAPIView):
         queryset = queryset.order_by('-fecha_hora_inicio')
         return queryset
 
+class EventoVoluntarioCreateReadView(ListCreateAPIView):
+    """
+    API endpoint para crear o ver todos los eventos de la organización
+    """
+    permission_classes = [permissions.IsAuthenticated, ]
+    serializer_class = EventoSerializer
+
+    def get_queryset(self):
+        queryset = self.get_eventos(get_token_user(self.request))
+        queryset = queryset.order_by('-fecha_hora_inicio')
+        return queryset
+
+    def get_eventos(self, user):
+        eventos = {}
+        colaboraciones = Colaboracion.objects.filter(voluntario_id=user)
+        for colaboracion in colaboraciones:
+            necesidad = Necesidad.objects.filter(id=colaboracion.necesidad_material_id)
+            if necesidad.evento_id not in eventos:
+                eventos[necesidad.evento_id] = Evento.objects.filter(id=necesidad.evento_id)
+        participaciones = Participacion.objects.filter(voluntario_id=user)
+        for participacion in participaciones:
+            necesidad = Voluntario.objects.filter(id=participacion.necesidad_voluntario_id)
+            if necesidad.evento_id not in eventos:
+                eventos[necesidad.evento_id] = Evento.objects.filter(id=necesidad.evento_id)
+        return list(eventos.values()) #Esta mal el enfoque, captar ids y despues buscar objetos que esten en esa lista
+
+
+
+
 class ConsultaEventosOrganizacionCreateReadView(ListCreateAPIView):
     """
     API endpoint para ver todos los eventos próximos

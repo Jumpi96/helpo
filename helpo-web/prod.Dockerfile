@@ -8,22 +8,19 @@ WORKDIR /usr/src/app
 # where available (npm@5+)
 COPY package*.json ./
 
-RUN npm install
 # If you are building your code for production
-# RUN npm install --only=production
-
-# Production installation needs:
-# RUN npm install chalk --save
-# Installing for production showed 'npm-run-all: not found'
+RUN npm install --only=production
 
 # Bundle app source
 COPY . .
 
 # Prepare build for production
-# RUN npm run build
-# RUN npm install -g serve
-# RUN serve -s build
-# started an static (unuseful) server at :5000
+RUN npm run build
 
-EXPOSE 3000
-CMD [ "npm", "start" ]
+# Copy built app into nginx container
+FROM nginx:alpine
+COPY --from=0 /usr/src/app/build /usr/share/nginx/html
+
+EXPOSE 80
+
+# This Dockerfile requires docker-ce >= 17.05

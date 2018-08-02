@@ -7,16 +7,17 @@ services:
   web:
     build:
       context: helpo-web/.
-      dockerfile: Dockerfile-prod
-    restart: always
+      dockerfile: prod.Dockerfile
+    restart: on-failure
     ports:
-    - "3000:3000"
-    volumes:
-      - .:/helpo-web/
+    - "80:80"
     depends_on:
       - db
       - api
 
 # Should I unbind volumes?
 # https://docs.docker.com/compose/production/
+
+# Volumes are not being unbinded
+# This file only extends, does not override, default compose
     

@@ -72,7 +72,7 @@ class RegistrarEvento extends Component {
       
       const cto = {
         nombre: contactos[i].nombre,
-        mail: email_info,
+        email: email_info,
         telefono: telefono_info,
       }
       info_contactos[i] = cto;

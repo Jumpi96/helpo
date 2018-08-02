@@ -190,22 +190,17 @@ function mapStateToProps(state, ownProps) {
     fecha_hora_inicio: new Date(),
     fecha_hora_fin: new Date(),
     ubicacion: { latitud: '', longitud: '', notas: '' },
-    contacto: [{
+    contactos: [{
       nombre: '',
-      mail: '',
+      email: '',
       telefono: '',
-      contactId: '1',
     }],
-    nextId: '2'
+    
   };
   const eventoId = ownProps.match.params.id;
   if (state.eventos.length > 0) {
     evento = Object.assign({}, state.eventos.find(evento => "" + evento.id === eventoId))
     evento.rubro_id = evento.rubro.id;
-    evento.nextId = evento.contacto.length + 1;
-    for (let i=0; i < evento.contacto.length; i++) {
-      evento.contacto[i].contactId = i+1;
-    }
   }
   return {evento: evento};
 }

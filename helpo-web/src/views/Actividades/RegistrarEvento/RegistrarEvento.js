@@ -20,86 +20,28 @@ class RegistrarEvento extends Component {
       fecha_hora_fin: new Date(),
       ubicacion: { latitud: -31.4201, longitud: -64.1888, notas: '' },
       errors: {},
-      contactos: [{
-        nombre: '',
-        mail: '',
-        telefono: '',
-        contactId: '1',
-      }],
-      nextId: '2',
+      contactos: [],
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleUbicacionChange = this.handleUbicacionChange.bind(this);
     this.handleRubroChange = this.handleRubroChange.bind(this);
-    this.handleContactChange = this.handleContactChange.bind(this);
     this.handleFechaHoraInicioChange = this.handleFechaHoraInicioChange.bind(this);
     this.handleFechaHoraFinChange = this.handleFechaHoraFinChange.bind(this);
-    this.handleAddContact = this.handleAddContact.bind(this);
-    this.handleRemoveContact = this.handleRemoveContact.bind(this);
-    this.handlePhoneChange = this.handlePhoneChange.bind(this);
+    this.handleActualizacionContactos = this.handleActualizacionContactos.bind(this);
   }
 
-  handleContactChange(event, contactId) {
-    const { value } = event.target;
-    const field = event.target.name;
-    const index = this.state.contactos.map(e => e.contactId).indexOf(contactId);
-    const newContactos = this.state.contactos;
-    newContactos[index][field] = value;
+  
+
+  handleActualizacionContactos(nuevosContactos){
     this.setState({
-      contactos: newContactos,
+      contactos : nuevosContactos
     });
   }
 
-  handlePhoneChange(event, contactId) {
-    const phone = event.target.value;
-    //Si value es No Numerico, no se modifica el estado
-    if (isNaN(phone)) {
-      return;
-    }
-    const index = this.state.contactos.map(e => e.contactId).indexOf(contactId);
-    const newContactos = this.state.contactos;
-    newContactos[index].telefono = phone;
-    this.setState({
-      contactos: newContactos,
-    });
-  }
-
-  handleInputChange(event) {
-    const target = event.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
-    const name = target.name;
-    this.setState({
-      [name]: value,
-    });
-  }
 
   handleRubroChange(r) {
     this.setState({ rubro_id: r });
-  }
-  handleAddContact() {
-    const newContact = {
-      nombre: '',
-      mail: '',
-      telefono: '',
-      contactId: this.state.nextId,
-    };
-    const newContactos = this.state.contactos.concat(newContact);
-    this.setState({
-      contactos: newContactos,
-      nextId: parseInt(this.state.nextId, 10) + 1,
-    });
-  }
-  handleRemoveContact(id) {
-    if (this.state.contactos.length === 1) {
-      return;
-    }
-    const newContactos = this.state.contactos;
-    const indexOfRemove = newContactos.map(e => e.contactId).indexOf(id);
-    newContactos.splice(indexOfRemove, 1);
-    this.setState({
-      contactos: newContactos,
-    });
   }
 
   handleOrganizacionChange(org) {
@@ -121,7 +63,7 @@ class RegistrarEvento extends Component {
     const contactos = this.state.contactos;
     let info_contactos = [];
     //Si no hay contactos, retorno array vacio    
-    if (contactos[0].nombre === "") {
+    if (contactos[0] === undefined || contactos[0].nombre === "") {
       return info_contactos;
     }
     for (let i = 0; i < contactos.length; i += 1) {
@@ -138,7 +80,16 @@ class RegistrarEvento extends Component {
     return info_contactos;
   }
 
-  handleSubmit(event) {
+  handleInputChange(event) {
+    const target = event.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
+    this.setState({
+        [name]: value
+    });
+  }
+
+  handleSubmit(event) { //Atencion a como se postean los contactos como contacto sin "S"
     event.preventDefault();
     if (this.handleValidation()) {
       const evento = {
@@ -223,15 +174,7 @@ class RegistrarEvento extends Component {
       formIsValid = false;
       errors.rubro = 'Hubo un problema al cargar los rubros.';
     } else { errors.rubro = undefined; }
-
-    const contactValidation = this.validateContactos();
-    const contactErrors = contactValidation.errors;
-    if (!contactValidation.is_valid) {
-      formIsValid = false;
-    }
-    //Concateno errors con contactErrors
-    const allErrors = Object.assign({}, errors, contactErrors)
-    this.setState({ errors: allErrors });
+    this.setState({ errors: errors });
     return formIsValid;
   }
 
@@ -240,7 +183,7 @@ class RegistrarEvento extends Component {
       <div className="animated fadeIn">
         <Card>
           <CardHeader>
-            <i className="fa fa-align-justify"></i> Complete las necesidades del evento
+            <i className="fa fa-align-justify"></i> Complete los datos del evento
           </CardHeader>
           <CardBody>
             <form onSubmit={this.handleSubmit}>
@@ -257,6 +200,9 @@ class RegistrarEvento extends Component {
                   />
                   <span style={{ color: 'red' }}>{this.state.errors.nombre}</span>
                 </div>
+              </div>
+
+              <div className="row">
                 <div className="form-group col-md-6">
                   <label htmlFor="listaRubros">Rubro</label>
                   <ListaRubrosEvento
@@ -267,24 +213,33 @@ class RegistrarEvento extends Component {
                   <span style={{ color: 'red' }}>{this.state.errors.rubro}</span>
                 </div>
               </div>
-              <div className="form-group">
-                <label>Fecha</label>
-                <div className="form-group">
+
+              <div className="row">                              
+                <div className="form-group col-md-1">
+                  <label>Inicio:  </label>
+                </div>
+                <div className="form-group col-md-3">
                   <DateTimePicker
-                    name="inicio"
-                    onChange={this.handleFechaHoraInicioChange}
-                    isClockOpen={false}
-                    value={this.state.fecha_hora_inicio}
+                      name="inicio"
+                      onChange={this.handleFechaHoraInicioChange}
+                      isClockOpen={false}
+                      value={this.state.fecha_hora_inicio}
                   />
+                </div>
+                <div className="form-group col-md-1">
+                  <label>Fin:  </label>
+                </div>
+                <div className="form-group col-md-3">
                   <DateTimePicker
                     name="fin"
                     onChange={this.handleFechaHoraFinChange}
                     isClockOpen={false}
                     value={this.state.fecha_hora_fin}
                   />
-                </div>
+                </div> 
                 <span style={{ color: 'red' }}>{this.state.errors.fechas}</span>
               </div>
+
               <div className="form-group">
                 <label htmlFor="descripcion">Descripción</label>
                 <textarea
@@ -302,10 +257,7 @@ class RegistrarEvento extends Component {
                 onUbicacionChange={this.handleUbicacionChange}
               />
               <RegistrarContacto
-                onClickAdd={this.handleAddContact}
-                onClickRemove={this.handleRemoveContact}
-                onContactChange={this.handleContactChange}
-                onPhoneChange={this.handlePhoneChange}
+                actualizarContactos={this.handleActualizacionContactos}
                 contacts={this.state.contactos}          
               />
               <span style={{ color: 'red' }}>{this.state.errors.contactoNombre}</span><p>{"\n"}</p>

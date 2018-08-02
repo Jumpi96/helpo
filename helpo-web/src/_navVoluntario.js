@@ -29,6 +29,11 @@
       icon: 'icon-cursor'
     },
     {
+      name: 'Eventos',
+      url: '/actividades/mis-contribuciones',
+      icon: 'icon-star'
+    },
+    {
       title: true,
       name: 'Perfil',
       wrapper: {            // optional wrapper object

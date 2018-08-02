@@ -15,6 +15,13 @@ class EventoApi {
       return error;
     });
   }
+  static getEventosConColaboraciones() {
+    return api.get('/voluntarios/colaboraciones/').then(response => {
+      return response.data;
+    }).catch(error => {
+      return error;
+    });
+  }
   static getEventosProximos() {
     return api.get('/actividades/consulta_eventos/').then(response => {
       return response.data;

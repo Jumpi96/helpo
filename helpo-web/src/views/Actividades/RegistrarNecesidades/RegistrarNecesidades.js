@@ -34,6 +34,7 @@ class RegistrarNecesidades extends Component {
       error_voluntario: undefined,
       error_necesidad: undefined,
       showModalEliminar: false,
+      showModalEditar: false,
       necesidadModificada: undefined
     };
     this.handleSubmitNecesidad = this.handleSubmitNecesidad.bind(this);

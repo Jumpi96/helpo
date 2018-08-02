@@ -11,7 +11,7 @@ export type State = {
 const initialState = {
   drawerState: 'closed',
   drawerDisabled: true,
-  themeState: 'platform',
+  themeState: 'material',
 };
 
 export default function (state:State = initialState, action:Action): State {

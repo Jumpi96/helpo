@@ -76,7 +76,7 @@ class MisEventos extends React.Component {
           <Fab
             direction="up"
             containerStyle={{}}
-            style={{ backgroundColor: "#5067FF" }}
+            style={{ backgroundColor: "#E94E1B" }}
             position="bottomRight"
             onPress={() => Actions.registrarEvento()}
           >

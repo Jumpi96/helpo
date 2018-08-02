@@ -112,7 +112,7 @@ export default {
 
 
       // Color
-  brandPrimary: '#3F51B5',
+  brandPrimary: '#E94E1B',
   brandInfo: '#3F57D3',
   brandSuccess: '#5cb85c',
   brandDanger: '#d9534f',
@@ -159,7 +159,7 @@ export default {
 
     // Header
   toolbarBtnColor: '#fff',
-  toolbarDefaultBg: '#3F51B5',
+  toolbarDefaultBg: '#E94E1B',
   toolbarHeight: (platform === 'ios') ? 76 : 56,
   toolbarIconSize: (platform === 'ios') ? 20 : 22,
   toolbarSearchIconSize: (platform === 'ios') ? 20 : 23,

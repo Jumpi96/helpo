@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
-import { Card } from 'reactstrap';
-import user_avatar from '../../../assets/user.svg'
+import { Card, CardHeader } from 'reactstrap';
 import SelectorUbicacion from '../../../utils/SelectorUbicacionGenerico'
 import api from '../../../api'
 import ModalGenerico from '../ModalGenerico'
@@ -28,7 +27,7 @@ const perfilPropTypes = {
       longitud: PropTypes.number,
       notas: PropTypes.string,
     }),
-    usuario: PropTypes.number,//User Id
+    usuario: PropTypes.number.isRequired,//User Id
   }),
   rubros: PropTypes.array.isRequired,
   switchToConsultar: PropTypes.func.isRequired,
@@ -51,7 +50,8 @@ class ModificarPerfilOrganizacion extends Component {
       rubros: this.rubros,   
       showModal: false,
       modalType: 'success',
-      errors: []
+      errors: [],
+      avatar_changed: false,
     }
     this.renderNombre  = this.renderNombre.bind(this);
     this.renderUbicacion = this.renderUbicacion.bind(this);
@@ -93,11 +93,11 @@ class ModificarPerfilOrganizacion extends Component {
         () =>
           this.setState({
             avatar_url: reader.result,
+            avatar_changed: true,
           }),
         false
       )
       reader.readAsDataURL(event.target.files[0])
-      console.log(this.state.avatar_url)
     }
   }
 
@@ -189,7 +189,8 @@ class ModificarPerfilOrganizacion extends Component {
 
   handleAvatarChange(avatar_url) {
     this.setState({
-      avatar_url: avatar_url
+      avatar_url: avatar_url,
+      avatar_changed: true,
     })
   }
 
@@ -234,15 +235,17 @@ class ModificarPerfilOrganizacion extends Component {
       rubro_id: this.fakeProps.rubro.id,
     }
     const newData = this.state
-
-    const rx = /\/9j\/.*/gm
-    const encondedAvatar = rx.exec(this.state.avatar_url)[0]
-    let avatar_url = await uploadImage(encondedAvatar)
-    if (avatar_url === 'recall') {
+    
+    let avatar_url = this.props.data.avatar.url
+    if ( this.state.avatar_changed ) {
+      console.log("MIAAAAAAMEEEEEEE")
+      const rx = /\/9j\/.*/gm
+      const encondedAvatar = rx.exec(this.state.avatar_url)[0]
       avatar_url = await uploadImage(encondedAvatar)
+      if (avatar_url === 'recall') {
+        avatar_url = await uploadImage(encondedAvatar)
+      }
     }
-    console.log("Avatar Url")
-    console.log(avatar_url)
     const submitData = {      
       descripcion: newData.descripcion,
       avatar: {url: avatar_url},
@@ -272,13 +275,14 @@ class ModificarPerfilOrganizacion extends Component {
       })
       return false
     }
+    this.setState({
+      avatar_url: submitData.avatar.url
+    })
     return true
   }
 
   handleSubmit() {
     this.prepareSubmitData().then( submitData => {
-      console.log("DATA")
-      console.log(submitData)
       if (this.validateData(submitData)) {
         api.put(`/perfiles/perfil_organizacion/${this.props.data.usuario}/`, submitData)
         .then(res => {
@@ -329,6 +333,9 @@ class ModificarPerfilOrganizacion extends Component {
   render() {    
     return (      
       <Card>
+        <CardHeader>
+          <i className="fa fa-align-justify"></i> Modificar Perfil
+        </CardHeader>
       <form>
         <div style={{ marginTop:'20px' }} class='container'>
         
@@ -345,11 +352,11 @@ class ModificarPerfilOrganizacion extends Component {
             </div>*/
             //SI SE DECIDE PODER CAMBIAR NOMBRE EN PERFIL, USAR ESTE CODIGO
           }
-          <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', height: '150px'}}  class='col'>            
+          <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', height: '150px'}}  class='col-2'>            
               <p style={{ textAlign: 'right' }} 
                  class='h4'>{this.props.nombre}</p>
           </div>
-          <div class='col'>
+          <div class='col-6'>
             <img
               class='rounded-circle'
               src={this.state.avatar_url}
@@ -362,42 +369,42 @@ class ModificarPerfilOrganizacion extends Component {
         </div>
           
         <div class='row'>
-            <p style={{ textAlign: 'right' }} class='font-weight-bold col' htmlFor="mail">Mail</p>
-            <div class='col'><p>{this.props.email}</p></div>
+            <p style={{ textAlign: 'right' }} class='font-weight-bold col-2' htmlFor="mail">Mail</p>
+            <div class='col-6'><p>{this.props.email}</p></div>
         </div>
 
         <div class='row'>
-            <p style={{ paddingTop: '8px',textAlign: 'right' }} class='font-weight-bold col' htmlFor="telefono">Teléfono</p>
-            <div class='col'>{this.renderTelefono()}</div>
+            <p style={{ paddingTop: '8px',textAlign: 'right' }} class='font-weight-bold col-2' htmlFor="telefono">Teléfono</p>
+            <div class='col-6'>{this.renderTelefono()}</div>
         </div>
 
         <div class='row'>   
-            <p style={{ paddingTop: '8px',textAlign: 'right' }} class='font-weight-bold col'           htmlFor="cuit">CUIT</p>            
-            <div class='col'>{this.renderCuit()}</div>
+            <p style={{ paddingTop: '8px',textAlign: 'right' }} class='font-weight-bold col-2'           htmlFor="cuit">CUIT</p>            
+            <div class='col-6'>{this.renderCuit()}</div>
         </div>
 
         <div class='row'>        
-            <p style={{ textAlign: 'right' }} class='font-weight-bold col' htmlFor="telefono">Rubro</p>
-            <div class='col'>{this.renderRubro()}</div>    
+            <p style={{ textAlign: 'right' }} class='font-weight-bold col-2' htmlFor="telefono">Rubro</p>
+            <div class='col-6'>{this.renderRubro()}</div>    
         </div>                       
 
         <div class='row'>          
-          <p style={{ textAlign: 'right' }} class='font-weight-bold col' htmlFor="descripcion">Descripcion</p> 
-          <div class='col'>{this.renderDescripcion()}</div>    
+          <p style={{ textAlign: 'right' }} class='font-weight-bold col-2' htmlFor="descripcion">Descripción</p> 
+          <div class='col-6'>{this.renderDescripcion()}</div>    
         </div>      
 
         <div class='row'>
-          <p class='font-weight-bold col' htmlFor="ubicacion" style={{ textAlign: 'right' }}>Ubicacion</p>
-          <div class='col' style={{ marginBottom: '5px' }}>{this.renderUbicacion()}</div>
+          <p class='font-weight-bold col-2' htmlFor="ubicacion" style={{ textAlign: 'right' }}>Ubicación</p>
+          <div class='col-6' style={{ marginBottom: '5px' }}>{this.renderUbicacion()}</div>
         </div>      
 
         <div style={{ margin: '20px' }} class='row'>
-          <div style={{ display: 'flex', justifyContent: 'flex-end' }} class='col'>
+          <div style={{ display: 'flex', justifyContent: 'flex-end' }} class='col-2'>
             <button onClick={this.handleSubmit} type="button" class="btn btn-primary">
               Guardar Cambios
             </button>
           </div>
-          <div class='col'>
+          <div class='col-6'>
             <button type="button" class="btn btn-danger" onClick={this.props.switchToConsultar}>
               Volver
             </button>

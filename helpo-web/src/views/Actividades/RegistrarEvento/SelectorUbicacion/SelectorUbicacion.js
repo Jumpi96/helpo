@@ -53,7 +53,7 @@ class SelectorUbicacion extends Component {
             mapElement={ <div style={ {height: '300px'} } /> }
             defaultPosition={this.state.ubicacionPorDefecto}
             onChange={this.handleCoordenadasChange} 
-            radius="-1"
+            radius={-1}
             name="locationPicker"/>
         </div>
         <div className="form-group col-md-6">

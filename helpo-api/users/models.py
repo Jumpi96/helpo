@@ -45,7 +45,7 @@ class VoluntarioProfile(Profile):
     habilidades = models.TextField(blank=True, null=True)
 
 class EmpresaProfile(Profile):
-    telefono = models.IntegerField(null=True)
+    telefono = models.BigIntegerField(null=True)
     cuit = models.BigIntegerField(blank=True, null=True)
     rubro = models.ForeignKey(RubroOrganizacion, on_delete=models.SET_NULL, blank=True, null=True)
     avatar = models.ForeignKey(Imagen, on_delete=models.SET_NULL, blank=True, null=True)

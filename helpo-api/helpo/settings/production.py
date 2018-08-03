@@ -33,6 +33,15 @@ AUTH_PASSWORD_VALIDATORS = []  # allow easy passwords only on local
 # Celery
 CELERY_TASK_ALWAYS_EAGER = True
 
+# CORS
+CORS_ORIGIN_WHITELIST = (
+    'helpo.com.ar:80',
+    'localhost:80',
+    'localhost:3000',
+    '10.0.2.2:8000',
+    '10.0.2.2:8001'
+)
+
 # Email
 INSTALLED_APPS += ('naomi',)
 EMAIL_BACKEND = 'naomi.mail.backends.naomi.NaomiBackend'

@@ -18,18 +18,7 @@ async function uploadImage(encodedimg) {
   if ( access_token == null ) {
     refreshToken()
   }
-
-  /*const instance = axios.create({
-    baseURL: '',
-    headers: { Authorization: `Bearer ${access_token}` }
-  })*/
   
-  /*instance.interceptors.request.use( request => {
-    console.log("REQUEST")
-    console.log(request)
-  })*/
-  const requestData = { Image: encodedimg}
-  //instance.post('https://api.imgur.com/3/image', requestData)
   await axios({
     method: 'post',
     url: 'https://api.imgur.com/3/image',

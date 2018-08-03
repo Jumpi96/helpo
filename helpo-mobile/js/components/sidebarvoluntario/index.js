@@ -21,6 +21,13 @@ const datas = [
     icon: 'home',
     bg: '#C5F442',
   },
+  {
+    name: 'Mis colaboraciones',
+    route: 'misColaboraciones',
+    icon: 'calculator',
+    bg: '#C5F442',
+  },
+
 ];
 
 class SideBarVoluntario extends Component {

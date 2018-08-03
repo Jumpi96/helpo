@@ -107,6 +107,8 @@ import AgregarNecesidad from './views/Actividades/RegistrarNecesidades/AgregarNe
 import AgregarVoluntario from './views/Actividades/RegistrarNecesidades/AgregarVoluntario/AgregarVoluntario';
 import MisEventos from './views/Actividades/MisEventos/MisEventos';
 import VerEvento from './views/Actividades/VerEvento/VerEvento';
+import MisColaboraciones from './views/Actividades/MisColaboraciones/MisColaboraciones';
+import VerColaboracionesEvento from './views/Actividades/MisColaboraciones/VerColaboracionesEvento';
 import EditarEvento from './views/Actividades/EditarEvento/EditarEvento';
 import Login from './views/Usuarios/Login';
 import Configuracion from './views/Usuarios/Configuracion';
@@ -215,6 +217,8 @@ class AppNavigator extends Component {
               <Scene key="registrarNecesidades" component={RegistrarNecesidades} />
               <Scene key="misEventos" component={MisEventos} />
               <Scene key="verEvento" component={VerEvento} />
+              <Scene key="misColaboraciones" component={MisColaboraciones} />
+              <Scene key="verColaboracionesEvento" component={VerColaboracionesEvento} />
               <Scene key="editarEvento" component={EditarEvento} />
               <Scene key="agregarNecesidad" component={AgregarNecesidad} />
               <Scene key="agregarVoluntario" component={AgregarVoluntario} />

@@ -101,13 +101,19 @@ import statusBarColor from './themes/variables';
 
 import Actividades from './views/Actividades/Actividades';
 import RegistrarEvento from './views/Actividades/RegistrarEvento/RegistrarEvento';
+import ConsultarEvento from './views/Actividades/ConsultarEventos/ConsultarEvento';
 import RegistrarNecesidades from './views/Actividades/RegistrarNecesidades/RegistrarNecesidades';
 import AgregarNecesidad from './views/Actividades/RegistrarNecesidades/AgregarNecesidad/AgregarNecesidad';
+import AgregarVoluntario from './views/Actividades/RegistrarNecesidades/AgregarVoluntario/AgregarVoluntario';
 import MisEventos from './views/Actividades/MisEventos/MisEventos';
 import VerEvento from './views/Actividades/VerEvento/VerEvento';
+import EditarEvento from './views/Actividades/EditarEvento/EditarEvento';
 import Login from './views/Usuarios/Login';
 import Configuracion from './views/Usuarios/Configuracion';
 import SignUp from './views/Usuarios/SignUp';
+import ConsultarEventos from './views/Actividades/ConsultarEventos/ConsultarEventos';
+import RegistrarColaboraciones from './views/Actividades/RegistrarColaboraciones/RegistrarColaboraciones';
+import AgregarColaboracion from './views/Actividades/RegistrarColaboraciones/AgregarColaboracion';
 
 const {
   popRoute,
@@ -199,11 +205,17 @@ class AppNavigator extends Component {
               <Scene key="signUp" component={SignUp} />
               <Scene key="configuracion" component={Configuracion} />
               <Scene key="actividades" component={Actividades} />
+              <Scene key="consultarEventos" component={ConsultarEventos} />
+              <Scene key="consultarEvento" component={ConsultarEvento} />
               <Scene key="registrarEvento" component={RegistrarEvento} />
               <Scene key="registrarNecesidades" component={RegistrarNecesidades} />
               <Scene key="misEventos" component={MisEventos} />
               <Scene key="verEvento" component={VerEvento} />
+              <Scene key="editarEvento" component={EditarEvento} />
               <Scene key="agregarNecesidad" component={AgregarNecesidad} />
+              <Scene key="agregarVoluntario" component={AgregarVoluntario} />
+              <Scene key="registrarColaboraciones" component={RegistrarColaboraciones} />
+              <Scene key="agregarColaboracion" component={AgregarColaboracion} />
               <Scene key="header" component={Header} />
               <Scene key="header1" component={Header1} />
               <Scene key="header2" component={Header2} />

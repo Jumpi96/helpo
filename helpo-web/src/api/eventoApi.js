@@ -15,8 +15,19 @@ class EventoApi {
       return error;
     });
   }
+  static getEventosProximos() {
+    return api.get('/actividades/consulta_eventos/').then(response => {
+      return response.data;
+    }).catch(error => {
+      return error;
+    });
+  }
   static updateEvento(evento) {
-    api.put(`/actividades/eventos/${evento.id}/`, evento);
+    return api.put(`/actividades/eventos/${evento.id}/`, evento).then(response => {
+      return response.data;
+    }).catch(error => {
+      return error;
+    });
   }
   static deleteEvento(evento) {
     return api.delete(`/actividades/eventos/${evento.id}/`, evento).then(response => {

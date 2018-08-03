@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import { Button, Table, Card, CardHeader, CardBody } from 'reactstrap';
 import './RegistrarNecesidades.css';
 import SelectorItem from './SelectorItem/SelectorItem';
+import ListaFunciones from './ListaFunciones/ListaFunciones';
 import NumericInput from 'react-numeric-input';
 import api from '../../../api';
-import ModalEliminarItem from '../../common/ModalEliminarItem/ModalEliminarItem';
+import ModalEliminarNecesidad from './ModalEliminarNecesidad/ModalEliminarNecesidad';
 import ModalEditarItem from './ModalEditarItem/ModalEditarItem';
 
 
@@ -22,31 +23,49 @@ class RegistrarNecesidades extends Component {
     this.state = {
       evento: evento,
       necesidades: [],
+      voluntarios: [],
       necesidad: undefined,
-      cantidad: undefined,
+      voluntario: undefined,
+      cantidad_necesidad: undefined,
+      cantidad_voluntario: undefined,
       recurso_id: 0,
-      descripcion: undefined,
-      error: undefined,
+      descripcion_necesidad: undefined,
+      descripcion_voluntario: undefined,
+      error_voluntario: undefined,
+      error_necesidad: undefined,
       showModalEliminar: false,
       necesidadModificada: undefined
     };
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleSubmitNecesidad = this.handleSubmitNecesidad.bind(this);
+    this.handleSubmitVoluntario = this.handleSubmitVoluntario.bind(this);
+    this.handleFuncionChange = this.handleFuncionChange.bind(this);
     this.handleItemChange = this.handleItemChange.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.saveNecesidad = this.saveNecesidad.bind(this);
     this.confirmDeleteNecesidad = this.confirmDeleteNecesidad.bind(this);
   }
 
-  handleSubmit(event) {
-    event.preventDefault();
-    if (this.handleValidation()) {
+  handleSubmitNecesidad() {
+    if (this.handleValidationNecesidad()) {
       const necesidad = {
         recurso_id: this.state.recurso_id,
-        descripcion: this.state.descripcion,
-        cantidad: this.state.cantidad,
+        descripcion: this.state.descripcion_necesidad,
+        cantidad: this.state.cantidad_necesidad,
         evento: this.state.evento
       }
       this.addNecesidad(necesidad);
+    }
+  }
+
+  handleSubmitVoluntario() {
+    if (this.handleValidationVoluntario()) {
+      const voluntario = {
+        funcion_id: this.state.funcion_id,
+        descripcion: this.state.descripcion_voluntario,
+        cantidad: this.state.cantidad_voluntario,
+        evento: this.state.evento
+      }
+      this.addVoluntario(voluntario);
     }
   }
 
@@ -56,34 +75,70 @@ class RegistrarNecesidades extends Component {
         console.log(res);
         console.log(res.data);
         this.cleanNecesidad();
-        this.loadNecesidades();
+        this.loadNecesidadesYVoluntarios();
       }).catch(function (error) {
         if (error.response){ console.log(error.response.status) }
         else { console.log('Error: ', error.message)}
-        this.setState({ error: "Hubo un problema al cargar su información." });
+        this.setState({ error_necesidad: "Hubo un problema al cargar su información." });
+      });
+  }
+
+  addVoluntario(voluntario) {
+    api.post('/actividades/voluntarios/', voluntario)
+      .then(res => {
+        console.log(res);
+        console.log(res.data);
+        this.cleanVoluntario();
+        this.loadNecesidadesYVoluntarios();
+      }).catch(function (error) {
+        if (error.response){ console.log(error.response.status) }
+        else { console.log('Error: ', error.message)}
+        this.setState({ error_voluntario: "Hubo un problema al cargar su información." });
       });
   }
 
   saveNecesidad(cantidad) {
     if (cantidad) {
-      const nuevaNecesidad = {
-        id: this.state.necesidadModificada.id,
-        recurso_id: this.state.necesidadModificada.recurso.id,
-        descripcion: this.state.necesidadModificada.descripcion,
-        cantidad: cantidad,
-        evento: this.state.evento
-      };
-      api.put("/actividades/necesidades/" + nuevaNecesidad.id + "/", nuevaNecesidad)
-        .then(res => {
-          console.log(res);
-          console.log(res.data);
-          this.cleanNecesidad();
-          this.loadNecesidades();
-        }).catch(function (error) {
-          if (error.response){ console.log(error.response.status) }
-          else { console.log('Error: ', error.message)}
-          this.setState({ error: "Hubo un problema al cargar su información." });
-        });
+      if (this.state.necesidadModificada.funcion) {
+        const nuevoVoluntario = {
+          id: this.state.necesidadModificada.id,
+          funcion_id: this.state.necesidadModificada.funcion.id,
+          descripcion: this.state.necesidadModificada.descripcion,
+          cantidad: cantidad,
+          evento: this.state.evento
+        }
+        api.put("/actividades/voluntarios/" + nuevoVoluntario.id + '/', nuevoVoluntario)
+          .then(res => {
+            console.log(res);
+            console.log(res.data);
+            this.cleanVoluntario();
+            this.loadNecesidadesYVoluntarios();
+          }).catch(function (error) {
+            if (error.response){ console.log(error.response.status) }
+            else { console.log('Error: ', error.message)}
+            this.setState({ error: "Hubo un problema al cargar su información." });
+          });
+      } else {
+        const nuevaNecesidad = {
+          id: this.state.necesidadModificada.id,
+          recurso_id: this.state.necesidadModificada.recurso.id,
+          descripcion: this.state.necesidadModificada.descripcion,
+          cantidad: cantidad,
+          evento: this.state.evento
+        };
+        api.put("/actividades/necesidades/" + nuevaNecesidad.id + "/", nuevaNecesidad)
+          .then(res => {
+            console.log(res);
+            console.log(res.data);
+            this.cleanNecesidad();
+            this.loadNecesidadesYVoluntarios();
+          }).catch(function (error) {
+            if (error.response){ console.log(error.response.status) }
+            else { console.log('Error: ', error.message)}
+            this.setState({ error: "Hubo un problema al cargar su información." });
+          });
+      }
+      
     }
     this.setState({
       showModalEditar: false,
@@ -91,9 +146,9 @@ class RegistrarNecesidades extends Component {
     });    
   }
 
-  handleValidation() {
+  handleValidationNecesidad() {
     let formIsValid = true;
-    var error = this.state.error;
+    var error = this.state.error_necesidad;
     if (this.state.recurso_id === 0 || 
       !this.state.recurso_id) {
       formIsValid = false;
@@ -101,7 +156,33 @@ class RegistrarNecesidades extends Component {
     } else {
       error = undefined;
     }
-    this.setState({error: error});
+    if (!this.state.descripcion_necesidad) {
+      formIsValid = false;
+      error = "Debe ingresar una descripción para la necesidad.";
+    } else {
+      error = undefined;
+    }
+    this.setState({error_necesidad: error});
+    return formIsValid;
+  }
+
+  handleValidationVoluntario() {
+    let formIsValid = true;
+    var error = this.state.error_voluntario;
+    if (this.state.funcion_id === 0 || 
+      !this.state.funcion_id) {
+      formIsValid = false;
+      error = "Hubo un problema al cargar las funciones.";
+    } else {
+      error = undefined;
+    }
+    if (!this.state.descripcion_voluntario) {
+      formIsValid = false;
+      error = "Debe ingresar una descripción para la necesidad de voluntario.";
+    } else {
+      error = undefined;
+    }
+    this.setState({error_voluntario: error});
     return formIsValid;
   }
 
@@ -113,12 +194,29 @@ class RegistrarNecesidades extends Component {
     });
   }
 
+  editVoluntario(id) {
+    const voluntario = this.state.voluntarios.filter(n => n.id === id)[0];
+    this.setState({ 
+      showModalEditar: true,
+      necesidadModificada: voluntario
+    });
+  }
+
   cleanNecesidad() {
     this.setState({
-      descripcion: undefined,
-      cantidad: undefined,
+      descripcion_necesidad: undefined,
+      cantidad_necesidad: undefined,
       recurso_id: undefined,
       necesidad: undefined
+    });
+  }
+
+  cleanVoluntario() {
+    this.setState({
+      descripcion_voluntario: undefined,
+      cantidad_voluntario: undefined,
+      funcion_id: undefined,
+      voluntario: undefined
     });
   }
 
@@ -126,22 +224,31 @@ class RegistrarNecesidades extends Component {
     const necesidad = this.state.necesidades.filter(n => n.id === id)[0];
     this.setState({ 
       showModalEliminar: true,
-      necesidadModificada: necesidad.recurso.nombre
+      necesidadModificada: necesidad
     });
-    
+  }
+
+  deleteVoluntario(id) {
+    const voluntario = this.state.voluntarios.filter(n => n.id === id)[0];
+    this.setState({ 
+      showModalEliminar: true,
+      necesidadModificada: voluntario
+    });
   }
 
   confirmDeleteNecesidad(res) {
-    if (res) {
-      api.delete('/actividades/necesidades/' + this.state.necesidadModificada.id + '/')
-      .then(res => {
-        console.log(res);
-        console.log(res.data);
-        this.loadNecesidades();
-      }).catch(function (error) {
-        if (error.response){ console.log(error.response.status) }
-        else { console.log('Error: ', error.message)}
-      });
+    if (res > 0) {
+      const ruta = this.state.necesidadModificada.funcion ? 
+        '/actividades/voluntarios/' : '/actividades/necesidades/';
+      api.delete(ruta + res + '/')
+        .then(res => {
+          console.log(res);
+          console.log(res.data);
+          this.loadNecesidadesYVoluntarios();
+        }).catch(function (error) {
+          if (error.response){ console.log(error.response.status) }
+          else { console.log('Error: ', error.message)}
+        });
     }
     this.setState({
       necesidadModificada: undefined,
@@ -150,13 +257,23 @@ class RegistrarNecesidades extends Component {
   }
 
   componentDidMount() {
-    this.loadNecesidades();
+    this.loadNecesidadesYVoluntarios();
   }
 
-  loadNecesidades() {
+  loadNecesidadesYVoluntarios() {
     api.get('/actividades/necesidades/?evento=' + this.state.evento)
       .then(res => {
         const necesidadesData = res.data;
+        api.get('/actividades/voluntarios/?evento=' + this.state.evento)
+          .then(res => {
+            const voluntariosData = res.data;
+            this.setState({ voluntarios: voluntariosData, necesidades: necesidadesData });
+          })
+          .catch((error) => {
+            if (error.response){ console.log(error.response.status) }
+            else { console.log('Error: ', error.message)}
+            this.setState({ error: "Hubo un problema al cargar su información." });
+          })
         this.setState({ necesidades: necesidadesData});
       })
       .catch((error) => {
@@ -180,8 +297,12 @@ class RegistrarNecesidades extends Component {
     });
   }
 
-  render() {
-    const tablaNecesidades = this.state.necesidades.map((n) =>
+  handleFuncionChange(f) {
+    this.setState({ funcion_id: f });
+  }
+
+  getTablaNecesidades() {
+    return this.state.necesidades.map((n) =>
       <tr>
         <td><i className={n.recurso.categoria.icono}></i></td>
         <td>{n.recurso.categoria.nombre}</td>
@@ -194,6 +315,24 @@ class RegistrarNecesidades extends Component {
           disabled={this.state.necesidad} color="danger">Eliminar</Button></td>
       </tr>
     );
+  }
+
+  getTablaVoluntarios() {
+    return this.state.voluntarios.map((n) =>
+      <tr>
+        <td><i className="cui-user"></i></td>
+        <td>{n.funcion.nombre}</td>
+        <td>{n.descripcion}</td>
+        <td>{n.cantidad}</td>
+        <td><Button onClick={() => this.editVoluntario(n.id)} outline
+          disabled={this.state.voluntario} color="warning">Editar</Button></td>
+        <td><Button onClick={() => this.deleteVoluntario(n.id)} outline 
+          disabled={this.state.voluntario} color="danger">Eliminar</Button></td>
+      </tr>
+    );
+  }
+
+  render() {
     return (
       <div className="animated fadeIn">
         <Card>
@@ -201,8 +340,9 @@ class RegistrarNecesidades extends Component {
             <i className="fa fa-align-justify"></i> Complete las necesidades del evento
           </CardHeader>
           <CardBody>
-            <div className="form-group">
-              <form onSubmit={this.handleSubmit}>
+            <form>
+              <div className="form-group">
+                <h5>Necesidades materiales</h5>
                 <div className="row">
                   <div className="col-md-4">
                     <SelectorItem 
@@ -211,47 +351,103 @@ class RegistrarNecesidades extends Component {
                   </div>
                   <div className="col-md-2">
                     <NumericInput className="form-control" min="1" placeholder="Cantidad"
-                      value={this.state.cantidad} 
-                      onChange={(num) => this.setState({ cantidad: num })}/>
+                      value={this.state.cantidad_necesidad}
+                      onChange={(num) => this.setState({ cantidad_necesidad: num })}/>
                   </div>
                   <div className="col-md-4">
                     <input type="text" 
-                      name="descripcion" className="form-control"
+                      name="descripcion_necesidad" className="form-control"
                       placeholder="Descripción"
-                      value={this.state.descripcion} 
+                      value={this.state.descripcion_necesidad} 
                       onChange={this.handleInputChange}
                     />
                   </div>
                   <div className="col-md-2">
-                    <Button outline type="submit" color="success">Agregar</Button>
+                    <Button 
+                      outline
+                      color="success"
+                      onClick={this.handleSubmitNecesidad}
+                    >
+                      Agregar
+                    </Button>
                   </div>
                 </div>
-                <span style={{color: "red"}}>{this.state.error}</span>
-              </form>
-            </div>
-            <Table responsive striped>
-              <thead>
-                <tr>
-                  <th></th>
-                  <th>Categoría</th>
-                  <th>Ítem</th>
-                  <th>Descripción</th>
-                  <th>Cantidad</th>
-                  <th></th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                {tablaNecesidades}
-              </tbody>
-            </Table>
-            <Button onClick={() => this.props.history.push('dashboard')} 
-              color="primary">Guardar necesidades</Button>
+                <span style={{color: "red"}}>{this.state.error_necesidad}</span>
+              </div>
+              <Table responsive striped>
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>Categoría</th>
+                    <th>Ítem</th>
+                    <th>Descripción</th>
+                    <th>Cantidad</th>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {this.getTablaNecesidades()}
+                </tbody>
+              </Table>
+              <div className="form-group">
+                <h5>Voluntarios</h5>
+                <div className="row">
+                  <div className="col-md-3">
+                    <ListaFunciones
+                      name="listaFunciones"
+                      funcion={this.state.funcion_id}
+                      onFuncionChange={this.handleFuncionChange}
+                    />
+                  </div>
+                  <div className="col-md-2">
+                    <NumericInput className="form-control" min="1" placeholder="Cantidad"
+                      value={this.state.cantidad_voluntario} 
+                      onChange={(num) => this.setState({ cantidad_voluntario: num })}/>
+                  </div>
+                  <div className="col-md-5">
+                    <input type="text" 
+                      name="descripcion_voluntario" className="form-control"
+                      placeholder="Descripción"
+                      value={this.state.descripcion_voluntario} 
+                      onChange={this.handleInputChange}
+                    />
+                  </div>
+                  <div className="col-md-2">
+                    <Button 
+                      outline
+                      color="success"
+                      onClick={this.handleSubmitVoluntario}
+                    >
+                      Agregar
+                    </Button>
+                  </div>
+                </div>
+                <span style={{color: "red"}}>{this.state.error_voluntario}</span>
+              </div>
+              <Table responsive striped>
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>Función</th>
+                    <th>Descripción</th>
+                    <th>Cantidad</th>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {this.getTablaVoluntarios()}
+                </tbody>
+              </Table>
+              <Button onClick={() => this.props.history.push('dashboard')} 
+                color="primary">Guardar necesidades</Button>
+            </form>
           </CardBody>
         </Card>
-        <ModalEliminarItem open={this.state.showModalEliminar} necesidad={this.state.necesidadModificada}
+        <ModalEliminarNecesidad open={this.state.showModalEliminar} necesidad={this.state.necesidadModificada}
           closeModal={this.confirmDeleteNecesidad}/>
-        <ModalEditarItem open={this.state.showModalEditar} nombre={this.state.necesidadModificada}
+        <ModalEditarItem open={this.state.showModalEditar} necesidad={this.state.necesidadModificada}
           closeModal={this.saveNecesidad}/>
       </div>
     )

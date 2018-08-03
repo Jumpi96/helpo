@@ -22,7 +22,7 @@ class Evento(IndexedTimeStampedModel):
 class Contacto(models.Model):
     nombre = models.CharField(max_length=100)
     email = models.EmailField(max_length=100,blank=True,null=True)
-    telefono = models.IntegerField(blank=True,null=True) 
+    telefono = models.BigIntegerField(blank=True,null=True) 
     evento = models.ForeignKey(Evento, related_name='contacto', null=False, on_delete=models.CASCADE)
 
 class CategoriaRecurso(models.Model):
@@ -37,4 +37,25 @@ class Necesidad(models.Model):
     descripcion = models.CharField(max_length=140, null=True)
     cantidad = models.IntegerField()
     recurso = models.ForeignKey(Recurso, null=False, on_delete=models.PROTECT)
-    evento = models.ForeignKey(Evento, null=False, on_delete=models.CASCADE)
+    evento = models.ForeignKey(Evento, related_name='necesidades', null=False, on_delete=models.CASCADE)
+
+class Funcion(models.Model):
+    nombre = models.CharField(max_length=50)
+
+class Voluntario(models.Model):
+    descripcion = models.CharField(max_length=140, null=True)
+    cantidad = models.IntegerField()
+    funcion = models.ForeignKey(Funcion, null=False, on_delete=models.PROTECT)
+    evento = models.ForeignKey(Evento, related_name='voluntarios', null=False, on_delete=models.CASCADE)
+
+class Colaboracion(models.Model):
+    cantidad = models.IntegerField()
+    comentario = models.CharField(max_length=140, null=True)
+    necesidad_material = models.ForeignKey(Necesidad, related_name='colaboraciones', null=False, on_delete=models.CASCADE)
+    voluntario = models.ForeignKey(User, null=False)
+
+class Participacion(models.Model):
+    comentario = models.CharField(max_length=140, null=True)
+    necesidad_voluntario = models.ForeignKey(Voluntario, related_name='participaciones', null=False, on_delete=models.CASCADE)
+    voluntario = models.ForeignKey(User, null=False)
+    

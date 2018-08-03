@@ -15,9 +15,7 @@ import {
   Text,
   ListItem,
   ActionSheet,
-  Fab,
-  IconNB,
-  View,
+  Separator,
 } from 'native-base';
 import { openDrawer } from '../../../actions/drawer';
 import styles from './styles';
@@ -26,23 +24,20 @@ import api from '../../../api';
 class RegistrarNecesidades extends React.Component {
   constructor(props) {
     super(props);
-    const idEvento = this.props.id;
+    const idEvento = this.props.id;    
     this.state = {
       evento: idEvento,
       necesidades: [],
+      voluntarios: [],
       error: undefined
     };
-  }
-
-  deleteNecesidad(id) {
-    this.setState({ necesidadModificada: id });
   }
 
   componentDidMount() {
     this.loadNecesidades();
   }
 
-  handleConfirmDelete(b) {
+  handleConfirmDeleteNecesidad(b) {
     if (b.text === "Eliminar" ) {
       api.delete("/actividades/necesidades/" + this.state.necesidadModificada + "/")
       .then(res => {
@@ -56,7 +51,21 @@ class RegistrarNecesidades extends React.Component {
       });
     }
     this.setState({
-      necesidadModificada: { recurso: {} }
+      necesidadModificada: { recurso: {} },
+    });
+  }
+
+  handleConfirmDeleteVoluntario(b) {
+    if (b.text === "Eliminar" ) {
+      api.delete("/actividades/voluntarios/" + this.state.necesidadModificada + "/")
+      .then(res => {
+        this.loadNecesidades();
+      }).catch(function (error) {
+        this.setState({ error: "Hubo un problema al cargar su información." });
+      });
+    }
+    this.setState({
+      necesidadModificada: { funcion: {} }
     });
   }
 
@@ -64,14 +73,60 @@ class RegistrarNecesidades extends React.Component {
     api.get("/actividades/necesidades/?evento=" + this.state.evento)
       .then(res => {
         const necesidadesData = res.data;
-        this.setState({ necesidades: necesidadesData});
-        console.log(necesidadesData);
+        api.get("/actividades/voluntarios/?evento=" + this.state.evento)
+          .then(res => {
+            const voluntariosData = res.data;
+            this.setState({ necesidades: necesidadesData, voluntarios: voluntariosData });
+          });
       })
       .catch((error) => {
-        if (error.response){ console.log(error.response.status); }
-        else { console.log("Error: ", error.message); }
         this.setState({ error: "Hubo un problema al cargar su información." });
       });
+  }
+
+  getListaVoluntarios() {
+    const deleteButtons = [
+      { text: "Eliminar", icon: "trash", iconColor: "#fa213b" },
+      { text: "Cancelar", icon: "close", iconColor: "#25de5b" }
+    ];
+    return this.state.voluntarios.map((n) =>
+      <ListItem icon key={n.id}>
+        <Left>
+          <Button style={{ backgroundColor: "#FD3C2D" }}
+            onPress={() => {
+              this.setState({ necesidadModificada: n.id });
+              ActionSheet.show(
+                {
+                  options: deleteButtons,
+                  cancelButtonIndex: 1,
+                  destructiveButtonIndex: 0,
+                  title: "¿Está seguro que desea eliminarlo?"
+                },
+                buttonIndex => {
+                  this.handleConfirmDeleteVoluntario(deleteButtons[buttonIndex]);
+                });
+              }
+            }>
+            <Icon active name="trash" />
+          </Button>
+        </Left>
+        <Body>
+          <Text>
+            {n.funcion.nombre}
+          </Text>
+          <Text numberOfLines={1} note>
+            {n.descripcion}
+          </Text>
+        </Body>
+        <Right>
+          <Text>{this.getCantidadVoluntarios(n)}</Text>
+        </Right>
+      </ListItem>
+    );
+  }
+
+  getCantidadVoluntarios(v) {
+    return '' + v.participaciones.length + '/' + v.cantidad;
   }
 
   render() {
@@ -93,7 +148,7 @@ class RegistrarNecesidades extends React.Component {
                     title: "¿Está seguro que desea eliminarlo?"
                   },
                   buttonIndex => {
-                    this.handleConfirmDelete(deleteButtons[buttonIndex]);
+                    this.handleConfirmDeleteNecesidad(deleteButtons[buttonIndex]);
                   });
                 }
               }>
@@ -122,25 +177,21 @@ class RegistrarNecesidades extends React.Component {
             </Button>
           </Left>
           <Body>
-            <Title>Registrar necesidades</Title>
+            <Title>Colaborar en {this.state.evento.nombre}</Title>
           </Body>
         </Header>
         <Content>
           <Form>
+            <Separator bordered noTopBorder>
+              <Text>Necesidades materiales</Text>
+            </Separator>
             {listaNecesidades}
+            <Separator bordered noTopBorder>
+              <Text>Voluntarios</Text>
+            </Separator>
+            {this.getListaVoluntarios()}
           </Form>
         </Content>
-        <View style={{ flex: 1 }}>
-          <Fab
-            direction="up"
-            containerStyle={{}}
-            style={{ backgroundColor: "#5067FF" }}
-            position="bottomRight"
-            onPress={() => Actions.agregarNecesidad({ evento: this.state.evento })}
-          >
-            <IconNB name="md-add" />
-          </Fab>
-        </View>
       </Container>
     );
   }

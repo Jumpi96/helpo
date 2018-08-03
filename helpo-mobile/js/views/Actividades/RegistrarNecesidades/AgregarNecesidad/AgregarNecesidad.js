@@ -92,6 +92,10 @@ class AgregarNecesidad extends React.Component {
       formIsValid = false;
       error = "La cantidad ingresada no es válida.";
     }
+    if (!this.state.descripcion) {
+      formIsValid = false;
+      error = "La descripción ingresada no es válida.";
+    }
     this.setState({error: error});
     return formIsValid;
   }

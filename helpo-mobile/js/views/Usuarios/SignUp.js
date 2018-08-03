@@ -40,7 +40,7 @@ class SignUp extends Component {
         user_type: this.state.user_type,
         apellido: this.state.apellido,
       };
-      api.post('/auth/sign_up/', usuario)
+      api.post("/auth/sign_up/", usuario)
       .then((res) => { this.setState({ errors: { ...this.state.errors, nombre: 'Se registro' } }); });
        // TODO: UX, rta 200 => "Su cuenta se registro, verificar mail, otra => Hubo problemas"
     } else {

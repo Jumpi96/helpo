@@ -33,23 +33,23 @@ class MisEventos extends React.Component {
 
   render() {
     const listaEventos = this.props.eventos.map((n) =>
-        <ListItem icon key={n.id}>
-          <Left>
-            <Button
-              style={{ backgroundColor: "#ffe859" }}
-              onPress={() => Actions.verEvento({ evento: n })}
-            >
-              <Icon name="hand" />
-            </Button>
-          </Left>
-          <Body>
-            <Text>
-              {n.nombre}
-            </Text>
-            <Text numberOfLines={1} note>
-              {moment(n.fecha_hora_inicio).format('DD/MM/YYYY')}
-            </Text>
-          </Body>
+      <ListItem icon key={n.id}>
+        <Left>
+          <Button
+            style={{ backgroundColor: '#ffe859' }}
+            onPress={() => Actions.verEvento({ evento: n, rubros: this.props.rubrosEvento })}
+          >
+            <Icon name="hand" />
+          </Button>
+        </Left>
+        <Body>
+          <Text>
+            {n.nombre}
+          </Text>
+          <Text numberOfLines={1} note>
+            {moment(n.fecha_hora_inicio).format('DD/MM/YYYY')}
+          </Text>
+        </Body>
         <Right>
           <Text>{n.rubro_id}</Text>
         </Right>
@@ -72,7 +72,7 @@ class MisEventos extends React.Component {
             {listaEventos}
           </Form>
         </Content>
-        <View style={{ flex: 0.5 }}>
+        <View style={{ flex: 0.1 }}>
           <Fab
             direction="up"
             containerStyle={{}}

@@ -22,6 +22,12 @@ const datas = [
     bg: '#C5F442',
   },
   {
+    name: 'Consultar eventos',
+    route: 'consultarEventos',
+    icon: 'home',
+    bg: '#C5F442',
+  },
+  {
     name: 'Actividades',
     route: 'actividades',
     icon: 'hand',

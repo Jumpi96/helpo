@@ -192,14 +192,8 @@ img {
   vertical-align: middle;
   border-style: none; }
 
-<<<<<<< HEAD
 svg:not(:root) {
   overflow: hidden; }
-=======
-svg {
-  overflow: hidden;
-  vertical-align: middle; }
->>>>>>> master
 
 table {
   border-collapse: collapse; }
@@ -2373,15 +2367,6 @@ input[type="button"].btn-block {
     .input-group > .custom-file + .custom-select,
     .input-group > .custom-file + .custom-file {
       margin-left: -1px; }
-<<<<<<< HEAD
-=======
-  .input-group > .form-control:focus,
-  .input-group > .custom-select:focus,
-  .input-group > .custom-file .custom-file-input:focus ~ .custom-file-label {
-    z-index: 3; }
-  .input-group > .custom-file .custom-file-input:focus {
-    z-index: 4; }
->>>>>>> master
   .input-group > .form-control:not(:last-child),
   .input-group > .custom-select:not(:last-child) {
     border-top-right-radius: 0;
@@ -2684,15 +2669,9 @@ input[type="button"].btn-block {
     border: 0;
     border-radius: 1rem;
     appearance: none; }
-<<<<<<< HEAD
     .custom-range::-webkit-slider-thumb:focus {
       outline: none;
       box-shadow: 0 0 0 1px #e4e5e6, 0 0 0 0.2rem rgba(32, 168, 216, 0.25); }
-=======
-    @media screen and (prefers-reduced-motion: reduce) {
-      .custom-range::-webkit-slider-thumb {
-        transition: none; } }
->>>>>>> master
     .custom-range::-webkit-slider-thumb:active {
       background-color: #b6e4f4; }
   .custom-range::-webkit-slider-runnable-track {
@@ -2710,15 +2689,9 @@ input[type="button"].btn-block {
     border: 0;
     border-radius: 1rem;
     appearance: none; }
-<<<<<<< HEAD
     .custom-range::-moz-range-thumb:focus {
       outline: none;
       box-shadow: 0 0 0 1px #e4e5e6, 0 0 0 0.2rem rgba(32, 168, 216, 0.25); }
-=======
-    @media screen and (prefers-reduced-motion: reduce) {
-      .custom-range::-moz-range-thumb {
-        transition: none; } }
->>>>>>> master
     .custom-range::-moz-range-thumb:active {
       background-color: #b6e4f4; }
   .custom-range::-moz-range-track {
@@ -2739,15 +2712,9 @@ input[type="button"].btn-block {
     border: 0;
     border-radius: 1rem;
     appearance: none; }
-<<<<<<< HEAD
     .custom-range::-ms-thumb:focus {
       outline: none;
       box-shadow: 0 0 0 1px #e4e5e6, 0 0 0 0.2rem rgba(32, 168, 216, 0.25); }
-=======
-    @media screen and (prefers-reduced-motion: reduce) {
-      .custom-range::-ms-thumb {
-        transition: none; } }
->>>>>>> master
     .custom-range::-ms-thumb:active {
       background-color: #b6e4f4; }
   .custom-range::-ms-track {

@@ -14,6 +14,8 @@ services:
     env_file: ./helpo-api/production.env
     command: ["./wait-for-it.sh", "db:5432", "--", "bash", "-c", 
       "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]
+    ports:
+    - "8000:8000"
     depends_on:
       - db
   web:
@@ -22,7 +24,8 @@ services:
     env_file: ./helpo-web/.env
     ports:
     - "80:80"
-    volumes: /certs:/certs
+    volumes:
+    - ./certs:/certs
     depends_on:
       - db
-      - api    
+      - api

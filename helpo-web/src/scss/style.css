@@ -145,7 +145,7 @@ sup {
   top: -.5em; }
 
 a {
-  color: #20a8d8;
+  color: #F39200;
   text-decoration: none;
   background-color: transparent;
   -webkit-text-decoration-skip: objects; }
@@ -1660,7 +1660,7 @@ fieldset:disabled a.btn {
 
 .btn-primary {
   color: #fff;
-  background-color: #20a8d8;
+  background-color: #F39200;
   border-color: #20a8d8; }
   .btn-primary:hover {
     color: #fff;
@@ -1843,10 +1843,10 @@ fieldset:disabled a.btn {
       box-shadow: 0 0 0 0.2rem rgba(47, 53, 58, 0.5); }
 
 .btn-outline-primary {
-  color: #20a8d8;
+  color: #F39200;
   background-color: transparent;
   background-image: none;
-  border-color: #20a8d8; }
+  border-color: #F39200; }
   .btn-outline-primary:hover {
     color: #fff;
     background-color: #20a8d8;
@@ -2789,7 +2789,7 @@ input[type="button"].btn-block {
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
   color: #fff;
-  background-color: #20a8d8; }
+  background-color: #F39200; }
 
 .nav-fill .nav-item {
   flex: 1 1 auto;
@@ -3290,7 +3290,7 @@ input[type="button"].btn-block {
   padding: 0.5rem 0.75rem;
   margin-left: -1px;
   line-height: 1.25;
-  color: #20a8d8;
+  color: #F39200;
   background-color: #fff;
   border: 1px solid #c8ced3; }
   .page-link:hover {
@@ -7990,7 +7990,7 @@ canvas {
 
 .nav-fill .nav-link.active {
   margin-top: -1px;
-  border-top: 2px solid #20a8d8; }
+  border-top: 2px solid #F39200; }
 
 *[dir="rtl"] .nav {
   padding-right: 0; }
@@ -8043,7 +8043,7 @@ canvas {
   flex-direction: column;
   padding: 0;
   color: #fff;
-  background: #2f353a; }
+  background: #E94E1B; }
   .sidebar .sidebar-close {
     position: absolute;
     right: 0;
@@ -8112,7 +8112,7 @@ canvas {
       width: 1.09375rem;
       margin: 0 0.5rem 0 0;
       font-size: 0.875rem;
-      color: #73818f;
+      color: white;
       text-align: center; }
     .sidebar .nav-link .badge {
       float: right;
@@ -8121,10 +8121,10 @@ canvas {
       color: #fff;
       background: #3a4248; }
       .sidebar .nav-link.active .nav-icon {
-        color: #20a8d8; }
+        color: #F39200; }
     .sidebar .nav-link:hover {
       color: #fff;
-      background: #20a8d8; }
+      background: #F39200; }
       .sidebar .nav-link:hover .nav-icon {
         color: #fff; }
       .sidebar .nav-link:hover.nav-dropdown-toggle::before {
@@ -8314,7 +8314,7 @@ canvas {
         width: 250px;
         overflow: visible; }
         .sidebar-minimized .sidebar .nav-item:hover > .nav-link {
-          background: #20a8d8; }
+          background: #F39200; }
           .sidebar-minimized .sidebar .nav-item:hover > .nav-link .nav-icon {
             color: #fff; }
     .sidebar-minimized .sidebar .nav-link {

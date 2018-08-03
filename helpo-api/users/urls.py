@@ -55,4 +55,9 @@ urlpatterns = [
         view=users_views.VerifyMailView.as_view(),
         name="user"
     ),    
+    url(
+      regex=r"^imgurToken/$",
+      view=users_views.ImgurTokenView.as_view(),
+      name="get_imgur_access_token"
+    ),    
 ]

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import './SelectorUbicacion.css';
 import LocationPicker from 'react-location-picker';
 
 
@@ -45,27 +44,28 @@ class SelectorUbicacion extends Component {
 
   render(){
     return (
-      <div className="row">
-        <div className="form-group col-md-6">
-          <label for="locationPicker">Ubicación</label>
+        <div>
+          <div style={{ paddingBottom: "10px", paddingTop: "10px" }}>
           <LocationPicker
             containerElement={ <div style={ {height: '100%', width: '100%'} } /> }
             mapElement={ <div style={ {height: '300px'} } /> }
             defaultPosition={this.state.ubicacionPorDefecto}
             onChange={this.handleCoordenadasChange} 
-            radius={-1}
+            radius="-1"
             name="locationPicker"/>
-        </div>
-        <div className="form-group col-md-6">
+          </div>
+          <div style={{ paddingBottom: "10px" }}>
           <input type="text" 
             name="notas" className="form-control"
             placeholder="Notas (Calle, número, localidad, CP)"
             value={this.props.ubicacion.notas}
             onChange={this.handleNotasChange} />
-          <br />
+          </div> 
+          
+          <div>
           <label name="direccion">{this.state.direccion}</label>
+          </div>
         </div>
-      </div>
     );
   }
 }

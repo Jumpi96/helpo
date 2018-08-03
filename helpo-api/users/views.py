@@ -1,12 +1,15 @@
 from django.shortcuts import render  # noqa
 from rest_framework import generics, permissions
+from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.generics import ListCreateAPIView
 from rest_framework.generics import RetrieveUpdateDestroyAPIView, RetrieveUpdateAPIView
 from knox.models import AuthToken
 from django.contrib.auth import get_user_model
-from users.models import RubroOrganizacion, OrganizacionProfile, VoluntarioProfile, EmpresaProfile
-from users.serializers import CreateUserSerializer, UserSerializer, LoginUserSerializer, RubroOrganizacionSerializer, OrganizacionProfileSerializer, VoluntarioProfileSerializer, EmpresaProfileSerializer, VerificationMailSerializer
+from users.models import RubroOrganizacion, OrganizacionProfile, VoluntarioProfile, EmpresaProfile, AppValues
+from users.serializers import CreateUserSerializer, UserSerializer, LoginUserSerializer, RubroOrganizacionSerializer, OrganizacionProfileSerializer, VoluntarioProfileSerializer, EmpresaProfileSerializer, VerificationMailSerializer, AppValuesSerializer
+import time
+import requests
 
 
 class CreateUserView(generics.GenericAPIView):
@@ -91,3 +94,39 @@ class VerifyMailView(generics.GenericAPIView):
         return Response({
             "verification": "Failed"
         })
+
+def refreshToken():
+  now = time.time()
+  last_refresh_reference = AppValues.objects.get(key="imgurLastRefresh")
+  last_refresh_time = float(last_refresh_reference.value)
+
+  # Me fijo si paso mas de un dia desde el ultimo refresh (en segundos)
+  if (now - last_refresh_time) > 86400:
+    refresh_token_reference = AppValues.objects.get(key="imgurRefreshToken")
+    access_token_reference = AppValues.objects.get(key="imgurAccessToken")
+    postData = {
+      'refresh_token': refresh_token_reference.value,
+      'client_id': '1e76d5b484ecae3',
+      'client_secret': '9b7c999acc773472aeb30b32b44e47f7fde4ff64',
+      'grant_type': 'refresh_token',
+    }
+    res = requests.post("https://api.imgur.com/oauth2/token", postData)
+    print(res.json())
+    new_access_token = res.json()['access_token']
+    new_refresh_token = res.json()['refresh_token']
+
+    last_refresh_reference.value = str(now)
+    last_refresh_reference.save()
+    refresh_token_reference.value = new_refresh_token
+    refresh_token_reference.save()
+    access_token_reference.value = new_access_token
+    access_token_reference.save()
+    
+
+class ImgurTokenView(APIView):
+
+  def get(self, request, format=None):
+    refreshToken()
+    token = AppValues.objects.get(key="imgurAccessToken")
+    serializer = AppValuesSerializer(token)
+    return Response(serializer.data)

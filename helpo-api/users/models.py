@@ -45,7 +45,7 @@ class VoluntarioProfile(Profile):
     habilidades = models.TextField(blank=True, null=True)
 
 class EmpresaProfile(Profile):
-    telefono = models.IntegerField(null=True)
+    telefono = models.BigIntegerField(null=True)
     cuit = models.BigIntegerField(blank=True, null=True)
     rubro = models.ForeignKey(RubroOrganizacion, on_delete=models.SET_NULL, blank=True, null=True)
     avatar = models.ForeignKey(Imagen, on_delete=models.SET_NULL, blank=True, null=True)
@@ -155,3 +155,19 @@ class Profile(models.Model):
 
     class Meta:
         abstract = True
+
+"""
+AppValues se va utilizar como diccionario clave-valor para
+almacenar valores generales.
+
+Precaucion: Asegurarse que la entrada este inicializada (campo creado en BD),
+por ahora hay que hacerlo manual
+
+Estructura (Mantener actualizado para saber que contiene):
+    imgurAccessToken: [TOKEN]
+    imgurRefreshToken: [TOKEN]
+    imgurLastRefresh: (time in seconds)
+"""
+class AppValues(models.Model):
+    key = models.TextField(primary_key=True)
+    value = models.TextField()   

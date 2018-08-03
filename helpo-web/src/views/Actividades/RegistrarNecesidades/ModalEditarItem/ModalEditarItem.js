@@ -100,7 +100,7 @@ class ModalEditarItem extends Component {
                   <strong>Cantidad</strong>
                 </div>
                 <div>
-                  <NumericInput className="form-control" min="1"
+                  <NumericInput className="form-control" min={1}
                     value={this.state.cantidad} onChange={this.handleCantidadChange}/>
                   <span style={{color: "red"}}>{this.state.error}</span>
                 </div>

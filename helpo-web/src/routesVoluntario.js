@@ -28,7 +28,7 @@ const ConsultarPerfil = Loadable({
 });
 
 const MisColaboraciones = Loadable({
-  loader: () => import('./views/Actividades/MisContribuciones/EventoPage.js'),
+  loader: () => import('./views/Actividades/MisColaboraciones/EventoPage.js'),
   loading: Loading,
 })
 

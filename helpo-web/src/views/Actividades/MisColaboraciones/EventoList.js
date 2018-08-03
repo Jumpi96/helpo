@@ -25,7 +25,7 @@ class EventoList extends React.Component {
             key={evento.id} footer
             mainText={evento.nombre} 
             icon="fa fa-hand-stop-o" color="primary" 
-            link={'/actividades/evento/' + evento.id}
+            link={'/actividades/mis-colaboraciones/' + evento.id}
           />
         )}
       </ul>

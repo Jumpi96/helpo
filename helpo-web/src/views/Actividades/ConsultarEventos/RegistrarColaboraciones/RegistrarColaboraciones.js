@@ -25,6 +25,7 @@ class RegistrarColaboraciones extends Component {
       funcionVoluntario: undefined,
     };
     this.selectFuncion = this.selectFuncion.bind(this);
+    this.getTablaVoluntarios = this.getTablaVoluntarios.bind(this);
     this.handleModalChange = this.handleModalChange.bind(this);
     this.saveColaboracionModal = this.saveColaboracionModal.bind(this);
   }
@@ -102,7 +103,7 @@ class RegistrarColaboraciones extends Component {
   }
 
   selectFuncion(e) {
-    this.setState({ funcionVoluntario: e.target.value });
+    this.setState({ funcionVoluntario: parseInt(e.target.value) });
   }
 
   getCantidadNecesidades(n) {
@@ -127,7 +128,7 @@ class RegistrarColaboraciones extends Component {
           <td>{this.getCantidadVoluntarios(this.state.voluntarios[i])}</td>
           <td>
             <input 
-              type="radio" name="voluntario" 
+              type="radio"
               value={this.state.voluntarios[i].id}
               checked={funcion === this.state.voluntarios[i].id}
               onClick={this.selectFuncion}
@@ -158,7 +159,7 @@ class RegistrarColaboraciones extends Component {
             <td>No participa</td>
             <td>
               <input 
-                type="radio" name="voluntario" 
+                type="radio"
                 value={0} checked={funcion === 0}
                 onClick={this.selectFuncion}
               />

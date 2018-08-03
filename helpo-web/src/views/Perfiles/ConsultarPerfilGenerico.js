@@ -46,7 +46,7 @@ class ConsultarPerfilGenerico extends Component {
     let initialState = {};
       api.get('/auth/user/')
       .then(res => {        
-
+            console.log(res)
             initialState.nombre = res.data.nombre
             initialState.userId = res.data.id
             initialState.email = res.data.email
@@ -55,7 +55,7 @@ class ConsultarPerfilGenerico extends Component {
           return api.get(`/perfiles/${this.getApiCall(initialState.userType)}/${initialState.userId}`)
         })
       .then(res => {
-        
+        console.log(res)
         initialState.data = res.data
         
         return api.get('/perfiles/rubros_organizacion/')
@@ -94,7 +94,7 @@ class ConsultarPerfilGenerico extends Component {
     })
   }
 
-  renderModificar() {    
+  renderModificar() {        
     switch (this.state.userType) {
       case 1:
         return (<ModificarPerfilOrganizacion 
@@ -107,12 +107,19 @@ class ConsultarPerfilGenerico extends Component {
 
       case 2:
         return ( <ModificarPerfilVoluntario 
+                  nombre={this.state.nombre}
                   email={this.state.email}
+                  data={this.state.data}
+                  switchToConsultar={this.switchToConsultar}
                   /> )
 
       case 3:
         return ( <ModificarPerfilEmpresa 
+                  nombre={this.state.nombre}
                   email={this.state.email}
+                  data={this.state.data}
+                  rubros={this.state.rubros}
+                  switchToConsultar={this.switchToConsultar}
                   /> )
 
       default:
@@ -132,12 +139,18 @@ class ConsultarPerfilGenerico extends Component {
 
       case 2:
         return ( <ConsultarPerfilVoluntario 
+                  nombre={this.state.nombre}
                   email={this.state.email}
+                  data={this.state.data}
+                  switchToModificar={this.switchToModificar}
                   /> )
 
       case 3:
         return ( <ConsultarPerfilEmpresa 
+                  nombre={this.state.nombre}
                   email={this.state.email}
+                  data={this.state.data}
+                  switchToModificar={this.switchToModificar}
                   /> )
 
       default:
@@ -145,7 +158,7 @@ class ConsultarPerfilGenerico extends Component {
     }
   }
 
-  renderConsultar() {    
+  renderConsultar() {
     switch (this.state.userType) {
       case 1:
         return (<ConsultarPerfilOrganizacion 
@@ -156,13 +169,19 @@ class ConsultarPerfilGenerico extends Component {
                   />)
 
       case 2:
-        return ( <ConsultarPerfilVoluntario 
+        return ( <ConsultarPerfilVoluntario
+                  nombre={this.state.nombre}
                   email={this.state.email}
+                  data={this.state.data}
+                  switchToModificar={this.switchToModificar}
                   /> )
 
       case 3:
         return ( <ConsultarPerfilEmpresa 
+                  nombre={this.state.nombre}
                   email={this.state.email}
+                  data={this.state.data}
+                  switchToModificar={this.switchToModificar}
                   /> )
 
       default:

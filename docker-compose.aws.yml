@@ -24,6 +24,7 @@ services:
     env_file: ./helpo-web/.env
     ports:
     - "80:80"
+    - "443":"443"
     volumes:
     - ./certs:/certs
     depends_on:

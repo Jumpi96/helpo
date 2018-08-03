@@ -17,7 +17,7 @@ DATABASES = {
     }
 }
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
+ALLOWED_HOSTS = ['.helpo.com.ar','localhost','127.0.0.1','10.0.2.2']
 
 STATIC_ROOT = base_dir_join('staticfiles')
 STATIC_URL = '/static/'

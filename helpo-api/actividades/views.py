@@ -188,23 +188,26 @@ class EventoVoluntarioCreateReadView(ListCreateAPIView):
     serializer_class = EventoSerializer
 
     def get_queryset(self):
-        queryset = self.get_eventos(get_token_user(self.request))
+        lista_eventos = self.get_eventos(get_token_user(self.request))
+        queryset = Evento.objects.all()
+        queryset = queryset.filter(id__in=lista_eventos)
         queryset = queryset.order_by('-fecha_hora_inicio')
         return queryset
 
     def get_eventos(self, user):
-        eventos = {}
+        eventos = []
         colaboraciones = Colaboracion.objects.filter(voluntario_id=user)
         for colaboracion in colaboraciones:
-            necesidad = Necesidad.objects.filter(id=colaboracion.necesidad_material_id)
+            necesidad = Necesidad.objects.filter(id=colaboracion.necesidad_material_id).first()
+            print(necesidad)
             if necesidad.evento_id not in eventos:
-                eventos[necesidad.evento_id] = Evento.objects.filter(id=necesidad.evento_id)
+                eventos.append(necesidad.evento_id)
         participaciones = Participacion.objects.filter(voluntario_id=user)
         for participacion in participaciones:
-            necesidad = Voluntario.objects.filter(id=participacion.necesidad_voluntario_id)
+            necesidad = Voluntario.objects.filter(id=participacion.necesidad_voluntario_id).first()
             if necesidad.evento_id not in eventos:
-                eventos[necesidad.evento_id] = Evento.objects.filter(id=necesidad.evento_id)
-        return list(eventos.values()) #Esta mal el enfoque, captar ids y despues buscar objetos que esten en esa lista
+                eventos.append(necesidad.evento_id)
+        return eventos
 
 
 

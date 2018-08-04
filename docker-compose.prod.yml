@@ -1,23 +1,43 @@
 version: '3'
 
 services:
-  api:
+  db:
+    image: postgres:10.4-alpine
     restart: always
-    env_file: ./helpo-api/production.env
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: db-helpo
+    expose:
+      - "5432"
+  api:
+    build: helpo-api/.
+    restart: always
+    env_file: ./helpo-api/.env
+    command: ["./wait-for-it.sh", "db:5432", "--", "bash", "-c", 
+      "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]
+    expose:
+      - "8000"
+    depends_on:
+      - db
   web:
     build:
       context: helpo-web/.
       dockerfile: prod.Dockerfile
-    restart: on-failure
+    restart: always
+    env_file: ./helpo-web/.env
     ports:
     - "80:80"
+    - "443:443"
+    - "8000:8080"
+    volumes:
+    - ./certs:/certs
     depends_on:
       - db
       - api
 
-# Should I unbind volumes?
-# https://docs.docker.com/compose/production/
+# Should be used alone
+# docker-compose -f docker-compose.prod.yml COMMAND
 
-# Volumes are not being unbinded
-# This file only extends, does not override, default compose
+# https://docs.docker.com/compose/production/
     

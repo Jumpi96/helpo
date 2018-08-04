@@ -1,4 +1,4 @@
-FROM node:carbon-alpine
+FROM ode:carbon-alpinen
 
 # Create app directory
 WORKDIR /usr/src/app
@@ -20,7 +20,7 @@ RUN npm run build
 # Copy built app into nginx container
 FROM nginx:alpine
 COPY --from=0 /usr/src/app/build /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/nginx.conf
 
 EXPOSE 80
 

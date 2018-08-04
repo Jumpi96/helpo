@@ -183,7 +183,8 @@ class EmpresaProfileSerializer(serializers.ModelSerializer):
         return instance
 
 class VoluntarioProfileSerializer(serializers.ModelSerializer):
-    avatar = ImagenSerializer(required=False)    
+    avatar = ImagenSerializer(required=False)   
+    usuario = UserSerializer(read_only=True) 
 
     class Meta:
         model = VoluntarioProfile

@@ -124,7 +124,9 @@ def refreshToken():
     
 
 class ImgurTokenView(APIView):
-
+  """
+  API endpoint para recibir el token de Imgur API
+  """
   def get(self, request, format=None):
     refreshToken()
     token = AppValues.objects.get(key="imgurAccessToken")

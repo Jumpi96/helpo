@@ -34,24 +34,32 @@ AUTH_PASSWORD_VALIDATORS = []  # allow easy passwords only on local
 CELERY_TASK_ALWAYS_EAGER = True
 
 # CORS
-#CORS_ORIGIN_WHITELIST = (
-#    'helpo.com.ar',
-#    'www.helpo.com.ar',  
-#    'http://helpo.com.ar',
-#    'https://helpo.com.ar',
-#    'http://www.helpo.com.ar',
-#    'https://www.helpo.com.ar',
-#    'helpo.com.ar:80',
-#    'http://helpo.com.ar:80',
-#    'https://helpo.com.ar:80',
-#    'helpo.com.ar:443',
-#    'http://helpo.com.ar:443',
-#    'https://helpo.com.ar:443',
-#    'helpo.com.ar:8000',       
-#    'http://helpo.com.ar:8000',
-#    'https://helpo.com.ar:8000'
-#)
-CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_WHITELIST = (
+    'helpo.com.ar',
+    'www.helpo.com.ar',
+    'http://helpo.com.ar',
+    'https://helpo.com.ar',
+    'http://www.helpo.com.ar',
+    'https://www.helpo.com.ar',
+    'helpo.com.ar:80',
+    'www.helpo.com.ar:80',
+    'http://helpo.com.ar:80',
+    'https://helpo.com.ar:80',
+    'http://www.helpo.com.ar:80',
+    'https://www.helpo.com.ar:80',
+    'helpo.com.ar:443',
+    'www.helpo.com.ar:443',
+    'http://helpo.com.ar:443',
+    'https://helpo.com.ar:443',
+    'http://www.helpo.com.ar:443',
+    'https://wwwhelpo.com.ar:443',
+    'helpo.com.ar:8000',
+    'www.helpo.com.ar:8000',
+    'http://helpo.com.ar:8000',
+    'https://helpo.com.ar:8000',
+    'http://www.helpo.com.ar:8000',
+    'https://www.helpo.com.ar:8000'
+)
 
 # Security
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

@@ -60,6 +60,7 @@ CORS_ORIGIN_WHITELIST = (
     u'http://www.helpo.com.ar:8000',
     u'https://www.helpo.com.ar:8000'
 )
+CORS_ORIGIN_ALLOW_ALL = True
 
 # Security
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

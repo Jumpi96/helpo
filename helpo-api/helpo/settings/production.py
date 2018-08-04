@@ -44,23 +44,21 @@ CORS_ORIGIN_WHITELIST = (
     u'helpo.com.ar:80',
     u'www.helpo.com.ar:80',
     u'http://helpo.com.ar:80',
-    u'https://helpo.com.ar:80',
     u'http://www.helpo.com.ar:80',
-    u'https://www.helpo.com.ar:80',
     u'helpo.com.ar:443',
     u'www.helpo.com.ar:443',
-    u'http://helpo.com.ar:443',
     u'https://helpo.com.ar:443',
-    u'http://www.helpo.com.ar:443',
-    u'https://wwwhelpo.com.ar:443',
-    u'helpo.com.ar:8000',
-    u'www.helpo.com.ar:8000',
-    u'http://helpo.com.ar:8000',
-    u'https://helpo.com.ar:8000',
-    u'http://www.helpo.com.ar:8000',
-    u'https://www.helpo.com.ar:8000'
+    u'https://www.helpo.com.ar:443',
+    u'helpo.com.ar:8080',
+    u'www.helpo.com.ar:8080',
+    u'http://helpo.com.ar:8080',
+    u'http://www.helpo.com.ar:8080',
+    u'helpo.com.ar:8443',
+    u'www.helpo.com.ar:8443',
+    u'https://helpo.com.ar:8443',
+    u'https://www.helpo.com.ar:8443'
 )
-CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ORIGIN_ALLOW_ALL = True
 
 # Security
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

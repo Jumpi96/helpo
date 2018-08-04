@@ -17,7 +17,7 @@ DATABASES = {
     }
 }
 
-ALLOWED_HOSTS = ['.helpo.com.ar','localhost','127.0.0.1','10.0.2.2']
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 
 STATIC_ROOT = base_dir_join('staticfiles')
 STATIC_URL = '/static/'
@@ -36,6 +36,7 @@ CELERY_TASK_ALWAYS_EAGER = True
 # CORS
 CORS_ORIGIN_WHITELIST = (
     'helpo.com.ar:80',
+    'helpo.com.ar:8000',
     'localhost:80',
     'localhost:3000',
     '10.0.2.2:8000',

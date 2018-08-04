@@ -28,7 +28,7 @@ const ConsultarPerfil = Loadable({
 });
 
 const Dashboard = Loadable({
-  loader: () => import('./views/Dashboard'),
+  loader: () => import('./views/Home/Home'),
   loading: Loading,
 });
 

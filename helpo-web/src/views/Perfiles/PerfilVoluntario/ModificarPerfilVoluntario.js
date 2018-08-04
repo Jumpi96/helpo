@@ -20,7 +20,13 @@ const perfilPropTypes = {
       id: PropTypes.number,
       url: PropTypes.string,
     }),
-    usuario: PropTypes.number.isRequired,//User Id
+    usuario: PropTypes.shape({
+      id: PropTypes.number,
+      email: PropTypes.string,
+      user_type: PropTypes.number,
+      is_confirmed: PropTypes.bool,
+      nombre: PropTypes.string,
+    }).isRequired,
   }),
   switchToConsultar: PropTypes.func.isRequired,
 }
@@ -79,6 +85,7 @@ class ModificarPerfilVoluntario extends Component {
     return (
       <select 
       className="form-control" value={this.state.sexo} onChange={this.handleSexoChange}>
+        <option value=""> </option>
         <option value="hombre">Hombre</option>
         <option value="mujer">Mujer</option>
         <option value="otro">Otro</option>
@@ -205,7 +212,6 @@ class ModificarPerfilVoluntario extends Component {
     }
     const submitData = {
       avatar: {url: avatar_url},
-      usuario: this.props.data.usuario,
     }    
     if (newData.dni !== "") {
       submitData.dni = newData.dni
@@ -245,7 +251,7 @@ class ModificarPerfilVoluntario extends Component {
       console.log("DATA")
       console.log(submitData)
       if (this.validateData(submitData)) {
-        api.put(`/perfiles/perfil_voluntario/${this.props.data.usuario}/`, submitData)
+        api.put(`/perfiles/perfil_voluntario/${this.props.data.usuario.id}/`, submitData)
         .then(res => {
           if (res.status === 200) {
             this.setState({

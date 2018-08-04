@@ -35,13 +35,35 @@ CELERY_TASK_ALWAYS_EAGER = True
 
 # CORS
 CORS_ORIGIN_WHITELIST = (
+    'helpo.com.ar',
+    'www.helpo.com.ar',  
+    'http://helpo.com.ar',
+    'https://helpo.com.ar',
+    'http://www.helpo.com.ar',
+    'https://www.helpo.com.ar',
     'helpo.com.ar:80',
-    'helpo.com.ar:8000',
-    'localhost:80',
-    'localhost:3000',
-    '10.0.2.2:8000',
-    '10.0.2.2:8001'
+    'http://helpo.com.ar:80',
+    'https://helpo.com.ar:80',
+    'helpo.com.ar:443',
+    'http://helpo.com.ar:443',
+    'https://helpo.com.ar:443',
+    'helpo.com.ar:8000',       
+    'http://helpo.com.ar:8000',
+    'https://helpo.com.ar:8000'
 )
+
+# Security
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SECURE_HSTS_SECONDS = 3600
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_BROWSER_XSS_FILTER = True
+X_FRAME_OPTIONS = 'DENY'
+CSRF_COOKIE_HTTPONLY = True
 
 # Email
 INSTALLED_APPS += ('naomi',)

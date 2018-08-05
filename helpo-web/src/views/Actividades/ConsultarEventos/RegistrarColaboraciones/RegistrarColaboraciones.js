@@ -103,7 +103,7 @@ class RegistrarColaboraciones extends Component {
   }
 
   selectFuncion(e) {
-    this.setState({ funcionVoluntario: parseInt(e.target.value) });
+    this.setState({ funcionVoluntario: parseInt(e.target.value, 10) });
   }
 
   getCantidadNecesidades(n) {

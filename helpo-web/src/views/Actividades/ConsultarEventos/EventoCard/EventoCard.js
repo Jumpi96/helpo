@@ -35,6 +35,7 @@ class EventoCard extends Component {
           <span class="badge badge-primary badge-pill">{necesidad.cantidad}</span>
         </li>
       )
+      
     });
     return necesidades;
   }
@@ -52,6 +53,10 @@ class EventoCard extends Component {
     return necesidades;
   }
 
+  getEventoPorcentaje() {
+    return 0; // TODO
+  }
+
   render() {
     const { 
       evento,
@@ -65,7 +70,7 @@ class EventoCard extends Component {
       = this.props;
 
     // demo purposes only
-    const progress = { style: '', color: color, value: 50};//evento.porcentaje };
+    const progress = { style: '', color: color, value: this.getEventoPorcentaje()};
     const card = { style: '', bgColor: '' };
 
     if (variant === 'inverse') {
@@ -102,7 +107,7 @@ class EventoCard extends Component {
           </div>
           
           <Link to={link}>
-            <button className="btn btn-primary pull-right">
+            <button className="btn btn-primary pull-right" hidden={!this.props.auth}>
               + Ver más
             </button>
           </Link>

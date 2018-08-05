@@ -8,3 +8,4 @@
  RUN pipenv install --system
  RUN pipenv install --dev --system
  ADD . /code/
+ EXPOSE 8000

@@ -1,0 +1,44 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:10.4-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: db-helpo
+    expose:
+      - "5432"
+  api:
+    build: helpo-api/.
+    restart: always
+    env_file: ./helpo-api/.env
+    command: ["./wait-for-it.sh", "db:5432", "--", "bash", "-c", 
+      "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]
+    expose:
+      - "8000"
+    depends_on:
+      - db
+  web:
+    build:
+      context: helpo-web/.
+      dockerfile: prod.Dockerfile
+    restart: always
+    env_file: ./helpo-web/.env
+    ports:
+    - "80:80"
+    - "443:443"
+    - "8080:8080"
+    - "8443:8443"
+    volumes:
+    - ./certs:/certs
+    depends_on:
+      - db
+      - api
+
+# Should be used alone
+# docker-compose -f docker-compose.prod.yml COMMAND
+
+# https://docs.docker.com/compose/production/
+    

@@ -28,7 +28,7 @@ class ConsultarEventosList extends React.Component {
                 <EventoCard
                   evento={evento}
                   key={evento.id} footer
-                  color="primary" 
+                  color="primary" auth={this.props.auth}
                   link={'/actividades/consultar-evento/' + evento.id}
                 />
               </Col>

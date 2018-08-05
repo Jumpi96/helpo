@@ -1,8 +1,7 @@
 from decouple import Csv, config
 from .base import *  # noqa
 
-
-DEBUG = True
+DEBUG = False
 
 SECRET_KEY = config('SECRET_KEY')
 
@@ -58,7 +57,6 @@ CORS_ORIGIN_WHITELIST = (
     u'https://helpo.com.ar:8443',
     u'https://www.helpo.com.ar:8443'
 )
-# CORS_ORIGIN_ALLOW_ALL = True
 
 # Security
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

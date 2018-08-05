@@ -52,7 +52,7 @@ class ConsultarPerfilGenerico extends Component {
             initialState.email = res.data.email
             initialState.userType = res.data.user_type          
 
-          return api.get(`/perfiles/${this.getApiCall(initialState.userType)}/${initialState.userId}`)
+          return api.get(`/perfiles/${this.getApiCall(initialState.userType)}/${initialState.userId}/`)
         })
       .then(res => {
         console.log(res)

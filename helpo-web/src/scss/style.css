@@ -2189,7 +2189,7 @@ fieldset:disabled a.btn {
 
 .btn-link {
   font-weight: 400;
-  color: #f39200;
+  color: #20a8d8;
   background-color: transparent; }
 
 .btn-link:hover {
@@ -8782,14 +8782,14 @@ canvas {
 
 .sidebar .nav-link.active {
   color: #fff;
-  background: #E94E1B; }
+  background: #F39200; }
 
 .sidebar .nav-link.active .nav-icon {
   color: #fff; }
 
 .sidebar .nav-link:hover {
   color: #fff;
-  background: #E94E1B; }
+  background: #F39200; }
 
 .sidebar .nav-link:hover .nav-icon {
   color: #fff; }

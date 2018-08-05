@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 //import {auth} from "../../../actions"; SE USA ABAJO - COMENTADO
 import validateEmail from "../../../utils/ValidateEmail";
 import api from "../../../api"
+import ModalRegistroExitoso from './ModalRegistroExitoso';
 
 
 class Register extends Component {
@@ -21,7 +22,8 @@ class Register extends Component {
         apellido: "",
         email: "",
         contraseña: "",
-      }
+      },
+      showModalRegistro: false,
     }
     this.handleUserTypeSelect = this.handleUserTypeSelect.bind(this);
     this.renderNameField = this.renderNameField.bind(this); 
@@ -46,12 +48,25 @@ class Register extends Component {
                         this.state.apellido);*/
       api.post('/auth/sign_up/', usuario)
       .then((res) => {console.log(res)})
+      this.props.history.push('dashboard')
+      alert("Se ha registrado exitosamente en Helpo! \nEsperamos ansiosos, que pueda empezar a disfrutar de la plataforma.");
+      //this.setState({
+        //showModalRegistro:true,
+      //});
     } else {
       // TODO
     }
   }
 
   handleUserTypeSelect(user_type) {
+    this.setState({
+      errors:{
+        nombre:'',
+        apellido:'',
+        email:'',
+        contraseña:''
+      },
+    })
     switch(user_type) {
       case "voluntario": {
         this.setState({ user_type: "2", apellido: "" });
@@ -297,6 +312,7 @@ class Register extends Component {
             </Col>
           </Row>
         </Container>
+        <ModalRegistroExitoso open={this.state.showModalRegistro}/>
       </div>
     );
   }

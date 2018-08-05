@@ -9,6 +9,7 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 # If you are building your code for production
+RUN npm install chalk eslint node-sass-chokidar npm-run-all react-scripts
 RUN npm install --only=production
 
 # Bundle app source

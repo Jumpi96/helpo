@@ -2166,7 +2166,7 @@ fieldset:disabled a.btn {
 
 .btn-link {
   font-weight: 400;
-  color: #20a8d8;
+  color: #f39200;
   background-color: transparent; }
 
 .btn-link:hover {
@@ -8759,14 +8759,14 @@ canvas {
 
 .sidebar .nav-link.active {
   color: #fff;
-  background: #F39200; }
+  background: #E94E1B; }
 
 .sidebar .nav-link.active .nav-icon {
   color: #fff; }
 
 .sidebar .nav-link:hover {
   color: #fff;
-  background: #F39200; }
+  background: #E94E1B; }
 
 .sidebar .nav-link:hover .nav-icon {
   color: #fff; }

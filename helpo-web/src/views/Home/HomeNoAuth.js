@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Card } from 'reactstrap';
-import './Home.css';
+import './HomeNoAuth.css';
 
 class Home extends Component {
  

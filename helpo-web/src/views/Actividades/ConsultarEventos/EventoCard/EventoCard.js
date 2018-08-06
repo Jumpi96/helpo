@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import { mapToCssModules } from 'reactstrap/lib/utils';
 import ong from '../../../../assets/img/ong.png';
+import { getImagen } from '../../../../utils/Imagen';
 
 const propTypes = {
   header: PropTypes.string,
@@ -88,7 +89,7 @@ class EventoCard extends Component {
         <CardBody>
         <div>
           <img
-            src={ong}
+            src={getImagen(evento.organizacion.avatar)}
             alt="ONG"
             style={{width:'75px', height:'75px'}} 
           />

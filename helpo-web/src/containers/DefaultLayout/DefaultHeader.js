@@ -8,6 +8,7 @@ import sygnet from '../../assets/img/brand/sygnet.svg'
 import { connect } from "react-redux";
 import {auth} from "../../../src/actions";
 import ConsultarPerfilGenerico from "../../../src/views/Perfiles/ConsultarPerfilGenerico"
+import { getImagen } from '../../utils/Imagen';
 
 const propTypes = {
   children: PropTypes.node,
@@ -43,7 +44,7 @@ class DefaultHeader extends Component {
           </NavItem>
           <AppHeaderDropdown direction="down">
             <DropdownToggle nav>
-              <img src={'assets/img/avatars/6.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com" /> {/*ACA DEBERIA IR LA FOTO DE PERFIL DEL USUARIO*/}
+              <img src={getImagen(this.props.auth.user.avatar)} className="img-avatar" alt="admin@bootstrapmaster.com" /> {/*ACA DEBERIA IR LA FOTO DE PERFIL DEL USUARIO*/}
             </DropdownToggle>
             <DropdownMenu right style={{ right: 'auto' }}>
               <DropdownItem header tag="div" className="text-center"><strong>Perfil</strong></DropdownItem>
@@ -67,7 +68,11 @@ class DefaultHeader extends Component {
 DefaultHeader.propTypes = propTypes;
 DefaultHeader.defaultProps = defaultProps;
 
-const mapStateToProps = state => {return {}}
+const mapStateToProps = state => {
+  return {
+    auth: state.auth,
+  }
+}
 
 const mapDispatchToProps = dispatch => {
   return {

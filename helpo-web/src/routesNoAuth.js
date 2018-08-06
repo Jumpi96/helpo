@@ -21,7 +21,7 @@ const Dashboard = Loadable({
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
   { path: '/noAuth', exact: true, name: 'Home', component: NoAuthLayout },
-  { path: '/noAuth/dashboard', name: 'Dashboard', component: Dashboard },
+  { path: '/noAuth/dashboard', name: 'helpo', component: Dashboard },
 
   { path: '/noAuth/actividades/consultar-eventos', name: 'Consultar eventos', component: ConsultarEventosPage },
 

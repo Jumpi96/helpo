@@ -28,9 +28,23 @@ class LoginUserSerializer(serializers.Serializer):
         raise serializers.ValidationError("Unable to log in with provided credentials")
 
 class UserSerializer(serializers.ModelSerializer):
+    avatar = serializers.SerializerMethodField()
+    
     class Meta:
         model = User
-        fields = ('id', 'email', 'user_type', 'is_confirmed', 'nombre')
+        fields = ('id', 'email', 'user_type', 'is_confirmed', 'nombre', 'avatar')
+
+    def get_avatar(self, obj):
+        if obj.user_type == 1:
+            perfil = OrganizacionProfile.objects.filter(id=obj.id).first()
+            return perfil.avatar.url
+        elif obj.user_type == 2:
+            perfil = VoluntarioProfile.objects.filter(id=obj.id).first()
+            return perfil.avatar.url
+        elif obj.user_type == 3:
+            perfil = EmpresaProfile.objects.filter(id=obj.id).first()
+            return perfil.avatar.url
+
 
 ## TODO: Ver de no repetir UbicacionSerializer del de actividades
 class UbicacionSerializer(serializers.ModelSerializer):

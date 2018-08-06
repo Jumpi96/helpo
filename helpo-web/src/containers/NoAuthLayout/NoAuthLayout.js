@@ -5,13 +5,7 @@ import { Container } from 'reactstrap';
 import { 
   AppFooter,
   AppBreadcrumb,
-  AppHeader, 
-  AppSidebar,
-  AppSidebarFooter,
-  AppSidebarForm,
-  AppSidebarHeader,
-  AppSidebarMinimizer,
-  AppSidebarNav,
+  AppHeader,
 } from '@coreui/react'; 
 import NoAuthFooter from './NoAuthFooter';
 import NoAuthHeader from './NoAuthHeader';
@@ -31,13 +25,6 @@ class NoAuthLayout extends Component {
             <NoAuthHeader />
           </AppHeader>
           <div className="app-body">
-            <AppSidebar fixed display="lg">
-              <AppSidebarHeader />
-              <AppSidebarForm />
-              <AppSidebarNav navConfig={navigation}  {...this.props} />
-              <AppSidebarFooter />
-              <AppSidebarMinimizer />
-            </AppSidebar>
             <main className="main">
               <AppBreadcrumb appRoutes={routes}/>
               <Container fluid>
@@ -62,22 +49,6 @@ class NoAuthLayout extends Component {
     }
   }
 }
-
-const navigation = {
-  items: [
-    {
-      name: 'Dashboard',
-      url: '/noAuth/dashboard',
-      icon: 'icon-speedometer'
-    },
-    {
-      name: 'Eventos',
-      url: '/noAuth/actividades/consultar-eventos',
-      icon: 'icon-cursor'
-    },
-  ]
-}
-
 
 const mapStateToProps = state => {
   return {

@@ -238,11 +238,16 @@ class AppValuesSerializer(serializers.ModelSerializer):
         fields = ('key', 'value')
 
 class VoluntarioInfoSerializer(serializers.ModelSerializer):
-    perfil = VoluntarioProfileSerializer(read_only=True)
+    perfil = VoluntarioInfoProfileSerializer(read_only=True)
 
     class Meta:
         model = User
         fields = ('id', 'nombre','perfil')
+
+class VoluntarioInfoProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = VoluntarioProfile
+        fields = ( 'apellido', 'dni')
 
 
         

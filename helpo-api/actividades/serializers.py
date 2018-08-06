@@ -133,7 +133,7 @@ class ColaboracionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Colaboracion
-        fields = ('id', 'comentario', 'cantidad', 'necesidad_material_id', 'voluntario_id','voluntario')
+        fields = ('id', 'comentario', 'cantidad', 'necesidad_material_id','voluntario')
     
     def create(self, validated_data):
         necesidad_material = validated_data.get('necesidad_material')

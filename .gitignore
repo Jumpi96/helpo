@@ -2,7 +2,7 @@
 *.vscode
 /db.sqlite3
 .DS_Store
-.env
+*.env
 # */settings/local.py
 /staticfiles/*
 /mediafiles/*
@@ -56,3 +56,6 @@ tmp_email/
 
 # Linux
 .directory
+
+# Postgres DB
+postgres-data/

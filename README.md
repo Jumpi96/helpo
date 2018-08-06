@@ -77,8 +77,8 @@ URL_CLIENT="http://localhost:3000/"
 ### Run
 - From root: `docker-compose build`
 - From root: `docker-compose up`
-  - If you need pgAdmin4 (http://localhost:5050) instead of previous command, run:
-    - `docker-compose -f docker-compose.yml -f pgadmin.yml up`
+  - If you need pgAdmin4 go to http://localhost:5050 and create a server with:
+    - Name: `postgres`, Host: `db`, Password: `postgres`.
 ### Migrations and Docker
 - We have a problem with our optional use of Docker and migrations. **If you want to create or modify models in Django**, you have to:
   - Do not use Docker to *makemigrations* and *migrate*.

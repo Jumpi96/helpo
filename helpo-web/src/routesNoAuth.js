@@ -13,7 +13,7 @@ const ConsultarEventosPage = Loadable({
 })
 
 const Dashboard = Loadable({
-  loader: () => import('./views/Dashboard'),
+  loader: () => import('./views/Home/HomeNoAuth'),
   loading: Loading,
 });
 

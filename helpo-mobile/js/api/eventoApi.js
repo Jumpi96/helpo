@@ -22,6 +22,13 @@ class EventoApi {
       return error;
     });
   }
+  static getEventosConColaboraciones() {
+    return api.get('/voluntarios/eventos/').then(response => {
+      return response.data;
+    }).catch(error => {
+      return error;
+    });
+  }
   static updateEvento(evento) {
     return api.put(`/actividades/eventos/${evento.id}/`, evento).then(response => {
       return response.data;

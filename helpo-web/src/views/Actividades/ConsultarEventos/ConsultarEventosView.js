@@ -22,6 +22,10 @@ class ConsultarEventosView extends React.Component {
     });
   }
 
+  esVoluntario() {
+    return this.props.auth.user.user_type === 2;
+  }
+
   render() {
     if (this.props.evento.nombre) {
       const evento = this.props.evento;
@@ -159,8 +163,8 @@ class ConsultarEventosView extends React.Component {
             }
             {listaNecesidades || listaVoluntarios ? (
               <button 
-                onClick={this.toggleColaborar} 
-                hidden={moment(evento.fecha_hora_inicio)<=moment()}
+                onClick={this.toggleColaborar}
+                hidden={moment(evento.fecha_hora_inicio)<=moment() || !this.esVoluntario()}
                 className="btn btn-warning offset-md-10"
               >
                 Colaborar
@@ -202,7 +206,7 @@ function mapStateToProps(state, ownProps) {
     evento = Object.assign({}, state.eventos.find(evento => "" + evento.id === eventoId))
     evento.rubro_id = evento.rubro.id;
   }
-  return {evento: evento};
+  return {evento: evento, auth: state.auth};
 }
 
 function mapDispatchToProps(dispatch) {  

@@ -91,15 +91,15 @@ import BasicTab from './components/tab/basicTab';
 import ConfigTab from './components/tab/configTab';
 import NHThumbnail from './components/thumbnail/';
 import NHTypography from './components/typography/';
-import SideBar from './components/sidebar';
 import SideBarNoAuth from './components/sidebarnoauth';
+import SideBarOrganizacion from './components/sidebarorganizacion';
+import SideBarVoluntario from './components/sidebarvoluntario';
 import Segment from './components/segment';
 import BasicSegment from './components/segment/SegmentHeader';
 import AdvSegment from './components/segment/segmentTab';
 import Toast from './components/toast';
 import statusBarColor from './themes/variables';
 
-import Actividades from './views/Actividades/Actividades';
 import RegistrarEvento from './views/Actividades/RegistrarEvento/RegistrarEvento';
 import ConsultarEvento from './views/Actividades/ConsultarEventos/ConsultarEvento';
 import RegistrarNecesidades from './views/Actividades/RegistrarNecesidades/RegistrarNecesidades';
@@ -107,6 +107,8 @@ import AgregarNecesidad from './views/Actividades/RegistrarNecesidades/AgregarNe
 import AgregarVoluntario from './views/Actividades/RegistrarNecesidades/AgregarVoluntario/AgregarVoluntario';
 import MisEventos from './views/Actividades/MisEventos/MisEventos';
 import VerEvento from './views/Actividades/VerEvento/VerEvento';
+import MisColaboraciones from './views/Actividades/MisColaboraciones/MisColaboraciones';
+import VerColaboracionesEvento from './views/Actividades/MisColaboraciones/VerColaboracionesEvento';
 import EditarEvento from './views/Actividades/EditarEvento/EditarEvento';
 import Login from './views/Usuarios/Login';
 import Configuracion from './views/Usuarios/Configuracion';
@@ -183,7 +185,12 @@ class AppNavigator extends Component {
   render() {
     let contentDrawer;
     if (this.props.auth.isAuthenticated) { // TODO: CHANGE AFTER MAKING LOGIN
-      contentDrawer = <SideBar navigator={this._navigator} />;
+      if (this.props.auth.user.user_type === 1) {
+        contentDrawer = <SideBarOrganizacion navigator={this._navigator} />;
+      } else {
+        contentDrawer = <SideBarVoluntario navigator={this._navigator} />;
+      }
+      
     } else {
       contentDrawer = <SideBarNoAuth navigator={this._navigator} />;
     }
@@ -204,13 +211,14 @@ class AppNavigator extends Component {
               <Scene key="login" component={Login} />
               <Scene key="signUp" component={SignUp} />
               <Scene key="configuracion" component={Configuracion} />
-              <Scene key="actividades" component={Actividades} />
               <Scene key="consultarEventos" component={ConsultarEventos} />
               <Scene key="consultarEvento" component={ConsultarEvento} />
               <Scene key="registrarEvento" component={RegistrarEvento} />
               <Scene key="registrarNecesidades" component={RegistrarNecesidades} />
               <Scene key="misEventos" component={MisEventos} />
               <Scene key="verEvento" component={VerEvento} />
+              <Scene key="misColaboraciones" component={MisColaboraciones} />
+              <Scene key="verColaboracionesEvento" component={VerColaboracionesEvento} />
               <Scene key="editarEvento" component={EditarEvento} />
               <Scene key="agregarNecesidad" component={AgregarNecesidad} />
               <Scene key="agregarVoluntario" component={AgregarVoluntario} />

@@ -193,4 +193,4 @@ class ConsultaNecesidadesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Evento
-        fields = ('id', 'nombre', 'necesidades', 'voluntarios')
+        fields = ('id', 'nombre', 'necesidades', 'voluntarios', 'fecha_hora_inicio')

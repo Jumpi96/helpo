@@ -180,6 +180,38 @@ class EventoOrganizacionCreateReadView(ListCreateAPIView):
         queryset = queryset.order_by('-fecha_hora_inicio')
         return queryset
 
+class EventoVoluntarioCreateReadView(ListCreateAPIView):
+    """
+    API endpoint para crear o ver todos los eventos de la organización
+    """
+    permission_classes = [permissions.IsAuthenticated, ]
+    serializer_class = ConsultaNecesidadesSerializer
+
+    def get_queryset(self):
+        lista_eventos = self.get_eventos(get_token_user(self.request))
+        queryset = Evento.objects.all()
+        queryset = queryset.filter(id__in=lista_eventos)
+        queryset = queryset.order_by('-fecha_hora_inicio')
+        return queryset
+
+    def get_eventos(self, user):
+        eventos = []
+        colaboraciones = Colaboracion.objects.filter(voluntario_id=user)
+        for colaboracion in colaboraciones:
+            necesidad = Necesidad.objects.filter(id=colaboracion.necesidad_material_id).first()
+            print(necesidad)
+            if necesidad.evento_id not in eventos:
+                eventos.append(necesidad.evento_id)
+        participaciones = Participacion.objects.filter(voluntario_id=user)
+        for participacion in participaciones:
+            necesidad = Voluntario.objects.filter(id=participacion.necesidad_voluntario_id).first()
+            if necesidad.evento_id not in eventos:
+                eventos.append(necesidad.evento_id)
+        return eventos
+
+
+
+
 class ConsultaEventosOrganizacionCreateReadView(ListCreateAPIView):
     """
     API endpoint para ver todos los eventos próximos

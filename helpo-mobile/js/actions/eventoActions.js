@@ -21,6 +21,16 @@ export function loadEventosOrganizacion() {
   };
 }
 
+export function loadEventosConColaboraciones() {  
+  return function(dispatch) {
+    return eventoApi.getEventosConColaboraciones().then(eventos => {
+      dispatch(loadEventosConColaboracionesSuccess(eventos));
+    }).catch(error => {
+      throw(error);
+    });
+  };
+}
+
 export function loadEventosProximos() {  
   return function(dispatch) {
     return eventoApi.getEventosProximos().then(eventos => {
@@ -51,6 +61,10 @@ export function loadEventosProximosSuccess(eventos) {
 
 export function loadEventosOrganizacionSuccess(eventos) {  
   return {type: types.LOAD_EVENTOS_ORGANIZACION_SUCCESS, eventos};
+}
+
+export function loadEventosConColaboracionesSuccess(eventos) {  
+  return {type: types.LOAD_EVENTOS_CON_COLABORACIONES_SUCCESS, eventos};
 }
 
 export function updateEventoSuccess(evento) {  

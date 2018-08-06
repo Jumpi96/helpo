@@ -144,7 +144,7 @@ class VerEvento extends React.Component {
             direction="left"
             containerStyle={{}}
             active={this.state.fabActive}
-            style={{ backgroundColor: '#5067FF' }}
+            style={{ backgroundColor: '#E94E1B' }}
             position="bottomRight"
             onPress={() => this.setState({ fabActive: !this.state.fabActive })}
           >

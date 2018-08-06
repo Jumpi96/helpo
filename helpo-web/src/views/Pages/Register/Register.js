@@ -226,7 +226,7 @@ class Register extends Component {
                 <CardHeader>
                   <Row>
                     <Col xs="12" sm="4">
-                      <Button className={user_type === "2" ? "btn-twitter" : "btn-secondary"} 
+                      <Button className={user_type === "2" ? "btn-warning" : "btn-primary"} 
                               block
                               onClick={() => this.handleUserTypeSelect("voluntario")}
                               >
@@ -234,7 +234,7 @@ class Register extends Component {
                       </Button>
                     </Col>
                     <Col xs="12" sm="4">
-                      <Button className={user_type === "1" ? "btn-twitter" : "btn-secondary"}  
+                      <Button className={user_type === "1" ? "btn-warning" : "btn-primary"}  
                               block
                               onClick={() => this.handleUserTypeSelect("ong")}
                               >
@@ -242,7 +242,7 @@ class Register extends Component {
                       </Button>
                     </Col>
                     <Col xs="12" sm="4">
-                      <Button className={user_type === "3" ? "btn-twitter" : "btn-secondary"}  
+                      <Button className={user_type === "3" ? "btn-warning" : "btn-primary"}  
                               block
                               onClick={() => this.handleUserTypeSelect("empresa")}
                               >
@@ -283,7 +283,7 @@ class Register extends Component {
                            placeholder="Repeat password" 
                            onChange={(e) => this.handleValueChange(e, "repeat")}/>                    
                   </InputGroup>
-                  <Button color="success" onClick={() => this.onSubmitData()} block>Crear Cuenta</Button>                  
+                  <Button color="primary" onClick={() => this.onSubmitData()} block>Crear Cuenta</Button>                  
                   <ul>{this.renderErrorList()}
                   <div>
                     {this.props.errors.length > 0 && (

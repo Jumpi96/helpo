@@ -5,7 +5,6 @@ import { Card, CardBody, Progress } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import { mapToCssModules } from 'reactstrap/lib/utils';
-import ong from '../../../../assets/img/ong.png';
 import { getImagen } from '../../../../utils/Imagen';
 
 const propTypes = {

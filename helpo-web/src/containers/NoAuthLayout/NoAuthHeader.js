@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Nav, NavItem } from 'reactstrap';
+import { Nav, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
@@ -25,6 +25,14 @@ class NoAuthHeader extends Component {
           full={{ src: logo, width: 89, height: 25, alt: 'CoreUI Logo' }}
           minimized={{ src: sygnet, width: 30, height: 30, alt: 'CoreUI Logo' }}
         />
+        <Nav className="d-md-down-none" navbar>
+          <NavItem className="px-3">
+            <NavLink href="#noAuth/dashboard">Inicio</NavLink>
+          </NavItem>
+          <NavItem className="px-3">
+            <NavLink href="#noAuth/actividades/consultar-eventos">Eventos</NavLink>
+          </NavItem>
+        </Nav>
         <Nav className="ml-auto" navbar>
           <NavItem className="px-3">
             <Link className="btn btn-primary" to="/login">Iniciar sesión</Link>

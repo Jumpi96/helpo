@@ -10,6 +10,8 @@ services:
       POSTGRES_DB: db-helpo
     expose:
       - "5432"
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
   api:
     build: helpo-api/.
     restart: always
@@ -35,5 +37,5 @@ services:
       - db
       - api
 
-# Meant to be used alone
+# Meant to be used alone, made for pulling from aws
 # docker-compose -f docker-compose.aws.yml COMMAND

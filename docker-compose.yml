@@ -10,6 +10,8 @@ services:
       POSTGRES_DB: db-helpo
     ports:
       - "5432:5432"
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
   api:
     build: helpo-api/.
     command: ["./wait-for-it.sh", "db:5432", "--", "bash", "-c", 
@@ -29,4 +31,12 @@ services:
     depends_on:
       - db
       - api
-    
+  pgadmin:
+    image: thajeztah/pgadmin4
+    ports:
+      - "5050:5050"
+    restart: always
+    depends_on:
+      - db
+
+# Default docker-compose, made for development

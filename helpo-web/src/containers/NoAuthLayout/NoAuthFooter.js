@@ -15,7 +15,7 @@ class NoAuthFooter extends Component {
 
     return (
       <React.Fragment>
-        <span><a href="https://coreui.io">CoreUI</a> &copy; 2018 creativeLabs.</span>
+      <span><a href="https://www.helpo.com.ar">helpo</a> &copy; 2018 </span>
       </React.Fragment>
     );
   }

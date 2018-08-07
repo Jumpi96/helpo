@@ -48,11 +48,6 @@ export default {
         class: ''             // optional class names space delimited list for title item ex: "text-center"
       },
       {
-        name: 'Modificar perfil',
-        url: '/perfiles/perfil-organizacion',
-        icon: 'icon-pencil',
-      },
-      {
         name: 'Consultar perfil',
         url: '/perfil',
         icon: 'icon-pencil',

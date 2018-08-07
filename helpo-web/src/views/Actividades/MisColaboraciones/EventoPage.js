@@ -19,7 +19,7 @@ class EventoPage extends React.Component {
       <div className="animated fadeIn">
         <Card>
           <CardHeader>
-            <i className="fa fa-align-justify"></i> Mis eventos
+            <i className="fa fa-align-justify"></i> Mis colaboraciones
           </CardHeader>
           <CardBody>
             <div className="row">

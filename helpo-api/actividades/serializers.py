@@ -165,10 +165,11 @@ class ParticipacionSerializer(serializers.ModelSerializer):
     necesidad_voluntario_id = serializers.PrimaryKeyRelatedField(
         queryset=Voluntario.objects.all(), source='necesidad_voluntario'
     )
+    voluntario = VoluntarioInfoSerializer(read_only=True)
     
     class Meta:
         model = Participacion
-        fields = ('id', 'comentario', 'necesidad_voluntario_id', 'voluntario_id')
+        fields = ('id', 'comentario', 'necesidad_voluntario_id', 'voluntario')
 
     def create(self, validated_data):
         necesidad_voluntario = validated_data.get('necesidad_voluntario')

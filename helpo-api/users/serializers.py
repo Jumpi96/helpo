@@ -238,16 +238,19 @@ class AppValuesSerializer(serializers.ModelSerializer):
         fields = ('key', 'value')
 
 class VoluntarioInfoSerializer(serializers.ModelSerializer):
-    perfil = VoluntarioInfoProfileSerializer(read_only=True)
+    dni = serializers.SerializerMethodField()
+    apellido = serializers.SerializerMethodField()
 
     class Meta:
         model = User
-        fields = ('id', 'nombre','perfil')
+        fields = ('id', 'nombre', 'dni', 'apellido')
 
-class VoluntarioInfoProfileSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = VoluntarioProfile
-        fields = ( 'apellido', 'dni')
-
+    def get_apellido(self, obj):
+        voluntario = VoluntarioProfile.objects.get(usuario=obj.id)
+        return voluntario.apellido
+    
+    def get_dni(self, obj):
+        voluntario = VoluntarioProfile.objects.get(usuario=obj.id)
+        return voluntario.dni
 
         

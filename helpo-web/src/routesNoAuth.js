@@ -23,7 +23,7 @@ const routes = [
   { path: '/noAuth', exact: true, name: 'Home', component: NoAuthLayout },
   { path: '/noAuth/dashboard', name: 'helpo', component: Dashboard },
 
-  { path: '/noAuth/actividades/consultar-eventos', name: 'Consultar eventos', component: ConsultarEventosPage },
+  { path: '/noAuth/actividades/consultar-eventos', name: 'Eventos', component: ConsultarEventosPage },
 
 ];
 

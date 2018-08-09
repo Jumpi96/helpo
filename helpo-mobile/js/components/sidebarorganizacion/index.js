@@ -16,7 +16,7 @@ const drawerImage = require('../../../img/logo-kitchen-sink-white.png');
 
 const datas = [
   {
-    name: 'Consultar eventos',
+    name: 'Eventos',
     route: 'consultarEventos',
     icon: 'paper',
     bg: '#C5F442',

@@ -41,7 +41,7 @@ class ConsultarEventos extends Component {
             </Button>
           </Left>
           <Body>
-            <Title>Consultar eventos</Title>
+            <Title>Eventos</Title>
           </Body>
           <Right />
         </Header>

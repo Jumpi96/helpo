@@ -54,7 +54,7 @@ const routes = [
   { path: '/dashboard', name: 'helpo', component: Dashboard },
 
   { path: '/actividades/evento', name: 'Mis eventos', component: EventoPage },
-  { path: '/actividades/consultar-eventos', name: 'Consultar eventos', component: ConsultarEventosPage },
+  { path: '/actividades/consultar-eventos', name: 'Eventos', component: ConsultarEventosPage },
   { path: '/actividades/consultar-evento/:id', name: 'Consultar evento', component: ConsultarEventosView },
   { path: '/actividades/registrar-evento', name: 'Registrar evento', component: RegistrarEvento },
   { path: '/actividades/registrar-necesidades', name: 'Registrar necesidades', component: RegistrarNecesidades },

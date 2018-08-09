@@ -88,7 +88,7 @@ class EventoCard extends Component {
         <CardBody>
         <div>
           <img
-            src={getImagen(evento.organizacion.avatar)}
+            src={getImagen(evento.organizacion ? evento.organizacion.avatar : undefined )}
             alt="ONG"
             style={{width:'75px', height:'75px'}} 
           />

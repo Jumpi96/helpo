@@ -21,7 +21,7 @@ class ConsultarEventosPage extends React.Component {
       <div className="animated fadeIn">
         <Card>
           <CardHeader>
-            <i className="fa fa-align-justify"></i> Consultar eventos
+            <i className="fa fa-align-justify"></i>Eventos
           </CardHeader>
           <CardBody>
             <ConsultarEventosList eventos={eventos} auth={this.getAuth()} />

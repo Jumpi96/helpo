@@ -69,7 +69,7 @@ npm run start
 - On project folder `helpo-api/`:
   - Create file with name `.env` and text:
 ```
-DJANGO_SETTINGS="helpo.settings.docker"
+DJANGO_SETTINGS=helpo.settings.docker
 URL_CLIENT="http://localhost:3000/"
 ```
 - On project folder `helpo-web/`:

@@ -1,46 +1,67 @@
-# NativeBase KitchenSink v2.1.0
-An example app with all the UI components of NativeBase
+#  HelpoMobile
+[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](http://standardjs.com/)
 
-> **NativeBase-KitchenSink** comes in four forms of app for you!
->1. Pure React Native App with `react-navigation` on branch **[master](https://github.com/GeekyAnts/NativeBase-KitchenSink)**
->2. Pure React Native App with `RNRF` on branch **[RNRF](https://github.com/GeekyAnts/NativeBase-KitchenSink/tree/RNRF)**
->3. An Expo app with `CRNA` and `react-navigation` on branch **[CRNA](https://github.com/GeekyAnts/NativeBase-KitchenSink/tree/CRNA)**
->4. A React App with `NativeBase for web` on branch **[web-support](https://github.com/GeekyAnts/NativeBase-KitchenSink/tree/web-support)**
+* Standard compliant React Native App Utilizing [Ignite](https://github.com/infinitered/ignite)
 
->Find the installation guide in `ReadMe` of appropriate branches
+## :arrow_up: How to Setup
 
-## Demo
+**Step 1:** git clone this repo:
 
-iOS | Android
- :--:| :-----:
- ![ios-demo](./screenshots/iOS.gif) | ![android-demo](./screenshots/Android.gif)
+**Step 2:** cd to the cloned repo:
+
+**Step 3:** Install the Application with `yarn` or `npm i`
 
 
-[NativeBase](http://nativebase.io/) is a free and open source framework that enables developers to build high-quality apps using [React Native](https://facebook.github.io/react-native/) for iOS and Android with a fusion of ES6. NativeBase builds a layer on top of React Native that provides you with basic set of components for mobile application development. This helps you to build world-class application experiences on native platforms.
+## :arrow_forward: How to Run App
 
-NativeBase without a doubt fits in well with mobile applications which cut downs one huge part of your app - The Front end.
-The applications stack of components is built using native UI components, so there are no compromises with the user experience.
+1. cd to the repo
+2. Run Build for either OS
+  * for iOS
+    * run `react-native run-ios`
+  * for Android
+    * Run Genymotion
+    * run `react-native run-android`
 
+## :no_entry_sign: Standard Compliant
 
-## Installation
+[![js-standard-style](https://cdn.rawgit.com/feross/standard/master/badge.svg)](https://github.com/feross/standard)
+This project adheres to Standard.  Our CI enforces this, so we suggest you enable linting to keep your project compliant during development.
 
-*	**Clone and install packages**
+**To Lint on Commit**
+
+This is implemented using [husky](https://github.com/typicode/husky). There is no additional setup needed.
+
+**Bypass Lint**
+
+If you have to bypass lint for a special commit that you will come back and clean (pushing something to a branch etc.) then you can bypass git hooks with adding `--no-verify` to your commit command.
+
+**Understanding Linting Errors**
+
+The linting rules are from JS Standard and React-Standard.  [Regular JS errors can be found with descriptions here](http://eslint.org/docs/rules/), while [React errors and descriptions can be found here](https://github.com/yannickcr/eslint-plugin-react).
+
+## :closed_lock_with_key: Secrets
+
+This project uses [react-native-config](https://github.com/luggit/react-native-config) to expose config variables to your javascript code in React Native. You can store API keys
+and other sensitive information in a `.env` file:
+
 ```
-git clone git@github.com:GeekyAnts/NativeBase-KitchenSink.git
-cd NativeBase-KitchenSink
-git checkout RNRF
-yarn
-react-native link react-native-vector-icons
+API_URL=https://myapi.com
+GOOGLE_MAPS_API_KEY=abcdefgh
 ```
 
-*	**Run on iOS**
-	*	Opt #1:
-		*	Open the project in Xcode from `ios/NativeBase-KitchenSink.xcodeproj`
-		*	Click `run` button to simulate
-	*	Opt #2:
-		*	Run `react-native run-ios` in your terminal
+and access them from React Native like so:
 
+```
+import Secrets from 'react-native-config'
 
-*	**Run on Android**
-	*	Make sure you have an `Android emulator` installed and running
-	*	Run `react-native run-android` in your terminal
+Secrets.API_URL  // 'https://myapi.com'
+Secrets.GOOGLE_MAPS_API_KEY  // 'abcdefgh'
+```
+
+The `.env` file is ignored by git keeping those secrets out of your repo.
+
+### Get started:
+1. Copy .env.example to .env
+2. Add your config variables
+3. Follow instructions at [https://github.com/luggit/react-native-config#setup](https://github.com/luggit/react-native-config#setup)
+4. Done!

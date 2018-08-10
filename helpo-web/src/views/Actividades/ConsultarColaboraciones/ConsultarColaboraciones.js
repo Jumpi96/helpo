@@ -1,13 +1,9 @@
 import React from 'react'
 import { Card, CardHeader, CardBody } from 'reactstrap'
 import TablaColaboraciones from './TablaColaboraciones/TablaColaboraciones'
+import { connect } from 'redux'
 
-class ConsultarColaboracion extends React.Component {
-  constructor(props){
-    super(props);
-  }
-
-  render() {
+const ConsultarColaboracionConnected  = () => {
 
     const necesidades = this.props.necesidades
 
@@ -22,6 +18,12 @@ class ConsultarColaboracion extends React.Component {
       </Card>
     );
   }
+
+
+const mapStateToProps = state => {
+  return { necesidades: state.colaboracionNecesidades }
 }
+
+const ConsultarColaboracion = connect(mapStateToProps)(ConsultarColaboracionConnected)
 
 export default ConsultarColaboracion;

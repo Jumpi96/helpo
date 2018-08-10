@@ -4,14 +4,7 @@ import PropTypes from 'prop-types'
 
 const tablaPropTypes = {
   necesidad: PropTypes.string.isRequired,
-  colaboraciones: PropTypes.arrayOf(PropTypes.shape({
-    apellido: PropTypes.string,
-    nombre: PropTypes.string,
-    dni: PropTypes.number,
-    cantidad: PropTypes.number,
-    comentario: PropTypes.string,
-    checkedBox: PropTypes.func,
-  })).isRequired,
+  colaboraciones: PropTypes.array.isRequired,
 } 
 
 const TablaColaboracion = (colaboraciones, necesidad) => {

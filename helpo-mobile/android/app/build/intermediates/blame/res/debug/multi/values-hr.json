@@ -1,17 +1,17 @@
 [
     {
-        "outputFile": "/home/agustin/workspaces/HelpoMobile/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-hr/values-hr.xml",
+        "outputFile": "/home/juampilorenzo/Documentos/ignite/helpoMobile/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-hr/values-hr.xml",
         "map": [
             {
                 "to": {
                     "startLine": 2,
                     "startColumn": 4,
-                    "startOffset": 55,
+                    "startOffset": 105,
                     "endColumn": 104,
-                    "endOffset": 155
+                    "endOffset": 205
                 },
                 "from": {
-                    "file": "/home/agustin/workspaces/HelpoMobile/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values-hr/values-hr.xml",
+                    "file": "/home/juampilorenzo/Documentos/ignite/helpoMobile/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values-hr/values-hr.xml",
                     "position": {
                         "startLine": 4,
                         "startColumn": 4,
@@ -25,12 +25,12 @@
                 "to": {
                     "startLine": 3,
                     "startColumn": 4,
-                    "startOffset": 160,
+                    "startOffset": 210,
                     "endColumn": 107,
-                    "endOffset": 263
+                    "endOffset": 313
                 },
                 "from": {
-                    "file": "/home/agustin/workspaces/HelpoMobile/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values-hr/values-hr.xml",
+                    "file": "/home/juampilorenzo/Documentos/ignite/helpoMobile/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values-hr/values-hr.xml",
                     "position": {
                         "startLine": 5,
                         "startColumn": 4,
@@ -44,12 +44,12 @@
                 "to": {
                     "startLine": 4,
                     "startColumn": 4,
-                    "startOffset": 268,
+                    "startOffset": 318,
                     "endColumn": 122,
-                    "endOffset": 386
+                    "endOffset": 436
                 },
                 "from": {
-                    "file": "/home/agustin/workspaces/HelpoMobile/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values-hr/values-hr.xml",
+                    "file": "/home/juampilorenzo/Documentos/ignite/helpoMobile/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values-hr/values-hr.xml",
                     "position": {
                         "startLine": 6,
                         "startColumn": 4,
@@ -63,12 +63,12 @@
                 "to": {
                     "startLine": 5,
                     "startColumn": 4,
-                    "startOffset": 391,
+                    "startOffset": 441,
                     "endColumn": 96,
-                    "endOffset": 483
+                    "endOffset": 533
                 },
                 "from": {
-                    "file": "/home/agustin/workspaces/HelpoMobile/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values-hr/values-hr.xml",
+                    "file": "/home/juampilorenzo/Documentos/ignite/helpoMobile/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values-hr/values-hr.xml",
                     "position": {
                         "startLine": 7,
                         "startColumn": 4,
@@ -82,12 +82,12 @@
                 "to": {
                     "startLine": 6,
                     "startColumn": 4,
-                    "startOffset": 488,
+                    "startOffset": 538,
                     "endColumn": 109,
-                    "endOffset": 593
+                    "endOffset": 643
                 },
                 "from": {
-                    "file": "/home/agustin/workspaces/HelpoMobile/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values-hr/values-hr.xml",
+                    "file": "/home/juampilorenzo/Documentos/ignite/helpoMobile/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values-hr/values-hr.xml",
                     "position": {
                         "startLine": 8,
                         "startColumn": 4,
@@ -101,12 +101,12 @@
                 "to": {
                     "startLine": 7,
                     "startColumn": 4,
-                    "startOffset": 598,
+                    "startOffset": 648,
                     "endColumn": 85,
-                    "endOffset": 679
+                    "endOffset": 729
                 },
                 "from": {
-                    "file": "/home/agustin/workspaces/HelpoMobile/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values-hr/values-hr.xml",
+                    "file": "/home/juampilorenzo/Documentos/ignite/helpoMobile/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values-hr/values-hr.xml",
                     "position": {
                         "startLine": 9,
                         "startColumn": 4,
@@ -120,12 +120,12 @@
                 "to": {
                     "startLine": 8,
                     "startColumn": 4,
-                    "startOffset": 684,
+                    "startOffset": 734,
                     "endColumn": 103,
-                    "endOffset": 783
+                    "endOffset": 833
                 },
                 "from": {
-                    "file": "/home/agustin/workspaces/HelpoMobile/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values-hr/values-hr.xml",
+                    "file": "/home/juampilorenzo/Documentos/ignite/helpoMobile/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values-hr/values-hr.xml",
                     "position": {
                         "startLine": 10,
                         "startColumn": 4,
@@ -139,12 +139,12 @@
                 "to": {
                     "startLine": 9,
                     "startColumn": 4,
-                    "startOffset": 788,
+                    "startOffset": 838,
                     "endColumn": 118,
-                    "endOffset": 902
+                    "endOffset": 952
                 },
                 "from": {
-                    "file": "/home/agustin/workspaces/HelpoMobile/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values-hr/values-hr.xml",
+                    "file": "/home/juampilorenzo/Documentos/ignite/helpoMobile/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values-hr/values-hr.xml",
                     "position": {
                         "startLine": 11,
                         "startColumn": 4,
@@ -158,12 +158,12 @@
                 "to": {
                     "startLine": 10,
                     "startColumn": 4,
-                    "startOffset": 907,
+                    "startOffset": 957,
                     "endColumn": 85,
-                    "endOffset": 988
+                    "endOffset": 1038
                 },
                 "from": {
-                    "file": "/home/agustin/workspaces/HelpoMobile/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values-hr/values-hr.xml",
+                    "file": "/home/juampilorenzo/Documentos/ignite/helpoMobile/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values-hr/values-hr.xml",
                     "position": {
                         "startLine": 12,
                         "startColumn": 4,
@@ -177,12 +177,12 @@
                 "to": {
                     "startLine": 11,
                     "startColumn": 4,
-                    "startOffset": 993,
+                    "startOffset": 1043,
                     "endColumn": 103,
-                    "endOffset": 1092
+                    "endOffset": 1142
                 },
                 "from": {
-                    "file": "/home/agustin/workspaces/HelpoMobile/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values-hr/values-hr.xml",
+                    "file": "/home/juampilorenzo/Documentos/ignite/helpoMobile/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values-hr/values-hr.xml",
                     "position": {
                         "startLine": 13,
                         "startColumn": 4,
@@ -196,12 +196,12 @@
                 "to": {
                     "startLine": 12,
                     "startColumn": 4,
-                    "startOffset": 1097,
+                    "startOffset": 1147,
                     "endColumn": 112,
-                    "endOffset": 1205
+                    "endOffset": 1255
                 },
                 "from": {
-                    "file": "/home/agustin/workspaces/HelpoMobile/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values-hr/values-hr.xml",
+                    "file": "/home/juampilorenzo/Documentos/ignite/helpoMobile/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values-hr/values-hr.xml",
                     "position": {
                         "startLine": 14,
                         "startColumn": 4,
@@ -215,12 +215,12 @@
                 "to": {
                     "startLine": 13,
                     "startColumn": 4,
-                    "startOffset": 1210,
+                    "startOffset": 1260,
                     "endColumn": 105,
-                    "endOffset": 1311
+                    "endOffset": 1361
                 },
                 "from": {
-                    "file": "/home/agustin/workspaces/HelpoMobile/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values-hr/values-hr.xml",
+                    "file": "/home/juampilorenzo/Documentos/ignite/helpoMobile/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values-hr/values-hr.xml",
                     "position": {
                         "startLine": 15,
                         "startColumn": 4,
@@ -234,12 +234,12 @@
                 "to": {
                     "startLine": 14,
                     "startColumn": 4,
-                    "startOffset": 1316,
+                    "startOffset": 1366,
                     "endColumn": 104,
-                    "endOffset": 1416
+                    "endOffset": 1466
                 },
                 "from": {
-                    "file": "/home/agustin/workspaces/HelpoMobile/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values-hr/values-hr.xml",
+                    "file": "/home/juampilorenzo/Documentos/ignite/helpoMobile/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values-hr/values-hr.xml",
                     "position": {
                         "startLine": 16,
                         "startColumn": 4,
@@ -253,12 +253,12 @@
                 "to": {
                     "startLine": 15,
                     "startColumn": 4,
-                    "startOffset": 1421,
+                    "startOffset": 1471,
                     "endColumn": 112,
-                    "endOffset": 1529
+                    "endOffset": 1579
                 },
                 "from": {
-                    "file": "/home/agustin/workspaces/HelpoMobile/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values-hr/values-hr.xml",
+                    "file": "/home/juampilorenzo/Documentos/ignite/helpoMobile/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values-hr/values-hr.xml",
                     "position": {
                         "startLine": 17,
                         "startColumn": 4,
@@ -272,12 +272,12 @@
                 "to": {
                     "startLine": 16,
                     "startColumn": 4,
-                    "startOffset": 1534,
+                    "startOffset": 1584,
                     "endColumn": 106,
-                    "endOffset": 1636
+                    "endOffset": 1686
                 },
                 "from": {
-                    "file": "/home/agustin/workspaces/HelpoMobile/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values-hr/values-hr.xml",
+                    "file": "/home/juampilorenzo/Documentos/ignite/helpoMobile/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values-hr/values-hr.xml",
                     "position": {
                         "startLine": 18,
                         "startColumn": 4,
@@ -291,12 +291,12 @@
                 "to": {
                     "startLine": 17,
                     "startColumn": 4,
-                    "startOffset": 1641,
+                    "startOffset": 1691,
                     "endColumn": 122,
-                    "endOffset": 1759
+                    "endOffset": 1809
                 },
                 "from": {
-                    "file": "/home/agustin/workspaces/HelpoMobile/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values-hr/values-hr.xml",
+                    "file": "/home/juampilorenzo/Documentos/ignite/helpoMobile/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values-hr/values-hr.xml",
                     "position": {
                         "startLine": 19,
                         "startColumn": 4,
@@ -310,12 +310,12 @@
                 "to": {
                     "startLine": 18,
                     "startColumn": 4,
-                    "startOffset": 1764,
+                    "startOffset": 1814,
                     "endColumn": 96,
-                    "endOffset": 1856
+                    "endOffset": 1906
                 },
                 "from": {
-                    "file": "/home/agustin/workspaces/HelpoMobile/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values-hr/values-hr.xml",
+                    "file": "/home/juampilorenzo/Documentos/ignite/helpoMobile/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values-hr/values-hr.xml",
                     "position": {
                         "startLine": 20,
                         "startColumn": 4,
@@ -329,12 +329,335 @@
                 "to": {
                     "startLine": 19,
                     "startColumn": 4,
-                    "startOffset": 1861,
-                    "endColumn": 100,
-                    "endOffset": 1957
+                    "startOffset": 1911,
+                    "endColumn": 107,
+                    "endOffset": 2014
                 },
                 "from": {
-                    "file": "/home/agustin/workspaces/HelpoMobile/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values-hr/values-hr.xml",
+                    "file": "/home/juampilorenzo/Documentos/ignite/helpoMobile/android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/11.0.4/res/values-hr/values.xml",
+                    "position": {
+                        "startLine": 4,
+                        "startColumn": 0,
+                        "startOffset": 283,
+                        "endColumn": 103,
+                        "endOffset": 386
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 20,
+                    "startColumn": 4,
+                    "startOffset": 2019,
+                    "endColumn": 188,
+                    "endOffset": 2203
+                },
+                "from": {
+                    "file": "/home/juampilorenzo/Documentos/ignite/helpoMobile/android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/11.0.4/res/values-hr/values.xml",
+                    "position": {
+                        "startLine": 5,
+                        "startColumn": 0,
+                        "startOffset": 387,
+                        "endColumn": 188,
+                        "endOffset": 575
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 21,
+                    "startColumn": 4,
+                    "startOffset": 2208,
+                    "endColumn": 131,
+                    "endOffset": 2335
+                },
+                "from": {
+                    "file": "/home/juampilorenzo/Documentos/ignite/helpoMobile/android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/11.0.4/res/values-hr/values.xml",
+                    "position": {
+                        "startLine": 6,
+                        "startColumn": 0,
+                        "startOffset": 576,
+                        "endColumn": 127,
+                        "endOffset": 703
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 22,
+                    "startColumn": 4,
+                    "startOffset": 2340,
+                    "endColumn": 111,
+                    "endOffset": 2447
+                },
+                "from": {
+                    "file": "/home/juampilorenzo/Documentos/ignite/helpoMobile/android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/11.0.4/res/values-hr/values.xml",
+                    "position": {
+                        "startLine": 7,
+                        "startColumn": 0,
+                        "startOffset": 704,
+                        "endColumn": 107,
+                        "endOffset": 811
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 23,
+                    "startColumn": 4,
+                    "startOffset": 2452,
+                    "endColumn": 215,
+                    "endOffset": 2663
+                },
+                "from": {
+                    "file": "/home/juampilorenzo/Documentos/ignite/helpoMobile/android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/11.0.4/res/values-hr/values.xml",
+                    "position": {
+                        "startLine": 8,
+                        "startColumn": 0,
+                        "startOffset": 812,
+                        "endColumn": 215,
+                        "endOffset": 1027
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 24,
+                    "startColumn": 4,
+                    "startOffset": 2668,
+                    "endColumn": 131,
+                    "endOffset": 2795
+                },
+                "from": {
+                    "file": "/home/juampilorenzo/Documentos/ignite/helpoMobile/android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/11.0.4/res/values-hr/values.xml",
+                    "position": {
+                        "startLine": 9,
+                        "startColumn": 0,
+                        "startOffset": 1028,
+                        "endColumn": 127,
+                        "endOffset": 1155
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 25,
+                    "startColumn": 4,
+                    "startOffset": 2800,
+                    "endColumn": 135,
+                    "endOffset": 2931
+                },
+                "from": {
+                    "file": "/home/juampilorenzo/Documentos/ignite/helpoMobile/android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/11.0.4/res/values-hr/values.xml",
+                    "position": {
+                        "startLine": 10,
+                        "startColumn": 0,
+                        "startOffset": 1156,
+                        "endColumn": 131,
+                        "endOffset": 1287
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 26,
+                    "startColumn": 4,
+                    "startOffset": 2936,
+                    "endColumn": 190,
+                    "endOffset": 3122
+                },
+                "from": {
+                    "file": "/home/juampilorenzo/Documentos/ignite/helpoMobile/android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-basement/11.0.4/res/values-hr/values.xml",
+                    "position": {
+                        "startLine": 4,
+                        "startColumn": 0,
+                        "startOffset": 285,
+                        "endColumn": 190,
+                        "endOffset": 475
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 27,
+                    "startColumn": 4,
+                    "startOffset": 3127,
+                    "endColumn": 208,
+                    "endOffset": 3331
+                },
+                "from": {
+                    "file": "/home/juampilorenzo/Documentos/ignite/helpoMobile/android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/11.0.4/res/values-hr/values.xml",
+                    "position": {
+                        "startLine": 11,
+                        "startColumn": 0,
+                        "startOffset": 1288,
+                        "endColumn": 208,
+                        "endOffset": 1496
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 28,
+                    "startColumn": 4,
+                    "startOffset": 3336,
+                    "endColumn": 108,
+                    "endOffset": 3440
+                },
+                "from": {
+                    "file": "/home/juampilorenzo/Documentos/ignite/helpoMobile/android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/11.0.4/res/values-hr/values.xml",
+                    "position": {
+                        "startLine": 12,
+                        "startColumn": 0,
+                        "startOffset": 1497,
+                        "endColumn": 104,
+                        "endOffset": 1601
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 29,
+                    "startColumn": 4,
+                    "startOffset": 3445,
+                    "endColumn": 187,
+                    "endOffset": 3628
+                },
+                "from": {
+                    "file": "/home/juampilorenzo/Documentos/ignite/helpoMobile/android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/11.0.4/res/values-hr/values.xml",
+                    "position": {
+                        "startLine": 13,
+                        "startColumn": 0,
+                        "startOffset": 1602,
+                        "endColumn": 187,
+                        "endOffset": 1789
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 30,
+                    "startColumn": 4,
+                    "startOffset": 3633,
+                    "endColumn": 129,
+                    "endOffset": 3758
+                },
+                "from": {
+                    "file": "/home/juampilorenzo/Documentos/ignite/helpoMobile/android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/11.0.4/res/values-hr/values.xml",
+                    "position": {
+                        "startLine": 14,
+                        "startColumn": 0,
+                        "startOffset": 1790,
+                        "endColumn": 125,
+                        "endOffset": 1915
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 31,
+                    "startColumn": 4,
+                    "startOffset": 3763,
+                    "endColumn": 205,
+                    "endOffset": 3964
+                },
+                "from": {
+                    "file": "/home/juampilorenzo/Documentos/ignite/helpoMobile/android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/11.0.4/res/values-hr/values.xml",
+                    "position": {
+                        "startLine": 15,
+                        "startColumn": 0,
+                        "startOffset": 1916,
+                        "endColumn": 205,
+                        "endOffset": 2121
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 32,
+                    "startColumn": 4,
+                    "startOffset": 3969,
+                    "endColumn": 172,
+                    "endOffset": 4137
+                },
+                "from": {
+                    "file": "/home/juampilorenzo/Documentos/ignite/helpoMobile/android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/11.0.4/res/values-hr/values.xml",
+                    "position": {
+                        "startLine": 16,
+                        "startColumn": 0,
+                        "startOffset": 2122,
+                        "endColumn": 168,
+                        "endOffset": 2290
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 33,
+                    "startColumn": 4,
+                    "startOffset": 4142,
+                    "endColumn": 97,
+                    "endOffset": 4235
+                },
+                "from": {
+                    "file": "/home/juampilorenzo/Documentos/ignite/helpoMobile/android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/11.0.4/res/values-hr/values.xml",
+                    "position": {
+                        "startLine": 17,
+                        "startColumn": 0,
+                        "startOffset": 2291,
+                        "endColumn": 93,
+                        "endOffset": 2384
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 34,
+                    "startColumn": 4,
+                    "startOffset": 4240,
+                    "endColumn": 91,
+                    "endOffset": 4327
+                },
+                "from": {
+                    "file": "/home/juampilorenzo/Documentos/ignite/helpoMobile/android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/11.0.4/res/values-hr/values.xml",
+                    "position": {
+                        "startLine": 18,
+                        "startColumn": 0,
+                        "startOffset": 2385,
+                        "endColumn": 87,
+                        "endOffset": 2472
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 35,
+                    "startColumn": 4,
+                    "startOffset": 4332,
+                    "endColumn": 109,
+                    "endOffset": 4437
+                },
+                "from": {
+                    "file": "/home/juampilorenzo/Documentos/ignite/helpoMobile/android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/11.0.4/res/values-hr/values.xml",
+                    "position": {
+                        "startLine": 19,
+                        "startColumn": 0,
+                        "startOffset": 2473,
+                        "endColumn": 105,
+                        "endOffset": 2578
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 36,
+                    "startColumn": 4,
+                    "startOffset": 4442,
+                    "endColumn": 100,
+                    "endOffset": 4538
+                },
+                "from": {
+                    "file": "/home/juampilorenzo/Documentos/ignite/helpoMobile/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values-hr/values-hr.xml",
                     "position": {
                         "startLine": 21,
                         "startColumn": 4,

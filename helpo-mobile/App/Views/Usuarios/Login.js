@@ -1,25 +1,15 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { actions } from 'react-native-navigation-redux-helpers';
 import { Container, Header, Title, Content, Button, Item, Label, Input, Body, Left, Right, Icon, Form, Text } from 'native-base';
-import { Actions } from 'react-native-router-flux';
-import { FormValidationMessage } from 'react-native-elements';
 
 import styles from './styles';
-import { login } from '../../actions/auth';
+import { login } from '../../Redux/actions/auth'
 
-const {
-  popRoute,
-} = actions;
 
 class Login extends Component {
 
   static propTypes = {
-    popRoute: React.PropTypes.func,
-    navigation: React.PropTypes.shape({
-      key: React.PropTypes.string,
-    }),
     login: React.PropTypes.func,
     auth: React.PropTypes.shape({
       isAuthenticated: React.PropTypes.bool,
@@ -49,7 +39,7 @@ class Login extends Component {
       <Container style={styles.container}>
         <Header>
           <Left>
-            <Button transparent onPress={() => Actions.pop()}>
+            <Button transparent onPress={() => undefined}>
               <Icon name="arrow-back" />
             </Button>
           </Left>
@@ -77,9 +67,7 @@ class Login extends Component {
           </Button>
           {this.props.errors.length > 0 && (
             <Item>
-              {this.props.errors.map(error => (
-                <FormValidationMessage key={error.field}>{error.message}</FormValidationMessage>
-              ))}
+              
             </Item>
           )}
         </Content>
@@ -90,7 +78,6 @@ class Login extends Component {
 
 function bindAction(dispatch) {
   return {
-    popRoute: key => dispatch(popRoute(key)),
     login: (email, password) => dispatch(login(email, password)),
   };
 }
@@ -104,8 +91,6 @@ const mapStateToProps = (state) => {
   }
   return {
     errors,
-    navigation: state.cardNavigation,
-    themeState: state.drawer.themeState,
     auth: state.auth,
   };
 };

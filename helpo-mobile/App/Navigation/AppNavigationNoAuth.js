@@ -3,7 +3,7 @@ import { StackNavigator } from "react-navigation";
 import styles from "./Styles/NavigationStyles";
 
 // screens identified by the router
-import NavigationDrawer from "./NavigationDrawer";
+import NavigationDrawer from "./NavigationDrawerNoAuth";
 
 // Manifest of possible screens
 const PrimaryNav = StackNavigator({

@@ -1,6 +1,6 @@
-import AppNavigationNoAuth from '../Navigation/AppNavigationNoAuth'
+import AppNavigation from '../Navigation/AppNavigation'
 
 export const reducer = (state, action) => {
-  const newState = AppNavigationNoAuth.router.getStateForAction(action, state)
+  const newState = AppNavigation.router.getStateForAction(action, state)
   return newState || state
 }

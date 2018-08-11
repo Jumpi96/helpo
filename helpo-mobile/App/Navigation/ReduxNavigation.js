@@ -2,10 +2,8 @@ import React from 'react'
 import { BackHandler, Platform } from 'react-native'
 import { addNavigationHelpers } from 'react-navigation'
 import { createReduxBoundAddListener } from 'react-navigation-redux-helpers'
-import { connect } from 'react-redux'
-import AppNavigationOrg from './AppNavigationOrg'
-import AppNavigationNoAuth from './AppNavigationNoAuth'
-import AppNavigationVol from './AppNavigationVol'
+import { connect } from 'react-redux' 
+import AppNavigation from './AppNavigation'
 
 class ReduxNavigation extends React.Component {
   componentWillMount () {
@@ -28,13 +26,7 @@ class ReduxNavigation extends React.Component {
   }
 
   render () {
-    if (this.props.navigation === 0) {
-      return <AppNavigationNoAuth navigation={addNavigationHelpers({ dispatch: this.props.dispatch, state: this.props.nav, addListener: createReduxBoundAddListener('root') })} />
-    } else if (this.props.navigation === 1) {
-      return <AppNavigationOrg navigation={addNavigationHelpers({ dispatch: this.props.dispatch, state: this.props.nav, addListener: createReduxBoundAddListener('root') })} />
-    } else if (this.props.navigation === 2) {
-      return <AppNavigationVol navigation={addNavigationHelpers({ dispatch: this.props.dispatch, state: this.props.nav, addListener: createReduxBoundAddListener('root') })} />
-    } 
+    return <AppNavigation navigation={addNavigationHelpers({ dispatch: this.props.dispatch, state: this.props.nav, addListener: createReduxBoundAddListener('root') })} />
   }
 }
 

@@ -5,10 +5,37 @@ import { List, ListItem, Text, View, Content } from "native-base";
 import styles from "./Styles/DrawerContentStyles";
 import { Images } from "../Themes";
 
+const itemsNoAuth = [
+	{
+		'key': 'LaunchScreen',
+		'routeName': 'LaunchScreen',
+		'name': 'NoAuth'
+	},
+	{
+		'key': 'Login',
+		'routeName': 'Login',
+		'name': 'NoAuth'
+	}
+]
+
+const itemsOrg = [
+	{
+		'key': 'LaunchScreen',
+		'routeName': 'LaunchScreen',
+		'name': 'Org'
+	}
+]
+
 class DrawerContent extends Component {
+
   render() {
 	const navigation = this.props.navigation;
-	const items = this.props.items;
+	let items;
+	if (true) {
+		items = itemsOrg;
+	} else {
+		items = itemsNoAuth;
+	}
 	return (
 	  <View style={styles.container}>
 		<Image source={Images.logoDark} style={styles.logo} />
@@ -17,7 +44,7 @@ class DrawerContent extends Component {
 			dataArray={items}
 			renderRow={item => (
 			<ListItem onPress={() => navigation.navigate(item.routeName)}>
-				<Text>{item.routeName}</Text>
+				<Text>{item.name}</Text>
 			</ListItem>
 			)}
 		  />

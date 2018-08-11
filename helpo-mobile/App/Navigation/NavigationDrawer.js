@@ -1,14 +1,15 @@
 import React from "react";
 import { DrawerNavigator } from "react-navigation";
-import ListviewExample from "../Containers/ListviewExample";
 import LaunchScreen from "../Containers/LaunchScreen";
 import DrawerContent from "../Containers/DrawerContent";
-import MisEventos from "../Views/Actividades/MisEventos/MisEventos";
+import Login from '../Views/Usuarios/Login';
+
+import ListviewExample from "../Containers/ListviewExample";
 
 const NavigationDrawer = DrawerNavigator({
 		LaunchScreen: { screen: LaunchScreen },
+		Login: { screen: Login },
 		ListviewExample: { screen: ListviewExample },
-		MisEventos: { screen: MisEventos },
   },
   {
 	initialRouteName: "LaunchScreen",

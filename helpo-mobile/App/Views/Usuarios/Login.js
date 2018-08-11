@@ -9,12 +9,12 @@ import { login } from '../../Redux/actions/auth'
 
 class Login extends Component {
 
-  static propTypes = {
+  /*static propTypes = {
     login: React.PropTypes.func,
     auth: React.PropTypes.shape({
       isAuthenticated: React.PropTypes.bool,
     }),
-  }
+  }*/
 
   constructor(props) {
     super(props);

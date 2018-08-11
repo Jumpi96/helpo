@@ -19,6 +19,7 @@ Created with [Django React Boilerplate](https://github.com/vintasoftware/django-
 - Prototyping: [JustInMind](https://www.justinmind.com/)
 - UML Modelling: [Enterprise Architect](http://www.sparxsystems.com/products/ea/) 
   - It's recommended to follow this [instructions](https://docs.google.com/document/d/1aiTtPPE9bWLdNnu2MVhimmbW6wWmoZtIJilpCCdZZQQ/edit?usp=sharing)
+- Redux dev tools: [ReduxDevTools](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd)
 ### Git
 To know how to:
 - Start coding

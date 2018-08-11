@@ -1,15 +1,21 @@
 import { createStore, applyMiddleware, compose } from 'redux'
 import Config from '../Config/DebugConfig'
+import Rehydration from '../Services/Rehydration'
+import ReduxPersist from '../Config/ReduxPersist'
 import createSagaMiddleware from 'redux-saga'
 import ScreenTracking from './ScreenTrackingMiddleware'
 import { createReactNavigationReduxMiddleware } from 'react-navigation-redux-helpers'
+import thunk from 'redux-thunk';
+import promise from './promise';
+
 
 // creates the store
 export default (rootReducer, rootSaga) => {
   /* ------------- Redux Configuration ------------- */
 
   const middleware = []
-  const enhancers = []
+  const enhancer = applyMiddleware(thunk, promise);
+  const enhancers = [enhancer]
 
   /* ------------- Navigation Middleware ------------ */
   const navigationMiddleware = createReactNavigationReduxMiddleware(
@@ -34,6 +40,11 @@ export default (rootReducer, rootSaga) => {
   // if Reactotron is enabled (default for __DEV__), we'll create the store through Reactotron
   const createAppropriateStore = Config.useReactotron ? console.tron.createStore : createStore
   const store = createAppropriateStore(rootReducer, compose(...enhancers))
+
+  // configure persistStore and check reducer version number
+  if (ReduxPersist.active) {
+    Rehydration.updateReducers(store)
+  }
 
   // kick off root saga
   let sagasManager = sagaMiddleware.run(rootSaga)

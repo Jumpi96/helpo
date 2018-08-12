@@ -20,8 +20,11 @@ class Login extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
+    const auth = this.props.auth;
     this.props.login(this.state.email, this.state.password);
-    this.props.navigation.navigate("LaunchScreen");
+    if (auth.isAuthenticated) {
+      this.props.navigation.navigate("LaunchScreen");
+    }
   }
 
   render() {
@@ -58,7 +61,7 @@ class Login extends Component {
           </Button>
           {this.props.errors.length > 0 && (
             <Item>
-              <Text>{this.props.errors[0]}</Text>
+              <Text>{this.props.errors.message}</Text>
             </Item>
           )}
         </Content>

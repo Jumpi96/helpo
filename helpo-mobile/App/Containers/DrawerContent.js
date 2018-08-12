@@ -29,6 +29,11 @@ const itemsOrg = [
 		'key': 'LaunchScreen',
 		'routeName': 'LaunchScreen',
 		'name': 'Home'
+	},
+	{
+		'key': 'Configuracion',
+		'routeName': 'Configuracion',
+		'name': 'Configuración'
 	}
 ]
 
@@ -37,6 +42,11 @@ const itemsVol = [
 		'key': 'LaunchScreen',
 		'routeName': 'LaunchScreen',
 		'name': 'Home'
+	},
+	{
+		'key': 'Configuracion',
+		'routeName': 'Configuracion',
+		'name': 'Configuración'
 	}
 ]
 
@@ -44,6 +54,7 @@ class DrawerContent extends Component {
 
   render() {
 		const navigation = this.props.navigation;
+		console.warn(this.props.auth);
 		let items;
 		if (this.props.auth === null || this.props.auth.user === null) {
 			items = itemsNoAuth;

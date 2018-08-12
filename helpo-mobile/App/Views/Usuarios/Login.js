@@ -9,35 +9,28 @@ import { login } from '../../Redux/actions/auth'
 
 class Login extends Component {
 
-  /*static propTypes = {
-    login: React.PropTypes.func,
-    auth: React.PropTypes.shape({
-      isAuthenticated: React.PropTypes.bool,
-    }),
-  }*/
-
   constructor(props) {
     super(props);
     this.state = {
       email: '',
       password: '',
     };
-    console.warn(this.props.auth)
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleSubmit(e) {
     e.preventDefault();
     this.props.login(this.state.email, this.state.password);
+    this.props.navigation.navigate("LaunchScreen");
   }
-
 
   render() {
     return (
       <Container style={styles.container}>
         <Header>
           <Left>
-            <Button transparent onPress={() => undefined}>
+            <Button transparent 
+              onPress={() => this.props.navigation.navigate("LaunchScreen")}>
               <Icon name="arrow-back" />
             </Button>
           </Left>
@@ -65,7 +58,7 @@ class Login extends Component {
           </Button>
           {this.props.errors.length > 0 && (
             <Item>
-              
+              <Text>{this.props.errors[0]}</Text>
             </Item>
           )}
         </Content>

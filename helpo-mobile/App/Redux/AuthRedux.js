@@ -7,7 +7,7 @@ import { AsyncStorage } from 'react-native';
 const { Types, Creators } = createActions({
   userLoad: null,
   userLoaded: ['user'],
-  loginSuccessful: ['res'],
+  loginSuccessful: null,
   authenticationError: null,
   loginFailed: null,
   registrationFailed: null,
@@ -43,7 +43,7 @@ export const success = (state, action) => {
 
 export const logged = (state, action) => {
   AsyncStorage.setItem('token', action.data.token);
-  return state.merge({ isAuthenticated: true, isLoading: false, errors: null });
+  return state.merge({ user: action.data.user, isAuthenticated: true, isLoading: false, errors: null });
 }
 
 export const failure = (state) => {

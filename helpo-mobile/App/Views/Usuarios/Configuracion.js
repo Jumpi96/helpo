@@ -1,29 +1,13 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { actions } from 'react-native-navigation-redux-helpers';
 import { Container, Header, Title, Content, Button, Item, Label, Input, Body, Left, Right, Icon, Form, Text } from 'native-base';
-import { Actions } from 'react-native-router-flux';
 
 import styles from './styles';
-import { logout } from '../../actions/auth';
+import { logout } from '../../Redux/actions/auth';
 
-const {
-  popRoute,
-} = actions;
 
 class Configuracion extends Component {
-
-  static propTypes = {
-    popRoute: React.PropTypes.func,
-    navigation: React.PropTypes.shape({
-      key: React.PropTypes.string,
-    }),
-    logout: React.PropTypes.func,
-    auth: React.PropTypes.shape({
-      isAuthenticated: React.PropTypes.bool,
-    }),
-  }
 
   constructor(props) {
     super(props);
@@ -32,10 +16,7 @@ class Configuracion extends Component {
 
   logout() {
     this.props.logout();
-  }
-
-  popRoute() {
-    this.props.popRoute(this.props.navigation.key);
+    this.props.navigation.navigate("LaunchScreen");
   }
 
   render() {
@@ -43,7 +24,7 @@ class Configuracion extends Component {
       <Container style={styles.container}>
         <Header>
           <Left>
-            <Button transparent onPress={() => Actions.pop()}>
+            <Button transparent onPress={() => this.props.navigation.navigate('LaunchScreen')}>
               <Icon name="arrow-back" />
             </Button>
           </Left>
@@ -68,15 +49,12 @@ class Configuracion extends Component {
 }
 
 function bindAction(dispatch) {
-  return {
-    popRoute: key => dispatch(popRoute(key)),
+  return {    
     logout: () => dispatch(logout()),
   };
 }
 
 const mapStateToProps = state => ({
-  navigation: state.cardNavigation,
-  themeState: state.drawer.themeState,
   auth: state.auth,
 });
 

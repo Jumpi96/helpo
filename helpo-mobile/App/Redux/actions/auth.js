@@ -74,13 +74,11 @@ export function logout() {
     return api.post('/auth/logout/', JSON.stringify(''), { headers })
       .then((res) => {
         dispatch({ type: 'LOGOUT_SUCCESSFUL' });
-        Actions.home();
         return res.data;
       })
       .catch((e) => {
         if (e.response.status === 403 || e.response.status === 401) {
           dispatch({ type: 'AUTHENTICATION_ERROR', data: e.response.data });          
-          Actions.home();
         } else {
           console.log('Server Error!');
         }

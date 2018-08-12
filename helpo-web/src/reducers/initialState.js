@@ -1,4 +1,5 @@
 export default {  
   eventos: [],
-  rubrosEvento: []
+  rubrosEvento: [],
+  misColaboraciones: []
 }

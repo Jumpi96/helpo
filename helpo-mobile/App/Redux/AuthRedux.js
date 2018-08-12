@@ -7,7 +7,11 @@ import { AsyncStorage } from 'react-native';
 const { Types, Creators } = createActions({
   userLoad: null,
   userLoaded: ['user'],
-  authenticationError: null
+  loginSuccessful: ['res'],
+  authenticationError: null,
+  loginFailed: null,
+  registrationFailed: null,
+  logoutSuccessful: null,
 })
 
 export const AuthTypes = Types
@@ -29,24 +33,45 @@ export const GithubSelectors = {}
 
 /* ------------- Reducers ------------- */
 
-// request the avatar for a user
-export const request = (state, { username }) =>
-  state.merge({ fetching: true, username, avatar: null })
+export const request = (state) =>
+  state.merge({ isLoading: true })
 
-// successful avatar lookup
 export const success = (state, action) => {
-  const { avatar } = action
-  return state.merge({ fetching: false, error: null, avatar })
+  const { user } = action
+  return state.merge({ isAuthenticated: true, isLoading: false, user })
 }
 
-// failed to get the avatar
-export const failure = (state) =>
-  state.merge({ fetching: false, error: true, avatar: null })
+export const logged = (state, action) => {
+  AsyncStorage.setItem('token', action.data.token);
+  return state.merge({ isAuthenticated: true, isLoading: false, errors: null });
+}
+
+export const failure = (state) => {
+  AsyncStorage.removeItem('token');
+  return state.merge({ errors: null, user: null, isAuthenticated: false, isLoading: false });
+}
+
+export const failedLogin = (state) => {
+  return state.merge ({ errors: { detail: 'Los datos ingresados no son correctos.' } })
+}
+
+export const failedSignup = (state) => {
+  return state; 
+}
+
+export const loggedout = (state, action) => {
+  AsyncStorage.removeItem('token');
+  return state.merge({ errors: action.data, token: null, user: null, isAuthenticated: false, isLoading: false })
+}
 
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.USER_LOAD]: request,
   [Types.USER_LOADED]: success,
-  [Types.AUTHENTICATION_ERROR]: failure
+  [Types.LOGIN_SUCCESSFUL]: logged,
+  [Types.AUTHENTICATION_ERROR]: failure,
+  [Types.LOGIN_FAILED]: failedLogin,
+  [Types.REGISTRATION_FAILED]: failedSignup,
+  [Types.LOGOUT_SUCCESSFUL]: loggedout,
 })

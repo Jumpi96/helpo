@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 // import validateEmail from "../../../utils/ValidateEmail";
 import api from '../../api';
 import SignUpPresentation from './SignUpPresentation';
-import validateEmail from '../../utils/ValidateEmail';
+import validateEmail from '../../Lib/ValidateEmail';
 
 
 class SignUp extends Component {

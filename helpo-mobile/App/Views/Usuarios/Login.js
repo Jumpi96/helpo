@@ -22,6 +22,7 @@ class Login extends Component {
       email: '',
       password: '',
     };
+    console.warn(this.props.auth)
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -30,9 +31,6 @@ class Login extends Component {
     this.props.login(this.state.email, this.state.password);
   }
 
-  popRoute() {
-    this.props.popRoute(this.props.navigation.key);
-  }
 
   render() {
     return (

@@ -35,15 +35,6 @@ class OrganizacionProfile(Profile):
     ubicacion = models.ForeignKey(Ubicacion, on_delete=models.SET_NULL,blank=True, null=True)
     descripcion = models.TextField(blank=True, null=True)
 
-class VoluntarioProfile(Profile):
-    sexo = models.TextField(blank=True, null=True)
-    apellido = models.CharField(max_length=140, default="no apellido")
-    telefono = models.BigIntegerField(blank=True, null=True)
-    dni = models.BigIntegerField(blank=True, null=True)
-    avatar = models.ForeignKey(Imagen, on_delete=models.SET_NULL, blank=True, null=True)
-    gustos = models.TextField(blank=True, null=True)
-    habilidades = models.TextField(blank=True, null=True)
-
 class EmpresaProfile(Profile):
     telefono = models.BigIntegerField(null=True)
     cuit = models.BigIntegerField(blank=True, null=True)
@@ -144,6 +135,15 @@ class User(AbstractBaseUser, PermissionsMixin, IndexedTimeStampedModel):
             return True
         return False
 
+class VoluntarioProfile(Profile):
+    sexo = models.TextField(blank=True, null=True)
+    apellido = models.CharField(max_length=140, default="no apellido")
+    telefono = models.BigIntegerField(blank=True, null=True)
+    dni = models.BigIntegerField(blank=True, null=True)
+    avatar = models.ForeignKey(Imagen, on_delete=models.SET_NULL, blank=True, null=True)
+    gustos = models.TextField(blank=True, null=True)
+    habilidades = models.TextField(blank=True, null=True)
+    usuario = models.ForeignKey(User, related_name='perfil', on_delete=models.CASCADE)
 
 class UserVerification(IndexedTimeStampedModel):
     usuario = models.OneToOneField('User')

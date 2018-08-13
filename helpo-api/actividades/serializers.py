@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from actividades.models import Evento, RubroEvento, Ubicacion, CategoriaRecurso, \
     Recurso, Necesidad, Contacto, Funcion, Voluntario, Participacion, Colaboracion
-from users.serializers import UserSerializer
+from users.serializers import UserSerializer, VoluntarioInfoSerializer
 
 class RubroEventoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -129,10 +129,11 @@ class ColaboracionSerializer(serializers.ModelSerializer):
     necesidad_material_id = serializers.PrimaryKeyRelatedField(
         queryset=Necesidad.objects.all(), source='necesidad_material'
     )
+    voluntario = VoluntarioInfoSerializer(read_only=True)
 
     class Meta:
         model = Colaboracion
-        fields = ('id', 'comentario', 'cantidad', 'necesidad_material_id', 'voluntario_id')
+        fields = ('id', 'comentario', 'cantidad', 'necesidad_material_id','voluntario')
     
     def create(self, validated_data):
         necesidad_material = validated_data.get('necesidad_material')
@@ -146,6 +147,8 @@ class ColaboracionSerializer(serializers.ModelSerializer):
             return colaboracion
         else:
             raise serializers.ValidationError()
+
+
 
 class ConsultaNecesidadSerializer(serializers.ModelSerializer):
     colaboraciones = ColaboracionSerializer(many=True)
@@ -162,10 +165,11 @@ class ParticipacionSerializer(serializers.ModelSerializer):
     necesidad_voluntario_id = serializers.PrimaryKeyRelatedField(
         queryset=Voluntario.objects.all(), source='necesidad_voluntario'
     )
+    voluntario = VoluntarioInfoSerializer(read_only=True)
     
     class Meta:
         model = Participacion
-        fields = ('id', 'comentario', 'necesidad_voluntario_id', 'voluntario_id')
+        fields = ('id', 'comentario', 'necesidad_voluntario_id', 'voluntario')
 
     def create(self, validated_data):
         necesidad_voluntario = validated_data.get('necesidad_voluntario')

@@ -4,15 +4,10 @@ import { Button, Icon, Card, CardItem, Text, Thumbnail, Right, Left, Body,
  } from 'native-base';
 import moment from 'moment';
 import styles from './styles';
-
-const logo = require('../../../../../img/logo.png');
+import { helpoImages } from '../../../../Themes';
 
 
 class EventoCard extends Component {
-
-  static propTypes = {
-    evento: React.PropTypes.object,
-  };
 
   getNecesidades() {
     const arrayNecesidades = this.props.evento.necesidades ? this.props.evento.necesidades : [];
@@ -48,7 +43,7 @@ class EventoCard extends Component {
       <Card style={styles.mb}>
         <CardItem bordered>
           <Left>
-            <Thumbnail source={logo} />
+            <Thumbnail source={helpoImages.launchscreenLogo} />
             <Body>
               <Text>Nombre de ONG</Text>
               <Text note>{moment(evento.fecha_hora_inicio).format('DD/MM/YYYY HH:mm')}</Text>

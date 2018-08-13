@@ -1,6 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { Actions } from 'react-native-router-flux';
 import moment from 'moment';
 import {
   Button,
@@ -18,17 +16,12 @@ import {
   Label,
   View,
 } from 'native-base';
-import { openDrawer } from '../../../actions/drawer';
 import styles from './styles';
 
 class ConsultaEvento extends React.Component {
 
-  static propTypes = {
-    evento: React.PropTypes.object,
-  }
-
-  getListaNecesidades() {
-    return this.props.evento.necesidades.map(n =>
+  getListaNecesidades(evento) {
+    return evento.necesidades.map(n =>
       <ListItem icon key={n.id}>
         <Left>
           <Button style={{ backgroundColor: '#F9DA1B' }}>
@@ -50,8 +43,8 @@ class ConsultaEvento extends React.Component {
     );
   }
 
-  getListaVoluntarios() {
-    return this.props.evento.voluntarios.map(n =>
+  getListaVoluntarios(evento) {
+    return evento.voluntarios.map(n =>
       <ListItem icon key={n.id}>
         <Left>
           <Button style={{ backgroundColor: '#ea8f3a' }}>
@@ -74,7 +67,8 @@ class ConsultaEvento extends React.Component {
   }
 
   render() {
-    const evento = this.props.evento;
+    const { params } = this.props.navigation.state;
+    const evento = params.evento;
     let listaContactos;
     if (evento.contacto.length > 0) {
       listaContactos = evento.contacto.map(contacto =>
@@ -87,7 +81,7 @@ class ConsultaEvento extends React.Component {
       <Container style={styles.container}>
         <Header>
           <Left>
-            <Button transparent onPress={() => Actions.pop()}>
+            <Button transparent onPress={() => this.props.navigation.navigate('ConsultarEventos')}>
               <Icon name="arrow-back" />
             </Button>
           </Left>
@@ -95,7 +89,7 @@ class ConsultaEvento extends React.Component {
             <Title>{evento.nombre}</Title>
           </Body>
           <Right>
-            <Button transparent onPress={() => Actions.registrarColaboraciones({ evento: evento.id })}>
+            <Button transparent onPress={() => this.props.navigation.navigate('RegistrarNecesidades', { evento: evento.id })}>
               <Text>Colaborar</Text>
             </Button>
           </Right>
@@ -145,7 +139,7 @@ class ConsultaEvento extends React.Component {
               <Separator bordered noTopBorder>
                 <Text>Necesidades materiales</Text>
               </Separator>
-              {this.getListaNecesidades()}
+              {this.getListaNecesidades(evento)}
             </View>
             ) : undefined
           }
@@ -154,7 +148,7 @@ class ConsultaEvento extends React.Component {
               <Separator bordered noTopBorder>
                 <Text>Voluntarios</Text>
               </Separator>
-              {this.getListaVoluntarios()}
+              {this.getListaVoluntarios(evento)}
             </View>
             ) : undefined
           }
@@ -164,16 +158,4 @@ class ConsultaEvento extends React.Component {
   }
 }
 
-function bindAction(dispatch) {
-  return {
-    openDrawer: () => dispatch(openDrawer()),
-    popRoute: key => dispatch(popRoute(key))
-  };
-}
-
-const mapStateToProps = state => ({
-  navigation: state.cardNavigation,
-  themeState: state.drawer.themeState,
-});
-
-export default connect(mapStateToProps, bindAction)(ConsultaEvento);
+export default ConsultaEvento;

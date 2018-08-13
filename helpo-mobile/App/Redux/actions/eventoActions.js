@@ -35,6 +35,7 @@ export function loadEventosProximos() {
   return function(dispatch) {
     return eventoApi.getEventosProximos().then(eventos => {
       dispatch(loadEventosProximosSuccess(eventos));
+      return eventos;
     }).catch(error => {
       throw(error);
     });

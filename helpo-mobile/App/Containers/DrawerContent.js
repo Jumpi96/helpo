@@ -26,14 +26,29 @@ const itemsNoAuth = [
 
 const itemsOrg = [
 	{
-		'key': 'LaunchScreen',
-		'routeName': 'LaunchScreen',
-		'name': 'Home'
+	  'key': 'LaunchScreen',
+	  'routeName': 'LaunchScreen',
+	  'name': 'Home'
 	},
 	{
-		'key': 'Configuracion',
-		'routeName': 'Configuracion',
-		'name': 'Configuración'
+	  'key': 'ConsultarEventos',
+	  'routeName': 'ConsultarEventos',
+	  'name': 'Consultar eventos',
+	},
+	{
+	  'key': 'RegistrarEvento',
+	  'routeName': 'RegistrarEvento',
+	  'name': 'Nuevo evento',
+	},
+	{
+	  'key': 'MisEventos',
+	  'routeName': 'MisEventos',
+	  'name': 'Mis eventos',
+	},
+	{
+	  'key': 'Configuracion',
+	  'routeName': 'Configuracion',
+	  'name': 'Configuración'
 	}
 ]
 

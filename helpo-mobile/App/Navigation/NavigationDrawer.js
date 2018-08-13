@@ -5,6 +5,12 @@ import DrawerContent from "../Containers/DrawerContent";
 import Login from '../Views/Usuarios/Login';
 import SignUp from '../Views/Usuarios/SignUp';
 import Configuracion from '../Views/Usuarios/Configuracion';
+import ConsultarEventos from '../Views/Actividades/ConsultarEventos/ConsultarEventos';
+import ConsultarEvento from '../Views/Actividades/ConsultarEventos/ConsultarEvento';
+/*import RegistrarEvento from '../Views/Actividades/RegistrarEvento/RegistrarEvento';
+import RegistrarNecesidades from '../Views/Actividades/RegistrarNecesidades/RegistrarNecesidades';
+import MisEventos from '../Views/Actividades/MisEventos/MisEventos';*/
+
 
 import ListviewExample from "../Containers/ListviewExample";
 
@@ -13,7 +19,11 @@ const NavigationDrawer = DrawerNavigator({
 		Login: { screen: Login },
 		SignUp: { screen: SignUp },
 		Configuracion: { screen: Configuracion },
-		ListviewExample: { screen: ListviewExample },
+		ConsultarEventos: { screen: ConsultarEventos },
+		ConsultarEvento: { screen: ConsultarEvento },
+		/*RegistrarEvento: { screen: RegistrarEvento },
+		RegistrarNecesidades: { screen: RegistrarNecesidades },
+		MisEventos: { screen: MisEventos },*/
   },
   {
 	initialRouteName: "LaunchScreen",

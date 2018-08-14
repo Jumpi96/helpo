@@ -42,7 +42,7 @@ services:
     expose:
       - "443"
     volumes:
-      - ./certs/public.pem:/certs/server.crt
+      - ./certs/public.pem:/certs/server.cert
       - ./certs/private.pem:/certs/server.key
     depends_on:
       - db

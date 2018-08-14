@@ -89,7 +89,7 @@ class ConsultaEvento extends React.Component {
             <Title>{evento.nombre}</Title>
           </Body>
           <Right>
-            <Button transparent onPress={() => this.props.navigation.navigate('RegistrarNecesidades', { evento: evento.id })}>
+            <Button transparent onPress={() => this.props.navigation.navigate('RegistrarColaboraciones', { evento: evento.id })}>
               <Text>Colaborar</Text>
             </Button>
           </Right>

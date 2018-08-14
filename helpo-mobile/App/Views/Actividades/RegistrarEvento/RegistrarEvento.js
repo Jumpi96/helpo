@@ -1,9 +1,6 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { Actions } from 'react-native-router-flux';
-import { actions } from 'react-native-navigation-redux-helpers';
 import { Alert } from 'react-native';
-import { FormValidationMessage } from 'react-native-elements';
+//import { FormValidationMessage } from 'react-native-elements';
 import {
   Container,
   Header,
@@ -21,28 +18,16 @@ import {
   Text,
 } from 'native-base';
 import moment from 'moment';
-import { openDrawer } from '../../../actions/drawer';
 import SelectorUbicacion from './SelectorUbicacion/SelectorUbicacion';
 import ListaRubrosEvento from './ListaRubrosEvento/ListaRubrosEvento';
 import api from '../../../api';
 import SelectorFechaHora from './SelectorFechaHora/SelectorFechaHora';
 import RegistrarContacto from './RegistrarContacto/RegistrarContacto';
-import validateEmail from '../../../utils/ValidateEmail';
+import validateEmail from '../../../Lib/ValidateEmail';
 import styles from './styles';
-
-const {
-  popRoute,
-} = actions;
 
 class RegistrarEvento extends React.Component {
 
-  static propTypes = {
-    openDrawer: React.PropTypes.func,
-    popRoute: React.PropTypes.func,
-    navigation: React.PropTypes.shape({
-      key: React.PropTypes.string,
-    }),
-  }
   constructor(props) {
     super(props);
     this.state = {
@@ -76,9 +61,6 @@ class RegistrarEvento extends React.Component {
     /* ------------------- */
   }
 
-  popRoute() {
-    this.props.popRoute(this.props.navigation.key);
-  }
 
   handleRubroChange(r) {
     this.setState({ rubro_id: r });
@@ -105,7 +87,7 @@ class RegistrarEvento extends React.Component {
             'Registrar evento',
             'Se registró el evento con éxito.'
           );
-          Actions.registrarNecesidades({ id: res.data.id });
+          this.props.navigation.navigate('RegistrarNecesidades', { evento: evento.id });
         }).catch((error) => {
           if (error.response) { console.log(error.response); } else { console.log('Error: ', error.message); }
         });
@@ -279,7 +261,7 @@ class RegistrarEvento extends React.Component {
       <Container style={styles.container}>
         <Header>
           <Left>
-            <Button transparent onPress={() => Actions.pop()}>
+            <Button transparent onPress={() => this.props.navigation.navigate("LaunchScreen")}>
               <Icon name="arrow-back" />
             </Button>
           </Left>
@@ -298,7 +280,7 @@ class RegistrarEvento extends React.Component {
                 onChangeText={text => this.setState({ nombre: text })}
               />
             </Item>
-            <FormValidationMessage>{this.state.errors.nombre}</FormValidationMessage>
+            <Text>{this.state.errors.nombre}</Text>
             <Item floatingLabel>
               <Label>Descripción</Label>
               <Input
@@ -312,7 +294,7 @@ class RegistrarEvento extends React.Component {
               rubro_id={this.state.rubro_id}
               onRubroChange={this.handleRubroChange}
             />
-            <FormValidationMessage>{this.state.errors.rubro}</FormValidationMessage>
+            <Text>{this.state.errors.rubro}</Text>
 
             <SelectorFechaHora
               detalle="Inicio"
@@ -326,7 +308,7 @@ class RegistrarEvento extends React.Component {
               value={this.state.fecha_hora_fin}
               handleChange={this.handleFechaHoraFinChange}
             />
-            <FormValidationMessage>{this.state.errors.fechas}</FormValidationMessage>
+            <Text>{this.state.errors.fechas}</Text>
 
             <Item>
               <SelectorUbicacion
@@ -344,9 +326,9 @@ class RegistrarEvento extends React.Component {
                 onRemoveContact={this.removeContact}
               />
             </Item>
-            <FormValidationMessage>{this.state.errors.contactoNombre}</FormValidationMessage>
-            <FormValidationMessage>{this.state.errors.contactoContacto}</FormValidationMessage>
-            <FormValidationMessage>{this.state.errors.email}</FormValidationMessage>
+            <Text>{this.state.errors.contactoNombre}</Text>
+            <Text>{this.state.errors.contactoContacto}</Text>
+            <Text>{this.state.errors.email}</Text>
             <Button
               block style={{ margin: 15, marginTop: 50 }}
               onPress={this.handleSubmit}
@@ -360,16 +342,4 @@ class RegistrarEvento extends React.Component {
   }
 }
 
-function bindAction(dispatch) {
-  return {
-    openDrawer: () => dispatch(openDrawer()),
-    popRoute: key => dispatch(popRoute(key)),
-  };
-}
-
-const mapStateToProps = state => ({
-  navigation: state.cardNavigation,
-  themeState: state.drawer.themeState,
-});
-
-export default connect(mapStateToProps, bindAction)(RegistrarEvento);
+export default RegistrarEvento;

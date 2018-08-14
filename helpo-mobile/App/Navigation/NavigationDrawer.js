@@ -7,7 +7,8 @@ import SignUp from '../Views/Usuarios/SignUp';
 import Configuracion from '../Views/Usuarios/Configuracion';
 import ConsultarEventos from '../Views/Actividades/ConsultarEventos/ConsultarEventos';
 import ConsultarEvento from '../Views/Actividades/ConsultarEventos/ConsultarEvento';
-/*import RegistrarEvento from '../Views/Actividades/RegistrarEvento/RegistrarEvento';
+import RegistrarEvento from '../Views/Actividades/RegistrarEvento/RegistrarEvento';
+/*
 import RegistrarNecesidades from '../Views/Actividades/RegistrarNecesidades/RegistrarNecesidades';
 import MisEventos from '../Views/Actividades/MisEventos/MisEventos';*/
 
@@ -21,8 +22,8 @@ const NavigationDrawer = DrawerNavigator({
 		Configuracion: { screen: Configuracion },
 		ConsultarEventos: { screen: ConsultarEventos },
 		ConsultarEvento: { screen: ConsultarEvento },
-		/*RegistrarEvento: { screen: RegistrarEvento },
-		RegistrarNecesidades: { screen: RegistrarNecesidades },
+		RegistrarEvento: { screen: RegistrarEvento },
+		/*RegistrarNecesidades: { screen: RegistrarNecesidades },
 		MisEventos: { screen: MisEventos },*/
   },
   {

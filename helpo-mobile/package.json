@@ -48,7 +48,9 @@
     "native-base": "2.7.2",
     "moment": "2.22.2",
     "redux-thunk": "2.3.0",
-    "redux-persist": "5.10.0"
+    "redux-persist": "5.10.0",
+    "react-native-google-place-picker": "1.2.1",
+    "react-native-modal-datetime-picker": "6.0.0"
   },
   "devDependencies": {
     "@storybook/addon-storyshots": "^3.4.0",

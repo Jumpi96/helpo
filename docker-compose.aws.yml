@@ -35,15 +35,12 @@ services:
       - db
       - api
   pgadmin:
-    image: dpage/pgadmin4
+    image: fenglc/pgadmin4:alpine
     restart: always
     env_file:
       - ./pgadmin.env
     expose:
-      - "443"
-    volumes:
-      - ./certs/public.pem:/certs/server.cert
-      - ./certs/private.pem:/certs/server.key
+      - "5050"
     depends_on:
       - db
 

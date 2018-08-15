@@ -17,14 +17,13 @@ dependencies:
     - pip install requests pipenv --upgrade
     - cd helpo-api && pipenv install --dev
     - cd helpo-web && npm install
-    - cd helpo-mobile && npm install
+    - cd helpo-mobile && yarn
 
 test:
   override:
     - cd helpo-web && npm run build
     - cd helpo-web && npm test
-    - cd helpo-mobile && npm test -- --runInBand --updateSnapshot:
-        timeout: 1500
+    - cd helpo-mobile && npm test
     - >-
       cd helpo-api
       DJANGO_SETTINGS_MODULE=helpo.settings.test

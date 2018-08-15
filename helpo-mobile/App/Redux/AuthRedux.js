@@ -34,11 +34,11 @@ export const GithubSelectors = {}
 /* ------------- Reducers ------------- */
 
 export const request = (state) =>
-  state.merge({ isLoading: true })
+  state.merge({ isLoading: true, errors: null })
 
 export const success = (state, action) => {
   const { user } = action
-  return state.merge({ isAuthenticated: true, isLoading: false, user })
+  return state.merge({ isAuthenticated: true, isLoading: false, user, errors: null })
 }
 
 export const logged = (state, action) => {
@@ -48,7 +48,7 @@ export const logged = (state, action) => {
 
 export const failure = (state) => {
   AsyncStorage.removeItem('token');
-  return state.merge({ errors: null, user: null, isAuthenticated: false, isLoading: false });
+  return state.merge({ errors: 'No se pudo iniciar sesión', user: null, isAuthenticated: false, isLoading: false });
 }
 
 export const failedLogin = (state) => {

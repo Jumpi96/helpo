@@ -61,7 +61,7 @@ class Login extends Component {
           </Button>
           {this.props.errors.length > 0 && (
             <Item>
-              <Text>{this.props.errors.message}</Text>
+              <Text style={styles.validationMessage}>{this.props.errors[0].message}</Text>
             </Item>
           )}
         </Content>

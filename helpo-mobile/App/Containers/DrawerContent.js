@@ -59,6 +59,16 @@ const itemsVol = [
 		'name': 'Home'
 	},
 	{
+		'key': 'ConsultarEventos',
+		'routeName': 'ConsultarEventos',
+		'name': 'Consultar eventos'
+	},
+	{
+		'key': 'MisColaboraciones',
+		'routeName': 'MisColaboraciones',
+		'name': 'Mis colaboraciones'
+	},
+	{
 		'key': 'Configuracion',
 		'routeName': 'Configuracion',
 		'name': 'Configuración'
@@ -74,7 +84,7 @@ class DrawerContent extends Component {
 			items = itemsNoAuth;
 		} else if (this.props.auth.user.user_type === 1) {
 			items = itemsOrg;
-		} else if (this.props.auth.user.user_type === 1) {
+		} else if (this.props.auth.user.user_type === 2) {
 			items  = itemsVol;
 		}
 		return (

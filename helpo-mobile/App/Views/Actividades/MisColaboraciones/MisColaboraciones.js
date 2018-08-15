@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Actions } from 'react-native-router-flux';
 import moment from 'moment';
 import {
   Button,
@@ -15,12 +14,8 @@ import {
   Icon,
   Text,
   ListItem,
-  Fab,
-  IconNB,
-  View,
 } from 'native-base';
-import * as eventoActions from '../../../actions/eventoActions';
-import { openDrawer } from '../../../actions/drawer';
+import * as eventoActions from '../../../Redux/actions/eventoActions';
 import styles from './styles';
 
 class MisColaboraciones extends React.Component {
@@ -75,15 +70,11 @@ class MisColaboraciones extends React.Component {
 
 function bindAction(dispatch) {
   return {
-    openDrawer: () => dispatch(openDrawer()),
-    popRoute: key => dispatch(popRoute(key)),
     loadEventosConColaboraciones: () => dispatch(eventoActions.loadEventosConColaboraciones()),
   };
 }
 
 const mapStateToProps = state => ({
-  navigation: state.cardNavigation,
-  themeState: state.drawer.themeState,
   eventos: state.eventos,
 });
 

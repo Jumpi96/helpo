@@ -1,8 +1,6 @@
 import React from "react";
 import { connect } from 'react-redux';
-import { Actions } from 'react-native-router-flux';
-import { actions } from 'react-native-navigation-redux-helpers';
-import { FormValidationMessage } from "react-native-elements";
+//import { FormValidationMessage } from "react-native-elements";
 import {
   Container,
   Header,
@@ -21,12 +19,7 @@ import {
   View,
 } from 'native-base';
 import styles from './styles';
-import { openDrawer } from '../../../actions/drawer';
 import api from '../../../api';
-
-const {
-  popRoute,
-} = actions;
 
 
 class AgregarColaboracion extends React.Component {
@@ -212,16 +205,4 @@ class AgregarColaboracion extends React.Component {
   }
 }
 
-function bindAction(dispatch) {
-  return {
-    openDrawer: () => dispatch(openDrawer()),
-    popRoute: key => dispatch(popRoute(key)),
-  };
-}
-
-const mapStateToProps = state => ({
-  navigation: state.cardNavigation,
-  themeState: state.drawer.themeState,
-});
-
-export default connect(mapStateToProps, bindAction)(AgregarColaboracion);
+export default AgregarColaboracion;

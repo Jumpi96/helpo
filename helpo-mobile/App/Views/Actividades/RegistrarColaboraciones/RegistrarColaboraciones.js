@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Actions } from 'react-native-router-flux'; 
 import {
   Button,
   Container,
@@ -17,7 +16,6 @@ import {
   ActionSheet,
   Separator,
 } from 'native-base';
-import { openDrawer } from '../../../actions/drawer';
 import styles from './styles';
 import api from '../../../api';
 
@@ -323,17 +321,8 @@ class RegistrarColaboraciones extends React.Component {
   }
 }
 
-function bindAction(dispatch) {
-  return {
-    openDrawer: () => dispatch(openDrawer()),
-    popRoute: key => dispatch(popRoute(key)),
-  };
-}
-
 const mapStateToProps = state => ({
-  navigation: state.cardNavigation,
-  themeState: state.drawer.themeState,
   auth: state.auth,
 });
 
-export default connect(mapStateToProps, bindAction)(RegistrarColaboraciones);
+export default connect(mapStateToProps, undefined)(RegistrarColaboraciones);

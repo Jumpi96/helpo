@@ -8,13 +8,11 @@ import Configuracion from '../Views/Usuarios/Configuracion';
 import ConsultarEventos from '../Views/Actividades/ConsultarEventos/ConsultarEventos';
 import ConsultarEvento from '../Views/Actividades/ConsultarEventos/ConsultarEvento';
 import RegistrarEvento from '../Views/Actividades/RegistrarEvento/RegistrarEvento';
-/*
 import RegistrarNecesidades from '../Views/Actividades/RegistrarNecesidades/RegistrarNecesidades';
-import MisEventos from '../Views/Actividades/MisEventos/MisEventos';*/
-
-
-import ListviewExample from "../Containers/ListviewExample";
-
+import MisEventos from '../Views/Actividades/MisEventos/MisEventos';
+import VerEvento from '../Views/Actividades/VerEvento/VerEvento';
+import EditarEvento from '../Views/Actividades/EditarEvento/EditarEvento';	
+ 
 const NavigationDrawer = DrawerNavigator({
 		LaunchScreen: { screen: LaunchScreen },
 		Login: { screen: Login },
@@ -23,8 +21,10 @@ const NavigationDrawer = DrawerNavigator({
 		ConsultarEventos: { screen: ConsultarEventos },
 		ConsultarEvento: { screen: ConsultarEvento },
 		RegistrarEvento: { screen: RegistrarEvento },
-		/*RegistrarNecesidades: { screen: RegistrarNecesidades },
-		MisEventos: { screen: MisEventos },*/
+		RegistrarNecesidades: { screen: RegistrarNecesidades },
+		MisEventos: { screen: MisEventos },
+		VerEvento: { screen: VerEvento },
+		EditarEvento: { screen: EditarEvento }
   },
   {
 	initialRouteName: "LaunchScreen",

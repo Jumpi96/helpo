@@ -1,6 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { Actions } from 'react-native-router-flux'; 
 import {
   Button,
   Container,
@@ -17,14 +15,14 @@ import {
   ActionSheet,
   Separator,
 } from 'native-base';
-import { openDrawer } from '../../../actions/drawer';
 import styles from './styles';
 import api from '../../../api';
 
 class RegistrarNecesidades extends React.Component {
   constructor(props) {
     super(props);
-    const idEvento = this.props.id;    
+    const { params } = this.props.navigation.state;
+    const idEvento = params.id;
     this.state = {
       evento: idEvento,
       necesidades: [],
@@ -126,7 +124,7 @@ class RegistrarNecesidades extends React.Component {
   }
 
   getCantidadVoluntarios(v) {
-    return '' + v.participaciones.length + '/' + v.cantidad;
+    return v.cantidad;
   }
 
   render() {
@@ -172,12 +170,12 @@ class RegistrarNecesidades extends React.Component {
       <Container style={styles.container}>
         <Header>
           <Left>
-            <Button transparent onPress={() => Actions.pop()}>
+            <Button transparent onPress={() => this.props.navigation.navigate('LaunchScreen')}>
               <Icon name="arrow-back" />
             </Button>
           </Left>
           <Body>
-            <Title>Colaborar en {this.state.evento.nombre}</Title>
+            <Title>Registrar necesidades</Title>
           </Body>
         </Header>
         <Content>
@@ -197,16 +195,4 @@ class RegistrarNecesidades extends React.Component {
   }
 }
 
-function bindAction(dispatch) {
-  return {
-    openDrawer: () => dispatch(openDrawer()),
-    popRoute: key => dispatch(popRoute(key)),
-  };
-}
-
-const mapStateToProps = state => ({
-  navigation: state.cardNavigation,
-  themeState: state.drawer.themeState,
-});
-
-export default connect(mapStateToProps, bindAction)(RegistrarNecesidades);
+export default RegistrarNecesidades;

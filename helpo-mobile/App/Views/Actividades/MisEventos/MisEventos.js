@@ -29,13 +29,18 @@ class MisEventos extends React.Component {
     this.props.loadEventosOrganizacion();
   }
 
+  getRubrosEvento() {
+    return this.props.rubroEvento.rubrosEvento;
+  }
+
   render() {
-    const listaEventos = this.props.eventos.map((n) =>
+    const eventos = this.props.evento.eventos;
+    const listaEventos = eventos.map((n) =>
       <ListItem icon key={n.id}>
         <Left>
           <Button
             style={{ backgroundColor: '#ffe859' }}
-            onPress={() => Actions.verEvento({ evento: n, rubros: this.props.rubrosEvento })}
+            onPress={() => this.props.navigation.navigate('VerEvento', { evento: n, rubros: this.getRubrosEvento() })}
           >
             <Icon name="hand" />
           </Button>
@@ -57,7 +62,7 @@ class MisEventos extends React.Component {
       <Container style={styles.container}>
         <Header>
           <Left>
-            <Button transparent onPress={() => undefined}>
+            <Button transparent onPress={() => this.props.navigation.navigate('LaunchScreen')}>
               <Icon name="arrow-back" />
             </Button>
           </Left>
@@ -76,7 +81,7 @@ class MisEventos extends React.Component {
             containerStyle={{}}
             style={{ backgroundColor: "#E94E1B" }}
             position="bottomRight"
-            onPress={() => undefined}
+            onPress={() => this.props.navigation.navigate('RegistrarEvento')}
           >
             <IconNB name="md-add" />
           </Fab>
@@ -94,8 +99,8 @@ function bindAction(dispatch) {
 }
 
 const mapStateToProps = state => ({
-  eventos: state.eventos,
-  rubrosEvento: state.rubrosEvento,
+  evento: state.evento,
+  rubroEvento: state.rubroEvento,
 });
 
 export default connect(mapStateToProps, bindAction)(MisEventos);

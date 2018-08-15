@@ -1,6 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { Actions } from 'react-native-router-flux';
 import moment from 'moment';
 import {
   Button,
@@ -21,16 +19,10 @@ import {
   ActionSheet,
   Toast,
 } from 'native-base';
-import { openDrawer } from '../../../actions/drawer';
 import api from '../../../api';
 import styles from './styles';
 
 class VerEvento extends React.Component {
-
-  static propTypes = {
-    evento: React.PropTypes.object,
-    rubrosEvento: React.PropTypes.object,
-  }
 
   constructor(props) {
     super(props);
@@ -39,15 +31,14 @@ class VerEvento extends React.Component {
     };
   }
 
-  handleConfirmDelete(b) {
-    if (b.text === 'Eliminar') {
-      const evento = this.props.evento;
+  handleConfirmDelete(evento, b) {
+    if (b.text === 'Eliminar') { 
       if (moment(evento.fecha_hora_inicio) > moment()) {
         api.delete("/actividades/eventos/" + evento.id + "/")
           .then((res) => {
             console.log(res);
             console.log(res.data);
-            Actions.misEventos();
+            this.props.navigation.navigate('MisEventos');
           }).catch(function (error) {
             if (error.response){ console.log(error.response.status); }
             else { console.log('Error: ', error.message); }
@@ -63,10 +54,11 @@ class VerEvento extends React.Component {
     }
   }
 
-  handleEdit() {
-    const evento = this.props.evento;
+  handleEdit(evento) { 
     if (moment(evento.fecha_hora_inicio) > moment()) {
-      Actions.editarEvento({ evento, rubros: this.props.rubros });
+      const { params } = this.props.navigation.state;
+      const rubros = params.rubros;
+      this.props.navigation.navigate('EditarEvento', { evento, rubros });
     } else {
       Toast.show({
         text: 'No se pueden modificar eventos ya finalizados.',
@@ -81,7 +73,8 @@ class VerEvento extends React.Component {
       { text: 'Eliminar', icon: 'trash', iconColor: '#fa213b' },
       { text: 'Cancelar', icon: 'close', iconColor: '#25de5b' },
     ];
-    const evento = this.props.evento;
+    const { params } = this.props.navigation.state;
+    const evento = params.evento;
     let listaContactos;
     if (evento.contacto.length > 0) {
       listaContactos = evento.contacto.map(contacto =>
@@ -94,7 +87,7 @@ class VerEvento extends React.Component {
       <Container style={styles.container}>
         <Header>
           <Left>
-            <Button transparent onPress={() => Actions.pop()}>
+            <Button transparent onPress={() => this.props.navigation.navigate('MisEventos')}>
               <Icon name="arrow-back" />
             </Button>
           </Left>
@@ -150,7 +143,7 @@ class VerEvento extends React.Component {
           >
             <IconNB name="md-add" />
             <Button style={{ backgroundColor: '#34A34F' }}
-              onPress={() => {this.handleEdit()}}
+              onPress={() => {this.handleEdit(evento)}}
             >
               <Icon name="color-filter" />
             </Button>
@@ -165,7 +158,7 @@ class VerEvento extends React.Component {
                     title: '¿Está seguro que desea eliminar el evento?',
                   },
                   (buttonIndex) => {
-                    this.handleConfirmDelete(deleteButtons[buttonIndex]);
+                    this.handleConfirmDelete(evento, deleteButtons[buttonIndex]);
                   });
               }}
             >
@@ -178,16 +171,4 @@ class VerEvento extends React.Component {
   }
 }
 
-function bindAction(dispatch) {
-  return {
-    openDrawer: () => dispatch(openDrawer()),
-    popRoute: key => dispatch(popRoute(key))
-  };
-}
-
-const mapStateToProps = state => ({
-  navigation: state.cardNavigation,
-  themeState: state.drawer.themeState,
-});
-
-export default connect(mapStateToProps, bindAction)(VerEvento);
+export default VerEvento;

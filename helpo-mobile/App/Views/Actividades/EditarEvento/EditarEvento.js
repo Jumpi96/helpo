@@ -1,7 +1,6 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { Actions } from 'react-native-router-flux';
 import moment from 'moment';
+import { connect } from 'react-redux';
 import {
   Button,
   Container,
@@ -20,20 +19,20 @@ import {
   Input,
   ListItem,
 } from 'native-base';
-import { FormValidationMessage } from 'react-native-elements';
+//import { FormValidationMessage } from 'react-native-elements';
 import SelectorUbicacion from '../RegistrarEvento/SelectorUbicacion/SelectorUbicacion';
 import SelectorFechaHora from '../RegistrarEvento/SelectorFechaHora/SelectorFechaHora';
 import RegistrarContacto from '../RegistrarEvento/RegistrarContacto/RegistrarContacto';
-import * as eventoActions from '../../../actions/eventoActions';
-import { openDrawer } from '../../../actions/drawer';
-import validateEmail from '../../../utils/ValidateEmail';
+import * as eventoActions from '../../../Redux/actions/eventoActions';
+import validateEmail from '../../../Lib/ValidateEmail';
 import styles from './styles';
 
 class EditarEvento extends React.Component {
 
   constructor(props) {
     super(props);
-    const evento = props.evento;
+    const { params } = this.props.navigation.state;
+    const evento = params.evento;
     for (let i = 0; i < evento.contacto.length; i += 1) {
       evento.contacto[i].contactId = i + 1;
     }
@@ -64,7 +63,7 @@ class EditarEvento extends React.Component {
     if (this.handleValidation()) {
       const evento = this.state.evento;
       this.props.updateEvento(evento);
-      Actions.verEvento({ evento, rubros: this.props.rubros });
+      this.props.navigation.navigate('VerEvento', { evento, rubros: this.props.rubros });
     }
   }
 
@@ -237,14 +236,16 @@ class EditarEvento extends React.Component {
   }
 
   render() {
-    const listaRubroEventos = this.props.rubros.map((r) =>
+    const { params } = this.props.navigation.state;
+    const rubros = params.rubros;
+    let listaRubroEventos = rubros.map((r) =>
       <Item value={r.id} key={r.id} label={r.nombre} />
     );
     return (
       <Container style={styles.container}>
         <Header>
           <Left>
-            <Button transparent onPress={() => Actions.pop()}>
+            <Button transparent onPress={() => this.props.navigation.navigate('MisEventos')}>
               <Icon name="arrow-back" />
             </Button>
           </Left>
@@ -254,7 +255,7 @@ class EditarEvento extends React.Component {
           <Right>
             <Button
               transparent
-              onPress={() => Actions.registrarNecesidades({ id: this.state.evento.id })}>
+              onPress={() => this.props.navigation.navigate('RegistrarNecesidades',{ id: this.state.evento.id })}>
               <Text>Necesidades</Text>
             </Button>
           </Right>
@@ -268,7 +269,7 @@ class EditarEvento extends React.Component {
                 onChangeText={this.handleNombreChange}
               />
             </Item>
-            <FormValidationMessage>{this.state.errors.nombre}</FormValidationMessage>
+            <Text>{this.state.errors.nombre}</Text>
             <Item>
               <Label>Descripción</Label>
               <Input
@@ -291,7 +292,7 @@ class EditarEvento extends React.Component {
                 </Picker>
               </Body>
             </ListItem>
-            <FormValidationMessage>{this.state.errors.rubro}</FormValidationMessage>
+            <Text>{this.state.errors.rubro}</Text>
             <SelectorFechaHora
               detalle="Inicio"
               soloFecha={false}
@@ -304,7 +305,7 @@ class EditarEvento extends React.Component {
               value={this.state.evento.fecha_hora_fin}
               handleChange={this.handleFechaHoraFinChange}
             />
-            <FormValidationMessage>{this.state.errors.fechas}</FormValidationMessage>
+            <Text>{this.state.errors.fechas}</Text>
 
             <ListItem>
               <Label>Ubicación</Label>
@@ -323,9 +324,9 @@ class EditarEvento extends React.Component {
                 onAddContact={this.addContact}
                 onRemoveContact={this.removeContact}
               />
-              <FormValidationMessage>{this.state.errors.contactoNombre}</FormValidationMessage>
-              <FormValidationMessage>{this.state.errors.contactoContacto}</FormValidationMessage>
-              <FormValidationMessage>{this.state.errors.email}</FormValidationMessage>
+              <Text>{this.state.errors.contactoNombre}</Text>
+              <Text>{this.state.errors.contactoContacto}</Text>
+              <Text>{this.state.errors.email}</Text>
             </ListItem>
             <Button
               block style={{ margin: 15, marginTop: 50 }}
@@ -342,15 +343,8 @@ class EditarEvento extends React.Component {
 
 function bindAction(dispatch) {
   return {
-    openDrawer: () => dispatch(openDrawer()),
-    popRoute: key => dispatch(popRoute(key)),
     updateEvento: evento => dispatch(eventoActions.updateEvento(evento)),
   };
 }
 
-const mapStateToProps = state => ({
-  navigation: state.cardNavigation,
-  themeState: state.drawer.themeState,
-});
-
-export default connect(mapStateToProps, bindAction)(EditarEvento);
+export default connect(undefined, bindAction)(EditarEvento);

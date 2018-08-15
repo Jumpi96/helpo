@@ -87,7 +87,7 @@ class RegistrarEvento extends React.Component {
             'Registrar evento',
             'Se registró el evento con éxito.'
           );
-          this.props.navigation.navigate('RegistrarNecesidades', { evento: evento.id });
+          this.props.navigation.navigate('RegistrarNecesidades', { id: evento.id });
         }).catch((error) => {
           if (error.response) { console.log(error.response); } else { console.log('Error: ', error.message); }
         });

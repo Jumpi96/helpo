@@ -32,17 +32,6 @@ AUTH_PASSWORD_VALIDATORS = []  # allow easy passwords only on local
 # Celery
 CELERY_TASK_ALWAYS_EAGER = True
 
-# Email
-INSTALLED_APPS += ('naomi',)
-EMAIL_BACKEND = 'naomi.mail.backends.naomi.NaomiBackend'
-EMAIL_FILE_PATH = base_dir_join('tmp_email')
-
-EMAIL_HOST = 'smtp.sendgrid.net'
-EMAIL_HOST_USER = config('SENDGRID_USERNAME')
-EMAIL_HOST_PASSWORD = config('SENDGRID_PASSWORD')
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-
 # django-debug-toolbar and django-debug-toolbar-request-history
 INSTALLED_APPS += ('debug_toolbar',)
 MIDDLEWARE += ('debug_toolbar.middleware.DebugToolbarMiddleware',)

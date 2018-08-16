@@ -25,6 +25,7 @@ class RegistrarColaboraciones extends React.Component {
     super(props);
     const { params } = this.props.navigation.state;
     const evento = params.evento;
+    console.warn(evento)
     this.state = {
       evento: {id: evento},
       necesidades: [],
@@ -79,7 +80,8 @@ class RegistrarColaboraciones extends React.Component {
 
   getBotonesNecesidades(idNecesidad) {
     const necesidad = this.state.necesidades.filter(n => n.id === idNecesidad)[0];
-    if (necesidad.colaboraciones.filter(n => n.voluntario_id === this.getUserId())) {
+    const colaboraciones_usuario = necesidad.colaboraciones.filter(n => n.voluntario_id === this.getUserId());
+    if (colaboraciones_usuario.length > 0) {
       return [
         { text: 'Modificar', icon: 'color-filter', iconColor: '#fa213b' },
         { text: 'Eliminar', icon: 'trash', iconColor: '#fa213b' },

@@ -123,7 +123,7 @@ class VerColaboracionesEvento extends React.Component {
       <Container style={styles.container}>
         <Header>
           <Left>
-            <Button transparent onPress={() => Actions.pop()}>
+            <Button transparent onPress={() => this.props.navigation.navigate('MisColaboraciones')}>
               <Icon name="arrow-back" />
             </Button>
           </Left>
@@ -132,7 +132,7 @@ class VerColaboracionesEvento extends React.Component {
           </Body>
           { moment(evento.fecha_hora_inicio) > moment() ?
             <Right>
-              <Button transparent onPress={() => Actions.registrarColaboraciones({ evento: evento.id })}>
+              <Button transparent onPress={() => this.props.navigation.navigate('RegistrarColaboraciones', { evento: evento.id })}>
                 <Text>Modificar</Text>
               </Button>
             </Right> : undefined

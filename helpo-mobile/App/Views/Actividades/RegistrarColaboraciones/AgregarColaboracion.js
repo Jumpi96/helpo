@@ -91,7 +91,7 @@ class AgregarColaboracion extends React.Component {
     };
     api.put('/actividades/colaboraciones/' + colaboracion.colaboracion_anterior + '/', nuevaColaboracion)
       .then(() => {
-        this.props.navigation.navigate('RegistrarColaboraciones', { evento: colaboracion.evento });
+        this.props.navigation.navigate('RegistrarColaboraciones', { evento: this.getIdEvento() });
       }).catch(function (error) {
         if (error.response){ console.log(error.response.status) }
         else { console.log('Error: ', error.message)}
@@ -108,7 +108,7 @@ class AgregarColaboracion extends React.Component {
       };
       api.post('/actividades/participaciones/', nuevaParticipacion)
         .then(() => {
-          this.props.navigation.navigate('RegistrarColaboraciones', { evento: colaboracion.evento });
+          this.props.navigation.navigate('RegistrarColaboraciones', { evento: this.getIdEvento() });
         }).catch(function (error) {
           if (error.response){ console.log(error.response.status) }
           else { console.log('Error: ', error.message)}
@@ -122,7 +122,7 @@ class AgregarColaboracion extends React.Component {
       };
       api.post('/actividades/colaboraciones/', nuevaColaboracion)
         .then(() => {
-          this.props.navigation.navigate('RegistrarColaboraciones', { evento: colaboracion.evento });
+          this.props.navigation.navigate('RegistrarColaboraciones', { evento: this.getIdEvento() });
         }).catch(function (error) {
           if (error.response){ console.log(error.response.status) }
           else { console.log('Error: ', error.message)}
@@ -154,12 +154,20 @@ class AgregarColaboracion extends React.Component {
     );
   }
 
+  getIdEvento() {
+    if (this.state.colaboracion.evento.id) {
+      return this.state.colaboracion.evento.id;
+    } else {
+      return this.state.colaboracion.evento;
+    }
+  }
+
   render() {
     return (
       <Container>
         <Header>
           <Left>
-            <Button transparent onPress={() => this.props.navigation.navigate('RegistrarColaboraciones', { evento: this.state.colaboracion.evento })}>
+            <Button transparent onPress={() => this.props.navigation.navigate('RegistrarColaboraciones', { evento: this.getIdEvento() })}>
               <Icon name="arrow-back" />
             </Button>
           </Left>

@@ -42,7 +42,7 @@ export const requestOrganizacion = (state, action) => {
   return state.merge({ eventos })
 }
 
-export const requestColaboraciones = (state) => {
+export const requestColaboraciones = (state, action) => {
   const { eventos } = action
   return state.merge({ eventos })
 }

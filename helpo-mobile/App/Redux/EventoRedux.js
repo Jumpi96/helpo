@@ -46,7 +46,7 @@ export const requestColaboraciones = (state, action) => {
   const { eventos } = action
   return state.merge({ eventos })
 }
-/*
+
 export const updateEvento = (state) => {
   const evento = action.data
   return [
@@ -54,7 +54,6 @@ export const updateEvento = (state) => {
     Object.assign({}, evento),
   ];
 }
-*/
 
 /* ------------- Hookup Reducers To Types ------------- */
 

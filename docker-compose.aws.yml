@@ -17,6 +17,8 @@ services:
     restart: always
     command: ["./wait-for-it.sh", "db:5432", "--", "bash", "-c", 
       "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]
+    env_file:
+      - helpo-api/.env
     expose:
       - "8000"
     depends_on:
@@ -24,6 +26,8 @@ services:
   web:
     image: helpo/helpo_web
     restart: always
+    env_file:
+      - helpo-web/.env
     ports:
       - "80:80"
       - "443:443"

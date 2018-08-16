@@ -26,6 +26,8 @@ services:
       - db
   web:
     build: helpo-web/.
+    env_file:
+      - helpo-web/.env
     ports:
     - "3000:3000"
     volumes:

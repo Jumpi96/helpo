@@ -1,6 +1,5 @@
 import React from "react";
 import { connect } from 'react-redux';
-//import { FormValidationMessage } from "react-native-elements";
 import {
   Container,
   Header,
@@ -26,7 +25,8 @@ class AgregarColaboracion extends React.Component {
 
   constructor(props) {
     super(props);
-    const colaboracion = this.props.colaboracion;
+    const { params } = this.props.navigation.state;
+    const colaboracion = params.colaboracion;
     this.state = { 
       colaboracion,
       error: undefined
@@ -91,7 +91,7 @@ class AgregarColaboracion extends React.Component {
     };
     api.put('/actividades/colaboraciones/' + colaboracion.colaboracion_anterior + '/', nuevaColaboracion)
       .then(() => {
-        Actions.registrarColaboraciones({ evento: colaboracion.evento });
+        this.props.navigation.navigate('RegistrarColaboraciones', { evento: colaboracion.evento });
       }).catch(function (error) {
         if (error.response){ console.log(error.response.status) }
         else { console.log('Error: ', error.message)}
@@ -108,7 +108,7 @@ class AgregarColaboracion extends React.Component {
       };
       api.post('/actividades/participaciones/', nuevaParticipacion)
         .then(() => {
-          Actions.registrarColaboraciones({ evento: colaboracion.evento });
+          this.props.navigation.navigate('RegistrarColaboraciones', { evento: colaboracion.evento });
         }).catch(function (error) {
           if (error.response){ console.log(error.response.status) }
           else { console.log('Error: ', error.message)}
@@ -122,7 +122,7 @@ class AgregarColaboracion extends React.Component {
       };
       api.post('/actividades/colaboraciones/', nuevaColaboracion)
         .then(() => {
-          Actions.registrarColaboraciones({ evento: colaboracion.evento });
+          this.props.navigation.navigate('RegistrarColaboraciones', { evento: colaboracion.evento });
         }).catch(function (error) {
           if (error.response){ console.log(error.response.status) }
           else { console.log('Error: ', error.message)}
@@ -159,7 +159,7 @@ class AgregarColaboracion extends React.Component {
       <Container>
         <Header>
           <Left>
-            <Button transparent onPress={() => Actions.pop()}>
+            <Button transparent onPress={() => this.props.navigation.navigate('RegistrarColaboraciones', { evento: this.state.colaboracion.evento })}>
               <Icon name="arrow-back" />
             </Button>
           </Left>
@@ -191,7 +191,7 @@ class AgregarColaboracion extends React.Component {
                 onChangeText={(text) => this.handleComentariosChange(text)}
               />
             </Item>
-            <FormValidationMessage>{this.state.error}</FormValidationMessage>
+            <Text style={styles.validationMessage}>{this.state.error}</Text>
             <Button
               block style={{ margin: 15, marginTop: 50 }}
               onPress={this.handleSubmit}

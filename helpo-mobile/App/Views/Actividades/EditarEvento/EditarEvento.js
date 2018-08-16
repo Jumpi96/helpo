@@ -19,7 +19,6 @@ import {
   Input,
   ListItem,
 } from 'native-base';
-//import { FormValidationMessage } from 'react-native-elements';
 import SelectorUbicacion from '../RegistrarEvento/SelectorUbicacion/SelectorUbicacion';
 import SelectorFechaHora from '../RegistrarEvento/SelectorFechaHora/SelectorFechaHora';
 import RegistrarContacto from '../RegistrarEvento/RegistrarContacto/RegistrarContacto';
@@ -269,7 +268,7 @@ class EditarEvento extends React.Component {
                 onChangeText={this.handleNombreChange}
               />
             </Item>
-            <Text>{this.state.errors.nombre}</Text>
+            <Text style={styles.validationMessage}>{this.state.errors.nombre}</Text>
             <Item>
               <Label>Descripción</Label>
               <Input
@@ -292,7 +291,7 @@ class EditarEvento extends React.Component {
                 </Picker>
               </Body>
             </ListItem>
-            <Text>{this.state.errors.rubro}</Text>
+            <Text style={styles.validationMessage}>{this.state.errors.rubro}</Text>
             <SelectorFechaHora
               detalle="Inicio"
               soloFecha={false}
@@ -305,7 +304,7 @@ class EditarEvento extends React.Component {
               value={this.state.evento.fecha_hora_fin}
               handleChange={this.handleFechaHoraFinChange}
             />
-            <Text>{this.state.errors.fechas}</Text>
+            <Text style={styles.validationMessage}>{this.state.errors.fechas}</Text>
 
             <ListItem>
               <Label>Ubicación</Label>
@@ -324,9 +323,9 @@ class EditarEvento extends React.Component {
                 onAddContact={this.addContact}
                 onRemoveContact={this.removeContact}
               />
-              <Text>{this.state.errors.contactoNombre}</Text>
-              <Text>{this.state.errors.contactoContacto}</Text>
-              <Text>{this.state.errors.email}</Text>
+              <Text style={styles.validationMessage}>{this.state.errors.contactoNombre}</Text>
+              <Text style={styles.validationMessage}>{this.state.errors.contactoContacto}</Text>
+              <Text style={styles.validationMessage}>{this.state.errors.email}</Text>
             </ListItem>
             <Button
               block style={{ margin: 15, marginTop: 50 }}

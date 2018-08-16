@@ -170,7 +170,7 @@ class RegistrarNecesidades extends React.Component {
       <Container style={styles.container}>
         <Header>
           <Left>
-            <Button transparent onPress={() => this.props.navigation.navigate('LaunchScreen')}>
+            <Button transparent onPress={() => this.props.navigation.navigate('MisEventos')}>
               <Icon name="arrow-back" />
             </Button>
           </Left>

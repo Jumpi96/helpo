@@ -25,12 +25,12 @@ class MisColaboraciones extends React.Component {
   }
 
   render() {
-    const listaEventos = this.props.eventos.map((n) =>
+    const listaEventos = this.props.evento.eventos.map((n) =>
       <ListItem icon key={n.id}>
         <Left>
           <Button
             style={{ backgroundColor: '#ffe859' }}
-            onPress={() => Actions.verColaboracionesEvento({ evento: n })}
+            onPress={() => this.props.navigation.navigate('VerColaboracionesEvento', { evento: n })}
           >
             <Icon name="hand" />
           </Button>
@@ -52,12 +52,12 @@ class MisColaboraciones extends React.Component {
       <Container style={styles.container}>
         <Header>
           <Left>
-            <Button transparent onPress={() => Actions.pop()}>
+            <Button transparent onPress={() => this.props.navigation.navigate('LaunchScreen')}>
               <Icon name="arrow-back" />
             </Button>
           </Left>
           <Body>
-            <Title>Mis eventos</Title>
+            <Title>Mis colaboraciones</Title>
           </Body>
         </Header>
         <Content>
@@ -75,7 +75,7 @@ function bindAction(dispatch) {
 }
 
 const mapStateToProps = state => ({
-  eventos: state.eventos,
+  evento: state.evento,
 });
 
 export default connect(mapStateToProps, bindAction)(MisColaboraciones);

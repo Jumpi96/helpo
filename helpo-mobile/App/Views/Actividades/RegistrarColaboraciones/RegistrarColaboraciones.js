@@ -23,8 +23,10 @@ import api from '../../../api';
 class RegistrarColaboraciones extends React.Component {
   constructor(props) {
     super(props);
+    const { params } = this.props.navigation.state;
+    const evento = params.evento;
     this.state = {
-      evento: {id: this.props.evento},
+      evento: {id: evento},
       necesidades: [],
       voluntarios: [],
       funcionVoluntario: undefined,
@@ -198,7 +200,7 @@ class RegistrarColaboraciones extends React.Component {
         evento: this.state.evento.id,
       };
       this.setState({ necesidadModificada: undefined });
-      Actions.agregarColaboracion({ colaboracion });
+      this.props.navigation.navigate('AgregarColaboracion', { colaboracion });
     } else if (button.text === 'Eliminar') {
       this.deleteColaboracion(this.state.necesidadModificada);
     } else if (button.text === 'Colaborar') {
@@ -214,7 +216,7 @@ class RegistrarColaboraciones extends React.Component {
         evento: this.state.evento,
       };
       this.setState({ necesidadModificada: undefined });
-      Actions.agregarColaboracion({ colaboracion });
+      this.props.navigation.navigate('AgregarColaboracion', { colaboracion });
     }
   }
 
@@ -249,7 +251,7 @@ class RegistrarColaboraciones extends React.Component {
         evento: this.state.evento.id,
       };
       this.setState({ necesidadModificada: undefined });
-      Actions.agregarColaboracion({ colaboracion: participacion });
+      this.props.navigation.navigate('AgregarColaboracion', { colaboracion: participacion });
     } else if (button.text === 'Eliminar') {
       this.deleteParticipacion();
       this.setState({ necesidadModificada: undefined });
@@ -296,7 +298,7 @@ class RegistrarColaboraciones extends React.Component {
       <Container style={styles.container}>
         <Header>
           <Left>
-            <Button transparent onPress={() => Actions.consultarEventos()}>
+            <Button transparent onPress={() => this.props.navigation.navigate('ConsultarEventos')}>
               <Icon name="arrow-back" />
             </Button>
           </Left>

@@ -1,5 +1,6 @@
 import React from 'react';
 import moment from 'moment';
+import { connect } from 'react-redux';
 import {
   Button,
   Container,
@@ -88,11 +89,15 @@ class ConsultaEvento extends React.Component {
           <Body>
             <Title>{evento.nombre}</Title>
           </Body>
-          <Right>
-            <Button transparent onPress={() => this.props.navigation.navigate('RegistrarColaboraciones', { evento: evento.id })}>
-              <Text>Colaborar</Text>
-            </Button>
-          </Right>
+          { this.props.auth.user.user_type === 2 ?
+            <Right>
+              <Button 
+                transparent 
+                onPress={() => this.props.navigation.navigate('RegistrarColaboraciones', { evento: evento.id })}>
+                <Text>Colaborar</Text>
+              </Button>
+            </Right> : undefined
+          }
         </Header>
         <Content>
           <Separator bordered noTopBorder>
@@ -158,4 +163,8 @@ class ConsultaEvento extends React.Component {
   }
 }
 
-export default ConsultaEvento;
+const mapStateToProps = state => ({
+  auth: state.auth,
+});
+
+export default connect(mapStateToProps, undefined)(ConsultaEvento);

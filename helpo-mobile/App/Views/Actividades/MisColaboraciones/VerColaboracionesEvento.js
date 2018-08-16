@@ -21,10 +21,10 @@ import styles from './styles';
 
 class VerColaboracionesEvento extends React.Component {
 
-  getListaNecesidades() {
+  getListaNecesidades(evento) {
     const listaNecesidades = [];
     let cantidad;
-    this.props.evento.necesidades.forEach((n) => {
+    evento.necesidades.forEach((n) => {
       cantidad = this.getCantidadNecesidades(n);
       if (cantidad > 0) {
         listaNecesidades.push(
@@ -87,8 +87,8 @@ class VerColaboracionesEvento extends React.Component {
     return this.props.auth.user.id;
   }
 
-  getListaVoluntarios() {
-    const voluntario = this.getFuncionVoluntario(this.props.evento.voluntarios);
+  getListaVoluntarios(evento) {
+    const voluntario = this.getFuncionVoluntario(evento.voluntarios);
     if (voluntario) {
       return (
         <View>
@@ -117,7 +117,8 @@ class VerColaboracionesEvento extends React.Component {
   }
 
   render() {
-    const evento = this.props.evento;
+    const { params } = this.props.navigation.state;
+    const evento = params.evento;
     return (
       <Container style={styles.container}>
         <Header>
@@ -145,8 +146,8 @@ class VerColaboracionesEvento extends React.Component {
             <Label style={styles.label}>Nombre</Label>
             <Text>{evento.nombre}</Text>
           </ListItem>
-          {this.getListaNecesidades()}
-          {this.getListaVoluntarios()}
+          {this.getListaNecesidades(evento)}
+          {this.getListaVoluntarios(evento)}
         </Content>
       </Container>
     );

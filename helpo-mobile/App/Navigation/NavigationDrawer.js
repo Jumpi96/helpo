@@ -24,6 +24,8 @@ const NavigationDrawer = DrawerNavigator({
 		Configuracion: { screen: Configuracion },
 		ConsultarEventos: { screen: ConsultarEventos },
 		ConsultarEvento: { screen: ConsultarEvento },
+		RegistrarColaboraciones: { screen: RegistrarColaboraciones },
+		AgregarColaboracion: { screen: AgregarColaboracion },
 		RegistrarEvento: { screen: RegistrarEvento },
 		RegistrarNecesidades: { screen: RegistrarNecesidades },
 		MisEventos: { screen: MisEventos },
@@ -31,8 +33,6 @@ const NavigationDrawer = DrawerNavigator({
 		EditarEvento: { screen: EditarEvento },
 		MisColaboraciones: { screen: MisColaboraciones },
 		VerColaboracionesEvento: { screen: VerColaboracionesEvento },
-		RegistrarColaboraciones: { screen: RegistrarColaboraciones },
-		AgregarColaboracion: { screen: AgregarColaboracion }
   },
   {
 	initialRouteName: "LaunchScreen",

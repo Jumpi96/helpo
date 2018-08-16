@@ -24,7 +24,6 @@ class EventoCard extends Component {
 
   getNecesidades() {
     const arrayNecesidades = this.props.evento.necesidades ? this.props.evento.necesidades : [];
-    console.log(arrayNecesidades);
     const necesidades = arrayNecesidades.slice(0, 2).map((necesidad) => {
       return (
         <li class="list-group-item d-flex justify-content-between align-items-center">

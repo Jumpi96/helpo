@@ -1,6 +1,5 @@
 import React from 'react';
 import { Alert } from 'react-native';
-//import { FormValidationMessage } from 'react-native-elements';
 import {
   Container,
   Header,
@@ -280,7 +279,7 @@ class RegistrarEvento extends React.Component {
                 onChangeText={text => this.setState({ nombre: text })}
               />
             </Item>
-            <Text>{this.state.errors.nombre}</Text>
+            <Text style={styles.validationMessage}>{this.state.errors.nombre}</Text>
             <Item floatingLabel>
               <Label>Descripción</Label>
               <Input
@@ -294,7 +293,7 @@ class RegistrarEvento extends React.Component {
               rubro_id={this.state.rubro_id}
               onRubroChange={this.handleRubroChange}
             />
-            <Text>{this.state.errors.rubro}</Text>
+            <Text style={styles.validationMessage}>{this.state.errors.rubro}</Text>
 
             <SelectorFechaHora
               detalle="Inicio"
@@ -308,7 +307,7 @@ class RegistrarEvento extends React.Component {
               value={this.state.fecha_hora_fin}
               handleChange={this.handleFechaHoraFinChange}
             />
-            <Text>{this.state.errors.fechas}</Text>
+            <Text style={styles.validationMessage}>{this.state.errors.fechas}</Text>
 
             <Item>
               <SelectorUbicacion
@@ -326,9 +325,9 @@ class RegistrarEvento extends React.Component {
                 onRemoveContact={this.removeContact}
               />
             </Item>
-            <Text>{this.state.errors.contactoNombre}</Text>
-            <Text>{this.state.errors.contactoContacto}</Text>
-            <Text>{this.state.errors.email}</Text>
+            <Text style={styles.validationMessage}>{this.state.errors.contactoNombre}</Text>
+            <Text style={styles.validationMessage}>{this.state.errors.contactoContacto}</Text>
+            <Text style={styles.validationMessage}>{this.state.errors.email}</Text>
             <Button
               block style={{ margin: 15, marginTop: 50 }}
               onPress={this.handleSubmit}

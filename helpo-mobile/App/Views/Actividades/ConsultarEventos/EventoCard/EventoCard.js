@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Button, Icon, Card, CardItem, Text, Thumbnail, Right, Left, Body,
-  Item,
+import { 
+  Button, Icon, Card, CardItem, Text, Thumbnail, Right, Left, Body, Item,
  } from 'native-base';
 import moment from 'moment';
 import styles from './styles';
@@ -45,7 +45,7 @@ class EventoCard extends Component {
           <Left>
             <Thumbnail source={helpoImages.launchscreenLogo} />
             <Body>
-              <Text>Nombre de ONG</Text>
+              <Text>{evento.organizacion ? evento.nombre + ' - ' + evento.organizacion.nombre : undefined }</Text>
               <Text note>{moment(evento.fecha_hora_inicio).format('DD/MM/YYYY HH:mm')}</Text>
             </Body>
           </Left>
@@ -59,12 +59,12 @@ class EventoCard extends Component {
           </Body>
         </CardItem>
         <CardItem style={{ paddingVertical: 0 }}>
-          <Right>
+          <Left>
             <Button onPress={() => this.props.openEvento()}>
               <Icon name="navigate" />
               <Text>Ver más</Text>
             </Button>
-          </Right>
+          </Left>
         </CardItem>
       </Card>
     );

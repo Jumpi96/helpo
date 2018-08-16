@@ -81,7 +81,7 @@ class UserManager(BaseUserManager):
         send_mail(
             'Confirma tu cuenta de helpo.',
             url_confirmation,
-            'helpo@helpo.com',
+            'noreply@helpo.com.ar',
             [user.email],
             fail_silently=True,
             html_message=content,

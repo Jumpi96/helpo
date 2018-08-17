@@ -71,19 +71,6 @@ SECURE_BROWSER_XSS_FILTER = True
 X_FRAME_OPTIONS = 'DENY'
 CSRF_COOKIE_HTTPONLY = True
 
-# Email
-INSTALLED_APPS += ('naomi',)
-EMAIL_BACKEND = 'naomi.mail.backends.naomi.NaomiBackend'
-EMAIL_FILE_PATH = base_dir_join('tmp_email')
-
-SERVER_EMAIL = 'foo@example.com'
-
-EMAIL_HOST = 'smtp.sendgrid.net'
-EMAIL_HOST_USER = config('SENDGRID_USERNAME')
-EMAIL_HOST_PASSWORD = config('SENDGRID_PASSWORD')
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-
 # django-debug-toolbar and django-debug-toolbar-request-history
 INSTALLED_APPS += ('debug_toolbar',)
 MIDDLEWARE += ('debug_toolbar.middleware.DebugToolbarMiddleware',)

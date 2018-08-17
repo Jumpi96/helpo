@@ -218,6 +218,14 @@ class Register extends Component {
   render() {
     const user_type = this.state.user_type;
     return (
+      <body>
+		<div class="container">
+				<div class="panel-heading">
+	               <div class="panel-title text-center">
+	               		<h1 class="title">Helpo</h1>
+	               		<hr />
+	               	</div>
+	            </div> 
       <div className="app flex-row align-items-center">
         <Container>
           <Row className="justify-content-center">
@@ -302,6 +310,9 @@ class Register extends Component {
         </Container>
         <ModalRegistroExitoso open={this.state.showModalRegistro}/>
       </div>
+      </div>
+		<script type="text/javascript" src="assets/js/bootstrap.js"></script>
+	</body>
     );
   }
 }

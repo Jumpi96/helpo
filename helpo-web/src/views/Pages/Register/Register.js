@@ -284,27 +284,15 @@ class Register extends Component {
                            onChange={(e) => this.handleValueChange(e, "repeat")}/>                    
                   </InputGroup>
                   <Button color="primary" onClick={() => this.onSubmitData()} block>Crear Cuenta</Button>                  
-                  <ul>{this.renderErrorList()}
-                  <div>
-                    {this.props.errors.length > 0 && (
-                      <div>
-                        {this.props.errors.map(error => (
-                          <li key={error.field}>
-                            <span style={{ color: 'red' }}>{error.message}</span>
-                          </li>
-                        ))}                        
-                      </div>                      
-                    )}                    
-                  </div>
-                  </ul>
+                  <ul>{this.renderErrorList()}</ul>
                 </CardBody>
                 <CardFooter className="p-4">
                   <Row>
                     <Col xs="12" sm="6">
-                      <Button className="btn-facebook" block><span>facebook</span></Button>
+                      <Button className="btn-facebook" block><span>Facebook</span></Button>
                     </Col>
                     <Col xs="12" sm="6">
-                      <Button className="btn-twitter" block><span>twitter</span></Button>
+                      <Button className="btn-twitter" block><span>Twitter</span></Button>
                     </Col>
                   </Row>
                 </CardFooter>

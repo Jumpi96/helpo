@@ -37,7 +37,7 @@ jobs:
     # This is based on your 1.0 configuration file or project settings
     - run:
         working_directory: ~/Jumpi96/helpo
-        command: if ["3.6.0" == "system"] || pyenv versions --bare | grep -x -q '3.6.0'; then pyenv global version;else pyenv install --skip-existing  3.6.0 && pyenv global version && pyenv rehash && pip install virtualenv && pip install nose && pip install pep8 && pyenv rehash;fi
+        command: pyenv install --skip-existing 3.6.0 && pyenv rehash && pip install virtualenv && pip install nose && pip install pep8 && pyenv rehash
     - run:
         working_directory: ~/Jumpi96/helpo
         command: nvm install 6.1.0 && nvm alias default 6.1.0

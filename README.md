@@ -74,7 +74,10 @@ DJANGO_SETTINGS=helpo.settings.docker
 URL_CLIENT="http://localhost:3000/"
 ```
 - On project folder `helpo-web/`:
-  - Create file with name `.env` and text `REACT_APP_API_URL="http://localhost:8000"`
+  - Create file with name `.env` and text:
+```
+  REACT_APP_API_URL="http://localhost:8000"
+```
 ### Run
 - From root: `docker-compose build`
 - From root: `docker-compose up`

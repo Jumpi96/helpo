@@ -25,10 +25,12 @@ import { NoAuthLayout } from './containers';
 import { Login, Page404, Page500, Register, ConfirmMail } from './views/Pages';
 //ComponentRenderer
 import ComponentRenderer from './utils/ComponentRenderer';
-
+import { composeWithDevTools } from 'redux-devtools-extension';
 // import { renderRoutes } from 'react-router-config';
 
-let store = createStore(helpo, applyMiddleware(thunk));
+let store = createStore(helpo, composeWithDevTools(
+  applyMiddleware(thunk)
+));
 
 class RootContainerComponent extends Component {
 

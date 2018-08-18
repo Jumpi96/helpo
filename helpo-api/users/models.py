@@ -1,10 +1,10 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from decouple import config
 from hashlib import sha256
-from django.core.mail import send_mail
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from common.models import IndexedTimeStampedModel
+import requests
 
 class Profile(models.Model):
     usuario = models.OneToOneField('User')
@@ -34,15 +34,6 @@ class OrganizacionProfile(Profile):
     avatar = models.ForeignKey(Imagen, on_delete=models.SET_NULL, blank=True, null=True)
     ubicacion = models.ForeignKey(Ubicacion, on_delete=models.SET_NULL,blank=True, null=True)
     descripcion = models.TextField(blank=True, null=True)
-
-class VoluntarioProfile(Profile):
-    sexo = models.TextField(blank=True, null=True)
-    apellido = models.CharField(max_length=140, default="no apellido")
-    telefono = models.BigIntegerField(blank=True, null=True)
-    dni = models.BigIntegerField(blank=True, null=True)
-    avatar = models.ForeignKey(Imagen, on_delete=models.SET_NULL, blank=True, null=True)
-    gustos = models.TextField(blank=True, null=True)
-    habilidades = models.TextField(blank=True, null=True)
 
 class EmpresaProfile(Profile):
     telefono = models.BigIntegerField(null=True)
@@ -84,17 +75,23 @@ class UserManager(BaseUserManager):
         uncutbash = str(sha256(str_encoded))
         bash = uncutbash[22:36]
         self.create_user_verification(user, bash)
-        """url_confirmation = '%s/confirmMail/%s' % (config('URL_CLIENT', default=None), bash)"""
-        url_confirmation = '%s/confirmMail/%s' % ('localhost:3000/#', bash)
-        content = '<a href="%s">Confirma su cuenta aquí</a>' % (url_confirmation)
-        send_mail(
-            'Confirma tu cuenta de helpo.',
-            url_confirmation,
-            'helpo@helpo.com',
-            [user.email],
-            fail_silently=True,
-            html_message=content,
-        )
+
+        mail_from = "registro@helpo.com.ar"
+        subject = "Verifique su registro en Helpo"
+        url_confirmation = '%s/#/confirmMail/%s' % (config('URL_CLIENT', default='localhost:3000'), bash)
+        content = '<a href=\\"%s\\">Confirme su cuenta haciendo click aqu&iacute;</a>' % (url_confirmation)
+
+
+        url = "https://mail.zoho.com/api/accounts/%s/messages" % (config('ZOHO_ACCOUNT_ID'))
+        payload = "{\n \"fromAddress\": \"%s\",\n \"toAddress\": \"%s\",\n \"subject\": \"%s\",\n \"content\": \"%s\"\n}" \
+                    % (mail_from, user.email, subject, content)
+        headers = {
+            'Authorization': config('ZOHO_AUTH_TOKEN'),
+            'Content-Type': "application/json"
+        }
+
+        response = requests.request("POST", url, data=payload, headers=headers)
+        print("Enviando mail a %s response code: %s" % (user.email, response.status_code))
 
     def create_user_verification(self, user, token):
         UserVerification.objects.create(usuario=user, verificationToken=token)
@@ -144,6 +141,15 @@ class User(AbstractBaseUser, PermissionsMixin, IndexedTimeStampedModel):
             return True
         return False
 
+class VoluntarioProfile(Profile):
+    sexo = models.TextField(blank=True, null=True)
+    apellido = models.CharField(max_length=140, default="no apellido")
+    telefono = models.BigIntegerField(blank=True, null=True)
+    dni = models.BigIntegerField(blank=True, null=True)
+    avatar = models.ForeignKey(Imagen, on_delete=models.SET_NULL, blank=True, null=True)
+    gustos = models.TextField(blank=True, null=True)
+    habilidades = models.TextField(blank=True, null=True)
+    usuario = models.ForeignKey(User, related_name='perfil', on_delete=models.CASCADE)
 
 class UserVerification(IndexedTimeStampedModel):
     usuario = models.OneToOneField('User')

@@ -27,7 +27,13 @@ const perfilPropTypes = {
       longitud: PropTypes.number,
       notas: PropTypes.string,
     }),
-    usuario: PropTypes.number.isRequired,//User Id
+    usuario: PropTypes.shape({
+      id: PropTypes.number,
+      email: PropTypes.string,
+      user_type: PropTypes.number,
+      is_confirmed: PropTypes.bool,
+      nombre: PropTypes.string,
+    }).isRequired,
   }),
   rubros: PropTypes.array.isRequired,
   switchToConsultar: PropTypes.func.isRequired,
@@ -249,7 +255,6 @@ class ModificarPerfilOrganizacion extends Component {
     const submitData = {      
       descripcion: newData.descripcion,
       avatar: {url: avatar_url},
-      usuario: this.props.data.usuario,
     }    
     if (newData.cuit !== "") {
       submitData.cuit = newData.cuit
@@ -284,7 +289,7 @@ class ModificarPerfilOrganizacion extends Component {
   handleSubmit() {
     this.prepareSubmitData().then( submitData => {
       if (this.validateData(submitData)) {
-        api.put(`/perfiles/perfil_organizacion/${this.props.data.usuario}/`, submitData)
+        api.put(`/perfiles/perfil_organizacion/${this.props.data.usuario.id}/`, submitData)
         .then(res => {
           if (res.status === 200) {
             this.setState({

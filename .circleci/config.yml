@@ -9,14 +9,12 @@ jobs:
       CIRCLE_TEST_REPORTS: /tmp/circleci-test-results
       PIPENV_IGNORE_VIRTUALENVS: true
     docker:
-    - image: circleci/build-image:ubuntu-14.04-XXL-upstart-1189-5614f37
-      command: /sbin/init
+    - image: circleci/python:3.6-jessie
     steps:
     - checkout
     - run: mkdir -p $CIRCLE_ARTIFACTS $CIRCLE_TEST_REPORTS
     - run:
-        working_directory: ~/Jumpi96/helpo
-        command: pyenv install --skip-existing 3.6.0 && pyenv rehash && pip install virtualenv && pip install nose && pip install pep8 && pyenv rehash
+        command: sudo pip install virtualenv && sudo pip install nose && sudo pip install pep8
     - restore_cache:
         keys:
         - v1-dep-{{ .Branch }}-
@@ -24,7 +22,7 @@ jobs:
         - v1-dep-
     - run: curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash
     - run: sudo apt-get install git-lfs --upgrade
-    - run: pip install requests pipenv --upgrade
+    - run: sudo pip install requests pipenv --upgrade
     - run: cd helpo-api && pipenv install --dev
     - save_cache:
         key: v1-dep-{{ .Branch }}-{{ epoch }}
@@ -54,14 +52,10 @@ jobs:
       CIRCLE_TEST_REPORTS: /tmp/circleci-test-results
       PIPENV_IGNORE_VIRTUALENVS: true
     docker:
-    - image: circleci/build-image:ubuntu-14.04-XXL-upstart-1189-5614f37
-      command: /sbin/init
+    - image: circleci/node:6
     steps:
     - checkout
     - run: mkdir -p $CIRCLE_ARTIFACTS $CIRCLE_TEST_REPORTS
-    - run:
-        working_directory: ~/Jumpi96/helpo
-        command: nvm install 6.1.0 && nvm alias default 6.1.0
     - restore_cache:
         keys:
         - v1-dep-{{ .Branch }}-
@@ -75,7 +69,6 @@ jobs:
         paths:
         # This is a broad list of cache paths to include many possible development environments
         # You can probably delete some of these entries
-        - vendor/bundle
         - ~/.bundle
     # Test
     - run: cd helpo-web && npm run build
@@ -96,14 +89,10 @@ jobs:
       CIRCLE_TEST_REPORTS: /tmp/circleci-test-results
       PIPENV_IGNORE_VIRTUALENVS: true
     docker:
-    - image: circleci/build-image:ubuntu-14.04-XXL-upstart-1189-5614f37
-      command: /sbin/init
+    - image: circleci/node:6
     steps:
     - checkout
     - run: mkdir -p $CIRCLE_ARTIFACTS $CIRCLE_TEST_REPORTS
-    - run:
-        working_directory: ~/Jumpi96/helpo
-        command: nvm install 6.1.0 && nvm alias default 6.1.0
     - restore_cache:
         keys:
         - v1-dep-{{ .Branch }}-
@@ -117,7 +106,6 @@ jobs:
         paths:
         # This is a broad list of cache paths to include many possible development environments
         # You can probably delete some of these entries
-        - vendor/bundle
         - ~/.bundle
     # Test
     - run:

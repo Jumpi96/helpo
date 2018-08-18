@@ -32,11 +32,6 @@ AUTH_PASSWORD_VALIDATORS = []  # allow easy passwords only on local
 # Celery
 CELERY_TASK_ALWAYS_EAGER = True
 
-# Email
-INSTALLED_APPS += ('naomi',)
-EMAIL_BACKEND = 'naomi.mail.backends.naomi.NaomiBackend'
-EMAIL_FILE_PATH = base_dir_join('tmp_email')
-
 # django-debug-toolbar and django-debug-toolbar-request-history
 INSTALLED_APPS += ('debug_toolbar',)
 MIDDLEWARE += ('debug_toolbar.middleware.DebugToolbarMiddleware',)

@@ -183,7 +183,8 @@ class EmpresaProfileSerializer(serializers.ModelSerializer):
         return instance
 
 class VoluntarioProfileSerializer(serializers.ModelSerializer):
-    avatar = ImagenSerializer(required=False)    
+    avatar = ImagenSerializer(required=False)   
+    usuario = UserSerializer(read_only=True) 
 
     class Meta:
         model = VoluntarioProfile
@@ -235,3 +236,21 @@ class AppValuesSerializer(serializers.ModelSerializer):
   class Meta:
         model = AppValues
         fields = ('key', 'value')
+
+class VoluntarioInfoSerializer(serializers.ModelSerializer):
+    dni = serializers.SerializerMethodField()
+    apellido = serializers.SerializerMethodField()
+
+    class Meta:
+        model = User
+        fields = ('id', 'nombre', 'dni', 'apellido')
+
+    def get_apellido(self, obj):
+        voluntario = VoluntarioProfile.objects.get(usuario=obj.id)
+        return voluntario.apellido
+    
+    def get_dni(self, obj):
+        voluntario = VoluntarioProfile.objects.get(usuario=obj.id)
+        return voluntario.dni
+
+        

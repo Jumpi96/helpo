@@ -221,11 +221,11 @@ class Register extends Component {
       <body>
 		<div class="container">
 				<div class="panel-heading">
-	               <div class="panel-title text-center">
-	               		<h1 class="title">Helpo</h1>
-	               		<hr />
-	               	</div>
-	            </div> 
+	        <div class="panel-title text-center">
+	          <h1 class="title">Helpo</h1>
+	          <hr />
+	        </div>
+	      </div> 
       <div className="app flex-row align-items-center">
         <Container>
           <Row className="justify-content-center">

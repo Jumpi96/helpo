@@ -22,7 +22,7 @@ jobs:
         - v1-dep-
     - run: curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash
     - run: sudo apt-get install git-lfs --upgrade
-    - run: pip install requests pipenv --upgrade
+    - run: sudo pip install requests pipenv --upgrade
     - run: cd helpo-api && pipenv install --dev
     - save_cache:
         key: v1-dep-{{ .Branch }}-{{ epoch }}

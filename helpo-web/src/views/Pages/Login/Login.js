@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
-import { Button, Card, CardBody, CardGroup, Col, Container, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
+import { Button, Card, CardBody, CardGroup, Col, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
 import { connect } from "react-redux";
 import {auth} from "../../../actions";
 
@@ -23,13 +23,20 @@ class Login extends Component {
       return <Redirect to="/" />
     } else {
       return (
+      <div class="container">
+            <div class="panel-heading">
+              <div class="panel-title text-center">
+                <h1 class="title">Helpo</h1>
+                <hr />
+              </div>
+            </div>
+
         <form onSubmit={this.onSubmit}>
-          <div className="app flex-row align-items-center">
-            <Container>
               <Row className="justify-content-center">
-                <Col md="8">
+                
                   <CardGroup>
-                    <Card className="p-4">
+
+                    <Card className="p-5" col-md-6 col-xs-6>
                       <CardBody>
                         <h1>Ingresar</h1>
                         <p className="text-muted">Ingresá con tu cuenta</p>
@@ -56,13 +63,12 @@ class Login extends Component {
                             <Button color="primary" type="submit"
                               className="px-4">Ingresá!</Button>
                           </Col>
-                          <Col xs="6" className="text-right">
-                            <Button color="link" className="px-0">¿Olvidaste tu contraseña?</Button>
-                          </Col>
+                          
                         </Row>
                       </CardBody>
                     </Card>
-                    <Card className="text-white bg-primary py-5 d-md-down-none" style={{ width: 44 + '%' }}>
+
+                    <Card className="bg-primary p-4"  >
                       <CardBody className="text-center">
                         <div>
                           <h2>Registrarse</h2>
@@ -83,15 +89,18 @@ class Login extends Component {
                       </CardBody>
                     </Card>
                   </CardGroup>
-                </Col>
               </Row>
-            </Container>
-          </div>
         </form>
+      </div>
       );
     } 
   }
 }
+
+
+//<Col xs="6" className="text-right"> Boton para el Olvido su contraseña
+//<Button color="link" className="px-0">¿Olvidaste tu contraseña?</Button>
+//</Col>
 
 
 const mapStateToProps = state => {

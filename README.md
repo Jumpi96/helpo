@@ -14,6 +14,7 @@ Created with [Django React Boilerplate](https://github.com/vintasoftware/django-
 - English or spanish accepted
 ### Tools
 - IDE: [Visual Studio Code](https://code.visualstudio.com/)
+  - To setup debugger: Download vscode extension "Debugger fo chrome", open the debugger in vscode (bug icon on the left), touch the gear button on the top, select chrome, and change the url to localhost:3000 instead of 8080, and save.
 - Console: [cmder](http://cmder.net/)
   - Go to settings (`Win+Alt+p`), startup, tasks, {{cmd:cmder}}, startup dir.. and select your GitHub directory
 - Prototyping: [JustInMind](https://www.justinmind.com/)

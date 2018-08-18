@@ -2,7 +2,7 @@ version: 2
 jobs:
   build-and-test-api:
     working_directory: ~/Jumpi96/helpo
-    parallelism: 4
+    parallelism: 1
     shell: /bin/bash --login
     environment:
       CIRCLE_ARTIFACTS: /tmp/circleci-artifacts
@@ -54,7 +54,7 @@ jobs:
         path: /tmp/circleci-test-results
   build-and-test-web:
     working_directory: ~/Jumpi96/helpo
-    parallelism: 4
+    parallelism: 3
     shell: /bin/bash --login
     environment:
       CIRCLE_ARTIFACTS: /tmp/circleci-artifacts

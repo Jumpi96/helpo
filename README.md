@@ -95,22 +95,25 @@ URL_CLIENT="http://localhost:3000/"
     - Helpo-web: `localhost:3000`
 
 ## Running helpo-mobile
-### Prerequisites
-- yarn (`npm install --global yarn`)
-- Android: have a **Android emulator** working.
-  - Note: be a magician, it is not fast and easy. I had many errors that were solved just being JPL.
-- iOS: be Luciano.
-### Setup
-- Execute: `ỳarn` to install inside helpo-mobile.
-- Execute: `react-native run-android`
+### Initial Setup
+Only the first time:
+1. Follow the [Building Projects with Native Code](https://facebook.github.io/react-native/docs/getting-started.html) guide picking your OS
+2. Follow the [Ignite CLI Installation](https://github.com/infinitered/ignite#arrow_down-install) guide
+3. Remember to [Install Yarn](https://yarnpkg.com/lang/en/docs/install/#debian-stable) paying attention to [Ubuntu 16.04 configuration](https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions)
+4. Open Android Studio and start an **Android Virtual Device (AVD)**
+5. From **_helpo-mobile_** folder, run:
+    - `yarn install`
+    - `react-native run-android` (or `react-native run-ios` in case you are Lucho)
 ### Run
-#### Android
-- Run `react-native run-android` o `npm start`.
-  - Double R should reload the emulator with changes.
-  - `npm install` and `npm start` is the easiest and safest approach.
-#### iOS
-- Run `react-native run-ios`
+Whenever you want to code, after initial setup:
+  - Android
+    1. Open Android Studio and start an Android Virtual Device (AVD)
+    2. From **_helpo-mobile_** folder, run:
+        - `npm start`
+    3. Tap twice **_R_** inside AVD to reload Helpo app.
 ### Using local API
 - Add your *server* (the IP where the JS bundler is working) IP to `base.py` configuration file. For example, 10.0.2.2.
   - Add to *ALLOWED_HOSTS* (without the port) and *CORS_ORIGIN_WHITELIST* (with its port --> 10.0.2.2:8000).
 - Change IP of `api.js` configuration file in helpo-mobile.
+### Reinstalling dependencies and packages
+- Repeat **Step 5** from *Initial Setup* if mobile dependencies have changed

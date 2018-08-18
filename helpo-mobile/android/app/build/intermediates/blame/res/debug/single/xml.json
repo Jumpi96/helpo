@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "/home/juampilorenzo/Documentos/ignite/helpoMobile/android/app/build/intermediates/res/merged/debug/xml/preferences.xml",
+        "source": "/home/juampilorenzo/Documentos/ignite/helpoMobile/android/app/build/intermediates/exploded-aar/com.facebook.react/react-native/0.55.1/res/xml/preferences.xml"
+    },
+    {
+        "merged": "/home/juampilorenzo/Documentos/helpo/helpo-mobile/android/app/build/intermediates/res/merged/debug/xml/preferences.xml",
+        "source": "/home/juampilorenzo/Documentos/helpo/helpo-mobile/android/app/build/intermediates/exploded-aar/com.facebook.react/react-native/0.55.1/res/xml/preferences.xml"
+    }
+]

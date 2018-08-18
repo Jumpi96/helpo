@@ -16,6 +16,8 @@ services:
     build: helpo-api/.
     command: ["./wait-for-it.sh", "db:5432", "--", "bash", "-c", 
       "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]
+    env_file:
+      - helpo-api/.env
     ports:
       - "8000:8000"
     volumes:
@@ -24,6 +26,8 @@ services:
       - db
   web:
     build: helpo-web/.
+    env_file:
+      - helpo-web/.env
     ports:
     - "3000:3000"
     volumes:

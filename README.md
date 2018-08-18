@@ -14,11 +14,13 @@ Created with [Django React Boilerplate](https://github.com/vintasoftware/django-
 - English or spanish accepted
 ### Tools
 - IDE: [Visual Studio Code](https://code.visualstudio.com/)
+  - To setup debugger: Download vscode extension "Debugger fo chrome", open the debugger in vscode (bug icon on the left), touch the gear button on the top, select chrome, and change the url to localhost:3000 instead of 8080, and save.
 - Console: [cmder](http://cmder.net/)
   - Go to settings (`Win+Alt+p`), startup, tasks, {{cmd:cmder}}, startup dir.. and select your GitHub directory
 - Prototyping: [JustInMind](https://www.justinmind.com/)
 - UML Modelling: [Enterprise Architect](http://www.sparxsystems.com/products/ea/) 
   - It's recommended to follow this [instructions](https://docs.google.com/document/d/1aiTtPPE9bWLdNnu2MVhimmbW6wWmoZtIJilpCCdZZQQ/edit?usp=sharing)
+- Redux dev tools: [ReduxDevTools](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd)
 ### Git
 To know how to:
 - Start coding
@@ -94,10 +96,12 @@ URL_CLIENT="http://localhost:3000/"
 
 ## Running helpo-mobile
 ### Prerequisites
+- yarn (`npm install --global yarn`)
 - Android: have a **Android emulator** working.
   - Note: be a magician, it is not fast and easy. I had many errors that were solved just being JPL.
 - iOS: be Luciano.
 ### Setup
+- Execute: `ỳarn` to install inside helpo-mobile.
 - Execute: `react-native run-android`
 ### Run
 #### Android

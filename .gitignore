@@ -3,6 +3,7 @@
 /db.sqlite3
 .DS_Store
 *.env
+*.pem
 # */settings/local.py
 /staticfiles/*
 /mediafiles/*
@@ -59,3 +60,6 @@ tmp_email/
 
 # Postgres DB
 postgres-data/
+
+# SSL Certs
+certs/

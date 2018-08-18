@@ -7,6 +7,7 @@ import ModalEliminarItem from '../../common/ModalEliminarItem/ModalEliminarItem'
 import * as eventoActions from '../../../actions/eventoActions';
 import EventoForm from './EventoForm';
 import './Eventos.css';
+import { Link } from 'react-router-dom'
 
 class EventoView extends React.Component {  
   constructor(props) {
@@ -23,10 +24,18 @@ class EventoView extends React.Component {
     this.toggleEditNecesidades = this.toggleEditNecesidades.bind(this);
     this.toggleDelete = this.toggleDelete.bind(this);
     this.confirmDeleteNecesidad = this.confirmDeleteNecesidad.bind(this);
+    this.toggleConsultarColaboraciones = this.toggleConsultarColaboraciones.bind(this);
   }
 
   toggleEdit() {
     this.setState({ isEditing: true });
+  }
+
+  toggleConsultarColaboraciones() {
+      this.props.history.push({ 
+      pathname: '/actividades/consultar-colaboraciones', 
+      search: '/' + this.state.evento.id,  
+    });
   }
 
   toggleEditNecesidades() {
@@ -151,6 +160,14 @@ class EventoView extends React.Component {
             >
               Editar necesidades
             </button>
+            <Link to={`/actividades/consultar-colaboraciones/${this.state.evento.id}`}>
+            <button 
+              onClick={this.toggleConsultarColaboraciones}
+              className="btn btn-warning"
+            >
+              Consultar Colaboraciones
+            </button>
+            </Link>
           </div>
           <div class="form-group">
             <button 

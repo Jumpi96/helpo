@@ -96,10 +96,12 @@ URL_CLIENT="http://localhost:3000/"
 
 ## Running helpo-mobile
 ### Prerequisites
+- yarn (`npm install --global yarn`)
 - Android: have a **Android emulator** working.
   - Note: be a magician, it is not fast and easy. I had many errors that were solved just being JPL.
 - iOS: be Luciano.
 ### Setup
+- Execute: `ỳarn` to install inside helpo-mobile.
 - Execute: `react-native run-android`
 ### Run
 #### Android

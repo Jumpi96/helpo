@@ -1,50 +1,54 @@
-import { Platform } from 'react-native';
-
-import variable from './../variables/platform';
+import variable from "./../variables/platform";
 
 export default (variables = variable) => {
-  const platformStyle = variables.platformStyle;
   const platform = variables.platform;
 
   const segmentTheme = {
     height: 45,
-    borderBottomWidth: variables.borderWidth,
     borderColor: variables.segmentBorderColorMain,
-    flexDirection: 'row',
-    justifyContent: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
     backgroundColor: variables.segmentBackgroundColor,
-    'NativeBase.Button': {
-      alignSelf: 'center',
+    "NativeBase.Button": {
+      alignSelf: "center",
       borderRadius: 0,
-      paddingHorizontal: 25,
+      paddingTop: 3,
+      paddingBottom: 3,
       height: 30,
-      backgroundColor: 'transparent',
+      backgroundColor: "transparent",
       borderWidth: 1,
+      borderLeftWidth: 0,
       borderColor: variables.segmentBorderColor,
       elevation: 0,
-      '.active': {
+      ".active": {
         backgroundColor: variables.segmentActiveBackgroundColor,
-        'NativeBase.Text': {
+        "NativeBase.Text": {
+          color: variables.segmentActiveTextColor
+        },
+        "NativeBase.Icon": {
           color: variables.segmentActiveTextColor
         }
       },
-      '.first': {
-        borderTopLeftRadius: (platform=='ios') ? 5 : undefined,
-        borderBottomLeftRadius: (platform=='ios') ? 5 : undefined,
-        borderRightWidth: 0
+      ".first": {
+        borderTopLeftRadius: platform === "ios" ? 5 : undefined,
+        borderBottomLeftRadius: platform === "ios" ? 5 : undefined,
+        borderLeftWidth: 1
       },
-      '.last': {
-        borderTopRightRadius: (platform=='ios') ? 5 : undefined,
-        borderBottomRightRadius: (platform=='ios') ? 5 : undefined,
-        borderLeftWidth: 0
+      ".last": {
+        borderTopRightRadius: platform === "ios" ? 5 : undefined,
+        borderBottomRightRadius: platform === "ios" ? 5 : undefined
       },
-      'NativeBase.Text': {
+      "NativeBase.Text": {
         color: variables.segmentTextColor,
         fontSize: 14
+      },
+      "NativeBase.Icon": {
+        fontSize: 22,
+        paddingTop: 0,
+        color: variables.segmentTextColor
       }
     }
   };
-
 
   return segmentTheme;
 };

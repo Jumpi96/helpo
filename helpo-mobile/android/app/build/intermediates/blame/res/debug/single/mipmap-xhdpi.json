@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "/home/juampilorenzo/Documentos/ignite/helpoMobile/android/app/build/intermediates/res/merged/debug/mipmap-xhdpi/ic_launcher.png",
+        "source": "/home/juampilorenzo/Documentos/ignite/helpoMobile/android/app/src/main/res/mipmap-xhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "/home/juampilorenzo/Documentos/helpo/helpo-mobile/android/app/build/intermediates/res/merged/debug/mipmap-xhdpi/ic_launcher.png",
+        "source": "/home/juampilorenzo/Documentos/helpo/helpo-mobile/android/app/src/main/res/mipmap-xhdpi/ic_launcher.png"
+    }
+]

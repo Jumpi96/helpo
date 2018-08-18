@@ -14,7 +14,7 @@ jobs:
     - checkout
     - run: mkdir -p $CIRCLE_ARTIFACTS $CIRCLE_TEST_REPORTS
     - run:
-        command: pip install virtualenv && pip install nose && pip install pep8
+        command: sudo pip install virtualenv && sudo pip install nose && sudo pip install pep8
     - restore_cache:
         keys:
         - v1-dep-{{ .Branch }}-

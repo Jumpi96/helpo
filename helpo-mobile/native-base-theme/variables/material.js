@@ -103,7 +103,7 @@ export default {
   checkboxTickColor: "#fff",
 
   // Color
-  brandPrimary: "#3F51B5",
+  brandPrimary: "#E94E1B",
   brandInfo: "#62B1F6",
   brandSuccess: "#5cb85c",
   brandDanger: "#d9534f",
@@ -147,7 +147,7 @@ export default {
 
   // Header
   toolbarBtnColor: "#fff",
-  toolbarDefaultBg: "#3F51B5",
+  toolbarDefaultBg: "#E94E1B",
   toolbarHeight: 56,
   toolbarSearchIconSize: 23,
   toolbarInputColor: "#fff",

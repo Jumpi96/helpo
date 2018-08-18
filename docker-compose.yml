@@ -37,7 +37,6 @@ services:
       - api
   pgadmin:
     image: thajeztah/pgadmin4
-    restart: always
     volumes:
       - ./pgadmin:/pgadmin/
     ports:

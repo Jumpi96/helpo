@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
-import { View, StatusBar } from 'react-native'
-import { Root } from 'native-base'
+import { StatusBar } from 'react-native'
+import { View, Root, StyleProvider } from 'native-base'
 import ReduxNavigation from '../Navigation/ReduxNavigation'
 import { connect } from 'react-redux'
 import { loadUser } from '../Redux/actions/auth'
+import getTheme from '../../native-base-theme/components';
+import material from '../../native-base-theme/variables/material';
 import StartupActions from '../Redux/StartupRedux'
 
 // Styles
@@ -18,10 +20,12 @@ class RootContainer extends Component {
   render () {
     return (
       <Root>
-        <View style={styles.applicationView}>
-          <StatusBar barStyle='light-content' />
-          <ReduxNavigation />
-        </View>
+        <StyleProvider style={getTheme(material)}>
+          <View style={styles.applicationView}>
+            <StatusBar barStyle='light-content' />
+            <ReduxNavigation />
+          </View>
+        </StyleProvider>
       </Root>
     )
   }

@@ -4,8 +4,8 @@ export default {
   },
   validationMessage: {
     color: '#ff0000',
-    marginTop: 20,
+    marginTop: 5,
     marginLeft: 20,
-    marginBottom: 10,
+    marginBottom: 2.5,
   }
 };

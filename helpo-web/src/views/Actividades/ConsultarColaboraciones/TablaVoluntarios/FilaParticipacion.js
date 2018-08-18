@@ -1,5 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import * as actions from '../../../../actions/consultarColaboracionesActions'
+import { connect } from 'react-redux'
 
 const FilaPropTypes = {
   apellido: PropTypes.string.isRequired,
@@ -10,8 +12,8 @@ const FilaPropTypes = {
   checkedBox: PropTypes.func,
 }
 
-const FilaParticipacion = ( props ) => {
-  const { apellido, nombre, dni, comentario, idParticipacion, checkedBox, participo } = props
+const FilaParticipacionConnected = ( props ) => {
+  const { apellido, nombre, dni, comentario, idParticipacion, handleCheckboxChange, participo } = props
   return (
     <tr>
       <td>{apellido}</td>
@@ -22,11 +24,16 @@ const FilaParticipacion = ( props ) => {
             type="checkbox" 
             name={"entregado" + idParticipacion} 
             defaultChecked={participo}
-            onChange={() => checkedBox(idParticipacion)}/>
+            onChange={(event) => handleCheckboxChange(event.target.checked, idParticipacion)}/>
             </td>
     </tr>
   )
 }
-FilaParticipacion.propTypes = FilaPropTypes
+FilaParticipacionConnected.propTypes = FilaPropTypes
+
+const mapDispatchToProps = dispatch => ({
+  handleCheckboxChange: (value, idParticipacion) => { dispatch(actions.consultarColaboracionesChangeParticipacion(value, idParticipacion)) }
+})
+const FilaParticipacion = connect( null, mapDispatchToProps)(FilaParticipacionConnected)
 
 export default FilaParticipacion;

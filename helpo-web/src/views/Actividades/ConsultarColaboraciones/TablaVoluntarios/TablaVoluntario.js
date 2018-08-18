@@ -18,7 +18,7 @@ const TablaVoluntario = ( props ) => {
         nombre: participacion.voluntario.nombre,
         dni: participacion.voluntario.dni ? participacion.voluntario.dni : "-",
         comentario: participacion.comentario ? participacion.comentario : "-",
-        idparticipacion: participacion.id,
+        idParticipacion: participacion.id,
         participo: participacion.participo,
         checkedBox: () => {}
       }

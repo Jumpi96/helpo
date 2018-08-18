@@ -29,6 +29,30 @@ export function consultarColaboracionesHasError( state = false, action ) {
   }
 }
 
+/*
+En entregados y participaciones se va  guardar un objeto donde
+KEY = id de colaboracion o participacion
+VALUE = True o False dependiendo de como cambio
+La idea de estos estados de redux es para que sea facil mandar los cambios a la api
+*/
+export function entregados( state = {}, action ) {
+  switch( action.type ) {
+    case types.CHANGE_COLABORACION_ENTREGA:
+      return { ...state, [action.colaboracion]: action.value}
+    default:
+      return state
+  }
+}
+
+export function participaciones( state = {}, action ) {
+  switch( action.type ) {
+    case types.CHANGE_COLABORACION_PARTICIPACION:
+      return { ...state, [action.participacion]: action.value}
+    default:
+      return state
+  }
+}
+
 /*export function consultarColaboracionesChangeValue( state, action) {
   switch( action.type ) {
     case types.CHANGE_COLABORACION_ENTREGA:
@@ -42,5 +66,7 @@ export function consultarColaboracionesHasError( state = false, action ) {
 export const consultarColaboraciones = combineReducers({
   consultarColaboracionesData,
   consultarColaboracionesLoaded,
-  consultarColaboracionesHasError
+  consultarColaboracionesHasError,
+  participaciones,
+  entregados
 })

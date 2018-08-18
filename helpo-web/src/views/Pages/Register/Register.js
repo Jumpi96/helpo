@@ -218,6 +218,14 @@ class Register extends Component {
   render() {
     const user_type = this.state.user_type;
     return (
+      <body>
+		<div class="container">
+				<div class="panel-heading">
+	               <div class="panel-title text-center">
+	               		<h1 class="title">Helpo</h1>
+	               		<hr />
+	               	</div>
+	            </div> 
       <div className="app flex-row align-items-center">
         <Container>
           <Row className="justify-content-center">
@@ -284,27 +292,15 @@ class Register extends Component {
                            onChange={(e) => this.handleValueChange(e, "repeat")}/>                    
                   </InputGroup>
                   <Button color="primary" onClick={() => this.onSubmitData()} block>Crear Cuenta</Button>                  
-                  <ul>{this.renderErrorList()}
-                  <div>
-                    {this.props.errors.length > 0 && (
-                      <div>
-                        {this.props.errors.map(error => (
-                          <li key={error.field}>
-                            <span style={{ color: 'red' }}>{error.message}</span>
-                          </li>
-                        ))}                        
-                      </div>                      
-                    )}                    
-                  </div>
-                  </ul>
+                  <ul>{this.renderErrorList()}</ul>
                 </CardBody>
                 <CardFooter className="p-4">
                   <Row>
                     <Col xs="12" sm="6">
-                      <Button className="btn-facebook" block><span>facebook</span></Button>
+                      <Button className="btn-facebook" block><span>Facebook</span></Button>
                     </Col>
                     <Col xs="12" sm="6">
-                      <Button className="btn-twitter" block><span>twitter</span></Button>
+                      <Button className="btn-twitter" block><span>Twitter</span></Button>
                     </Col>
                   </Row>
                 </CardFooter>
@@ -314,6 +310,9 @@ class Register extends Component {
         </Container>
         <ModalRegistroExitoso open={this.state.showModalRegistro}/>
       </div>
+      </div>
+		<script type="text/javascript" src="assets/js/bootstrap.js"></script>
+	</body>
     );
   }
 }

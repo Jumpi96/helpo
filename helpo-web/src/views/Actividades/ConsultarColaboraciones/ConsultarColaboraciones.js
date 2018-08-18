@@ -1,45 +1,60 @@
 import React from 'react'
 import { Card, CardHeader, CardBody } from 'reactstrap'
 import TablaColaboraciones from './TablaColaboraciones/TablaColaboraciones'
-import { connect } from 'redux'
+import TablaVoluntarios from './TablaVoluntarios/TablaVoluntarios'
+import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import * as actions from '../../../actions/misColaboracionesActions'
+import * as actions from '../../../actions/consultarColaboracionesActions'
 
 const propTypes = {
-  misColaboraciones: PropTypes.object.isRequired,
+  necesidades: PropTypes.object.isRequired,
   hasLoaded: PropTypes.bool.isRequired,
   hasError: PropTypes.bool.isRequired,
   fetchData: PropTypes.func.isRequired
 }
 
-const ConsultarColaboracionConnected  = ( misColaboraciones, hasLoaded, hasError, fetchData ) => {
+class ConsultarColaboracionConnected extends React.Component {
+  
+  componentDidMount() {
+    this.props.fetchData(this.props.match.params.eventoId)
+  } 
+
+  render() {
+    console.log(this.props)
+    const content = () => { return (
+      <div>
+      <CardHeader>
+            <i className="fa fa-align-justify"></i> Colaboraciones del evento {this.props.necesidades.nombre}
+      </CardHeader>
+      <CardBody>
+          <TablaColaboraciones {...this.props.necesidades.necesidades}/>
+          <TablaVoluntarios {...this.props.necesidades.voluntarios}/>
+      </CardBody>
+      </div>
+    )}
 
     return (
       <Card>
-        <CardHeader>
-            <i className="fa fa-align-justify"></i> <p>Colaboraciones del evento {this.props.evento}</p>
-        </CardHeader>
-        <CardBody>
-          <TablaColaboraciones {...misColaboraciones.necesidades}/>
-        </CardBody>
+        {this.props.hasLoaded 
+        ? content()
+        : <p>Cargando...</p>}        
       </Card>
     );
   }
-ConsultarColaboracionConnected.PropTypes = propTypes
+}
+ConsultarColaboracionConnected.propTypes = propTypes
 
 const mapStateToProps = state => {
   return { 
-    necesidades: state.misColaboraciones.misColaboracionesData,
-    hasLoaded: state.misColaboraciones.misColaboracionesLoaded,
-    hasError: state.misColaboraciones.misColaboracionesHasError
+    necesidades: state.consultarColaboraciones.consultarColaboracionesData,
+    hasLoaded: state.consultarColaboraciones.consultarColaboracionesLoaded,
+    hasError: state.consultarColaboraciones.consultarColaboracionesHasError
    }
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    fetchData: eventoId => { dispatch(actions.fetchDetalleColaboraciones(eventoId)) },
-  }
-}
+const mapDispatchToProps = dispatch => ({
+   fetchData: eventoId => { dispatch(actions.fetchDetalleColaboraciones(eventoId)) },  
+})
 
 const ConsultarColaboracion = connect(mapStateToProps, mapDispatchToProps)(ConsultarColaboracionConnected)
 

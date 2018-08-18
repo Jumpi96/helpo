@@ -4,18 +4,43 @@ import PropTypes from 'prop-types'
 
 const tablaPropTypes = {
   necesidad: PropTypes.string.isRequired,
-  colaboraciones: PropTypes.array.isRequired,
+  colaboraciones: PropTypes.array.isRequired,//[ {}, {} ],
 } 
 
-const TablaColaboracion = (colaboraciones, necesidad) => {
+const TablaColaboracion = ( props ) => {
+
+  function adaptData( colaboraciones ) {
+    let dataArray = []
+    for ( let colaboracion of colaboraciones ) {
+      const colaboracionData = {
+        //Si comentario o dni son undefined, toman valor "-"
+        apellido: colaboracion.voluntario.apellido,
+        nombre: colaboracion.voluntario.nombre,
+        dni: colaboracion.voluntario.dni ? colaboracion.voluntario.dni : "-",
+        cantidad: colaboracion.cantidad,
+        comentario: colaboracion.comentario ? colaboracion.comentario : "-",
+        idColaboracion: colaboracion.id,
+        checkedBox: () => {},
+        entregado: colaboracion.entregado
+      }
+      dataArray.push(colaboracionData)      
+    }    
+    return dataArray
+  }
+
+  const noColaboraciones = (
+    <p style={{ fontSize: '16px' }} className="text-muted text-center"> No hay colaboraciones para este recurso</p>
+  )
+
+  const { colaboraciones, necesidad } = props
   let FilasColaboracion
   if ( colaboraciones.length > 0) {
-    FilasColaboracion = colaboraciones.map( (colaboracion) => <FilaColaboracion {...colaboracion}/> )
+    FilasColaboracion = adaptData(colaboraciones).map( (colaboracion) => <FilaColaboracion key={ colaboracion.idColaboracion } {...colaboracion}/> )
   }
 
   return (
     <div>
-      <p>{necesidad}</p>
+      <p className="h4" style={{ marginTop: '20px', marginBottom: '20px' }}>Recurso - {necesidad}</p>
       <table className="table">
         <thead>
           <tr>
@@ -31,9 +56,10 @@ const TablaColaboracion = (colaboraciones, necesidad) => {
           {FilasColaboracion}
         </tbody>
       </table>
+        {colaboraciones.length === 0 ? noColaboraciones : ""}
     </div>
   )
 }
-TablaColaboracion.PropTypes = tablaPropTypes
+TablaColaboracion.propTypes = tablaPropTypes
 
 export default TablaColaboracion

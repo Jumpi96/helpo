@@ -12,8 +12,6 @@ const axios = require('axios')
 async function uploadImage(encodedimg) {
   let access_token = localStorage.getItem('imgur_access_token')
   let url = ''
-  console.log("TOKEN")
-  console.log(access_token)
 
   if ( access_token == null ) {
     refreshToken()
@@ -29,14 +27,9 @@ async function uploadImage(encodedimg) {
       Authorization: `Bearer ${access_token}`
     }
   })
-  .then( response => {
-    console.log("RESPONSE")
-    console.log(response)        
+  .then( response => { 
     if (response.status === 200) {
-      console.log("I LIVE")
       url = response.data.data.link
-      console.log("URL")
-      console.log(url)
     }
     else if ( response.status === 400 && response.data.error.code === 500 ) {
       localStorage.setItem('imgur_access_token', null)
@@ -47,10 +40,7 @@ async function uploadImage(encodedimg) {
     }
   })
   .catch( error => {
-    console.log("RESPONSE CATCH")
-    console.log(error)  
     if ( error.response.status === 400 && error.response.data.error.code === 500 ) {
-      console.log("IM LIVE")
       localStorage.setItem('imgur_access_token', null)
       url = 'recall'
     }

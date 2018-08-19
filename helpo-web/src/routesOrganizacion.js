@@ -65,7 +65,7 @@ const routes = [
   { path: '/actividades/registrar-necesidades', name: 'Registrar necesidades', component: RegistrarNecesidades },
   { path: '/actividades/consultar-colaboraciones/:eventoId', name: 'Consultar Colaboraciones', component: ConsultarColaboraciones },
   { path: '/perfiles/perfil-organizacion', name: 'Perfil organizacion', component: ModificarPerfilOrganizacion },
-  { path: '/perfil', name: 'Mi perfil', component: ConsultarPerfil },
+  { path: '/perfil/:usuarioId?', name: 'Perfil de usuario', component: ConsultarPerfil }
 ];
 
 export default routes;

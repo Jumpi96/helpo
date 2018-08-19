@@ -28,6 +28,7 @@ const perfilPropTypes = {
     }),
   }),
   switchToModificar: PropTypes.func.isRequired,
+  sinModificar: PropTypes.bool
 }
 
 class ConsultarPerfilOrganizacion extends Component {
@@ -154,7 +155,9 @@ class ConsultarPerfilOrganizacion extends Component {
         {this.mostrarUbicacion()}
 
         <div style={{ width: '500px', justifyContent: 'center' ,display: 'flex', marginBottom: '10px' }} class='row offster-md-4'>          
-          <Button onClick={this.props.switchToModificar} color='primary'>Modificar Datos</Button>
+          {this.props.sinModificar
+          ? "" 
+          : <Button onClick={this.props.switchToModificar} color='primary'>Modificar Datos</Button>}
         </div>  
         </div>      
       </Card>

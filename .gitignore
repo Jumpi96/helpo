@@ -61,5 +61,8 @@ tmp_email/
 # Postgres DB
 postgres-data/
 
+# PgAdmin
+pgadmin/
+
 # SSL Certs
 certs/

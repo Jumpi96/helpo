@@ -120,5 +120,6 @@ CELERY_RESULT_SERIALIZER = 'json'
 CORS_ORIGIN_WHITELIST = (
     'localhost:3000',
     '10.0.2.2:8000',
-    '10.0.2.2:8001'
+    '10.0.2.2:8001',
+    '10.0.2.2:8081'
 )

@@ -10,7 +10,7 @@ const FilaPropTypes = {
   nombre: PropTypes.string.isRequired,
   dni: PropTypes.number,
   comentario: PropTypes.string,
-  idColaboracion: PropTypes.number.isRequired,
+  idParticipacion: PropTypes.number.isRequired,
   checkedBox: PropTypes.func,
   idVoluntario: PropTypes.number.isRequired
 }

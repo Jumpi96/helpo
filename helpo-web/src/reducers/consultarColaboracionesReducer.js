@@ -53,6 +53,24 @@ export function participaciones( state = {}, action ) {
   }
 }
 
+export function sentDataSuccess( state = false, action) {
+  switch( action.type ) {
+    case types.SEND_CONSULTAR_COLABORACIONES_SUCCESFUL:
+      return action.success
+    default:
+      return state
+  }
+}
+
+export function sentDataHadError( state = false, action) {
+  switch( action.type) {
+    case types.SEND_CONSULTAR_COLABORACIONES_HAD_ERROR:
+      return true
+    default:
+      return state
+  }
+}
+
 /*export function consultarColaboracionesChangeValue( state, action) {
   switch( action.type ) {
     case types.CHANGE_COLABORACION_ENTREGA:
@@ -68,5 +86,7 @@ export const consultarColaboraciones = combineReducers({
   consultarColaboracionesLoaded,
   consultarColaboracionesHasError,
   participaciones,
-  entregados
+  entregados,
+  sentDataSuccess,
+  sentDataHadError
 })

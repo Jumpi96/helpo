@@ -67,4 +67,18 @@ export function consultarColaboracionesChangeColaboracion(bool, colaboracionId) 
   }
 }
 
+export function consultarColaboracionesSendDataSuccessful(bool) {
+  return {
+    type: types.SEND_CONSULTAR_COLABORACIONES_SUCCESFUL,
+    success: bool
+  }
+}
+
+export function consultarColaboracionesSendDataHadError(bool) {
+  return {
+    type: types.SEND_CONSULTAR_COLABORACIONES_HAD_ERROR,
+    hadError: bool
+  }
+}
+
 //export function consultarColaboracionesSendData()

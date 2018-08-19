@@ -76,7 +76,6 @@ class ConsultarColaboracionConnected extends React.Component {
       promises.push(promise)
     }
     for ( let key in this.props.participaciones ) {
-      console.log(key)
       const patchData = { participo: this.props.participaciones[key] }
       const promise = api.patch(`/actividades/participaciones/${key}/`, patchData)
       promises.push(promise)
@@ -93,7 +92,6 @@ class ConsultarColaboracionConnected extends React.Component {
   }
 
   render() {
-    console.log(this.props)
     const content = () => { return (
       <div>
       <CardHeader>

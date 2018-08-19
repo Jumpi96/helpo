@@ -3,7 +3,6 @@ import TablaVoluntario from './TablaVoluntario'
 
 const TablaVoluntarios = ( props ) => {
   let tablas = []
-  console.log(props)
     for ( var key in props ) {
         const participaciones = props[key].participaciones 
         const funcion = props[key].funcion.nombre

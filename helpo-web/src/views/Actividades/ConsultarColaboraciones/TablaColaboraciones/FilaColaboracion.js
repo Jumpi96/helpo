@@ -17,7 +17,7 @@ const FilaPropTypes = {
 }
 
 const FilaColaboracionConnected = ( props ) => {
-  const { apellido, nombre, dni, cantidad, comentario, idColaboracion, handleCheckboxChange, entregado,idVoluntario } = props  
+  const { apellido, nombre, cantidad, comentario, idColaboracion, handleCheckboxChange, entregado,idVoluntario } = props  
 
   const perfilButton = (
     <Link to={`/perfil/${idVoluntario}`}>

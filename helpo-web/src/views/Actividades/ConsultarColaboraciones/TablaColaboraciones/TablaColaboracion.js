@@ -21,7 +21,8 @@ const TablaColaboracion = ( props ) => {
         comentario: colaboracion.comentario ? colaboracion.comentario : "-",
         idColaboracion: colaboracion.id,
         checkedBox: () => {},
-        entregado: colaboracion.entregado
+        entregado: colaboracion.entregado,
+        idVoluntario: colaboracion.voluntario.id
       }
       dataArray.push(colaboracionData)      
     }    
@@ -46,7 +47,7 @@ const TablaColaboracion = ( props ) => {
           <tr>
             <th scope="col">Apellido</th>
             <th scope="col">Nombre</th>
-            <th scope="col">DNI</th>
+            <th scope="col"></th>
             <th scope="col">Cantidad</th>
             <th scope="col">Comentario</th>
             <th scope="col">Entregado</th>

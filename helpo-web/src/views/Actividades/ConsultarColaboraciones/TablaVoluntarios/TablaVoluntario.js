@@ -20,7 +20,8 @@ const TablaVoluntario = ( props ) => {
         comentario: participacion.comentario ? participacion.comentario : "-",
         idParticipacion: participacion.id,
         participo: participacion.participo,
-        checkedBox: () => {}
+        checkedBox: () => {},
+        idVoluntario: participacion.voluntario.id
       }
       dataArray.push(participacionData)      
     }    
@@ -45,7 +46,7 @@ const TablaVoluntario = ( props ) => {
           <tr>
             <th scope="col">Apellido</th>
             <th scope="col">Nombre</th>
-            <th scope="col">DNI</th>
+            <th scope="col"></th>
             <th scope="col">Comentario</th>
             <th scope="col">Participó</th>
           </tr>  

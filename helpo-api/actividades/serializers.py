@@ -121,23 +121,6 @@ class ComentarioSerializer(serializers.ModelSerializer):
         fields = ('id', 'comentario', 'voluntario', 'voluntario_id', 'evento_id')
 
 
-class ConsultaEventoSerializer(serializers.ModelSerializer):
-    ubicacion = UbicacionSerializer()
-    rubro = RubroEventoSerializer(read_only=True)
-    rubro_id = serializers.PrimaryKeyRelatedField(
-        queryset=RubroEvento.objects.all(), source='rubro', write_only=True
-    )
-    contacto = ContactoSerializer(many=True)
-    necesidades = NecesidadSerializer(many=True)
-    voluntarios = VoluntarioSerializer(many=True)
-    comentarios = ComentarioSerializer(many=True)
-    organizacion = UserSerializer()
-
-    class Meta:
-        model = Evento
-        fields = ('id', 'nombre', 'descripcion', 'fecha_hora_inicio',
-            'fecha_hora_fin', 'rubro', 'rubro_id', 'ubicacion', 'contacto', 'organizacion_id',
-            'necesidades', 'organizacion', 'voluntarios', 'comentarios')
 
 class ColaboracionSerializer(serializers.ModelSerializer):
     necesidad_material_id = serializers.PrimaryKeyRelatedField(
@@ -212,3 +195,21 @@ class ConsultaNecesidadesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Evento
         fields = ('id', 'nombre', 'necesidades', 'voluntarios', 'fecha_hora_inicio')
+
+class ConsultaEventoSerializer(serializers.ModelSerializer):
+    ubicacion = UbicacionSerializer()
+    rubro = RubroEventoSerializer(read_only=True)
+    rubro_id = serializers.PrimaryKeyRelatedField(
+        queryset=RubroEvento.objects.all(), source='rubro', write_only=True
+    )
+    contacto = ContactoSerializer(many=True)
+    necesidades = ConsultaNecesidadSerializer(many=True)
+    voluntarios = ConsultaVoluntarioSerializer(many=True)
+    comentarios = ComentarioSerializer(many=True)
+    organizacion = UserSerializer()
+
+    class Meta:
+        model = Evento
+        fields = ('id', 'nombre', 'descripcion', 'fecha_hora_inicio',
+            'fecha_hora_fin', 'rubro', 'rubro_id', 'ubicacion', 'contacto', 'organizacion_id',
+            'necesidades', 'organizacion', 'voluntarios', 'comentarios')

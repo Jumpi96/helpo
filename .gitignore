@@ -60,9 +60,11 @@ tmp_email/
 
 # Postgres DB
 postgres-data/
+!postgres-data/.gitkeep
 
 # PgAdmin
 pgadmin/
+!pgadmin/.gitkeep
 
 # SSL Certs
 certs/

@@ -98,8 +98,10 @@ class EventoView extends React.Component {
 
   getFuncionVoluntario(voluntarios) {
     let userId = this.getUserId();
+    let filtroVoluntarios;
     for (let i = 0; i < voluntarios.length; i += 1) {
-      if (voluntarios[i].participaciones.filter(p => p.voluntario_id === userId)) {
+      filtroVoluntarios = voluntarios[i].participaciones.filter(p => p.voluntario_id === userId);
+      if (filtroVoluntarios.length > 0) {
         return voluntarios[i];
       }
     }
@@ -109,7 +111,7 @@ class EventoView extends React.Component {
     let contador = 0;
     let userId = this.getUserId();
     n.colaboraciones.forEach((c) => {
-      if (c.voluntario_id === userId) {
+      if (c.voluntario.id === userId) {
         contador += c.cantidad;
       };
     });

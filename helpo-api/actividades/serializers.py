@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from actividades.models import Evento, RubroEvento, Ubicacion, CategoriaRecurso, \
-    Recurso, Necesidad, Contacto, Funcion, Voluntario, Participacion, Colaboracion
+    Recurso, Necesidad, Contacto, Funcion, Voluntario, Participacion, Colaboracion, Comentario
 from users.serializers import UserSerializer, VoluntarioInfoSerializer
 
 class RubroEventoSerializer(serializers.ModelSerializer):
@@ -107,6 +107,19 @@ class VoluntarioSerializer(serializers.ModelSerializer):
         model = Voluntario
         fields = '__all__'
 
+class ComentarioSerializer(serializers.ModelSerializer):
+    evento_id = serializers.PrimaryKeyRelatedField(
+        queryset=Evento.objects.all(), source='evento'
+    )
+    voluntario_id = serializers.PrimaryKeyRelatedField(
+        queryset=Voluntario.objects.all(), source='voluntario'
+    )
+    voluntario = VoluntarioInfoSerializer(read_only=True)
+
+    class Meta:
+        model = Colaboracion
+        fields = ('id', 'comentario', 'voluntario', 'voluntario_id', 'evento_id')
+
 
 class ConsultaEventoSerializer(serializers.ModelSerializer):
     ubicacion = UbicacionSerializer()
@@ -117,13 +130,14 @@ class ConsultaEventoSerializer(serializers.ModelSerializer):
     contacto = ContactoSerializer(many=True)
     necesidades = NecesidadSerializer(many=True)
     voluntarios = VoluntarioSerializer(many=True)
+    comentarios = ComentarioSerializer(many=True)
     organizacion = UserSerializer()
 
     class Meta:
         model = Evento
         fields = ('id', 'nombre', 'descripcion', 'fecha_hora_inicio',
             'fecha_hora_fin', 'rubro', 'rubro_id', 'ubicacion', 'contacto', 'organizacion_id',
-            'necesidades', 'organizacion', 'voluntarios')
+            'necesidades', 'organizacion', 'voluntarios', 'comentarios')
 
 class ColaboracionSerializer(serializers.ModelSerializer):
     necesidad_material_id = serializers.PrimaryKeyRelatedField(

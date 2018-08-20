@@ -5,12 +5,12 @@ from rest_framework.response import Response
 from rest_framework import status
 from datetime import datetime
 from actividades.models import Evento, RubroEvento, CategoriaRecurso, Recurso, Necesidad, \
-    Contacto, Voluntario, Funcion, Participacion, Colaboracion
+    Contacto, Voluntario, Funcion, Participacion, Colaboracion, Comentario
 from knox.models import AuthToken
 from actividades.serializers import EventoSerializer, RubroEventoSerializer, \
     CategoriaRecursoSerializer, RecursoSerializer, NecesidadSerializer, ContactoSerializer, \
     ConsultaEventoSerializer, VoluntarioSerializer, FuncionSerializer, ConsultaNecesidadesSerializer, \
-    ParticipacionSerializer, ColaboracionSerializer
+    ParticipacionSerializer, ColaboracionSerializer, ComentarioSerializer
 from common.functions import get_token_user
 
 class RubroEventoCreateReadView(ListCreateAPIView):
@@ -267,6 +267,28 @@ class ParticipacionReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     """
     queryset = Participacion.objects.all()
     serializer_class = ParticipacionSerializer
+    lookup_field = 'id'
+
+class ComentarioCreateReadView(ListCreateAPIView):
+    """
+    API endpoint para crear o ver todos los comentarios de evento
+    """
+    queryset = Comentario.objects.all()
+    serializer_class = ComentarioSerializer
+
+    def create(self, request):
+        serializer = ComentarioSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(voluntario_id=get_token_user(self.request))
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class ComentarioReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
+    """
+    API endpoint para leer, actualizar o eliminar un comentario de evento
+    """
+    queryset = Comentario.objects.all()
+    serializer_class = ComentarioSerializer
     lookup_field = 'id'
 
 class ConsultaNecesidadesReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):

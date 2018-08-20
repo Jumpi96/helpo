@@ -24,6 +24,7 @@ project.xcworkspace
 
 # Android/IntelliJ
 #
+helpo-mobile/android/
 android/
 build/
 .idea

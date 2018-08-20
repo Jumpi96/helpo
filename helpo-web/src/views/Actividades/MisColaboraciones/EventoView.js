@@ -167,6 +167,13 @@ class EventoView extends React.Component {
           >
             Editar colaboraciones
           </button>
+          <button
+            onClick={this.toggleView}
+            hidden={moment(evento.fecha_hora_inicio)>moment()}
+            className="btn btn-warning"
+          >
+            Comentar evento
+          </button>
           <ModalEliminarItem open={this.state.showModalEliminar} nombre={this.state.evento.nombre}
             closeModal={this.confirmDeleteNecesidad}/>
         </div>

@@ -51,6 +51,7 @@ class Voluntario(models.Model):
 class Comentario(models.Model):
     evento = models.ForeignKey(Evento, related_name='comentarios', null=False, on_delete=models.CASCADE)
     voluntario = models.ForeignKey(User, null=False)
+    comentario = models.CharField(max_length=280, null=False)
 
 class Colaboracion(models.Model):
     cantidad = models.IntegerField()

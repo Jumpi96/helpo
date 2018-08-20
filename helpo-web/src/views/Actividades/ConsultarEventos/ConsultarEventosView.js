@@ -7,6 +7,8 @@ import moment from 'moment';
 import * as eventoActions from '../../../actions/eventoActions';
 import './Eventos.css';
 import ong from '../../../assets/img/ong.png';
+import { getImagen } from '../../../utils/Imagen';
+import ComentariosEvento from './ComentariosEvento/ComentariosEvento';
 
 class ConsultarEventosView extends React.Component {  
 
@@ -65,7 +67,7 @@ class ConsultarEventosView extends React.Component {
           <CardBody>
             <h1 id="titulo">
               <img
-                src={ong}
+                src={getImagen(evento.organizacion ? evento.organizacion.avatar : ong )}
                 alt={evento.organizacion.nombre}
                 style={{width:'75px', height:'75px'}} 
               />
@@ -169,6 +171,10 @@ class ConsultarEventosView extends React.Component {
               >
                 Colaborar
               </button>
+              ) : undefined
+            }
+            {true ? (//moment(evento.fecha_hora_inicio)>moment() ? (
+              <ComentariosEvento evento={evento.id} />
               ) : undefined
             }
           </CardBody>

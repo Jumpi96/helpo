@@ -10,7 +10,6 @@ class ComentariosEvento extends Component {
     const usuario = this.getUserId();
     this.state = {
       participante: this.participante(this.props.evento, usuario),
-      dioRetroalimentacion: this.dioRetroalimentacion(this.props.evento, usuario),
       comentario: '',
     }
     this.handleRetroalimentacion = this.handleRetroalimentacion.bind(this);
@@ -74,7 +73,7 @@ class ComentariosEvento extends Component {
           <div className="col-md-2">
             <p className="text-right font-weight-bold">{c.voluntario.nombre + " " + c.voluntario.apellido}</p>
           </div>
-          <div className="col-md-2">
+          <div className="col-md-10">
             <p>{c.comentario}</p>
           </div>
         </div>
@@ -115,7 +114,7 @@ class ComentariosEvento extends Component {
   }
 
   getOpcionRetroalimentacion() {
-    if (!this.state.dioRetroalimentacion) {
+    if (!this.dioRetroalimentacion(this.props.evento, this.getUserId())) {
       return (
         <div className="form-group">
           <button class="btn btn-primary" onClick={this.handleRetroalimentacion}>

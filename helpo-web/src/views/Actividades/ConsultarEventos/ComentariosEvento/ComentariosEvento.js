@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import api from '../../../../api';
+import './ComentariosEvento.css'
 
 class ComentariosEvento extends Component {
 
@@ -70,30 +71,34 @@ class ComentariosEvento extends Component {
     if (this.props.evento.comentarios.length > 0) {
       const opiniones = this.props.evento.comentarios.map((c) =>
         <div className="row">
-            <div className="col-md-2">
-              <p className="text-right font-weight-bold">{c.voluntario.nombre + " " + c.voluntario.apellido}</p>
-            </div>
-            <div className="col-md-2">
-              <p>{c.comentario}</p>
-            </div>
+          <div className="col-md-2">
+            <p className="text-right font-weight-bold">{c.voluntario.nombre + " " + c.voluntario.apellido}</p>
+          </div>
+          <div className="col-md-2">
+            <p>{c.comentario}</p>
+          </div>
         </div>
       );
       return opiniones;
     }
   }
 
-  dioRetroalimentacion(evento,usuario) {
+  dioRetroalimentacion(evento, usuario) {
     const necesidades = evento.necesidades;
     const voluntarios = evento.voluntarios;
     let filtroNecesidades;
     for (let i=0; i < necesidades.length; i++) {
       filtroNecesidades = necesidades[i].colaboraciones.filter(c => c.voluntario.id === usuario);
-      return filtroNecesidades.length > 0 && filtroNecesidades[0].retroalimentacion;
+      if (filtroNecesidades.length > 0 && filtroNecesidades[0].retroalimentacion) {
+        return true;
+      }
     }
     let filtroVoluntarios;
     for (let i=0; i < voluntarios.length; i++) {
       filtroVoluntarios = voluntarios[i].participaciones.filter(c => c.voluntario.id === usuario);
-      return filtroVoluntarios.length > 0 && filtroVoluntarios[0].retroalimentacion;
+      if (filtroVoluntarios.length > 0 && filtroVoluntarios[0].retroalimentacion) {
+        return true;
+      }
     }
     return false;
   }
@@ -159,6 +164,7 @@ class ComentariosEvento extends Component {
         {this.state.participante ?
           this.getOpcionComentar()
         : undefined}
+        <br />
         {opiniones}
       </div>
     )

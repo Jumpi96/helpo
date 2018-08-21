@@ -314,6 +314,9 @@ def RetroalimentacionEvento(request):
             c.retroalimentacion = True
             c.save()
         participaciones = Participacion.objects.filter(voluntario_id=user).filter(necesidad_voluntario__evento_id=request.data['evento'])
+        for p in participaciones:
+            p.retroalimentacion = True
+            p.save()
         return Response(request.data, status=status.HTTP_201_CREATED)
     except:
        return Response(status=status.HTTP_400_BAD_REQUEST)

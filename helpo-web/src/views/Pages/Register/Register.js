@@ -307,7 +307,6 @@ class Register extends Component {
           <ModalRegistroExitoso open={this.state.showModalRegistro}/>
         </div>
 		<script type="text/javascript" src="assets/js/bootstrap.js"></script>
-    <script type="text/javascript" src="node_modules/auth0-js/build/auth0.js"></script>
 	  </body>
     );
   }

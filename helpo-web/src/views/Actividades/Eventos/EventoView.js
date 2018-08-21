@@ -136,7 +136,7 @@ class EventoView extends React.Component {
             </div>
             ) : undefined
           }
-          <div class="btn-group form-group" role="group">
+          <div className="btn-group form-group" role="group">
             <button 
               onClick={this.toggleEdit} 
               hidden={moment(evento.fecha_hora_inicio)<=moment()}
@@ -151,8 +151,14 @@ class EventoView extends React.Component {
             >
               Editar necesidades
             </button>
+            <a target="_blank" rel="noopener noreferrer" 
+            href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.helpo.com.ar%2F%23%2FnoAuth
+            %2Factividades%2Fconsultar-eventos%2F1">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/c/cd/Facebook_logo_%28square%29.png" alt="Compartir en Facebook" 
+              width="40" height="40" facebook-share-dialog="true"/>
+            </a>             
           </div>
-          <div class="form-group">
+          <div className="form-group">
             <button 
               onClick={this.toggleDelete} 
               hidden={moment(evento.fecha_hora_inicio)<=moment()}

@@ -23,10 +23,10 @@ class Login extends Component {
       return <Redirect to="/" />
     } else {
       return (
-      <div class="container">
-            <div class="panel-heading">
-              <div class="panel-title text-center">
-                <h1 class="title">Helpo</h1>
+      <div className="container">
+            <div className="panel-heading">
+              <div className="panel-title text-center">
+                <h1 className="title">Helpo</h1>
                 <hr />
               </div>
             </div>
@@ -36,7 +36,7 @@ class Login extends Component {
                 
                   <CardGroup>
 
-                    <Card className="p-5" col-md-6 col-xs-6>
+                    <Card className="p-5" col-md-6="true" col-xs-6="true">
                       <CardBody>
                         <h1>Ingresar</h1>
                         <p className="text-muted">Ingresá con tu cuenta</p>

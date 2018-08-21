@@ -14,18 +14,34 @@ class ConsultarEventosPage extends React.Component {
   getAuth() {
     return this.props.auth.isAuthenticated;
   }
+  renderEventos(){
+    const eventos = this.props.eventos;
+    if(eventos.length === 0){
+      return(
+        <div className="row">
+          <div className="form-group col-md-6 col-md-offset-3">
+            <label>&emsp;Todav&iacute;a no hay eventos registrados</label>
+          </div>
+        </div>
+      )
+    }
+    else{
+      return(
+        <CardBody>
+            <ConsultarEventosList eventos={eventos} auth={this.getAuth()} />
+        </CardBody>
+      )
+    }
+  }
 
   render() {
-    const eventos = this.props.eventos;
     return (
       <div className="animated fadeIn">
         <Card>
           <CardHeader>
             <i className="fa fa-align-justify"></i> Consultar eventos
           </CardHeader>
-          <CardBody>
-            <ConsultarEventosList eventos={eventos} auth={this.getAuth()} />
-          </CardBody>
+          {this.renderEventos()}
         </Card>
       </div>
     );

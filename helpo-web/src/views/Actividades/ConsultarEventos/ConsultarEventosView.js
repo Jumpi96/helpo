@@ -18,9 +18,10 @@ class ConsultarEventosView extends React.Component {
       evento: { id }
     }
     this.toggleColaborar = this.toggleColaborar.bind(this);
+    this.loadEvento = this.loadEvento.bind(this);
   }
 
-  componentDidMount() {
+  loadEvento() {
     api.get('/actividades/consulta_eventos/' + this.state.evento.id + '/')
       .then(res => {
         this.setState({ evento: res.data });
@@ -29,6 +30,10 @@ class ConsultarEventosView extends React.Component {
         if (error.response){ console.log(error.response.status) }
         else { console.log('Error: ', error.message)}
       })
+  }
+
+  componentDidMount() {
+    this.loadEvento(); 
   }
 
   toggleColaborar() {
@@ -188,7 +193,7 @@ class ConsultarEventosView extends React.Component {
               ) : undefined
             }
             {true ? (//moment(evento.fecha_hora_inicio)>moment() ? (
-              <ComentariosEvento evento={evento} />
+              <ComentariosEvento evento={evento} update={this.loadEvento} />
               ) : undefined
             }
           </CardBody>

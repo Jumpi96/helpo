@@ -1,4 +1,5 @@
 from rest_framework import viewsets, permissions
+from rest_framework.decorators import api_view
 from rest_framework.generics import ListCreateAPIView
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
 from rest_framework.response import Response
@@ -282,7 +283,7 @@ class ComentarioCreateReadView(ListCreateAPIView):
     serializer_class = ComentarioSerializer
 
     def create(self, request):
-        serializer = ComentarioSerializer(data=request.data)
+        serializer = ComentarioSerializer(data=request.data)        
         if serializer.is_valid():
             serializer.save(voluntario_id=get_token_user(self.request))
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -303,3 +304,16 @@ class ConsultaNecesidadesReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     serializer_class = ConsultaNecesidadesSerializer
     queryset = Evento.objects.all()
     lookup_field = 'id'
+
+@api_view(['POST'])
+def RetroalimentacionEvento(request):
+    try:
+        user = get_token_user(request)
+        colaboraciones = Colaboracion.objects.filter(voluntario_id=user).filter(necesidad_material__evento_id=request.data['evento'])
+        for c in colaboraciones:
+            c.retroalimentacion = True
+            c.save()
+        participaciones = Participacion.objects.filter(voluntario_id=user).filter(necesidad_voluntario__evento_id=request.data['evento'])
+        return Response(request.data, status=status.HTTP_201_CREATED)
+    except:
+       return Response(status=status.HTTP_400_BAD_REQUEST)

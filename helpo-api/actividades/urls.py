@@ -165,4 +165,10 @@ urlpatterns = [
         view=actividades_views.ComentarioReadUpdateDeleteView.as_view(),
         name="get_put_delete_comentario"
     ),
+    # {% url "api:retroalimentacion" %}
+    url(
+        regex=r"^feedbacks/retroalimentacion/$",
+        view=actividades_views.RetroalimentacionEvento,
+        name="post_retroalimentacion"
+    ),
 ]

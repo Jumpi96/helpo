@@ -43,7 +43,7 @@ class EventoView extends React.Component {
 
   toggleView() {
     this.props.history.push({ 
-      pathname: '/actividades/consultar-evento/' + this.state.evento.id,
+      pathname: '/actividades/consultar-evento?id=' + this.state.evento.id,
     });
   }
 

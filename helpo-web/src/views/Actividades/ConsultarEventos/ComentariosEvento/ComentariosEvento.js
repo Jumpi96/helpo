@@ -1,6 +1,17 @@
 import React, { Component } from 'react';
+import { connect } from "react-redux";
 
 class ComentariosEvento extends Component {
+
+  constructor(props) {
+    super(props);
+    const usuario = this.getUserId();
+    this.state = {
+      voluntario_id: usuario,
+      participante: this.participante(usuario),
+      dioRetroalimentacion: this.dioRetroalimentacion(usuario)
+    }
+  }
 
   getOpcionComentar() {
     return (
@@ -34,11 +45,16 @@ class ComentariosEvento extends Component {
     }
   }
 
+  dioRetroalimentacion(usuario) {
+    return false;
+  }
+
   getOpcionRetroalimentacion() {
-    if (false) {
+    if (!this.state.dioRetroalimentacion) {
       return (
         <div className="form-group">
           <button class="btn btn-primary"><i class="fa fa-thumbs-up"></i>Me gustó el evento</button>
+          <label>Ayuda a la ONG en helpo si te gustó ser parte de esta actividad.</label>
         </div>
       )
     } else {
@@ -48,20 +64,50 @@ class ComentariosEvento extends Component {
           <label className="label-group">Indicaste que te gustó el evento</label>
         </div>
       )
+    }    
+  }
+
+  participante(usuario) {
+    const necesidades = this.props.evento.necesidades;
+    const voluntarios = this.props.evento.voluntarios;
+    for (let i=0; i < necesidades.length; i++) {
+      if (necesidades[i].colaboraciones.filter(c => c.voluntario.id === usuario).length > 0){
+        return true;
+      }
     }
-    
+    for (let i=0; i < voluntarios.length; i++) {
+      if (voluntarios[i].participaciones.filter(c => c.voluntario.id === usuario).length > 0){
+        return true;
+      }
+    }
+    return false;
+  }
+
+  getUserId() {
+    return this.props.auth.user.id;
   }
 
   render() {
+    const opiniones = this.getOpiniones();
     return (
       <div className="offset-md-1">
         <h2>Opiniones del evento</h2>
-        {this.getOpcionRetroalimentacion()}
-        {this.getOpcionComentar()}
-        {this.getOpiniones()}
+        {this.state.participante ?
+          this.getOpcionRetroalimentacion()
+        : undefined}
+        {this.state.participante ?
+          this.getOpcionComentar()
+        : undefined}
+        {opiniones}
       </div>
     )
   }
 }
 
-export default ComentariosEvento;
+const mapStateToProps = state => {
+  return {
+    auth: state.auth,
+  }
+}
+  
+export default connect(mapStateToProps, undefined)(ComentariosEvento);

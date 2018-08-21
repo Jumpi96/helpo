@@ -117,6 +117,12 @@ urlpatterns = [
         view=actividades_views.ConsultaEventosOrganizacionCreateReadView.as_view(),
         name="get_post_consulta_evento"
     ),
+    # {% url "api:consulta_eventos" evento.id %}
+    url(
+        regex=r"^actividades/consulta_eventos/(?P<id>[-\w]+)/$",
+        view=actividades_views.ConsultaEventosReadUpdateDeleteView.as_view(),
+        name="get_put_delete_consulta_evento"
+    ),
     # {% url "api:colaboraciones" %}
     url(
         regex=r"^actividades/colaboraciones/$",

@@ -209,9 +209,6 @@ class EventoVoluntarioCreateReadView(ListCreateAPIView):
                 eventos.append(necesidad.evento_id)
         return eventos
 
-
-
-
 class ConsultaEventosOrganizacionCreateReadView(ListCreateAPIView):
     """
     API endpoint para ver todos los eventos próximos
@@ -223,6 +220,14 @@ class ConsultaEventosOrganizacionCreateReadView(ListCreateAPIView):
         queryset = queryset.filter(fecha_hora_inicio__gte=datetime.today())
         queryset = queryset.order_by('-fecha_hora_inicio')
         return queryset
+
+class ConsultaEventosReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
+    """
+    API endpoint para leer, actualizar o eliminar un evento
+    """
+    queryset = Evento.objects.all()
+    serializer_class = ConsultaEventoSerializer
+    lookup_field = 'id'
 
 class ColaboracionCreateReadView(ListCreateAPIView):
     """

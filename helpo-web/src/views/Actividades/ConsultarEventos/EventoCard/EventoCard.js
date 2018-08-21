@@ -72,7 +72,7 @@ class EventoCard extends Component {
         contadorCubiertas += contadorTemp;
       }
     }
-    return contadorNecesidades > 0 ? contadorCubiertas/contadorNecesidades : 0;
+    return contadorNecesidades > 0 ? (contadorCubiertas/contadorNecesidades) * 100 : 0;
   }
 
   render() {

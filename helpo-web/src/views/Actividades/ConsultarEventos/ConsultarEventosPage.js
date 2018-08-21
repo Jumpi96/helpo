@@ -17,18 +17,22 @@ class ConsultarEventosPage extends React.Component {
 
   render() {
     const eventos = this.props.eventos;
-    return (
-      <div className="animated fadeIn">
-        <Card>
-          <CardHeader>
-            <i className="fa fa-align-justify"></i> Consultar eventos
-          </CardHeader>
-          <CardBody>
-            <ConsultarEventosList eventos={eventos} auth={this.getAuth()} />
-          </CardBody>
-        </Card>
-      </div>
-    );
+    if (eventos[0] && eventos[0].descripcion) {
+      return (
+        <div className="animated fadeIn">
+          <Card>
+            <CardHeader>
+              <i className="fa fa-align-justify"></i> Consultar eventos
+            </CardHeader>
+            <CardBody>
+              <ConsultarEventosList eventos={eventos} auth={this.getAuth()} />
+            </CardBody>
+          </Card>
+        </div>
+      );
+    } else {
+      return <p>Cargando...</p>
+    }
   }
 }
 

@@ -192,7 +192,7 @@ class ConsultarEventosView extends React.Component {
               </button>
               ) : undefined
             }
-            {true ? (//moment(evento.fecha_hora_inicio)>moment() ? (
+            {moment(evento.fecha_hora_inicio)<=moment() ? (
               <ComentariosEvento evento={evento} update={this.loadEvento} />
               ) : undefined
             }

@@ -8,8 +8,6 @@ class ComentariosEvento extends Component {
     super(props);
     const usuario = this.getUserId();
     this.state = {
-      evento: this.props.evento,
-      voluntario_id: usuario,
       participante: this.participante(this.props.evento, usuario),
       dioRetroalimentacion: this.dioRetroalimentacion(this.props.evento, usuario),
       comentario: '',
@@ -51,8 +49,8 @@ class ComentariosEvento extends Component {
   handleComentar() {
     const comentario = {
       comentario: this.state.comentario,
-      evento_id: this.state.evento.id,
-      voluntario_id: this.state.voluntario_id
+      evento_id: this.props.evento.id,
+      voluntario_id: this.getUserId()
     }
     api.post('feedbacks/comentarios/', comentario)
       .then((res) => {
@@ -65,18 +63,18 @@ class ComentariosEvento extends Component {
   }
 
   existeComentario(usuario) {
-    return this.state.evento.comentarios.filter(c => c.voluntario.id === usuario).length > 0;
+    return this.props.evento.comentarios.filter(c => c.voluntario.id === usuario).length > 0;
   }
 
   getOpiniones() {
-    if (this.state.evento.comentarios.length > 0) {
-      const opiniones = this.state.evento.comentarios.map((c) =>
+    if (this.props.evento.comentarios.length > 0) {
+      const opiniones = this.props.evento.comentarios.map((c) =>
         <div className="row">
             <div className="col-md-2">
-            <b>{c.voluntario.nombre}</b>
+              <p className="text-right font-weight-bold">{c.voluntario.nombre + " " + c.voluntario.apellido}</p>
             </div>
             <div className="col-md-2">
-            <label>{c.comentario}</label>
+              <p>{c.comentario}</p>
             </div>
         </div>
       );
@@ -101,7 +99,7 @@ class ComentariosEvento extends Component {
   }
 
   handleRetroalimentacion() {
-    api.post('feedbacks/retroalimentacion/', { evento: this.state.evento.id })
+    api.post('feedbacks/retroalimentacion/', { evento: this.props.evento.id })
       .then((res) => {
         this.props.update();
       })
@@ -118,17 +116,16 @@ class ComentariosEvento extends Component {
           <button class="btn btn-primary" onClick={this.handleRetroalimentacion}>
             <i class="fa fa-thumbs-up"></i>Me gustó el evento
           </button>
-          <label>Ayuda a la ONG en helpo si te gustó ser parte de esta actividad.</label>
+          <label><span class="badge badge-warning">Ayuda a la ONG en helpo si te gustó ser parte de esta actividad.</span></label>
         </div>
       )
     } else {
       return (
-        <div className="form-group">
-          <button class="btn btn-primary" disabled><i class="fa fa-thumbs-up"></i></button>
-          <label className="label-group">Indicaste que te gustó el evento</label>
+        <div>
+          <label><span class="badge badge-warning">Indicaste que te gustó el evento.</span></label>
         </div>
       )
-    }    
+    }
   }
 
   participante(evento, usuario) {

@@ -76,11 +76,14 @@ class EventoView extends React.Component {
         )
       }
     });
-    return(
-      <tbody>
-        {listaNecesidades}
-      </tbody>
-    );
+    if (listaNecesidades.length > 0) {
+      return(
+        <tbody>
+          {listaNecesidades}
+        </tbody>
+      );
+    }
+    return undefined;
   }
 
   getTablaVoluntarios(voluntarios) {
@@ -100,7 +103,7 @@ class EventoView extends React.Component {
     let userId = this.getUserId();
     let filtroVoluntarios;
     for (let i = 0; i < voluntarios.length; i += 1) {
-      filtroVoluntarios = voluntarios[i].participaciones.filter(p => p.voluntario_id === userId);
+      filtroVoluntarios = voluntarios[i].participaciones.filter(p => p.voluntario.id === userId);
       if (filtroVoluntarios.length > 0) {
         return voluntarios[i];
       }
@@ -134,18 +137,20 @@ class EventoView extends React.Component {
               <h1>{evento.nombre}</h1>
             </div>
           </div>
-          <Table responsive striped>
-            <thead>
-              <tr>
-                <th></th>
-                <th>Categoría</th>
-                <th>Ítem</th>
-                <th>Descripción</th>
-                <th>Cantidad</th>
-              </tr>
-            </thead>
-            {listaNecesidades}
-          </Table>
+          {listaNecesidades ?
+            <Table responsive striped>
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Categoría</th>
+                  <th>Ítem</th>
+                  <th>Descripción</th>
+                  <th>Cantidad</th>
+                </tr>
+              </thead>
+              {listaNecesidades}
+            </Table> : undefined
+          }
           {listaVoluntarios ?
             <Table responsive striped>
               <thead>

@@ -152,10 +152,10 @@ class EventoView extends React.Component {
               Editar necesidades
             </button>
             <a target="_blank" rel="noopener noreferrer" 
-            href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.helpo.com.ar%2F%23%2FnoAuth
-            %2Factividades%2Fconsultar-eventos%2F1">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/c/cd/Facebook_logo_%28square%29.png" alt="Compartir en Facebook" 
-              width="40" height="40" facebook-share-dialog="true"/>
+            href={"https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.helpo.com.ar%2F%23%2FnoAuth" +
+            "%2Factividades%2Fconsultar-eventos%2F" + evento.id}>
+              <img src="https://upload.wikimedia.org/wikipedia/commons/c/cd/Facebook_logo_%28square%29.png" 
+              alt="Compartir en Facebook" width="40" height="40" facebook-share-dialog="true"/>
             </a>             
           </div>
           <div className="form-group">

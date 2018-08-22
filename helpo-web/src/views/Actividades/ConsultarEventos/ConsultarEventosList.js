@@ -30,7 +30,7 @@ class ConsultarEventosList extends React.Component {
                     evento={evento}
                     key={evento.id} footer
                     color="primary" auth={this.props.auth}
-                    link={'/actividades/consultar-evento/' + evento.id}
+                    link={'/actividades/consultar-evento?id=' + evento.id} 
                   />
                 </Col>
               )}

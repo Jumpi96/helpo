@@ -59,7 +59,7 @@ class RegistrarColaboraciones extends Component {
   getNecesidadVoluntario(necesidades) {
     const usuario = this.getUserId();
     for (let i=0; i < necesidades.length; i++) {
-      if (necesidades[i].participaciones.filter(c => c.voluntario.id === usuario).length > 0){
+      if (necesidades[i].participaciones.filter(c => c.voluntario_id === usuario).length > 0){
         return necesidades[i].id;
       }
     }
@@ -67,7 +67,7 @@ class RegistrarColaboraciones extends Component {
   }
 
   existeColaboracion(n) {
-    return n.colaboraciones.filter(c => c.voluntario.id === this.getUserId()).length > 0;
+    return n.colaboraciones.filter(c => c.voluntario_id === this.getUserId()).length > 0;
   }
 
   getTablaNecesidades() {
@@ -197,7 +197,7 @@ class RegistrarColaboraciones extends Component {
 
   editColaboracion(idNecesidad) {
     const necesidad = this.state.necesidades.filter(v => v.id === idNecesidad)[0];
-    const colaboracionAnterior = necesidad.colaboraciones.filter(c => c.voluntario.id === this.getUserId())[0];
+    const colaboracionAnterior = necesidad.colaboraciones.filter(c => c.voluntario_id === this.getUserId())[0];
     const colaboracion = {
       id: idNecesidad,
       cantidad_anterior: colaboracionAnterior.cantidad,
@@ -251,7 +251,7 @@ class RegistrarColaboraciones extends Component {
     const usuario = this.getUserId();
     let participaciones;
     for (let i=0; i < necesidades.length; i++) {
-      participaciones = necesidades[i].participaciones.filter(c => c.voluntario.id === usuario);
+      participaciones = necesidades[i].participaciones.filter(c => c.voluntario_id === usuario);
       if (participaciones.length > 0){
         return participaciones[0].id;
       }
@@ -332,7 +332,7 @@ class RegistrarColaboraciones extends Component {
 
   getColaboracionAnterior(necesidadId) {
     const necesidad = this.state.necesidades.filter(n => n.id === necesidadId)[0];
-    return necesidad.colaboraciones.filter(c => c.voluntario.id === this.getUserId())[0].id;
+    return necesidad.colaboraciones.filter(c => c.voluntario_id === this.getUserId())[0].id;
   }
 
   saveParticipacion(participacion) {

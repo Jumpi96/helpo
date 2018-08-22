@@ -53,26 +53,7 @@ class EventoCard extends Component {
   }
 
   getEventoPorcentaje() {
-    let contadorNecesidades = 0;
-    let contadorCubiertas = 0;
-    let contadorTemp = 0;
-    const voluntarios = this.props.evento.voluntarios;
-    const necesidades = this.props.evento.necesidades;
-    if (voluntarios && necesidades) {
-      for (let i = 0; i < voluntarios.length; i++) {
-        contadorNecesidades += voluntarios[i].cantidad;
-        contadorCubiertas += voluntarios[i].participaciones.length;
-      }
-      for (let i = 0; i < necesidades.length; i++) {
-        contadorTemp = 0;
-        contadorNecesidades += necesidades[i].cantidad;
-        for (let j = 0; j < necesidades[i].colaboraciones; i++) {
-          contadorTemp += necesidades[i].colaboraciones[j].cantidad;
-        }
-        contadorCubiertas += contadorTemp;
-      }
-    }
-    return contadorNecesidades > 0 ? (contadorCubiertas/contadorNecesidades) * 100 : 0;
+    return 0; // TODO
   }
 
   render() {

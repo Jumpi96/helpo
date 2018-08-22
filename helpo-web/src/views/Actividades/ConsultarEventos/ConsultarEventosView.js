@@ -1,45 +1,24 @@
 import React from 'react';
 import { Card, CardHeader, CardBody, Table } from 'reactstrap';
-import { connect } from "react-redux";
+import { PropTypes } from 'prop-types';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 import moment from 'moment';
-import api from '../../../api';
+import * as eventoActions from '../../../actions/eventoActions';
 import './Eventos.css';
 import ong from '../../../assets/img/ong.png';
-import { getImagen } from '../../../utils/Imagen';
-import ComentariosEvento from './ComentariosEvento/ComentariosEvento';
 
 class ConsultarEventosView extends React.Component {  
 
   constructor(props) {
     super(props);
-    const urlParams = new URLSearchParams(this.props.location.search)
-    const id = urlParams.get('id');
-    this.state = {
-      evento: { id }
-    }
     this.toggleColaborar = this.toggleColaborar.bind(this);
-    this.loadEvento = this.loadEvento.bind(this);
-  }
-
-  loadEvento() {
-    api.get('/actividades/consulta_eventos/' + this.state.evento.id + '/')
-      .then(res => {
-        this.setState({ evento: res.data });
-      })
-      .catch((error) => {
-        if (error.response){ console.log(error.response.status) }
-        else { console.log('Error: ', error.message)}
-      })
-  }
-
-  componentDidMount() {
-    this.loadEvento(); 
   }
 
   toggleColaborar() {
     this.props.history.push({ 
       pathname: '/actividades/registrar-colaboraciones', 
-      search: '?evento=' + this.state.evento.id,
+      search: '?evento=' + this.props.evento.id,
     });
   }
 
@@ -48,8 +27,8 @@ class ConsultarEventosView extends React.Component {
   }
 
   render() {
-    if (this.state.evento.nombre) {
-      const evento = this.state.evento;
+    if (this.props.evento.nombre) {
+      const evento = this.props.evento;
       let listaContactos, listaNecesidades, listaVoluntarios;
       if (evento.necesidades.length > 0) {
         listaNecesidades = evento.necesidades.map((n) => 
@@ -86,7 +65,7 @@ class ConsultarEventosView extends React.Component {
           <CardBody>
             <h1 id="titulo">
               <img
-                src={getImagen(evento.organizacion ? evento.organizacion.avatar : ong )}
+                src={ong}
                 alt={evento.organizacion.nombre}
                 style={{width:'75px', height:'75px'}} 
               />
@@ -192,10 +171,6 @@ class ConsultarEventosView extends React.Component {
               </button>
               ) : undefined
             }
-            {moment(evento.fecha_hora_inicio)<=moment() ? (
-              <ComentariosEvento evento={evento} update={this.loadEvento} />
-              ) : undefined
-            }
           </CardBody>
         </Card>
       </div>
@@ -206,11 +181,38 @@ class ConsultarEventosView extends React.Component {
   }
 };
 
+ConsultarEventosView.propTypes = {  
+  evento: PropTypes.object.isRequired,
+  actions: PropTypes.object.isRequired
+};
 
-const mapStateToProps = state => {
-  return {
-    auth: state.auth,
+function mapStateToProps(state, ownProps) {  
+  let evento = {
+    nombre: '',
+    descripcion: '',
+    rubro: {},
+    fecha_hora_inicio: new Date(),
+    fecha_hora_fin: new Date(),
+    ubicacion: { latitud: '', longitud: '', notas: '' },
+    contactos: [{
+      nombre: '',
+      email: '',
+      telefono: '',
+    }],
+    
+  };
+  const eventoId = ownProps.match.params.id;
+  if (state.eventos.length > 0) {
+    evento = Object.assign({}, state.eventos.find(evento => "" + evento.id === eventoId))
+    evento.rubro_id = evento.rubro.id;
   }
+  return {evento: evento, auth: state.auth};
 }
-  
-export default connect(mapStateToProps, undefined)(ConsultarEventosView);
+
+function mapDispatchToProps(dispatch) {  
+  return {
+    actions: bindActionCreators(eventoActions, dispatch)
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ConsultarEventosView);

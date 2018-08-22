@@ -43,7 +43,7 @@ const routes = [
   { path: '/', exact: true, name: 'Home', component: DefaultLayout },
   { path: '/dashboard', name: 'helpo', component: Dashboard },
   { path: '/actividades/consultar-eventos', name: 'Consultar eventos', component: ConsultarEventosPage },
-  { path: '/actividades/consultar-evento/', name: 'Consultar evento', component: ConsultarEventosView },
+  { path: '/actividades/consultar-evento/:id', name: 'Consultar evento', component: ConsultarEventosView },
   { path: '/actividades/registrar-colaboraciones', name: 'Registrar colaboraciones', component: RegistrarColaboraciones },
   { path: '/actividades/mis-colaboraciones', name: 'Mis colaboraciones', component: MisColaboraciones },
   { path: '/perfil', name: 'Mi perfil', component: ConsultarPerfil },

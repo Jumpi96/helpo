@@ -43,7 +43,8 @@ class EventoView extends React.Component {
 
   toggleView() {
     this.props.history.push({ 
-      pathname: '/actividades/consultar-evento/' + this.state.evento.id,
+      pathname: '/actividades/consultar-evento', 
+      search: '?id=' + this.state.evento.id,
     });
   }
 
@@ -76,11 +77,14 @@ class EventoView extends React.Component {
         )
       }
     });
-    return(
-      <tbody>
-        {listaNecesidades}
-      </tbody>
-    );
+    if (listaNecesidades.length > 0) {
+      return(
+        <tbody>
+          {listaNecesidades}
+        </tbody>
+      );
+    }
+    return undefined;
   }
 
   getTablaVoluntarios(voluntarios) {
@@ -98,8 +102,10 @@ class EventoView extends React.Component {
 
   getFuncionVoluntario(voluntarios) {
     let userId = this.getUserId();
+    let filtroVoluntarios;
     for (let i = 0; i < voluntarios.length; i += 1) {
-      if (voluntarios[i].participaciones.filter(p => p.voluntario_id === userId)) {
+      filtroVoluntarios = voluntarios[i].participaciones.filter(p => p.voluntario.id === userId);
+      if (filtroVoluntarios.length > 0) {
         return voluntarios[i];
       }
     }
@@ -109,7 +115,7 @@ class EventoView extends React.Component {
     let contador = 0;
     let userId = this.getUserId();
     n.colaboraciones.forEach((c) => {
-      if (c.voluntario_id === userId) {
+      if (c.voluntario.id === userId) {
         contador += c.cantidad;
       };
     });
@@ -132,18 +138,20 @@ class EventoView extends React.Component {
               <h1>{evento.nombre}</h1>
             </div>
           </div>
-          <Table responsive striped>
-            <thead>
-              <tr>
-                <th></th>
-                <th>Categoría</th>
-                <th>Ítem</th>
-                <th>Descripción</th>
-                <th>Cantidad</th>
-              </tr>
-            </thead>
-            {listaNecesidades}
-          </Table>
+          {listaNecesidades ?
+            <Table responsive striped>
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Categoría</th>
+                  <th>Ítem</th>
+                  <th>Descripción</th>
+                  <th>Cantidad</th>
+                </tr>
+              </thead>
+              {listaNecesidades}
+            </Table> : undefined
+          }
           {listaVoluntarios ?
             <Table responsive striped>
               <thead>
@@ -164,6 +172,13 @@ class EventoView extends React.Component {
             className="btn btn-warning"
           >
             Editar colaboraciones
+          </button>
+          <button
+            onClick={this.toggleView}
+            hidden={moment(evento.fecha_hora_inicio)>moment()}
+            className="btn btn-warning"
+          >
+            Comentar evento
           </button>
           <ModalEliminarItem open={this.state.showModalEliminar} nombre={this.state.evento.nombre}
             closeModal={this.confirmDeleteNecesidad}/>

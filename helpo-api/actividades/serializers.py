@@ -1,8 +1,7 @@
 from rest_framework import serializers
 from actividades.models import Evento, RubroEvento, Ubicacion, CategoriaRecurso, \
-    Recurso, Necesidad, Contacto, Funcion, Voluntario, Participacion, Colaboracion, Comentario
+    Recurso, Necesidad, Contacto, Funcion, Voluntario, Participacion, Colaboracion
 from users.serializers import UserSerializer, VoluntarioInfoSerializer
-from users.models import User
 
 class RubroEventoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -108,20 +107,23 @@ class VoluntarioSerializer(serializers.ModelSerializer):
         model = Voluntario
         fields = '__all__'
 
-class ComentarioSerializer(serializers.ModelSerializer):
-    evento_id = serializers.PrimaryKeyRelatedField(
-        queryset=Evento.objects.all(), source='evento'
+
+class ConsultaEventoSerializer(serializers.ModelSerializer):
+    ubicacion = UbicacionSerializer()
+    rubro = RubroEventoSerializer(read_only=True)
+    rubro_id = serializers.PrimaryKeyRelatedField(
+        queryset=RubroEvento.objects.all(), source='rubro', write_only=True
     )
-    voluntario_id = serializers.PrimaryKeyRelatedField(
-        queryset=User.objects.all(), source='voluntario'
-    )
-    voluntario = VoluntarioInfoSerializer(read_only=True)
+    contacto = ContactoSerializer(many=True)
+    necesidades = NecesidadSerializer(many=True)
+    voluntarios = VoluntarioSerializer(many=True)
+    organizacion = UserSerializer()
 
     class Meta:
-        model = Comentario
-        fields = ('id', 'comentario', 'voluntario', 'voluntario_id', 'evento_id')
-
-
+        model = Evento
+        fields = ('id', 'nombre', 'descripcion', 'fecha_hora_inicio',
+            'fecha_hora_fin', 'rubro', 'rubro_id', 'ubicacion', 'contacto', 'organizacion_id',
+            'necesidades', 'organizacion', 'voluntarios')
 
 class ColaboracionSerializer(serializers.ModelSerializer):
     necesidad_material_id = serializers.PrimaryKeyRelatedField(
@@ -131,7 +133,7 @@ class ColaboracionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Colaboracion
-        fields = ('id', 'comentario', 'cantidad', 'necesidad_material_id', 'voluntario', 'retroalimentacion')
+        fields = ('id', 'comentario', 'cantidad', 'necesidad_material_id','voluntario')
     
     def create(self, validated_data):
         necesidad_material = validated_data.get('necesidad_material')
@@ -167,7 +169,7 @@ class ParticipacionSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Participacion
-        fields = ('id', 'comentario', 'necesidad_voluntario_id', 'voluntario', 'retroalimentacion')
+        fields = ('id', 'comentario', 'necesidad_voluntario_id', 'voluntario')
 
     def create(self, validated_data):
         necesidad_voluntario = validated_data.get('necesidad_voluntario')
@@ -196,21 +198,3 @@ class ConsultaNecesidadesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Evento
         fields = ('id', 'nombre', 'necesidades', 'voluntarios', 'fecha_hora_inicio')
-
-class ConsultaEventoSerializer(serializers.ModelSerializer):
-    ubicacion = UbicacionSerializer()
-    rubro = RubroEventoSerializer(read_only=True)
-    rubro_id = serializers.PrimaryKeyRelatedField(
-        queryset=RubroEvento.objects.all(), source='rubro', write_only=True
-    )
-    contacto = ContactoSerializer(many=True)
-    necesidades = ConsultaNecesidadSerializer(many=True)
-    voluntarios = ConsultaVoluntarioSerializer(many=True)
-    comentarios = ComentarioSerializer(many=True)
-    organizacion = UserSerializer()
-
-    class Meta:
-        model = Evento
-        fields = ('id', 'nombre', 'descripcion', 'fecha_hora_inicio',
-            'fecha_hora_fin', 'rubro', 'rubro_id', 'ubicacion', 'contacto', 'organizacion_id',
-            'necesidades', 'organizacion', 'voluntarios', 'comentarios')

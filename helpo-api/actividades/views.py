@@ -1,16 +1,17 @@
 from rest_framework import viewsets, permissions
+from rest_framework.decorators import api_view
 from rest_framework.generics import ListCreateAPIView
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
 from rest_framework.response import Response
 from rest_framework import status
 from datetime import datetime
 from actividades.models import Evento, RubroEvento, CategoriaRecurso, Recurso, Necesidad, \
-    Contacto, Voluntario, Funcion, Participacion, Colaboracion
+    Contacto, Voluntario, Funcion, Participacion, Colaboracion, Comentario
 from knox.models import AuthToken
 from actividades.serializers import EventoSerializer, RubroEventoSerializer, \
     CategoriaRecursoSerializer, RecursoSerializer, NecesidadSerializer, ContactoSerializer, \
     ConsultaEventoSerializer, VoluntarioSerializer, FuncionSerializer, ConsultaNecesidadesSerializer, \
-    ParticipacionSerializer, ColaboracionSerializer
+    ParticipacionSerializer, ColaboracionSerializer, ComentarioSerializer
 from common.functions import get_token_user
 
 class RubroEventoCreateReadView(ListCreateAPIView):
@@ -209,9 +210,6 @@ class EventoVoluntarioCreateReadView(ListCreateAPIView):
                 eventos.append(necesidad.evento_id)
         return eventos
 
-
-
-
 class ConsultaEventosOrganizacionCreateReadView(ListCreateAPIView):
     """
     API endpoint para ver todos los eventos próximos
@@ -223,6 +221,14 @@ class ConsultaEventosOrganizacionCreateReadView(ListCreateAPIView):
         queryset = queryset.filter(fecha_hora_inicio__gte=datetime.today())
         queryset = queryset.order_by('-fecha_hora_inicio')
         return queryset
+
+class ConsultaEventosReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
+    """
+    API endpoint para leer, actualizar o eliminar un evento
+    """
+    queryset = Evento.objects.all()
+    serializer_class = ConsultaEventoSerializer
+    lookup_field = 'id'
 
 class ColaboracionCreateReadView(ListCreateAPIView):
     """
@@ -269,6 +275,28 @@ class ParticipacionReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     serializer_class = ParticipacionSerializer
     lookup_field = 'id'
 
+class ComentarioCreateReadView(ListCreateAPIView):
+    """
+    API endpoint para crear o ver todos los comentarios de evento
+    """
+    queryset = Comentario.objects.all()
+    serializer_class = ComentarioSerializer
+
+    def create(self, request):
+        serializer = ComentarioSerializer(data=request.data)        
+        if serializer.is_valid():
+            serializer.save(voluntario_id=get_token_user(self.request))
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class ComentarioReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
+    """
+    API endpoint para leer, actualizar o eliminar un comentario de evento
+    """
+    queryset = Comentario.objects.all()
+    serializer_class = ComentarioSerializer
+    lookup_field = 'id'
+
 class ConsultaNecesidadesReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     """
     API endpoint para ver consultar el estado de necesidades de un evento
@@ -276,3 +304,19 @@ class ConsultaNecesidadesReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     serializer_class = ConsultaNecesidadesSerializer
     queryset = Evento.objects.all()
     lookup_field = 'id'
+
+@api_view(['POST'])
+def RetroalimentacionEvento(request):
+    try:
+        user = get_token_user(request)
+        colaboraciones = Colaboracion.objects.filter(voluntario_id=user).filter(necesidad_material__evento_id=request.data['evento'])
+        for c in colaboraciones:
+            c.retroalimentacion = True
+            c.save()
+        participaciones = Participacion.objects.filter(voluntario_id=user).filter(necesidad_voluntario__evento_id=request.data['evento'])
+        for p in participaciones:
+            p.retroalimentacion = True
+            p.save()
+        return Response(request.data, status=status.HTTP_201_CREATED)
+    except:
+       return Response(status=status.HTTP_400_BAD_REQUEST)

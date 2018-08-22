@@ -22,7 +22,7 @@ import styles from './styles';
 class VerColaboracionesEvento extends React.Component {
 
   getListaNecesidades(evento) {
-    const listaNecesidades = [];
+    let listaNecesidades = [];
     let cantidad;
     evento.necesidades.forEach((n) => {
       cantidad = this.getCantidadNecesidades(n);
@@ -65,7 +65,7 @@ class VerColaboracionesEvento extends React.Component {
   getFuncionVoluntario(voluntarios) {
     const userId = this.getUserId();
     for (let i = 0; i < voluntarios.length; i += 1) {
-      if (voluntarios[i].participaciones.filter(p => p.voluntario_id === userId)) {
+      if (voluntarios[i].participaciones.filter(p => p.voluntario.id === userId)) {
         return voluntarios[i];
       }
     }
@@ -76,7 +76,7 @@ class VerColaboracionesEvento extends React.Component {
     let contador = 0;
     let userId = this.getUserId();
     n.colaboraciones.forEach((c) => {
-      if (c.voluntario_id === userId) {
+      if (c.voluntario.id === userId) {
         contador += c.cantidad;
       };
     });
@@ -130,13 +130,16 @@ class VerColaboracionesEvento extends React.Component {
           <Body>
             <Title>{evento.nombre}</Title>
           </Body>
+          <Right>
           { moment(evento.fecha_hora_inicio) > moment() ?
-            <Right>
-              <Button transparent onPress={() => this.props.navigation.navigate('RegistrarColaboraciones', { evento: evento.id })}>
-                <Text>Modificar</Text>
-              </Button>
-            </Right> : undefined
+            <Button transparent onPress={() => this.props.navigation.navigate('RegistrarColaboraciones', { evento: evento.id })}>
+              <Text>Modificar</Text>
+            </Button> :
+            <Button transparent onPress={() => this.props.navigation.navigate('ComentarEvento', { evento: evento.id })}>
+              <Text>Comentar</Text>
+            </Button>
           }
+          </Right>
         </Header>
         <Content>
           <Separator bordered noTopBorder>

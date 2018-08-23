@@ -67,6 +67,26 @@ class ConsultaEvento extends React.Component {
     );
   }
 
+  getListaComentarios(evento) {
+    return evento.comentarios.map(n =>
+      <ListItem icon key={n.id}>
+        <Left>
+          <Button style={{ backgroundColor: '#ea8f3a' }}>
+            <Icon type="FontAwesome" name="comment" />
+          </Button>
+        </Left>
+        <Body>
+          <Text>
+            {n.voluntario.nombre + ' ' + n.voluntario.apellido}
+          </Text>
+          <Text numberOfLines={2} note>
+            {n.comentario}
+          </Text>
+        </Body>
+      </ListItem>
+    );
+  }
+
   render() {
     const { params } = this.props.navigation.state;
     const evento = params.evento;
@@ -154,6 +174,15 @@ class ConsultaEvento extends React.Component {
                 <Text>Voluntarios</Text>
               </Separator>
               {this.getListaVoluntarios(evento)}
+            </View>
+            ) : undefined
+          }
+          {evento.comentarios.length > 0 ? (
+            <View>
+              <Separator bordered noTopBorder>
+                <Text>Comentarios</Text>
+              </Separator>
+              {this.getListaComentarios(evento)}
             </View>
             ) : undefined
           }

@@ -1,6 +1,7 @@
 import React from 'react';
-import { Col, Row, Badge } from 'reactstrap';
+import { Col, Row } from 'reactstrap';
 import { PropTypes } from 'prop-types';
+import Multiselect from 'react-bootstrap-multiselect';
 import EventoCard from './EventoCard/EventoCard';
 
 class ConsultarEventosList extends React.Component {
@@ -17,25 +18,27 @@ class ConsultarEventosList extends React.Component {
 
   render() {
     if (this.props.eventos.length > 0) {
+      const list = [{value:'One',selected:true},{value:'Two'},{value:'Three'},{value:'Four',label:'Four Label'}];
       const eventos = this.sortEventos(this.props.eventos);
       return (
-        <Row>
-          <div className="col-md-3">
-            <Badge color="warning">Próximamente...</Badge>
-          </div>
-          <div className="col-md-9">
-            {eventos.map(evento =>       
-                <Col>
-                  <EventoCard
-                    evento={evento}
-                    key={evento.id} footer
-                    color="primary" auth={this.props.auth}
-                    link={'/actividades/consultar-evento?id=' + evento.id} 
-                  />
-                </Col>
-              )}
-            </div>
+        <div>
+          <Row>
+            <Multiselect data={list} multiple />
           </Row>
+          <br />
+          <Row>
+            {eventos.map(evento =>       
+              <Col>
+                <EventoCard
+                  evento={evento}
+                  key={evento.id} footer
+                  color="primary" auth={this.props.auth}
+                  link={'/actividades/consultar-evento?id=' + evento.id} 
+                />
+              </Col>
+            )}
+          </Row>
+        </div>
         );
     } else {
       return <p>Cargando...</p>

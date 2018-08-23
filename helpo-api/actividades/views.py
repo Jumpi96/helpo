@@ -219,7 +219,7 @@ class ConsultaEventosOrganizacionCreateReadView(ListCreateAPIView):
     def get_queryset(self):
         queryset = Evento.objects.all()
         queryset = queryset.filter(fecha_hora_inicio__gte=datetime.today())
-        queryset = queryset.order_by('-fecha_hora_inicio')
+        queryset = queryset.order_by('fecha_hora_inicio')
         return queryset
 
 class ConsultaEventosReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):

@@ -5,12 +5,14 @@ from django.views.generic import TemplateView
 from rest_framework import routers
 from actividades import urls as actividades_urls
 from users import urls as users_urls
-from rest_framework.documentation import include_docs_urls
+from rest_framework_swagger.views import get_swagger_view
+
+schema_view = get_swagger_view(title='Pastebin API')
 
 urlpatterns = [ 
     url(r'^admin/', admin.site.urls),
     url(r'auth/', include('knox.urls')),
-    url(r'^docs/', include_docs_urls(title='Helpo API'))
+    url(r'^docs/', schema_view)
 ]
 
 urlpatterns += actividades_urls.urlpatterns

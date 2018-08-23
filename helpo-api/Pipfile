@@ -36,6 +36,7 @@ opbeat = "*"
 whitenoise = "*"
 ipython = "*"
 requests = "*"
+coreapi = "*"
 
 [requires]
 python_version = "3.6"

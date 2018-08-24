@@ -4,6 +4,7 @@ import { Card, CardHeader, CardBody } from 'reactstrap';
 import {connect} from 'react-redux';
 import * as eventoActions from '../../../actions/eventoActions';
 import ConsultarEventosList from './ConsultarEventosList';
+import ConsultarEventosFilter from './ConsultarEventosFilter';
 
 class ConsultarEventosPage extends React.Component {
   constructor(props) {
@@ -14,6 +15,11 @@ class ConsultarEventosPage extends React.Component {
   getAuth() {
     return this.props.auth.isAuthenticated;
   }
+
+  updatePath(link) {
+    console.log(link);
+  }
+
   renderEventos(){
     const eventos = this.props.eventos;
     if(eventos.length === 0){
@@ -28,7 +34,9 @@ class ConsultarEventosPage extends React.Component {
     else{
       return(
         <CardBody>
-            <ConsultarEventosList eventos={eventos} auth={this.getAuth()} />
+          <ConsultarEventosFilter updatePath={this.updatePath} />
+          <br />
+          <ConsultarEventosList eventos={eventos} auth={this.getAuth()} />
         </CardBody>
       )
     }

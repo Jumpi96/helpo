@@ -38,11 +38,11 @@ class ConsultarEventosPage extends React.Component {
     const eventos = this.state.eventos;
     if(eventos.length === 0){
       return(
-        <div className="row">
-          <div className="form-group col-md-6 col-md-offset-3">
-            <label>&emsp;Todav&iacute;a no hay eventos registrados</label>
-          </div>
-        </div>
+        <CardBody>
+          <ConsultarEventosFilter updatePath={this.loadEventos} />
+          <br />
+          <label>&emsp;Todav&iacute;a no hay eventos registrados</label>
+        </CardBody>
       )
     }
     else{

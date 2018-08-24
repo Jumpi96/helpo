@@ -124,3 +124,8 @@ CORS_ORIGIN_WHITELIST = (
     '10.0.2.2:8001',
     '10.0.2.2:8081'
 )
+
+# Swagger
+SWAGGER_SETTINGS = {
+    'LOGIN_URL': '/auth/log_in/'
+}

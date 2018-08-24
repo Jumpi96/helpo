@@ -82,6 +82,7 @@ class ConsultarEventosFilter extends React.Component {
                 <label for="materiales">Materiales</label>
                 <Select
                   name="materiales"
+                  placeholder="Seleccione..."
                   options={this.state.optionsMateriales}
                   isMulti onChange={this.handleChangeMateriales}
                   value={this.state.selectedMateriales}
@@ -91,6 +92,7 @@ class ConsultarEventosFilter extends React.Component {
                 <label for="funciones">Funciones</label>
                 <Select
                   name="funciones"
+                  placeholder="Seleccione..."
                   options={this.state.optionsFunciones}
                   isMulti onChange={this.handleChangeFunciones}
                   value={this.state.selectedFunciones}

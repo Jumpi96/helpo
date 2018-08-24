@@ -1,27 +1,41 @@
 import React from 'react';  
-import { PropTypes } from 'prop-types'; 
 import { Card, CardHeader, CardBody } from 'reactstrap';
 import {connect} from 'react-redux';
-import * as eventoActions from '../../../actions/eventoActions';
+import api from '../../../api';
 import ConsultarEventosList from './ConsultarEventosList';
 import ConsultarEventosFilter from './ConsultarEventosFilter';
 
 class ConsultarEventosPage extends React.Component {
+
   constructor(props) {
     super(props);
-    this.props.loadEventosProximos();
+    this.state = {
+      eventos: [],
+    }
+    this.loadEventos = this.loadEventos.bind(this);
   }
 
   getAuth() {
     return this.props.auth.isAuthenticated;
   }
 
-  updatePath(link) {
-    console.log(link);
+  componentDidMount() {
+    this.loadEventos('');
+  }
+
+  loadEventos(ruta) {
+    api.get('/actividades/consulta_eventos/' + ruta)
+      .then((res) => {
+        this.setState({ eventos: res.data });
+      })
+      .catch((error) => {
+        if (error.response){ console.log(error.response.status) }
+        else { console.log('Error: ', error.message)}
+      })
   }
 
   renderEventos(){
-    const eventos = this.props.eventos;
+    const eventos = this.state.eventos;
     if(eventos.length === 0){
       return(
         <div className="row">
@@ -34,7 +48,7 @@ class ConsultarEventosPage extends React.Component {
     else{
       return(
         <CardBody>
-          <ConsultarEventosFilter updatePath={this.updatePath} />
+          <ConsultarEventosFilter updatePath={this.loadEventos} />
           <br />
           <ConsultarEventosList eventos={eventos} auth={this.getAuth()} />
         </CardBody>
@@ -56,23 +70,9 @@ class ConsultarEventosPage extends React.Component {
   }
 }
 
-ConsultarEventosPage.propTypes = {
-  eventos: PropTypes.array.isRequired
-};
-
 function mapStateToProps(state, ownProps) {
   return {
-    eventos: state.eventos,
     auth: state.auth, 
   }
-} 
-
-const mapDispatchToProps = dispatch => {
-    return {
-      loadEventosProximos: () => {
-        return dispatch(eventoActions.loadEventosProximos());
-      }
-    }
-  }
-
-export default connect(mapStateToProps, mapDispatchToProps)(ConsultarEventosPage);
+}
+export default connect(mapStateToProps, undefined)(ConsultarEventosPage);

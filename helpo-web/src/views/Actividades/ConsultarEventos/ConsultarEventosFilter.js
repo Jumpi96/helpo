@@ -23,8 +23,8 @@ class ConsultarEventosFilter extends React.Component {
         const optionsMateriales = this.loadOptions(res.data);
         api.get('/actividades/funciones/')
           .then((res) => {
-              const optionsFunciones = this.loadOptions(res.data);
-              this.setState({ optionsFunciones, optionsMateriales });
+            const optionsFunciones = this.loadOptions(res.data);
+            this.setState({ optionsFunciones, optionsMateriales });
           })
       })
       .catch((error) => {
@@ -54,24 +54,24 @@ class ConsultarEventosFilter extends React.Component {
   }
 
   updatePath(materiales, funciones) {
-    let path = '?';
+    let ruta = '?';
     if (materiales.length > 0) {
-      path += 'necesidades=';
+      ruta += 'necesidades=';
       materiales.forEach(function (m) {
-        path += m.value + ',';
+        ruta += m.value + ',';
       });
-      path = path[path.length-1] === ',' ? path.substring(0, path.length-1) : path;
-      path += '&';
+      ruta = ruta[ruta.length-1] === ',' ? ruta.substring(0, ruta.length-1) : ruta;
+      ruta += '&';
     }
     if (funciones.length > 0) {
-      path += 'funciones=';
+      ruta += 'funciones=';
       funciones.forEach(function (m) {
-        path += m.value + ',';
+        ruta += m.value + ',';
       });
-      path = path.substring(0, path.length-1) + '&';
+      ruta = ruta.substring(0, ruta.length-1) + '&';
     }
-    path = path[path.length-1] === '&' ? path.substring(0, path.length-1) : path;
-    this.props.updatePath(path);
+    ruta = ruta[ruta.length-1] === '&' ? ruta.substring(0, ruta.length-1) : ruta;
+    this.props.updatePath(ruta);
   }
 
   render() {

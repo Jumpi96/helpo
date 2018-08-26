@@ -251,6 +251,9 @@ class ModificarPerfilVoluntario extends Component {
       console.log("DATA")
       console.log(submitData)
       if (this.validateData(submitData)) {
+        console.log("HOLA")
+        console.log(this.props.data.usuario.email)
+        console.log(this.props.data.usuario.id)
         api.put(`/perfiles/perfil_voluntario/${this.props.data.usuario.id}/`, submitData)
         .then(res => {
           if (res.status === 200) {
@@ -277,7 +280,7 @@ class ModificarPerfilVoluntario extends Component {
         return (
           <ModalGenerico
             body='Se guardaron los cambios exitosamente'
-            onCancel={() => {this.setState({ showModal: false })}}
+            onCancel={this.props.switchToConsultar}
           />)  
       }
       else {

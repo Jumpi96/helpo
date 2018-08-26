@@ -55,13 +55,11 @@ class ConsultarEventos extends Component {
           <Body>
             <Title>Consultar eventos</Title>
           </Body>
-          {!params || (params && !params.organizacion) ?
-            <Right>
-              <Button transparent onPress={() => this.props.navigation.navigate("FiltroEventos")}>
-                <Icon type="FontAwesome" name="filter" />
-              </Button>
-            </Right> : undefined
-          }
+          <Right>
+            <Button transparent onPress={() => this.props.navigation.navigate("FiltroEventos")}>
+              <Icon type="FontAwesome" name="filter" />
+            </Button>
+          </Right>
         </Header>
         <Content padder>
           {eventos && eventos.map(evento =>

@@ -251,6 +251,12 @@ class ConsultaEventosOrganizacionCreateReadView(ListCreateAPIView):
                 for e in eventos_rubro:
                     if e.id not in eventos:
                         eventos.append(e.id)
+        organizacion = params.get('organizacion', None)
+        if organizacion is not None:
+            for e in eventos:
+                evento = Evento.objects.filter(id=e)
+                if evento.organizacion_id != organizacion:
+                    eventos.remove(e)
         return eventos
 
 class ConsultaEventosReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):

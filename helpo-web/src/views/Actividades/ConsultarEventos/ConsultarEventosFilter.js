@@ -10,11 +10,14 @@ class ConsultarEventosFilter extends React.Component {
     this.state = {
       selectedFunciones: [],
       selectedMateriales: [],
+      selectedRubros: [],
       optionsFunciones: [],
       optionsMateriales: [],
+      optionsRubros: [],
     };
     this.handleChangeFunciones = this.handleChangeFunciones.bind(this);
     this.handleChangeMateriales = this.handleChangeMateriales.bind(this);
+    this.handleChangeRubros = this.handleChangeRubros.bind(this);
   }
 
   componentDidMount() {
@@ -24,7 +27,11 @@ class ConsultarEventosFilter extends React.Component {
         api.get('/actividades/funciones/')
           .then((res) => {
             const optionsFunciones = this.loadOptions(res.data);
-            this.setState({ optionsFunciones, optionsMateriales });
+            api.get('/actividades/rubros_evento/')
+              .then((res) => {
+                const optionsRubros = this.loadOptions(res.data);
+                this.setState({ optionsFunciones, optionsMateriales, optionsRubros });
+              })
           })
       })
       .catch((error) => {
@@ -44,16 +51,25 @@ class ConsultarEventosFilter extends React.Component {
   handleChangeFunciones(selectedFunciones) {
     this.setState({ selectedFunciones });
     const { selectedMateriales } = this.state;
-    this.updatePath(selectedMateriales, selectedFunciones);
+    const { selectedRubros } = this.state;
+    this.updatePath(selectedMateriales, selectedFunciones, selectedRubros);
   }
 
   handleChangeMateriales(selectedMateriales) {
     this.setState({ selectedMateriales });
     const { selectedFunciones } = this.state;
-    this.updatePath(selectedMateriales, selectedFunciones);
+    const { selectedRubros } = this.state;
+    this.updatePath(selectedMateriales, selectedFunciones, selectedRubros);
   }
 
-  updatePath(materiales, funciones) {
+  handleChangeRubros(selectedRubros) {
+    this.setState({ selectedRubros });
+    const { selectedFunciones } = this.state;
+    const { selectedMateriales } = this.state;
+    this.updatePath(selectedMateriales, selectedFunciones, selectedRubros);
+  }
+
+  updatePath(materiales, funciones, rubros) {
     let ruta = '?';
     if (materiales.length > 0) {
       ruta += 'necesidades=';
@@ -67,6 +83,13 @@ class ConsultarEventosFilter extends React.Component {
       ruta += 'funciones=';
       funciones.forEach(function (m) {
         ruta += m.value + ',';
+      });
+      ruta = ruta.substring(0, ruta.length-1) + '&';
+    }
+    if (rubros.length > 0) {
+      ruta += 'rubros=';
+      rubros.forEach(function (f) {
+        ruta += f.value + ',';
       });
       ruta = ruta.substring(0, ruta.length-1) + '&';
     }
@@ -97,6 +120,16 @@ class ConsultarEventosFilter extends React.Component {
                   isMulti onChange={this.handleChangeFunciones}
                   value={this.state.selectedFunciones}
                 />
+            </Col>
+            <Col md="3">
+              <label for="rubros">Rubros</label>
+              <Select
+                name="rubros"
+                placeholder="Seleccione..."
+                options={this.state.optionsRubros}
+                isMulti onChange={this.handleChangeRubros}
+                value={this.state.selectedRubros}
+              />
             </Col>
         </Row>
     </div>

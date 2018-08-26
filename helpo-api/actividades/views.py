@@ -241,8 +241,16 @@ class ConsultaEventosOrganizacionCreateReadView(ListCreateAPIView):
             for f in funciones:
                 voluntarios = Voluntario.objects.filter(funcion__id=f)
                 for v in voluntarios:
-                    if v.evento_id not in enventos:
+                    if v.evento_id not in eventos:
                         eventos.append(v.evento_id)
+        rubros = params.get('rubros', None)
+        if rubros is not None:
+            rubros = rubros.split(',')
+            for r in rubros:
+                eventos_rubro = Evento.objects.filter(rubro__id=r)
+                for e in eventos_rubro:
+                    if e.id not in eventos:
+                        eventos.append(e.id)
         return eventos
 
 class ConsultaEventosReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):

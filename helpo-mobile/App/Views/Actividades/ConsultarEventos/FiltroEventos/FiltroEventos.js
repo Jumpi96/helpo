@@ -25,11 +25,14 @@ class FiltroEventos extends React.Component {
     this.state = {
       selectedFunciones: [],
       selectedMateriales: [],
+      selectedRubros: [],
       optionsFunciones: [],
       optionsMateriales: [],
+      optionsRubros: [],
     };
     this.handleChangeFuncion = this.handleChangeFuncion.bind(this);
     this.handleChangeMaterial = this.handleChangeMaterial.bind(this);
+    this.handleChangeRubro = this.handleChangeRubro.bind(this);
   }
 
   getLink() {
@@ -37,8 +40,10 @@ class FiltroEventos extends React.Component {
     const {
       selectedFunciones,
       selectedMateriales,
+      selectedRubros,
       optionsFunciones,
-      optionsMateriales
+      optionsMateriales,
+      optionsRubros
     } = this.state;
     if (selectedMateriales.filter(n => n !== false).length > 0) {
       ruta += 'necesidades=';
@@ -60,6 +65,16 @@ class FiltroEventos extends React.Component {
       ruta = ruta[ruta.length-1] === ',' ? ruta.substring(0, ruta.length-1) : ruta;
       ruta += '&';
     }
+    if (selectedRubros.filter(n => n !== false).length > 0) {
+      ruta += 'rubros=';
+      for (let i=0; i < optionsRubros.length; i++) {
+        if (selectedRubros[i]) {
+          ruta += optionsRubros[i].id + ',';
+        }
+      }
+      ruta = ruta[ruta.length-1] === ',' ? ruta.substring(0, ruta.length-1) : ruta;
+      ruta += '&';
+    }
     ruta = ruta[ruta.length-1] === '&' ? ruta.substring(0, ruta.length-1) : ruta;
     return ruta;
   }
@@ -72,17 +87,24 @@ class FiltroEventos extends React.Component {
     api.get('/actividades/categorias_recurso/')
       .then((res) => {
         const optionsMateriales = res.data;
-        const selectedMateriales = this.initialArray(optionsMateriales)
+        const selectedMateriales = this.initialArray(optionsMateriales);
         api.get('/actividades/funciones/')
           .then((res) => {
             const optionsFunciones = res.data;
-            const selectedFunciones = this.initialArray(optionsFunciones)
-            this.setState({ 
-              optionsFunciones, 
-              optionsMateriales,
-              selectedFunciones,
-              selectedMateriales
-            });
+            const selectedFunciones = this.initialArray(optionsFunciones);
+            api.get('/actividades/rubros_evento/')
+              .then((res) => {
+                const optionsRubros = res.data;
+                const selectedRubros = this.initialArray(optionsRubros);
+                this.setState({ 
+                  optionsFunciones, 
+                  optionsMateriales,
+                  optionsRubros,
+                  selectedFunciones,
+                  selectedMateriales,
+                  selectedRubros
+                });
+              })
           })
       })
       .catch((error) => {
@@ -101,6 +123,12 @@ class FiltroEventos extends React.Component {
     const { selectedMateriales } = this.state;
     selectedMateriales[i] = !selectedMateriales[i];
     this.setState({ selectedMateriales });
+  }
+
+  handleChangeRubro(i) {
+    const { selectedRubros } = this.state;
+    selectedRubros[i] = !selectedRubros[i];
+    this.setState({ selectedRubros });
   }
 
   getListaMateriales() {
@@ -149,6 +177,29 @@ class FiltroEventos extends React.Component {
     );
   }
 
+  getListaRubros() {
+    let listaRubros = [];
+    for (let i=0; i < this.state.optionsRubros.length; i++) {
+      listaRubros.push(
+        <ListItem>
+          <CheckBox 
+            onPress={() => this.handleChangeRubro(i)}
+            checked={this.state.selectedRubros[i]}
+            color="red"
+          />
+          <Body>
+            <Text>{this.state.optionsRubros[i].nombre}</Text>
+          </Body>
+        </ListItem>
+      );
+    }
+    return (
+      <View>
+        {listaRubros}
+      </View>
+    );
+  }
+
   render() {
     return (
       <Container style={styles.container}>
@@ -178,6 +229,10 @@ class FiltroEventos extends React.Component {
             <Text>Funciones</Text>
           </Separator>
           {this.getListaFunciones()}
+          <Separator bordered noTopBorder>
+            <Text>Rubros</Text>
+          </Separator>
+          {this.getListaRubros()}
         </Content>
       </Container>
     );

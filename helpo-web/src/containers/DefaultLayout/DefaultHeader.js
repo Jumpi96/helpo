@@ -12,6 +12,7 @@ import { getImagen } from '../../utils/Imagen';
 
 const propTypes = {
   children: PropTypes.node,
+  nombre: PropTypes.string.nombre,
 };
 
 const defaultProps = {};
@@ -43,8 +44,8 @@ class DefaultHeader extends Component {
             <NavLink href="#"><i className="icon-bell"></i><Badge pill color="danger" hidden>0</Badge></NavLink>
           </NavItem>
           <AppHeaderDropdown direction="down">
-            <DropdownToggle nav>
-              <img src={getImagen(this.props.auth.user.avatar)} className="img-avatar" alt="admin@bootstrapmaster.com" /> {/*ACA DEBERIA IR LA FOTO DE PERFIL DEL USUARIO*/}
+            <DropdownToggle nav title="Julieta">
+            {this.props.auth.user.nombre} <img src={getImagen(this.props.auth.user.avatar)} className="img-avatar" alt="admin@bootstrapmaster.com" /> {/*ACA DEBERIA IR LA FOTO DE PERFIL DEL USUARIO*/}
             </DropdownToggle>
             <DropdownMenu right style={{ right: 'auto' }}>
               <DropdownItem header tag="div" className="text-center"><strong>Perfil</strong></DropdownItem>

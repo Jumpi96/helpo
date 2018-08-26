@@ -66,6 +66,13 @@ class RubroOrganizacionReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     serializer_class = RubroOrganizacionSerializer
     lookup_field = 'id'
 
+class OrgProfileCreateReadView(ListCreateAPIView):
+    """
+    API endpoint para crear o ver todos los perfiles de organización
+    """
+    queryset = OrganizacionProfile.objects.all()
+    serializer_class = OrganizacionProfileSerializer
+
 class OrgProfileReadUpdateDeleteView(RetrieveUpdateAPIView):
     """
     API endpoint para leer, actualizar o eliminar un perfil de organizacion

@@ -25,8 +25,10 @@ class FiltroEventos extends React.Component {
     this.state = {
       selectedFunciones: [],
       selectedMateriales: [],
+      selectedRubros: [],
       optionsFunciones: [],
       optionsMateriales: [],
+      optionsRubros: [],
     };
     this.handleChangeFuncion = this.handleChangeFuncion.bind(this);
     this.handleChangeMaterial = this.handleChangeMaterial.bind(this);

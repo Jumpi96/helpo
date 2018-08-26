@@ -1,6 +1,5 @@
 import React from 'react';
 import { Col, Row, Badge } from 'reactstrap';
-import { PropTypes } from 'prop-types';
 import OrganizacionCard from './OrganizacionCard';
 
 class OrganizacionesList extends React.Component {
@@ -51,10 +50,6 @@ class OrganizacionesList extends React.Component {
 
   } 
 
-};
-
-OrganizacionesList.propTypes = {  
-  organizaciones: PropTypes.array.isRequired
 };
 
 export default OrganizacionesList;  

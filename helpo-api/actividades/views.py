@@ -219,11 +219,20 @@ class ConsultaEventosOrganizacionCreateReadView(ListCreateAPIView):
     def get_queryset(self):
         queryset = Evento.objects.all()
         queryset = queryset.filter(fecha_hora_inicio__gte=datetime.today())
-        if len(self.request.query_params) > 0:
+        if self.tiene_filtros(self.request.query_params):
             lista_eventos = self.get_eventos(self.request.query_params)    
             queryset = queryset.filter(id__in=lista_eventos)
+        if 'organizacion' in self.request.query_params:
+            queryset = queryset.filter(organizacion_id=self.request.query_params.get('organizacion'))    
         queryset = queryset.order_by('fecha_hora_inicio')
         return queryset
+
+    def tiene_filtros(self, params):
+        filtros = ['necesidades', 'funciones', 'rubros']
+        for f in filtros:
+            if f in params:
+                return True
+        return False
     
     def get_eventos(self, params):
         eventos = []
@@ -251,12 +260,6 @@ class ConsultaEventosOrganizacionCreateReadView(ListCreateAPIView):
                 for e in eventos_rubro:
                     if e.id not in eventos:
                         eventos.append(e.id)
-        organizacion = params.get('organizacion', None)
-        if organizacion is not None:
-            for e in eventos:
-                evento = Evento.objects.filter(id=e)
-                if evento.organizacion_id != organizacion:
-                    eventos.remove(e)
         return eventos
 
 class ConsultaEventosReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):

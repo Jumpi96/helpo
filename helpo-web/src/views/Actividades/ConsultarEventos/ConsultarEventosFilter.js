@@ -71,6 +71,9 @@ class ConsultarEventosFilter extends React.Component {
 
   updatePath(materiales, funciones, rubros) {
     let ruta = '?';
+    if (this.props.organizacion) {
+      ruta += 'organizacion=' + this.props.organizacion + '&';
+    }
     if (materiales.length > 0) {
       ruta += 'necesidades=';
       materiales.forEach(function (m) {
@@ -137,4 +140,4 @@ class ConsultarEventosFilter extends React.Component {
   }  
 };
 
-export default ConsultarEventosFilter;  
+export default ConsultarEventosFilter;

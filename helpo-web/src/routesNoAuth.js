@@ -16,6 +16,10 @@ const ConsultarEventosView = Loadable({
   loader: () => import('./views/Actividades/ConsultarEventos/ConsultarEventosView'),
   loading: Loading,
 }) 
+const OrganizacionesPage = Loadable({
+  loader: () => import('./views/Organizaciones/OrganizacionesPage.js'),
+  loading: Loading,
+})
 
 const Dashboard = Loadable({
   loader: () => import('./views/Home/HomeNoAuth'),
@@ -31,6 +35,7 @@ const routes = [
   { path: '/noAuth/actividades/consultar-evento/', name: 'Consultar evento', component: ConsultarEventosView },
 
 
+  { path: '/noAuth/organizaciones', name: 'Organizaciones', component: OrganizacionesPage },
 ];
 
 export default routes;

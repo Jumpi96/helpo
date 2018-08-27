@@ -32,16 +32,28 @@ DerivedData
 project.xcworkspace
 
 # Android/IJ
+build/
 .idea
 .gradle
 local.properties
+*.iml
 
 # node.js
 node_modules/
 npm-debug.log
+yarn-error.log 
 
 # BUCK
 buck-out/
 \.buckd/
 android/app/libs
 android/keystores/debug.keystore
+
+*/fastlane/report.xml
+*/fastlane/Preview.html
+*/fastlane/screenshots
+# Bundle artifact
+*.jsbundle
+# Misc
+#
+.env

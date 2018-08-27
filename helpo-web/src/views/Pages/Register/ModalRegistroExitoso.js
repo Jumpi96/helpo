@@ -1,26 +1,34 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import PropTypes from 'prop-types'
 
-class ModalRegistroExitoso extends Component {
-
-  render() {
-    // const nombre = this.props.nombre ? this.props.nombre : undefined;
-    return (
-      <div className="animated fadeIn">
-        <Modal isOpen={this.props.open}
-          className='modal'>
-          <ModalHeader>Eliminar contacto</ModalHeader>
-          <ModalBody>
-            <strong>Se ha registrado exitosamente en Helpo!</strong>
-            \nEsperamos ansiosos, que pueda empezara disfrutar de la plataforma.
-          </ModalBody>
-          <ModalFooter>
-            <Button color="danger" onClick={() => this.props.history.push('noAuth/dashboard')}>Aceptar</Button>
-          </ModalFooter>
-        </Modal>
-      </div>
-    );
-  }
+const proptypes = {
+  title: PropTypes.string,
+  body: PropTypes.string.isRequired,
+  onSuccess: PropTypes.func,
+  onCancel: PropTypes.func.isRequired,
 }
 
+function ModalRegistroExitoso(props) {
+  let success;
+  if (props.onSuccess) {
+    success = <Button color="primary" onClick={props.onSuccess}>Continuar}</Button>
+  }
+  return (
+    
+      
+        <Modal isOpen={true}>
+          <ModalHeader>{props.title}</ModalHeader>
+          <ModalBody>
+            {props.body}
+          </ModalBody>
+          <ModalFooter>
+            {success}{' '}
+            <Button color="secondary" onClick={props.onCancel}>Volver</Button>
+          </ModalFooter>
+        </Modal>
+      
+  )
+}
+ModalRegistroExitoso.PropTypes = proptypes;
 export default ModalRegistroExitoso;

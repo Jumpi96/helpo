@@ -1843,7 +1843,7 @@ fieldset:disabled a.btn {
   box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.5); }
 
 .btn-warning.disabled, .btn-warning:disabled {
-  color: #23282c;
+  color: white;
   background-color: #ffc107;
   border-color: #ffc107; }
 
@@ -10641,6 +10641,12 @@ body {
 
 html body .app.flex-row.align-items-center {
   height: 100vh; }
+
+.icon-helpo {
+  background-image: url("./icons/helpo.png");
+  background-repeat: no-repeat;
+  width: 20px;
+  height: 14px; }
 
 .app-header .navbar-nav .dropdown-menu-right {
   right: auto; }

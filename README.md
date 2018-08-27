@@ -21,6 +21,9 @@ Created with [Django React Boilerplate](https://github.com/vintasoftware/django-
 - UML Modelling: [Enterprise Architect](http://www.sparxsystems.com/products/ea/) 
   - It's recommended to follow this [instructions](https://docs.google.com/document/d/1aiTtPPE9bWLdNnu2MVhimmbW6wWmoZtIJilpCCdZZQQ/edit?usp=sharing)
 - Redux dev tools: [ReduxDevTools](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd)
+- Reactotron (mejor debug para mobile): [Reactotron](https://github.com/infinitered/reactotron)
+  - No config needed for mobile, just install the app
+  - If using android emulator and it doesnt connect, try `adb reverse tcp:9090 tcp:9090`
 ### Git
 To know how to:
 - Start coding

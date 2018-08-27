@@ -104,7 +104,7 @@ class ConsultarPerfilOrganizacion extends Component {
   }  
   
   getLinkVerEventos() {
-    return '/actividades/consultar-eventos' + '?organizacion=' + this.props.id;
+    return '/actividades/consultar-eventos?organizacion=' + this.props.id;
   }
 
   render() {

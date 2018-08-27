@@ -15,9 +15,9 @@ import {
   Icon,
   Text,
   Label,
-  View,
 } from 'native-base';
 import styles from './styles';
+import { Linking, Image, TouchableHighlight, View } from 'react-native'
 
 class ConsultaEvento extends React.Component {
 
@@ -89,10 +89,10 @@ class ConsultaEvento extends React.Component {
           <Body>
             <Title>{evento.nombre}</Title>
           </Body>
-          { this.props.auth.user.user_type === 2 ?
+          {this.props.auth.user.user_type === 2 ?
             <Right>
-              <Button 
-                transparent 
+              <Button
+                transparent
                 onPress={() => this.props.navigation.navigate('RegistrarColaboraciones', { evento: evento.id })}>
                 <Text>Colaborar</Text>
               </Button>
@@ -137,7 +137,7 @@ class ConsultaEvento extends React.Component {
               </Separator>
               {listaContactos}
             </View>
-            ) : undefined
+          ) : undefined
           }
           {evento.necesidades.length > 0 ? (
             <View>
@@ -146,7 +146,7 @@ class ConsultaEvento extends React.Component {
               </Separator>
               {this.getListaNecesidades(evento)}
             </View>
-            ) : undefined
+          ) : undefined
           }
           {evento.voluntarios.length > 0 ? (
             <View>
@@ -155,8 +155,67 @@ class ConsultaEvento extends React.Component {
               </Separator>
               {this.getListaVoluntarios(evento)}
             </View>
-            ) : undefined
+          ) : undefined
           }
+          {
+            // Hacia abajo, copiado y pegado de 'VerEvento.js' para compartir en Redes Sociales
+          }
+          <View>
+            <Separator bordered noTopBorder>
+              <Text>Compartir</Text>
+            </Separator>
+            <View style={{
+              flex: 1,
+              flexDirection: "row",
+              justifyContent: 'space-evenly',
+              alignItems: 'center',
+            }}>
+              <TouchableHighlight onPress={() => {
+                // Facebook - Cambiar
+                var url = "https://www.facebook.com/sharer/sharer.php?u=" +
+                  "https%3A%2F%2Fwww.helpo.com.ar%2F%23%2Factividades%2Fevento%2F" + evento.id;
+                Linking.openURL(url);
+              }}>
+                <Image
+                  style={{ width: 50, height: 50 }}
+                  source={require('../../../Images/facebook.png')}
+                />
+              </TouchableHighlight>
+              <TouchableHighlight onPress={() => {
+                // Twitter - Cambiar
+                var url = "http://twitter.com/share?text=Sumate%20a%20mi%20evento%20en%20Helpo%3A%20" +
+                  evento.nombre + "&url=https%3A%2F%2Fwww.helpo.com.ar%2F%23%2Factividades%2Fevento%2F" +
+                  evento.id + "&hashtags=Helpo";
+                Linking.openURL(url);
+              }}>
+                <Image
+                  style={{ width: 50, height: 50 }}
+                  source={require('../../../Images/twitter.png')}
+                />
+              </TouchableHighlight>
+              <TouchableHighlight onPress={() => {
+                // Google+ - Cambiar
+                var url = "https://plus.google.com/share?url=https%3A%2F%2Fwww.helpo.com.ar%2F%23%2Factividades%2Fevento%2F" + evento.id;
+                Linking.openURL(url);
+              }}>
+                <Image
+                  style={{ width: 50, height: 50 }}
+                  source={require('../../../Images/google.jpg')}
+                />
+              </TouchableHighlight>
+              <TouchableHighlight onPress={() => {
+                // LinkedIn - Cambiar
+                var url = "https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fwww.helpo.com.ar%2F%23%2Factividades%2Fevento%2F" +
+                  evento.id + "&summary=Sumate%20a%20mi%20evento%20en%20Helpo%3A%20" + evento.nombre + "&source=Helpo";
+                Linking.openURL(url);
+              }}>
+                <Image
+                  style={{ width: 50, height: 50 }}
+                  source={require('../../../Images/linkedin.png')}
+                />
+              </TouchableHighlight>
+            </View>
+          </View>
         </Content>
       </Container>
     );

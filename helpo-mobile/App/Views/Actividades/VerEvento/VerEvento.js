@@ -13,7 +13,6 @@ import {
   Icon,
   Text,
   Label,
-  View,
   Fab,
   IconNB,
   ActionSheet,
@@ -21,6 +20,7 @@ import {
 } from 'native-base';
 import api from '../../../api';
 import styles from './styles';
+import { Linking, Image, TouchableHighlight, View } from 'react-native'
 
 class VerEvento extends React.Component {
 
@@ -32,7 +32,7 @@ class VerEvento extends React.Component {
   }
 
   handleConfirmDelete(evento, b) {
-    if (b.text === 'Eliminar') { 
+    if (b.text === 'Eliminar') {
       if (moment(evento.fecha_hora_inicio) > moment()) {
         api.delete("/actividades/eventos/" + evento.id + "/")
           .then((res) => {
@@ -40,7 +40,7 @@ class VerEvento extends React.Component {
             console.log(res.data);
             this.props.navigation.navigate('MisEventos');
           }).catch(function (error) {
-            if (error.response){ console.log(error.response.status); }
+            if (error.response) { console.log(error.response.status); }
             else { console.log('Error: ', error.message); }
             this.setState({ error: 'Hubo un problema al cargar su información.' });
           });
@@ -54,7 +54,7 @@ class VerEvento extends React.Component {
     }
   }
 
-  handleEdit(evento) { 
+  handleEdit(evento) {
     if (moment(evento.fecha_hora_inicio) > moment()) {
       const { params } = this.props.navigation.state;
       const rubros = params.rubros;
@@ -129,8 +129,64 @@ class VerEvento extends React.Component {
               </Separator>
               {listaContactos}
             </View>
-            ) : undefined
+          ) : undefined
           }
+          <View>
+            <Separator bordered noTopBorder>
+              <Text>Compartir</Text>
+            </Separator>
+            <View style={{
+              flex: 1,
+              flexDirection: "row",
+              justifyContent: 'space-evenly',
+              alignItems: 'center',
+            }}>
+              <TouchableHighlight onPress={() => {
+                // Facebook - Cambiar
+                var url = "https://www.facebook.com/sharer/sharer.php?u=" +
+                  "https%3A%2F%2Fwww.helpo.com.ar%2F%23%2Factividades%2Fevento%2F" + evento.id;
+                Linking.openURL(url);
+              }}>
+                <Image
+                  style={{ width: 50, height: 50 }}
+                  source={require('../../../Images/facebook.png')}
+                />
+              </TouchableHighlight>
+              <TouchableHighlight onPress={() => {
+                // Twitter - Cambiar
+                var url = "http://twitter.com/share?text=Sumate%20a%20mi%20evento%20en%20Helpo%3A%20" + 
+                evento.nombre + "&url=https%3A%2F%2Fwww.helpo.com.ar%2F%23%2Factividades%2Fevento%2F" + 
+                evento.id + "&hashtags=Helpo";
+                Linking.openURL(url);
+              }}>
+                <Image
+                  style={{ width: 50, height: 50 }}
+                  source={require('../../../Images/twitter.png')}
+                />
+              </TouchableHighlight>
+              <TouchableHighlight onPress={() => {
+                // Google+ - Cambiar
+                var url = "https://plus.google.com/share?url=https%3A%2F%2Fwww.helpo.com.ar%2F%23%2Factividades%2Fevento%2F" + evento.id;
+                Linking.openURL(url);
+              }}>
+                <Image
+                  style={{ width: 50, height: 50 }}
+                  source={require('../../../Images/google.jpg')}
+                />
+              </TouchableHighlight>
+              <TouchableHighlight onPress={() => {
+                // LinkedIn - Cambiar
+                var url = "https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fwww.helpo.com.ar%2F%23%2Factividades%2Fevento%2F" + 
+                evento.id + "&summary=Sumate%20a%20mi%20evento%20en%20Helpo%3A%20"+ evento.nombre + "&source=Helpo";
+                Linking.openURL(url);
+              }}>
+                <Image
+                  style={{ width: 50, height: 50 }}
+                  source={require('../../../Images/linkedin.png')}
+                />
+              </TouchableHighlight>
+            </View>
+          </View>
         </Content>
         <View style={{ flex: 0.1 }}>
           <Fab
@@ -143,7 +199,7 @@ class VerEvento extends React.Component {
           >
             <IconNB name="md-add" />
             <Button style={{ backgroundColor: '#34A34F' }}
-              onPress={() => {this.handleEdit(evento)}}
+              onPress={() => { this.handleEdit(evento) }}
             >
               <Icon name="color-filter" />
             </Button>

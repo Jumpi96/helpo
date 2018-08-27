@@ -96,6 +96,7 @@ class EventoView extends React.Component {
           <MetaTags>
             {
               // Cambiar
+              // La misma URL que se comparta debe tener los siguientes meta tags
             }
             <meta property="og:url" content={"https://www.helpo.com.ar/#/actividades/evento/" + evento.id }/>
             <meta property="og:type" content="article" />
@@ -163,7 +164,7 @@ class EventoView extends React.Component {
               Editar necesidades
             </button>
             {
-              // Cambiar
+              // Facebook - Cambiar
             }
             <a target="_blank" rel="noopener noreferrer" 
             href={"https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.helpo.com.ar%2F%23%2F" +
@@ -172,7 +173,7 @@ class EventoView extends React.Component {
               alt="Compartir en Facebook" width="40" height="40" facebook-share-dialog="true"/>
             </a>
             {
-              // Cambiar
+              // Twitter - Cambiar
             }
             <a target="_blank" rel="noopener noreferrer" 
             href={"http://twitter.com/share?text=Sumate%20a%20mi%20evento%20en%20Helpo%3A%20" + evento.nombre + 
@@ -181,7 +182,7 @@ class EventoView extends React.Component {
               alt="Compartir en Twitter" width="40" height="40"/>
             </a>
             {
-              // Cambiar
+              // Google+ - Cambiar
             }
             <a target="_blank" rel="noopener noreferrer" 
             href={"https://plus.google.com/share?url=https%3A%2F%2Fwww.helpo.com.ar%2F%23%2Factividades%2Fevento%2F" + evento.id}>
@@ -189,7 +190,7 @@ class EventoView extends React.Component {
               alt="Compartir en Google+" width="40" height="40"/>
             </a>
             {
-              // Cambiar
+              // LinkedIn - Cambiar
             }
             <a target="_blank" rel="noopener noreferrer" 
             href={"https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fwww.helpo.com.ar%2F%23%2Factividades%2Fevento%2F" + 

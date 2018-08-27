@@ -5,6 +5,9 @@ from django.views.generic import TemplateView
 from rest_framework import routers
 from actividades import urls as actividades_urls
 from users import urls as users_urls
+from rest_framework_swagger.views import get_swagger_view
+
+schema_view = get_swagger_view(title='Helpo API')
 
 urlpatterns = [ 
     url(r'^admin/', admin.site.urls),
@@ -19,3 +22,5 @@ if settings.DEBUG:
     urlpatterns = [
         url(r'^__debug__/', include(debug_toolbar.urls)),
     ] + urlpatterns
+
+urlpatterns += [ url(r'^docs/', schema_view) ]

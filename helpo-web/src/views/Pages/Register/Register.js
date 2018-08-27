@@ -40,19 +40,15 @@ class Register extends Component {
         user_type: this.state.user_type,
         apellido: this.state.apellido,
       }
-      console.log("------------")
-      console.log(usuario)
-      console.log("------------")
-      /*this.props.register(this.state.nombre, this.state.email,
-                        this.state.user_type, this.state.password,
-                        this.state.apellido);*/
+
       api.post('/auth/sign_up/', usuario)
-      .then((res) => {console.log(res)})
+        .then(function (response) {
+          alert("¡Se ha registrado exitosamente en Helpo!")
+        })
+        .catch(function (error) {
+          alert("Error: ya existe un usuario con ese mail")
+        })
       this.props.history.push('dashboard')
-      alert("Se ha registrado exitosamente en Helpo! \nEsperamos ansiosos, que pueda empezar a disfrutar de la plataforma.");
-      //this.setState({
-        //showModalRegistro:true,
-      //});
     } else {
       // TODO
     }
@@ -219,100 +215,99 @@ class Register extends Component {
     const user_type = this.state.user_type;
     return (
       <body>
-		<div class="container">
-				<div class="panel-heading">
-	        <div class="panel-title text-center">
-	          <h1 class="title">Helpo</h1>
-	          <hr />
+		    <div className="container">
+				  <div className="panel-heading">
+	          <div className="panel-title text-center">
+	            <h1 className="title">Helpo</h1>
+	          </div>
 	        </div>
 	      </div> 
-      <div className="app flex-row align-items-center">
-        <Container>
-          <Row className="justify-content-center">
-            <Col md="6">
-              <Card className="mx-4">
-                <CardHeader>
-                  <Row>
-                    <Col xs="12" sm="4">
-                      <Button className={user_type === "2" ? "btn-warning" : "btn-primary"} 
-                              block
-                              onClick={() => this.handleUserTypeSelect("voluntario")}
-                              >
-                              <span>Voluntario</span>
-                      </Button>
-                    </Col>
-                    <Col xs="12" sm="4">
-                      <Button className={user_type === "1" ? "btn-warning" : "btn-primary"}  
-                              block
-                              onClick={() => this.handleUserTypeSelect("ong")}
-                              >
-                              <span>ONG</span>
-                      </Button>
-                    </Col>
-                    <Col xs="12" sm="4">
-                      <Button className={user_type === "3" ? "btn-warning" : "btn-primary"}  
-                              block
-                              onClick={() => this.handleUserTypeSelect("empresa")}
-                              >
-                              <span>Empresa</span>
-                      </Button>
-                    </Col>
-                  </Row>
-                </CardHeader>
-                <CardBody className="p-4">
-                  <h1>Registrar Usuario</h1>
-                  <p className="text-muted">Cree su cuenta</p>
-                  {this.renderNameField()}
-                  <InputGroup className="mb-3">
-                    <InputGroupAddon addonType="prepend">
-                      <InputGroupText>@</InputGroupText>
-                    </InputGroupAddon>
-                    <Input type="text" 
-                           placeholder="Email" 
-                           onChange={(e) => this.handleValueChange(e, "email")}/>                    
-                  </InputGroup>
-                  <InputGroup className="mb-3">
-                    <InputGroupAddon addonType="prepend">
-                      <InputGroupText>
-                        <i className="icon-lock"></i>
-                      </InputGroupText>
-                    </InputGroupAddon>
-                    <Input type="password" 
-                           placeholder="Password" 
-                           onChange={(e) => this.handleValueChange(e, "password")}/>
-                  </InputGroup>
-                  <InputGroup className="mb-4">
-                    <InputGroupAddon addonType="prepend">
-                      <InputGroupText>
-                        <i className="icon-lock"></i>
-                      </InputGroupText>
-                    </InputGroupAddon>
-                    <Input type="password" 
-                           placeholder="Repeat password" 
-                           onChange={(e) => this.handleValueChange(e, "repeat")}/>                    
-                  </InputGroup>
-                  <Button color="primary" onClick={() => this.onSubmitData()} block>Crear Cuenta</Button>                  
-                  <ul>{this.renderErrorList()}</ul>
-                </CardBody>
-                <CardFooter className="p-4">
-                  <Row>
-                    <Col xs="12" sm="6">
-                      <Button className="btn-facebook" block><span>Facebook</span></Button>
-                    </Col>
-                    <Col xs="12" sm="6">
-                      <Button className="btn-twitter" block><span>Twitter</span></Button>
-                    </Col>
-                  </Row>
-                </CardFooter>
-              </Card>
-            </Col>
-          </Row>
-        </Container>
-        <ModalRegistroExitoso open={this.state.showModalRegistro}/>
-      </div>
-      </div>
+        <div className="app flex-row align-items-center">
+          <Container>
+            <Row className="justify-content-center">
+              <Col md="6">
+                <Card className="mx-4">
+                  <CardHeader>
+                   <Row>
+                      <Col xs="12" sm="4">
+                        <Button className={user_type === "2" ? "btn-warning" : "btn-primary"} 
+                                block
+                                onClick={() => this.handleUserTypeSelect("voluntario")}
+                                >
+                                <span>Voluntario</span>
+                        </Button>
+                      </Col>
+                      <Col xs="12" sm="4">
+                        <Button className={user_type === "1" ? "btn-warning" : "btn-primary"}  
+                                block
+                                onClick={() => this.handleUserTypeSelect("ong")}
+                                >
+                                <span>ONG</span>
+                        </Button>
+                      </Col>
+                      <Col xs="12" sm="4">
+                        <Button className={user_type === "3" ? "btn-warning" : "btn-primary"}  
+                                block
+                                onClick={() => this.handleUserTypeSelect("empresa")}
+                                >
+                                <span>Empresa</span>
+                        </Button>
+                      </Col>
+                    </Row>
+                  </CardHeader>
+                  <CardBody className="p-4">
+                    <h1>Registrar Usuario</h1>
+                    <p className="text-muted">Cree su cuenta</p>
+                    {this.renderNameField()}
+                    <InputGroup className="mb-3">
+                      <InputGroupAddon addonType="prepend">
+                        <InputGroupText>@</InputGroupText>
+                      </InputGroupAddon>
+                      <Input type="text" 
+                             placeholder="Email" 
+                             onChange={(e) => this.handleValueChange(e, "email")}/>                    
+                    </InputGroup>
+                    <InputGroup className="mb-3">
+                      <InputGroupAddon addonType="prepend">
+                        <InputGroupText>
+                          <i className="icon-lock"></i>
+                        </InputGroupText>
+                      </InputGroupAddon>
+                      <Input type="password" 
+                             placeholder="Password" 
+                             onChange={(e) => this.handleValueChange(e, "password")}/>
+                    </InputGroup>
+                    <InputGroup className="mb-4">
+                      <InputGroupAddon addonType="prepend">
+                        <InputGroupText>
+                          <i className="icon-lock"></i>
+                        </InputGroupText>
+                      </InputGroupAddon>
+                      <Input type="password" 
+                            placeholder="Repeat password" 
+                            onChange={(e) => this.handleValueChange(e, "repeat")}/>                    
+                    </InputGroup>
+                    <Button color="primary" onClick={() => this.onSubmitData()} block>Crear Cuenta</Button>                  
+                    <ul>{this.renderErrorList()}</ul>
+                  </CardBody>
+                  <CardFooter className="p-4">
+                    <Row>
+                      <Col xs="12" sm="6">
+                        <Button className="btn-facebook" block><span>Facebook</span></Button>
+                      </Col>
+                      <Col xs="12" sm="6">
+                        <Button className="btn-twitter" block><span>Twitter</span></Button>
+                      </Col>
+                    </Row>
+                  </CardFooter>
+                </Card>
+              </Col>
+            </Row>
+          </Container>
+          <ModalRegistroExitoso open={this.state.showModalRegistro}/>
+        </div>
 		<script type="text/javascript" src="assets/js/bootstrap.js"></script>
-	</body>
+	  </body>
     );
   }
 }

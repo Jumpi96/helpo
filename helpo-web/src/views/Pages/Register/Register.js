@@ -46,7 +46,6 @@ class Register extends Component {
       api.post('/auth/sign_up/', usuario)
       .then(res => {
         if(res.status === 200) {
-          console.log("Bien")
           this.setState({
             showModalRegistro: true,
             modalType: 'success',
@@ -57,7 +56,6 @@ class Register extends Component {
       .catch ( 
         res => {
           if(res.status !== 200) {
-            console.log("Mal")
             this.setState({
               showModalRegistro: true,
               modalType: 'failure',

@@ -130,7 +130,8 @@ class ConsultarPerfilGenerico extends Component {
   renderConsultarOtro() {    
     switch (this.state.userType) {
       case 1:
-        return (<ConsultarPerfilOrganizacion 
+        return (<ConsultarPerfilOrganizacion
+                  id={this.state.userId}
                   nombre={this.state.nombre}
                   email={this.state.email}
                   data={this.state.data}
@@ -162,6 +163,7 @@ class ConsultarPerfilGenerico extends Component {
     switch (this.state.userType) {
       case 1:
         return (<ConsultarPerfilOrganizacion 
+                  id={this.state.userId}
                   nombre={this.state.nombre}
                   email={this.state.email}
                   data={this.state.data}

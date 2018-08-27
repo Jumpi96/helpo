@@ -218,12 +218,22 @@ class ConsultaEventosOrganizacionCreateReadView(ListCreateAPIView):
 
     def get_queryset(self):
         queryset = Evento.objects.all()
-        queryset = queryset.filter(fecha_hora_inicio__gte=datetime.today())
-        if len(self.request.query_params) > 0:
-            lista_eventos = self.get_eventos(self.request.query_params)    
+        if 'organizacion' in self.request.query_params:
+            queryset = queryset.filter(organizacion_id=self.request.query_params.get('organizacion'))
+        else:
+            queryset = queryset.filter(fecha_hora_inicio__gte=datetime.today())
+        if self.tiene_filtros(self.request.query_params):
+            lista_eventos = self.get_eventos(self.request.query_params)
             queryset = queryset.filter(id__in=lista_eventos)
         queryset = queryset.order_by('fecha_hora_inicio')
         return queryset
+
+    def tiene_filtros(self, params):
+        filtros = ['necesidades', 'funciones', 'rubros']
+        for f in filtros:
+            if f in params:
+                return True
+        return False
     
     def get_eventos(self, params):
         eventos = []

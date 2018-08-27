@@ -18,8 +18,13 @@ class ConsultarEventos extends Component {
   componentDidMount() {
     const { params } = this.props.navigation.state;
     if (params) {
-      this.loadEventos(params.link);
-      params.link = '';
+      if (params.organizacion) {
+        this.loadEventos('?organizacion=' + params.organizacion);
+        params.organizacion = '';
+      } else {
+        this.loadEventos(params.link);
+        params.link = '';
+      }
     } else {
       this.loadEventos('');
     }
@@ -38,6 +43,7 @@ class ConsultarEventos extends Component {
 
   render() {
     const eventos = this.state.eventos;
+    const { params } = this.props.navigation.state;
     return (
       <Container style={styles.container}>
         <Header>

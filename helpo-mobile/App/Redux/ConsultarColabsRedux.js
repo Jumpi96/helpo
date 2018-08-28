@@ -6,7 +6,8 @@ import Immutable from 'seamless-immutable'
 const { Types, Creators } = createActions({
   consultarColabsRequest: ['eventoId'],
   consultarColabsSuccess: ['data'],
-  consultarColabsFailure: null
+  consultarColabsFailure: null,
+  consultarColabsDetalleCol: ['datos']
 })
 
 export const ConsultarColabsTypes = Types
@@ -18,7 +19,8 @@ export const INITIAL_STATE = Immutable({
   data: null,
   fetching: null,
   payload: null,
-  error: null
+  error: null,
+  detalle: null
 })
 
 /* ------------- Selectors ------------- */
@@ -42,6 +44,13 @@ export const success = (state, action) => {
 // Something went wrong somewhere.
 export const failure = state =>
   state.merge({ fetching: false, error: true, data: null })
+
+// Cargar datos de detlle colaboracion
+
+export const detalle = (state, action) => {
+  const { data } = action
+  return state.merge({ detalle: data })
+}
 
 /* ------------- Hookup Reducers To Types ------------- */
 

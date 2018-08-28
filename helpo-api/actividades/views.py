@@ -222,6 +222,9 @@ class ConsultaEventosOrganizacionCreateReadView(ListCreateAPIView):
             queryset = queryset.filter(organizacion_id=self.request.query_params.get('organizacion'))
         else:
             queryset = queryset.filter(fecha_hora_inicio__gte=datetime.today())
+        if 'fecha_desde' in self.request.query_params:
+            queryset = queryset.filter(fecha_hora_inicio__gte=self.request.query_params.get('fecha_desde'))
+            queryset = queryset.filter(fecha_hora_inicio__lte=self.request.query_params.get('fecha_hasta'))
         if self.tiene_filtros(self.request.query_params):
             lista_eventos = self.get_eventos(self.request.query_params)
             queryset = queryset.filter(id__in=lista_eventos)

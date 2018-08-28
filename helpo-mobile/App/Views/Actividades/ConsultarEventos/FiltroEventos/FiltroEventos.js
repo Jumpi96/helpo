@@ -1,5 +1,5 @@
 import React from 'react';
-import api from '../../../../api';
+import moment from 'moment';
 import {
   Button,
   Container,
@@ -16,6 +16,7 @@ import {
   CheckBox,
   View
 } from 'native-base';
+import api from '../../../../api';
 import styles from '../styles';
 
 class FiltroEventos extends React.Component {
@@ -26,9 +27,11 @@ class FiltroEventos extends React.Component {
       selectedFunciones: [],
       selectedMateriales: [],
       selectedRubros: [],
+      selectedFecha: 0,
       optionsFunciones: [],
       optionsMateriales: [],
       optionsRubros: [],
+      optionsFechas: this.loadOptionsFecha(),
     };
     this.handleChangeFuncion = this.handleChangeFuncion.bind(this);
     this.handleChangeMaterial = this.handleChangeMaterial.bind(this);
@@ -41,6 +44,7 @@ class FiltroEventos extends React.Component {
       selectedFunciones,
       selectedMateriales,
       selectedRubros,
+      selectedFecha,
       optionsFunciones,
       optionsMateriales,
       optionsRubros
@@ -74,6 +78,9 @@ class FiltroEventos extends React.Component {
       }
       ruta = ruta[ruta.length-1] === ',' ? ruta.substring(0, ruta.length-1) : ruta;
       ruta += '&';
+    }
+    if (selectedFecha !== 0) {
+      ruta += this.getValorFecha(selectedFecha) + '&';
     }
     ruta = ruta[ruta.length-1] === '&' ? ruta.substring(0, ruta.length-1) : ruta;
     return ruta;
@@ -129,6 +136,10 @@ class FiltroEventos extends React.Component {
     const { selectedRubros } = this.state;
     selectedRubros[i] = !selectedRubros[i];
     this.setState({ selectedRubros });
+  }
+
+  handleChangeFecha(selectedFecha) {
+    this.setState({ selectedFecha });
   }
 
   getListaMateriales() {
@@ -200,6 +211,53 @@ class FiltroEventos extends React.Component {
     );
   }
 
+  getListaFechas() {
+    let listaFechas = [];
+    this.state.optionsFechas.forEach((option) => {
+      listaFechas.push(
+        <ListItem>
+          <CheckBox 
+            onPress={() => this.handleChangeFecha(option.value)}
+            checked={this.state.selectedFecha === option.value}
+            color="orange"
+          />
+          <Body>
+            <Text>{option.label}</Text>
+          </Body>
+        </ListItem>
+      );
+    });
+    return (
+      <View>
+        {listaFechas}
+      </View>
+    )
+  }
+
+  getValorFecha(selectedFecha) {
+    let desde, hasta;
+    if (selectedFecha === 1) {
+      desde = moment();
+      hasta = moment().add(7, 'days');
+    } else if (selectedFecha === 2) {
+      desde = moment().add(7, 'days');
+      hasta = moment().add(14, 'days');
+    } else if (selectedFecha === 3) {
+      desde = moment();
+      hasta = moment().add(1, 'months');
+    }
+    return 'fecha_desde=' + desde.toISOString() + '&fecha_hasta=' + hasta.toISOString();
+  }
+
+  loadOptionsFecha() {
+    return [
+      { value: 0, label: 'Todas' },
+      { value: 1, label: 'Esta semana' },
+      { value: 2, label: 'Próxima semana' },
+      { value: 3, label: 'Próximo mes' },
+    ];
+  }
+
   render() {
     return (
       <Container style={styles.container}>
@@ -233,6 +291,10 @@ class FiltroEventos extends React.Component {
             <Text>Rubros</Text>
           </Separator>
           {this.getListaRubros()}
+          <Separator bordered noTopBorder>
+            <Text>Fechas</Text>
+          </Separator>
+          {this.getListaFechas()}
         </Content>
       </Container>
     );

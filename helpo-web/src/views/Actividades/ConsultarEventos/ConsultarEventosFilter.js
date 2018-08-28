@@ -1,8 +1,11 @@
 import React from 'react';
-import { Col, Row } from 'reactstrap';
+import { Col, Row, Modal, ModalBody, ModalHeader, ModalFooter } from 'reactstrap';
+import LocationPicker from 'react-location-picker';
 import Select from 'react-select';
 import moment from 'moment';
 import api from '../../../api.js'
+
+const ubicacionPorDefecto = { lat: -31.4201, lng: -64.1888 };
 
 class ConsultarEventosFilter extends React.Component {
 
@@ -26,6 +29,7 @@ class ConsultarEventosFilter extends React.Component {
     this.handleChangeRubros = this.handleChangeRubros.bind(this);
     this.handleChangeFecha = this.handleChangeFecha.bind(this);
     this.handleChangeUbicacion = this.handleChangeUbicacion.bind(this);
+    this.handleCoordenadasChange = this.handleCoordenadasChange.bind(this);
   }
 
   componentDidMount() {
@@ -113,6 +117,8 @@ class ConsultarEventosFilter extends React.Component {
       this.setState({ selectedUbicacion });
       const { selectedFunciones, selectedMateriales, selectedRubros, selectedFecha } = this.state;
       this.updatePath(selectedMateriales, selectedFunciones, selectedRubros, selectedFecha, selectedUbicacion);
+    } else {
+      this.setState({openModal: true});
     }
   }
 
@@ -174,6 +180,10 @@ class ConsultarEventosFilter extends React.Component {
     return 'kms=' + kms + '&latitud=' + this.state.latitud + '&longitud=' + this.state.longitud;
   }
 
+  handleCoordenadasChange({ position, address }){
+    this.setState({ latitud: position.lat, longitud: position.lng });
+  }
+
   render() {
     return (
       <div>
@@ -229,7 +239,24 @@ class ConsultarEventosFilter extends React.Component {
               />
             </Col>
         </Row>
-    </div>
+        <Modal isOpen={this.state.openModal} className='modal-warning'>
+          <ModalHeader>Seleccionar ubicación</ModalHeader>
+          <ModalBody>
+            <LocationPicker
+              containerElement={ <div style={ {height: '100%', width: '100%'} } /> }
+              mapElement={ <div style={ {height: '300px'} } /> }
+              defaultPosition={ubicacionPorDefecto}
+              onChange={this.handleCoordenadasChange}
+              radius={-1}
+              name="locationPicker"/>
+          </ModalBody>
+          <ModalFooter>
+            <button className="btn btn-primary" onClick={() => this.setState({ openModal: false })}>
+              Aceptar
+            </button>
+          </ModalFooter>
+        </Modal>
+      </div>
     );
   }  
 };

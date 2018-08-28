@@ -315,7 +315,7 @@ class ModificarPerfilOrganizacion extends Component {
         return (
           <ModalGenerico
             body='Se guardaron los cambios exitosamente'
-            onCancel={() => {this.setState({ showModal: false })}}
+            onCancel={this.props.switchToConsultar}
           />)  
       }
       else {

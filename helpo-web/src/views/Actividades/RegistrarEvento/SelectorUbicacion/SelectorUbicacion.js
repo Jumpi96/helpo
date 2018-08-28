@@ -47,7 +47,7 @@ class SelectorUbicacion extends Component {
     return (
       <div className="row">
         <div className="form-group col-md-6">
-          <label for="locationPicker">Ubicación</label>
+          <label htmlFor="locationPicker">Ubicación</label>
           <LocationPicker
             containerElement={ <div style={ {height: '100%', width: '100%'} } /> }
             mapElement={ <div style={ {height: '300px'} } /> }

@@ -21,7 +21,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - .:/helpo-api/code
+      - ./helpo-api:/code
     depends_on:
       - db
   web:
@@ -31,7 +31,7 @@ services:
     ports:
     - "3000:3000"
     volumes:
-      - .:/helpo-web/
+      - ./helpo-web/src:/usr/src/app/src
     depends_on:
       - db
       - api

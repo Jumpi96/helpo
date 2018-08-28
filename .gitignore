@@ -59,10 +59,12 @@ tmp_email/
 .directory
 
 # Postgres DB
-postgres-data/
+postgres-data/*
+!postgres-data/.gitkeep
 
 # PgAdmin
-pgadmin/
+pgadmin/*
+!pgadmin/.gitkeep
 
 # SSL Certs
 certs/

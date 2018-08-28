@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types'
 import { Card, CardHeader, Button } from 'reactstrap';
 import {Gmaps, Marker} from 'react-gmaps';
@@ -39,6 +40,7 @@ class ConsultarPerfilOrganizacion extends Component {
     this.renderDescripcion = this.renderDescripcion.bind(this);
     this.renderRubro = this.renderRubro.bind(this);
     this.renderTelefono = this.renderTelefono.bind(this);
+    this.getLinkVerEventos = this.getLinkVerEventos.bind(this);
   }
 
   renderTelefono() {
@@ -102,8 +104,12 @@ class ConsultarPerfilOrganizacion extends Component {
     }
   }  
   
+  getLinkVerEventos() {
+    return '/actividades/consultar-eventos?organizacion=' + this.props.id;
+  }
 
-  render() {    
+  render() {
+    const link = this.getLinkVerEventos();
     return (      
       <Card>
         <CardHeader>
@@ -111,54 +117,57 @@ class ConsultarPerfilOrganizacion extends Component {
         </CardHeader>
         <div class='container'>
         
-        <div style={{ alignItems: 'center' }} class='row'>
-          <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', height: '150px'}} class='col-2'>            
-            <p style={{ textAlign: 'right' }} 
-               class='h4'>{this.props.nombre}</p>
+          <div style={{ alignItems: 'center' }} class='row'>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', height: '150px'}} class='col-2'>            
+              <p style={{ textAlign: 'right' }} 
+                class='h4'>{this.props.nombre}</p>
+            </div>
+            <div class='col-6'>
+              <img
+                class='rounded-circle'
+                src={getImagen(this.props.data.avatar.url)}
+                alt="avatar"
+                width="100" 
+                height="100"
+              />
+            </div>
           </div>
-          <div class='col-6'>
-            <img
-              class='rounded-circle'
-              src={getImagen(this.props.data.avatar.url)}
-              alt="avatar"
-              width="100" 
-              height="100"
-            />
+            
+          <div class='row'>
+              <p style={{ textAlign: 'right' }} class='font-weight-bold col-2' htmlFor="mail">Mail</p>
+              <div class='col-6'><p>{this.props.email}</p></div>
           </div>
-        </div>
-          
-        <div class='row'>
-            <p style={{ textAlign: 'right' }} class='font-weight-bold col-2' htmlFor="mail">Mail</p>
-            <div class='col-6'><p>{this.props.email}</p></div>
-        </div>
 
-        <div class='row'>
-            <p style={{ textAlign: 'right' }} class='font-weight-bold col-2' htmlFor="telefono">Teléfono</p>
-            <div class='col-6'>{this.renderTelefono()}</div>
-        </div>
+          <div class='row'>
+              <p style={{ textAlign: 'right' }} class='font-weight-bold col-2' htmlFor="telefono">Teléfono</p>
+              <div class='col-6'>{this.renderTelefono()}</div>
+          </div>
 
-        <div class='row'>          
-            <p style={{ textAlign: 'right' }} class='font-weight-bold col-2' htmlFor="cuit">CUIT</p>
-            <div class='col-6'>{this.renderCuit()}</div>
-        </div>
+          <div class='row'>          
+              <p style={{ textAlign: 'right' }} class='font-weight-bold col-2' htmlFor="cuit">CUIT</p>
+              <div class='col-6'>{this.renderCuit()}</div>
+          </div>
 
-        <div class='row'>        
-            <p style={{ textAlign: 'right' }} class='font-weight-bold col-2' htmlFor="telefono">Rubro</p>
-            <div class='col-6'>{this.renderRubro()}</div>    
-        </div>                       
+          <div class='row'>        
+              <p style={{ textAlign: 'right' }} class='font-weight-bold col-2' htmlFor="telefono">Rubro</p>
+              <div class='col-6'>{this.renderRubro()}</div>    
+          </div>                       
 
-        <div class='row'>          
-          <p style={{ paddingLeft: 0 ,textAlign: 'right' }} class='font-weight-bold col-2' htmlFor="descripcion">Descripción</p> 
-          <div class='col-6'>{this.renderDescripcion()}</div>    
-        </div>             
+          <div class='row'>          
+            <p style={{ paddingLeft: 0 ,textAlign: 'right' }} class='font-weight-bold col-2' htmlFor="descripcion">Descripción</p> 
+            <div class='col-6'>{this.renderDescripcion()}</div>    
+          </div>             
 
-        {this.mostrarUbicacion()}
+          {this.mostrarUbicacion()}
 
-        <div style={{ width: '500px', justifyContent: 'center' ,display: 'flex', marginBottom: '10px' }} class='row offster-md-4'>          
-          {this.props.sinModificar
-          ? "" 
-          : <Button onClick={this.props.switchToModificar} color='primary'>Modificar Datos</Button>}
-        </div>  
+          <div style={{ width: '500px', justifyContent: 'center' ,display: 'flex', marginBottom: '10px' }} class='row offster-md-4'>          
+            <Button onClick={this.props.switchToModificar} color='primary'>Modificar Datos</Button>
+          </div>
+          <div style={{ width: '500px', justifyContent: 'center' ,display: 'flex', marginBottom: '10px' }} class='row offster-md-4'>          
+            <Link to={link}>
+              <button className='btn btn-primary'>Ver eventos organizados</button>
+            </Link>
+          </div>
         </div>      
       </Card>
     );

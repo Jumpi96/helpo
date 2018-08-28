@@ -48,12 +48,18 @@ class Voluntario(models.Model):
     funcion = models.ForeignKey(Funcion, null=False, on_delete=models.PROTECT)
     evento = models.ForeignKey(Evento, related_name='voluntarios', null=False, on_delete=models.CASCADE)
 
+class Comentario(models.Model):
+    evento = models.ForeignKey(Evento, related_name='comentarios', null=False, on_delete=models.CASCADE)
+    voluntario = models.ForeignKey(User, null=False)
+    comentario = models.CharField(max_length=280, null=False)
+
 class Colaboracion(models.Model):
     cantidad = models.IntegerField()
     comentario = models.CharField(max_length=140, null=True)
     necesidad_material = models.ForeignKey(Necesidad, related_name='colaboraciones', null=False, on_delete=models.CASCADE)
     voluntario = models.ForeignKey(User, null=False)
     entregado = models.BooleanField(null=False, blank=False, default=False)
+    retroalimentacion = models.BooleanField(default=False)
 
 class Participacion(models.Model):
     comentario = models.CharField(max_length=140, null=True)
@@ -61,3 +67,4 @@ class Participacion(models.Model):
     voluntario = models.ForeignKey(User, null=False)
     participo = models.BooleanField(null=False, blank=False, default=False)
     
+    retroalimentacion = models.BooleanField(default=False)

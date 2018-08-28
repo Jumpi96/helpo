@@ -13,15 +13,19 @@ class ConsultarEventosFilter extends React.Component {
       selectedMateriales: [],
       selectedRubros: [],
       selectedFecha: { value: 0, label: 'Todas' },
+      selectedUbicacion: { value: 0, label: 'Todas' },
       optionsFunciones: [],
       optionsMateriales: [],
       optionsRubros: [],
       optionsFechas: this.loadOptionsFecha(),
+      optionsUbicaciones: this.loadOptionsUbicaciones(),
+      latitud: undefined, longitud: undefined
     };
     this.handleChangeFunciones = this.handleChangeFunciones.bind(this);
     this.handleChangeMateriales = this.handleChangeMateriales.bind(this);
     this.handleChangeRubros = this.handleChangeRubros.bind(this);
     this.handleChangeFecha = this.handleChangeFecha.bind(this);
+    this.handleChangeUbicacion = this.handleChangeUbicacion.bind(this);
   }
 
   componentDidMount() {
@@ -42,6 +46,16 @@ class ConsultarEventosFilter extends React.Component {
         if (error.response){ console.log(error.response.status) }
         else { console.log('Error: ', error.message)}
       });
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        this.setState({
+          latitud: position.coords.latitude,
+          longitud: position.coords.longitude,
+        });
+      },
+      (e) => {console.warn(e.message)},
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+    );
   }
 
   loadOptions(rawOptions) {
@@ -61,28 +75,45 @@ class ConsultarEventosFilter extends React.Component {
     ];
   }
 
+  loadOptionsUbicaciones() {
+    return [
+      { value: 0, label: 'Todas' },
+      { value: 5, label: 'A menos de 5 km' },
+      { value: 10, label: 'A menos de 10 km' },
+      { value: 100, label: 'A menos de 100 km' },
+    ];
+  }
+
   handleChangeFunciones(selectedFunciones) {
     this.setState({ selectedFunciones });
-    const { selectedRubros, selectedMateriales, selectedFecha } = this.state;
-    this.updatePath(selectedMateriales, selectedFunciones, selectedRubros, selectedFecha);
+    const { selectedRubros, selectedMateriales, selectedFecha, selectedUbicacion } = this.state;
+    this.updatePath(selectedMateriales, selectedFunciones, selectedRubros, selectedFecha, selectedUbicacion);
   }
 
   handleChangeMateriales(selectedMateriales) {
     this.setState({ selectedMateriales });
-    const { selectedFunciones, selectedRubros, selectedFecha } = this.state;
-    this.updatePath(selectedMateriales, selectedFunciones, selectedRubros, selectedFecha);
+    const { selectedFunciones, selectedRubros, selectedFecha, selectedUbicacion } = this.state;
+    this.updatePath(selectedMateriales, selectedFunciones, selectedRubros, selectedFecha, selectedUbicacion);
   }
 
   handleChangeRubros(selectedRubros) {
     this.setState({ selectedRubros });
-    const { selectedFunciones, selectedMateriales, selectedFecha } = this.state;
-    this.updatePath(selectedMateriales, selectedFunciones, selectedRubros, selectedFecha);
+    const { selectedFunciones, selectedMateriales, selectedFecha, selectedUbicacion } = this.state;
+    this.updatePath(selectedMateriales, selectedFunciones, selectedRubros, selectedFecha, selectedUbicacion);
   }
 
   handleChangeFecha(selectedFecha) {
     this.setState({ selectedFecha });
-    const { selectedFunciones, selectedMateriales, selectedRubros } = this.state;
-    this.updatePath(selectedMateriales, selectedFunciones, selectedRubros, selectedFecha);
+    const { selectedFunciones, selectedMateriales, selectedRubros, selectedUbicacion } = this.state;
+    this.updatePath(selectedMateriales, selectedFunciones, selectedRubros, selectedFecha, selectedUbicacion);
+  }
+
+  handleChangeUbicacion(selectedUbicacion) {
+    if (this.state.longitud) {
+      this.setState({ selectedUbicacion });
+      const { selectedFunciones, selectedMateriales, selectedRubros, selectedFecha } = this.state;
+      this.updatePath(selectedMateriales, selectedFunciones, selectedRubros, selectedFecha, selectedUbicacion);
+    }
   }
 
   getValorFecha(fecha) {
@@ -101,7 +132,7 @@ class ConsultarEventosFilter extends React.Component {
     return 'fecha_desde=' + desde.toISOString() + '&fecha_hasta=' + hasta.toISOString();
   }
 
-  updatePath(materiales, funciones, rubros, fecha) {
+  updatePath(materiales, funciones, rubros, fecha, ubicacion) {
     let ruta = '?';
     if (this.props.organizacion) {
       ruta += 'organizacion=' + this.props.organizacion + '&';
@@ -131,8 +162,16 @@ class ConsultarEventosFilter extends React.Component {
     if (fecha.value !== 0) {
       ruta += this.getValorFecha(fecha) + '&';
     }
+    if (ubicacion.value !== 0) {
+      ruta += this.getValorUbicacion(ubicacion) + '&';
+    }
     ruta = ruta[ruta.length-1] === '&' ? ruta.substring(0, ruta.length-1) : ruta;
     this.props.updatePath(ruta);
+  }
+
+  getValorUbicacion(selectedUbicacion) {
+    const kms = selectedUbicacion.value;
+    return 'kms=' + kms + '&latitud=' + this.state.latitud + '&longitud=' + this.state.longitud;
   }
 
   render() {
@@ -177,6 +216,16 @@ class ConsultarEventosFilter extends React.Component {
                 options={this.state.optionsFechas}
                 onChange={this.handleChangeFecha}
                 value={this.state.selectedFecha}
+              />
+            </Col>
+            <Col md="3">
+              <label for="ubicaciones">Ubicación</label>
+              <Select
+                name="ubicaciones"
+                placeholder="Seleccione..."
+                options={this.state.optionsUbicaciones}
+                onChange={this.handleChangeUbicacion}
+                value={this.state.selectedUbicacion}
               />
             </Col>
         </Row>

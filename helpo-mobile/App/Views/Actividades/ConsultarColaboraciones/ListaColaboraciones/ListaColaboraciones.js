@@ -10,7 +10,10 @@ const ListaColaboraciones = (props) => {
     const cantidad = colaboracion.cantidad
     const entregado = colaboracion.entregado
     const item = (
-      <ListItem>
+      <ListItem
+        button
+        onPress={() => props.navigation.navigate('DetalleColaboracion')}
+      >
         <Left>
           <Text>{nombre}{"\n"}{apellido}</Text>
         </Left>

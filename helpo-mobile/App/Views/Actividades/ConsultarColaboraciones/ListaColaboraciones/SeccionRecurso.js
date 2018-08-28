@@ -10,6 +10,7 @@ const SeccionRecurso = (props) => {
     const recurso = necesidad.recurso.nombre
     listas.push(
       <ListaColaboraciones 
+      navigation={props.navigation}
       key={ 'lista-colab-'+necesidad.id }
       necesidad={ recurso } 
       colaboraciones={ colaboraciones } 

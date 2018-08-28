@@ -60,7 +60,7 @@ class ConsultarColaboracionConnected extends React.Component {
 
     const content = () => { return (
       <View>
-        <SeccionRecurso necesidades={this.props.data.necesidades}/>
+        <SeccionRecurso necesidades={this.props.data.necesidades} navigation={this.props.navigation}/>
       </View>
     )}
 

@@ -132,7 +132,7 @@ class Register extends Component {
         break;
       }
       case "email": {
-        this.setState({ email: event.target.value.toLowerCase });
+        this.setState({ email: event.target.value.toLowerCase() });
         break;
       }
       case "password": {

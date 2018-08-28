@@ -131,17 +131,13 @@ class VerEvento extends React.Component {
             </View>
             ) : undefined
           }
-          <ListItem icon>
-            <Left>
-              <Button 
-                style={{ backgroundColor: "#FF9501" }}
-                onPress={() => this.props.navigation.navigate('ConsultarColaboraciones', {
-                  eventoId: this.props.navigation.state.params.evento.id})}>
-                <Icon active name="plane" />
-              </Button>
-            </Left>
+          <ListItem 
+            button 
+            onPress={() => this.props.navigation.navigate('ConsultarColaboraciones', {
+              eventoId: this.props.navigation.state.params.evento.id})}
+            >
             <Body>
-              <Text>Colaboraciones</Text>
+              <Text>Ver Colaboraciones</Text>
             </Body>
           </ListItem>
         </Content>

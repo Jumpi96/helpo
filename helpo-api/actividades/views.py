@@ -12,7 +12,7 @@ from actividades.serializers import EventoSerializer, RubroEventoSerializer, \
     CategoriaRecursoSerializer, RecursoSerializer, NecesidadSerializer, ContactoSerializer, \
     ConsultaEventoSerializer, VoluntarioSerializer, FuncionSerializer, ConsultaNecesidadesSerializer, \
     ParticipacionSerializer, ColaboracionSerializer, ComentarioSerializer
-from common.functions import get_token_user
+from common.functions import get_token_user, calc_distance_locations
 
 class RubroEventoCreateReadView(ListCreateAPIView):
     """
@@ -225,6 +225,12 @@ class ConsultaEventosOrganizacionCreateReadView(ListCreateAPIView):
         if 'fecha_desde' in self.request.query_params:
             queryset = queryset.filter(fecha_hora_inicio__gte=self.request.query_params.get('fecha_desde'))
             queryset = queryset.filter(fecha_hora_inicio__lte=self.request.query_params.get('fecha_hasta'))
+        if 'kms' in self.request.query_params:
+            kms = float(self.request.query_params.get('kms'))
+            latitud = float(self.request.query_params.get('latitud'))
+            longitud = float(self.request.query_params.get('longitud'))
+            lista_eventos = self.filtrar_ubicacion(kms, latitud, longitud)
+            queryset = queryset.filter(id__in=lista_eventos)
         if self.tiene_filtros(self.request.query_params):
             lista_eventos = self.get_eventos(self.request.query_params)
             queryset = queryset.filter(id__in=lista_eventos)
@@ -237,6 +243,14 @@ class ConsultaEventosOrganizacionCreateReadView(ListCreateAPIView):
             if f in params:
                 return True
         return False
+
+    def filtrar_ubicacion(self, kms, latitud, longitud):
+        eventos = Evento.objects.all()
+        eventos = eventos.filter(fecha_hora_inicio__gte=datetime.today())
+        ids = [e.id for e in eventos 
+            if calc_distance_locations(latitud, longitud, e.ubicacion.latitud, e.ubicacion.longitud) <= kms
+        ]
+        return ids
     
     def get_eventos(self, params):
         eventos = []

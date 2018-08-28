@@ -28,14 +28,19 @@ class FiltroEventos extends React.Component {
       selectedMateriales: [],
       selectedRubros: [],
       selectedFecha: 0,
+      selectedUbicacion: 0,
       optionsFunciones: [],
       optionsMateriales: [],
       optionsRubros: [],
       optionsFechas: this.loadOptionsFecha(),
+      optionsUbicaciones: this.loadOptionsUbicaciones(),
+      latitud: undefined, longitud: undefined
     };
     this.handleChangeFuncion = this.handleChangeFuncion.bind(this);
     this.handleChangeMaterial = this.handleChangeMaterial.bind(this);
     this.handleChangeRubro = this.handleChangeRubro.bind(this);
+    this.handleChangeFecha = this.handleChangeFecha.bind(this);
+    this.handleChangeUbicacion = this.handleChangeUbicacion.bind(this);
   }
 
   getLink() {
@@ -45,6 +50,7 @@ class FiltroEventos extends React.Component {
       selectedMateriales,
       selectedRubros,
       selectedFecha,
+      selectedUbicacion,
       optionsFunciones,
       optionsMateriales,
       optionsRubros
@@ -82,6 +88,9 @@ class FiltroEventos extends React.Component {
     if (selectedFecha !== 0) {
       ruta += this.getValorFecha(selectedFecha) + '&';
     }
+    if (selectedUbicacion !== 0) {
+      ruta += this.getValorUbicacion(selectedUbicacion) + '&';
+    }
     ruta = ruta[ruta.length-1] === '&' ? ruta.substring(0, ruta.length-1) : ruta;
     return ruta;
   }
@@ -118,6 +127,16 @@ class FiltroEventos extends React.Component {
         if (error.response){ console.log(error.response.status) }
         else { console.log('Error: ', error.message)}
       });
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          this.setState({
+            latitud: position.coords.latitude,
+            longitud: position.coords.longitude,
+          });
+        },
+        (e) => {console.warn(e.message)},
+        { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+      );
   }
 
   handleChangeFuncion(i) {
@@ -140,6 +159,12 @@ class FiltroEventos extends React.Component {
 
   handleChangeFecha(selectedFecha) {
     this.setState({ selectedFecha });
+  }
+
+  handleChangeUbicacion(selectedUbicacion) {
+    if (this.state.longitud) {
+      this.setState({ selectedUbicacion });
+    }
   }
 
   getListaMateriales() {
@@ -234,6 +259,30 @@ class FiltroEventos extends React.Component {
     )
   }
 
+  getListaUbicaciones() {
+    let listaUbicaciones = [];
+    this.state.optionsUbicaciones.forEach((option) => {
+      listaUbicaciones.push(
+        <ListItem>
+          <CheckBox 
+            onPress={() => this.handleChangeUbicacion(option.value)}
+            checked={this.state.selectedUbicacion === option.value}
+            color="red"
+          />
+          <Body>
+            <Text>{option.label}</Text>
+          </Body>
+        </ListItem>
+      );
+    });
+    return (
+      <View>
+        {listaUbicaciones}
+      </View>
+    )
+  }
+  
+
   getValorFecha(selectedFecha) {
     let desde, hasta;
     if (selectedFecha === 1) {
@@ -249,12 +298,26 @@ class FiltroEventos extends React.Component {
     return 'fecha_desde=' + desde.toISOString() + '&fecha_hasta=' + hasta.toISOString();
   }
 
+  getValorUbicacion(selectedUbicacion) {
+    const kms = selectedUbicacion;
+    return 'kms=' + kms + '&latitud=' + this.state.latitud + '&longitud=' + this.state.longitud;
+  }
+
   loadOptionsFecha() {
     return [
       { value: 0, label: 'Todas' },
       { value: 1, label: 'Esta semana' },
       { value: 2, label: 'Próxima semana' },
       { value: 3, label: 'Próximo mes' },
+    ];
+  }
+
+  loadOptionsUbicaciones() {
+    return [
+      { value: 0, label: 'Todas' },
+      { value: 5, label: 'A menos de 5 km' },
+      { value: 10, label: 'A menos de 10 km' },
+      { value: 100, label: 'A menos de 100 km' },
     ];
   }
 
@@ -295,6 +358,10 @@ class FiltroEventos extends React.Component {
             <Text>Fechas</Text>
           </Separator>
           {this.getListaFechas()}
+          <Separator bordered noTopBorder>
+            <Text>Ubicación</Text>
+          </Separator>
+          {this.getListaUbicaciones()}
         </Content>
       </Container>
     );

@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Container, Header, Title, Content, Button, Icon, Left, Right, Body } from 'native-base';
+import { Container, Header, Title, Content, Button, Icon, Left, Right, Body, Toast } from 'native-base';
 import api from '../../../api';
 import EventoCard from './EventoCard/EventoCard';
 import styles from './styles';
@@ -34,6 +34,12 @@ class ConsultarEventos extends Component {
     api.get('/actividades/consulta_eventos/' + ruta)
       .then((res) => {
         this.setState({ eventos: res.data });
+        if (res.data.length === 0) {
+          Toast.show({
+            text: 'No existen eventos registrados.',
+            buttonText: 'Aceptar'
+          });
+        }
       })
       .catch((error) => {
         if (error.response){ console.log(error.response.status) }
@@ -43,7 +49,6 @@ class ConsultarEventos extends Component {
 
   render() {
     const eventos = this.state.eventos;
-    const { params } = this.props.navigation.state;
     return (
       <Container style={styles.container}>
         <Header>

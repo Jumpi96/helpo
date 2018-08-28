@@ -282,7 +282,6 @@ class FiltroEventos extends React.Component {
     )
   }
   
-
   getValorFecha(selectedFecha) {
     let desde, hasta;
     if (selectedFecha === 1) {

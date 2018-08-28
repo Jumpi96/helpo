@@ -1,8 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import ContainerHeader from '../../../../Components/ContainerHeader'
-import { Container, ListItem } from 'native-base'
-import { FlatList, Text,  } from 'react-native'
+import { Container, ListItem, Left, Body, Text } from 'native-base'
+import { FlatList } from 'react-native'
 
 const DetalleColaboracion = (props) => {
 
@@ -12,7 +12,14 @@ const DetalleColaboracion = (props) => {
       <ContainerHeader titulo='Detalle Colaboracion' goBack={props.navigation.goBack}/>
       <FlatList
         data={[{key: 'a'}, {key: 'b'}]}
-        renderItem={({item}) => <ListItem><Text>{item.key}</Text></ListItem>}
+        renderItem={({item}) => (<ListItem>
+                                  <Left>
+                                    <Text>{item.key}: </Text>
+                                  </Left>
+                                  <Body>
+                                    <Text>Aloha</Text>
+                                  </Body>
+                                </ListItem>)}
       />
     </Container>
   )

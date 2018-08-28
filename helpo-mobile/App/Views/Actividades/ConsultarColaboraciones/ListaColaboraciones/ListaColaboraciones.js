@@ -1,5 +1,7 @@
 import React from 'react'
 import { ListItem, Icon, Text, View, Left, Body, Right } from 'native-base'
+import { connect } from 'react-redux'
+import ConsultarColabsActions from '../../../../Redux/ConsultarColabsRedux'
 
 const ListaColaboraciones = (props) => {
   const { necesidad, colaboraciones } = props
@@ -12,7 +14,7 @@ const ListaColaboraciones = (props) => {
     const item = (
       <ListItem
         button
-        onPress={() => props.navigation.navigate('DetalleColaboracion')}
+        onPress={() => {props.uploadDetalle(colaboracion);props.navigation.navigate('DetalleColaboracion')}}
       >
         <Left>
           <Text>{nombre}{"\n"}{apellido}</Text>
@@ -41,4 +43,8 @@ const ListaColaboraciones = (props) => {
   )
 }
 
-export default ListaColaboraciones
+const mapDispatchToProps = (dispatch) => {
+  uploadDetalle: (colaboracion) => dispatch(ConsultarColabsActions.consultarColabsDetalleCol(colaboracion))
+}
+
+export default connect(null ,mapDispatchToProps)(ListaColaboraciones)

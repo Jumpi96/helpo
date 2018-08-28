@@ -12,7 +12,7 @@ class ConsultarEventosFilter extends React.Component {
       selectedFunciones: [],
       selectedMateriales: [],
       selectedRubros: [],
-      selectedFechas: [],
+      selectedFecha: { value: 0, label: 'Todas' },
       optionsFunciones: [],
       optionsMateriales: [],
       optionsRubros: [],
@@ -21,7 +21,7 @@ class ConsultarEventosFilter extends React.Component {
     this.handleChangeFunciones = this.handleChangeFunciones.bind(this);
     this.handleChangeMateriales = this.handleChangeMateriales.bind(this);
     this.handleChangeRubros = this.handleChangeRubros.bind(this);
-    this.handleChangeFechas = this.handleChangeFechas.bind(this);
+    this.handleChangeFecha = this.handleChangeFecha.bind(this);
   }
 
   componentDidMount() {
@@ -54,53 +54,54 @@ class ConsultarEventosFilter extends React.Component {
 
   loadOptionsFecha() {
     return [
-      { value: 0, label: 'Esta semana' },
-      { value: 1, label: 'Próxima semana' },
-      { value: 2, label: 'Próximo mes' },
+      { value: 0, label: 'Todas' },
+      { value: 1, label: 'Esta semana' },
+      { value: 2, label: 'Próxima semana' },
+      { value: 3, label: 'Próximo mes' },
     ];
   }
 
   handleChangeFunciones(selectedFunciones) {
     this.setState({ selectedFunciones });
-    const { selectedRubros, selectedMateriales, selectedFechas } = this.state;
-    this.updatePath(selectedMateriales, selectedFunciones, selectedRubros, selectedFechas);
+    const { selectedRubros, selectedMateriales, selectedFecha } = this.state;
+    this.updatePath(selectedMateriales, selectedFunciones, selectedRubros, selectedFecha);
   }
 
   handleChangeMateriales(selectedMateriales) {
     this.setState({ selectedMateriales });
-    const { selectedFunciones, selectedRubros, selectedFechas } = this.state;
-    this.updatePath(selectedMateriales, selectedFunciones, selectedRubros, selectedFechas);
+    const { selectedFunciones, selectedRubros, selectedFecha } = this.state;
+    this.updatePath(selectedMateriales, selectedFunciones, selectedRubros, selectedFecha);
   }
 
   handleChangeRubros(selectedRubros) {
     this.setState({ selectedRubros });
-    const { selectedFunciones, selectedMateriales, selectedFechas } = this.state;
-    this.updatePath(selectedMateriales, selectedFunciones, selectedRubros, selectedFechas);
+    const { selectedFunciones, selectedMateriales, selectedFecha } = this.state;
+    this.updatePath(selectedMateriales, selectedFunciones, selectedRubros, selectedFecha);
   }
 
-  handleChangeFechas(selectedFechas) {
-    this.setState({ selectedFechas });
+  handleChangeFecha(selectedFecha) {
+    this.setState({ selectedFecha });
     const { selectedFunciones, selectedMateriales, selectedRubros } = this.state;
-    this.updatePath(selectedMateriales, selectedFunciones, selectedRubros, selectedFechas);
+    this.updatePath(selectedMateriales, selectedFunciones, selectedRubros, selectedFecha);
   }
 
-  getValorFecha(fechas) {
-    const value = fechas[0].value;
+  getValorFecha(fecha) {
+    const { value } = fecha;
     let desde, hasta;
-    if (value === 0) {
+    if (value === 1) {
       desde = moment();
       hasta = moment().add(7, 'days');
-    } else if (value === 1) {
+    } else if (value === 2) {
       desde = moment().add(7, 'days');
       hasta = moment().add(14, 'days');
-    } else {
+    } else if (value === 3) {
       desde = moment();
       hasta = moment().add(1, 'months');
     }
     return 'fecha_desde=' + desde.toISOString() + '&fecha_hasta=' + hasta.toISOString();
   }
 
-  updatePath(materiales, funciones, rubros, fechas) {
+  updatePath(materiales, funciones, rubros, fecha) {
     let ruta = '?';
     if (this.props.organizacion) {
       ruta += 'organizacion=' + this.props.organizacion + '&';
@@ -127,8 +128,8 @@ class ConsultarEventosFilter extends React.Component {
       });
       ruta = ruta.substring(0, ruta.length-1) + '&';
     }
-    if (fechas.length > 0) {
-      ruta += this.getValorFecha(fechas);
+    if (fecha.value !== 0) {
+      ruta += this.getValorFecha(fecha) + '&';
     }
     ruta = ruta[ruta.length-1] === '&' ? ruta.substring(0, ruta.length-1) : ruta;
     this.props.updatePath(ruta);
@@ -168,14 +169,14 @@ class ConsultarEventosFilter extends React.Component {
                 value={this.state.selectedRubros}
               />
             </Col>
-            <Col md="2">
+            <Col md="3">
               <label for="fechas">Fecha</label>
               <Select
                 name="fechas"
                 placeholder="Seleccione..."
                 options={this.state.optionsFechas}
-                onChange={this.handleChangeFechas}
-                value={this.state.selectedFechas}
+                onChange={this.handleChangeFecha}
+                value={this.state.selectedFecha}
               />
             </Col>
         </Row>

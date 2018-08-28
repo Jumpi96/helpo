@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import validateEmail from "../../../utils/ValidateEmail";
 import api from "../../../api"
 import ModalRegistroExitoso from './ModalRegistroExitoso';
-
+import './Register.css';
 
 class Register extends Component {
   constructor(props) {
@@ -132,7 +132,7 @@ class Register extends Component {
         break;
       }
       case "email": {
-        this.setState({ email: event.target.value });
+        this.setState({ email: event.target.value.toLowerCase });
         break;
       }
       case "password": {
@@ -302,7 +302,9 @@ class Register extends Component {
                       <InputGroupAddon addonType="prepend">
                         <InputGroupText>@</InputGroupText>
                       </InputGroupAddon>
-                      <Input type="text" 
+                      <Input 
+                             className="Email"
+                             type="text" 
                              placeholder="Email" 
                              onChange={(e) => this.handleValueChange(e, "email")}/>                    
                     </InputGroup>

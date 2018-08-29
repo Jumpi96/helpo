@@ -26,6 +26,7 @@ import { Login, Page404, Page500, Register, ConfirmMail } from './views/Pages';
 //ComponentRenderer
 import ComponentRenderer from './utils/ComponentRenderer';
 import { composeWithDevTools } from 'redux-devtools-extension';
+import RedireccionarEvento from './views/Actividades/RedireccionarEvento/RedireccionarEvento';
 // import { renderRoutes } from 'react-router-config';
 
 let store = createStore(helpo, composeWithDevTools(
@@ -59,6 +60,7 @@ class RootContainerComponent extends Component {
           <Route exact path="/register" name="Register Page" component={Register} />
           <Route exact path="/404" name="Page 404" component={Page404} />
           <Route exact path="/500" name="Page 500" component={Page500} />
+          <Route exact path="/redirect/evento" name ="Redireccionando..." component={RedireccionarEvento} />
           <Route exact path="/prueba" name="PRUEBA" component={ComponentRenderer} />
           <Route path="/confirmMail/:token" name="Confirmar Email" component={ConfirmMail} />
           <Route path="/noAuth" name="Home" component={NoAuthLayout} />

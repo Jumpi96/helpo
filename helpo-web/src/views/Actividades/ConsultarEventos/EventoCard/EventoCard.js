@@ -125,7 +125,7 @@ class EventoCard extends Component {
           </div>
           
           <Link to={link}>
-            <button className="btn btn-primary pull-right" hidden={!this.props.auth}>
+            <button className="btn btn-primary pull-right">
               + Ver más
             </button>
           </Link>

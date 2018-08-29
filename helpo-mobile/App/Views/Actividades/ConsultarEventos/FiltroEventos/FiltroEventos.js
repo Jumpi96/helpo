@@ -288,8 +288,8 @@ class FiltroEventos extends React.Component {
       desde = moment();
       hasta = moment().add(7, 'days');
     } else if (selectedFecha === 2) {
-      desde = moment().add(7, 'days');
-      hasta = moment().add(14, 'days');
+      desde = moment();
+      hasta = moment().add(15, 'days');
     } else if (selectedFecha === 3) {
       desde = moment();
       hasta = moment().add(1, 'months');
@@ -306,8 +306,8 @@ class FiltroEventos extends React.Component {
     return [
       { value: 0, label: 'Todas' },
       { value: 1, label: 'Esta semana' },
-      { value: 2, label: 'Próxima semana' },
-      { value: 3, label: 'Próximo mes' },
+      { value: 2, label: 'Próximos 15 días' },
+      { value: 3, label: 'Este mes' },
     ];
   }
 

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import { Card, CardHeader } from 'reactstrap';
-import SelectorUbicacion from '../../../Lib/SelectorUbicacionGenerico'
 import api from '../../../api'
 import ModalGenerico from '../ModalGenerico'
 import { uploadImage } from '../../../Lib/Imagen'
@@ -11,21 +10,15 @@ const perfilPropTypes = {
   email: PropTypes.string.isRequired,
   data: PropTypes.shape({
     verificada: PropTypes.bool,
+    apellido: PropTypes.string,
     telefono: PropTypes.number,
-    cuit: PropTypes.number,
-    descripcion: PropTypes.string,
-    rubro: PropTypes.shape({
-      id: PropTypes.number,
-      nombre: PropTypes.string,
-    }),
+    dni: PropTypes.number,
+    sexo: PropTypes.string,
+    habilidades: PropTypes.string,
+    gustos: PropTypes.string,
     avatar: PropTypes.shape({
       id: PropTypes.number,
       url: PropTypes.string,
-    }),
-    ubicacion: PropTypes.shape({
-      latitud: PropTypes.number,
-      longitud: PropTypes.number,
-      notas: PropTypes.string,
     }),
     usuario: PropTypes.shape({
       id: PropTypes.number,
@@ -35,60 +28,41 @@ const perfilPropTypes = {
       nombre: PropTypes.string,
     }).isRequired,
   }),
-  rubros: PropTypes.array.isRequired,
   switchToConsultar: PropTypes.func.isRequired,
 }
 
-class ModificarPerfilOrganizacion extends Component {
+class ModificarPerfilVoluntario extends Component {
   constructor(props) {
     super(props); 
-    this.rubros = [{id: 0, nombre: 'Ninguno'}].concat(this.props.rubros)
-    this.fakeProps = this.checkBeforeState(this.props.data.rubro, this.props.data.ubicacion)
     this.state = {
       nombre: this.props.nombre,
       // Checkeo null porque si es null react tira un warning (https://github.com/reactstrap/reactstrap/issues/570)
       telefono: this.props.data.telefono == null ? '' : this.props.data.telefono,
-      cuit: this.props.data.cuit == null ? '' : this.props.data.cuit,
-      descripcion: this.props.data.descripcion == null ? '' : this.props.data.descripcion,
+      dni: this.props.data.dni == null ? '' : this.props.data.dni,
+      sexo: this.props.data.sexo == null ? '' : this.props.data.sexo,
+      gustos: this.props.data.gustos == null ? '' : this.props.data.gustos,
+      habilidades: this.props.data.habilidades == null ? '' : this.props.data.habilidades,
       avatar_url: this.props.data.avatar.url,
-      ubicacion: this.fakeProps.ubicacion,
-      rubro_id: this.fakeProps.rubro.id,
-      rubros: this.rubros,   
       showModal: false,
       modalType: 'success',
       errors: [],
       avatar_changed: false,
     }
     this.renderNombre  = this.renderNombre.bind(this);
-    this.renderUbicacion = this.renderUbicacion.bind(this);
-    this.renderCuit = this.renderCuit.bind(this);
-    this.renderDescripcion = this.renderDescripcion.bind(this);
-    this.renderRubro = this.renderRubro.bind(this);
+    this.renderDni = this.renderDni.bind(this);
     this.renderTelefono = this.renderTelefono.bind(this);
     this.handleNombreChange = this.handleNombreChange.bind(this);
-    this.handleCuitChange = this.handleCuitChange.bind(this);
+    this.handleDniChange = this.handleDniChange.bind(this);
     this.handleTelefonoChange = this.handleTelefonoChange.bind(this);
-    this.handleDescripcionChange = this.handleDescripcionChange.bind(this);
-    this.handleRubroChange = this.handleRubroChange.bind(this);
-    this.handleUbicacionChange = this.handleUbicacionChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.onSelectFile = this.onSelectFile.bind(this);
     this.showModal = this.showModal.bind(this);
     this.handleAvatarChange = this.handleAvatarChange.bind(this);
-  }
-
-  //Checkeo si hay nulls en los props antes meterlos en state
-  checkBeforeState(rubro, ubicacion) {
-    let newRubro = rubro
-    let newUbicacion = ubicacion
-    if (rubro == null) {
-      newRubro = {id: 0, nombre: ""}
-    }
-    if (ubicacion == null) {
-      newUbicacion = {latitud: -31.428900, longitud: -64.185424, notas: ""}
-    }
-    const respuesta = {rubro: newRubro, ubicacion: newUbicacion}
-    return respuesta
+    this.renderGustos = this.renderGustos.bind(this);
+    this.handleGustosChange = this.handleGustosChange.bind(this);
+    this.renderHabilidades = this.renderHabilidades.bind(this);
+    this.handleHabilidadesChange = this.handleHabilidadesChange.bind(this);
+    this.handleSexoChange = this.handleSexoChange.bind(this);
   }
 
   onSelectFile(event) {
@@ -106,7 +80,57 @@ class ModificarPerfilOrganizacion extends Component {
       reader.readAsDataURL(event.target.files[0])
     }
   }
+  /**/
+  renderSexo() {
+    return (
+      <select 
+      className="form-control" value={this.state.sexo} onChange={this.handleSexoChange}>
+        <option value=""> </option>
+        <option value="hombre">Hombre</option>
+        <option value="mujer">Mujer</option>
+        <option value="otro">Otro</option>
+      </select>)
+  }
 
+  handleSexoChange(event) {    
+    this.setState({
+      sexo: event.target.value
+    })
+  }
+
+  renderGustos() {
+    return (
+      <textarea
+        rows= '5'
+        cols='30'
+        className='form-control'
+        value={this.state.gustos}
+        onChange={this.handleGustosChange}
+      />)
+  }
+
+  handleGustosChange(event) {
+    this.setState({
+      gustos: event.target.value
+    });
+  }
+
+  renderHabilidades() {
+    return (
+      <textarea
+        rows= '5'
+        cols='30'
+        className='form-control'
+        value={this.state.habilidades}
+        onChange={this.handleHabilidadesChange}
+      />)
+  }
+
+  handleHabilidadesChange(event) {
+    this.setState({
+      habilidades: event.target.value
+    });
+  }  
   renderNombre() {
     return (
       <input
@@ -124,7 +148,6 @@ class ModificarPerfilOrganizacion extends Component {
       nombre: event.target.value
     })
   }
-  
 
   renderTelefono() {
     return (
@@ -147,50 +170,25 @@ class ModificarPerfilOrganizacion extends Component {
       });
   }
 
-  renderCuit() {
+  renderDni() {
     return (
     <input
       type="text"
-      name="cuit"
+      name="dni"
       className="form-control"
-      placeholder="Cuit"
-      value={this.state.cuit}
-      onChange={this.handleCuitChange}
+      placeholder="Dni"
+      value={this.state.dni}
+      onChange={this.handleDniChange}
     />)
   }
 
-  handleCuitChange(event) {
+  handleDniChange(event) {
     if (isNaN(event.target.value)) {
       return;
     }
     this.setState({
-      cuit: event.target.value
+      dni: event.target.value
     });
-  }
-
-  renderRubro() {
-    
-    const rubro = this.state.rubro_id == null ? 0 : this.state.rubro_id
-    const listaRubroEventos = this.state.rubros.map((r) =>
-      <option key={r.id} value={r.id} data-key={r.id}>{r.nombre}</option>
-    );
-    
-    return(
-      <select
-        value={rubro}
-        className="form-control"
-        onChange={this.handleRubroChange}>
-          {listaRubroEventos}
-      </select>
-    )    
-  }
-
-  handleRubroChange(event) {
-    const selectedIndex = event.target.options.selectedIndex;
-    const selectedId = event.target.options[selectedIndex].getAttribute('data-key');
-    this.setState({
-      rubro_id: parseInt(selectedId, 10)
-    })
   }
 
   handleAvatarChange(avatar_url) {
@@ -199,52 +197,12 @@ class ModificarPerfilOrganizacion extends Component {
       avatar_changed: true,
     })
   }
-
-  renderDescripcion() {
-    return (
-      <textarea
-        rows= '5'
-        cols='30'
-        className='form-control'
-        value={this.state.descripcion}
-        onChange={this.handleDescripcionChange}
-      />)
-  }
-
-  handleDescripcionChange(event) {
-    this.setState({
-      descripcion: event.target.value
-    });
-  }
-
-  renderUbicacion() {
-    return (
-      <SelectorUbicacion
-        ubicacion={this.state.ubicacion}
-        onUbicacionChange={this.handleUbicacionChange}
-      />
-    )
-  }
   
-  handleUbicacionChange(ubi) {
-    this.setState({ ubicacion: ubi });
-  }  
-
   async prepareSubmitData() {
-    const oldData = {
-      nombre: this.props.nombre,
-      telefono: this.props.data.telefono,
-      cuit: this.props.data.cuit,
-      descripcion: this.props.data.descripcion,
-      avatar_url: this.props.data.avatar.url,
-      ubicacion: this.fakeProps.ubicacion,
-      rubro_id: this.fakeProps.rubro.id,
-    }
     const newData = this.state
-    
+
     let avatar_url = this.props.data.avatar.url
-    if ( this.state.avatar_changed ) {
-      console.log("MIAAAAAAMEEEEEEE")
+    if (this.state.avatar_changed ) {
       const rx = /\/9j\/.*/gm
       const encondedAvatar = rx.exec(this.state.avatar_url)[0]
       avatar_url = await uploadImage(encondedAvatar)
@@ -252,21 +210,23 @@ class ModificarPerfilOrganizacion extends Component {
         avatar_url = await uploadImage(encondedAvatar)
       }
     }
-    const submitData = {      
-      descripcion: newData.descripcion,
+    const submitData = {
       avatar: {url: avatar_url},
     }    
-    if (newData.cuit !== "") {
-      submitData.cuit = newData.cuit
+    if (newData.dni !== "") {
+      submitData.dni = newData.dni
+    }
+    if (newData.gustos !== "") {
+      submitData.gustos = newData.gustos
+    }
+    if (newData.habilidades !== "") {
+      submitData.habilidades = newData.habilidades
+    }
+    if (newData.sexo !== "") {
+      submitData.sexo = newData.sexo
     }
     if (newData.telefono !== "") {
       submitData.telefono = newData.telefono
-    }
-    if (newData.rubro_id != null && newData.rubro_id !== 0) {
-      submitData.rubro = {id: newData.rubro_id, nombre: this.state.rubros[newData.rubro_id].nombre }
-    }
-    if (newData.ubicacion !== oldData.ubicacion && newData.ubicacion !== this.fakeProps.ubicacion) {
-      submitData.ubicacion = this.state.ubicacion
     }
     return submitData
   }
@@ -288,8 +248,13 @@ class ModificarPerfilOrganizacion extends Component {
 
   handleSubmit() {
     this.prepareSubmitData().then( submitData => {
+      console.log("DATA")
+      console.log(submitData)
       if (this.validateData(submitData)) {
-        api.put(`/perfiles/perfil_organizacion/${this.props.data.usuario.id}/`, submitData)
+        console.log("HOLA")
+        console.log(this.props.data.usuario.email)
+        console.log(this.props.data.usuario.id)
+        api.put(`/perfiles/perfil_voluntario/${this.props.data.usuario.id}/`, submitData)
         .then(res => {
           if (res.status === 200) {
             this.setState({
@@ -359,7 +324,7 @@ class ModificarPerfilOrganizacion extends Component {
           }
           <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', height: '150px'}}  class='col-2'>            
               <p style={{ textAlign: 'right' }} 
-                 class='h4'>{this.props.nombre}</p>
+                 class='h4'>{this.props.nombre} {this.props.data.apellido}</p>
           </div>
           <div class='col-6'>
             <img
@@ -384,24 +349,25 @@ class ModificarPerfilOrganizacion extends Component {
         </div>
 
         <div class='row'>   
-            <p style={{ paddingTop: '8px',textAlign: 'right' }} class='font-weight-bold col-2'           htmlFor="cuit">CUIT</p>            
-            <div class='col-6'>{this.renderCuit()}</div>
+            <p style={{ paddingTop: '8px',textAlign: 'right' }} class='font-weight-bold col-2'           htmlFor="dni">DNI</p>            
+            <div class='col-6'>{this.renderDni()}</div>
         </div>
 
         <div class='row'>        
-            <p style={{ textAlign: 'right' }} class='font-weight-bold col-2' htmlFor="telefono">Rubro</p>
-            <div class='col-6'>{this.renderRubro()}</div>    
-        </div>                       
-
-        <div class='row'>          
-          <p style={{ textAlign: 'right' }} class='font-weight-bold col-2' htmlFor="descripcion">Descripción</p> 
-          <div class='col-6'>{this.renderDescripcion()}</div>    
+          <p style={{ textAlign: 'right' }} class='font-weight-bold col-2' htmlFor="sexo">Sexo</p>
+          <div class='col-6'>{this.renderSexo()}</div>    
+        </div>
+        
+        <div class='row'>        
+          <p style={{ textAlign: 'right' }} class='font-weight-bold col-2' htmlFor="gustos">Gustos</p>
+          <div class='col-6'>{this.renderGustos()}</div>    
         </div>      
 
-        <div class='row'>
-          <p class='font-weight-bold col-2' htmlFor="ubicacion" style={{ textAlign: 'right' }}>Ubicación</p>
-          <div class='col-6' style={{ marginBottom: '5px' }}>{this.renderUbicacion()}</div>
-        </div>      
+        <div class='row'>        
+          <p style={{ textAlign: 'right' }} class='font-weight-bold col-2' htmlFor="habilidades">Habilidades</p>
+          <div class='col-6'>{this.renderHabilidades()}</div>    
+        </div>
+
 
         <div style={{ margin: '20px' }} class='row'>
           <div style={{ display: 'flex', justifyContent: 'flex-end' }} class='col-2'>
@@ -423,6 +389,6 @@ class ModificarPerfilOrganizacion extends Component {
     );
   }
 }
-ModificarPerfilOrganizacion.propTypes = perfilPropTypes;
+ModificarPerfilVoluntario.propTypes = perfilPropTypes;
 
-export default ModificarPerfilOrganizacion;
+export default ModificarPerfilVoluntario;

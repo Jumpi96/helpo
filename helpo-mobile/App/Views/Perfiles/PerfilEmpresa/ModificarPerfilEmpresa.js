@@ -33,17 +33,17 @@ const perfilPropTypes = {
       user_type: PropTypes.number,
       is_confirmed: PropTypes.bool,
       nombre: PropTypes.string,
-    }).isRequired,
+    }).isRequired,//User Id
   }),
   rubros: PropTypes.array.isRequired,
   switchToConsultar: PropTypes.func.isRequired,
 }
 
-class ModificarPerfilOrganizacion extends Component {
+class ModificarPerfilEmpresa extends Component {
   constructor(props) {
     super(props); 
     this.rubros = [{id: 0, nombre: 'Ninguno'}].concat(this.props.rubros)
-    this.fakeProps = this.checkBeforeState(this.props.data.rubro, this.props.data.ubicacion)
+   // this.fakeProps = this.checkBeforeState(this.props.data.rubro, this.props.data.ubicacion)
     this.state = {
       nombre: this.props.nombre,
       // Checkeo null porque si es null react tira un warning (https://github.com/reactstrap/reactstrap/issues/570)
@@ -51,8 +51,8 @@ class ModificarPerfilOrganizacion extends Component {
       cuit: this.props.data.cuit == null ? '' : this.props.data.cuit,
       descripcion: this.props.data.descripcion == null ? '' : this.props.data.descripcion,
       avatar_url: this.props.data.avatar.url,
-      ubicacion: this.fakeProps.ubicacion,
-      rubro_id: this.fakeProps.rubro.id,
+    //  ubicacion: this.fakeProps.ubicacion,
+     // rubro_id: this.fakeProps.rubro.id,
       rubros: this.rubros,   
       showModal: false,
       modalType: 'success',
@@ -289,7 +289,7 @@ class ModificarPerfilOrganizacion extends Component {
   handleSubmit() {
     this.prepareSubmitData().then( submitData => {
       if (this.validateData(submitData)) {
-        api.put(`/perfiles/perfil_organizacion/${this.props.data.usuario.id}/`, submitData)
+        api.put(`/perfiles/perfil_empresa/${this.props.data.usuario.id}/`, submitData)
         .then(res => {
           if (res.status === 200) {
             this.setState({
@@ -423,6 +423,6 @@ class ModificarPerfilOrganizacion extends Component {
     );
   }
 }
-ModificarPerfilOrganizacion.propTypes = perfilPropTypes;
+ModificarPerfilEmpresa.propTypes = perfilPropTypes;
 
-export default ModificarPerfilOrganizacion;
+export default ModificarPerfilEmpresa;

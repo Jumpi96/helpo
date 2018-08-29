@@ -1,25 +1,26 @@
 import React, { Component } from 'react';
-import { getImagen } from '../../../Lib/Imagen';
-import {
-  Container,
-  Header,
-  Title,
-  Content,
-  Button,
-  Item,
-  Label,
-  ListItem,
-  Input,
-  Body,
-  Left,
-  Right,
-  Icon,
-  Form,
-  Text,
-  Image
-} from 'native-base';
-import styles from '../styles';
+import PropTypes from 'prop-types'
+import { Card, CardHeader , Button } from 'reactstrap';
+import { getImagen } from '../../../Lib/Imagen'
 
+const perfilPropTypes = {
+  nombre: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
+  data: PropTypes.shape({
+    verificada: PropTypes.bool,
+    telefono: PropTypes.number,
+    dni: PropTypes.number,
+    gustos: PropTypes.string,
+    habilidades: PropTypes.string,
+    sexo: PropTypes.string,
+    apellido: PropTypes.string,
+    avatar: PropTypes.shape({
+      id: PropTypes.number,
+      url: PropTypes.string,
+    })
+  }),
+  switchToModificar: PropTypes.func.isRequired,
+}
 
 class ConsultarPerfilVoluntario extends Component {
   constructor(props) {
@@ -31,129 +32,122 @@ class ConsultarPerfilVoluntario extends Component {
     this.renderApellido = this.renderApellido.bind(this);
     this.renderGustos = this.renderGustos.bind(this);
     this.renderHabilidades = this.renderHabilidades.bind(this);
+
   }
   renderSexo() {
     if (this.props.data.sexo == null) {
-      return <Text class='text-muted'> No hay valor ingresado</Text>
+      return <p class='text-muted'> No hay valor ingresado</p>
     }
-    return <Text> {this.props.data.sexo}</Text>      
+    return <p> {this.props.data.sexo}</p>      
   }
 
   renderApellido() {
     if (this.props.data.apellido == null) {
-      return <Text class='text-muted'> No hay valor ingresado</Text>
+      return <p class='text-muted'> No hay valor ingresado</p>
     }
-    return <Text> {this.props.data.apellido}</Text>      
+    return <p> {this.props.data.apellido}</p>      
   }
 
   renderGustos() {
     if (this.props.data.gustos == null) {
-      return <Text class='text-muted'> No hay valor ingresado</Text>
+      return <p class='text-muted'> No hay valor ingresado</p>
     }
-    return <Text> {this.props.data.gustos}</Text>      
+    return <p> {this.props.data.gustos}</p>      
   }
 
   renderHabilidades() {
     if (this.props.data.habilidades == null) {
-      return <Text class='text-muted'> No hay valor ingresado</Text>
+      return <p class='text-muted'> No hay valor ingresado</p>
     }
-    return <Text> {this.props.data.habilidades}</Text>      
+    return <p> {this.props.data.habilidades}</p>      
   }
 
   renderTelefono() {
     //Si uso == va a dar True para null y undefined
     if (this.props.data.telefono == null) {
-      return <Text class='text-muted'> No hay valor ingresado</Text>
+      return <p class='text-muted'> No hay valor ingresado</p>
     }
-    return <Text> {this.props.data.telefono}</Text>      
+    return <p> {this.props.data.telefono}</p>      
   }
 
   renderDni() {
     if (this.props.data.dni == null) {
-      return <Text class='text-muted'> No hay valor ingresado</Text>
+      return <p class='text-muted'> No hay valor ingresado</p>
     }
-    return <Text> {this.props.data.dni}</Text>      
+    return <p> {this.props.data.dni}</p>      
   }
 
   renderDescripcion() {
     if (this.props.data.descripcion == null) {
-      return <Text class='text-muted'> No hay valor ingresado</Text>
+      return <p class='text-muted'> No hay valor ingresado</p>
     }
-    return <Text> {this.props.data.descripcion}</Text>      
+    return <p> {this.props.data.descripcion}</p>      
   }  
 
-  render() {
-    return (
-      <Container style={styles.container}>
-        <Header>
-          
-          <Left>
-            <Button transparent onPress={() => this.props.navigation.navigate('LaunchScreen')}>
-              <Icon name="arrow-back" />
-            </Button>
-          </Left>
-          
-          <Body>
-            <Title>Perfil</Title>
-          </Body>
-
-          <Right>
-            <Button transparent onClick={this.props.switchToModificar}>
-              <Icon name="edit" />
-            </Button>
-          </Right>
-
-        </Header>
+  render() {    
+    return (      
+      <Card>
+        <CardHeader>
+          <i className="fa fa-align-justify"></i> Perfil
+        </CardHeader>
+        <div class='container'>
         
-        <Content>
-
-          <Image
-            source={{uri: getImagen(this.props.data.avatar.url) }}
-          />
+        <div style={{ alignItems: 'center' }} class='row'>
+          <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', height: '150px'}} class='col-2'>            
+            <p style={{ textAlign: 'right' }} 
+               class='h4'>{this.props.nombre} {this.renderApellido()}</p>
+          </div>
+          <div class='col-6'>
+            <img
+              class='rounded-circle'
+              src={getImagen(this.props.data.avatar.url)}
+              alt="avatar"
+              width="100" 
+              height="100"
+            />
+          </div>
+        </div>
           
-          <ListItem>
-            <Label style={styles.label}>Nombre</Label>
-            <Text>{this.props.nombre}</Text>
-          </ListItem>
+        <div class='row'>
+            <p style={{ textAlign: 'right' }} class='font-weight-bold col-2' htmlFor="mail">Mail</p>
+            <div class='col-6'><p>{this.props.email}</p></div>
+        </div>
 
-          <ListItem>
-            <Label style={styles.label}>Apellido</Label>
-            {this.renderApellido}
-          </ListItem>
+        <div class='row'>
+            <p style={{ textAlign: 'right' }} class='font-weight-bold col-2' htmlFor="telefono">Teléfono</p>
+            <div class='col-6'>{this.renderTelefono()}</div>
+        </div>
 
-          <ListItem>
-            <Label style={styles.label}>Mail</Label>
-            <Text>{this.props.email}</Text>
-          </ListItem>
+        <div class='row'>          
+            <p style={{ textAlign: 'right' }} class='font-weight-bold col-2' htmlFor="dni">DNI</p>
+            <div class='col-6'>{this.renderDni()}</div>
+        </div>
+        
+        {/**/}
+        <div class='row'>        
+            <p style={{ textAlign: 'right' }} class='font-weight-bold col-2' htmlFor="sexo">Sexo</p>
+            <div class='col-6'>{this.renderSexo()}</div>    
+        </div>
 
-          <ListItem>
-            <Label style={styles.label}>Teléfono</Label>
-            {this.renderTelefono}
-          </ListItem>
+        <div class='row'>        
+            <p style={{ textAlign: 'right' }} class='font-weight-bold col-2' htmlFor="gustos">Gustos</p>
+            <div class='col-6'>{this.renderGustos()}</div>    
+        </div>
 
-          <ListItem>
-            <Label style={styles.label}>DNI</Label>
-            {this.renderDni}
-          </ListItem>
+        <div class='row'>        
+            <p style={{ textAlign: 'right' }} class='font-weight-bold col-2' htmlFor="habilidades">Habilidades</p>
+            <div class='col-6'>{this.renderHabilidades()}</div>    
+        </div>
+        {/**/}            
 
-          <ListItem>
-            <Label style={styles.label}>Sexo</Label>
-            {this.renderSexo}
-          </ListItem>
-
-          <ListItem>
-            <Label style={styles.label}>Gustos</Label>
-            {this.renderGustos}
-          </ListItem>
-
-          <ListItem>
-            <Label style={styles.label}>Habilidades</Label>
-            {this.renderHabilidades}
-          </ListItem>
-
-        </Content>
-      </Container>
+        <div style={{ width: '500px', justifyContent: 'center' ,display: 'flex', marginBottom: '10px' }} class='row offster-md-4'>         
+          <Button onClick={this.props.switchToModificar} color='primary'>Modificar Datos</Button>
+        </div>  
+        </div>
+      </Card>
     );
   }
 }
+ConsultarPerfilVoluntario.propTypes = perfilPropTypes;
+
 export default ConsultarPerfilVoluntario;

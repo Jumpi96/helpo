@@ -84,6 +84,111 @@ class ConsultarPerfilVoluntario extends Component {
     return <p> {this.props.data.descripcion}</p>      
   }  
 
+  render() {
+    const { params } = this.props.navigation.state;
+    const evento = params.evento;
+    let listaContactos;
+    if (evento.contacto.length > 0) {
+      listaContactos = evento.contacto.map(contacto =>
+        <ListItem key={contacto.nombre}>
+          <Text>{contacto.nombre} - {contacto.telefono}</Text>
+        </ListItem>
+      );
+    }
+    return (
+      <Container style={styles.container}>
+        <Header>
+          <Left>
+            <Button transparent onPress={() => this.props.navigation.navigate('ConsultarEventos')}>
+              <Icon name="arrow-back" />
+            </Button>
+          </Left>
+          <Body>
+            <Title>{evento.nombre}</Title>
+          </Body>
+          { this.props.auth.user.user_type === 2 ?
+            <Right>
+              <Button 
+                transparent 
+                onPress={() => this.props.navigation.navigate('RegistrarColaboraciones', { evento: evento.id })}>
+                <Text>Colaborar</Text>
+              </Button>
+            </Right> : undefined
+          }
+        </Header>
+        <Content>
+          <Separator bordered noTopBorder>
+            <Text>Información</Text>
+          </Separator>
+          <ListItem>
+            <Label style={styles.label}>Nombre</Label>
+            <Text>{evento.nombre}</Text>
+          </ListItem>
+          <ListItem>
+            <Label style={styles.label}>Organización</Label>
+            <Text>{evento.organizacion.nombre}</Text>
+          </ListItem>
+          <ListItem>
+            <Label style={styles.label}>Descripción</Label>
+            <Text>{evento.descripcion}</Text>
+          </ListItem>
+          <ListItem>
+            <Label style={styles.label}>Rubro</Label>
+            <Text>{evento.rubro.nombre}</Text>
+          </ListItem>
+          <Separator bordered noTopBorder>
+            <Text>Fecha</Text>
+          </Separator>
+          <ListItem>
+            <Label style={styles.label}>Inicio</Label>
+            <Text>{moment(evento.fecha_hora_inicio).format('DD/MM/YYYY HH:mm')}</Text>
+          </ListItem>
+          <ListItem>
+            <Label style={styles.label}>Fin</Label>
+            <Text>{moment(evento.fecha_hora_fin).format('DD/MM/YYYY HH:mm')}</Text>
+          </ListItem>
+          {listaContactos ? (
+            <View>
+              <Separator bordered noTopBorder>
+                <Text>Contactos</Text>
+              </Separator>
+              {listaContactos}
+            </View>
+            ) : undefined
+          }
+          {evento.necesidades.length > 0 ? (
+            <View>
+              <Separator bordered noTopBorder>
+                <Text>Necesidades materiales</Text>
+              </Separator>
+              {this.getListaNecesidades(evento)}
+            </View>
+            ) : undefined
+          }
+          {evento.voluntarios.length > 0 ? (
+            <View>
+              <Separator bordered noTopBorder>
+                <Text>Voluntarios</Text>
+              </Separator>
+              {this.getListaVoluntarios(evento)}
+            </View>
+            ) : undefined
+          }
+          {evento.comentarios.length > 0 ? (
+            <View>
+              <Separator bordered noTopBorder>
+                <Text>Comentarios</Text>
+              </Separator>
+              {this.getListaComentarios(evento)}
+            </View>
+            ) : undefined
+          }
+        </Content>
+      </Container>
+    );
+  }
+}
+
   render() {    
     return (      
       <Card>

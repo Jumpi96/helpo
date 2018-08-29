@@ -1753,7 +1753,7 @@ fieldset:disabled a.btn {
       box-shadow: 0 0 0 0.2rem rgba(99, 194, 222, 0.5); }
 
 .btn-warning {
-  color: #23282c;
+  color: white;
   background-color: #ffc107;
   border-color: #ffc107; }
   .btn-warning:hover {
@@ -1763,7 +1763,7 @@ fieldset:disabled a.btn {
   .btn-warning:focus, .btn-warning.focus {
     box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.5); }
   .btn-warning.disabled, .btn-warning:disabled {
-    color: #23282c;
+    color: white;
     background-color: #ffc107;
     border-color: #ffc107; }
   .btn-warning:not(:disabled):not(.disabled):active, .btn-warning:not(:disabled):not(.disabled).active,
@@ -9870,3 +9870,10 @@ body {
 
 html body .app.flex-row.align-items-center {
   height: 100vh; }
+
+.icon-helpo {
+  background-image: url("./icons/helpo.png");
+  background-repeat: no-repeat;
+  width: 20px;
+  height: 14px;
+}

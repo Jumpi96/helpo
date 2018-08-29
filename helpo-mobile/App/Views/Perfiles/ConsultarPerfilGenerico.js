@@ -183,6 +183,16 @@ class ConsultarPerfilGenerico extends Component {
       default:
       //return ( <Text>Error</Text> )        
     }
+  }  
+
+  renderComponente() {
+    if (this.state.loggedUser && this.state.modificar) {
+      return this.renderModificar()
+    }
+    else if (this.state.loggedUser && !this.state.modificar) {
+      return this.renderConsultar()
+    }
+    else { return this.renderConsultarOtro()}
   }
 
   renderComponente() {

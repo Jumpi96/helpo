@@ -1,7 +1,12 @@
 import api from "../api"
 const axios = require('axios')
 
-
+async function refreshToken() {
+  await api.get('imgurToken/')
+  .then(res => {        
+    localStorage.setItem('imgur_access_token', res.data.value)
+  })
+}
 
 /*
   Sube una imagen codificada en base64 a Imgur,
@@ -10,13 +15,11 @@ const axios = require('axios')
   Si retorna 'error' hubo un error y no se completo la funcion con exito
 */
 async function uploadImage(encodedimg) {
-  let access_token = localStorage.getItem('imgur_access_token')
+  let access_token = await localStorage.getItem('imgur_access_token')
   let url = ''
-
-  if ( access_token == null ) {
-    refreshToken()
-  }
-  
+  if ( access_token === "null" ) {
+    await refreshToken()
+  }  
   await axios({
     method: 'post',
     url: 'https://api.imgur.com/3/image',
@@ -31,8 +34,8 @@ async function uploadImage(encodedimg) {
     if (response.status === 200) {
       url = response.data.data.link
     }
-    else if ( response.status === 400 && response.data.error.code === 500 ) {
-      localStorage.setItem('imgur_access_token', null)
+    else if ((response.status === 400 && response.data.error.code === 500) || response.status === 403 ) {
+      localStorage.setItem('imgur_access_token', "null")
       url = 'recall'
     }
     else {      
@@ -40,21 +43,11 @@ async function uploadImage(encodedimg) {
     }
   })
   .catch( error => {
-    if ( error.response.status === 400 && error.response.data.error.code === 500 ) {
-      localStorage.setItem('imgur_access_token', null)
-      url = 'recall'
-    }
-    else { url = 'errorCatched'}
+    url = 'errorCatched'
   })
   return url
 }
 
-function refreshToken() {
-  api.get('imgurToken/')
-  .then(res => {    
-    localStorage.setItem('imgur_access_token', res.data.value)
-  })
-}
 
 function getImagen(url) {
   return url

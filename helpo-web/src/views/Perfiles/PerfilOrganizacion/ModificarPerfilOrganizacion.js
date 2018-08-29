@@ -244,9 +244,8 @@ class ModificarPerfilOrganizacion extends Component {
     
     let avatar_url = this.props.data.avatar.url
     if ( this.state.avatar_changed ) {
-      console.log("MIAAAAAAMEEEEEEE")
-      const rx = /\/9j\/.*/gm
-      const encondedAvatar = rx.exec(this.state.avatar_url)[0]
+      const rx = /data.*base64,(.*)/gm
+      const encondedAvatar = rx.exec(this.state.avatar_url)[1]
       avatar_url = await uploadImage(encondedAvatar)
       if (avatar_url === 'recall') {
         avatar_url = await uploadImage(encondedAvatar)
@@ -289,12 +288,8 @@ class ModificarPerfilOrganizacion extends Component {
   handleSubmit() {
     this.prepareSubmitData().then( submitData => {
       if (this.validateData(submitData)) {
-        console.log("Imprimiendo DATA de ONG")
-        console.log(submitData)
-        console.log("Imprimiendo USUARIO de ONG")
-        console.log(this.props.data.usuario)
 
-        api.put(`/perfiles/perfil_organizacion/${this.props.data.usuario}/`, submitData)
+        api.put(`/perfiles/perfil_organizacion/${this.props.data.usuario.id}/`, submitData)
         .then(res => {
           if (res.status === 200) {
             this.setState({
@@ -310,7 +305,6 @@ class ModificarPerfilOrganizacion extends Component {
           }
         })
       }
-      console.log(this.state.errors)
     }) 
   }
 

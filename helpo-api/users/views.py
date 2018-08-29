@@ -119,7 +119,6 @@ def refreshToken():
       'grant_type': 'refresh_token',
     }
     res = requests.post("https://api.imgur.com/oauth2/token", postData)
-    print(res.json())
     new_access_token = res.json()['access_token']
     new_refresh_token = res.json()['refresh_token']
 

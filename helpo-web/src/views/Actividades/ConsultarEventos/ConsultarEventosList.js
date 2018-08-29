@@ -15,6 +15,14 @@ class ConsultarEventosList extends React.Component {
     });
   }
 
+  getLink(evento) {
+    if (localStorage.getItem("token") !== null) {
+      return '/actividades/consultar-evento?id=' + evento.id;
+    } else {
+      return '/noAuth/actividades/consultar-evento?id=' + evento.id;
+    } 
+  }
+
   render() {
     if (this.props.eventos.length > 0) {
       const eventos = this.sortEventos(this.props.eventos);
@@ -26,8 +34,8 @@ class ConsultarEventosList extends React.Component {
                 <EventoCard
                   evento={evento}
                   key={evento.id} footer
-                  color="primary" auth={this.props.auth}
-                  link={'/actividades/consultar-evento?id=' + evento.id} 
+                  color="primary"
+                  link={this.getLink(evento)} 
                 />
               </Col>
             )}

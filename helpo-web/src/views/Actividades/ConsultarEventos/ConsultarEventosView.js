@@ -44,7 +44,11 @@ class ConsultarEventosView extends React.Component {
   }
 
   esVoluntario() {
-    return this.props.auth.user.user_type === 2;
+    if (this.props.auth.user) {
+      return this.props.auth.user.user_type === 2;
+    } else {
+      return false;
+    }
   }
 
   render() {
@@ -192,7 +196,7 @@ class ConsultarEventosView extends React.Component {
               </button>
               ) : undefined
             }
-            {moment(evento.fecha_hora_inicio)<=moment() ? (
+            {moment(evento.fecha_hora_inicio)<=moment() && this.props.auth.user ? (
               <ComentariosEvento evento={evento} update={this.loadEvento} />
               ) : undefined
             }

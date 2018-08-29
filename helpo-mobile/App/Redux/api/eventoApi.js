@@ -37,7 +37,7 @@ class EventoApi {
     });
   }
   static getColaboracionesParticipaciones(eventoId) {
-    return api.get(`/actividades/consulta_necesidades/${eventoId}`).then(response => {
+    return api.get(`/actividades/consulta_necesidades/${eventoId}/`).then(response => {
       return response.data;
     }).catch(error => {
       return error;

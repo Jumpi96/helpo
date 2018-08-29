@@ -289,7 +289,12 @@ class ModificarPerfilOrganizacion extends Component {
   handleSubmit() {
     this.prepareSubmitData().then( submitData => {
       if (this.validateData(submitData)) {
-        api.put(`/perfiles/perfil_organizacion/${this.props.data.usuario.id}/`, submitData)
+        console.log("Imprimiendo DATA de ONG")
+        console.log(submitData)
+        console.log("Imprimiendo USUARIO de ONG")
+        console.log(this.props.data.usuario)
+
+        api.put(`/perfiles/perfil_organizacion/${this.props.data.usuario}/`, submitData)
         .then(res => {
           if (res.status === 200) {
             this.setState({

@@ -7,7 +7,9 @@ const { Types, Creators } = createActions({
   consultarColabsRequest: ['eventoId'],
   consultarColabsSuccess: ['data'],
   consultarColabsFailure: null,
-  consultarColabsDetalleCol: ['datos']
+  consultarColabsDetalleCol: ['data'],
+  consultarColabsChangeCol: ['id', 'value', 'eventoId'],
+  consultarColabsChangePar: ['id', 'value', 'eventoId'],
 })
 
 export const ConsultarColabsTypes = Types
@@ -33,7 +35,7 @@ export const ConsultarColabsSelectors = {
 
 // request the data from an api
 export const request = (state) =>
-  state.merge({ fetching: true, data: null })
+  state.merge({ fetching: true })
 
 // successful api lookup
 export const success = (state, action) => {
@@ -57,5 +59,6 @@ export const detalle = (state, action) => {
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.CONSULTAR_COLABS_REQUEST]: request,
   [Types.CONSULTAR_COLABS_SUCCESS]: success,
-  [Types.CONSULTAR_COLABS_FAILURE]: failure
+  [Types.CONSULTAR_COLABS_FAILURE]: failure,
+  [Types.CONSULTAR_COLABS_DETALLE_COL]: detalle,
 })

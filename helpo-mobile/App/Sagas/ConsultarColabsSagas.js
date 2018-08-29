@@ -13,12 +13,11 @@
 import { call, put } from 'redux-saga/effects'
 import ConsultarColabsActions from '../Redux/ConsultarColabsRedux'
 import eventoApi from '../Redux/api/eventoApi'
-// import { ConsultarColabsSelectors } from '../Redux/ConsultarColabsRedux'
+import api from '../api'
 
 export function * getConsultarColabs (action) {
   const { eventoId } = action
   // get current data from Store
-  // const currentData = yield select(ConsultarColabsSelectors.getData)
   // make the call to the api
   const response = yield call(eventoApi.getColaboracionesParticipaciones, eventoId)
 
@@ -27,6 +26,30 @@ export function * getConsultarColabs (action) {
     // You might need to change the response here - do this with a 'transform',
     // located in ../Transforms/. Otherwise, just pass the data back from the api.
     yield put(ConsultarColabsActions.consultarColabsSuccess(response))
+  } else {
+    yield put(ConsultarColabsActions.consultarColabsFailure())
+  }
+}
+
+export function * updateColaboracion(action) {
+  const { id, value, eventoId } = action
+  const patchData = { entregado: value }
+  const response = api.patch(`/actividades/colaboraciones/${id}/`, patchData)
+
+  if(response) {
+    yield put(ConsultarColabsActions.consultarColabsRequest(eventoId))
+  } else {
+    yield put(ConsultarColabsActions.consultarColabsFailure())
+  }
+}
+
+export function * updateParticipacion(action) {
+  const { id, value, eventoId } = action
+  const patchData = { participo: value }
+  const response = api.patch(`/actividades/participaciones/${id}/`, patchData)
+
+  if(response) {
+    yield put(ConsultarColabsActions.consultarColabsRequest(eventoId))
   } else {
     yield put(ConsultarColabsActions.consultarColabsFailure())
   }

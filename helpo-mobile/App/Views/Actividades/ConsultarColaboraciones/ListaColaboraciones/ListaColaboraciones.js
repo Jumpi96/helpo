@@ -3,6 +3,14 @@ import { ListItem, Icon, Text, View, Left, Body, Right } from 'native-base'
 import { connect } from 'react-redux'
 import ConsultarColabsActions from '../../../../Redux/ConsultarColabsRedux'
 
+const noItems = (
+  <ListItem>
+    <Body>
+      <Text>No hay colaboraciones para este recurso</Text>
+    </Body>
+  </ListItem>
+)
+
 const ListaColaboraciones = (props) => {
   const { necesidad, colaboraciones } = props
   let items = []
@@ -31,7 +39,10 @@ const ListaColaboraciones = (props) => {
     )
     items.push(item)
   }
-    
+  
+  if( items.length === 0) {
+    items.push(noItems)
+  }
 
   return (
     <View>
@@ -43,8 +54,8 @@ const ListaColaboraciones = (props) => {
   )
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch) => ({
   uploadDetalle: (colaboracion) => dispatch(ConsultarColabsActions.consultarColabsDetalleCol(colaboracion))
-}
+})
 
 export default connect(null ,mapDispatchToProps)(ListaColaboraciones)

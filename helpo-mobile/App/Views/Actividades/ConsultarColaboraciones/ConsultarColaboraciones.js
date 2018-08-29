@@ -1,11 +1,11 @@
 import React from 'react'
 import SeccionRecurso from './ListaColaboraciones/SeccionRecurso'
-import ListaVoluntarios from './ListaVoluntarios/ListaVoluntarios'
+import SeccionFuncion from './ListaVoluntarios/SeccionFuncion'
 import { connect } from 'react-redux'
 import { View, Text } from 'react-native'
 import { Container, List } from 'native-base'
 import ContainerHeader from '../../../Components/ContainerHeader'
-import ConsultarColabsActions, { ConsultarColabsTypes } from '../../../Redux/ConsultarColabsRedux'
+import ConsultarColabsActions from '../../../Redux/ConsultarColabsRedux'
 import api from '../../../api'
 import axios from 'axios'
 
@@ -61,6 +61,7 @@ class ConsultarColaboracionConnected extends React.Component {
     const content = () => { return (
       <View>
         <SeccionRecurso necesidades={this.props.data.necesidades} navigation={this.props.navigation}/>
+        <SeccionFuncion voluntarios={this.props.data.voluntarios} navigation={this.props.navigation}/>
       </View>
     )}
 

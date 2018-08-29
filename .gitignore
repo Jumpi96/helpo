@@ -68,6 +68,3 @@ pgadmin/*
 
 # SSL Certs
 certs/
-
-#Android
-helpo-mobile/android/

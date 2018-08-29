@@ -28,18 +28,18 @@ class ConsultarEventosList extends React.Component {
       const eventos = this.sortEventos(this.props.eventos);
       return (
         <div>
+          {eventos.map(evento =>
           <Row>
-            {eventos.map(evento =>       
-              <Col>
-                <EventoCard
-                  evento={evento}
-                  key={evento.id} footer
-                  color="primary"
-                  link={this.getLink(evento)} 
-                />
-              </Col>
-            )}
+            <Col>
+              <EventoCard
+                evento={evento}
+                key={evento.id} footer
+                color="primary"
+                link={this.getLink(evento)} 
+              />
+            </Col>
           </Row>
+          )}
         </div>
         );
     } else {

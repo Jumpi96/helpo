@@ -131,6 +131,15 @@ class VerEvento extends React.Component {
             </View>
             ) : undefined
           }
+          <ListItem 
+            button 
+            onPress={() => this.props.navigation.navigate('ConsultarColaboraciones', {
+              eventoId: this.props.navigation.state.params.evento.id})}
+            >
+            <Body>
+              <Text>Ver Colaboraciones</Text>
+            </Body>
+          </ListItem>
         </Content>
         <View style={{ flex: 0.1 }}>
           <Fab

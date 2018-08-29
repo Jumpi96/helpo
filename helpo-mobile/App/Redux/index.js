@@ -9,7 +9,8 @@ export const reducers = combineReducers({
   search: require('./SearchRedux').reducer,
   auth: require('./AuthRedux').reducer,
   evento: require('./EventoRedux').reducer,
-  rubroEvento: require('./RubroEventoRedux').reducer
+  rubroEvento: require('./RubroEventoRedux').reducer,
+  consultarColabs: require('./ConsultarColabsRedux').reducer
 })
 
 export default () => {

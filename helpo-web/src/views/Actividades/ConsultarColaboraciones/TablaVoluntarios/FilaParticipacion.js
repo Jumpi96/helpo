@@ -9,15 +9,14 @@ const FilaPropTypes = {
   apellido: PropTypes.string.isRequired,
   nombre: PropTypes.string.isRequired,
   dni: PropTypes.number,
-  cantidad: PropTypes.number.isRequired,
   comentario: PropTypes.string,
-  idColaboracion: PropTypes.number.isRequired,
-  handleCheckboxChange: PropTypes.func.isRequired,
+  idParticipacion: PropTypes.number.isRequired,
+  checkedBox: PropTypes.func,
   idVoluntario: PropTypes.number.isRequired
 }
 
-const FilaColaboracionConnected = ( props ) => {
-  const { apellido, nombre, cantidad, comentario, idColaboracion, handleCheckboxChange, entregado,idVoluntario } = props  
+const FilaParticipacionConnected = ( props ) => {
+  const { apellido, nombre, comentario, idParticipacion, handleCheckboxChange, participo, idVoluntario } = props
 
   const perfilButton = (
     <Link to={`/perfil/${idVoluntario}`}>
@@ -30,23 +29,21 @@ const FilaColaboracionConnected = ( props ) => {
       <td>{apellido}</td>
       <td>{nombre}</td>
       <td>{perfilButton}</td>
-      <td>{cantidad}</td>
       <td>{comentario ? comentario : "-"}</td>
       <td><input 
             type="checkbox" 
-            name={"entregado" + idColaboracion}              
-            defaultChecked={entregado}
-            onChange={(event) => handleCheckboxChange(event.target.checked, idColaboracion)}/>
+            name={"entregado" + idParticipacion} 
+            defaultChecked={participo}
+            onChange={(event) => handleCheckboxChange(event.target.checked, idParticipacion)}/>
             </td>
     </tr>
   )
 }
-FilaColaboracionConnected.propTypes = FilaPropTypes
+FilaParticipacionConnected.propTypes = FilaPropTypes
 
 const mapDispatchToProps = dispatch => ({
-  handleCheckboxChange: (value, colaboracionId) => { dispatch(actions.consultarColaboracionesChangeColaboracion(value, colaboracionId)) }
+  handleCheckboxChange: (value, idParticipacion) => { dispatch(actions.consultarColaboracionesChangeParticipacion(value, idParticipacion)) }
 })
-const FilaColaboracion = connect( null, mapDispatchToProps)(FilaColaboracionConnected)
+const FilaParticipacion = connect( null, mapDispatchToProps)(FilaParticipacionConnected)
 
-
-export default FilaColaboracion;
+export default FilaParticipacion;

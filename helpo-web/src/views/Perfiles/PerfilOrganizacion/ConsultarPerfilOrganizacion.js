@@ -29,6 +29,7 @@ const perfilPropTypes = {
     }),
   }),
   switchToModificar: PropTypes.func.isRequired,
+  sinModificar: PropTypes.bool
 }
 
 class ConsultarPerfilOrganizacion extends Component {

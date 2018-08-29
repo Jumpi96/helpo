@@ -1,16 +1,16 @@
 import React from 'react'
-import TablaColaboracion from './TablaColaboracion'
+import TablaVoluntario from './TablaVoluntario'
 
-const TablaColaboraciones = ( props ) => {
+const TablaVoluntarios = ( props ) => {
   let tablas = []
     for ( var key in props ) {
-        const colaboraciones = props[key].colaboraciones 
-        const necesidad = props[key].recurso.nombre
+        const participaciones = props[key].participaciones 
+        const funcion = props[key].funcion.nombre
        tablas.push(
-        <TablaColaboracion 
+        <TablaVoluntario 
         key={ key }
-        necesidad={ necesidad } 
-        colaboraciones={ colaboraciones } 
+        funcion={ funcion } 
+        participaciones={ participaciones } 
         />) 
       }
     
@@ -28,4 +28,4 @@ const TablaColaboraciones = ( props ) => {
     </div>
   )
 }
-export default TablaColaboraciones;
+export default TablaVoluntarios;

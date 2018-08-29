@@ -288,7 +288,7 @@ class ModificarPerfilEmpresa extends Component {
   handleSubmit() {
     this.prepareSubmitData().then( submitData => {
       if (this.validateData(submitData)) {
-        api.put(`/perfiles/perfil_empresa/${this.props.data.usuario}/`, submitData)
+        api.put(`/perfiles/perfil_empresa/${this.props.data.usuario.id}/`, submitData)
         .then(res => {
           if (res.status === 200) {
             this.setState({

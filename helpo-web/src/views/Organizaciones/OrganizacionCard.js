@@ -20,44 +20,7 @@ const propTypes = {
   link: PropTypes.string,
 };
 
-class organizacionCard extends Component {
-
-
-  getVoluntarios() {
-    const arrayVoluntarios = this.props.organizacion.voluntarios ? this.props.organizacion.voluntarios : [];
-    const necesidades = arrayVoluntarios.slice(0, 2).map((voluntario) => {
-      return (
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-          {voluntario.funcion.nombre}
-          <span class="badge badge-primary badge-pill">{voluntario.cantidad}</span>
-        </li>
-      )
-    });
-    return necesidades;
-  }
-
-  getorganizacionPorcentaje() {
-    let contadorNecesidades = 0;
-    let contadorCubiertas = 0;
-    let contadorTemp = 0;
-    const voluntarios = this.props.organizacion.voluntarios;
-    const necesidades = this.props.organizacion.necesidades;
-    if (voluntarios && necesidades) {
-      for (let i = 0; i < voluntarios.length; i++) {
-        contadorNecesidades += voluntarios[i].cantidad;
-        contadorCubiertas += voluntarios[i].participaciones.length;
-      }
-      for (let i = 0; i < necesidades.length; i++) {
-        contadorTemp = 0;
-        contadorNecesidades += necesidades[i].cantidad;
-        for (let j = 0; j < necesidades[i].colaboraciones; i++) {
-          contadorTemp += necesidades[i].colaboraciones[j].cantidad;
-        }
-        contadorCubiertas += contadorTemp;
-      }
-    }
-    return contadorNecesidades > 0 ? (contadorCubiertas/contadorNecesidades) * 100 : 0;
-  }
+class OrganizacionCard extends Component {
 
   render() {
     const { 
@@ -71,22 +34,8 @@ class organizacionCard extends Component {
       ...attributes } 
       = this.props;
 
-    // demo purposes only
-    const progress = { style: '', color: color, value: this.getorganizacionPorcentaje()};
-    const card = { style: '', bgColor: '' };
-
-    if (variant === 'inverse') {
-      progress.style = 'progress-white';
-      progress.color = '';
-      card.style = 'text-white';
-      card.bgColor = 'bg-' + color;
-    }
-
-    const classes = mapToCssModules(classNames(className, card.style, card.bgColor), cssModule);
-    progress.style = classNames('progress-xs my-3', progress.style);
-
     return (
-      <Card className={classes} {...attributes}>
+      <Card>
         <CardBody>
         <div>
 
@@ -110,7 +59,7 @@ class organizacionCard extends Component {
           </div>
           
           <Link to={link}> 
-            <button className="btn btn-primary pull-right" hidden={!this.props.auth}>
+            <button className="btn btn-primary pull-right" hidden={!this.props.auth}> 
               + Ver perfil
             </button>
           </Link>
@@ -122,6 +71,6 @@ class organizacionCard extends Component {
   }
 }
 
-organizacionCard.propTypes = propTypes;
+OrganizacionCard.propTypes = propTypes;
 
-export default organizacionCard;
+export default OrganizacionCard;

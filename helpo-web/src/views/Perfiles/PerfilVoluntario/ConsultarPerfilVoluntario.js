@@ -20,6 +20,7 @@ const perfilPropTypes = {
     })
   }),
   switchToModificar: PropTypes.func.isRequired,
+  sinModificar: PropTypes.bool
 }
 
 class ConsultarPerfilVoluntario extends Component {
@@ -140,8 +141,10 @@ class ConsultarPerfilVoluntario extends Component {
         </div>
         {/**/}            
 
-        <div style={{ width: '500px', justifyContent: 'center' ,display: 'flex', marginBottom: '10px' }} class='row offster-md-4'>         
-          <Button onClick={this.props.switchToModificar} color='primary'>Modificar Datos</Button>
+        <div style={{ width: '500px', justifyContent: 'center' ,display: 'flex', marginBottom: '10px' }} class='row offster-md-4'>          
+          {this.props.sinModificar
+          ? "" 
+          : <Button onClick={this.props.switchToModificar} color='primary'>Modificar Datos</Button>}
         </div>  
         </div>
       </Card>

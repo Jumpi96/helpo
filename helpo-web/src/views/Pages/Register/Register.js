@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import validateEmail from "../../../utils/ValidateEmail";
 import api from "../../../api"
 import ModalRegistroExitoso from './ModalRegistroExitoso';
-
+import './Register.css';
 
 class Register extends Component {
   constructor(props) {
@@ -24,11 +24,13 @@ class Register extends Component {
         contraseña: "",
       },
       showModalRegistro: false,
+      modalType: 'success'
     }
     this.handleUserTypeSelect = this.handleUserTypeSelect.bind(this);
     this.renderNameField = this.renderNameField.bind(this); 
     this.onSubmitData = this.onSubmitData.bind(this);
     this.renderErrorList = this.renderErrorList.bind(this);
+    this.showModalRegistro = this.showModalRegistro.bind(this);
   }
 
   onSubmitData() {        
@@ -42,16 +44,53 @@ class Register extends Component {
       }
 
       api.post('/auth/sign_up/', usuario)
-        .then(function (response) {
-          alert("¡Se ha registrado exitosamente en Helpo!")
-        })
-        .catch(function (error) {
-          alert("Error: ya existe un usuario con ese mail")
-        })
-      this.props.history.push('dashboard')
-    } else {
-      // TODO
+      .then(res => {
+        if(res.status === 200) {
+          this.setState({
+            showModalRegistro: true,
+            modalType: 'success',
+          })
+        }
+      }
+      )
+      .catch ( 
+        res => {
+          if(res.status !== 200) {
+            this.setState({
+              showModalRegistro: true,
+              modalType: 'failure',
+            })
+          }
+        }
+      )
+     // this.props.history.push('dashboard')
+    } 
+  }
+
+  renderModal() {
+    if (this.state.showModalRegistro) {
+      if (this.state.modalType === "success") {
+        return (
+          <ModalRegistroExitoso
+            body='¡Se ha registrado exitosamente en Helpo!'
+            onCancel={() => this.props.history.push('dashboard')}
+          />)  
+      }
+      else {
+        return (
+          <ModalRegistroExitoso
+            body='Error: ya existe un usuario con ese mail'
+            onCancel={() => {this.setState({ showModalRegistro: false })}}
+          />
+        )
+      }      
     }
+  }
+
+  showModalRegistro() {
+    this.setState({
+      showModalRegistro: true,
+    })
   }
 
   handleUserTypeSelect(user_type) {
@@ -93,7 +132,7 @@ class Register extends Component {
         break;
       }
       case "email": {
-        this.setState({ email: event.target.value });
+        this.setState({ email: event.target.value.toLowerCase() });
         break;
       }
       case "password": {
@@ -263,7 +302,9 @@ class Register extends Component {
                       <InputGroupAddon addonType="prepend">
                         <InputGroupText>@</InputGroupText>
                       </InputGroupAddon>
-                      <Input type="text" 
+                      <Input 
+                             className="Email"
+                             type="text" 
                              placeholder="Email" 
                              onChange={(e) => this.handleValueChange(e, "email")}/>                    
                     </InputGroup>
@@ -304,7 +345,7 @@ class Register extends Component {
               </Col>
             </Row>
           </Container>
-          <ModalRegistroExitoso open={this.state.showModalRegistro}/>
+        {this.renderModal()}
         </div>
 		<script type="text/javascript" src="assets/js/bootstrap.js"></script>
 	  </body>

@@ -244,9 +244,8 @@ class ModificarPerfilEmpresa extends Component {
     
     let avatar_url = this.props.data.avatar.url
     if ( this.state.avatar_changed ) {
-      console.log("MIAAAAAAMEEEEEEE")
-      const rx = /\/9j\/.*/gm
-      const encondedAvatar = rx.exec(this.state.avatar_url)[0]
+      const rx = /data.*base64,(.*)/gm
+      const encondedAvatar = rx.exec(this.state.avatar_url)[1]
       avatar_url = await uploadImage(encondedAvatar)
       if (avatar_url === 'recall') {
         avatar_url = await uploadImage(encondedAvatar)
@@ -315,7 +314,7 @@ class ModificarPerfilEmpresa extends Component {
         return (
           <ModalGenerico
             body='Se guardaron los cambios exitosamente'
-            onCancel={() => {this.setState({ showModal: false })}}
+            onCancel={this.props.switchToConsultar}
           />)  
       }
       else {

@@ -20,6 +20,11 @@ urlpatterns = [
         view=users_views.UserView.as_view(),
         name="user"
     ),
+    url(
+        regex=r"^perfiles/user/(?P<id>[-\w]+)/$",
+        view=users_views.UserInfoView.as_view(),
+        name="user"
+    ),
     # {% url "api:rubros_organizacion" %}
     url(
         regex=r"^perfiles/rubros_organizacion/$",

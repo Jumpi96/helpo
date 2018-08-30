@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Row, Badge } from 'reactstrap';
+import { Col, Row } from 'reactstrap';
 import { PropTypes } from 'prop-types';
 import EventoCard from './EventoCard/EventoCard';
 
@@ -9,33 +9,38 @@ class ConsultarEventosList extends React.Component {
     return eventos.sort(function(a, b) {
       var keyA = new Date(a.fecha_hora_inicio),
       keyB = new Date(b.fecha_hora_inicio);
-      if(keyA < keyB) return 1;
-      if(keyA > keyB) return -1;
+      if(keyA > keyB) return 1;
+      if(keyA < keyB) return -1;
       return 0;
     });
+  }
+
+  getLink(evento) {
+    if (localStorage.getItem("token") !== null) {
+      return '/actividades/consultar-evento?id=' + evento.id;
+    } else {
+      return '/noAuth/actividades/consultar-evento?id=' + evento.id;
+    } 
   }
 
   render() {
     if (this.props.eventos.length > 0) {
       const eventos = this.sortEventos(this.props.eventos);
       return (
-        <Row>
-          <div className="col-md-3">
-            <Badge color="warning">Próximamente...</Badge>
-          </div>
-          <div className="col-md-9">
-            {eventos.map(evento =>       
-                <Col>
-                  <EventoCard
-                    evento={evento}
-                    key={evento.id} footer
-                    color="primary" auth={this.props.auth}
-                    link={'/actividades/consultar-evento/' + evento.id}
-                  />
-                </Col>
-              )}
-            </div>
+        <div>
+          {eventos.map(evento =>
+          <Row>
+            <Col>
+              <EventoCard
+                evento={evento}
+                key={evento.id} footer
+                color="primary"
+                link={this.getLink(evento)} 
+              />
+            </Col>
           </Row>
+          )}
+        </div>
         );
     } else {
       return <p>Cargando...</p>

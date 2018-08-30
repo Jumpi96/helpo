@@ -21,6 +21,9 @@ Created with [Django React Boilerplate](https://github.com/vintasoftware/django-
 - UML Modelling: [Enterprise Architect](http://www.sparxsystems.com/products/ea/) 
   - It's recommended to follow this [instructions](https://docs.google.com/document/d/1aiTtPPE9bWLdNnu2MVhimmbW6wWmoZtIJilpCCdZZQQ/edit?usp=sharing)
 - Redux dev tools: [ReduxDevTools](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd)
+- Reactotron (mejor debug para mobile): [Reactotron](https://github.com/infinitered/reactotron)
+  - No config needed for mobile, just install the app
+  - If using android emulator and it doesnt connect, try `adb reverse tcp:9090 tcp:9090`
 ### Git
 To know how to:
 - Start coding
@@ -42,12 +45,8 @@ pip install pipenv
 ### Setup
 - On pgAdmin, open Servers, PostgreSQL 10, right click on Databases and create db with name: `db-helpo`
 - On project folder `helpo-api/`:
-  - Create file with name `.env` and text: 
-```
-DJANGO_SETTINGS="helpo.settings.local"
-URL_CLIENT="http://localhost:3000/"
-```
-- Run on `helpo-api/`: 
+  - Create file with name `.env` and text from: [API Local ENV Wiki](https://github.com/Jumpi96/helpo/wiki/ENV-Files#local)
+  - Run on `helpo-api/`: 
 ```
 pipenv install --dev
 pipenv shell
@@ -55,8 +54,8 @@ python manage.py migrate
 python manage.py runserver
 ```
 - On project folder `helpo-web/`:
-  - Create file with name `.env` and text `REACT_APP_API_URL="http://localhost:8000"`
-- Run on `helpo-web/`: 
+  - Create file with name `.env` and text from: [Web Local or Docker ENV Wiki](https://github.com/Jumpi96/helpo/wiki/ENV-Files#local-or-docker)
+  - Run on `helpo-web/`: 
 ```
 npm update
 npm update --save
@@ -69,16 +68,9 @@ npm run start
 - Install Docker.
 ### Setup
 - On project folder `helpo-api/`:
-  - Create file with name `.env` and text:
-```
-DJANGO_SETTINGS=helpo.settings.docker
-URL_CLIENT="http://localhost:3000/"
-```
+  - Create file with name `.env` and text from: [API Docker ENV Wiki](https://github.com/Jumpi96/helpo/wiki/ENV-Files#docker)
 - On project folder `helpo-web/`:
-  - Create file with name `.env` and text:
-```
-REACT_APP_API_URL="http://localhost:8000"
-```
+  - Create file with name `.env` and text from: [Web Local or Docker ENV Wiki](https://github.com/Jumpi96/helpo/wiki/ENV-Files#local-or-docker)
 ### Run
 - From root: `docker-compose build`
 - From root: `docker-compose up`

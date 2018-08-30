@@ -1,8 +1,8 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Container, Header, Title, Content, Button, Icon, Left, Right, Body } from 'native-base';
-import * as eventoActions from '../../../Redux/actions/eventoActions';
+import { Container, Header, Title, Content, Button, Icon, Left, Right, Body, Toast } from 'native-base';
+import api from '../../../api';
 import EventoCard from './EventoCard/EventoCard';
 import styles from './styles';
 
@@ -10,11 +10,45 @@ class ConsultarEventos extends Component {
 
   constructor(props) {
     super(props);
-    this.props.loadEventos();
+    this.state = {
+      eventos: []
+    }
+  }
+
+  componentDidMount() {
+    const { params } = this.props.navigation.state;
+    if (params) {
+      if (params.organizacion) {
+        this.loadEventos('?organizacion=' + params.organizacion);
+        params.organizacion = '';
+      } else {
+        this.loadEventos(params.link);
+        params.link = '';
+      }
+    } else {
+      this.loadEventos('');
+    }
+  }
+
+  loadEventos(ruta) {
+    api.get('/actividades/consulta_eventos/' + ruta)
+      .then((res) => {
+        this.setState({ eventos: res.data });
+        if (res.data.length === 0) {
+          Toast.show({
+            text: 'No existen eventos registrados.',
+            buttonText: 'Aceptar'
+          });
+        }
+      })
+      .catch((error) => {
+        if (error.response){ console.log(error.response.status) }
+        else { console.log('Error: ', error.message)}
+      })
   }
 
   render() {
-    const eventos = this.props.evento.eventos;
+    const eventos = this.state.eventos;
     return (
       <Container style={styles.container}>
         <Header>
@@ -26,7 +60,11 @@ class ConsultarEventos extends Component {
           <Body>
             <Title>Consultar eventos</Title>
           </Body>
-          <Right />
+          <Right>
+            <Button transparent onPress={() => this.props.navigation.navigate("FiltroEventos")}>
+              <Icon type="FontAwesome" name="filter" />
+            </Button>
+          </Right>
         </Header>
         <Content padder>
           {eventos && eventos.map(evento =>
@@ -42,14 +80,4 @@ class ConsultarEventos extends Component {
   }
 }
 
-function bindAction(dispatch) {
-  return {
-    loadEventos: () => dispatch(eventoActions.loadEventosProximos()),
-  };
-}
-
-const mapStateToProps = state => ({
-  evento: state.evento,
-});
-
-export default connect(mapStateToProps, bindAction)(ConsultarEventos);
+export default ConsultarEventos;

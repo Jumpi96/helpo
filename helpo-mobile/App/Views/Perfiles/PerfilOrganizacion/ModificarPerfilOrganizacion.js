@@ -107,8 +107,6 @@ class ModificarPerfilOrganizacion extends Component {
      
       api.put(`/perfiles/perfil_organizacion/${this.props.usuarioId}`, perfil)
         .then((res) => {
-          console.log(res);
-          console.log(res.data);
           this.props.history.push('dashboard'); //Fijarse que pasa con la ruta
         }).catch(function (error) {
           if (error.response) { console.log(error.response.status) }

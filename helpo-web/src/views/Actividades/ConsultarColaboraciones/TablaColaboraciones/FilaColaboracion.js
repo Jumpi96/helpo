@@ -1,5 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import * as actions from '../../../../actions/consultarColaboracionesActions'
+import { connect } from 'react-redux'
+import { Button } from 'reactstrap'
+import { Link } from 'react-router-dom'
 
 const FilaPropTypes = {
   apellido: PropTypes.string.isRequired,
@@ -8,26 +12,41 @@ const FilaPropTypes = {
   cantidad: PropTypes.number.isRequired,
   comentario: PropTypes.string,
   idColaboracion: PropTypes.number.isRequired,
-  checkedBox: PropTypes.func,
+  handleCheckboxChange: PropTypes.func.isRequired,
+  idVoluntario: PropTypes.number.isRequired
 }
 
-const FilaColaboracion = (apellido, nombre, dni = "-", cantidad, comentario = "-", idColaboracion, checkedBox) => {
+const FilaColaboracionConnected = ( props ) => {
+  const { apellido, nombre, cantidad, comentario, idColaboracion, handleCheckboxChange, entregado,idVoluntario } = props  
+
+  const perfilButton = (
+    <Link to={`/perfil/${idVoluntario}`}>
+      <Button color='secondary'>Ir a Perfil</Button>
+    </Link>
+  )
+
   return (
     <tr>
       <td>{apellido}</td>
       <td>{nombre}</td>
-      <td>{dni}</td>
+      <td>{perfilButton}</td>
       <td>{cantidad}</td>
-      <td>{comentario}</td>
+      <td>{comentario ? comentario : "-"}</td>
       <td><input 
             type="checkbox" 
-            name={"entregado" + idColaboracion} 
-            value={idColaboracion} 
-            onChange={() => checkedBox(idColaboracion)}/>
+            name={"entregado" + idColaboracion}              
+            defaultChecked={entregado}
+            onChange={(event) => handleCheckboxChange(event.target.checked, idColaboracion)}/>
             </td>
     </tr>
   )
 }
-FilaColaboracion.PropTypes = FilaPropTypes
+FilaColaboracionConnected.propTypes = FilaPropTypes
+
+const mapDispatchToProps = dispatch => ({
+  handleCheckboxChange: (value, colaboracionId) => { dispatch(actions.consultarColaboracionesChangeColaboracion(value, colaboracionId)) }
+})
+const FilaColaboracion = connect( null, mapDispatchToProps)(FilaColaboracionConnected)
+
 
 export default FilaColaboracion;

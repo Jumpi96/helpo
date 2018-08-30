@@ -7,11 +7,13 @@ import DebugConfig from '../Config/DebugConfig'
 
 import { StartupTypes } from '../Redux/StartupRedux'
 import { GithubTypes } from '../Redux/GithubRedux'
+import { ConsultarColabsTypes } from '../Redux/ConsultarColabsRedux'
 
 /* ------------- Sagas ------------- */
 
 import { startup } from './StartupSagas'
 import { getUserAvatar } from './GithubSagas'
+import { getConsultarColabs, updateColaboracion, updateParticipacion } from './ConsultarColabsSagas'
 
 /* ------------- API ------------- */
 
@@ -28,5 +30,9 @@ export default function * root () {
 
     // some sagas receive extra parameters in addition to an action
     takeLatest(GithubTypes.USER_REQUEST, getUserAvatar, api),
+
+    takeLatest(ConsultarColabsTypes.CONSULTAR_COLABS_REQUEST, getConsultarColabs),
+    takeLatest(ConsultarColabsTypes.CONSULTAR_COLABS_CHANGE_COL, updateColaboracion),
+    takeLatest(ConsultarColabsTypes.CONSULTAR_COLABS_CHANGE_PAR, updateParticipacion)
   ])
 }

@@ -16,6 +16,8 @@ import MisColaboraciones from '../Views/Actividades/MisColaboraciones/MisColabor
 import VerColaboracionesEvento from '../Views/Actividades/MisColaboraciones/VerColaboracionesEvento';
 import RegistrarColaboraciones from '../Views/Actividades/RegistrarColaboraciones/RegistrarColaboraciones';
 import AgregarColaboracion from '../Views/Actividades/RegistrarColaboraciones/AgregarColaboracion';
+import ComentarEvento from '../Views/Actividades/ComentarEvento/ComentarEvento';
+import FiltroEventos from '../Views/Actividades/ConsultarEventos/FiltroEventos/FiltroEventos';
  
 const NavigationDrawer = DrawerNavigator({
 		LaunchScreen: { screen: LaunchScreen },
@@ -33,6 +35,8 @@ const NavigationDrawer = DrawerNavigator({
 		EditarEvento: { screen: EditarEvento },
 		MisColaboraciones: { screen: MisColaboraciones },
 		VerColaboracionesEvento: { screen: VerColaboracionesEvento },
+		ComentarEvento: { screen: ComentarEvento },
+		FiltroEventos: { screen: FiltroEventos },
   },
   {
 	initialRouteName: "LaunchScreen",

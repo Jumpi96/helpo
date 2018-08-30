@@ -148,31 +148,36 @@ class RegistrarEvento extends Component {
   handleValidation(event) {
     let formIsValid = true;
     const errors = this.state.errors;
-
+    const inicio = moment(this.state.fecha_hora_inicio);
+    const fin = moment(this.state.fecha_hora_fin);
+    const actual = moment(new Date());
+    
     if (!this.state.nombre) {
       formIsValid = false;
-      errors.nombre = 'Debe ingresar un nombre.';
+      errors.nombre = 'Debe ingresar un nombre';
     } else { errors.nombre = undefined; }
 
     if (isNaN(Date.parse(this.state.fecha_hora_inicio)) ||
     isNaN(Date.parse(this.state.fecha_hora_fin))) {
       formIsValid = false;
-      errors.fechas = 'Las fechas ingresadas no son válidas.';
+      errors.fechas = 'Las fechas ingresadas no son válidas';
     } else {
-      const inicio = moment(this.state.fecha_hora_inicio);
-      const fin = moment(this.state.fecha_hora_fin);
-      const ahora = moment(new Date());
-      if (moment.duration(fin.diff(inicio)).asHours() > 24 ||
-          inicio < ahora ||
-          moment.duration(fin.diff(inicio)).asHours() < 0) {
+      if (moment.duration(fin.diff(inicio)).asHours() > 24 && inicio<fin) {
         formIsValid = false;
-        errors.fechas = 'Las fecha de fin debe ser mayor a la de inicio y ' +
-          'la actividad no durar más de 24 horas.';
-      } else { errors.fechas = undefined; }
+        errors.fechas = 'El evento no puede durar más de 24 horas';
+      } else 
+        if (inicio < actual || inicio === actual) {
+          formIsValid = false;
+          errors.fechas = "No es posible organizar el evento en el mismo día"
+        } else 
+          if (fin < inicio) {
+            formIsValid = false;
+            errors.fechas = 'La fecha de inicio debe ser anterior a la fecha de fin del evento'
+          } else { errors.fechas = undefined; }
     }
     if (this.state.rubro_id === 0) {
       formIsValid = false;
-      errors.rubro = 'Hubo un problema al cargar los rubros.';
+      errors.rubro = 'Hubo un problema al cargar los rubros';
     } else { errors.rubro = undefined; }
     this.setState({ errors: errors });
     return formIsValid;
@@ -237,8 +242,11 @@ class RegistrarEvento extends Component {
                     value={this.state.fecha_hora_fin}
                   />
                 </div> 
-                <span style={{ color: 'red' }}>{this.state.errors.fechas}</span>
               </div>
+              <div className="row">
+                    <span style={{ color: 'red' }}>{this.state.errors.fechas}</span>
+              </div>
+              
 
               <div className="form-group">
                 <label htmlFor="descripcion">Descripción</label>

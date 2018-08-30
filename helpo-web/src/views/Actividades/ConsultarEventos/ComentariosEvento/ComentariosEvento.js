@@ -103,7 +103,7 @@ class ComentariosEvento extends Component {
   }
 
   handleRetroalimentacion() {
-    api.post('feedbacks/retroalimentacion/', { evento: this.props.evento.id })
+    api.post('feedbacks/retroalimentacion_voluntario/', { evento: this.props.evento.id })
       .then((res) => {
         this.props.update();
       })

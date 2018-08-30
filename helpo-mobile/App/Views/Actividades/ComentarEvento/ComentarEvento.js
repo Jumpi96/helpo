@@ -102,7 +102,7 @@ class ComentarEvento extends React.Component {
   }
 
   handleRetroalimentacion() {
-    api.post('feedbacks/retroalimentacion/', { evento: this.state.evento.id })
+    api.post('feedbacks/retroalimentacion_voluntario/', { evento: this.state.evento.id })
       .then((res) => {
         this.loadEvento();
       })

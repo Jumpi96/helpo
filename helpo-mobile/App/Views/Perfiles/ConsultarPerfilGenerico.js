@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import api from '../../../../api';
+import api from '../../api';
 import ConsultarPerfilOrganizacion from './PerfilOrganizacion/ConsultarPerfilOrganizacion'
 import ConsultarPerfilEmpresa from './PerfilEmpresa/ConsultarPerfilEmpresa'
 import ConsultarPerfilVoluntario from './PerfilVoluntario/ConsultarPerfilVoluntario'
@@ -45,8 +45,7 @@ class ConsultarPerfilGenerico extends Component {
     // TODO: Other user (No usuario logeado)
     let initialState = {};
       api.get('/auth/user/')
-      .then(res => {        
-            console.log(res)
+      .then(res => {  
             initialState.nombre = res.data.nombre
             initialState.userId = res.data.id
             initialState.email = res.data.email
@@ -55,15 +54,11 @@ class ConsultarPerfilGenerico extends Component {
           return api.get(`/perfiles/${this.getApiCall(initialState.userType)}/${initialState.userId}/`)
         })
       .then(res => {
-        console.log(res)
         initialState.data = res.data
-        
         return api.get('/perfiles/rubros_organizacion/')
       })   
       .then( res => {
-        
         initialState.rubros = res.data
-        
       })
       .then(() => {
         // Cambio estado aca para asegurarme que se llame todo lo anterior

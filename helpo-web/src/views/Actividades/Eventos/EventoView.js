@@ -33,9 +33,9 @@ class EventoView extends React.Component {
   }
 
   toggleConsultarColaboraciones() {
-      this.props.history.push({ 
-      pathname: '/actividades/consultar-colaboraciones', 
-      search: '/' + this.state.evento.id,  
+    this.props.history.push({
+      pathname: '/actividades/consultar-colaboraciones',
+      search: '/' + this.state.evento.id,
     });
   }
 
@@ -146,6 +146,14 @@ class EventoView extends React.Component {
             </div>
           ) : undefined
           }
+          <div className="row">
+            <div className="form-group col-md-6">
+              <b name="compartir" className="float-left">Compartir</b>
+            </div>
+            <div className="form-group col-md-6">
+              <ButtonsCompartirEvento evento={this.state.evento} />
+            </div>
+          </div>
           <div className="btn-group form-group" role="group">
             <button
               onClick={this.toggleEdit}
@@ -162,11 +170,11 @@ class EventoView extends React.Component {
               Editar necesidades
             </button>
             <Link to={`/actividades/consultar-colaboraciones/${this.state.evento.id}`}>
-            <button 
-              onClick={this.toggleConsultarColaboraciones}
-              className="btn btn-warning"
-            >
-              Consultar Colaboraciones
+              <button
+                onClick={this.toggleConsultarColaboraciones}
+                className="btn btn-warning"
+              >
+                Consultar Colaboraciones
             </button>
             </Link>
           </div>
@@ -181,8 +189,6 @@ class EventoView extends React.Component {
           </div>
           <ModalEliminarItem open={this.state.showModalEliminar} nombre={this.state.evento.nombre}
             closeModal={this.confirmDeleteNecesidad} />
-
-          <ButtonsCompartirEvento evento={this.state.evento} />
         </div>
       );
     } else {

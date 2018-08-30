@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { Card, CardHeader } from 'reactstrap';
 import api from '../../../api'
 import ModalGenerico from '../ModalGenerico'
-import { uploadImage } from '../../Services/Imagen'
+import { uploadImage } from 'º../../Services/Imagen'
 
 const perfilPropTypes = {
   nombre: PropTypes.string.isRequired,

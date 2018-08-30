@@ -110,10 +110,19 @@ class ConsultarPerfilVoluntario extends Component {
               <Icon name="arrow-back" />
             </Button>
           </Left>
+
+          
           
           <Body>
             <Title>Perfil</Title>
           </Body>
+
+
+          <Right>
+            <Button transparent onClick={this.props.switchToModificar}>
+              <Icon type="FontAwesome" name="edit" />
+            </Button>
+          </Right>
 
         </Header>
         

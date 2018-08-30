@@ -60,6 +60,8 @@ const itemsOrg = [
 	  'routeName': 'Configuracion',
 	  'name': 'Configuración'
 	}
+
+
 ]
 
 const itemsVol = [
@@ -67,6 +69,11 @@ const itemsVol = [
 		'key': 'LaunchScreen',
 		'routeName': 'LaunchScreen',
 		'name': 'Home'
+	},
+	{
+		'key': 'ConsultarPerfilVoluntario',
+		'routeName': 'ConsultarPerfilVoluntario',
+		'name': 'Perfil'
 	},
 	{
 		'key': 'ConsultarEventos',
@@ -88,6 +95,7 @@ const itemsVol = [
 		'routeName': 'Configuracion',
 		'name': 'Configuración'
 	}
+	
 ]
 
 const itemsEmp = [

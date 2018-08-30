@@ -92,6 +92,8 @@ class ConsultarPerfilVoluntario extends Component {
               <Icon name="arrow-back" />
             </Button>
           </Left>
+
+          
           
           <Body>
             <Title>Perfil</Title>

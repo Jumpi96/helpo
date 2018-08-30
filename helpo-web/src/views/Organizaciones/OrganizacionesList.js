@@ -4,7 +4,7 @@ import OrganizacionCard from './OrganizacionCard';
 
 class OrganizacionesList extends React.Component {
   
-  sortOrganizaciones(organizaciones) {
+  sortOrganizaciones(organizaciones) { // Aca implementar el buscador.
     return organizaciones.sort(function(a, b) {
       var keyA = new Date(a.fecha_hora_inicio),
       keyB = new Date(b.fecha_hora_inicio);
@@ -17,8 +17,7 @@ class OrganizacionesList extends React.Component {
   render() {
 
     if (this.props.organizaciones.length > 0) {
-      const organizaciones = this.sortorganizaciones(this.props.organizaciones);
-
+      const organizaciones = this.props.organizaciones; // ES PARA CUANDO SE IMPLEMENTE EL BUSCADOR this.sortorganizaciones(this.props.organizaciones);
       return (
         <Row>
 
@@ -33,7 +32,7 @@ class OrganizacionesList extends React.Component {
                     organizacion={organizacion}
                     key={organizacion.id} footer
                     color="primary" auth={this.props.auth}
-                    link={'/actividades/consultar-organizacion?id=' + organizacion.id} 
+                    link={'/actividades/consultar-organizacion?id=' + organizacion.id} // Ver que link va
                   />
                 </Col>
               )}

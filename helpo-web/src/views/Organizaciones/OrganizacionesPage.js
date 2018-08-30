@@ -30,7 +30,7 @@ class OrganizacionesPage extends React.Component {
       })
   }
 
-  componentDidMount() { 
+  componentDidMount() {  // Suponiendo  que res son todas las organizaciones
     api.get(`/perfiles/perfil_organizacion/`)
     .then( (res) => {
       this.setState({

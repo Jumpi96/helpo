@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import { Card, CardHeader , Button } from 'reactstrap';
-import { getImagen } from '../../../utils/Imagen'
+import { getImagen } from '../../Services/Imagen'
 
 const perfilPropTypes = {
   nombre: PropTypes.string.isRequired,

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import api from '../../api';
-//import ConsultarPerfilOrganizacion from './PerfilOrganizacion/ConsultarPerfilOrganizacion'
-//import ConsultarPerfilEmpresa from './PerfilEmpresa/ConsultarPerfilEmpresa'
+import api from '../../../../api';
+import ConsultarPerfilOrganizacion from './PerfilOrganizacion/ConsultarPerfilOrganizacion'
+import ConsultarPerfilEmpresa from './PerfilEmpresa/ConsultarPerfilEmpresa'
 import ConsultarPerfilVoluntario from './PerfilVoluntario/ConsultarPerfilVoluntario'
 import ModificarPerfilOrganizacion from './PerfilOrganizacion/ModificarPerfilOrganizacion'
 import ModificarPerfilEmpresa from './PerfilEmpresa/ModificarPerfilEmpresa'

@@ -20,10 +20,7 @@ import ComentarEvento from '../Views/Actividades/ComentarEvento/ComentarEvento';
 import FiltroEventos from '../Views/Actividades/ConsultarEventos/FiltroEventos/FiltroEventos';
 import MensajesEvento from '../Views/Actividades/MensajesEvento/MensajesEvento';
 import NuevoMensaje from '../Views/Actividades/MensajesEvento/NuevoMensaje';
-import OrganizacionesPage from '../Views/Organizaciones/OrganizacionesPage';
-
 import ConsultarPerfilVoluntario from '../Views/Perfiles/PerfilVoluntario/ConsultarPerfilVoluntario';
-import ConsultarPerfilGenerico from '../Views/Perfiles/ConsultarPerfilGenerico';
 import ModificarPerfilVoluntario from '../Views/Perfiles/PerfilVoluntario/ModificarPerfilVoluntario';
  
 const NavigationDrawer = DrawerNavigator({
@@ -45,10 +42,8 @@ const NavigationDrawer = DrawerNavigator({
 		ComentarEvento: { screen: ComentarEvento },
 		FiltroEventos: { screen: FiltroEventos },
 		MensajesEvento: { screen: MensajesEvento },
-		NuevoMensaje: { screen: NuevoMensaje },
-		OrganizacionesPage: {screen: OrganizacionesPage}
+		NuevoMensaje: { screen: NuevoMensaje }
 		ConsultarPerfilVoluntario: {screen: ConsultarPerfilVoluntario},
-		ConsultarPerfilGenerico: {screen: ConsultarPerfilGenerico},
 		ModificarPerfilVoluntario: {screen: ModificarPerfilVoluntario},
   },
   {

@@ -71,8 +71,8 @@ const itemsVol = [
 		'name': 'Home'
 	},
 	{
-		'key': 'ConsultarPerfilGenerico',
-		'routeName': 'ConsultarPerfilGenerico',
+		'key': 'ConsultarPerfilVoluntario',
+		'routeName': 'ConsultarPerfilVoluntario',
 		'name': 'Perfil'
 	},
 	{

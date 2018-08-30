@@ -18,9 +18,9 @@ class CompartirEvento extends Component {
           alignItems: 'center',
         }}>
           <TouchableHighlight onPress={() => {
-            // Facebook - Cambiar
+            // Facebook
             var url = "https://www.facebook.com/sharer/sharer.php?u=" +
-              "https%3A%2F%2Fwww.helpo.com.ar%2F%23%2Factividades%2Fevento%2F" + evento.id;
+              "https%3A%2F%2Fwww.helpo.com.ar%2F%23%2Fredirect%2Fevento%3Fid%3D" + evento.id;
             Linking.openURL(url);
           }}>
             <Image
@@ -29,9 +29,9 @@ class CompartirEvento extends Component {
             />
           </TouchableHighlight>
           <TouchableHighlight onPress={() => {
-            // Twitter - Cambiar
+            // Twitter
             var url = "http://twitter.com/share?text=Sumate%20a%20mi%20evento%20en%20Helpo%3A%20" +
-              evento.nombre + "&url=https%3A%2F%2Fwww.helpo.com.ar%2F%23%2Factividades%2Fevento%2F" +
+              evento.nombre + "&url=https%3A%2F%2Fwww.helpo.com.ar%2F%23%2Fredirect%2Fevento%3Fid%3D" +
               evento.id + "&hashtags=Helpo";
             Linking.openURL(url);
           }}>
@@ -41,8 +41,8 @@ class CompartirEvento extends Component {
             />
           </TouchableHighlight>
           <TouchableHighlight onPress={() => {
-            // Google+ - Cambiar
-            var url = "https://plus.google.com/share?url=https%3A%2F%2Fwww.helpo.com.ar%2F%23%2Factividades%2Fevento%2F" + evento.id;
+            // Google+
+            var url = "https://plus.google.com/share?url=https%3A%2F%2Fwww.helpo.com.ar%2F%23%2Fredirect%2Fevento%3Fid%3D" + evento.id;
             Linking.openURL(url);
           }}>
             <Image
@@ -51,8 +51,8 @@ class CompartirEvento extends Component {
             />
           </TouchableHighlight>
           <TouchableHighlight onPress={() => {
-            // LinkedIn - Cambiar
-            var url = "https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fwww.helpo.com.ar%2F%23%2Factividades%2Fevento%2F" +
+            // LinkedIn
+            var url = "https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fwww.helpo.com.ar%2F%23%2Fredirect%2Fevento%3Fid%3D" +
               evento.id + "&summary=Sumate%20a%20mi%20evento%20en%20Helpo%3A%20" + evento.nombre + "&source=Helpo";
             Linking.openURL(url);
           }}>

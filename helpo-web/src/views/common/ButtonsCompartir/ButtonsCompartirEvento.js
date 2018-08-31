@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import MetaTags from 'react-meta-tags';
 
 class ButtonsCompartirEvento extends Component {
 
@@ -7,16 +6,6 @@ class ButtonsCompartirEvento extends Component {
         const evento = this.props.evento;
         return (
             <div className="wrapper">
-                <MetaTags>
-                    {
-                        // La misma URL que se comparta debe tener los siguientes meta tags
-                    }
-                    <meta property="og:url" content={"https://www.helpo.com.ar/#/redirect/evento?id=" + evento.id} />
-                    <meta property="og:type" content="article" />
-                    <meta property="og:title" content={"Helpo: " + evento.nombre} />
-                    <meta property="og:description" content={evento.descripcion} />
-                    <meta property="og:image" content="https://i.imgur.com/GyVKBfQ.jpg" />
-                </MetaTags>
                 <div className="btn-group form-group" role="group">
                     {
                         // Facebook

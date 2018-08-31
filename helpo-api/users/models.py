@@ -4,7 +4,7 @@ from hashlib import sha256
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from common.models import IndexedTimeStampedModel
-import requests
+from common.mails import send_mail
 
 class Profile(models.Model):
     usuario = models.OneToOneField('User')
@@ -81,17 +81,7 @@ class UserManager(BaseUserManager):
         url_confirmation = '%s/#/confirmMail/%s' % (config('URL_CLIENT', default='localhost:3000'), bash)
         content = '<a href=\\"%s\\">Confirme su cuenta haciendo click aqu&iacute;</a>' % (url_confirmation)
 
-
-        url = "https://mail.zoho.com/api/accounts/%s/messages" % (config('ZOHO_ACCOUNT_ID'))
-        payload = "{\n \"fromAddress\": \"%s\",\n \"toAddress\": \"%s\",\n \"subject\": \"%s\",\n \"content\": \"%s\"\n}" \
-                    % (mail_from, user.email, subject, content)
-        headers = {
-            'Authorization': config('ZOHO_AUTH_TOKEN'),
-            'Content-Type': "application/json"
-        }
-
-        response = requests.request("POST", url, data=payload, headers=headers)
-        print("Enviando mail a %s response code: %s" % (user.email, response.status_code))
+        send_mail(mail_from, user.email, subject, content)
 
     def create_user_verification(self, user, token):
         UserVerification.objects.create(usuario=user, verificationToken=token)

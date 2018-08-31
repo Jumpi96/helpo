@@ -20,6 +20,7 @@ const TablaColaboracion = ( props ) => {
         cantidad: colaboracion.cantidad,
         comentario: colaboracion.comentario ? colaboracion.comentario : "-",
         idColaboracion: colaboracion.id,
+        retroalimentacion_ong: colaboracion.retroalimentacion_ong,
         checkedBox: () => {},
         entregado: colaboracion.entregado,
         idVoluntario: colaboracion.voluntario.id
@@ -51,6 +52,7 @@ const TablaColaboracion = ( props ) => {
             <th scope="col">Cantidad</th>
             <th scope="col">Comentario</th>
             <th scope="col">Entregado</th>
+            <th scope="col">Retroalimentación</th>
           </tr>  
         </thead>
         <tbody>

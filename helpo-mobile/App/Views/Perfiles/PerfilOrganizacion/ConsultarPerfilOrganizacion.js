@@ -2,6 +2,22 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types'
 import { Card, CardHeader, Button } from 'reactstrap';
+import {
+  Container,
+  Header,
+  Title,
+  Content,
+  Button,
+  Item,
+  Label,
+  Input,
+  Body,
+  Left,
+  Right,
+  Icon,
+  Form,
+  Text,
+} from 'native-base';
 import {Gmaps, Marker} from 'react-gmaps';
 import { getImagen } from '../../../Lib/Imagen'
 //https://github.com/MicheleBertoli/react-gmaps
@@ -110,11 +126,12 @@ class ConsultarPerfilOrganizacion extends Component {
   render() {
     const link = this.getLinkVerEventos();
     return (      
-      <Card>
-        <CardHeader>
+      <Container>
+        <Header>
           <i className="fa fa-align-justify"></i> Perfil
-        </CardHeader>
-        <div class='container'>
+        </Header>
+
+        <Container>
         
           <div style={{ alignItems: 'center' }} class='row'>
             <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', height: '150px'}} class='col-2'>            
@@ -167,8 +184,9 @@ class ConsultarPerfilOrganizacion extends Component {
               <button className='btn btn-primary'>Ver eventos organizados</button>
             </Link>
           </div>
-        </div>      
-      </Card>
+
+        </Container>      
+      </Container>
     );
   }
 }

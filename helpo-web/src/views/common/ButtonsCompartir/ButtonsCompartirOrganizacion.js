@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import MetaTags from 'react-meta-tags';
 
-class ButtonsCompartirONG extends Component {
+class ButtonsCompartirOrganizacion extends Component {
 
     render() {
         const ong = this.props.ong;
@@ -58,4 +58,4 @@ class ButtonsCompartirONG extends Component {
         );
     }
 }
-export default ButtonsCompartirONG;
+export default ButtonsCompartirOrganizacion;

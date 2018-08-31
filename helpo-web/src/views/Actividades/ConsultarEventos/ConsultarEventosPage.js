@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import api from '../../../api';
 import ConsultarEventosList from './ConsultarEventosList';
 import ConsultarEventosFilter from './ConsultarEventosFilter';
-import ButtonsCompartirONG from '../../common/ButtonsCompartir/ButtonsCompartirONG';
+import ButtonsCompartirOrganizacion from '../../common/ButtonsCompartir/ButtonsCompartirOrganizacion';
 
 class ConsultarEventosPage extends React.Component {
 
@@ -89,7 +89,7 @@ class ConsultarEventosPage extends React.Component {
               </div>
               <div className="form-group">
                 <div className="float-left offset-md-3">
-                  <ButtonsCompartirONG ong={ong} />
+                  <ButtonsCompartirOrganizacion ong={ong} />
                 </div>
               </div>
             </div>

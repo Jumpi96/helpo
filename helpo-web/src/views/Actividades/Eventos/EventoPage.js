@@ -7,7 +7,7 @@ import * as eventoActions from '../../../actions/eventoActions';
 import * as rubrosEventoActions from '../../../actions/rubroEventoActions';
 import EventoList from './EventoList';
 import EventoView from './EventoView';
-import ButtonsCompartirONG from '../../common/ButtonsCompartir/ButtonsCompartirONG';
+import ButtonsCompartirOrganizacion from '../../common/ButtonsCompartir/ButtonsCompartirOrganizacion';
 
 class EventoPage extends React.Component {
   constructor(props) {
@@ -45,7 +45,7 @@ class EventoPage extends React.Component {
               </div>
               <div className="form-group">
                 <div className="float-left offset-md-3">
-                  <ButtonsCompartirONG ong={this.getONG()} />
+                  <ButtonsCompartirOrganizacion ong={this.getONG()} />
                 </div>
               </div>
             </div>

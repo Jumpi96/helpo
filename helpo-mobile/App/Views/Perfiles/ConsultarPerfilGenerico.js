@@ -6,6 +6,7 @@ import ConsultarPerfilVoluntario from './PerfilVoluntario/ConsultarPerfilVolunta
 import ModificarPerfilOrganizacion from './PerfilOrganizacion/ModificarPerfilOrganizacion'
 import ModificarPerfilEmpresa from './PerfilEmpresa/ModificarPerfilEmpresa'
 import ModificarPerfilVoluntario from './PerfilVoluntario/ModificarPerfilVoluntario'
+import { View, Container } from 'native-base';
 
 class ConsultarPerfilGenerico extends Component {
   constructor(props) {
@@ -198,9 +199,9 @@ class ConsultarPerfilGenerico extends Component {
 
   render() {
     return (
-    <div>
+    <Container>
       {this.renderComponente()}
-    </div>
+    </Container>
     );
   }
 }

@@ -106,6 +106,8 @@ android {
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
+        manifestPlaceholders = [onesignal_app_id: "8dfa1a54-4fb2-42b3-97a6-70e004144dd5",
+                                onesignal_google_project_number: "REMOTE"]
     }
     signingConfigs {
         release {
@@ -148,6 +150,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-onesignal')
     compile project(':react-native-vector-icons')
     compile project(':react-native-device-info')
     compile fileTree(dir: "libs", include: ["*.jar"])

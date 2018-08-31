@@ -13,14 +13,15 @@ import {
   Icon,
   Text,
   Label,
-  View,
   Fab,
   IconNB,
   ActionSheet,
   Toast,
+  View,
 } from 'native-base';
 import api from '../../../api';
 import styles from './styles';
+import CompartirEvento from '../CompartirEvento/CompartirEvento';
 
 class VerEvento extends React.Component {
 
@@ -32,7 +33,7 @@ class VerEvento extends React.Component {
   }
 
   handleConfirmDelete(evento, b) {
-    if (b.text === 'Eliminar') { 
+    if (b.text === 'Eliminar') {
       if (moment(evento.fecha_hora_inicio) > moment()) {
         api.delete("/actividades/eventos/" + evento.id + "/")
           .then((res) => {
@@ -40,7 +41,7 @@ class VerEvento extends React.Component {
             console.log(res.data);
             this.props.navigation.navigate('MisEventos');
           }).catch(function (error) {
-            if (error.response){ console.log(error.response.status); }
+            if (error.response) { console.log(error.response.status); }
             else { console.log('Error: ', error.message); }
             this.setState({ error: 'Hubo un problema al cargar su información.' });
           });
@@ -54,7 +55,7 @@ class VerEvento extends React.Component {
     }
   }
 
-  handleEdit(evento) { 
+  handleEdit(evento) {
     if (moment(evento.fecha_hora_inicio) > moment()) {
       const { params } = this.props.navigation.state;
       const rubros = params.rubros;
@@ -129,7 +130,7 @@ class VerEvento extends React.Component {
               </Separator>
               {listaContactos}
             </View>
-            ) : undefined
+          ) : undefined
           }
           <ListItem 
             button 
@@ -140,6 +141,7 @@ class VerEvento extends React.Component {
               <Text>Ver Colaboraciones</Text>
             </Body>
           </ListItem>
+          <CompartirEvento evento={params.evento} />
         </Content>
         <View style={{ flex: 0.1 }}>
           <Fab
@@ -152,7 +154,7 @@ class VerEvento extends React.Component {
           >
             <IconNB name="md-add" />
             <Button style={{ backgroundColor: '#34A34F' }}
-              onPress={() => {this.handleEdit(evento)}}
+              onPress={() => { this.handleEdit(evento) }}
             >
               <Icon name="color-filter" />
             </Button>

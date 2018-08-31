@@ -1,18 +1,19 @@
-import React from 'react';  
+import React from 'react';
 import { PropTypes } from 'prop-types';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import moment from 'moment';
 import ModalEliminarItem from '../../common/ModalEliminarItem/ModalEliminarItem';
 import * as eventoActions from '../../../actions/eventoActions';
 import EventoForm from './EventoForm';
 import './Eventos.css';
+import ButtonsCompartirEvento from '../../common/ButtonsCompartir/ButtonsCompartirEvento';
 import { Link } from 'react-router-dom'
 
-class EventoView extends React.Component {  
+class EventoView extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { 
+    this.state = {
       isEditing: false,
       evento: this.props.evento,
       saving: false,
@@ -32,16 +33,16 @@ class EventoView extends React.Component {
   }
 
   toggleConsultarColaboraciones() {
-      this.props.history.push({ 
-      pathname: '/actividades/consultar-colaboraciones', 
-      search: '/' + this.state.evento.id,  
+    this.props.history.push({
+      pathname: '/actividades/consultar-colaboraciones',
+      search: '/' + this.state.evento.id,
     });
   }
 
   toggleEditNecesidades() {
-    this.props.history.push({ 
-      pathname: '/actividades/registrar-necesidades', 
-      search: '?evento=' + this.state.evento.id,  
+    this.props.history.push({
+      pathname: '/actividades/registrar-necesidades',
+      search: '?evento=' + this.state.evento.id,
     });
   }
 
@@ -67,14 +68,14 @@ class EventoView extends React.Component {
   updateEventoState(field, value) {
     const evento = this.state.evento;
     evento[field] = value;
-    return this.setState({evento: evento});
+    return this.setState({ evento: evento });
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
     if (this.props.evento.id !== nextProps.evento.id) {
-      this.setState({evento: nextProps.evento});
+      this.setState({ evento: nextProps.evento });
     }
-    this.setState({saving: false, isEditing: false});
+    this.setState({ saving: false, isEditing: false });
   }
 
   render() {
@@ -82,20 +83,20 @@ class EventoView extends React.Component {
       return (
         <div>
           <h1>Editar evento</h1>
-          <EventoForm 
-            evento={this.state.evento} 
+          <EventoForm
+            evento={this.state.evento}
             rubros={this.props.rubrosEvento}
-            onSave={this.saveEvento} 
-            onChange={this.updateEventoState} 
+            onSave={this.saveEvento}
+            onChange={this.updateEventoState}
             saving={this.state.saving}
-          /> 
+          />
         </div>
       )
     } else if (this.state.evento.nombre) {
       const evento = this.state.evento;
       let listaContactos;
       if (evento.contacto.length > 0) {
-        listaContactos = evento.contacto.map((contacto) => 
+        listaContactos = evento.contacto.map((contacto) =>
           <li class="list-group-item">{contacto.nombre} - {contacto.telefono}</li>
         );
       }
@@ -104,7 +105,7 @@ class EventoView extends React.Component {
           <h1>{evento.nombre}</h1>
           <div className="row">
             <div className="form-group col-md-6">
-              <b className="float-right">Descripción</b>
+              <b className="float-left">Descripción</b>
             </div>
             <div className="form-group col-md-6">
               <p>{evento.descripcion}</p>
@@ -112,7 +113,7 @@ class EventoView extends React.Component {
           </div>
           <div className="row">
             <div className="form-group col-md-6">
-              <b className="float-right">Rubro</b>
+              <b className="float-left">Rubro</b>
             </div>
             <div className="form-group col-md-6">
               <p>{evento.rubro.nombre}</p>
@@ -120,7 +121,7 @@ class EventoView extends React.Component {
           </div>
           <div className="row">
             <div className="form-group col-md-6">
-              <b className="float-right">Fecha de inicio</b>
+              <b className="float-left">Fecha de inicio</b>
             </div>
             <div className="form-group col-md-6">
               <p>{moment(evento.fecha_hora_inicio).format('DD/MM/YYYY HH:mm')}</p>
@@ -128,58 +129,66 @@ class EventoView extends React.Component {
           </div>
           <div className="row">
             <div className="form-group col-md-6">
-              <b className="float-right">Fecha de finalización</b>
+              <b className="float-left">Fecha de finalización</b>
             </div>
             <div className="form-group col-md-6">
-            <p>{moment(evento.fecha_hora_fin).format('DD/MM/YYYY HH:mm')}</p>
+              <p>{moment(evento.fecha_hora_fin).format('DD/MM/YYYY HH:mm')}</p>
             </div>
           </div>
           {listaContactos ? (
             <div className="row">
               <div className="form-group col-md-6">
-                <b name="contactos" className="float-right">Contactos</b>
+                <b name="contactos" className="float-left">Contactos</b>
               </div>
               <div className="form-group col-md-6">
                 <ul class="list-group">{listaContactos}</ul>
               </div>
             </div>
-            ) : undefined
+          ) : undefined
           }
-          <div class="btn-group form-group" role="group">
-            <button 
-              onClick={this.toggleEdit} 
-              hidden={moment(evento.fecha_hora_inicio)<=moment()}
+          <div className="row">
+            <div className="form-group col-md-6">
+              <b name="compartir" className="float-left">Compartir</b>
+            </div>
+            <div className="form-group col-md-6">
+              <ButtonsCompartirEvento evento={this.state.evento} />
+            </div>
+          </div>
+          <div className="btn-group form-group" role="group">
+            <button
+              onClick={this.toggleEdit}
+              hidden={moment(evento.fecha_hora_inicio) <= moment()}
               className="btn btn-warning"
             >
               Editar evento
             </button>
-            <button 
-              onClick={this.toggleEditNecesidades} 
-              hidden={moment(evento.fecha_hora_inicio)<=moment()}
+            <button
+              onClick={this.toggleEditNecesidades}
+              hidden={moment(evento.fecha_hora_inicio) <= moment()}
               className="btn btn-warning"
             >
               Editar necesidades
             </button>
             <Link to={`/actividades/consultar-colaboraciones/${this.state.evento.id}`}>
-            <button 
-              onClick={this.toggleConsultarColaboraciones}
-              className="btn btn-warning"
-            >
-              Consultar Colaboraciones
+              <button
+                onClick={this.toggleConsultarColaboraciones}
+                className="btn btn-warning"
+              >
+                Consultar Colaboraciones
             </button>
             </Link>
           </div>
-          <div class="form-group">
-            <button 
-              onClick={this.toggleDelete} 
-              hidden={moment(evento.fecha_hora_inicio)<=moment()}
+          <div className="form-group">
+            <button
+              onClick={this.toggleDelete}
+              hidden={moment(evento.fecha_hora_inicio) <= moment()}
               className="btn btn-danger"
             >
               Eliminar evento
             </button>
           </div>
           <ModalEliminarItem open={this.state.showModalEliminar} nombre={this.state.evento.nombre}
-            closeModal={this.confirmDeleteNecesidad}/>
+            closeModal={this.confirmDeleteNecesidad} />
         </div>
       );
     } else {
@@ -188,13 +197,13 @@ class EventoView extends React.Component {
   }
 };
 
-EventoView.propTypes = {  
+EventoView.propTypes = {
   evento: PropTypes.object.isRequired,
   rubrosEvento: PropTypes.array.isRequired,
   actions: PropTypes.object.isRequired
 };
 
-function mapStateToProps(state, ownProps) {  
+function mapStateToProps(state, ownProps) {
   let evento = {
     nombre: '',
     descripcion: '',
@@ -215,14 +224,14 @@ function mapStateToProps(state, ownProps) {
     evento = Object.assign({}, state.eventos.find(evento => "" + evento.id === eventoId))
     evento.rubro_id = evento.rubro.id;
     evento.nextId = evento.contacto.length + 1;
-    for (let i=0; i < evento.contacto.length; i++) {
-      evento.contacto[i].contactId = i+1;
+    for (let i = 0; i < evento.contacto.length; i++) {
+      evento.contacto[i].contactId = i + 1;
     }
   }
-  return {evento: evento, rubrosEvento: state.rubrosEvento};
+  return { evento: evento, rubrosEvento: state.rubrosEvento };
 }
 
-function mapDispatchToProps(dispatch) {  
+function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(eventoActions, dispatch)
   };

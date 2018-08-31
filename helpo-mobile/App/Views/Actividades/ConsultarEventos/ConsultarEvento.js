@@ -18,6 +18,7 @@ import {
   View,
 } from 'native-base';
 import styles from './styles';
+import CompartirEvento from '../CompartirEvento/CompartirEvento';
 
 class ConsultaEvento extends React.Component {
 
@@ -109,10 +110,10 @@ class ConsultaEvento extends React.Component {
           <Body>
             <Title>{evento.nombre}</Title>
           </Body>
-          { this.props.auth.user.user_type === 2 ?
+          {this.props.auth.user.user_type === 2 ?
             <Right>
-              <Button 
-                transparent 
+              <Button
+                transparent
                 onPress={() => this.props.navigation.navigate('RegistrarColaboraciones', { evento: evento.id })}>
                 <Text>Colaborar</Text>
               </Button>
@@ -157,7 +158,7 @@ class ConsultaEvento extends React.Component {
               </Separator>
               {listaContactos}
             </View>
-            ) : undefined
+          ) : undefined
           }
           {evento.necesidades.length > 0 ? (
             <View>
@@ -166,7 +167,7 @@ class ConsultaEvento extends React.Component {
               </Separator>
               {this.getListaNecesidades(evento)}
             </View>
-            ) : undefined
+          ) : undefined
           }
           {evento.voluntarios.length > 0 ? (
             <View>
@@ -175,7 +176,7 @@ class ConsultaEvento extends React.Component {
               </Separator>
               {this.getListaVoluntarios(evento)}
             </View>
-            ) : undefined
+          ) : undefined
           }
           {evento.comentarios.length > 0 ? (
             <View>
@@ -184,8 +185,9 @@ class ConsultaEvento extends React.Component {
               </Separator>
               {this.getListaComentarios(evento)}
             </View>
-            ) : undefined
+          ) : undefined
           }
+          <CompartirEvento evento={params.evento} />
         </Content>
       </Container>
     );

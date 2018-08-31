@@ -21,6 +21,7 @@ import {
 import * as eventoActions from '../../../Redux/actions/eventoActions';
 import * as rubrosEventoActions from '../../../Redux/actions/rubroEventoActions';
 import styles from './styles';
+import CompartirOrganizacion from '../CompartirEvento/CompartirOrganizacion';
 
 class MisEventos extends React.Component {
   constructor(props) {
@@ -33,6 +34,10 @@ class MisEventos extends React.Component {
     return this.props.rubroEvento.rubrosEvento;
   }
 
+  getONG() {
+    return this.props.auth.user;
+  }
+  
   render() {
     const eventos = this.props.evento.eventos;
     const listaEventos = eventos.map((n) =>
@@ -46,10 +51,15 @@ class MisEventos extends React.Component {
           </Button>
         </Left>
         <Body>
-          <Text>
+          <Text
+            onPress={() => this.props.navigation.navigate('VerEvento', { evento: n, rubros: this.getRubrosEvento() })}
+          >
             {n.nombre}
           </Text>
-          <Text numberOfLines={1} note>
+          <Text
+            numberOfLines={1} note
+            onPress={() => this.props.navigation.navigate('VerEvento', { evento: n, rubros: this.getRubrosEvento() })}
+          >
             {moment(n.fecha_hora_inicio).format('DD/MM/YYYY')}
           </Text>
         </Body>
@@ -74,6 +84,7 @@ class MisEventos extends React.Component {
           <Form>
             {listaEventos}
           </Form>
+          <CompartirOrganizacion ong={this.getONG()} />
         </Content>
         <View style={{ flex: 0.1 }}>
           <Fab
@@ -101,6 +112,7 @@ function bindAction(dispatch) {
 const mapStateToProps = state => ({
   evento: state.evento,
   rubroEvento: state.rubroEvento,
+  auth: state.auth,
 });
 
 export default connect(mapStateToProps, bindAction)(MisEventos);

@@ -20,6 +20,7 @@ const TablaVoluntario = ( props ) => {
         comentario: participacion.comentario ? participacion.comentario : "-",
         idParticipacion: participacion.id,
         participo: participacion.participo,
+        retroalimentacion_ong: participacion.retroalimentacion_ong,
         checkedBox: () => {},
         idVoluntario: participacion.voluntario.id
       }
@@ -49,6 +50,7 @@ const TablaVoluntario = ( props ) => {
             <th scope="col"></th>
             <th scope="col">Comentario</th>
             <th scope="col">Participó</th>
+            <th scope="col">Retroalimentación</th>
           </tr>  
         </thead>
         <tbody>

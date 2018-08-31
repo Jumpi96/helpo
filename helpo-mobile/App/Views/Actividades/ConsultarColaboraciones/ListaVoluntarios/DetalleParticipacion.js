@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 import ContainerHeader from '../../../../Components/ContainerHeader'
 import { Container, ListItem, Left, Body, Text, Icon } from 'native-base'
 import { FlatList } from 'react-native'
+import moment from 'moment'
+import api from '../../../../api'
 import ConsultarColabsActions from '../../../../Redux/ConsultarColabsRedux'
 
 class DetalleParticipacion extends React.Component {
@@ -10,9 +12,25 @@ class DetalleParticipacion extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      participo: this.props.participacion.participo
+      participo: this.props.participacion.participo,
+      retroalimentacion: this.props.participacion.retroalimentacion_ong
     }
     this.renderItem = this.renderItem.bind(this)
+  }
+
+  handleRetroalimentacion() {
+    const mensaje = { 
+      evento: this.props.eventoId, 
+      voluntario: this.props.participacion.voluntario.id
+    };
+    api.post('feedbacks/retroalimentacion_ong/', mensaje)
+      .then((res) => {
+        this.setState({ retroalimentacion: true })
+      })
+      .catch((error) => {
+        if (error.response){ console.log(error.response.status) }
+        else { console.log('Error: ', error.message)}
+      })
   }
 
   renderItem = (item) => {
@@ -45,8 +63,30 @@ class DetalleParticipacion extends React.Component {
         </Body>
       </ListItem>
     )
+    const retroalimentacionItem = (
+      <ListItem button onPress={() => 
+        {
+          if (!this.state.retroalimentacion) {
+            this.handleRetroalimentacion();
+          }
+        }}>
+        <Left>
+          <Text style={{ fontWeight: 'bold' }}>{item.key}: </Text>
+        </Left>
+        <Body>
+          {item.value
+          ? <Icon color='red' type='Entypo' name='check'/>
+          : <Icon color='black' type='Entypo' name='cross'/>}
+        </Body>
+      </ListItem>
+    )
     if(item.key === 'Participo') {
       return participoItem
+    } else if (item.key === 'Retroalimentación') {
+      if (moment(this.props.evento.fecha_hora_inicio) > moment()) {
+        return undefined;
+      }
+      return retroalimentacionItem;
     }
     return defaultItem
   }
@@ -61,7 +101,8 @@ class DetalleParticipacion extends React.Component {
             {key: 'Apellido', value: this.props.participacion.voluntario.apellido},
             {key: 'Comentario', value: this.props.participacion.comentario},
             {key: 'Dni', value: this.props.participacion.voluntario.dni},
-            {key: 'Participo', value: this.state.participo}
+            {key: 'Participo', value: this.state.participo},
+            {key: 'Retroalimentación', value: this.state.retroalimentacion}
           ]}
           renderItem={({item}) => this.renderItem(item)}
         />
@@ -71,6 +112,7 @@ class DetalleParticipacion extends React.Component {
 }
 
 const mapStateToProps = state => ({
+  evento: state.consultarColabs.data,
   participacion: state.consultarColabs.detalle,
   eventoId: state.consultarColabs.data.id
 })

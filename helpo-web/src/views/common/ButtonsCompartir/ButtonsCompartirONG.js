@@ -13,7 +13,7 @@ class ButtonsCompartirONG extends Component {
                     }
                     <meta property="og:url" content={"https://www.helpo.com.ar/#/redirect/ong?id=" + ong.id} />
                     <meta property="og:type" content="article" />
-                    <meta property="og:title" content={ong.nombre + "en Helpo"} />
+                    <meta property="og:title" content={ong.nombre + " en Helpo"} />
                     <meta property="og:description" content={"Eventos de " + ong.nombre + " en Helpo"} />
                     <meta property="og:image" content="https://i.imgur.com/GyVKBfQ.jpg" />
                 </MetaTags>

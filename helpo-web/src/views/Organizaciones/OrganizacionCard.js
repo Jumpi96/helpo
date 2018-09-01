@@ -21,6 +21,34 @@ const propTypes = {
 };
 
 class OrganizacionCard extends Component {
+  constructor(props) {
+    super(props); //Llama a las props del padre
+    this.state = {
+      nombre: '',
+      userId: 0, // 1: ONG, 2: Vol, 3: Empresa
+      userType: 0,     
+      email: '',
+      data: {},
+      rubros: [], // [{ id: , nombre: },]
+      modificar: false,
+      loggedUser: true,
+    };
+
+  componentDidMount() {
+    // TODO: Other user (No usuario logeado)
+    let initialState = {};
+      api.get('/auth/user/')
+      .then(res => {        
+            console.log(res)
+            initialState.nombre = res.data.nombre
+            initialState.userId = res.data.id
+            initialState.email = res.data.email
+            initialState.userType = res.data.user_type 
+      })
+        .catch( error => {
+          console.log(error)
+        })      
+    }    
 
   render() {
     const { 
@@ -40,24 +68,16 @@ class OrganizacionCard extends Component {
         <div>
 
           <img
-            src={getImagen(organizacion.organizacion ? organizacion.organizacion.avatar : undefined )}
+            className="col-md-3"
+            src={getImagen(organizacion ? organizacion.avatar : undefined )}
             alt="ONG"
             style={{width:'75px', height:'75px'}} 
           />
           
-          <div>
-            {organizacion.organizacion ?
-              organizacion.nombre + ' - ' + organizacion.organizacion.nombre : undefined
-            }
-          </div>
+          <div className="col-6">
+            <p style={{ textAlign: 'right' }} class='font-weight-bold col-2' htmlFor="mail">{organizacion.descripcion}</p>
+        </div>
 
-          <div className="col-md-6">
-            <ul className="list-group">
-              {this.getNecesidades()}
-              {this.getVoluntarios()}
-            </ul>
-          </div>
-          
           <Link to={link}> 
             <button className="btn btn-primary pull-right" hidden={!this.props.auth}> 
               + Ver perfil

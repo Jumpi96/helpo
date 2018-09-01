@@ -17,12 +17,12 @@ class OrganizacionCard extends Component {
             style={{width:'75px', height:'75px'}} 
           />
 
-          <div className="col-6">
-            <p style={{ textAlign: 'right' }} className='font-weight-bold col-2' htmlFor="mail">{organizacion.usuario.nombre}</p>
+          <div >
+            <p style={{ textAlign: 'right' }} className='font-weight-bold' htmlFor="nombre">{organizacion.usuario.nombre}</p>
           </div>
           
-          <div className="col-6">
-            <p style={{ textAlign: 'right' }} className='font-weight-bold col-2' htmlFor="mail">{organizacion.usuario.descripcion}</p>
+          <div>
+            <p style={{ textAlign: 'right' }} className='font-weight-bold' htmlFor="mail">{organizacion.descripcion}</p>
           </div>
 
         <div className="col-6">

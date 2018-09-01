@@ -21,6 +21,7 @@ import FiltroEventos from '../Views/Actividades/ConsultarEventos/FiltroEventos/F
 import MensajesEvento from '../Views/Actividades/MensajesEvento/MensajesEvento';
 import NuevoMensaje from '../Views/Actividades/MensajesEvento/NuevoMensaje';
 import ConsultarPerfilVoluntario from '../Views/Perfiles/PerfilVoluntario/ConsultarPerfilVoluntario';
+import ConsultarPerfilGenerico from '../Views/Perfiles/ConsultarPerfilGenerico';
 import ModificarPerfilVoluntario from '../Views/Perfiles/PerfilVoluntario/ModificarPerfilVoluntario';
  
 const NavigationDrawer = DrawerNavigator({
@@ -44,6 +45,7 @@ const NavigationDrawer = DrawerNavigator({
 		MensajesEvento: { screen: MensajesEvento },
 		NuevoMensaje: { screen: NuevoMensaje }
 		ConsultarPerfilVoluntario: {screen: ConsultarPerfilVoluntario},
+		ConsultarPerfilGenerico: {screen: ConsultarPerfilGenerico},
 		ModificarPerfilVoluntario: {screen: ModificarPerfilVoluntario},
   },
   {

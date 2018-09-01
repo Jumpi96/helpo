@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types'
-import { Card, CardHeader, Button } from 'reactstrap';
+import { HashRouter, Route, Switch, Redirect } from 'react-router-dom';
 import {
   Container,
   Header,

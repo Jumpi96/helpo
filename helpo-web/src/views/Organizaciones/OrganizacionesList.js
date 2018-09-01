@@ -3,6 +3,19 @@ import { Col, Row, Badge } from 'reactstrap';
 import OrganizacionCard from './OrganizacionCard';
 
 class OrganizacionesList extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      nombre: '',
+      error:'',
+    };
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.buscarOrganizacoines = this.buscarOrganizacoines.bind(this);
+
+
+  }
+
+    
   
   sortOrganizaciones(organizaciones) { // Aca implementar el buscador.
     return organizaciones.sort(function(a, b) {
@@ -14,12 +27,39 @@ class OrganizacionesList extends React.Component {
     });
   }
 
-  render() {
+  handleInputChange(event) {
+    const target = event.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
+    this.setState({
+        [name]: value
+    });
+  }
 
-    if (this.props.organizaciones.length > 0) {
-      const organizaciones = this.props.organizaciones; // ES PARA CUANDO SE IMPLEMENTE EL BUSCADOR this.sortorganizaciones(this.props.organizaciones);
-      return (
+  buscarOrganizacoines(organizaciones){
+    if(this.state.nombre !== ''){
+      var organizacionesFiltradas = organizaciones.find(organizaciones.nombre.toLowerCase().includes(this.state.nombre));
+      return organizacionesFiltradas;
+    }
+    else return organizaciones;
+  }
+
+  render() {
+    const organizaciones = this.buscarOrganizaciones(this.props.organizaciones);
+    return (
         <Row>
+          <div className="form-group col-md-6">
+            <label htmlFor="nombre">Buscar</label>
+            <input
+              type="text"
+              name="nombre"
+              className="form-control"
+              placeholder="Ingrese el nombre de una ONG"
+              value={this.state.nombre}
+              onChange={this.handleInputChange}
+            />
+            <span style={{ color: 'red' }}>{this.state.error}</span>
+          </div>
 
           <div className="col-md-3">
             <Badge color="warning">Buscador...</Badge>
@@ -40,12 +80,6 @@ class OrganizacionesList extends React.Component {
 
           </Row>
         );
-
-    }
-    
-    else {
-      return <p>Cargando...</p>
-    }
 
   } 
 

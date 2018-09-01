@@ -73,7 +73,7 @@ urlpatterns = [
     ),
     # {% url "api:device_id" device_id.player_id %}
     url(
-        regex=r"^perfiles/device_id/(?P<id>[-\w]+)/$",
+        regex=r"^perfiles/device_id/(?P<player_id>[-\w]+)/$",
         view=users_views.DeviceIDReadUpdateDeleteView.as_view(),
         name="get_put_delete_device_id"
     ),

@@ -150,7 +150,7 @@ class DeviceIDCreateReadView(ListCreateAPIView):
     lookup_field = 'player_id'
 
 
-class DeviceIDReadUpdateDeleteView(RetrieveUpdateAPIView):
+class DeviceIDReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     """
     API endpoint para leer, actualizar o eliminar un dispositivo de usuario
     """

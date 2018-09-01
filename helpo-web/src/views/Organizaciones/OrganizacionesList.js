@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Row, Badge } from 'reactstrap';
+import { Col, Row } from 'reactstrap';
 import OrganizacionCard from './OrganizacionCard';
 
 class OrganizacionesList extends React.Component {
@@ -10,7 +10,7 @@ class OrganizacionesList extends React.Component {
       error:'',
     };
     this.handleInputChange = this.handleInputChange.bind(this);
-    this.buscarOrganizacoines = this.buscarOrganizacoines.bind(this);
+    this.buscarOrganizaciones = this.buscarOrganizaciones.bind(this);
 
 
   }
@@ -36,18 +36,24 @@ class OrganizacionesList extends React.Component {
     });
   }
 
-  buscarOrganizacoines(organizaciones){
+  buscarOrganizaciones(organizaciones){
     if(this.state.nombre !== ''){
-      var organizacionesFiltradas = organizaciones.find(organizaciones.nombre.toLowerCase().includes(this.state.nombre));
+      const organizacionesFiltradas = organizaciones.filter(organizacion => this.contieneNombre(organizacion));
       return organizacionesFiltradas;
     }
     else return organizaciones;
   }
 
+  contieneNombre(organizacion){
+    return organizacion.usuario.nombre.toLowerCase().includes(this.state.nombre)
+  }
+
   render() {
     const organizaciones = this.buscarOrganizaciones(this.props.organizaciones);
     return (
+      <div>
         <Row>
+
           <div className="form-group col-md-6">
             <label htmlFor="nombre">Buscar</label>
             <input
@@ -61,10 +67,6 @@ class OrganizacionesList extends React.Component {
             <span style={{ color: 'red' }}>{this.state.error}</span>
           </div>
 
-          <div className="col-md-3">
-            <Badge color="warning">Buscador...</Badge>
-          </div>
-
           <div className="col-md-9">
             {organizaciones.map(organizacion =>       
                 <Col>
@@ -72,13 +74,14 @@ class OrganizacionesList extends React.Component {
                     organizacion={organizacion}
                     key={organizacion.id} footer
                     color="primary" auth={this.props.auth}
-                    link={'/perfiles/perfil-organizacion/' + organizacion.id} // Ver que link va
+                    link={'/perfiles/perfil_organizacion/' + organizacion.usuario.id} // Ver que link va
                   />
                 </Col>
               )}
             </div>
 
           </Row>
+        </div>
         );
 
   } 

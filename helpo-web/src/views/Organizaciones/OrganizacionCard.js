@@ -37,7 +37,6 @@ class OrganizacionCard extends Component {
       <Card>
         <CardBody>
         <div>
-
           <img
             className="col-md-3"
             src={getImagen(organizacion ? organizacion.avatar : undefined )}
@@ -49,11 +48,13 @@ class OrganizacionCard extends Component {
             <p style={{ textAlign: 'right' }} class='font-weight-bold col-2' htmlFor="mail">{organizacion.descripcion}</p>
         </div>
 
+        <div className="col-6">
           <Link to={link}> 
             <button className="btn btn-primary pull-right" hidden={!this.props.auth}> 
               + Ver perfil
             </button>
           </Link>
+          </div>
 
         </div>
         </CardBody>

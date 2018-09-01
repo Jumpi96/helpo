@@ -14,27 +14,16 @@ class OrganizacionesPage extends React.Component {
     const urlParams = new URLSearchParams(this.props.location.search)
     const id = urlParams.get('id');
     this.state = {
-      organizaciones: []
+      organizaciones:[]
     }
     this.componentDidMount = this.componentDidMount.bind(this);
-  }
-
-  loadOrganizacion() { // Puede usarse 
-    api.get('/actividades/consulta_organizaciones/' + this.state.organizacion.id + '/')
-      .then(res => {
-        this.setState({ organizacion: res.data });
-      })
-      .catch((error) => {
-        if (error.response){ console.log(error.response.status) }
-        else { console.log('Error: ', error.message)}
-      })
   }
 
   componentDidMount() {  // Suponiendo  que res son todas las organizaciones
     api.get(`/perfiles/perfil_organizacion/`)
     .then( (res) => {
       this.setState({
-        organizaciones: res,        
+        organizaciones: res.data,        
       })
     })
   }  
@@ -58,7 +47,6 @@ class OrganizacionesPage extends React.Component {
       )
     }
   }
-
 
 
   render() {

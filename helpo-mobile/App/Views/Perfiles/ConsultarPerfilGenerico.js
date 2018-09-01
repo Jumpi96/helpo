@@ -3,7 +3,7 @@ import api from '../../api';
 //import ConsultarPerfilOrganizacion from './PerfilOrganizacion/ConsultarPerfilOrganizacion'
 //import ConsultarPerfilEmpresa from './PerfilEmpresa/ConsultarPerfilEmpresa'
 import ConsultarPerfilVoluntario from './PerfilVoluntario/ConsultarPerfilVoluntario'
-import ModificarPerfilOrganizacion from './PerfilOrganizacion/ModificarPerfilOrganizacion'
+//import ModificarPerfilOrganizacion from './PerfilOrganizacion/ModificarPerfilOrganizacion'
 import ModificarPerfilEmpresa from './PerfilEmpresa/ModificarPerfilEmpresa'
 import ModificarPerfilVoluntario from './PerfilVoluntario/ModificarPerfilVoluntario'
 import { View, Container } from 'native-base';

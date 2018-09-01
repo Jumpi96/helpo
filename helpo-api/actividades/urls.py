@@ -177,4 +177,16 @@ urlpatterns = [
         view=actividades_views.RetroalimentacionONGEvento,
         name="post_retroalimentacion_ong"
     ),
+    # {% url "api:mensajes" %}
+    url(
+        regex=r"^actividades/mensajes/$",
+        view=actividades_views.MensajeCreateReadView.as_view(),
+        name="get_post_mensaje"
+    ),
+    # {% url "api:comentarios" evento.id %}
+    url(
+        regex=r"^actividades/mensajes/(?P<id>[-\w]+)/$",
+        view=actividades_views.MensajeReadUpdateDeleteView.as_view(),
+        name="get_put_delete_mensaje"
+    ),
 ]

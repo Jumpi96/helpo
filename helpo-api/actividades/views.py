@@ -6,12 +6,12 @@ from rest_framework.response import Response
 from rest_framework import status
 from datetime import datetime
 from actividades.models import Evento, RubroEvento, CategoriaRecurso, Recurso, Necesidad, \
-    Contacto, Voluntario, Funcion, Participacion, Colaboracion, Comentario
+    Contacto, Voluntario, Funcion, Participacion, Colaboracion, Comentario, Mensaje
 from knox.models import AuthToken
 from actividades.serializers import EventoSerializer, RubroEventoSerializer, \
     CategoriaRecursoSerializer, RecursoSerializer, NecesidadSerializer, ContactoSerializer, \
     ConsultaEventoSerializer, VoluntarioSerializer, FuncionSerializer, ConsultaNecesidadesSerializer, \
-    ParticipacionSerializer, ColaboracionSerializer, ComentarioSerializer
+    ParticipacionSerializer, ColaboracionSerializer, ComentarioSerializer, MensajeSerializer
 from common.functions import get_token_user, calc_distance_locations
 
 class RubroEventoCreateReadView(ListCreateAPIView):
@@ -394,3 +394,24 @@ def RetroalimentacionONGEvento(request):
         return Response(request.data, status=status.HTTP_201_CREATED)
     except:
        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+class MensajeCreateReadView(ListCreateAPIView):
+    """
+    API endpoint para crear o ver todos los mensajes
+    """
+    serializer_class = MensajeSerializer
+
+    def get_queryset(self):
+        queryset = Mensaje.objects.all()
+        evento = self.request.query_params.get('evento', None)
+        if evento is not None:
+            queryset = queryset.filter(evento_id=categoria)
+        return queryset
+
+class MensajeReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
+    """
+    API endpoint para leer, actualizar o eliminar un mensaje
+    """
+    queryset = Mensaje.objects.all()
+    serializer_class = MensajeSerializer
+    lookup_field = 'id'

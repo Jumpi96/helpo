@@ -32,7 +32,7 @@ class OrganizacionesList extends React.Component {
                     organizacion={organizacion}
                     key={organizacion.id} footer
                     color="primary" auth={this.props.auth}
-                    link={'/actividades/consultar-organizacion?id=' + organizacion.id} // Ver que link va
+                    link={'/perfiles/perfil-organizacion/' + organizacion.id} // Ver que link va
                   />
                 </Col>
               )}

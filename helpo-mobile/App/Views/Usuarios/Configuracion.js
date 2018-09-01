@@ -15,7 +15,7 @@ class Configuracion extends Component {
   }
 
   logout() {
-    this.props.logout();
+    this.props.logout(this.props.auth.email);
     this.props.navigation.navigate("LaunchScreen");
   }
 

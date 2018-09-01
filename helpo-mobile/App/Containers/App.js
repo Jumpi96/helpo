@@ -41,8 +41,9 @@ class App extends Component {
   }
   onIds(device) {
     console.log('Device info: ', device);
+    global.player_id = device.userId;
   }
-  
+
   render() {
     return (
       <Provider store={store}>

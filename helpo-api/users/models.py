@@ -4,7 +4,7 @@ from hashlib import sha256
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from common.models import IndexedTimeStampedModel
-from common.mails import send_mail
+from common.notifications import send_mail, send_push_notification
 
 class Profile(models.Model):
     usuario = models.OneToOneField('User')
@@ -82,6 +82,7 @@ class UserManager(BaseUserManager):
         content = '<a href=\\"%s\\">Confirme su cuenta haciendo click aqu&iacute;</a>' % (url_confirmation)
 
         send_mail(mail_from, user.email, subject, content)
+        send_push_notification("en_ti", "es_ti", "Hi", "Hola")
 
     def create_user_verification(self, user, token):
         UserVerification.objects.create(usuario=user, verificationToken=token)

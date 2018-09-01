@@ -127,6 +127,10 @@ class ConsultarPerfilVoluntario extends Component {
         </Header>
         
         <Content>
+
+          <Image
+            source={{uri: getImagen(this.props.avatar.url) }}
+          />
           
           <ListItem>
             <Label style={styles.label}>Nombre</Label>

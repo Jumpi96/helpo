@@ -168,3 +168,7 @@ Estructura (Mantener actualizado para saber que contiene):
 class AppValues(models.Model):
     key = models.TextField(primary_key=True)
     value = models.TextField()   
+
+class DeviceID(models.Model):
+    player_id = models.TextField(primary_key=True)
+    email = models.EmailField(max_length=255)

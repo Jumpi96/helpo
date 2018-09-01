@@ -6,8 +6,8 @@ from rest_framework.generics import ListCreateAPIView
 from rest_framework.generics import RetrieveUpdateDestroyAPIView, RetrieveUpdateAPIView
 from knox.models import AuthToken
 from django.contrib.auth import get_user_model
-from users.models import RubroOrganizacion, OrganizacionProfile, VoluntarioProfile, EmpresaProfile, AppValues, User
-from users.serializers import CreateUserSerializer, UserSerializer, LoginUserSerializer, RubroOrganizacionSerializer, OrganizacionProfileSerializer, VoluntarioProfileSerializer, EmpresaProfileSerializer, VerificationMailSerializer, AppValuesSerializer
+from users.models import RubroOrganizacion, OrganizacionProfile, VoluntarioProfile, EmpresaProfile, AppValues, User, DeviceID
+from users.serializers import CreateUserSerializer, UserSerializer, LoginUserSerializer, RubroOrganizacionSerializer, OrganizacionProfileSerializer, VoluntarioProfileSerializer, EmpresaProfileSerializer, VerificationMailSerializer, AppValuesSerializer, DeviceIDSerializer
 import time
 import requests
 
@@ -139,3 +139,21 @@ class ImgurTokenView(APIView):
     token = AppValues.objects.get(key="imgurAccessToken")
     serializer = AppValuesSerializer(token)
     return Response(serializer.data)
+
+
+class DeviceIDCreateReadView(ListCreateAPIView):
+    """
+    API endpoint para crear o ver todos los dispositivos de usuario
+    """
+    queryset = DeviceID.objects.all()
+    serializer_class = DeviceIDSerializer
+    lookup_field = 'player_id'
+
+
+class DeviceIDReadUpdateDeleteView(RetrieveUpdateAPIView):
+    """
+    API endpoint para leer, actualizar o eliminar un dispositivo de usuario
+    """
+    queryset = DeviceID.objects.all()
+    serializer_class = DeviceIDSerializer
+    lookup_field = 'player_id'

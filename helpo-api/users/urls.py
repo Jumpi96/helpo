@@ -59,10 +59,22 @@ urlpatterns = [
         regex=r"^verify_email/$",
         view=users_views.VerifyMailView.as_view(),
         name="user"
-    ),    
+    ),
     url(
       regex=r"^imgurToken/$",
       view=users_views.ImgurTokenView.as_view(),
       name="get_imgur_access_token"
-    ),    
+    ),
+    # {% url "api:device_id" %}
+    url(
+        regex=r"^perfiles/device_id/$",
+        view=users_views.DeviceIDCreateReadView.as_view(),
+        name="get_post_device_id"
+    ),
+    # {% url "api:device_id" device_id.player_id %}
+    url(
+        regex=r"^perfiles/device_id/(?P<id>[-\w]+)/$",
+        view=users_views.DeviceIDReadUpdateDeleteView.as_view(),
+        name="get_put_delete_device_id"
+    ),
 ]

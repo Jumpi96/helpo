@@ -69,3 +69,7 @@ class Participacion(models.Model):
     participo = models.BooleanField(null=False, blank=False, default=False)
     retroalimentacion_voluntario = models.BooleanField(default=False)
     retroalimentacion_ong = models.BooleanField(default=False)
+
+class Mensaje(IndexedTimeStampedModel):
+    evento = models.ForeignKey(Evento, related_name='mensajes', null=False, on_delete=models.CASCADE)
+    mensaje = models.CharField(max_length=1000, null=True)

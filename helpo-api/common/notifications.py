@@ -9,10 +9,25 @@ def _get_players_id(mails):
     return [device.player_id for device in device_list]
 
 
+def _get_email_from_id(user_id):
+    from users.models import User
+    return User.objects.get(id=user_id).email
+
+
+def send_mail_to_id(id_to, subject, html_content, mail_from="notificaciones@helpo.com.ar"):
+    mail = _get_email_from_id(id_to)
+    send_mail_to(mail, subject, html_content, mail_from)
+
+
+def send_mail_to_list(mails_to=["error@helpo.com.ar"], subject="Error", html_content="Error", mail_from="notificaciones@helpo.com.ar"):
+    for mail in mails_to:
+        send_mail_to(mail, subject, html_content, mail_from)
+
+
 def send_mail_to(mail_to="error@helpo.com.ar", subject="Error", html_content="Error", mail_from="notificaciones@helpo.com.ar"):
     url = "https://mail.zoho.com/api/accounts/%s/messages" % (
         config('ZOHO_ACCOUNT_ID'))
-    payload = "{\n \"fromAddress\": \"%s\",\n \"toAddress\": \"%s\",\n \"subject\": \"%s\",\n \"content\": \"%s\"\n}" \
+    payload = "{\n \"fromAddress\": \"%s\",\n \"toAddress\": \"%s\",\n \"subject\": \"%s\",\n \"content\": %s\n}" \
         % (mail_from, mail_to, subject, html_content)
     headers = {
         'Authorization': config('ZOHO_AUTH_TOKEN'),
@@ -23,10 +38,6 @@ def send_mail_to(mail_to="error@helpo.com.ar", subject="Error", html_content="Er
     print("Enviando mail a %s desde %s, response code: %s" %
           (mail_to, mail_from, response.status_code))
 
-
-def send_mail_to_list(mails_to=["error@helpo.com.ar"], subject="Error", html_content="Error", mail_from="notificaciones@helpo.com.ar"):
-    for mail in mails_to:
-        send_mail_to(mail, subject, html_content, mail_from)
 
 def send_push_notification_to(mails_to, en_title, es_title, en_message, es_message):
     url = "https://onesignal.com/api/v1/notifications"

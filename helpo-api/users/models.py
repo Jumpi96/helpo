@@ -78,7 +78,8 @@ class UserManager(BaseUserManager):
         mail_from = "registro@helpo.com.ar"
         subject = "Verifique su registro en Helpo"
         url_confirmation = '%s/#/confirmMail/%s' % (config('URL_CLIENT', default='localhost:3000'), bash)
-        content = '<a href=\\"%s\\">Confirme su cuenta haciendo click aqu&iacute;</a>' % (url_confirmation)
+        from common.templates import render_verify_email
+        content = render_verify_email(url_confirmation)
 
         from common.notifications import send_push_notification_to, send_mail_to, send_mail_to_list
         send_mail_to(user.email, subject, content, mail_from)

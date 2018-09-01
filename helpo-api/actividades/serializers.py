@@ -231,4 +231,4 @@ class MensajeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Mensaje
-        fields = ('id', 'mensaje', 'evento_id')
+        fields = ('id', 'mensaje', 'evento_id', 'created')

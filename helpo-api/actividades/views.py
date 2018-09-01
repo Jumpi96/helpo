@@ -399,19 +399,26 @@ class MensajeCreateReadView(ListCreateAPIView):
     """
     API endpoint para crear o ver todos los mensajes
     """
+    permission_classes = [permissions.IsAuthenticated, ]
     serializer_class = MensajeSerializer
 
     def get_queryset(self):
         queryset = Mensaje.objects.all()
-        evento = self.request.query_params.get('evento', None)
-        if evento is not None:
-            queryset = queryset.filter(evento_id=categoria)
-        return queryset
+        evento_id = self.request.query_params.get('evento', None)
+        user = get_token_user(self.request)        
+        if evento_id is not None:
+            evento = Evento.objects.filter(id=evento_id)[0]
+            if evento.organizacion_id == user:
+                queryset = queryset.filter(evento_id=evento_id)
+                queryset = queryset.order_by('created')
+                return queryset
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class MensajeReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     """
     API endpoint para leer, actualizar o eliminar un mensaje
     """
+    permission_classes = [permissions.IsAuthenticated, ]
     queryset = Mensaje.objects.all()
     serializer_class = MensajeSerializer
     lookup_field = 'id'

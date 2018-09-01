@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Button, Table, Card, CardHeader, CardBody } from 'reactstrap';
+import moment from 'moment';
+import ModalNuevoMensaje from './ModalNuevoMensaje';
 import api from '../../../api';
-import ModalEliminarNecesidad from './ModalEliminarNecesidad/ModalEliminarNecesidad';
-import ModalEditarItem from './ModalEditarItem/ModalEditarItem';
 
 
 class ListadoMensajes extends Component {
@@ -18,27 +18,67 @@ class ListadoMensajes extends Component {
     }
     this.state = {
       evento,
-      mensajes: []
+      mensajes: [],
+      mensaje: '',
+      openModal: false
     };
+    this.confirmNuevoMensaje = this.confirmNuevoMensaje.bind(this);
+    this.handleInput = this.handleInput.bind(this);
+    this.loadMensajes = this.loadMensajes.bind(this);
   }
 
   componentDidMount() {
-    a
+    this.loadMensajes();
   }
 
-  getTablaVoluntarios() {
-    return this.state.voluntarios.map((n) =>
+  loadMensajes() {
+    api.get('/actividades/mensajes/?evento=' + this.state.evento)
+      .then((res) => {
+        this.setState({ mensajes: res.data });
+      })
+      .catch((e) => {
+        this.props.history.push({ pathname: '/dashboard' });
+      })
+  }
+
+  getListaMensajes() {
+    if (this.state.mensajes.length > 0) {
+      return this.state.mensajes.map((n) =>
+        <tr>
+          <td><i className="cui-envelope-letter"></i></td>
+          <td>{moment(n.created).format("DD/MM/YYYY HH:mm")}</td>
+          <td>{n.mensaje}</td>
+        </tr>
+      );
+    }
+    return (
       <tr>
-        <td><i className="cui-user"></i></td>
-        <td>{n.funcion.nombre}</td>
-        <td>{n.descripcion}</td>
-        <td>{n.cantidad}</td>
-        <td><Button onClick={() => this.editVoluntario(n.id)} outline
-          disabled={this.state.voluntario} color="warning">Editar</Button></td>
-        <td><Button onClick={() => this.deleteVoluntario(n.id)} outline 
-          disabled={this.state.voluntario} color="danger">Eliminar</Button></td>
+        <td></td>
+        <td></td>
+        <td>No se han enviado mensajes en este evento.</td>
       </tr>
-    );
+    )
+  }
+
+  confirmNuevoMensaje(enviar) {
+    const mensaje = {
+      mensaje: this.state.mensaje,
+      evento_id: this.state.evento,
+    }
+    if (enviar) {
+      api.post('/actividades/mensajes/', mensaje)
+        .then((res) => {
+          this.loadMensajes();
+        })
+        .catch((e) => {
+          this.setState({ error: "El mensaje ingresado no es válido."})
+        })
+    }
+    this.setState({ openModal: false, mensaje: '' })
+  }
+
+  handleInput(e) {
+    this.setState({ mensaje: e.target.value });
   }
 
   render() {
@@ -46,10 +86,20 @@ class ListadoMensajes extends Component {
       <div className="animated fadeIn">
         <Card>
           <CardHeader>
-            <i className="fa fa-align-justify"></i> Complete las necesidades del evento
+            <i className="fa fa-align-justify"></i> Mensajes del evento
           </CardHeader>
           <CardBody>
             <form>
+              <p>Los mensajes son enviados a <b>todos los voluntarios</b> registrados en el evento. Si un voluntario se anota posteriormente al envío del mensaje, <b>también recibirá</b> una copia del mismo.</p>
+              <p>Una <b>copia del mensaje</b> será enviada a su correo electrónico.</p>
+              <button className="btn btn-primary" type="button"
+                onClick={() => this.setState({ openModal: true })} 
+              >
+                <span className="cui-envelope-letter"></span> Nuevo mensaje
+              </button>
+              <br />
+              <span style={{ color: 'red' }}>{this.state.error}</span>
+              <hr />
               <Table responsive striped>
                 <thead>
                   <tr>
@@ -59,18 +109,14 @@ class ListadoMensajes extends Component {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td><i className="cui-user"></i></td>
-                    <td>Un mensaje</td>
-                    <td>Un mensaje</td>
-                  </tr>
+                  {this.getListaMensajes()}
                 </tbody>
               </Table>
-              <Button onClick={() => this.props.history.push('dashboard')} 
-                color="primary">Guardar necesidades</Button>
             </form>
           </CardBody>
         </Card>
+        <ModalNuevoMensaje open={this.state.openModal} mensaje={this.state.mensaje}
+            closeModal={this.confirmNuevoMensaje} updateMensaje={this.handleInput} />
       </div>
     )
   }

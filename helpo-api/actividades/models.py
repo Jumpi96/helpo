@@ -72,4 +72,4 @@ class Participacion(models.Model):
 
 class Mensaje(IndexedTimeStampedModel):
     evento = models.ForeignKey(Evento, related_name='mensajes', null=False, on_delete=models.CASCADE)
-    mensaje = models.CharField(max_length=1000, null=True)
+    mensaje = models.CharField(max_length=1000, null=False)

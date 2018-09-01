@@ -71,7 +71,7 @@ class ImagenSerializer(serializers.ModelSerializer):
 class OrganizacionProfileSerializer(serializers.ModelSerializer):
     rubro = RubroOrganizacionSerializer(required=False)
     ubicacion = UbicacionSerializer(required=False)
-    avatar = ImagenSerializer(required=False)    
+    avatar = ImagenSerializer(required=False)
     usuario = UserSerializer(read_only=True)
 
     class Meta:

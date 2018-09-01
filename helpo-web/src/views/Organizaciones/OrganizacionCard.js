@@ -21,35 +21,6 @@ const propTypes = {
 };
 
 class OrganizacionCard extends Component {
-  constructor(props) {
-    super(props); //Llama a las props del padre
-    this.state = {
-      nombre: '',
-      userId: 0, // 1: ONG, 2: Vol, 3: Empresa
-      userType: 0,     
-      email: '',
-      data: {},
-      rubros: [], // [{ id: , nombre: },]
-      modificar: false,
-      loggedUser: true,
-    };
-
-  componentDidMount() {
-    // TODO: Other user (No usuario logeado)
-    let initialState = {};
-      api.get('/auth/user/')
-      .then(res => {        
-            console.log(res)
-            initialState.nombre = res.data.nombre
-            initialState.userId = res.data.id
-            initialState.email = res.data.email
-            initialState.userType = res.data.user_type 
-      })
-        .catch( error => {
-          console.log(error)
-        })      
-    }    
-
   render() {
     const { 
       organizacion,

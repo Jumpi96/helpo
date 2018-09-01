@@ -1,8 +1,15 @@
 from decouple import config
 import requests
+import json
 
 
-def send_mail(mail_from="notificaciones@helpo.com.ar", mail_to="error@helpo.com.ar", subject="Error", html_content="Error"):
+def _get_players_id(mails):
+    from users.models import DeviceID
+    device_list = DeviceID.objects.filter(email__in=mails)
+    return [device.player_id for device in device_list]
+
+
+def send_mail_to(mail_to="error@helpo.com.ar", subject="Error", html_content="Error", mail_from="notificaciones@helpo.com.ar"):
     url = "https://mail.zoho.com/api/accounts/%s/messages" % (
         config('ZOHO_ACCOUNT_ID'))
     payload = "{\n \"fromAddress\": \"%s\",\n \"toAddress\": \"%s\",\n \"subject\": \"%s\",\n \"content\": \"%s\"\n}" \
@@ -17,16 +24,22 @@ def send_mail(mail_from="notificaciones@helpo.com.ar", mail_to="error@helpo.com.
           (mail_to, mail_from, response.status_code))
 
 
-def send_push_notification(en_title, es_title, en_message, es_message):
+def send_mail_to_list(mails_to=["error@helpo.com.ar"], subject="Error", html_content="Error", mail_from="notificaciones@helpo.com.ar"):
+    for mail in mails_to:
+        send_mail_to(mail, subject, html_content, mail_from)
+
+def send_push_notification_to(mails_to, en_title, es_title, en_message, es_message):
     url = "https://onesignal.com/api/v1/notifications"
+
+    players_id_json = json.dumps(_get_players_id(mails_to))
 
     payload = "{\n " \
         "    \"app_id\": \"8dfa1a54-4fb2-42b3-97a6-70e004144dd5\",\n " \
         "   \"headings\": {\"en\": \"%s\", \"es\": \"%s\"},\n " \
         "   \"contents\": {\n   \t                \"en\": \"%s\",\n   \t " \
         "               \"es\": \"%s\",\n   \t                \"url\": \"https://www.helpo.com.ar\"\n " \
-        "  \t\t\t\t},\n    \"include_player_ids\": [\"28631624-bddd-4bc4-8fcd-4c24b1dc00d9\"]\n}" \
-        % (en_title, es_title, en_message, es_message)
+        "  \t\t\t\t},\n    \"include_player_ids\": %s \n}" \
+        % (en_title, es_title, en_message, es_message, players_id_json)
     headers = {
         'Authorization': "Basic " + config('ONESIGNAL_REST_API_KEY'),
         'Content-Type': "application/json"
@@ -34,8 +47,8 @@ def send_push_notification(en_title, es_title, en_message, es_message):
 
     response = requests.request("POST", url, data=payload, headers=headers)
 
-    print("Enviando notificacion push a 28631624-bddd-4bc4-8fcd-4c24b1dc00d9, response text: %s, response code: %s" % (
-        response.text, response.status_code))
+    print("Enviando notificacion push a %s, response text: %s, response code: %s" % (
+        mails_to, response.text, response.status_code))
 
 
 def send_push_notification_all(en_title, es_title, en_message, es_message):

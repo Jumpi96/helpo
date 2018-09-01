@@ -40,6 +40,4 @@ class OrganizacionCard extends Component {
   }
 }
 
-OrganizacionCard.propTypes = propTypes;
-
 export default OrganizacionCard;

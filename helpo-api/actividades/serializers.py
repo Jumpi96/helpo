@@ -234,7 +234,7 @@ class MensajeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Mensaje
-        fields = ('id', 'mensaje', 'evento_id', 'created')
+        fields = ('id', 'asunto', 'mensaje', 'evento_id', 'created')
 
     def create(self, validated_data):
         mensaje = Mensaje.objects.create(**validated_data)

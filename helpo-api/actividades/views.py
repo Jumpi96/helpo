@@ -192,7 +192,6 @@ class EventoVoluntarioCreateReadView(ListCreateAPIView):
         lista_eventos = self.get_eventos(get_token_user(self.request))
         queryset = Evento.objects.all()
         queryset = queryset.filter(id__in=lista_eventos)
-        queryset = queryset.order_by('-fecha_hora_inicio')
         return queryset
 
     def get_eventos(self, user):
@@ -409,7 +408,7 @@ class MensajeCreateReadView(ListCreateAPIView):
             evento = Evento.objects.filter(id=evento_id)[0]
             if evento.organizacion_id == user:
                 queryset = queryset.filter(evento_id=evento_id)
-                queryset = queryset.order_by('created')
+                queryset = queryset.order_by('-created')
                 return queryset
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

@@ -20,6 +20,7 @@ class ListadoMensajes extends Component {
       evento,
       mensajes: [],
       mensaje: '',
+      asunto: '',
       openModal: false
     };
     this.confirmNuevoMensaje = this.confirmNuevoMensaje.bind(this);
@@ -47,6 +48,7 @@ class ListadoMensajes extends Component {
         <tr>
           <td><i className="cui-envelope-letter"></i></td>
           <td>{moment(n.created).format("DD/MM/YYYY HH:mm")}</td>
+          <td>{n.asunto}</td>
           <td>{n.mensaje}</td>
         </tr>
       );
@@ -62,6 +64,7 @@ class ListadoMensajes extends Component {
 
   confirmNuevoMensaje(enviar) {
     const mensaje = {
+      asunto: this.state.asunto,
       mensaje: this.state.mensaje,
       evento_id: this.state.evento,
     }
@@ -75,11 +78,11 @@ class ListadoMensajes extends Component {
           this.setState({ error: "El mensaje ingresado no es válido."})
         })
     }
-    this.setState({ openModal: false, mensaje: '' })
+    this.setState({ openModal: false, mensaje: '', asunto: '' })
   }
 
-  handleInput(e) {
-    this.setState({ mensaje: e.target.value });
+  handleInput(asunto, mensaje) {
+    this.setState({ asunto, mensaje });
   }
 
   render() {
@@ -106,6 +109,7 @@ class ListadoMensajes extends Component {
                   <tr>
                     <th></th>
                     <th>Fecha</th>
+                    <th>Asunto</th>
                     <th>Mensaje</th>
                   </tr>
                 </thead>
@@ -116,7 +120,7 @@ class ListadoMensajes extends Component {
             </form>
           </CardBody>
         </Card>
-        <ModalNuevoMensaje open={this.state.openModal} mensaje={this.state.mensaje}
+        <ModalNuevoMensaje open={this.state.openModal} mensaje={this.state.mensaje} asunto={this.state.asunto}
             closeModal={this.confirmNuevoMensaje} updateMensaje={this.handleInput} />
       </div>
     )

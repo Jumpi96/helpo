@@ -47,6 +47,11 @@ const ConsultarColaboraciones = Loadable({
   loading: Loading,
 })
 
+const AlbumImagenes = Loadable({
+  loader: () => import('./views/Actividades/ConsultarEventos/AlbumImagenes/AlbumImagenes'),
+  loading: Loading,
+})
+
 const Dashboard = Loadable({
   loader: () => import('./views/Home/Home'),
   loading: Loading,
@@ -65,7 +70,8 @@ const routes = [
   { path: '/actividades/registrar-necesidades', name: 'Registrar necesidades', component: RegistrarNecesidades },
   { path: '/actividades/consultar-colaboraciones/:eventoId', name: 'Consultar Colaboraciones', component: ConsultarColaboraciones },
   { path: '/perfiles/perfil-organizacion', name: 'Perfil organizacion', component: ModificarPerfilOrganizacion },
-  { path: '/perfil/:usuarioId?', name: 'Perfil de usuario', component: ConsultarPerfil }
+  { path: '/perfil/:usuarioId?', name: 'Perfil de usuario', component: ConsultarPerfil },
+  { path: '/actividades/album/:eventoId', name: 'Album de Evento', component: AlbumImagenes }
 ];
 
 export default routes;

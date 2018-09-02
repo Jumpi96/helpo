@@ -8,6 +8,7 @@ import ong from '../../../assets/img/ong.png';
 import { getImagen } from '../../../utils/Imagen';
 import ComentariosEvento from './ComentariosEvento/ComentariosEvento';
 import ButtonsCompartirEvento from '../../common/ButtonsCompartir/ButtonsCompartirEvento';
+import ButtonGoAlbum from '../ConsultarEventos/AlbumImagenes/ButtonGoAlbum'
 
 class ConsultarEventosView extends React.Component {
 
@@ -201,6 +202,14 @@ class ConsultarEventosView extends React.Component {
                 <ComentariosEvento evento={evento} update={this.loadEvento} />
               ) : undefined
               }
+              <div className="row">
+                <div className="form-group col-md-3">
+                  <b name="compartir" className="float-right">Album</b>
+                </div>
+                <div className="form-group col-md-9">
+                  <ButtonGoAlbum/>
+                </div>
+              </div>
               <div className="row">
                 <div className="form-group col-md-3">
                   <b name="compartir" className="float-right">Compartir</b>

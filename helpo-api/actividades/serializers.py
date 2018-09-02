@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from actividades.models import Evento, RubroEvento, Ubicacion, CategoriaRecurso, \
     Recurso, Necesidad, Contacto, Funcion, Voluntario, Participacion, Colaboracion, Comentario, Mensaje
+from actividades.services import send_mail_mensaje_evento
 from users.serializers import UserSerializer, VoluntarioInfoSerializer
 from users.models import User
 
@@ -232,3 +233,8 @@ class MensajeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Mensaje
         fields = ('id', 'mensaje', 'evento_id', 'created')
+
+    def create(self, validated_data):
+        mensaje = Mensaje.objects.create(**validated_data)
+        send_mail_mensaje_evento(mensaje, validated_data.get('evento_id'))
+        return mensaje

@@ -30,6 +30,7 @@ class CategoriaRecurso(models.Model):
     icono = models.CharField(max_length=50, null=True)
 
 class Recurso(models.Model):
+
     nombre = models.CharField(max_length=50)
     categoria = models.ForeignKey(CategoriaRecurso, null=False, on_delete=models.PROTECT)
 
@@ -73,3 +74,7 @@ class Participacion(models.Model):
 class Mensaje(IndexedTimeStampedModel):
     evento = models.ForeignKey(Evento, related_name='mensajes', null=False, on_delete=models.CASCADE)
     mensaje = models.CharField(max_length=1000, null=False)
+
+class LogMensaje(IndexedTimeStampedModel):
+    evento = models.ForeignKey(Mensaje, related_name='envios', null=False, on_delete=models.CASCADE)
+    voluntario = models.ForeignKey(User, null=False)

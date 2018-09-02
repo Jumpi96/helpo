@@ -200,7 +200,6 @@ class EventoVoluntarioCreateReadView(ListCreateAPIView):
         colaboraciones = Colaboracion.objects.filter(voluntario_id=user)
         for colaboracion in colaboraciones:
             necesidad = Necesidad.objects.filter(id=colaboracion.necesidad_material_id).first()
-            print(necesidad)
             if necesidad.evento_id not in eventos:
                 eventos.append(necesidad.evento_id)
         participaciones = Participacion.objects.filter(voluntario_id=user)

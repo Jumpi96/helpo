@@ -61,11 +61,6 @@ const itemsVol = [
 		'name': 'Home'
 	},
 	{
-		'key': 'ConsultarPerfilGenerico',
-		'routeName': 'ConsultarPerfilGenerico',
-		'name': 'Perfil'
-	},
-	{
 		'key': 'ConsultarEventos',
 		'routeName': 'ConsultarEventos',
 		'name': 'Consultar eventos'
@@ -74,6 +69,11 @@ const itemsVol = [
 		'key': 'MisColaboraciones',
 		'routeName': 'MisColaboraciones',
 		'name': 'Mis colaboraciones'
+	},
+	{
+		'key': 'ConsultarPerfilGenerico',
+		'routeName': 'ConsultarPerfilGenerico',
+		'name': 'Mi perfil'
 	},
 	{
 		'key': 'Configuracion',

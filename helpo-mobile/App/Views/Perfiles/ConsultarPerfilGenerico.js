@@ -14,7 +14,7 @@ class ConsultarPerfilGenerico extends Component {
     this.state = {
       nombre: '',
       userId: 0, // 1: ONG, 2: Vol, 3: Empresa
-      userType: 0,     
+      userType: 0,
       email: '',
       data: {},
       rubros: [], // [{ id: , nombre: },]
@@ -33,32 +33,30 @@ class ConsultarPerfilGenerico extends Component {
     switch (userType) {
       case 1:
         return 'perfil_organizacion'
-      case 2: 
+      case 2:
         return 'perfil_voluntario'
       case 3:
         return 'perfil_empresa'
       default:
-        return ''        
+        return ''
     }
   }
 
   componentDidMount() {
-    // TODO: Other user (No usuario logeado)
     let initialState = {};
-      api.get('/auth/user/')
-      .then(res => {  
-            initialState.nombre = res.data.nombre
-            initialState.userId = res.data.id
-            initialState.email = res.data.email
-            initialState.userType = res.data.user_type          
-
-          return api.get(`/perfiles/${this.getApiCall(initialState.userType)}/${initialState.userId}/`)
-        })
+    api.get('/auth/user/')
+      .then(res => {
+        initialState.nombre = res.data.nombre
+        initialState.userId = res.data.id
+        initialState.email = res.data.email
+        initialState.userType = res.data.user_type
+        return api.get(`/perfiles/${this.getApiCall(initialState.userType)}/${initialState.userId}/`)
+      })
       .then(res => {
         initialState.data = res.data
         return api.get('/perfiles/rubros_organizacion/')
-      })   
-      .then( res => {
+      })
+      .then(res => {
         initialState.rubros = res.data
       })
       .then(() => {
@@ -72,10 +70,10 @@ class ConsultarPerfilGenerico extends Component {
           rubros: initialState.rubros
         })
       })
-      .catch( error => {
+      .catch(error => {
         console.log(error)
-      })      
-  }    
+      })
+  }
 
   switchToConsultar() {
     this.componentDidMount()
@@ -90,102 +88,102 @@ class ConsultarPerfilGenerico extends Component {
     })
   }
 
-  renderModificar() {        
+  renderModificar() {
     switch (this.state.userType) {
       case 1:
-        return (<ModificarPerfilOrganizacion 
-                  nombre={this.state.nombre}
-                  email={this.state.email}
-                  data={this.state.data}
-                  rubros={this.state.rubros}
-                  switchToConsultar={this.switchToConsultar}
-                  />)
+        return (<ModificarPerfilOrganizacion
+          nombre={this.state.nombre}
+          email={this.state.email}
+          data={this.state.data}
+          rubros={this.state.rubros}
+          switchToConsultar={this.switchToConsultar}
+        />)
 
       case 2:
-        return ( <ModificarPerfilVoluntario 
-                  nombre={this.state.nombre}
-                  email={this.state.email}
-                  data={this.state.data}
-                  switchToConsultar={this.switchToConsultar}
-                  /> )
+        return (<ModificarPerfilVoluntario
+          nombre={this.state.nombre}
+          email={this.state.email}
+          data={this.state.data}
+          switchToConsultar={this.switchToConsultar}
+        />)
 
       case 3:
-        return ( <ModificarPerfilEmpresa 
-                  nombre={this.state.nombre}
-                  email={this.state.email}
-                  data={this.state.data}
-                  rubros={this.state.rubros}
-                  switchToConsultar={this.switchToConsultar}
-                  /> )
+        return (<ModificarPerfilEmpresa
+          nombre={this.state.nombre}
+          email={this.state.email}
+          data={this.state.data}
+          rubros={this.state.rubros}
+          switchToConsultar={this.switchToConsultar}
+        />)
 
       default:
-        return ( <p>Error</p> )        
+        return (<p>Error</p>)
     }
-  }  
+  }
 
-  renderConsultarOtro() {    
+  renderConsultarOtro() {
     switch (this.state.userType) {
       case 1:
         return (<ConsultarPerfilOrganizacion
-                  id={this.state.userId}
-                  nombre={this.state.nombre}
-                  email={this.state.email}
-                  data={this.state.data}
-                  switchToModificar={this.switchToModificar}
-                  />)
+          id={this.state.userId}
+          nombre={this.state.nombre}
+          email={this.state.email}
+          data={this.state.data}
+          switchToModificar={this.switchToModificar}
+        />)
 
       case 2:
-        return ( <ConsultarPerfilVoluntario 
-                  nombre={this.state.nombre}
-                  email={this.state.email}
-                  data={this.state.data}
-                  switchToModificar={this.switchToModificar}
-                  /> )
+        return (<ConsultarPerfilVoluntario
+          nombre={this.state.nombre}
+          email={this.state.email}
+          data={this.state.data}
+          switchToModificar={this.switchToModificar}
+        />)
 
       case 3:
-        return ( <ConsultarPerfilEmpresa 
-                  nombre={this.state.nombre}
-                  email={this.state.email}
-                  data={this.state.data}
-                  switchToModificar={this.switchToModificar}
-                  /> )
+        return (<ConsultarPerfilEmpresa
+          nombre={this.state.nombre}
+          email={this.state.email}
+          data={this.state.data}
+          switchToModificar={this.switchToModificar}
+        />)
 
       default:
-        return ( <p>Error</p> )        
+        return (<p>Error</p>)
     }
   }
 
   renderConsultar() {
     switch (this.state.userType) {
       case 1:
-        return (<ConsultarPerfilOrganizacion 
-                  id={this.state.userId}
-                  nombre={this.state.nombre}
-                  email={this.state.email}
-                  data={this.state.data}
-                  switchToModificar={this.switchToModificar}
-                  />)
+        return (<ConsultarPerfilOrganizacion
+          id={this.state.userId}
+          nombre={this.state.nombre}
+          email={this.state.email}
+          data={this.state.data}
+          switchToModificar={this.switchToModificar}
+        />)
 
       case 2:
-        return ( <ConsultarPerfilVoluntario
-                  nombre={this.state.nombre}
-                  email={this.state.email}
-                  data={this.state.data}
-                  switchToModificar={this.switchToModificar}
-                  /> )
+        return (<ConsultarPerfilVoluntario
+          nombre={this.state.nombre}
+          email={this.state.email}
+          data={this.state.data}
+          switchToModificar={this.switchToModificar}
+        />)
 
       case 3:
-        return ( <ConsultarPerfilEmpresa 
-                  nombre={this.state.nombre}
-                  email={this.state.email}
-                  data={this.state.data}
-                  switchToModificar={this.switchToModificar}
-                  /> )
+        return (<ConsultarPerfilEmpresa
+          nombre={this.state.nombre}
+          email={this.state.email}
+          data={this.state.data}
+          switchToModificar={this.switchToModificar}
+        />)
 
       default:
-        //return ( <Text>Error</Text> )        
+      //return ( <Text>Error</Text> )        
     }
-  }  
+  }
 
   renderComponente() {
     if (this.state.loggedUser && this.state.modificar) {
@@ -194,14 +192,14 @@ class ConsultarPerfilGenerico extends Component {
     else if (this.state.loggedUser && !this.state.modificar) {
       return this.renderConsultar()
     }
-    else { return this.renderConsultarOtro()}
+    else { return this.renderConsultarOtro() }
   }
 
   render() {
     return (
-    <Container>
-      {this.renderComponente()}
-    </Container>
+      <Container>
+        {this.renderComponente()}
+      </Container>
     );
   }
 }

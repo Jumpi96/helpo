@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import authenticate
-from users.models import User, RubroOrganizacion, OrganizacionProfile, Ubicacion, Imagen, VoluntarioProfile, EmpresaProfile, UserVerification, AppValues
+from users.models import User, RubroOrganizacion, OrganizacionProfile, Ubicacion, Imagen, VoluntarioProfile, EmpresaProfile, UserVerification, AppValues, DeviceID
 from django.core.exceptions import ObjectDoesNotExist
 
 
@@ -255,4 +255,8 @@ class VoluntarioInfoSerializer(serializers.ModelSerializer):
         voluntario = VoluntarioProfile.objects.get(usuario=obj.id)
         return voluntario.dni
 
-        
+class DeviceIDSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = DeviceID
+        fields = ('player_id', 'email')

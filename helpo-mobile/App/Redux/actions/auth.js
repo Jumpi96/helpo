@@ -1,4 +1,5 @@
 import api from '../../api';
+import dispositivoApi from '../api/dispositivoApi';
 
 export function loadUser() {
   return (dispatch) => {
@@ -28,6 +29,7 @@ export function login(email, password) {
   return (dispatch) => {
     const headers = { 'Content-Type': 'application/json' };
     const body = JSON.stringify({ email, password });
+    dispositivoApi.setDispositivo(email);
 
     return api.post('/auth/log_in/', body, { headers })
       .then((res) => {
@@ -67,9 +69,10 @@ export function register(email, password) {
   };
 }
 
-export function logout() {
+export function logout(email) {
   return (dispatch) => {
     const headers = { 'Content-Type': 'application/json' };
+    dispositivoApi.deleteDispositivo(email);
 
     return api.post('/auth/logout/', JSON.stringify(''), { headers })
       .then((res) => {

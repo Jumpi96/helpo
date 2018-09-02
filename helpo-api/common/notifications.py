@@ -14,29 +14,30 @@ def _get_email_from_id(user_id):
     return User.objects.get(id=user_id).email
 
 
-def send_mail_to_id_list(ids_to, subject, html_content, mail_from="notificaciones@helpo.com.ar"):
+def send_mail_to_id_list(ids_to, html_subject, html_content, mail_from="notificaciones@helpo.com.ar"):
     for user_id in ids_to:
-        send_mail_to_id(user_id, subject, html_content, mail_from)
+        send_mail_to_id(user_id, html_subject, html_content, mail_from)
 
 
-def send_mail_to_id(id_to, subject, html_content, mail_from="notificaciones@helpo.com.ar"):
+def send_mail_to_id(id_to, html_subject, html_content, mail_from="notificaciones@helpo.com.ar"):
     mail = _get_email_from_id(id_to)
-    send_mail_to(mail, subject, html_content, mail_from)
+    send_mail_to(mail, html_subject, html_content, mail_from)
 
 
-def send_mail_to_list(mails_to=["error@helpo.com.ar"], subject="Error", html_content="Error", mail_from="notificaciones@helpo.com.ar"):
+def send_mail_to_list(mails_to=["error@helpo.com.ar"], html_subject="Error", html_content="Error", mail_from="notificaciones@helpo.com.ar"):
     for mail in mails_to:
-        send_mail_to(mail, subject, html_content, mail_from)
+        send_mail_to(mail, html_subject, html_content, mail_from)
 
 
-def send_mail_to(mail_to="error@helpo.com.ar", subject="Error", html_content="Error", mail_from="notificaciones@helpo.com.ar"):
+def send_mail_to(mail_to="error@helpo.com.ar", html_subject="Error", html_content="Error", mail_from="notificaciones@helpo.com.ar"):
+    json_subject = json.dumps(html_subject)
     url = "https://mail.zoho.com/api/accounts/%s/messages" % (
         config('ZOHO_ACCOUNT_ID'))
-    payload = "{\n \"fromAddress\": \"%s\",\n \"toAddress\": \"%s\",\n \"subject\": \"%s\",\n \"content\": %s\n}" \
-        % (mail_from, mail_to, subject, html_content)
+    payload = "{\n \"fromAddress\": \"%s\",\n \"toAddress\": \"%s\",\n \"subject\": %s,\n \"content\": %s\n}" \
+        % (mail_from, mail_to, json_subject, html_content)
     headers = {
         'Authorization': config('ZOHO_AUTH_TOKEN'),
-        'Content-Type': "application/json"
+        'Content-Type': "application/json; charset=utf-8"
     }
 
     response = requests.request("POST", url, data=payload, headers=headers)

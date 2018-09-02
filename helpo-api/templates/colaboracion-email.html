@@ -43,7 +43,7 @@
 
     /* Masthead ----------------------- */
     .email-masthead {
-      padding: 25px 0;
+      padding: 10px 0;
       text-align: center;
     }
 
@@ -204,7 +204,7 @@
           <!-- Logo -->
           <tr>
             <td align="center" class="email-masthead">
-              <img class="email-masthead_logo" src="https://s3-us-west-2.amazonaws.com/helpo-aws/logo_principal.png" alt="Helpo" width="140"
+              <img class="email-masthead_logo" src="https://s3-us-west-2.amazonaws.com/helpo-aws/logo_principal.png" alt="Helpo" width="120"
                 height="140">
             </td>
           </tr>
@@ -226,7 +226,7 @@
                             <ul style="list-style-type:disc">
                               <li>Nombre: {{evento.nombre}}</li>
                               <li>Organizaci&oacute;n: {{evento.organizacion.nombre}}</li>
-                              <li>Descripci&oacute;n {{evento.descripcion}}</li>
+                              <li>Descripci&oacute;n: {{evento.descripcion|default:"Sin descripci&oacute;n"}}</li>
                               <li>Fecha:</li>
                               <ul style="list-style-type:circle">
                                 <li>Inicio: {{evento.fecha_hora_inicio}}</li>
@@ -236,14 +236,14 @@
                               <ul style="list-style-type:circle">
                                 <li>Latitud: {{evento.ubicacion.latitud}}</li>
                                 <li>Longitud: {{evento.ubicacion.longitud}}</li>
-                                <li>Notas: {{evento.ubicacion.notas}}</li>
+                                <li>Notas: {{evento.ubicacion.notas|default:"Sin notas"}}</li>
                               </ul>
                             </ul>
                             <h4>Datos de su Colaboraci&oacute;n</h4>
                             <ul style="list-style-type:disc">
-                              <li>Categor&iacute;a: {{colaboracion.necesidad_material.recurso.categoria}}</li>
+                              <li>Categor&iacute;a: {{colaboracion.necesidad_material.recurso.categoria.nombre}}</li>
                               <li>Recurso: {{colaboracion.necesidad_material.recurso.nombre}}</li>
-                              <li>Descripci&oacute;n: {{colaboracion.necesidad_material.descripcion}}</li>
+                              <li>Descripci&oacute;n: {{colaboracion.necesidad_material.descripcion|default:"Sin descripci&oacute;n"}}</li>
                               <li>Cantidad: {{colaboracion.cantidad}}</li>
                             </ul>
                           </div>
@@ -255,8 +255,7 @@
                     <table class="body-sub">
                       <tr>
                         <td>
-                          <p class="sub">Si desea contactarnos, no dude en escribirnos a: </p>
-                          <p class="sub"><a href="mailto:consultas@helpo.com.ar">consultas@helpo.com.ar</a></p>
+                          <p class="sub">Si desea contactarnos, no dude en escribirnos a: <a style="color:#F39200" href="mailto:consultas@helpo.com.ar">consultas@helpo.com.ar</a></p>
                         </td>
                       </tr>
                     </table>

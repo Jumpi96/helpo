@@ -142,19 +142,19 @@ class ColaboracionSerializer(serializers.ModelSerializer):
             suma_colaboraciones += c.cantidad
         if (suma_colaboraciones + cantidad) <= necesidad_material.cantidad:
             colaboracion = Colaboracion.objects.create(necesidad_material_id=necesidad_material.id, **validated_data)
-            print(validated_data)
             voluntario_id = validated_data['voluntario_id']
-            self.send_colaboracion_email(voluntario_id)
+            evento = validated_data['necesidad_material'].evento            
+            self.send_colaboracion_email(voluntario_id, evento, colaboracion)
             return colaboracion
         else:
             raise serializers.ValidationError()
     
-    def send_colaboracion_email(self, voluntario_id):
-        subject = "Registro de su colaboración en Helpo"
-        content = 'Usted se ha colaborado con Helpo'
-
+    def send_colaboracion_email(self, voluntario_id, evento, colaboracion):
+        subject_utf = u"Registro de su colaboración en Helpo"
+        from common.templates import render_colaboracion_email
+        content = render_colaboracion_email(evento, colaboracion)
         from common.notifications import send_mail_to_id
-        send_mail_to_id(id_to=voluntario_id, subject=subject, html_content=content)
+        send_mail_to_id(id_to=voluntario_id, html_subject=subject_utf, html_content=content)
 
 
 class ConsultaNecesidadSerializer(serializers.ModelSerializer):

@@ -143,16 +143,34 @@ class ColaboracionSerializer(serializers.ModelSerializer):
         if (suma_colaboraciones + cantidad) <= necesidad_material.cantidad:
             colaboracion = Colaboracion.objects.create(necesidad_material_id=necesidad_material.id, **validated_data)
             voluntario_id = validated_data['voluntario_id']
-            evento = validated_data['necesidad_material'].evento            
-            self.send_colaboracion_email(voluntario_id, evento, colaboracion)
+            evento = validated_data['necesidad_material'].evento   
+            titulo_email = "Usted se ha registrado para colaborar con los siguientes datos:"         
+            self.send_colaboracion_email(voluntario_id, evento, colaboracion, titulo_email)
             return colaboracion
         else:
             raise serializers.ValidationError()
+
+
+    def update(self, instance, validated_data):
+        new_instance = super().update(instance, validated_data)
+        voluntario_id = instance.voluntario.id
+        evento = validated_data['necesidad_material'].evento  
+        titulo_email = u"Usted ha modificado su colaboración en un Evento. Los nuevos datos son:"
+        self.send_colaboracion_email(voluntario_id, evento, new_instance, titulo_email)
+        return new_instance
     
-    def send_colaboracion_email(self, voluntario_id, evento, colaboracion):
+    # la continuacion de la negrada de Gon
+    def destroy(self, colaboracion_id):
+        colaboracion = Colaboracion.objects.get(id=colaboracion_id)
+        voluntario_id = colaboracion.voluntario.id
+        evento = colaboracion.necesidad_material.evento
+        titulo_email = u"Usted ha cancelado su colaboración en el siguiente Evento:"
+        self.send_colaboracion_email(voluntario_id, evento, colaboracion, titulo_email)
+
+    def send_colaboracion_email(self, voluntario_id, evento, colaboracion, titulo_email):
         subject_utf = u"Registro de su colaboración en Helpo"
         from common.templates import render_colaboracion_email
-        content = render_colaboracion_email(evento, colaboracion)
+        content = render_colaboracion_email(evento, colaboracion, titulo_email)
         from common.notifications import send_mail_to_id
         send_mail_to_id(id_to=voluntario_id, html_subject=subject_utf, html_content=content)
 

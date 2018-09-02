@@ -309,6 +309,14 @@ class ColaboracionReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     queryset = Colaboracion.objects.all()
     serializer_class = ColaboracionSerializer
     lookup_field = 'id'
+    
+    # de aca para abajo, es una negrada, no queda otra, preguntarle a Gon por que
+    def destroy(self, request, *args, **kwargs):
+        serializer = ColaboracionSerializer(data=request.data)
+        colaboracion_id = request.path.split("/actividades/colaboraciones/",1)[1][:-1]
+        serializer.destroy(colaboracion_id)
+        return super().destroy(request, *args, **kwargs)
+
 
 class ParticipacionCreateReadView(ListCreateAPIView):
     """

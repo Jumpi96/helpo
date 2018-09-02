@@ -31,10 +31,11 @@ def send_mail_to_list(mails_to=["error@helpo.com.ar"], html_subject="Error", htm
 
 def send_mail_to(mail_to="error@helpo.com.ar", html_subject="Error", html_content="Error", mail_from="notificaciones@helpo.com.ar"):
     json_subject = json.dumps(html_subject)
+    json_content = json.dumps(html_content)
     url = "https://mail.zoho.com/api/accounts/%s/messages" % (
         config('ZOHO_ACCOUNT_ID'))
     payload = "{\n \"fromAddress\": \"%s\",\n \"toAddress\": \"%s\",\n \"subject\": %s,\n \"content\": %s\n}" \
-        % (mail_from, mail_to, json_subject, html_content)
+        % (mail_from, mail_to, json_subject, json_content)
     headers = {
         'Authorization': config('ZOHO_AUTH_TOKEN'),
         'Content-Type': "application/json; charset=utf-8"

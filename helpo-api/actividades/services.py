@@ -7,8 +7,9 @@ def send_mail_mensaje_evento(mensaje, evento_id):
     participantes = get_participantes_evento(evento_id)
     email_participantes = [p.email for p in participantes]
     evento = Evento.objects.filter(id=evento_id).first()
+    email_participantes.append(evento.organizacion.email)
     send_mail_to_list(email_participantes, 
-        "helpo - Mensaje de evento: " + evento.nombre,
+        "helpo - " + mensaje.asunto + " (" + evento.nombre + ")",
         render_mensaje_evento(evento, mensaje.mensaje)
     )
     for participante in participantes:
@@ -38,7 +39,7 @@ def send_previous_mail_evento(evento_id, voluntario_id):
     for mensaje in mensajes:
         if len(LogMensaje.objects.filter(mensaje_id=mensaje.id, voluntario_id=voluntario_id)) == 0:
             send_mail_to(voluntario_email, 
-                "helpo - Mensaje de evento: " + evento.nombre,
+                "helpo - " + mensaje.asunto + " (" + evento.nombre + ")",
                 render_mensaje_evento(evento, mensaje.mensaje)
             )
             LogMensaje.objects.create(voluntario_id=voluntario_id, mensaje_id=mensaje.id)

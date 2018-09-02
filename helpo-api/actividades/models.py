@@ -87,4 +87,10 @@ class ActividadesTasks(models.Model):
     evento = models.ForeignKey(Evento, null=True, blank=True)
     tipo = models.CharField(max_length=140, null=False, blank=False)
     execute_date = models.DateTimeField(null=False, blank=False)
+
+
+class EventoImagen(models.Model):
+
+    url = models.TextField()    
+    evento = models.ForeignKey(Evento, null=False, blank=False)
     

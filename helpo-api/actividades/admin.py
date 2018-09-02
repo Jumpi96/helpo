@@ -3,7 +3,7 @@ from .models import Evento, ActividadesTasks
 # Register your models here.
 
 class EventoAdmin(admin.ModelAdmin):
-    list_display = ['nombre', 'organizacion', 'fecha_hora_inicio', 'fecha_hora_fin', 'rubro']
+    list_display = ['id' ,'nombre', 'organizacion', 'fecha_hora_inicio', 'fecha_hora_fin', 'rubro']
 
 class ActividadesTasksAdmin(admin.ModelAdmin):
     list_display = ['tipo', 'execute_date', 'evento']

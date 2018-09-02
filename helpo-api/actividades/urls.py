@@ -177,4 +177,22 @@ urlpatterns = [
         view=actividades_views.RetroalimentacionONGEvento,
         name="post_retroalimentacion_ong"
     ),
+    # {% url "api:evento_imagen" evento_imagen.evento %}
+    url(
+        regex=r"^actividades/imagenes/(?P<evento>[-\w]+)/$",
+        view=actividades_views.EventoImagenListView.as_view(),
+        name="get_evento_imagenes"
+    ),
+    # {% url "api:evento_imagen" evento_imagen.id %}
+    url(
+        regex=r"^actividades/imagen/(?P<id>[-\w]+)/$",
+        view=actividades_views.EventoImagenRetrieveDestroyView.as_view(),
+        name="get_delete_evento_imagen"
+    ),
+    # {% url "api:evento_imagen" evento_imagen.evento %}
+    url(
+        regex=r"^actividades/imagenes/$",
+        view=actividades_views.EventoImagenCreateView.as_view(),
+        name="post_evento_imagen"
+    ),
 ]

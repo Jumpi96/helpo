@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from actividades.models import Evento, RubroEvento, Ubicacion, CategoriaRecurso, \
-    Recurso, Necesidad, Contacto, Funcion, Voluntario, Participacion, Colaboracion, Comentario
+    Recurso, Necesidad, Contacto, Funcion, Voluntario, Participacion, Colaboracion, Comentario, EventoImagen
 from users.serializers import UserSerializer, VoluntarioInfoSerializer
 from users.models import User
 
@@ -36,13 +36,14 @@ class EventoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Evento
         fields = ('id', 'nombre', 'descripcion', 'fecha_hora_inicio',
-            'fecha_hora_fin', 'rubro', 'rubro_id', 'ubicacion', 'contacto', 'organizacion_id')
+            'fecha_hora_fin', 'rubro', 'rubro_id', 'ubicacion', 'contacto', 'organizacion_id', 'estado')
         extra_kwargs = {
             'descripcion': {
                 'required': False,
                 'allow_blank': True,
-            }
+            }        
         }
+        read_only_fields = ('estado',)
 
     def create(self, validated_data):
         ubicacion_data = validated_data.pop('ubicacion')
@@ -214,3 +215,9 @@ class ConsultaEventoSerializer(serializers.ModelSerializer):
         fields = ('id', 'nombre', 'descripcion', 'fecha_hora_inicio',
             'fecha_hora_fin', 'rubro', 'rubro_id', 'ubicacion', 'contacto', 'organizacion_id',
             'necesidades', 'organizacion', 'voluntarios', 'comentarios')
+
+class EventoImagenSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = EventoImagen
+        fields = ('id', 'url', 'evento')

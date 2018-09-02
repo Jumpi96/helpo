@@ -17,13 +17,9 @@ class OrganizacionCard extends Component {
             style={{width:'75px', height:'75px'}} 
           />
 
-          <div >
-            <p style={{ textAlign: 'right' }} className='font-weight-bold' htmlFor="nombre">{organizacion.usuario.nombre}</p>
-          </div>
+          <div>{organizacion.usuario.nombre}</div>
           
-          <div>
-            <p style={{ textAlign: 'right' }} className='font-weight-bold' htmlFor="mail">{organizacion.descripcion}</p>
-          </div>
+          <div>{organizacion.descripcion}</div>
 
         <div className="col-6">
           <Link to={this.props.link}> 

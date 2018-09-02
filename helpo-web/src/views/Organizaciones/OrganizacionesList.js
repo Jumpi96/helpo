@@ -40,10 +40,8 @@ class OrganizacionesList extends React.Component {
     const organizaciones = this.buscarOrganizaciones(this.props.organizaciones);
     return (
       <div>
-        <Row>
-
-          <div className="form-group col-md-6">
-            <label htmlFor="nombre">Buscar una Organización Helpo:</label>
+        <div className="form-group col-md-6">
+            <label htmlFor="nombre">Buscar una Organización</label>
             <input
               type="text"
               name="nombre"
@@ -53,9 +51,9 @@ class OrganizacionesList extends React.Component {
               onChange={this.handleInputChange}
             />
             <span style={{ color: 'red' }}>{this.state.error}</span>
-          </div>
-
-          <div className="col-md-9">
+        </div>
+        <div>
+        <Row>
             {organizaciones.map(organizacion =>       
                 <Col>
                   <OrganizacionCard
@@ -66,14 +64,11 @@ class OrganizacionesList extends React.Component {
                   />
                 </Col>
               )}
-            </div>
-
           </Row>
-        </div>
-        );
-
+          </div>
+          </div>
+    );
   } 
-
 };
 
 export default OrganizacionesList;  

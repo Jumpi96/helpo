@@ -17,7 +17,7 @@ class ConsultarEventosView extends React.Component {
     const urlParams = new URLSearchParams(this.props.location.search)
     const id = urlParams.get('id');
     this.state = {
-      evento: { id }
+      evento: { id },
     }
     this.toggleColaborar = this.toggleColaborar.bind(this);
     this.loadEvento = this.loadEvento.bind(this);
@@ -207,7 +207,12 @@ class ConsultarEventosView extends React.Component {
                   <b name="compartir" className="float-right">Album</b>
                 </div>
                 <div className="form-group col-md-9">
-                  <ButtonGoAlbum/>
+                  <ButtonGoAlbum                     
+                    ong={this.state.evento.organizacion.nombre}
+                    ongId={this.state.evento.organizacion_id}
+                    evento={this.state.evento.nombre}
+                    eventoId={this.state.evento.id}
+                  />
                 </div>
               </div>
               <div className="row">

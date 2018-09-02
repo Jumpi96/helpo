@@ -1,18 +1,13 @@
 import React from 'react';
-import { Card, CardHeader, CardBody, Table } from 'reactstrap';
-import moment from 'moment';
+import { Card, CardHeader, CardBody } from 'reactstrap';
 import api from '../../api';
 import './Organizaciones.css';
-import ong from '../../assets/img/ong.png';
-import { getImagen } from '../../utils/Imagen';
 import OrganizacionesList from './OrganizacionesList'
 
 class OrganizacionesPage extends React.Component {  
 
   constructor(props) {
     super(props);
-    const urlParams = new URLSearchParams(this.props.location.search)
-    const id = urlParams.get('id');
     this.state = {
       organizaciones:[]
     }

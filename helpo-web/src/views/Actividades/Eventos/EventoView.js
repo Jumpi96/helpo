@@ -26,6 +26,7 @@ class EventoView extends React.Component {
     this.toggleDelete = this.toggleDelete.bind(this);
     this.confirmDeleteNecesidad = this.confirmDeleteNecesidad.bind(this);
     this.toggleConsultarColaboraciones = this.toggleConsultarColaboraciones.bind(this);
+    this.toggleMensajes = this.toggleMensajes.bind(this);
   }
 
   toggleEdit() {
@@ -76,6 +77,13 @@ class EventoView extends React.Component {
       this.setState({ evento: nextProps.evento });
     }
     this.setState({ saving: false, isEditing: false });
+  }
+
+  toggleMensajes() {
+    this.props.history.push({
+      pathname: '/actividades/mensajes',
+      search: '?evento=' + this.state.evento.id,
+    });
   }
 
   render() {
@@ -174,9 +182,15 @@ class EventoView extends React.Component {
                 onClick={this.toggleConsultarColaboraciones}
                 className="btn btn-warning"
               >
-                Consultar Colaboraciones
+                Consultar colaboraciones
             </button>
             </Link>
+            <button
+              onClick={this.toggleMensajes}
+              className="btn btn-warning"
+            >
+              Ver mensajes
+            </button>
           </div>
           <div className="form-group">
             <button

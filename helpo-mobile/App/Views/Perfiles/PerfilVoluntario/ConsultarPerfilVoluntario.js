@@ -99,7 +99,7 @@ class ConsultarPerfilVoluntario extends Component {
           </Right>
         </Header>
         <Content>
-          <Thumbnail source={{uri: this.props.data.avatar.url}} />
+          <Thumbnail large source={{uri: this.props.data.avatar.url}} />
           <ListItem>
             <Label style={styles.label}>Nombre</Label>
             <Text>{this.props.nombre}</Text>

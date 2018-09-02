@@ -14,6 +14,11 @@ def _get_email_from_id(user_id):
     return User.objects.get(id=user_id).email
 
 
+def send_mail_to_id_list(ids_to, subject, html_content, mail_from="notificaciones@helpo.com.ar"):
+    for user_id in ids_to:
+        send_mail_to_id(user_id, subject, html_content, mail_from)
+
+
 def send_mail_to_id(id_to, subject, html_content, mail_from="notificaciones@helpo.com.ar"):
     mail = _get_email_from_id(id_to)
     send_mail_to(mail, subject, html_content, mail_from)
@@ -39,7 +44,15 @@ def send_mail_to(mail_to="error@helpo.com.ar", subject="Error", html_content="Er
           (mail_to, mail_from, response.status_code))
 
 
-def send_push_notification_to(mails_to, en_title, es_title, en_message, es_message):
+def send_push_notification_to_id_list(ids_to, en_title, es_title, en_message, es_message):
+    mails_to = []
+    for user_id in ids_to:
+        mails_to.append(_get_email_from_id(user_id))
+    send_push_notification_to_list(
+        mails_to, en_title, es_title, en_message, es_message)
+
+
+def send_push_notification_to_list(mails_to, en_title, es_title, en_message, es_message):
     url = "https://onesignal.com/api/v1/notifications"
 
     players_id_json = json.dumps(_get_players_id(mails_to))

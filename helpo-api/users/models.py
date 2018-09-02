@@ -81,10 +81,12 @@ class UserManager(BaseUserManager):
         from common.templates import render_verify_email
         content = render_verify_email(url_confirmation)
 
-        from common.notifications import send_push_notification_to, send_mail_to, send_mail_to_list
+        from common.notifications import send_mail_to
         send_mail_to(user.email, subject, content, mail_from)
-        # send_push_notification_to(["techo@techo.com", "admin@admin.com"], "en", "es", "ja", "hola")
+        # from common.notifications import send_mail_to_list, send_push_notification_to_list, send_push_notification_to_id_list
         # send_mail_to_list(["gonzaulla@gmail.com", "helpoweb@gmail.com"], "sub", "hola")
+        # send_push_notification_to_list(["techo@techo.com", "admin@admin.com"], "en", "es", "ja", "hola")
+        # send_push_notification_to_id_list([1], "en", "es", "ja", "hola")
 
     def create_user_verification(self, user, token):
         UserVerification.objects.create(usuario=user, verificationToken=token)

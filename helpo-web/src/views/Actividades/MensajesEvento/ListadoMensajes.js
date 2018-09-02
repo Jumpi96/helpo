@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Table, Card, CardHeader, CardBody } from 'reactstrap';
+import { Table, Card, CardHeader, CardBody } from 'reactstrap';
 import moment from 'moment';
 import ModalNuevoMensaje from './ModalNuevoMensaje';
 import api from '../../../api';

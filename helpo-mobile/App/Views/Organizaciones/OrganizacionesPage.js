@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Header, Title, Content, Button, Icon, Left, Right, Body, Item, Label, Input, Text } from 'native-base';
+import { Container, Header, Title, Content, Button, Icon, Left, Right, Body } from 'native-base';
 import api from '../../api';
 import styles from './styles';
 import moment from 'moment';
@@ -10,12 +10,15 @@ class OrganizacionesPage extends React.Component {
 
   constructor(props) {
     super(props);
+    const urlParams = new URLSearchParams(this.props.location.search)
+    const id = urlParams.get('id');
     this.state = {
       nombre: '',
       error:'',
-      organizaciones:[],
+      organizaciones:[]
     };
     this.componentDidMount = this.componentDidMount.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
     this.buscarOrganizaciones = this.buscarOrganizaciones.bind(this);
   }
 
@@ -48,6 +51,15 @@ class OrganizacionesPage extends React.Component {
     }
   }
 
+  handleInputChange(event) {
+    const target = event.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
+    this.setState({
+        [name]: value
+    });
+  }
+
   buscarOrganizaciones(organizaciones){
     if(this.state.nombre !== ''){
       const organizacionesFiltradas = organizaciones.filter(organizacion => this.contieneNombre(organizacion));
@@ -57,17 +69,17 @@ class OrganizacionesPage extends React.Component {
   }
 
   contieneNombre(organizacion){
-    return organizacion.usuario.nombre.toLowerCase().includes(this.state.nombre.toLowerCase())
+    return organizacion.usuario.nombre.toLowerCase().includes(this.state.nombre)
   }
 
   mostrarError(organizaciones){
-    if(organizaciones.length === 0){
+    if(organizaciones.length() === 0){
       <Text style={styles.validationMessage}>No se encontraron coincidencias.</Text>
     }        
   }
 
   render() {
-    const organizaciones = this.buscarOrganizaciones(this.state.organizaciones);
+    const organizaciones = this.buscarOrganizaciones(this.props.organizaciones);
     return (
       <Container style={styles.container}>
         <Header>
@@ -82,10 +94,10 @@ class OrganizacionesPage extends React.Component {
         </Header>
 
         <Item>
-        <Label>Buscar una Organización Helpo:</Label>
+        <Label>Buscar</Label>
         <Input
         value={this.state.nombre}
-        onChangeText={text => this.setState({ nombre: text })}
+        onChangeText={this.handleInputChange}
         />
         {this.mostrarError}
         </Item>

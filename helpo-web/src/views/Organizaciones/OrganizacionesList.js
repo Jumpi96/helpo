@@ -43,7 +43,7 @@ class OrganizacionesList extends React.Component {
         <Row>
 
           <div className="form-group col-md-6">
-            <label htmlFor="nombre">Buscar</label>
+            <label htmlFor="nombre">Buscar una Organización Helpo:</label>
             <input
               type="text"
               name="nombre"

@@ -1,24 +1,22 @@
 import React, { Component } from 'react';
-import { getImagen } from '../../../Lib/Imagen';
+import { helpoImages } from '../../../Themes';
 import {
   Container,
   Header,
   Title,
   Content,
   Button,
-  Item,
   Label,
   ListItem,
-  Input,
   Body,
   Left,
   Right,
   Icon,
-  Form,
+  Thumbnail,
   Text,
-  Image
 } from 'native-base';
 import styles from '../styles';
+import { getImagen } from '../../../Lib/Imagen';
 
 
 class ConsultarPerfilVoluntario extends Component {
@@ -86,31 +84,22 @@ class ConsultarPerfilVoluntario extends Component {
     return (
       <Container style={styles.container}>
         <Header>
-          
           <Left>
             <Button transparent onPress={() => this.props.navigation.navigate('LaunchScreen')}>
               <Icon name="arrow-back" />
             </Button>
           </Left>
-          
           <Body>
             <Title>Perfil</Title>
           </Body>
-
           <Right>
             <Button transparent onClick={this.props.switchToModificar}>
               <Icon name="edit" />
             </Button>
           </Right>
-
         </Header>
-        
         <Content>
-
-          <Image
-            source={{uri: getImagen(this.props.data.avatar.url) }}
-          />
-          
+          <Thumbnail source={{uri: this.props.data.avatar.url}} />
           <ListItem>
             <Label style={styles.label}>Nombre</Label>
             <Text>{this.props.nombre}</Text>
@@ -156,4 +145,5 @@ class ConsultarPerfilVoluntario extends Component {
     );
   }
 }
+
 export default ConsultarPerfilVoluntario;

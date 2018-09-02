@@ -76,5 +76,5 @@ class Mensaje(IndexedTimeStampedModel):
     mensaje = models.CharField(max_length=1000, null=False)
 
 class LogMensaje(IndexedTimeStampedModel):
-    evento = models.ForeignKey(Mensaje, related_name='envios', null=False, on_delete=models.CASCADE)
+    mensaje = models.ForeignKey(Mensaje, related_name='envios', null=False, on_delete=models.CASCADE)
     voluntario = models.ForeignKey(User, null=False)

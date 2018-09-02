@@ -68,6 +68,7 @@ class ListadoMensajes extends Component {
     if (enviar) {
       api.post('/actividades/mensajes/', mensaje)
         .then((res) => {
+          alert('El mensaje fue enviado correctamente.');
           this.loadMensajes();
         })
         .catch((e) => {

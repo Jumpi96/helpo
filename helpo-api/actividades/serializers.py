@@ -236,5 +236,5 @@ class MensajeSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         mensaje = Mensaje.objects.create(**validated_data)
-        send_mail_mensaje_evento(mensaje, validated_data.get('evento_id'))
+        send_mail_mensaje_evento(mensaje, validated_data.get('evento').id)
         return mensaje

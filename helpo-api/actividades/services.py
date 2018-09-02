@@ -1,5 +1,5 @@
-from actividades.models import Evento, Necesidad, Colaboracion, Voluntario, Participacion, LogMensaje
-from common.notifications import send_mail_to_list
+from actividades.models import Evento, Necesidad, Colaboracion, Voluntario, Participacion, LogMensaje, Mensaje
+from common.notifications import send_mail_to_list, send_mail_to
 from common.templates import render_mensaje_evento
 from users.models import User
 
@@ -30,3 +30,15 @@ def get_participantes_evento(evento_id):
             if participacion.voluntario_id not in participantes:
                 participantes.append(participacion.voluntario_id)
     return User.objects.filter(id__in=participantes)
+
+def send_previous_mail_evento(evento_id, voluntario_id):
+    mensajes = Mensaje.objects.filter(evento_id=evento_id)
+    evento = Evento.objects.filter(id=evento_id).first()
+    voluntario_email = User.objects.filter(id=voluntario_id).first().email
+    for mensaje in mensajes:
+        if len(LogMensaje.objects.filter(mensaje_id=mensaje.id, voluntario_id=voluntario_id)) == 0:
+            send_mail_to(voluntario_email, 
+                "helpo - Mensaje de evento: " + evento.nombre,
+                render_mensaje_evento(evento, mensaje.mensaje)
+            )
+            LogMensaje.objects.create(voluntario_id=voluntario_id, mensaje_id=mensaje.id)

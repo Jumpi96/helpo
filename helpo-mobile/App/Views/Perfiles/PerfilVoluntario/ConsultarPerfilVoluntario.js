@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { getImagen } from '../../../Lib/Imagen';
 import {
   Container,
@@ -17,27 +16,10 @@ import {
   Icon,
   Form,
   Text,
+  Image
 } from 'native-base';
 import styles from '../styles';
 
-const perfilPropTypes = {
-  nombre: PropTypes.string.isRequired,
-  email: PropTypes.string.isRequired,
-  data: PropTypes.shape({
-    verificada: PropTypes.bool,
-    telefono: PropTypes.number,
-    dni: PropTypes.number,
-    gustos: PropTypes.string,
-    habilidades: PropTypes.string,
-    sexo: PropTypes.string,
-    apellido: PropTypes.string,
-    avatar: PropTypes.shape({
-      id: PropTypes.number,
-      url: PropTypes.string,
-    })
-  }),
-  switchToModificar: PropTypes.func.isRequired,
-}
 
 class ConsultarPerfilVoluntario extends Component {
   constructor(props) {
@@ -110,17 +92,14 @@ class ConsultarPerfilVoluntario extends Component {
               <Icon name="arrow-back" />
             </Button>
           </Left>
-
-          
           
           <Body>
             <Title>Perfil</Title>
           </Body>
 
-
           <Right>
             <Button transparent onClick={this.props.switchToModificar}>
-              <Icon type="FontAwesome" name="edit" />
+              <Icon name="edit" />
             </Button>
           </Right>
 
@@ -129,7 +108,7 @@ class ConsultarPerfilVoluntario extends Component {
         <Content>
 
           <Image
-            source={{uri: getImagen(this.props.avatar.url) }}
+            source={{uri: getImagen(this.props.data.avatar.url) }}
           />
           
           <ListItem>
@@ -177,7 +156,4 @@ class ConsultarPerfilVoluntario extends Component {
     );
   }
 }
-
-ConsultarPerfilVoluntario.propTypes = perfilPropTypes;
-
 export default ConsultarPerfilVoluntario;

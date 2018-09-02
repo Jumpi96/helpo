@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import api from '../../api';
 //import ConsultarPerfilOrganizacion from './PerfilOrganizacion/ConsultarPerfilOrganizacion'
-import ConsultarPerfilEmpresa from './PerfilEmpresa/ConsultarPerfilEmpresa'
+//import ConsultarPerfilEmpresa from './PerfilEmpresa/ConsultarPerfilEmpresa'
 import ConsultarPerfilVoluntario from './PerfilVoluntario/ConsultarPerfilVoluntario'
 
 class ConsultarPerfilGenerico extends Component {
@@ -40,7 +40,7 @@ class ConsultarPerfilGenerico extends Component {
         return <ConsultarPerfilEmpresa {...this.props.usuarioId}/>
 
       default:
-        return ( <p>Error</p> )        
+        //return ( <Text>Error</Text> )        
     }
   }
 

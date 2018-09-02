@@ -13,6 +13,11 @@ const itemsNoAuth = [
 		'name': 'Home'
 	},
 	{
+		'key': 'OrganizacionesPage',
+		'routeName': 'OrganizacionesPage',
+		'name': 'Organizaciones Helpo'
+	},
+	{
 		'key': 'Login',
 		'routeName': 'Login',
 		'name': 'Iniciar sesión'
@@ -46,6 +51,11 @@ const itemsOrg = [
 	  'name': 'Mis eventos',
 	},
 	{
+		'key': 'OrganizacionesPage',
+		'routeName': 'OrganizacionesPage',
+		'name': 'Organizaciones Helpo'
+	},
+	{
 	  'key': 'Configuracion',
 	  'routeName': 'Configuracion',
 	  'name': 'Configuración'
@@ -67,6 +77,11 @@ const itemsVol = [
 		'key': 'MisColaboraciones',
 		'routeName': 'MisColaboraciones',
 		'name': 'Mis colaboraciones'
+	},
+	{
+		'key': 'OrganizacionesPage',
+		'routeName': 'OrganizacionesPage',
+		'name': 'Organizaciones Helpo'
 	},
 	{
 		'key': 'Configuracion',

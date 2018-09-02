@@ -43,7 +43,7 @@ const NavigationDrawer = DrawerNavigator({
 		ComentarEvento: { screen: ComentarEvento },
 		FiltroEventos: { screen: FiltroEventos },
 		MensajesEvento: { screen: MensajesEvento },
-		NuevoMensaje: { screen: NuevoMensaje }
+		NuevoMensaje: { screen: NuevoMensaje },
 		ConsultarPerfilVoluntario: {screen: ConsultarPerfilVoluntario},
 		ConsultarPerfilGenerico: {screen: ConsultarPerfilGenerico},
 		ModificarPerfilVoluntario: {screen: ModificarPerfilVoluntario},

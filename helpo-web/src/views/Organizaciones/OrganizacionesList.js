@@ -33,7 +33,7 @@ class OrganizacionesList extends React.Component {
   }
 
   contieneNombre(organizacion){
-    return organizacion.usuario.nombre.toLowerCase().includes(this.state.nombre)
+    return organizacion.usuario.nombre.toLowerCase().includes(this.state.nombre.toLowerCase())
   }
 
   render() {

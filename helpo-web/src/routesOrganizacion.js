@@ -49,6 +49,7 @@ const ConsultarColaboraciones = Loadable({
 
 const AlbumImagenes = Loadable({
   loader: () => import('./views/Actividades/ConsultarEventos/AlbumImagenes/AlbumImagenes'),
+  loading: Loading,
 })
 
 const ListadoMensajes = Loadable({

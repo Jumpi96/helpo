@@ -195,6 +195,7 @@ urlpatterns = [
         view=actividades_views.EventoImagenCreateView.as_view(),
         name="post_evento_imagen"
     # {% url "api:mensajes" %}
+    ),
     url(
         regex=r"^actividades/mensajes/$",
         view=actividades_views.MensajeCreateReadView.as_view(),

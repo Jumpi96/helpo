@@ -26,6 +26,7 @@ class NuevoMensaje extends React.Component {
     const evento = params.evento;
     this.state = {
       evento,
+      asunto: '',
       mensaje: '',
       error: ''
     }
@@ -35,6 +36,7 @@ class NuevoMensaje extends React.Component {
   handleSubmit() {
     const mensaje = {
       mensaje: this.state.mensaje,
+      asunto: this.state.asunto,
       evento_id: this.state.evento,
     }
     api.post('/actividades/mensajes/', mensaje)
@@ -61,6 +63,11 @@ class NuevoMensaje extends React.Component {
         </Header>
         <Content>
           <Form>
+            <Item floatingLabel>
+              <Label>Asunto</Label>
+              <Input value={this.state.asunto}
+                onChangeText={(text) => this.setState({ asunto: text })} />
+            </Item>
             <Item floatingLabel>
               <Label>Mensaje</Label>
               <Input value={this.state.mensaje} multiline

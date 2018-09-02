@@ -57,7 +57,7 @@ class MensajesEvento extends React.Component {
           </Left>
           <Body>
             <Text>
-              {moment(n.created).format("DD/MM/YYYY HH:mm")}
+              {n.asunto}
             </Text>
             <Text numberOfLines={1} note>
               {n.mensaje}

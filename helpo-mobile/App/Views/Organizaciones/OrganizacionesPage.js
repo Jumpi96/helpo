@@ -82,7 +82,7 @@ class OrganizacionesPage extends React.Component {
         </Header>
 
         <Item>
-        <Label>Buscar</Label>
+        <Label>Buscar una Organización Helpo:</Label>
         <Input
         value={this.state.nombre}
         onChangeText={text => this.setState({ nombre: text })}

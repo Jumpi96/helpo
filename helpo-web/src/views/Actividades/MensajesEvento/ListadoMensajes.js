@@ -86,7 +86,7 @@ class ListadoMensajes extends Component {
       <div className="animated fadeIn">
         <Card>
           <CardHeader>
-            <i className="fa fa-align-justify"></i> Mensajes del evento
+            <i className="fa fa-align-justify"></i> Mensajes de evento
           </CardHeader>
           <CardBody>
             <form>

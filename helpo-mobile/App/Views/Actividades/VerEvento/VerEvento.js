@@ -132,6 +132,9 @@ class VerEvento extends React.Component {
             </View>
           ) : undefined
           }
+          <Separator bordered noTopBorder>
+            <Text>Administrar evento</Text>
+          </Separator>
           <ListItem 
             button 
             onPress={() => this.props.navigation.navigate('ConsultarColaboraciones', {
@@ -139,6 +142,15 @@ class VerEvento extends React.Component {
             >
             <Body>
               <Text>Ver Colaboraciones</Text>
+            </Body>
+          </ListItem>
+          <ListItem 
+            button 
+            onPress={() => this.props.navigation.navigate('MensajesEvento', {
+              evento: this.props.navigation.state.params.evento.id})}
+            >
+            <Body>
+              <Text>Mensajes de evento</Text>
             </Body>
           </ListItem>
           <CompartirEvento evento={params.evento} />

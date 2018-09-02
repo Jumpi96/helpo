@@ -44,7 +44,6 @@ const NavigationDrawer = DrawerNavigator({
 		FiltroEventos: { screen: FiltroEventos },
 		MensajesEvento: { screen: MensajesEvento },
 		NuevoMensaje: { screen: NuevoMensaje },
-		ConsultarPerfilVoluntario: {screen: ConsultarPerfilVoluntario},
 		ConsultarPerfilGenerico: {screen: ConsultarPerfilGenerico},
 		ModificarPerfilVoluntario: {screen: ModificarPerfilVoluntario},
   },

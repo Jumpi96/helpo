@@ -20,6 +20,8 @@ import ComentarEvento from '../Views/Actividades/ComentarEvento/ComentarEvento';
 import FiltroEventos from '../Views/Actividades/ConsultarEventos/FiltroEventos/FiltroEventos';
 import MensajesEvento from '../Views/Actividades/MensajesEvento/MensajesEvento';
 import NuevoMensaje from '../Views/Actividades/MensajesEvento/NuevoMensaje';
+import OrganizacionesPage from '../Views/Organizaciones/OrganizacionesPage';
+
  
 const NavigationDrawer = DrawerNavigator({
 		LaunchScreen: { screen: LaunchScreen },
@@ -40,7 +42,8 @@ const NavigationDrawer = DrawerNavigator({
 		ComentarEvento: { screen: ComentarEvento },
 		FiltroEventos: { screen: FiltroEventos },
 		MensajesEvento: { screen: MensajesEvento },
-		NuevoMensaje: { screen: NuevoMensaje }
+		NuevoMensaje: { screen: NuevoMensaje },
+		OrganizacionesPage: {screen: OrganizacionesPage}
   },
   {
 	initialRouteName: "LaunchScreen",

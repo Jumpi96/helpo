@@ -15,18 +15,6 @@ class OrganizacionesList extends React.Component {
 
   }
 
-    
-  
-  sortOrganizaciones(organizaciones) { // Aca implementar el buscador.
-    return organizaciones.sort(function(a, b) {
-      var keyA = new Date(a.fecha_hora_inicio),
-      keyB = new Date(b.fecha_hora_inicio);
-      if(keyA < keyB) return 1;
-      if(keyA > keyB) return -1;
-      return 0;
-    });
-  }
-
   handleInputChange(event) {
     const target = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;

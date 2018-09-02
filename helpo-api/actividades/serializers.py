@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from actividades.models import Evento, RubroEvento, Ubicacion, CategoriaRecurso, \
-    Recurso, Necesidad, Contacto, Funcion, Voluntario, Participacion, Colaboracion, Comentario, EventoImagen
+    Recurso, Necesidad, Contacto, Funcion, Voluntario, Participacion, Colaboracion, Comentario, Mensaje, EventoImagen
+from actividades.services import send_mail_mensaje_evento, send_previous_mail_evento
 from users.serializers import UserSerializer, VoluntarioInfoSerializer
 from users.models import User
 
@@ -142,11 +143,20 @@ class ColaboracionSerializer(serializers.ModelSerializer):
         for c in colaboraciones:
             suma_colaboraciones += c.cantidad
         if (suma_colaboraciones + cantidad) <= necesidad_material.cantidad:
+            voluntario_id = validated_data['voluntario_id']
+            send_previous_mail_evento(necesidad_material.evento_id, voluntario_id)
             colaboracion = Colaboracion.objects.create(necesidad_material_id=necesidad_material.id, **validated_data)
+            self.send_colaboracion_email(voluntario_id)
             return colaboracion
         else:
             raise serializers.ValidationError()
+    
+    def send_colaboracion_email(self, voluntario_id):
+        subject = "Registro de su colaboración en Helpo"
+        content = 'Usted se ha colaborado con Helpo'
 
+        from common.notifications import send_mail_to_id
+        send_mail_to_id(id_to=voluntario_id, subject=subject, html_content=content)
 
 
 class ConsultaNecesidadSerializer(serializers.ModelSerializer):
@@ -174,7 +184,9 @@ class ParticipacionSerializer(serializers.ModelSerializer):
         necesidad_voluntario = validated_data.get('necesidad_voluntario')
         participaciones = Participacion.objects.filter(necesidad_voluntario_id=necesidad_voluntario.id)
         if len(participaciones) < necesidad_voluntario.cantidad:
+            voluntario_id = validated_data['voluntario_id']
             participacion = Participacion.objects.create(necesidad_voluntario_id=necesidad_voluntario.id, **validated_data)
+            send_previous_mail_evento(necesidad_voluntario.evento_id, voluntario_id)
             return participacion
         else:
             raise serializers.ValidationError()
@@ -221,3 +233,18 @@ class EventoImagenSerializer(serializers.ModelSerializer):
     class Meta:
         model = EventoImagen
         fields = ('id', 'url', 'evento')
+            'necesidades', 'organizacion', 'voluntarios', 'comentarios')
+
+class MensajeSerializer(serializers.ModelSerializer):
+    evento_id = serializers.PrimaryKeyRelatedField(
+        queryset=Evento.objects.all(), source='evento'
+    )
+
+    class Meta:
+        model = Mensaje
+        fields = ('id', 'mensaje', 'evento_id', 'created')
+
+    def create(self, validated_data):
+        mensaje = Mensaje.objects.create(**validated_data)
+        send_mail_mensaje_evento(mensaje, validated_data.get('evento').id)
+        return mensaje

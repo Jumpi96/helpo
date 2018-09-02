@@ -59,8 +59,7 @@ tmp_email/
 .directory
 
 # Postgres DB
-postgres-data/*
-!postgres-data/.gitkeep
+postgres-data/
 
 # PgAdmin
 pgadmin/*

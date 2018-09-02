@@ -49,6 +49,10 @@ const ConsultarColaboraciones = Loadable({
 
 const AlbumImagenes = Loadable({
   loader: () => import('./views/Actividades/ConsultarEventos/AlbumImagenes/AlbumImagenes'),
+})
+
+const ListadoMensajes = Loadable({
+  loader: () => import('./views/Actividades/MensajesEvento/ListadoMensajes'),
   loading: Loading,
 })
 
@@ -69,6 +73,7 @@ const routes = [
   { path: '/actividades/registrar-evento', name: 'Registrar evento', component: RegistrarEvento },
   { path: '/actividades/registrar-necesidades', name: 'Registrar necesidades', component: RegistrarNecesidades },
   { path: '/actividades/consultar-colaboraciones/:eventoId', name: 'Consultar Colaboraciones', component: ConsultarColaboraciones },
+  { path: '/actividades/mensajes', name: 'Mensajes de evento', component: ListadoMensajes },
   { path: '/perfiles/perfil-organizacion', name: 'Perfil organizacion', component: ModificarPerfilOrganizacion },
   { path: '/perfil/:usuarioId?', name: 'Perfil de usuario', component: ConsultarPerfil },
   { path: '/actividades/album/:eventoId', name: 'Album de Evento', component: AlbumImagenes }

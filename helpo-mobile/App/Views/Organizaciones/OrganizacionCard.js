@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 //import { getImagen } from '../../Lib/Imagen'; Importar para que se pueda ver imagen.
 import { 
-  Button, Icon, Card, CardItem, Text, Thumbnail, Right, Left, Body, Item, Container, Header, Title, Content, Label, Input
+  Button, Icon, Card, CardItem, Text, Thumbnail, Right, Left, Body, Item,
  } from 'native-base';
+import moment from 'moment';
 import styles from './styles';
 
 class OrganizacionCard extends Component {
@@ -13,7 +14,7 @@ class OrganizacionCard extends Component {
       <Card style={styles.mb}>
         <CardItem bordered>
           <Left>
-            <Thumbnail source={organizacion.usuario.avatar} />
+            <Thumbnail source={getImagen(organizacion ? organizacion.usuario.avatar : undefined )} />
             <Body>
               <Text style={{ fontWeight: '600' }}>{organizacion.usuario.nombre ? organizacion.usuario.nombre : undefined }</Text>
             </Body>

@@ -214,7 +214,7 @@ class ConsultaEventoSerializer(serializers.ModelSerializer):
         model = Evento
         fields = ('id', 'nombre', 'descripcion', 'fecha_hora_inicio',
             'fecha_hora_fin', 'rubro', 'rubro_id', 'ubicacion', 'contacto', 'organizacion_id',
-            'necesidades', 'organizacion', 'voluntarios', 'comentarios')
+            'necesidades', 'organizacion', 'voluntarios', 'comentarios', 'estado')
 
 class EventoImagenSerializer(serializers.ModelSerializer):
 

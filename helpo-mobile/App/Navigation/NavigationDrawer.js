@@ -18,6 +18,8 @@ import RegistrarColaboraciones from '../Views/Actividades/RegistrarColaboracione
 import AgregarColaboracion from '../Views/Actividades/RegistrarColaboraciones/AgregarColaboracion';
 import ComentarEvento from '../Views/Actividades/ComentarEvento/ComentarEvento';
 import FiltroEventos from '../Views/Actividades/ConsultarEventos/FiltroEventos/FiltroEventos';
+import OrganizacionesPage from '../Views/Organizaciones/OrganizacionesPage';
+
  
 const NavigationDrawer = DrawerNavigator({
 		LaunchScreen: { screen: LaunchScreen },
@@ -37,6 +39,7 @@ const NavigationDrawer = DrawerNavigator({
 		VerColaboracionesEvento: { screen: VerColaboracionesEvento },
 		ComentarEvento: { screen: ComentarEvento },
 		FiltroEventos: { screen: FiltroEventos },
+		OrganizacionesPage: {screen: OrganizacionesPage}
   },
   {
 	initialRouteName: "LaunchScreen",

@@ -57,3 +57,7 @@ android/keystores/debug.keystore
 # Misc
 #
 .env
+
+# I don't feel so good iOS
+third-party/
+ios/Index/

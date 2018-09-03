@@ -133,11 +133,11 @@ class RegistrarEvento extends Component {
         validacion.is_valid = false;
       }
       if (contactos[i].mail === "" && contactos[i].telefono === "") {
-        errors.contactoContacto = 'Debe ingresar un mail o un telefono';        
+        errors.contactoContacto = 'Debe ingresar un mail o un teléfono';        
         validacion.is_valid = false;
       }
       if (contactos[i].mail !== "" && !validateEmail(contactos[i].mail)) {
-        errors.email = 'Debe ingresar un mail valido';        
+        errors.email = 'Debe ingresar un mail válido';        
         validacion.is_valid = false;
       }
     }
@@ -162,18 +162,23 @@ class RegistrarEvento extends Component {
       formIsValid = false;
       errors.fechas = 'Las fechas ingresadas no son válidas';
     } else {
-      if (moment.duration(fin.diff(inicio)).asHours() > 24 && inicio<fin) {
+      if (inicio.days() === actual.days() && (inicio.hours() >= actual.hours() || inicio.hours() < actual.hours())) {
         formIsValid = false;
-        errors.fechas = 'El evento no puede durar más de 24 horas';
+        errors.fechas = "No es posible organizar el evento en el mismo día"
       } else 
-        if (inicio < actual || inicio === actual) {
+        if (inicio < actual) {
           formIsValid = false;
-          errors.fechas = "No es posible organizar el evento en el mismo día"
+          errors.fechas = 'La fecha de inicio debe ser posterior a la fecha actual';  
         } else 
           if (fin < inicio) {
             formIsValid = false;
             errors.fechas = 'La fecha de inicio debe ser anterior a la fecha de fin del evento'
-          } else { errors.fechas = undefined; }
+          } else
+            if (moment.duration(fin.diff(inicio)).asHours() > 24 && inicio < fin) {
+            formIsValid = false;
+            errors.fechas = 'El evento no puede durar más de 24 horas'
+            } 
+            else { errors.fechas = undefined; }
     }
     if (this.state.rubro_id === 0) {
       formIsValid = false;

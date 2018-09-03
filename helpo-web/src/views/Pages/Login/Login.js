@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
-import { Button, Card, CardBody, CardGroup, Col, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
+import { Button, Card, CardBody, CardGroup, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
 import { connect } from "react-redux";
 import {auth} from "../../../actions";
+import logo from '../../../assets/img/brand/logo_principal.svg' 
 
 class Login extends Component {
   constructor(props) {
@@ -23,21 +24,18 @@ class Login extends Component {
       return <Redirect to="/" />
     } else {
       return (
-      <div className="container">
-            <div className="panel-heading">
-              <div className="panel-title text-center">
-                <h1 className="title">Helpo</h1>
-                <hr />
+      <div class="container">
+            <div class="panel-heading">
+              <div class="panel-title text-center">
+                <img src={logo} alt="Helpo" width="150" height="150"></img>
               </div>
             </div>
 
         <form onSubmit={this.onSubmit}>
               <Row className="justify-content-center">
-                
-                  <CardGroup>
-
-                    <Card className="p-5" col-md-6="true" col-xs-6="true">
-                      <CardBody>
+                <CardGroup>
+                    <Card className="p-5" col-md-6 col-xs-6>
+                      <CardBody className="text-center">
                         <h1>Ingresar</h1>
                         <p className="text-muted">Ingresá con tu cuenta</p>
                         <InputGroup className="mb-3">
@@ -46,8 +44,8 @@ class Login extends Component {
                               <i className="icon-user"></i>
                             </InputGroupText>
                           </InputGroupAddon>
-                          <Input type="text" placeholder="Email" 
-                            onChange={(e) => this.setState({email: e.target.value})}/>
+                          <Input className="Email" size="30" type="text" placeholder="Email" 
+                            onChange={(e) => this.setState({email: e.target.value.toLowerCase()})}/>
                         </InputGroup>
                         <InputGroup className="mb-4">
                           <InputGroupAddon addonType="prepend">
@@ -55,26 +53,20 @@ class Login extends Component {
                               <i className="icon-lock"></i>
                             </InputGroupText>
                           </InputGroupAddon>
-                          <Input type="password" placeholder="Contraseña"
+                          <Input size="30" type="password" placeholder="Contraseña"
                             onChange={(e) => this.setState({password: e.target.value})}/>
                         </InputGroup>
-                        <Row>
-                          <Col xs="6">
-                            <Button color="primary" type="submit"
-                              className="px-4">Ingresá!</Button>
-                          </Col>
-                          
-                        </Row>
+                            <Button color="primary" type="submit" className="px-4">¡Ingresá!</Button>
                       </CardBody>
                     </Card>
 
-                    <Card className="bg-primary p-4"  >
+                    <Card className="bg-primary p-5" col-md-6 col-xs-6>
                       <CardBody className="text-center">
                         <div>
-                          <h2>Registrarse</h2>
+                          <h1>Registrarse</h1>  
                           <p>¿No estás registrado todavía en <strong>helpo</strong>?</p>
                           <Button onClick={() => this.props.history.push('register')} 
-                             color="primary">Regístrate!</Button>
+                             color="primary">¡Regístrate!</Button>
                         </div>
                         <br />
                         <div>

@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -109,7 +110,7 @@
 			remoteGlobalIDString = 5DBEB1501B18CEA900B34395;
 			remoteInfo = RNVectorIcons;
 		};
-		0BFD9AF4213DE7BD004B0140 /* PBXContainerItemProxy */ = {
+		0BFD9B2E213DF1D0004B0140 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5BFDA9FFE22D4A178EF85025 /* RCTOneSignal.xcodeproj */;
 			proxyType = 2;
@@ -537,10 +538,10 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		0BFD9AF1213DE7BC004B0140 /* Products */ = {
+		0BFD9B2B213DF1D0004B0140 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				0BFD9AF5213DE7BD004B0140 /* libRCTOneSignal.a */,
+				0BFD9B2F213DF1D0004B0140 /* libRCTOneSignal.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -852,7 +853,7 @@
 					ProjectRef = 00C302D31ABCB9D200DB3ED1 /* RCTNetwork.xcodeproj */;
 				},
 				{
-					ProductGroup = 0BFD9AF1213DE7BC004B0140 /* Products */;
+					ProductGroup = 0BFD9B2B213DF1D0004B0140 /* Products */;
 					ProjectRef = 5BFDA9FFE22D4A178EF85025 /* RCTOneSignal.xcodeproj */;
 				},
 				{
@@ -944,11 +945,11 @@
 			remoteRef = 0B9051A12128D77B00772911 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		0BFD9AF5213DE7BD004B0140 /* libRCTOneSignal.a */ = {
+		0BFD9B2F213DF1D0004B0140 /* libRCTOneSignal.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libRCTOneSignal.a;
-			remoteRef = 0BFD9AF4213DE7BD004B0140 /* PBXContainerItemProxy */;
+			remoteRef = 0BFD9B2E213DF1D0004B0140 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		139105C11AF99BAD00B5F7CC /* libRCTSettings.a */ = {

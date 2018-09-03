@@ -26,6 +26,11 @@ const OrganizacionesPage = Loadable({
   loading: Loading,
 })
 
+const OrganizacionesPage = Loadable({
+  loader: () => import('./views/Organizaciones/OrganizacionesPage.js'),
+  loading: Loading,
+})
+
 const Dashboard = Loadable({
   loader: () => import('./views/Home/HomeNoAuth'),
   loading: Loading,

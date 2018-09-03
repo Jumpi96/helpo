@@ -4,7 +4,7 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <title>Bienvenido a Helpo</title>
+  <title>Helpo: colaboraci&oacute;n</title>
   <style type="text/css" rel="stylesheet" media="all">
     /* Base ------------------------------ */
     *:not(br):not(tr):not(html) {
@@ -215,24 +215,42 @@
                 <!-- Body content -->
                 <tr>
                   <td class="content-cell">
-                    <h1>Mensaje de evento: {{evento_nombre}}</h1>
-                    <p>La organización <b>{{organizacion}}</b> envía a sus voluntarios el siguiente mensaje:</p>
+                    <h1>Notificaci&oacute;n de su colaboraci&oacute;n en Helpo</h1>
+                    <p>{{titulo}}</p>
                     <!-- Action -->
                     <table class="body-action" align="center" width="100%" cellpadding="0" cellspacing="0">
                       <tr>
-                        <td align="center">
+                        <td align="left">
                           <div>
-                            <!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="{{action_url}}" style="height:45px;v-text-anchor:middle;width:200px;" arcsize="7%" stroke="f" fill="t">
-                            <v:fill type="tile" color="#414EF9" />
-                            <w:anchorlock/>
-                            <center style="color:#ffffff;font-family:sans-serif;font-size:15px;">Verify Email</center>
-                          </v:roundrect><![endif]-->
-                            <blockquote>{{mensaje}}</blockquote>
+                            <h2>Datos del evento</h2>
+                            <ul style="list-style-type:disc">
+                              <li>Nombre: {{evento.nombre}}</li>
+                              <li>Organizaci&oacute;n: {{evento.organizacion.nombre}}</li>
+                              <li>Descripci&oacute;n: {{evento.descripcion|default:"Sin descripci&oacute;n"}}</li>
+                              <li>Fecha:</li>
+                              <ul style="list-style-type:circle">
+                                <li>Inicio: {{evento.fecha_hora_inicio}}</li>
+                                <li>Fin: {{evento.fecha_hora_fin}}</li>
+                              </ul>
+                              <li>Ubicaci&oacute;n:</li>
+                              <ul style="list-style-type:circle">
+                                <li>Latitud: {{evento.ubicacion.latitud}}</li>
+                                <li>Longitud: {{evento.ubicacion.longitud}}</li>
+                                <li>Notas: {{evento.ubicacion.notas|default:"Sin notas"}}</li>
+                              </ul>
+                            </ul>
+                            <h2>Datos de su colaboraci&oacute;n</h2>
+                            <ul style="list-style-type:disc">
+                              <li>Categor&iacute;a: {{colaboracion.necesidad_material.recurso.categoria.nombre}}</li>
+                              <li>Recurso: {{colaboracion.necesidad_material.recurso.nombre}}</li>
+                              <li>Descripci&oacute;n: {{colaboracion.necesidad_material.descripcion|default:"Sin descripci&oacute;n"}}</li>
+                              <li>Cantidad: {{colaboracion.cantidad}}</li>
+                            </ul>
                           </div>
                         </td>
                       </tr>
                     </table>
-                    <a href="www.helpo.com.ar">Ir a Helpo</a>
+                    <p>Gracias,<br>Equipo Helpo</p>
                     <!-- Sub copy -->
                     <table class="body-sub">
                       <tr>

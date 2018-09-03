@@ -92,6 +92,13 @@ class EventoReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     serializer_class = EventoSerializer
     lookup_field = 'id'
 
+    def update(self, request, *args, **kwargs):
+        nuevo_evento = super().update(request, *args, **kwargs)
+        from actividades.services import notificar_cambio_evento
+        notificar_cambio_evento(request.data)
+        return nuevo_evento
+
+
 class CategoriaRecursoCreateReadView(ListCreateAPIView):
     """
     API endpoint para crear o ver todas las categorías de recurso
@@ -310,6 +317,14 @@ class ColaboracionReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     queryset = Colaboracion.objects.all()
     serializer_class = ColaboracionSerializer
     lookup_field = 'id'
+    
+    # de aca para abajo, es una negrada, no queda otra, preguntarle a Gon por que
+    def destroy(self, request, *args, **kwargs):
+        serializer = ColaboracionSerializer(data=request.data)
+        colaboracion_id = request.path.split("/actividades/colaboraciones/",1)[1][:-1]
+        serializer.destroy(colaboracion_id)
+        return super().destroy(request, *args, **kwargs)
+
 
 class ParticipacionCreateReadView(ListCreateAPIView):
     """

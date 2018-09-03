@@ -14,8 +14,9 @@ import {
   Icon,
   Thumbnail,
   Text,
+  Separator,
 } from 'native-base';
-import styles from '../styles';
+import styles from './styles';
 import { getImagen } from '../../../Lib/Imagen';
 
 
@@ -93,13 +94,16 @@ class ConsultarPerfilVoluntario extends Component {
             <Title>Perfil</Title>
           </Body>
           <Right>
-            <Button transparent onClick={this.props.switchToModificar}>
+            <Button transparent onClick={this.props.switchToModificar}> 
               <Icon name="edit" />
             </Button>
           </Right>
         </Header>
         <Content>
-          <Thumbnail large source={{uri: this.props.data.avatar.url}} />
+          <Thumbnail large center source={{uri: this.props.data.avatar.url}} />
+          <Separator bordered noTopBorder>
+            <Text>Datos personales</Text>
+          </Separator>
           <ListItem>
             <Label style={styles.label}>Nombre</Label>
             <Text>{this.props.nombre}</Text>
@@ -129,6 +133,10 @@ class ConsultarPerfilVoluntario extends Component {
             <Label style={styles.label}>Sexo</Label>
             {this.renderSexo}
           </ListItem>
+
+          <Separator bordered noTopBorder>
+            <Text>Extras</Text>
+          </Separator>
 
           <ListItem>
             <Label style={styles.label}>Gustos</Label>

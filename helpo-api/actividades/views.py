@@ -2,16 +2,19 @@ from rest_framework import viewsets, permissions
 from rest_framework.decorators import api_view
 from rest_framework.generics import ListCreateAPIView
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
+from rest_framework.generics import RetrieveDestroyAPIView
+from rest_framework.generics import CreateAPIView
+from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from datetime import datetime
 from actividades.models import Evento, RubroEvento, CategoriaRecurso, Recurso, Necesidad, \
-    Contacto, Voluntario, Funcion, Participacion, Colaboracion, Comentario
+    Contacto, Voluntario, Funcion, Participacion, Colaboracion, Comentario, Mensaje, EventoImagen
 from knox.models import AuthToken
 from actividades.serializers import EventoSerializer, RubroEventoSerializer, \
     CategoriaRecursoSerializer, RecursoSerializer, NecesidadSerializer, ContactoSerializer, \
     ConsultaEventoSerializer, VoluntarioSerializer, FuncionSerializer, ConsultaNecesidadesSerializer, \
-    ParticipacionSerializer, ColaboracionSerializer, ComentarioSerializer
+    ParticipacionSerializer, ColaboracionSerializer, ComentarioSerializer, MensajeSerializer, EventoImagenSerializer
 from common.functions import get_token_user, calc_distance_locations
 
 class RubroEventoCreateReadView(ListCreateAPIView):
@@ -199,7 +202,6 @@ class EventoVoluntarioCreateReadView(ListCreateAPIView):
         lista_eventos = self.get_eventos(get_token_user(self.request))
         queryset = Evento.objects.all()
         queryset = queryset.filter(id__in=lista_eventos)
-        queryset = queryset.order_by('-fecha_hora_inicio')
         return queryset
 
     def get_eventos(self, user):
@@ -207,7 +209,6 @@ class EventoVoluntarioCreateReadView(ListCreateAPIView):
         colaboraciones = Colaboracion.objects.filter(voluntario_id=user)
         for colaboracion in colaboraciones:
             necesidad = Necesidad.objects.filter(id=colaboracion.necesidad_material_id).first()
-            print(necesidad)
             if necesidad.evento_id not in eventos:
                 eventos.append(necesidad.evento_id)
         participaciones = Participacion.objects.filter(voluntario_id=user)
@@ -409,3 +410,56 @@ def RetroalimentacionONGEvento(request):
         return Response(request.data, status=status.HTTP_201_CREATED)
     except:
        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+class EventoImagenRetrieveDestroyView(RetrieveDestroyAPIView):
+
+    """ API endpoint para leer o eliminar una imagen de un evento """
+
+    queryset = EventoImagen.objects.all()
+    serializer_class = EventoImagenSerializer
+    lookup_field = 'id'
+
+
+class EventoImagenListView(APIView):
+
+    """ API endpoint para ver todas las imagenes de un evento """
+
+    def get(self, request, evento, format=None):
+        print(request)
+        imagenes = EventoImagen.objects.all().filter(evento=evento)
+        serializer = EventoImagenSerializer(imagenes, many=True)
+        return Response(serializer.data)
+
+class EventoImagenCreateView(CreateAPIView):
+
+    """ APU endpoint para crear una imagen de un evento """
+
+    queryset = EventoImagen.objects.all()
+    serializer_class = EventoImagenSerializer
+class MensajeCreateReadView(ListCreateAPIView):
+    """
+    API endpoint para crear o ver todos los mensajes
+    """
+    permission_classes = [permissions.IsAuthenticated, ]
+    serializer_class = MensajeSerializer
+
+    def get_queryset(self):
+        queryset = Mensaje.objects.all()
+        evento_id = self.request.query_params.get('evento', None)
+        user = get_token_user(self.request)        
+        if evento_id is not None:
+            evento = Evento.objects.filter(id=evento_id)[0]
+            if evento.organizacion_id == user:
+                queryset = queryset.filter(evento_id=evento_id)
+                queryset = queryset.order_by('-created')
+                return queryset
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class MensajeReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
+    """
+    API endpoint para leer, actualizar o eliminar un mensaje
+    """
+    permission_classes = [permissions.IsAuthenticated, ]
+    queryset = Mensaje.objects.all()
+    serializer_class = MensajeSerializer
+    lookup_field = 'id'

@@ -17,6 +17,15 @@ def render_cambio_evento_email(evento):
     return render_mail('cambio-evento-email.html', dict_context)
 
 
+def render_mensaje_evento(evento, mensaje):
+    dict_context = dict(
+        mensaje=mensaje,
+        evento_nombre=evento.nombre,
+        organizacion=evento.organizacion.nombre
+    )
+    return render_mail('mensaje-evento.html', dict_context)
+
+
 def render_mail(html_template, dict_context):
     template = loader.get_template(html_template)
     html_content = template.render(dict_context)

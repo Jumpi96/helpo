@@ -48,10 +48,24 @@ async function uploadImage(encodedimg) {
   return url
 }
 
+async function handleImageUpload(image) {
+
+  const rx = /data.*base64,(.*)/gm
+  const encondedAvatar = rx.exec(image)[1]
+
+  let avatar_url = "URL NO ASIGNADA"
+  avatar_url = await uploadImage(encondedAvatar)
+  if (avatar_url === 'recall') {
+    avatar_url = await uploadImage(encondedAvatar)
+  }
+
+  return avatar_url
+}
+
 
 function getImagen(url) {
   return url
 }
 
 
-export { uploadImage, getImagen }
+export { uploadImage, getImagen, handleImageUpload }

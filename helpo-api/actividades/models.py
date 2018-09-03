@@ -11,6 +11,18 @@ class Ubicacion(models.Model):
     notas = models.CharField(max_length=140, null=True)
 
 class Evento(IndexedTimeStampedModel):
+
+    EVENTO_STATUS = (
+        (0, 'other'),
+        (1, 'created'),
+        (2, 'in_progress'),
+        (3, 'finalized')
+    )
+
+    def __str__(self):
+        show = self.organizacion.nombre + " - " + self.nombre
+        return show
+
     nombre = models.CharField(max_length=100)
     descripcion = models.CharField(max_length=1000, null=True)
     fecha_hora_inicio = models.DateTimeField()
@@ -18,6 +30,7 @@ class Evento(IndexedTimeStampedModel):
     rubro = models.ForeignKey(RubroEvento, null=True, on_delete=models.SET_NULL)  
     ubicacion = models.ForeignKey(Ubicacion, null=True, on_delete=models.SET_NULL)
     organizacion = models.ForeignKey(User, null=False)
+    estado = models.PositiveSmallIntegerField(choices=EVENTO_STATUS, default=1, null=False, blank=False)
 
 class Contacto(models.Model):
     nombre = models.CharField(max_length=100)
@@ -30,6 +43,7 @@ class CategoriaRecurso(models.Model):
     icono = models.CharField(max_length=50, null=True)
 
 class Recurso(models.Model):
+
     nombre = models.CharField(max_length=50)
     categoria = models.ForeignKey(CategoriaRecurso, null=False, on_delete=models.PROTECT)
 
@@ -69,3 +83,23 @@ class Participacion(models.Model):
     participo = models.BooleanField(null=False, blank=False, default=False)
     retroalimentacion_voluntario = models.BooleanField(default=False)
     retroalimentacion_ong = models.BooleanField(default=False)
+
+class ActividadesTasks(models.Model):
+    evento = models.ForeignKey(Evento, null=True, blank=True)
+    tipo = models.CharField(max_length=140, null=False, blank=False)
+    execute_date = models.DateTimeField(null=False, blank=False)
+
+
+class EventoImagen(models.Model):
+
+    url = models.TextField()    
+    evento = models.ForeignKey(Evento, null=False, blank=False)
+    
+class Mensaje(IndexedTimeStampedModel):
+    evento = models.ForeignKey(Evento, related_name='mensajes', null=False, on_delete=models.CASCADE)
+    asunto = models.CharField(max_length=100, null=False)
+    mensaje = models.CharField(max_length=1000, null=False)
+
+class LogMensaje(IndexedTimeStampedModel):
+    mensaje = models.ForeignKey(Mensaje, related_name='envios', null=False, on_delete=models.CASCADE)
+    voluntario = models.ForeignKey(User, null=False)

@@ -17,9 +17,11 @@ import {
 // sidebar nav config
 import navOrganizacion from '../../_navOrganizacion';
 import navVoluntario from '../../_navVoluntario';
+import navEmpresa from '../../_navEmpresa';
 // routes config
 import routesOrganizacion from '../../routesOrganizacion';
 import routesVoluntario from '../../routesVoluntario';
+import routesEmpresa from '../../routesEmpresa';
 import DefaultAside from './DefaultAside';
 import DefaultFooter from './DefaultFooter';
 import DefaultHeader from './DefaultHeader';
@@ -32,16 +34,20 @@ class DefaultLayout extends Component {
   getNavigation() {
     if (this.props.auth.user.user_type === 1) {
       return navOrganizacion;
-    } else {
+    } else if (this.props.auth.user.user_type === 2) {
       return navVoluntario;
+    } else {
+      return navEmpresa;
     }
   }
 
   getRoutes() {
     if (this.props.auth.user.user_type === 1) {
       return routesOrganizacion;
-    } else {
+    } else if (this.props.auth.user.user_type === 2) {
       return routesVoluntario;
+    } else {
+      return routesEmpresa;
     }
   }
 

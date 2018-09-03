@@ -2,16 +2,19 @@ from rest_framework import viewsets, permissions
 from rest_framework.decorators import api_view
 from rest_framework.generics import ListCreateAPIView
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
+from rest_framework.generics import RetrieveDestroyAPIView
+from rest_framework.generics import CreateAPIView
+from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from datetime import datetime
 from actividades.models import Evento, RubroEvento, CategoriaRecurso, Recurso, Necesidad, \
-    Contacto, Voluntario, Funcion, Participacion, Colaboracion, Comentario, Mensaje
+    Contacto, Voluntario, Funcion, Participacion, Colaboracion, Comentario, Mensaje, EventoImagen
 from knox.models import AuthToken
 from actividades.serializers import EventoSerializer, RubroEventoSerializer, \
     CategoriaRecursoSerializer, RecursoSerializer, NecesidadSerializer, ContactoSerializer, \
     ConsultaEventoSerializer, VoluntarioSerializer, FuncionSerializer, ConsultaNecesidadesSerializer, \
-    ParticipacionSerializer, ColaboracionSerializer, ComentarioSerializer, MensajeSerializer
+    ParticipacionSerializer, ColaboracionSerializer, ComentarioSerializer, MensajeSerializer, EventoImagenSerializer
 from common.functions import get_token_user, calc_distance_locations
 
 class RubroEventoCreateReadView(ListCreateAPIView):
@@ -393,6 +396,31 @@ def RetroalimentacionONGEvento(request):
     except:
        return Response(status=status.HTTP_400_BAD_REQUEST)
 
+class EventoImagenRetrieveDestroyView(RetrieveDestroyAPIView):
+
+    """ API endpoint para leer o eliminar una imagen de un evento """
+
+    queryset = EventoImagen.objects.all()
+    serializer_class = EventoImagenSerializer
+    lookup_field = 'id'
+
+
+class EventoImagenListView(APIView):
+
+    """ API endpoint para ver todas las imagenes de un evento """
+
+    def get(self, request, evento, format=None):
+        print(request)
+        imagenes = EventoImagen.objects.all().filter(evento=evento)
+        serializer = EventoImagenSerializer(imagenes, many=True)
+        return Response(serializer.data)
+
+class EventoImagenCreateView(CreateAPIView):
+
+    """ APU endpoint para crear una imagen de un evento """
+
+    queryset = EventoImagen.objects.all()
+    serializer_class = EventoImagenSerializer
 class MensajeCreateReadView(ListCreateAPIView):
     """
     API endpoint para crear o ver todos los mensajes

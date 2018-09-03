@@ -4,7 +4,6 @@ from hashlib import sha256
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from common.models import IndexedTimeStampedModel
-import requests
 
 class Profile(models.Model):
     usuario = models.OneToOneField('User')
@@ -79,19 +78,15 @@ class UserManager(BaseUserManager):
         mail_from = "registro@helpo.com.ar"
         subject = "Verifique su registro en Helpo"
         url_confirmation = '%s/#/confirmMail/%s' % (config('URL_CLIENT', default='localhost:3000'), bash)
-        content = '<a href=\\"%s\\">Confirme su cuenta haciendo click aqu&iacute;</a>' % (url_confirmation)
+        from common.templates import render_verify_email
+        content = render_verify_email(url_confirmation)
 
-
-        url = "https://mail.zoho.com/api/accounts/%s/messages" % (config('ZOHO_ACCOUNT_ID'))
-        payload = "{\n \"fromAddress\": \"%s\",\n \"toAddress\": \"%s\",\n \"subject\": \"%s\",\n \"content\": \"%s\"\n}" \
-                    % (mail_from, user.email, subject, content)
-        headers = {
-            'Authorization': config('ZOHO_AUTH_TOKEN'),
-            'Content-Type': "application/json"
-        }
-
-        response = requests.request("POST", url, data=payload, headers=headers)
-        print("Enviando mail a %s response code: %s" % (user.email, response.status_code))
+        from common.notifications import send_mail_to
+        send_mail_to(user.email, subject, content, mail_from)
+        # from common.notifications import send_mail_to_list, send_push_notification_to_list, send_push_notification_to_id_list
+        # send_mail_to_list(["gonzaulla@gmail.com", "helpoweb@gmail.com"], "sub", "hola")
+        # send_push_notification_to_list(["techo@techo.com", "admin@admin.com"], "en", "es", "ja", "hola")
+        # send_push_notification_to_id_list([1], "en", "es", "ja", "hola")
 
     def create_user_verification(self, user, token):
         UserVerification.objects.create(usuario=user, verificationToken=token)
@@ -177,3 +172,7 @@ Estructura (Mantener actualizado para saber que contiene):
 class AppValues(models.Model):
     key = models.TextField(primary_key=True)
     value = models.TextField()   
+
+class DeviceID(models.Model):
+    player_id = models.TextField(primary_key=True)
+    email = models.EmailField(max_length=255)

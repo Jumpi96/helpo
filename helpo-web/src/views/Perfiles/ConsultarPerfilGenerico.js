@@ -42,11 +42,19 @@ class ConsultarPerfilGenerico extends Component {
   }
 
   componentDidMount() {
-    // TODO: Other user (No usuario logeado)
-    let initialState = {};
-      api.get('/auth/user/')
-      .then(res => {        
-            console.log(res)
+    let initialState = { loggedUser: true};
+    let userURL = ""
+    const params = this.props.match.params
+    // Me fijo si Object params no esta vacio
+    if( params.usuarioId ) {
+      userURL = `/perfiles/user/${params.usuarioId}/`
+      initialState.loggedUser = false
+    } 
+    else { 
+      userURL = '/auth/user/'
+    }
+      api.get(userURL)
+      .then(res => {  
             initialState.nombre = res.data.nombre
             initialState.userId = res.data.id
             initialState.email = res.data.email
@@ -55,7 +63,6 @@ class ConsultarPerfilGenerico extends Component {
           return api.get(`/perfiles/${this.getApiCall(initialState.userType)}/${initialState.userId}/`)
         })
       .then(res => {
-        console.log(res)
         initialState.data = res.data
         
         return api.get('/perfiles/rubros_organizacion/')
@@ -73,11 +80,11 @@ class ConsultarPerfilGenerico extends Component {
           email: initialState.email,
           userType: initialState.userType,
           data: initialState.data,
-          rubros: initialState.rubros
+          rubros: initialState.rubros,
+          loggedUser: initialState.loggedUser
         })
       })
       .catch( error => {
-        console.log(error)
       })      
   }    
 
@@ -130,11 +137,13 @@ class ConsultarPerfilGenerico extends Component {
   renderConsultarOtro() {    
     switch (this.state.userType) {
       case 1:
-        return (<ConsultarPerfilOrganizacion 
+        return (<ConsultarPerfilOrganizacion
+                  id={this.state.userId}
                   nombre={this.state.nombre}
                   email={this.state.email}
                   data={this.state.data}
                   switchToModificar={this.switchToModificar}
+                  sinModificar={true}
                   />)
 
       case 2:
@@ -143,6 +152,7 @@ class ConsultarPerfilGenerico extends Component {
                   email={this.state.email}
                   data={this.state.data}
                   switchToModificar={this.switchToModificar}
+                  sinModificar={true}
                   /> )
 
       case 3:
@@ -151,6 +161,7 @@ class ConsultarPerfilGenerico extends Component {
                   email={this.state.email}
                   data={this.state.data}
                   switchToModificar={this.switchToModificar}
+                  sinModificar={true}
                   /> )
 
       default:
@@ -162,6 +173,7 @@ class ConsultarPerfilGenerico extends Component {
     switch (this.state.userType) {
       case 1:
         return (<ConsultarPerfilOrganizacion 
+                  id={this.state.userId}
                   nombre={this.state.nombre}
                   email={this.state.email}
                   data={this.state.data}

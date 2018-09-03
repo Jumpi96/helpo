@@ -2,17 +2,20 @@ from rest_framework import viewsets, permissions
 from rest_framework.decorators import api_view
 from rest_framework.generics import ListCreateAPIView
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
+from rest_framework.generics import RetrieveDestroyAPIView
+from rest_framework.generics import CreateAPIView
+from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from datetime import datetime
 from actividades.models import Evento, RubroEvento, CategoriaRecurso, Recurso, Necesidad, \
-    Contacto, Voluntario, Funcion, Participacion, Colaboracion, Comentario
+    Contacto, Voluntario, Funcion, Participacion, Colaboracion, Comentario, Mensaje, EventoImagen
 from knox.models import AuthToken
 from actividades.serializers import EventoSerializer, RubroEventoSerializer, \
     CategoriaRecursoSerializer, RecursoSerializer, NecesidadSerializer, ContactoSerializer, \
     ConsultaEventoSerializer, VoluntarioSerializer, FuncionSerializer, ConsultaNecesidadesSerializer, \
-    ParticipacionSerializer, ColaboracionSerializer, ComentarioSerializer
-from common.functions import get_token_user
+    ParticipacionSerializer, ColaboracionSerializer, ComentarioSerializer, MensajeSerializer, EventoImagenSerializer
+from common.functions import get_token_user, calc_distance_locations
 
 class RubroEventoCreateReadView(ListCreateAPIView):
     """
@@ -192,7 +195,6 @@ class EventoVoluntarioCreateReadView(ListCreateAPIView):
         lista_eventos = self.get_eventos(get_token_user(self.request))
         queryset = Evento.objects.all()
         queryset = queryset.filter(id__in=lista_eventos)
-        queryset = queryset.order_by('-fecha_hora_inicio')
         return queryset
 
     def get_eventos(self, user):
@@ -200,7 +202,6 @@ class EventoVoluntarioCreateReadView(ListCreateAPIView):
         colaboraciones = Colaboracion.objects.filter(voluntario_id=user)
         for colaboracion in colaboraciones:
             necesidad = Necesidad.objects.filter(id=colaboracion.necesidad_material_id).first()
-            print(necesidad)
             if necesidad.evento_id not in eventos:
                 eventos.append(necesidad.evento_id)
         participaciones = Participacion.objects.filter(voluntario_id=user)
@@ -218,12 +219,39 @@ class ConsultaEventosOrganizacionCreateReadView(ListCreateAPIView):
 
     def get_queryset(self):
         queryset = Evento.objects.all()
-        queryset = queryset.filter(fecha_hora_inicio__gte=datetime.today())
-        if len(self.request.query_params) > 0:
-            lista_eventos = self.get_eventos(self.request.query_params)    
+        if 'organizacion' in self.request.query_params:
+            queryset = queryset.filter(organizacion_id=self.request.query_params.get('organizacion'))
+        else:
+            queryset = queryset.filter(fecha_hora_inicio__gte=datetime.today())
+        if 'fecha_desde' in self.request.query_params:
+            queryset = queryset.filter(fecha_hora_inicio__gte=self.request.query_params.get('fecha_desde'))
+            queryset = queryset.filter(fecha_hora_inicio__lte=self.request.query_params.get('fecha_hasta'))
+        if 'kms' in self.request.query_params:
+            kms = float(self.request.query_params.get('kms'))
+            latitud = float(self.request.query_params.get('latitud'))
+            longitud = float(self.request.query_params.get('longitud'))
+            lista_eventos = self.filtrar_ubicacion(kms, latitud, longitud)
+            queryset = queryset.filter(id__in=lista_eventos)
+        if self.tiene_filtros(self.request.query_params):
+            lista_eventos = self.get_eventos(self.request.query_params)
             queryset = queryset.filter(id__in=lista_eventos)
         queryset = queryset.order_by('fecha_hora_inicio')
         return queryset
+
+    def tiene_filtros(self, params):
+        filtros = ['necesidades', 'funciones', 'rubros']
+        for f in filtros:
+            if f in params:
+                return True
+        return False
+
+    def filtrar_ubicacion(self, kms, latitud, longitud):
+        eventos = Evento.objects.all()
+        eventos = eventos.filter(fecha_hora_inicio__gte=datetime.today())
+        ids = [e.id for e in eventos 
+            if calc_distance_locations(latitud, longitud, e.ubicacion.latitud, e.ubicacion.longitud) <= kms
+        ]
+        return ids
     
     def get_eventos(self, params):
         eventos = []
@@ -241,8 +269,16 @@ class ConsultaEventosOrganizacionCreateReadView(ListCreateAPIView):
             for f in funciones:
                 voluntarios = Voluntario.objects.filter(funcion__id=f)
                 for v in voluntarios:
-                    if v.evento_id not in enventos:
+                    if v.evento_id not in eventos:
                         eventos.append(v.evento_id)
+        rubros = params.get('rubros', None)
+        if rubros is not None:
+            rubros = rubros.split(',')
+            for r in rubros:
+                eventos_rubro = Evento.objects.filter(rubro__id=r)
+                for e in eventos_rubro:
+                    if e.id not in eventos:
+                        eventos.append(e.id)
         return eventos
 
 class ConsultaEventosReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
@@ -329,17 +365,86 @@ class ConsultaNecesidadesReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     lookup_field = 'id'
 
 @api_view(['POST'])
-def RetroalimentacionEvento(request):
+def RetroalimentacionVoluntarioEvento(request):
     try:
         user = get_token_user(request)
         colaboraciones = Colaboracion.objects.filter(voluntario_id=user).filter(necesidad_material__evento_id=request.data['evento'])
         for c in colaboraciones:
-            c.retroalimentacion = True
+            c.retroalimentacion_voluntario = True
             c.save()
         participaciones = Participacion.objects.filter(voluntario_id=user).filter(necesidad_voluntario__evento_id=request.data['evento'])
         for p in participaciones:
-            p.retroalimentacion = True
+            p.retroalimentacion_voluntario = True
             p.save()
         return Response(request.data, status=status.HTTP_201_CREATED)
     except:
        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def RetroalimentacionONGEvento(request):
+    try:
+        voluntario = request.data['voluntario']
+        colaboraciones = Colaboracion.objects.filter(voluntario_id=voluntario).filter(necesidad_material__evento_id=request.data['evento'])
+        for c in colaboraciones:
+            c.retroalimentacion_ong = True
+            c.save()
+        participaciones = Participacion.objects.filter(voluntario_id=voluntario).filter(necesidad_voluntario__evento_id=request.data['evento'])
+        for p in participaciones:
+            p.retroalimentacion_ong = True
+            p.save()
+        return Response(request.data, status=status.HTTP_201_CREATED)
+    except:
+       return Response(status=status.HTTP_400_BAD_REQUEST)
+
+class EventoImagenRetrieveDestroyView(RetrieveDestroyAPIView):
+
+    """ API endpoint para leer o eliminar una imagen de un evento """
+
+    queryset = EventoImagen.objects.all()
+    serializer_class = EventoImagenSerializer
+    lookup_field = 'id'
+
+
+class EventoImagenListView(APIView):
+
+    """ API endpoint para ver todas las imagenes de un evento """
+
+    def get(self, request, evento, format=None):
+        print(request)
+        imagenes = EventoImagen.objects.all().filter(evento=evento)
+        serializer = EventoImagenSerializer(imagenes, many=True)
+        return Response(serializer.data)
+
+class EventoImagenCreateView(CreateAPIView):
+
+    """ APU endpoint para crear una imagen de un evento """
+
+    queryset = EventoImagen.objects.all()
+    serializer_class = EventoImagenSerializer
+class MensajeCreateReadView(ListCreateAPIView):
+    """
+    API endpoint para crear o ver todos los mensajes
+    """
+    permission_classes = [permissions.IsAuthenticated, ]
+    serializer_class = MensajeSerializer
+
+    def get_queryset(self):
+        queryset = Mensaje.objects.all()
+        evento_id = self.request.query_params.get('evento', None)
+        user = get_token_user(self.request)        
+        if evento_id is not None:
+            evento = Evento.objects.filter(id=evento_id)[0]
+            if evento.organizacion_id == user:
+                queryset = queryset.filter(evento_id=evento_id)
+                queryset = queryset.order_by('-created')
+                return queryset
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class MensajeReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
+    """
+    API endpoint para leer, actualizar o eliminar un mensaje
+    """
+    permission_classes = [permissions.IsAuthenticated, ]
+    queryset = Mensaje.objects.all()
+    serializer_class = MensajeSerializer
+    lookup_field = 'id'

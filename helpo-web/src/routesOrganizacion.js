@@ -1,7 +1,7 @@
 import React from 'react';
 import Loadable from 'react-loadable'
 
-import DefaultLayout from './containers/DefaultLayout';
+import DefaultLayout from './containers/DefaultLayout/DefaultLayout';
 
 function Loading() {
   return <div>Cargando...</div>;
@@ -13,12 +13,12 @@ const RegistrarEvento = Loadable({
 });
 
 const EventoPage = Loadable({
-  loader: () => import('./views/Actividades/Eventos/EventoPage.js'),
+  loader: () => import('./views/Actividades/Eventos/EventoPage'),
   loading: Loading,
 })
 
 const ConsultarEventosPage = Loadable({
-  loader: () => import('./views/Actividades/ConsultarEventos/ConsultarEventosPage.js'),
+  loader: () => import('./views/Actividades/ConsultarEventos/ConsultarEventosPage'),
   loading: Loading,
 })
 
@@ -42,6 +42,21 @@ const ConsultarPerfil = Loadable({
   loading: Loading,
 });
 
+const ConsultarColaboraciones = Loadable({
+  loader: () => import('./views/Actividades/ConsultarColaboraciones/ConsultarColaboraciones'),
+  loading: Loading,
+})
+
+const AlbumImagenes = Loadable({
+  loader: () => import('./views/Actividades/ConsultarEventos/AlbumImagenes/AlbumImagenes'),
+  loading: Loading,
+})
+
+const ListadoMensajes = Loadable({
+  loader: () => import('./views/Actividades/MensajesEvento/ListadoMensajes'),
+  loading: Loading,
+})
+
 const Dashboard = Loadable({
   loader: () => import('./views/Home/Home'),
   loading: Loading,
@@ -58,8 +73,11 @@ const routes = [
   { path: '/actividades/consultar-evento/', name: 'Consultar evento', component: ConsultarEventosView },
   { path: '/actividades/registrar-evento', name: 'Registrar evento', component: RegistrarEvento },
   { path: '/actividades/registrar-necesidades', name: 'Registrar necesidades', component: RegistrarNecesidades },
+  { path: '/actividades/consultar-colaboraciones/:eventoId', name: 'Consultar Colaboraciones', component: ConsultarColaboraciones },
+  { path: '/actividades/mensajes', name: 'Mensajes de evento', component: ListadoMensajes },
   { path: '/perfiles/perfil-organizacion', name: 'Perfil organizacion', component: ModificarPerfilOrganizacion },
-  { path: '/perfil', name: 'Mi perfil', component: ConsultarPerfil },
+  { path: '/perfil/:usuarioId?', name: 'Perfil de usuario', component: ConsultarPerfil },
+  { path: '/actividades/album/:eventoId', name: 'Album de Evento', component: AlbumImagenes }
 ];
 
 export default routes;

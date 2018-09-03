@@ -6,8 +6,8 @@ from rest_framework.generics import ListCreateAPIView
 from rest_framework.generics import RetrieveUpdateDestroyAPIView, RetrieveUpdateAPIView
 from knox.models import AuthToken
 from django.contrib.auth import get_user_model
-from users.models import RubroOrganizacion, OrganizacionProfile, VoluntarioProfile, EmpresaProfile, AppValues
-from users.serializers import CreateUserSerializer, UserSerializer, LoginUserSerializer, RubroOrganizacionSerializer, OrganizacionProfileSerializer, VoluntarioProfileSerializer, EmpresaProfileSerializer, VerificationMailSerializer, AppValuesSerializer
+from users.models import RubroOrganizacion, OrganizacionProfile, VoluntarioProfile, EmpresaProfile, AppValues, User, DeviceID
+from users.serializers import CreateUserSerializer, UserSerializer, LoginUserSerializer, RubroOrganizacionSerializer, OrganizacionProfileSerializer, VoluntarioProfileSerializer, EmpresaProfileSerializer, VerificationMailSerializer, AppValuesSerializer, DeviceIDSerializer
 import time
 import requests
 
@@ -42,6 +42,14 @@ class UserView(generics.RetrieveAPIView):
 
     def get_object(self):
         return self.request.user
+
+class UserInfoView(generics.RetrieveAPIView):
+    """
+    API endpoint para ver informacion de un usuario en particular
+    """
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    lookup_field = 'id'
 
 class RubroOrganizacionCreateReadView(ListCreateAPIView):
     """
@@ -111,7 +119,6 @@ def refreshToken():
       'grant_type': 'refresh_token',
     }
     res = requests.post("https://api.imgur.com/oauth2/token", postData)
-    print(res.json())
     new_access_token = res.json()['access_token']
     new_refresh_token = res.json()['refresh_token']
 
@@ -132,3 +139,21 @@ class ImgurTokenView(APIView):
     token = AppValues.objects.get(key="imgurAccessToken")
     serializer = AppValuesSerializer(token)
     return Response(serializer.data)
+
+
+class DeviceIDCreateReadView(ListCreateAPIView):
+    """
+    API endpoint para crear o ver todos los dispositivos de usuario
+    """
+    queryset = DeviceID.objects.all()
+    serializer_class = DeviceIDSerializer
+    lookup_field = 'player_id'
+
+
+class DeviceIDReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
+    """
+    API endpoint para leer, actualizar o eliminar un dispositivo de usuario
+    """
+    queryset = DeviceID.objects.all()
+    serializer_class = DeviceIDSerializer
+    lookup_field = 'player_id'

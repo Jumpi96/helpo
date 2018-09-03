@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import authenticate
-from users.models import User, RubroOrganizacion, OrganizacionProfile, Ubicacion, Imagen, VoluntarioProfile, EmpresaProfile, UserVerification, AppValues
+from users.models import User, RubroOrganizacion, OrganizacionProfile, Ubicacion, Imagen, VoluntarioProfile, EmpresaProfile, UserVerification, AppValues, DeviceID
 from django.core.exceptions import ObjectDoesNotExist
 
 
@@ -72,6 +72,7 @@ class OrganizacionProfileSerializer(serializers.ModelSerializer):
     rubro = RubroOrganizacionSerializer(required=False)
     ubicacion = UbicacionSerializer(required=False)
     avatar = ImagenSerializer(required=False)    
+    usuario = UserSerializer(read_only=True)
 
     class Meta:
         model = OrganizacionProfile
@@ -129,6 +130,7 @@ class EmpresaProfileSerializer(serializers.ModelSerializer):
     rubro = RubroOrganizacionSerializer(required=False)
     ubicacion = UbicacionSerializer(required=False)
     avatar = ImagenSerializer(required=False)    
+    usuario = UserSerializer(read_only=True)
 
     class Meta:
         model = EmpresaProfile
@@ -253,4 +255,8 @@ class VoluntarioInfoSerializer(serializers.ModelSerializer):
         voluntario = VoluntarioProfile.objects.get(usuario=obj.id)
         return voluntario.dni
 
-        
+class DeviceIDSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = DeviceID
+        fields = ('player_id', 'email')

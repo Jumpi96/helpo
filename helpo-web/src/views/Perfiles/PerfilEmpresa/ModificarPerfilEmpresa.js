@@ -43,7 +43,7 @@ class ModificarPerfilEmpresa extends Component {
   constructor(props) {
     super(props); 
     this.rubros = [{id: 0, nombre: 'Ninguno'}].concat(this.props.rubros)
-   // this.fakeProps = this.checkBeforeState(this.props.data.rubro, this.props.data.ubicacion)
+    this.fakeProps = this.checkBeforeState(this.props.data.rubro, this.props.data.ubicacion)
     this.state = {
       nombre: this.props.nombre,
       // Checkeo null porque si es null react tira un warning (https://github.com/reactstrap/reactstrap/issues/570)
@@ -51,8 +51,8 @@ class ModificarPerfilEmpresa extends Component {
       cuit: this.props.data.cuit == null ? '' : this.props.data.cuit,
       descripcion: this.props.data.descripcion == null ? '' : this.props.data.descripcion,
       avatar_url: this.props.data.avatar.url,
-    //  ubicacion: this.fakeProps.ubicacion,
-     // rubro_id: this.fakeProps.rubro.id,
+      ubicacion: this.fakeProps.ubicacion,
+      rubro_id: this.fakeProps.rubro.id,
       rubros: this.rubros,   
       showModal: false,
       modalType: 'success',
@@ -244,9 +244,8 @@ class ModificarPerfilEmpresa extends Component {
     
     let avatar_url = this.props.data.avatar.url
     if ( this.state.avatar_changed ) {
-      console.log("MIAAAAAAMEEEEEEE")
-      const rx = /\/9j\/.*/gm
-      const encondedAvatar = rx.exec(this.state.avatar_url)[0]
+      const rx = /data.*base64,(.*)/gm
+      const encondedAvatar = rx.exec(this.state.avatar_url)[1]
       avatar_url = await uploadImage(encondedAvatar)
       if (avatar_url === 'recall') {
         avatar_url = await uploadImage(encondedAvatar)

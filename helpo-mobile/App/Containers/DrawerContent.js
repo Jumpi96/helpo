@@ -75,6 +75,24 @@ const itemsVol = [
 	}
 ]
 
+const itemsEmp = [
+	{
+	  'key': 'LaunchScreen',
+	  'routeName': 'LaunchScreen',
+	  'name': 'Home'
+	},
+	{
+	  'key': 'ConsultarEventos',
+	  'routeName': 'ConsultarEventos',
+	  'name': 'Consultar eventos',
+	},
+	{
+	  'key': 'Configuracion',
+	  'routeName': 'Configuracion',
+	  'name': 'Configuración'
+	}
+]
+
 class DrawerContent extends Component {
 
   render() {
@@ -86,6 +104,8 @@ class DrawerContent extends Component {
 			items = itemsOrg;
 		} else if (this.props.auth.user.user_type === 2) {
 			items  = itemsVol;
+		} else {
+			items = itemsEmp;
 		}
 		return (
 		  <View style={styles.container}>

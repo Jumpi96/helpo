@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
+import BotonHelpo from '../../../common/BotonHelpo/BotonHelpo'
 import api from '../../../../api';
 import './ComentariosEvento.css'
 
@@ -103,7 +104,7 @@ class ComentariosEvento extends Component {
   }
 
   handleRetroalimentacion() {
-    api.post('feedbacks/retroalimentacion/', { evento: this.props.evento.id })
+    api.post('feedbacks/retroalimentacion_voluntario/', { evento: this.props.evento.id })
       .then((res) => {
         this.props.update();
       })
@@ -116,18 +117,20 @@ class ComentariosEvento extends Component {
   getOpcionRetroalimentacion() {
     if (!this.dioRetroalimentacion(this.props.evento, this.getUserId())) {
       return (
-        <div className="form-group">
-          <button class="btn btn-primary" onClick={this.handleRetroalimentacion}>
-            <i class="fa fa-thumbs-up"></i>Me gustó el evento
-          </button>
-          <label><span class="badge badge-warning">Ayuda a la ONG en helpo si te gustó ser parte de esta actividad.</span></label>
-        </div>
+        <BotonHelpo
+          titulo={'Dar una mano'}
+          disabled={false}
+          mensaje={'Ayuda a la ONG en helpo si te gustó ser parte de esta actividad.'}
+          onClick={this.handleRetroalimentacion}
+        />
       )
     } else {
       return (
-        <div>
-          <label><span class="badge badge-warning">Indicaste que te gustó el evento.</span></label>
-        </div>
+        <BotonHelpo
+          titulo={'Dar una mano'}
+          disabled={true}
+          mensaje={'Ya diste una mano a la ONG por este evento.'}
+        />
       )
     }
   }

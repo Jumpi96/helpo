@@ -49,7 +49,7 @@ export default {
       },
       {
         name: 'Mi perfil',
-        url: '/perfil',
+        url: '/perfil/',
         icon: 'icon-pencil',
       },
     ],

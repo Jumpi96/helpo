@@ -203,8 +203,8 @@ class ModificarPerfilVoluntario extends Component {
 
     let avatar_url = this.props.data.avatar.url
     if (this.state.avatar_changed ) {
-      const rx = /\/9j\/.*/gm
-      const encondedAvatar = rx.exec(this.state.avatar_url)[0]
+      const rx = /data.*base64,(.*)/gm
+      const encondedAvatar = rx.exec(this.state.avatar_url)[1]
       avatar_url = await uploadImage(encondedAvatar)
       if (avatar_url === 'recall') {
         avatar_url = await uploadImage(encondedAvatar)
@@ -246,14 +246,9 @@ class ModificarPerfilVoluntario extends Component {
     return true
   }
 
-  handleSubmit() {
+  handleSubmit() {    
     this.prepareSubmitData().then( submitData => {
-      console.log("DATA")
-      console.log(submitData)
-      if (this.validateData(submitData)) {
-        console.log("HOLA")
-        console.log(this.props.data.usuario.email)
-        console.log(this.props.data.usuario.id)
+      if (this.validateData(submitData)) {        
         api.put(`/perfiles/perfil_voluntario/${this.props.data.usuario.id}/`, submitData)
         .then(res => {
           if (res.status === 200) {

@@ -165,10 +165,46 @@ urlpatterns = [
         view=actividades_views.ComentarioReadUpdateDeleteView.as_view(),
         name="get_put_delete_comentario"
     ),
-    # {% url "api:retroalimentacion" %}
+    # {% url "api:retroalimentacion_voluntario" %}
     url(
-        regex=r"^feedbacks/retroalimentacion/$",
-        view=actividades_views.RetroalimentacionEvento,
-        name="post_retroalimentacion"
+        regex=r"^feedbacks/retroalimentacion_voluntario/$",
+        view=actividades_views.RetroalimentacionVoluntarioEvento,
+        name="post_retroalimentacion_voluntario"
+    ),
+    # {% url "api:retroalimentacion_ong" %}
+    url(
+        regex=r"^feedbacks/retroalimentacion_ong/$",
+        view=actividades_views.RetroalimentacionONGEvento,
+        name="post_retroalimentacion_ong"
+    ),
+    # {% url "api:evento_imagen" evento_imagen.evento %}
+    url(
+        regex=r"^actividades/imagenes/(?P<evento>[-\w]+)/$",
+        view=actividades_views.EventoImagenListView.as_view(),
+        name="get_evento_imagenes"
+    ),
+    # {% url "api:evento_imagen" evento_imagen.id %}
+    url(
+        regex=r"^actividades/imagen/(?P<id>[-\w]+)/$",
+        view=actividades_views.EventoImagenRetrieveDestroyView.as_view(),
+        name="get_delete_evento_imagen"
+    ),
+    # {% url "api:evento_imagen" evento_imagen.evento %}
+    url(
+        regex=r"^actividades/imagenes/$",
+        view=actividades_views.EventoImagenCreateView.as_view(),
+        name="post_evento_imagen"
+    # {% url "api:mensajes" %}
+    ),
+    url(
+        regex=r"^actividades/mensajes/$",
+        view=actividades_views.MensajeCreateReadView.as_view(),
+        name="get_post_mensaje"
+    ),
+    # {% url "api:comentarios" evento.id %}
+    url(
+        regex=r"^actividades/mensajes/(?P<id>[-\w]+)/$",
+        view=actividades_views.MensajeReadUpdateDeleteView.as_view(),
+        name="get_put_delete_mensaje"
     ),
 ]

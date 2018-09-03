@@ -36,10 +36,10 @@ class MisColaboraciones extends React.Component {
           </Button>
         </Left>
         <Body>
-          <Text>
+          <Text onPress={() => this.props.navigation.navigate('VerColaboracionesEvento', { evento: n })}>
             {n.nombre}
           </Text>
-          <Text numberOfLines={1} note>
+          <Text numberOfLines={1} note onPress={() => this.props.navigation.navigate('VerColaboracionesEvento', { evento: n })}>
             {moment(n.fecha_hora_inicio).format('DD/MM/YYYY')}
           </Text>
         </Body>

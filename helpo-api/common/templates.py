@@ -7,8 +7,14 @@ def render_verify_email(url_confirmation):
 
 
 def render_colaboracion_email(evento, colaboracion, titulo_email):
-    dict_context = dict(evento=evento, colaboracion=colaboracion, titulo=titulo_email)
+    dict_context = dict(
+        evento=evento, colaboracion=colaboracion, titulo=titulo_email)
     return render_mail('colaboracion-email.html', dict_context)
+
+
+def render_cambio_evento_email(evento):
+    dict_context = dict(evento=evento)
+    return render_mail('cambio-evento-email.html', dict_context)
 
 
 def render_mail(html_template, dict_context):

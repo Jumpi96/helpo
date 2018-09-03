@@ -89,6 +89,13 @@ class EventoReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     serializer_class = EventoSerializer
     lookup_field = 'id'
 
+    def update(self, request, *args, **kwargs):
+        nuevo_evento = super().update(request, *args, **kwargs)
+        from actividades.services import notificar_cambio_evento
+        notificar_cambio_evento(request.data)
+        return nuevo_evento
+
+
 class CategoriaRecursoCreateReadView(ListCreateAPIView):
     """
     API endpoint para crear o ver todas las categorías de recurso

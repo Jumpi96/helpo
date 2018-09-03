@@ -15,17 +15,8 @@ const ConsultarEventosPage = Loadable({
 const ConsultarEventosView = Loadable({
   loader: () => import('./views/Actividades/ConsultarEventos/ConsultarEventosView'),
   loading: Loading,
-}) 
-const OrganizacionesPage = Loadable({
-  loader: () => import('./views/Organizaciones/OrganizacionesPage.js'),
-  loading: Loading,
 })
-
-const OrganizacionesPage = Loadable({
-  loader: () => import('./views/Organizaciones/OrganizacionesPage.js'),
-  loading: Loading,
-})
-
+ 
 const OrganizacionesPage = Loadable({
   loader: () => import('./views/Organizaciones/OrganizacionesPage.js'),
   loading: Loading,

@@ -53,9 +53,7 @@ class Login extends Component {
                               <i className="icon-lock"></i>
                             </InputGroupText>
                           </InputGroupAddon>
-                          <Input size="3
-                          
-                          0" type="password" placeholder="Contraseña"
+                          <Input size="30" type="password" placeholder="Contraseña"
                             onChange={(e) => this.setState({password: e.target.value})}/>
                         </InputGroup>
                             <Button color="primary" type="submit" className="px-4">¡Ingresá!</Button>

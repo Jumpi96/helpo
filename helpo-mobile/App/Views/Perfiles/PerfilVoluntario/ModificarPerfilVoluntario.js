@@ -1,35 +1,25 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { Card, CardHeader } from 'reactstrap';
 import api from '../../../api'
 import ModalGenerico from '../ModalGenerico'
 import { uploadImage } from '../../../Lib/Imagen'
-
-const perfilPropTypes = {
-  nombre: PropTypes.string.isRequired,
-  email: PropTypes.string.isRequired,
-  data: PropTypes.shape({
-    verificada: PropTypes.bool,
-    apellido: PropTypes.string,
-    telefono: PropTypes.number,
-    dni: PropTypes.number,
-    sexo: PropTypes.string,
-    habilidades: PropTypes.string,
-    gustos: PropTypes.string,
-    avatar: PropTypes.shape({
-      id: PropTypes.number,
-      url: PropTypes.string,
-    }),
-    usuario: PropTypes.shape({
-      id: PropTypes.number,
-      email: PropTypes.string,
-      user_type: PropTypes.number,
-      is_confirmed: PropTypes.bool,
-      nombre: PropTypes.string,
-    }).isRequired,
-  }),
-  switchToConsultar: PropTypes.func.isRequired,
-}
+import {
+  Container,
+  Header,
+  Title,
+  Content,
+  Button,
+  Item,
+  Label,
+  Input,
+  Body,
+  Left,
+  Right,
+  Icon,
+  Form,
+  Text,
+  TextInput,
+  Picker,
+} from 'native-base';
 
 class ModificarPerfilVoluntario extends Component {
   constructor(props) {
@@ -83,112 +73,97 @@ class ModificarPerfilVoluntario extends Component {
   /**/
   renderSexo() {
     return (
-      <select 
-      className="form-control" value={this.state.sexo} onChange={this.handleSexoChange}>
-        <option value=""> </option>
-        <option value="hombre">Hombre</option>
-        <option value="mujer">Mujer</option>
-        <option value="otro">Otro</option>
-      </select>)
-  }
-
-  handleSexoChange(event) {    
-    this.setState({
-      sexo: event.target.value
-    })
+      <Picker
+        selectedValue={this.state.sexo}
+        onValueChange={(itemValue) => this.setState({sexo: itemValue})}>
+        <Picker.Item label="Java" value="" />
+        <Picker.Item label="JavaScript" value="Hombre" />
+        <Picker.Item label="JavaScript" value="Mujer" />
+        <Picker.Item label="JavaScript" value="Otro" />
+      </Picker>
+    );
   }
 
   renderGustos() {
     return (
-      <textarea
-        rows= '5'
-        cols='30'
-        className='form-control'
+      <TextInput
+        multiline={true}
+        numberOfLines={5}
+        onChangeText={(text) => this.setState({gustos:text})}
         value={this.state.gustos}
-        onChange={this.handleGustosChange}
-      />)
-  }
-
-  handleGustosChange(event) {
-    this.setState({
-      gustos: event.target.value
-    });
+      />
+    );
   }
 
   renderHabilidades() {
     return (
-      <textarea
-        rows= '5'
-        cols='30'
-        className='form-control'
-        value={this.state.habilidades}
-        onChange={this.handleHabilidadesChange}
-      />)
+      <TextInput
+      multiline={true}
+      numberOfLines={5}
+      onChangeText={(text) => this.setState({habilidades:text})}
+      value={this.state.habilidades}
+    />
+    );
   }
 
-  handleHabilidadesChange(event) {
-    this.setState({
-      habilidades: event.target.value
-    });
-  }  
   renderNombre() {
     return (
-      <input
-        type="text"
-        name="nombre"
-        className="form-control"
-        placeholder="Nombre"
-        value={this.state.nombre}
-        onChange={this.handleNombreChange}
-      />)    
-    }
-  
-  handleNombreChange(event) {
-    this.setState({
-      nombre: event.target.value
-    })
+      <Item floatingLabel>
+        <Label>Nombre</Label>
+        <Input
+          value={this.state.nombre}
+          onChangeText={text => this.setState({ nombre: text })}
+        />
+      </Item>
+    );    
+  }
+
+  renderApellido() {
+    return (
+      <Item floatingLabel>
+      <Label>Apellido</Label>
+      <Input
+        value={this.state.apellido}
+        onChangeText={text => this.setState({ apellido: text })}
+      />
+    </Item>
+    );    
+  }
+
+  renderEmail() {
+    return (
+      <Item floatingLabel>
+      <Label>Email</Label>
+      <Input
+        value={this.state.email}
+        onChangeText={text => this.setState({ email: text })}
+      />
+    </Item>
+    );    
   }
 
   renderTelefono() {
     return (
-      <input
-        type="text"
-        name="telefono"
-        className="form-control"
-        placeholder="Telefono"
-        value={this.state.telefono}
-        onChange={this.handleTelefonoChange}
-      />)    
-    }
-
-  handleTelefonoChange(event) {
-      if (isNaN(event.target.value)) {
-        return;
-      }
-      this.setState({
-        telefono: event.target.value
-      });
+      <Item floatingLabel>
+        <Label>Teléfono</Label>
+        <Input
+          value={this.state.telefono}
+          onChangeText={text => this.setState({ telefono: text })}
+        />
+      </Item>
+    );      
   }
 
   renderDni() {
     return (
-    <input
-      type="text"
-      name="dni"
-      className="form-control"
-      placeholder="Dni"
-      value={this.state.dni}
-      onChange={this.handleDniChange}
-    />)
-  }
-
-  handleDniChange(event) {
-    if (isNaN(event.target.value)) {
-      return;
-    }
-    this.setState({
-      dni: event.target.value
-    });
+      <Item floatingLabel>
+        <Label>DNI</Label>
+        <Input
+          value={this.state.dni}
+          onChangeText={text => this.setState({ dni: text })}
+        />
+      </Item>
+    );  
   }
 
   handleAvatarChange(avatar_url) {
@@ -200,7 +175,6 @@ class ModificarPerfilVoluntario extends Component {
   
   async prepareSubmitData() {
     const newData = this.state
-
     let avatar_url = this.props.data.avatar.url
     if (this.state.avatar_changed ) {
       const rx = /\/9j\/.*/gm
@@ -251,9 +225,6 @@ class ModificarPerfilVoluntario extends Component {
       console.log("DATA")
       console.log(submitData)
       if (this.validateData(submitData)) {
-        console.log("HOLA")
-        console.log(this.props.data.usuario.email)
-        console.log(this.props.data.usuario.id)
         api.put(`/perfiles/perfil_voluntario/${this.props.data.usuario.id}/`, submitData)
         .then(res => {
           if (res.status === 200) {
@@ -264,8 +235,8 @@ class ModificarPerfilVoluntario extends Component {
           }
           else {
             this.setState({
-              showModal: true,
-              modalType: 'failure'
+              showModal: true, // Hay que poner alerts o algo, ver como lo resolvio la Juli
+              modalType: 'failure',
             })
           }
         })
@@ -274,121 +245,57 @@ class ModificarPerfilVoluntario extends Component {
     }) 
   }
 
-  renderModal() {
-    if (this.state.showModal) {
-      if (this.state.modalType === "success") {
-        return (
-          <ModalGenerico
-            body='Se guardaron los cambios exitosamente'
-            onCancel={this.props.switchToConsultar}
-          />)  
-      }
-      else {
-        return (
-          <ModalGenerico
-            body='Hubo un problema al intentar cargar los datos, por favor intentelo mas tarde'
-            onCancel={() => {this.setState({ showModal: false })}}
-          />
-        )
-      }      
-    }
-  }
+  render() {
+    return (
+      <Container style={styles.container}>
+        <Header>
+          <Left>
+            <Button transparent onPress={() => this.props.("SwitchToConsultar")}>
+              <Icon name="arrow-back" />
+            </Button>
+          </Left>
+          <Body>
+            <Title>Registrar evento</Title>
+          </Body>
+          <Right />
+        </Header>
 
-  showModal() {
-    this.setState({
-      showModal: true,
-    })
-  }
+        <Content>
+          <Form>
+          <Thumbnail large center source={{uri: this.props.data.avatar.url}} />
+          <Separator bordered noTopBorder>
+            <Text>Datos personales</Text>
+          </Separator>
+            {this.renderNombre}
+            <Text style={styles.validationMessage}>{this.state.errors.nombre}</Text>
+            {this.renderAellido}
+            <Text style={styles.validationMessage}>{this.state.errors.apellido}</Text>
+            {this.renderEmail}
+            <Text style={styles.validationMessage}>{this.state.errors.email}</Text>
+            {this.renderTelefono}
+            <Text style={styles.validationMessage}>{this.state.errors.telefono}</Text>
+            {this.renderDni}
+            <Text style={styles.validationMessage}>{this.state.errors.dni}</Text>
+            {this.renderSexo}
+            <Separator bordered noTopBorder>
+            <Text>Extras</Text>
+            </Separator>
+            <Text style={styles.validationMessage}>{this.state.errors.sexo}</Text>
+            {this.renderGustos}
+            <Text style={styles.validationMessage}>{this.state.errors.gustos}</Text>
+            {this.renderHabilidades}
 
-  render() {    
-    return (      
-      <Card>
-        <CardHeader>
-          <i className="fa fa-align-justify"></i> Modificar Perfil
-        </CardHeader>
-      <form>
-        <div style={{ marginTop:'20px' }} class='container'>
-        
-        <div style={{ alignItems: 'center' }} class='row'>
-          {/*<div style={{flexDirection: 'column', alignItems: 'flex-end',display: 'flex', justifyContent: 'center', height: '150px'}} class='col'> 
-            <div style={{ display: 'flex', height: '50px', width: '100%', justifyContent: 'flex-end', alignItems: 'center' }} >
-              <p style={{ textAlign: 'right' }} 
-                 class='h4'>Nombre</p>
-            </div>   
-            <div style={{ display: 'flex', height: '50px',width: '100%', justifyContent: 'flex-end', alignItems: 'center'}} >       
-              <p style={{ textAlign: 'right' }} 
-                 class='h4'>{this.renderNombre()}</p>
-            </div>
-            </div>*/
-            //SI SE DECIDE PODER CAMBIAR NOMBRE EN PERFIL, USAR ESTE CODIGO
-          }
-          <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', height: '150px'}}  class='col-2'>            
-              <p style={{ textAlign: 'right' }} 
-                 class='h4'>{this.props.nombre} {this.props.data.apellido}</p>
-          </div>
-          <div class='col-6'>
-            <img
-              class='rounded-circle'
-              src={this.state.avatar_url}
-              alt="avatar"
-              width="100" 
-              height="100"
-            />
-            <input style={{ marginBottom: '10px', marginTop: '10px' }} type='file' onChange={this.onSelectFile}/>
-          </div>
-        </div>
-          
-        <div class='row'>
-            <p style={{ textAlign: 'right' }} class='font-weight-bold col-2' htmlFor="mail">Mail</p>
-            <div class='col-6'><p>{this.props.email}</p></div>
-        </div>
-
-        <div class='row'>
-            <p style={{ paddingTop: '8px',textAlign: 'right' }} class='font-weight-bold col-2' htmlFor="telefono">Teléfono</p>
-            <div class='col-6'>{this.renderTelefono()}</div>
-        </div>
-
-        <div class='row'>   
-            <p style={{ paddingTop: '8px',textAlign: 'right' }} class='font-weight-bold col-2'           htmlFor="dni">DNI</p>            
-            <div class='col-6'>{this.renderDni()}</div>
-        </div>
-
-        <div class='row'>        
-          <p style={{ textAlign: 'right' }} class='font-weight-bold col-2' htmlFor="sexo">Sexo</p>
-          <div class='col-6'>{this.renderSexo()}</div>    
-        </div>
-        
-        <div class='row'>        
-          <p style={{ textAlign: 'right' }} class='font-weight-bold col-2' htmlFor="gustos">Gustos</p>
-          <div class='col-6'>{this.renderGustos()}</div>    
-        </div>      
-
-        <div class='row'>        
-          <p style={{ textAlign: 'right' }} class='font-weight-bold col-2' htmlFor="habilidades">Habilidades</p>
-          <div class='col-6'>{this.renderHabilidades()}</div>    
-        </div>
-
-
-        <div style={{ margin: '20px' }} class='row'>
-          <div style={{ display: 'flex', justifyContent: 'flex-end' }} class='col-2'>
-            <button onClick={this.handleSubmit} type="button" class="btn btn-primary">
-              Guardar Cambios
-            </button>
-          </div>
-          <div class='col-6'>
-            <button type="button" class="btn btn-danger" onClick={this.props.switchToConsultar}>
-              Volver
-            </button>
-          </div>
-        </div>
-
-        </div>      
-      </form>
-      {this.renderModal()}
-      </Card>
+            <Button
+              block style={{ margin: 15, marginTop: 50 }}
+              onPress={this.handleSubmit}
+            >
+              <Text>Guardar Evento</Text>
+            </Button>
+          </Form>
+        </Content>
+      </Container>
     );
   }
 }
-ModificarPerfilVoluntario.propTypes = perfilPropTypes;
 
 export default ModificarPerfilVoluntario;

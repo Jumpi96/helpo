@@ -9,7 +9,6 @@ import EventoForm from './EventoForm';
 import './Eventos.css';
 import ButtonsCompartirEvento from '../../common/ButtonsCompartir/ButtonsCompartirEvento';
 import { Link } from 'react-router-dom'
-import ButtonGoAlbum from '../ConsultarEventos/AlbumImagenes/ButtonGoAlbum'
 
 class EventoView extends React.Component {
   constructor(props) {

@@ -102,9 +102,12 @@ class AlbumImagenes extends React.Component {
   render() {
     
     const imagenPicker = (
-      <div style={{ width: '100%', paddingBottom: 20 }}>
-        <p className='text-bold' >Añadir imagen: </p>
-        <ImagenSelecter callback={this.handleAddImage} />
+      <div className='container' style={{ width: '100%', paddingBottom: 20 }}>
+        <div className='row'>
+        <div style={{ marginTop: 10, marginRight: 10 }} className='sm'><p className='font-weight-bold' >Añadir imagen:</p></div>
+        <ImagenSelecter className='sm' callback={this.handleAddImage} />
+        </div>
+        <div classname='row' style={{ backgroundColor: 'lightGray', height: 2 }}></div>
       </div>
     )
 

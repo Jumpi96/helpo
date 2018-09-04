@@ -34,6 +34,13 @@ export function fetchImagenesFailure(error) {
   }
 }
 
+export function addEventoImagen(imagen) {
+  return {
+    type: types.ALBUM_EVENTO_ADD_IMAGEN,
+    imagen: imagen
+  }
+}
+
 export function getAlbumProps(props) {
   
   return {

@@ -5,6 +5,8 @@ export function imagenes(state = [], action) {
   switch( action.type ) {
     case types.FETCH_ALBUM_EVENTO_IMAGENES_SUCCESS:
       return action.imagenes
+    case types.ALBUM_EVENTO_ADD_IMAGEN:
+      return [...state, action.imagen]
     default:
       return state
   }

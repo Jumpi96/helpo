@@ -232,7 +232,9 @@ class EventoImagenSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = EventoImagen
-        fields = ('id', 'url', 'evento', 'necesidades', 'organizacion', 'voluntarios', 'comentarios')
+        fields = ('id', 'url', 'evento')
+        read_only_fields = ('id',)
+
 
 class MensajeSerializer(serializers.ModelSerializer):
     evento_id = serializers.PrimaryKeyRelatedField(

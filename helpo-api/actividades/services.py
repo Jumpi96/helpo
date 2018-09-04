@@ -94,3 +94,25 @@ def _get_usuarios(evento):
 def _get_evento(evento):
     from actividades.models import Evento
     return Evento.objects.get(id=evento['id'])
+
+
+def send_participacion_create_email(participacion):
+    titulo_email = u"Usted se ha registrado para participar como " \
+        + participacion.necesidad_voluntario.funcion.nombre + " en el siguiente evento:"
+    _send_participacion_email(participacion, titulo_email)
+
+
+def send_participacion_destroy_email(participacion):
+    titulo_email = u"Usted ha cancelado su participación como " \
+        + participacion.necesidad_voluntario.funcion.nombre + " en el siguiente evento:"
+    _send_participacion_email(participacion, titulo_email)
+
+
+def _send_participacion_email(participacion, titulo_email):
+    subject_utf = u"Registro de su participación en Helpo"
+    from common.templates import render_participacion_email
+    content = render_participacion_email(participacion, titulo_email)
+    voluntario_mail = participacion.voluntario.email
+    from common.notifications import send_mail_to
+    send_mail_to(voluntario_mail,
+                 html_subject=subject_utf, html_content=content)

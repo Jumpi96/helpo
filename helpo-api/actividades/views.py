@@ -337,6 +337,8 @@ class ParticipacionCreateReadView(ListCreateAPIView):
         serializer = ParticipacionSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(voluntario_id=get_token_user(self.request))
+            from actividades.services import send_participacion_create_email
+            send_participacion_create_email(serializer.instance)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -348,6 +350,15 @@ class ParticipacionReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     queryset = Participacion.objects.all()
     serializer_class = ParticipacionSerializer
     lookup_field = 'id'
+
+    # negrada is back!
+    def destroy(self, request, *args, **kwargs):
+        participacion_id = request.path.split("/actividades/participaciones/",1)[1][:-1]
+        participacion = Participacion.objects.get(id=participacion_id)
+        from actividades.services import send_participacion_destroy_email
+        send_participacion_destroy_email(participacion)        
+        return super().destroy(request, *args, **kwargs)
+
 
 class ComentarioCreateReadView(ListCreateAPIView):
     """

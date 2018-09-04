@@ -201,20 +201,19 @@ class ConsultarEventosView extends React.Component {
               {moment(evento.fecha_hora_inicio) <= moment() && this.props.auth.user ? (
                 <ComentariosEvento evento={evento} update={this.loadEvento} />
               ) : undefined
-              }
-              <div className="row">
-                <div className="form-group col-md-3">
-                  <b name="compartir" className="float-right">Album</b>
-                </div>
-                <div className="form-group col-md-9">
-                  <ButtonGoAlbum                     
-                    ong={this.state.evento.organizacion.nombre}
-                    ongId={this.state.evento.organizacion_id}
-                    evento={this.state.evento.nombre}
-                    eventoId={this.state.evento.id}
-                  />
-                </div>
-              </div>
+              }                
+                {/* Renderiza boton Ver album si empezo evento */}
+                {this.state.evento.estado > 1 
+                  ? (
+                <div className="row">   
+                  <div className="form-group col-md-3">
+                   <b name="compartir" className="float-right">Album</b>
+                  </div>
+                  <div className="form-group col-md-9">
+                    <ButtonGoAlbum eventoId={this.state.evento.id}/>
+                  </div>
+                </div>) 
+                  : undefined}              
               <div className="row">
                 <div className="form-group col-md-3">
                   <b name="compartir" className="float-right">Compartir</b>

@@ -14,6 +14,28 @@ export function fetchEventoImagenes(eventoId) {
     }
 }
 
+// Borra la imagen en la api
+export function deleteEventoImagen(imagen) {
+  return function(dispatch) {
+    api.delete(`/actividades/imagen/${imagen.id}`)
+    .then( response => {
+      dispatch(removeEventoImagen(imagen))
+    })
+    .catch( error => {
+      //Ya se q no es esta accion, placeholder
+      dispatch(fetchImagenesFailure(error))
+    })
+  }
+}
+
+// Saca la imagen del redux
+export function removeEventoImagen(imagen) {
+  return {
+    type: types.ALBUM_EVENTO_REMOVE_IMAGEN,
+    imagen: imagen
+  }
+}
+
 export function fetchImagenesSuccess(imagenes) {
   return {
     type: types.FETCH_ALBUM_EVENTO_IMAGENES_SUCCESS,

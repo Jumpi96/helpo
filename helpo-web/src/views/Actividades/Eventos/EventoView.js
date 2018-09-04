@@ -9,6 +9,7 @@ import EventoForm from './EventoForm';
 import './Eventos.css';
 import ButtonsCompartirEvento from '../../common/ButtonsCompartir/ButtonsCompartirEvento';
 import { Link } from 'react-router-dom'
+import ButtonGoAlbum from '../ConsultarEventos/AlbumImagenes/ButtonGoAlbum'
 
 class EventoView extends React.Component {
   constructor(props) {
@@ -185,6 +186,14 @@ class EventoView extends React.Component {
                 Consultar colaboraciones
             </button>
             </Link>
+            {/* Renderiza boton Ver album si empezo evento */}
+            {this.props.evento.estado > 1 
+                  ? (
+                    <Link to={`/actividades/album/${this.props.evento.id}`}>
+                      <button className="btn btn-warning">Ver Album</button>
+                    </Link>
+                  ) 
+                  : undefined}
             <button
               onClick={this.toggleMensajes}
               className="btn btn-warning"

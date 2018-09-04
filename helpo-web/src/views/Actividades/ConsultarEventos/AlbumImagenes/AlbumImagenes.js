@@ -19,7 +19,8 @@ class AlbumImagenes extends React.Component {
       imagenes: this.props.imagenes,
       modalOpen: false,
       imagenSelected: null,
-      isOwner: false
+      url: null, // Agrego esto para facilitar el manejo del modal
+      isOwner: null
     }
     this.renderImagenes = this.renderImagenes.bind(this)
     this.handlePressImagen = this.handlePressImagen.bind(this)
@@ -27,13 +28,25 @@ class AlbumImagenes extends React.Component {
     this.handleAddImage = this.handleAddImage.bind(this)
   }
 
-  componentDidMount() {
-    this.props.fetchImagenes(this.props.eventoId)
+  async componentDidMount() {
+    const eventoId = this.props.match.params.eventoId
+    const response = await api.get(`actividades/consulta_eventos/${eventoId}/`)
+    const props = await {
+      evento: response.data.nombre,
+      eventoId: response.data.id,
+      ongId: response.data.organizacion.id,
+      ong: response.data.organizacion.nombre,
+      ownerId: this.props.ownerId // #Negrada by Gonza
+    }
+    await this.props.uploadProps(props)
+    this.props.fetchImagenes(eventoId)
+
   }
 
-  handlePressImagen(url) {
+  handlePressImagen(imagen) {
     this.setState({
-      imagenSelected: url
+      imagenSelected: imagen,
+      url: imagen.url
     })
     this.toggleModal()
   }
@@ -51,7 +64,7 @@ class AlbumImagenes extends React.Component {
       const postData = { url: url, evento: this.props.eventoId }
       const postUrl = '/actividades/imagenes/'
       const response = await api.post(postUrl, postData)
-      await this.props.addImagen(response.data)      
+      await this.props.addImagen(response.data)
     }
     catch (error) {
 
@@ -70,7 +83,7 @@ class AlbumImagenes extends React.Component {
 
       const images = eventoImagenes.map(eventoImagen => (
         <div key={eventoImagen.id} style={{ padding: 5 }}>
-          <Button key={eventoImagen.id} outline onClick={() => this.handlePressImagen(eventoImagen.url)}>
+          <Button key={eventoImagen.id} outline onClick={() => this.handlePressImagen(eventoImagen)}>
             <img
               key={eventoImagen.id}
               src={eventoImagen.url}
@@ -87,6 +100,14 @@ class AlbumImagenes extends React.Component {
   }
 
   render() {
+    
+    const imagenPicker = (
+      <div style={{ width: '100%', paddingBottom: 20 }}>
+        <p className='text-bold' >Añadir imagen: </p>
+        <ImagenSelecter callback={this.handleAddImage} />
+      </div>
+    )
+
     return (
       <div>
         <Card>
@@ -94,14 +115,19 @@ class AlbumImagenes extends React.Component {
             <i className="fa fa-align-justify"></i> Album de {this.props.evento} - {this.props.ong}
           </CardHeader>
           <CardBody style={{ display: 'flex', flexWrap: 'wrap' }}>
-            <div style={{ width: '100%', paddingBottom: 20 }}>
-              <p className='text-bold' >Añadir imagen: </p>
-              <ImagenSelecter callback={this.handleAddImage} />
-            </div>
+            {/* Si es el owner del album le habilito para añadir imagenes */}
+            {this.props.isOwner ? imagenPicker : undefined}
             {this.renderImagenes()}
           </CardBody>
         </Card>
-        <ModalImagen open={this.state.modalOpen} imagen={this.state.imagenSelected} toggle={this.toggleModal} />
+        <ModalImagen
+          open={this.state.modalOpen}
+          imagen={this.state.imagenSelected}
+          url={this.state.url}
+          toggle={this.toggleModal}
+          isOwner={this.props.isOwner}
+          remove={this.props.removeImagen}
+        />
       </div>
     )
   }
@@ -114,12 +140,16 @@ const mapStateToProps = state => ({
   eventoId: state.albumEvento.props.eventoId,
   imagenes: state.albumEvento.imagenes,
   loading: state.albumEvento.loading,
-  error: state.albumEvento.error
+  error: state.albumEvento.error,
+  ownerId: state.auth.user.id,
+  isOwner: state.albumEvento.props.isOwner
 })
 
 const mapDispatchToProps = dispatch => ({
   fetchImagenes: eventoId => dispatch(actions.fetchEventoImagenes(eventoId)),
-  addImagen: imagen => dispatch(actions.addEventoImagen(imagen))
+  addImagen: imagen => dispatch(actions.addEventoImagen(imagen)),
+  removeImagen: imagen => dispatch(actions.deleteEventoImagen(imagen)),
+  uploadProps: props => dispatch(actions.getAlbumProps(props))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(AlbumImagenes)

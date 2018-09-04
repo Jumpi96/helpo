@@ -95,7 +95,7 @@ class SignUp extends Component {
         break;
       }
       case 'email': {
-        this.setState({ email: value });
+        this.setState({ email: value.toLowerCase() });
         break;
       }
       case 'password': {

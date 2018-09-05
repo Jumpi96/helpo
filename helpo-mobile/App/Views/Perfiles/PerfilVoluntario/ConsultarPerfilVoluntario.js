@@ -86,7 +86,7 @@ class ConsultarPerfilVoluntario extends Component {
       <Container style={styles.container}>
         <Header>
           <Left>
-            <Button transparent onPress={() => this.props.navigation.navigate('LaunchScreen')}>
+            <Button transparent onPress={() => this.props.navigation.navigate("LaunchScreen")}>
               <Icon name="arrow-back" />
             </Button>
           </Left>
@@ -94,7 +94,7 @@ class ConsultarPerfilVoluntario extends Component {
             <Title>Perfil</Title>
           </Body>
           <Right>
-            <Button transparent onClick={this.props.switchToModificar}> 
+            <Button transparent onPress={() =>this.props.switchToModificar}> 
               <Icon name="edit" />
             </Button>
           </Right>

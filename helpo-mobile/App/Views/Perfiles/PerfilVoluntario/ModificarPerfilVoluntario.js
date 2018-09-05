@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import api from '../../../api'
-import ModalGenerico from '../ModalGenerico'
 import { uploadImage } from '../../../Lib/Imagen'
 import {
   Container,
@@ -250,7 +249,7 @@ class ModificarPerfilVoluntario extends Component {
       <Container style={styles.container}>
         <Header>
           <Left>
-            <Button transparent onPress={() => this.props.("SwitchToConsultar")}>
+            <Button transparent onPress={() => this.props.navigation.navigate('LaunchScreen')}>
               <Icon name="arrow-back" />
             </Button>
           </Left>

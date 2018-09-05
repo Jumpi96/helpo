@@ -249,7 +249,7 @@ class ModificarPerfilVoluntario extends Component {
       <Container style={styles.container}>
         <Header>
           <Left>
-            <Button transparent onPress={() => this.props.navigation.navigate('LaunchScreen')}>
+            <Button transparent onPress={() => this.props.switchToConsultar}>
               <Icon name="arrow-back" />
             </Button>
           </Left>

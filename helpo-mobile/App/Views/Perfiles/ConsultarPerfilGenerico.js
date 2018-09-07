@@ -195,48 +195,6 @@ class ConsultarPerfilGenerico extends Component {
     else { return this.renderConsultarOtro() }
   }
 
-  renderConsultar() {
-    switch (this.state.userType) {
-      case 1:
-        return (<ConsultarPerfilOrganizacion 
-                  id={this.state.userId}
-                  nombre={this.state.nombre}
-                  email={this.state.email}
-                  data={this.state.data}
-                  switchToModificar={this.switchToModificar}
-                  />)
-
-      case 2:
-        return ( <ConsultarPerfilVoluntario
-                  nombre={this.state.nombre}
-                  email={this.state.email}
-                  data={this.state.data}
-                  switchToModificar={this.switchToModificar}
-                  /> )
-
-      case 3:
-        return ( <ConsultarPerfilEmpresa 
-                  nombre={this.state.nombre}
-                  email={this.state.email}
-                  data={this.state.data}
-                  switchToModificar={this.switchToModificar}
-                  /> )
-
-      default:
-        //return ( <Text>Error</Text> )        
-    }
-  }  
-
-  renderComponente() {
-    if (this.state.loggedUser && this.state.modificar) {
-      return this.renderModificar()
-    }
-    else if (this.state.loggedUser && !this.state.modificar) {
-      return this.renderConsultar()
-    }
-    else { return this.renderConsultarOtro()}
-  }
-
   render() {
     return (
       <Container>

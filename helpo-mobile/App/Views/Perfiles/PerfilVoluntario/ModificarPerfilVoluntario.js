@@ -249,14 +249,18 @@ class ModificarPerfilVoluntario extends Component {
       <Container style={styles.container}>
         <Header>
           <Left>
-            <Button transparent onPress={() => this.props.switchToConsultar}>
+            <Button transparent onPress={() => {this.props.switchToConsultar}}>
               <Icon name="arrow-back" />
             </Button>
           </Left>
           <Body>
             <Title>Registrar evento</Title>
           </Body>
-          <Right />
+          <Right>
+            <Button transparent onPress={() => {this.handleSubmit}}>
+              <Icon name="confirm" />
+            </Button>
+          </Right>
         </Header>
 
         <Content>
@@ -283,13 +287,6 @@ class ModificarPerfilVoluntario extends Component {
             {this.renderGustos}
             <Text style={styles.validationMessage}>{this.state.errors.gustos}</Text>
             {this.renderHabilidades}
-
-            <Button
-              block style={{ margin: 15, marginTop: 50 }}
-              onPress={this.handleSubmit}
-            >
-              <Text>Guardar Evento</Text>
-            </Button>
           </Form>
         </Content>
       </Container>

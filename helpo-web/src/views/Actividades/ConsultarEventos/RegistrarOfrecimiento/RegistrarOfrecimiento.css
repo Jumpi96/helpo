@@ -1,0 +1,7 @@
+#map { 
+    width:700px; height: 500px;
+}
+
+input[name=notas] {    
+    margin-top: 30px; 
+}

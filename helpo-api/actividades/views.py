@@ -14,8 +14,7 @@ from knox.models import AuthToken
 from actividades.serializers import EventoSerializer, RubroEventoSerializer, \
     CategoriaRecursoSerializer, RecursoSerializer, NecesidadSerializer, ContactoSerializer, \
     ConsultaEventoSerializer, VoluntarioSerializer, FuncionSerializer, ConsultaNecesidadesSerializer, \
-    ParticipacionSerializer, ColaboracionSerializer, ComentarioSerializer, MensajeSerializer, EventoImagenSerializer, \
-    OfrecimientoParticipacionSerializer
+    ParticipacionSerializer, ColaboracionSerializer, ComentarioSerializer, MensajeSerializer, EventoImagenSerializer
 from common.functions import get_token_user, calc_distance_locations
 
 class RubroEventoCreateReadView(ListCreateAPIView):
@@ -340,22 +339,6 @@ class ParticipacionCreateReadView(ListCreateAPIView):
             serializer.save(voluntario_id=get_token_user(self.request))
             from actividades.services import send_participacion_create_email
             send_participacion_create_email(serializer.instance)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-class OfrecimientoParticipacionCreateReadView(ListCreateAPIView):
-    """
-    API endpoint para crear o ver todas las participaciones de voluntario
-    """
-    queryset = Participacion.objects.all()
-    serializer_class = OfrecimientoParticipacionSerializer
-
-    def create(self, request):
-        serializer = OfrecimientoParticipacionSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save(voluntario_id=get_token_user(self.request))
-            from actividades.services import send_participacion_create_email
-            #send_participacion_create_email(serializer.instance)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

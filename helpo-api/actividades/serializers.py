@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from actividades.models import Evento, RubroEvento, Ubicacion, CategoriaRecurso, \
-    Recurso, Necesidad, Contacto, Funcion, Voluntario, Participacion, Colaboracion, Comentario, Mensaje, EventoImagen
+    Recurso, Necesidad, Contacto, Funcion, Voluntario, Participacion, Colaboracion, Comentario, Mensaje, EventoImagen, \
+    Pedido
 from actividades.services import send_mail_mensaje_evento, send_previous_mail_evento
 from users.serializers import UserSerializer, ColaboradorInfoSerializer
 from users.models import User
@@ -196,12 +197,15 @@ class ParticipacionSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Participacion
-        fields = ('id', 'comentario', 'necesidad_voluntario_id', 'colaborador', 'participo', 'retroalimentacion_voluntario', 'retroalimentacion_ong')
+        fields = ('id', 'comentario', 'cantidad', 'necesidad_voluntario_id', 'colaborador', 'participo', 'retroalimentacion_voluntario', 'retroalimentacion_ong')
 
     def create(self, validated_data):
         necesidad_voluntario = validated_data.get('necesidad_voluntario')
         participaciones = Participacion.objects.filter(necesidad_voluntario_id=necesidad_voluntario.id)
-        if len(participaciones) < necesidad_voluntario.cantidad:
+        suma_participantes = 0
+        for c in colaboraciones:
+            suma_participantes += c.cantidad
+        if (suma_participantes + cantidad) <= necesidad_voluntario.cantidad:
             colaborador_id = validated_data['colaborador_id']
             participacion = Participacion.objects.create(necesidad_voluntario_id=necesidad_voluntario.id, vigente=True, **validated_data)
             send_previous_mail_evento(necesidad_voluntario.evento_id, colaborador_id)
@@ -266,3 +270,9 @@ class MensajeSerializer(serializers.ModelSerializer):
         mensaje = Mensaje.objects.create(**validated_data)
         send_mail_mensaje_evento(mensaje, validated_data.get('evento').id)
         return mensaje
+
+class PedidoSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Pedido
+        fields = '__all__'

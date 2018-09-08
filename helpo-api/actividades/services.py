@@ -116,3 +116,13 @@ def _send_participacion_email(participacion, titulo_email):
     from common.notifications import send_mail_to
     send_mail_to(voluntario_mail,
                  html_subject=subject_utf, html_content=content)
+
+def create_pedido_voluntario(user, necesidad_voluntario):
+    evento_id = Voluntario.objects.get(id=necesidad_voluntario).evento_id
+    if len(Pedido.objects.filter(evento_id=evento_id).filter(empresa_id=user.id)) == 0:
+        Pedido.objects.create(evento_id=evento_id, empresa_id=user.id, aceptado=0)
+
+def create_pedido_necesidad(user, necesidad_material):
+    evento_id = Necesidad.objects.get(id=necesidad_material).evento_id
+    if len(Pedido.objects.filter(evento_id=evento_id).filter(empresa_id=user.id)) == 0:
+        Pedido.objects.create(evento_id=evento_id, empresa_id=user.id, aceptado=0)

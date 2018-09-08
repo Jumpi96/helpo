@@ -12,7 +12,7 @@ class RegistrarOfrecimientos extends Component {
     const urlParams = new URLSearchParams(this.props.location.search)
     const parametro = urlParams.get('evento');
     let evento;
-    if (parametro && empresaTienePedido(parametro)) {
+    if (parametro && !this.empresaTienePedido(parametro)) {
       evento = parametro;
     } else {
       this.props.history.push({ pathname: '/dashboard' });
@@ -37,7 +37,7 @@ class RegistrarOfrecimientos extends Component {
     return this.props.auth.user.id;
   }
 
-  checkEmpresa(evento) {
+  empresaTienePedido(evento) {
     api.get('/actividades/pedidos/')
       .then(res => {
         const pedidos = res.data;
@@ -131,7 +131,7 @@ class RegistrarOfrecimientos extends Component {
     } else {
       return (
         <td>
-          <Button onClick={() => this.openModalParticipacion(n.id)} color="primary">Ofrecer</Button>
+          <Button onClick={() => this.newParticipacion(n.id)} color="primary">Ofrecer</Button>
         </td>
       );
     }
@@ -196,6 +196,20 @@ class RegistrarOfrecimientos extends Component {
       comentarios: undefined,
     }
     this.setState({ colaboracionModificada: colaboracion });
+  }
+
+  newParticipacion(idVoluntario) {
+    const voluntario = this.state.voluntarios.filter(v => v.id === idVoluntario)[0];
+    const participacion = {
+      id: idVoluntario,
+      cantidad_anterior: 0,
+      cantidad: undefined,
+      cantidad_restante: this.getCantidadRestante(voluntario, 0),
+      funcion: voluntario.funcion,
+      descripcion: voluntario.descripcion,
+      comentarios: undefined,
+    }
+    this.setState({ colaboracionModificada: participacion });
   }
 
   getCantidadRestante(necesidad, aportado) {

@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import ugettext_lazy as _
 
-from .models import User
+from .models import User, AppValues
 
 
 class CustomUserAdmin(UserAdmin):
@@ -23,5 +23,9 @@ class CustomUserAdmin(UserAdmin):
             'fields': ('email', 'password1', 'password2')}),
     )
 
+class CustomAppValuesAdmin(admin.ModelAdmin):
+    list_display = ['key', 'value']
+
 
 admin.site.register(User, CustomUserAdmin)
+admin.site.register(AppValues, CustomAppValuesAdmin)

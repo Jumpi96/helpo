@@ -27,6 +27,7 @@ class ConsultarPerfilGenerico extends Component {
     this.renderComponente = this.renderComponente.bind(this)
     this.switchToConsultar = this.switchToConsultar.bind(this)
     this.switchToModificar = this.switchToModificar.bind(this)
+    this.goBack = this.goBack.bind(this);
   }
 
   getApiCall(userType) {
@@ -97,6 +98,7 @@ class ConsultarPerfilGenerico extends Component {
           data={this.state.data}
           rubros={this.state.rubros}
           switchToConsultar={this.switchToConsultar}
+          goBack={this.goBack}
         />)
 
       case 2:
@@ -105,6 +107,7 @@ class ConsultarPerfilGenerico extends Component {
           email={this.state.email}
           data={this.state.data}
           switchToConsultar={this.switchToConsultar}
+          goBack={this.goBack}
         />)
 
       case 3:
@@ -114,11 +117,16 @@ class ConsultarPerfilGenerico extends Component {
           data={this.state.data}
           rubros={this.state.rubros}
           switchToConsultar={this.switchToConsultar}
+          goBack={this.goBack}
         />)
 
       default:
         return (<p>Error</p>)
     }
+  }
+
+  goBack() {
+    this.props.navigation.navigate("LaunchScreen");
   }
 
   renderConsultarOtro() {
@@ -130,6 +138,7 @@ class ConsultarPerfilGenerico extends Component {
           email={this.state.email}
           data={this.state.data}
           switchToModificar={this.switchToModificar}
+          goBack={this.goBack}
         />)
 
       case 2:
@@ -138,6 +147,7 @@ class ConsultarPerfilGenerico extends Component {
           email={this.state.email}
           data={this.state.data}
           switchToModificar={this.switchToModificar}
+          goBack={this.goBack}
         />)
 
       case 3:
@@ -146,6 +156,7 @@ class ConsultarPerfilGenerico extends Component {
           email={this.state.email}
           data={this.state.data}
           switchToModificar={this.switchToModificar}
+          goBack={this.goBack}
         />)
 
       default:
@@ -162,6 +173,7 @@ class ConsultarPerfilGenerico extends Component {
           email={this.state.email}
           data={this.state.data}
           switchToModificar={this.switchToModificar}
+          goBack={this.goBack}
         />)
 
       case 2:
@@ -170,6 +182,7 @@ class ConsultarPerfilGenerico extends Component {
           email={this.state.email}
           data={this.state.data}
           switchToModificar={this.switchToModificar}
+          goBack={this.goBack}
         />)
 
       case 3:
@@ -178,6 +191,7 @@ class ConsultarPerfilGenerico extends Component {
           email={this.state.email}
           data={this.state.data}
           switchToModificar={this.switchToModificar}
+          goBack={this.goBack}
         />)
 
       default:

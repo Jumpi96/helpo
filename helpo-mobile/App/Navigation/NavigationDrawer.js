@@ -20,9 +20,7 @@ import ComentarEvento from '../Views/Actividades/ComentarEvento/ComentarEvento';
 import FiltroEventos from '../Views/Actividades/ConsultarEventos/FiltroEventos/FiltroEventos';
 import MensajesEvento from '../Views/Actividades/MensajesEvento/MensajesEvento';
 import NuevoMensaje from '../Views/Actividades/MensajesEvento/NuevoMensaje';
-import ConsultarPerfilVoluntario from '../Views/Perfiles/PerfilVoluntario/ConsultarPerfilVoluntario';
 import ConsultarPerfilGenerico from '../Views/Perfiles/ConsultarPerfilGenerico';
-import ModificarPerfilVoluntario from '../Views/Perfiles/PerfilVoluntario/ModificarPerfilVoluntario';
  
 const NavigationDrawer = DrawerNavigator({
 		LaunchScreen: { screen: LaunchScreen },
@@ -45,7 +43,6 @@ const NavigationDrawer = DrawerNavigator({
 		MensajesEvento: { screen: MensajesEvento },
 		NuevoMensaje: { screen: NuevoMensaje },
 		ConsultarPerfilGenerico: {screen: ConsultarPerfilGenerico},
-		ModificarPerfilVoluntario: {screen: ModificarPerfilVoluntario},
   },
   {
 	initialRouteName: "LaunchScreen",

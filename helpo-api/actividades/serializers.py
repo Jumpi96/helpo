@@ -167,7 +167,7 @@ class ColaboracionSerializer(serializers.ModelSerializer):
         colaborador_id = colaboracion.colaborador.id
         evento = colaboracion.necesidad_material.evento
         titulo_email = u"Usted ha cancelado su colaboración en el siguiente Evento:"
-        self.send_colaboracion_email(voluntario_id, evento, colaboracion, titulo_email)
+        self.send_colaboracion_email(colaborador_id, evento, colaboracion, titulo_email)
 
     def send_colaboracion_email(self, colaborador_id, evento, colaboracion, titulo_email):
         subject_utf = u"Registro de su colaboración en Helpo"

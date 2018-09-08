@@ -118,6 +118,7 @@ class AlbumImagenes extends React.Component {
             <i className="fa fa-align-justify"></i> Album de {this.props.evento} - {this.props.ong}
           </CardHeader>
           <CardBody style={{ display: 'flex', flexWrap: 'wrap' }}>
+            <p style={{ fontSize: 20 }} className='font-weight-bold' >{this.props.evento} - {this.props.ong}</p>
             {/* Si es el owner del album le habilito para añadir imagenes */}
             {this.props.isOwner ? imagenPicker : undefined}
             {this.renderImagenes()}

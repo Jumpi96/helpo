@@ -106,7 +106,7 @@ class LogMensaje(IndexedTimeStampedModel):
     mensaje = models.ForeignKey(Mensaje, related_name='envios', null=False, on_delete=models.CASCADE)
     voluntario = models.ForeignKey(User, null=False)
 
-class Ofrecimiento(IndexedTimeStampedModel):
+class Pedido(IndexedTimeStampedModel):
     OFRECIMIENTO_STATUS = (
         (-1, 'rechazado'),
         (0, 'pendiente'),

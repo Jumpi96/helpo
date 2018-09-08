@@ -12,7 +12,7 @@ class RegistrarOfrecimientos extends Component {
     const urlParams = new URLSearchParams(this.props.location.search)
     const parametro = urlParams.get('evento');
     let evento;
-    if (parametro) {
+    if (parametro && empresaTienePedido(parametro)) {
       evento = parametro;
     } else {
       this.props.history.push({ pathname: '/dashboard' });
@@ -35,6 +35,19 @@ class RegistrarOfrecimientos extends Component {
 
   getUserId() {
     return this.props.auth.user.id;
+  }
+
+  checkEmpresa(evento) {
+    api.get('/actividades/pedidos/')
+      .then(res => {
+        const pedidos = res.data;
+        return pedidos.filter(n => n.evento_id === evento && n.aceptado !== 0).length > 0;
+      })
+      .catch((error) => {
+        if (error.response){ console.log(error.response.status) }
+        else { console.log('Error: ', error.message)}
+      })
+    return false;
   }
 
   loadNecesidadesYVoluntarios() {

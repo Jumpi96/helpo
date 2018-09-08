@@ -339,6 +339,7 @@ class RegistrarColaboraciones extends Component {
     const nuevaParticipacion = {
       comentario: participacion.comentarios,
       necesidad_voluntario_id: participacion.id,
+      cantidad: 1,
     };
     if (this.getNecesidadVoluntario(this.state.voluntarios) !== this.state.funcionVoluntario) {
       this.deleteParticipacion();

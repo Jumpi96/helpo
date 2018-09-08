@@ -147,6 +147,12 @@ urlpatterns = [
         view=actividades_views.ParticipacionReadUpdateDeleteView.as_view(),
         name="get_put_delete_participacion"
     ),
+    # {% url "api:ofrecimiento_participaciones" %}
+    url(
+        regex=r"^actividades/ofrecimiento_participaciones/$",
+        view=actividades_views.OfrecimientoParticipacionCreateReadView.as_view(),
+        name="get_post_ofrecimiento_participacion"
+    ),
     # {% url "api:consulta_necesidades" %}
     url(
         regex=r"^actividades/consulta_necesidades/(?P<id>[-\w]+)/$",

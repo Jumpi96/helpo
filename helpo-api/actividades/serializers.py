@@ -209,6 +209,29 @@ class ParticipacionSerializer(serializers.ModelSerializer):
         else:
             raise serializers.ValidationError()
 
+
+class OfrecimientoParticipacionSerializer(serializers.ModelSerializer):
+    necesidad_voluntario_id = serializers.PrimaryKeyRelatedField(
+        queryset=Voluntario.objects.all(), source='necesidad_voluntario'
+    )
+    colaborador = ColaboradorInfoSerializer(read_only=True)
+    
+    class Meta:
+        model = Participacion
+        fields = ('id', 'comentario', 'necesidad_voluntario_id', 'colaborador', 'participo', 'retroalimentacion_voluntario', 'retroalimentacion_ong')
+
+    def create(self, validated_data):
+        necesidad_voluntario = validated_data.get('necesidad_voluntario')
+        participaciones = Participacion.objects.filter(necesidad_voluntario_id=necesidad_voluntario.id)
+        if len(participaciones) + validated_data.get('cantidad') < necesidad_voluntario.cantidad:
+            colaborador_id = validated_data['colaborador_id']
+            for i in xrange(validated_data.get('cantidad')):
+                participacion = Participacion.objects.create(necesidad_voluntario_id=necesidad_voluntario.id, vigente=True, **validated_data)
+            send_previous_mail_evento(necesidad_voluntario.evento_id, colaborador_id)
+            return participacion
+        else:
+            raise serializers.ValidationError()
+
 class ConsultaVoluntarioSerializer(serializers.ModelSerializer):
     participaciones = ParticipacionSerializer(many=True)
     funcion = FuncionSerializer(read_only=True)

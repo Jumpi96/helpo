@@ -27,7 +27,7 @@ const ConsultarPerfil = Loadable({
   loading: Loading,
 });
 
-const RegistrarColaboraciones = Loadable({
+const RegistrarOfrecimientos = Loadable({
   loader: () => import('./views/Actividades/RegistrarOfrecimientos/RegistrarOfrecimientos'),
   loading: Loading,
 });
@@ -45,7 +45,7 @@ const routes = [
   { path: '/actividades/consultar-eventos', name: 'Consultar eventos', component: ConsultarEventosPage },
   { path: '/actividades/consultar-evento/', name: 'Consultar evento', component: ConsultarEventosView },
   { path: '/perfiles/perfil-empresa', name: 'Perfil empresa', component: ModificarPerfilEmpresa },
-  { path: '/actividades/registrar-colaboraciones', name: 'Registrar colaboraciones', component: RegistrarColaboraciones },
+  { path: '/actividades/registrar-colaboraciones', name: 'Registrar ofrecimiento', component: RegistrarOfrecimientos },
   { path: '/perfil/:usuarioId?', name: 'Perfil de usuario', component: ConsultarPerfil }
 ];
 

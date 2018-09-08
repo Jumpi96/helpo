@@ -134,19 +134,17 @@ class ModalRegistrarOfrecimiento extends Component {
                   </div>
                 </div>
               </div>
-              {!this.props.colaboracion.funcion ?
-                <div className="row">
-                  <div className="col-md-6">
-                    <div>
-                      <strong>Cantidad</strong>
-                    </div>
-                    <div>
-                      <NumericInput className="form-control" min="1"
-                        value={this.props.colaboracion.cantidad} onChange={this.handleCantidadChange}/>
-                    </div>
+              <div className="row">
+                <div className="col-md-6">
+                  <div>
+                    <strong>Cantidad</strong>
                   </div>
-                </div> : undefined
-              }
+                  <div>
+                    <NumericInput className="form-control" min="1"
+                      value={this.props.colaboracion.cantidad} onChange={this.handleCantidadChange}/>
+                  </div>
+                </div>
+              </div>
               <div className="row">
                 <div className="col-md-12">
                   <div>

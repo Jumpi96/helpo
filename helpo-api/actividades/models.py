@@ -85,6 +85,7 @@ class Participacion(models.Model):
     vigente = models.NullBooleanField(null=True, default=True)
     retroalimentacion_voluntario = models.BooleanField(default=False)
     retroalimentacion_ong = models.BooleanField(default=False)
+    cantidad = models.IntegerField()
 
 class ActividadesTasks(models.Model):
     evento = models.ForeignKey(Evento, null=True, blank=True)

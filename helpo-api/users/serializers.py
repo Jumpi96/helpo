@@ -239,8 +239,9 @@ class AppValuesSerializer(serializers.ModelSerializer):
         model = AppValues
         fields = ('key', 'value')
 
-class VoluntarioInfoSerializer(serializers.ModelSerializer):
-    dni = serializers.SerializerMethodField()
+# Colaborador refiere a voluntario o empresa que colabora/participa en la actividad social.
+class ColaboradorInfoSerializer(serializers.ModelSerializer):
+    identificador = serializers.SerializerMethodField() # Número de DNI o CUIT
     apellido = serializers.SerializerMethodField()
 
     class Meta:
@@ -249,11 +250,17 @@ class VoluntarioInfoSerializer(serializers.ModelSerializer):
 
     def get_apellido(self, obj):
         voluntario = VoluntarioProfile.objects.get(usuario=obj.id)
-        return voluntario.apellido
+        if voluntario != None:
+            return voluntario.apellido
+        else:
+            return EmpresaProfile.objects.get(usuario=obj.id).nombre
     
-    def get_dni(self, obj):
+    def get_identificador(self, obj):
         voluntario = VoluntarioProfile.objects.get(usuario=obj.id)
-        return voluntario.dni
+        if voluntario != None:
+            return voluntario.dni
+        else:
+            return EmpresaProfile.objects.get(usuario=obj.id).cuit
 
 class DeviceIDSerializer(serializers.ModelSerializer):
 

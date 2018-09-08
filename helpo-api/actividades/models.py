@@ -71,7 +71,7 @@ class Colaboracion(models.Model):
     cantidad = models.IntegerField()
     comentario = models.CharField(max_length=140, null=True)
     necesidad_material = models.ForeignKey(Necesidad, related_name='colaboraciones', null=False, on_delete=models.CASCADE)
-    voluntario = models.ForeignKey(User, null=False)
+    colaborador = models.ForeignKey(User, null=False)
     entregado = models.BooleanField(null=False, blank=False, default=False)
     vigente = models.NullBooleanField(null=True, default=True)
     retroalimentacion_voluntario = models.BooleanField(default=False)
@@ -80,7 +80,7 @@ class Colaboracion(models.Model):
 class Participacion(models.Model):
     comentario = models.CharField(max_length=140, null=True)
     necesidad_voluntario = models.ForeignKey(Voluntario, related_name='participaciones', null=False, on_delete=models.CASCADE)
-    voluntario = models.ForeignKey(User, null=False)
+    colaborador = models.ForeignKey(User, null=False)
     participo = models.BooleanField(null=False, blank=False, default=False)
     vigente = models.NullBooleanField(null=True, default=True)
     retroalimentacion_voluntario = models.BooleanField(default=False)

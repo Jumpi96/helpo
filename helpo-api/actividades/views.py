@@ -12,6 +12,7 @@ from actividades.models import Evento, RubroEvento, CategoriaRecurso, Recurso, N
     Contacto, Voluntario, Funcion, Participacion, Colaboracion, Comentario, Mensaje, EventoImagen, \
     Pedido
 from knox.models import AuthToken
+from users.models import User
 from actividades.serializers import EventoSerializer, RubroEventoSerializer, \
     CategoriaRecursoSerializer, RecursoSerializer, NecesidadSerializer, ContactoSerializer, \
     ConsultaEventoSerializer, VoluntarioSerializer, FuncionSerializer, ConsultaNecesidadesSerializer, \
@@ -209,12 +210,12 @@ class EventoVoluntarioCreateReadView(ListCreateAPIView):
 
     def get_eventos(self, user):
         eventos = []
-        colaboraciones = Colaboracion.objects.filter(voluntario_id=user)
+        colaboraciones = Colaboracion.objects.filter(colaborador_id=user)
         for colaboracion in colaboraciones:
             necesidad = Necesidad.objects.filter(id=colaboracion.necesidad_material_id).first()
             if necesidad.evento_id not in eventos:
                 eventos.append(necesidad.evento_id)
-        participaciones = Participacion.objects.filter(voluntario_id=user)
+        participaciones = Participacion.objects.filter(colaborador_id=user)
         for participacion in participaciones:
             necesidad = Voluntario.objects.filter(id=participacion.necesidad_voluntario_id).first()
             if necesidad.evento_id not in eventos:
@@ -225,6 +226,7 @@ class ConsultaEventosOrganizacionCreateReadView(ListCreateAPIView):
     """
     API endpoint para ver todos los eventos próximos
     """
+    
     serializer_class = ConsultaEventoSerializer
 
     def get_queryset(self):
@@ -308,10 +310,11 @@ class ColaboracionCreateReadView(ListCreateAPIView):
 
     def create(self, request):
         serializer = ColaboracionSerializer(data=request.data)
+        user = User.objects.get(id=get_token_user(self.request))
         if serializer.is_valid():
             if user.user_type == 3:
                 create_pedido_necesidad(user, request_data['necesidad_material_id'])
-            serializer.save(voluntario_id=get_token_user(self.request))
+            serializer.save(colaborador_id=user.id)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -341,12 +344,12 @@ class ParticipacionCreateReadView(ListCreateAPIView):
     def create(self, request):
         serializer = ParticipacionSerializer(data=request.data)
         if serializer.is_valid():
-            user = get_token_user(self.request)
-            serializer.save(voluntario_id=user)
+            user = User.objects.get(id=get_token_user(self.request))
+            serializer.save(colaborador_id=user.id)
             from actividades.services import send_participacion_create_email
             send_participacion_create_email(serializer.instance)
             if user.user_type == 3:
-                create_pedido_voluntario(user, request_data['necesidad_voluntario_id'])
+                create_pedido_voluntario(user, request.data['necesidad_voluntario_id'])
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

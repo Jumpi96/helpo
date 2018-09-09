@@ -71,7 +71,7 @@ class RegistrarOfrecimientos extends Component {
   getNecesidadVoluntario(necesidades) {
     const usuario = this.getUserId();
     for (let i=0; i < necesidades.length; i++) {
-      if (necesidades[i].participaciones.filter(c => c.voluntario.id === usuario).length > 0){
+      if (necesidades[i].participaciones.filter(c => c.colaborador.id === usuario).length > 0){
         return necesidades[i].id;
       }
     }
@@ -148,11 +148,12 @@ class RegistrarOfrecimientos extends Component {
   }
 
   getCantidadVoluntarios(v) {
-    return '' + v.participaciones.length + '/'+ v.cantidad;
+    let contador = 0;
+    v.participaciones.forEach((c) => { contador += c.cantidad});
+    return '' + contador + '/'+ v.cantidad;
   }
 
-  getTablaVoluntarios() {
-    const funcion = this.state.funcionVoluntario;
+  getTablaVoluntarios() { 
     const voluntarios = [];
     for (let i = 0; i < this.state.voluntarios.length; i++) {
       voluntarios.push(
@@ -173,7 +174,6 @@ class RegistrarOfrecimientos extends Component {
             <th>Función</th>
             <th>Descripción</th>
             <th>Participando</th>
-            <th></th>
             <th></th>
           </tr>
         </thead>
@@ -257,7 +257,7 @@ class RegistrarOfrecimientos extends Component {
     const usuario = this.getUserId();
     let participaciones;
     for (let i=0; i < necesidades.length; i++) {
-      participaciones = necesidades[i].participaciones.filter(c => c.voluntario.id === usuario);
+      participaciones = necesidades[i].participaciones.filter(c => c.colaborador.id === usuario);
       if (participaciones.length > 0){
         return participaciones[0].id;
       }
@@ -338,18 +338,19 @@ class RegistrarOfrecimientos extends Component {
 
   getColaboracionAnterior(necesidadId) {
     const necesidad = this.state.necesidades.filter(n => n.id === necesidadId)[0];
-    return necesidad.colaboraciones.filter(c => c.voluntario.id === this.getUserId())[0].id;
+    return necesidad.colaboraciones.filter(c => c.colaborador.id === this.getUserId())[0].id;
   }
 
   saveParticipacion(participacion) {
     const nuevaParticipacion = {
       comentario: participacion.comentarios,
       necesidad_voluntario_id: participacion.id,
+      cantidad: participacion.cantidad
     };
     if (this.getNecesidadVoluntario(this.state.voluntarios) !== this.state.funcionVoluntario) {
       this.deleteParticipacion();
     }
-    api.post('/actividades/ofrecimiento_participaciones/', nuevaParticipacion)
+    api.post('/actividades/participaciones/', nuevaParticipacion)
       .then(res => {
         console.log(res);
         console.log(res.data);

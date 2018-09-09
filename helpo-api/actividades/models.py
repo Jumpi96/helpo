@@ -104,7 +104,7 @@ class Mensaje(IndexedTimeStampedModel):
 
 class LogMensaje(IndexedTimeStampedModel):
     mensaje = models.ForeignKey(Mensaje, related_name='envios', null=False, on_delete=models.CASCADE)
-    voluntario = models.ForeignKey(User, null=False)
+    usuario = models.ForeignKey(User, null=False)
 
 class Pedido(IndexedTimeStampedModel):
     OFRECIMIENTO_STATUS = (

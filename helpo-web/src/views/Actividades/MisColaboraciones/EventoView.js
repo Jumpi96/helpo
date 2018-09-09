@@ -104,7 +104,7 @@ class EventoView extends React.Component {
     let userId = this.getUserId();
     let filtroVoluntarios;
     for (let i = 0; i < voluntarios.length; i += 1) {
-      filtroVoluntarios = voluntarios[i].participaciones.filter(p => p.voluntario.id === userId);
+      filtroVoluntarios = voluntarios[i].participaciones.filter(p => p.colaborador.id === userId);
       if (filtroVoluntarios.length > 0) {
         return voluntarios[i];
       }
@@ -115,7 +115,7 @@ class EventoView extends React.Component {
     let contador = 0;
     let userId = this.getUserId();
     n.colaboraciones.forEach((c) => {
-      if (c.voluntario.id === userId) {
+      if (c.colaborador.id === userId) {
         contador += c.cantidad;
       };
     });

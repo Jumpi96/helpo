@@ -224,7 +224,7 @@ class RegistrarOfrecimientos extends Component {
 
   editColaboracion(idNecesidad) {
     const necesidad = this.state.necesidades.filter(v => v.id === idNecesidad)[0];
-    const colaboracionAnterior = necesidad.colaboraciones.filter(c => c.voluntario.id === this.getUserId())[0];
+    const colaboracionAnterior = necesidad.colaboraciones.filter(c => c.colaborador.id === this.getUserId())[0];
     const colaboracion = {
       id: idNecesidad,
       cantidad_anterior: colaboracionAnterior.cantidad,

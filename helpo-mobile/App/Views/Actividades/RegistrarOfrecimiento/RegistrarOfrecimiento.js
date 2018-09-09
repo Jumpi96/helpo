@@ -20,7 +20,7 @@ import styles from './../RegistrarColaboraciones/styles';
 import api from '../../../api';
 
 
-class RegistrarColaboraciones extends React.Component {
+class RegistrarOfrecimiento extends React.Component {
   constructor(props) {
     super(props);
     const { params } = this.props.navigation.state;
@@ -204,7 +204,7 @@ class RegistrarColaboraciones extends React.Component {
         evento: this.state.evento.id,
       };
       this.setState({ necesidadModificada: undefined });
-      this.props.navigation.navigate('AgregarColaboracion', { colaboracion });
+      this.props.navigation.navigate('AgregarOfrecimiento', { colaboracion });
     } else if (button.text === 'Eliminar') {
       this.deleteColaboracion(this.state.necesidadModificada);
     } else if (button.text === 'Colaborar') {
@@ -220,7 +220,7 @@ class RegistrarColaboraciones extends React.Component {
         evento: this.state.evento,
       };
       this.setState({ necesidadModificada: undefined });
-      this.props.navigation.navigate('AgregarColaboracion', { colaboracion });
+      this.props.navigation.navigate('AgregarOfrecimiento', { colaboracion });
     }
   }
 
@@ -255,7 +255,7 @@ class RegistrarColaboraciones extends React.Component {
         evento: this.state.evento.id,
       };
       this.setState({ necesidadModificada: undefined });
-      this.props.navigation.navigate('AgregarColaboracion', { colaboracion: participacion });
+      this.props.navigation.navigate('AgregarOfrecimiento', { colaboracion: participacion });
     } else if (button.text === 'Eliminar') {
       this.deleteParticipacion();
       this.setState({ necesidadModificada: undefined });
@@ -307,7 +307,7 @@ class RegistrarColaboraciones extends React.Component {
             </Button>
           </Left>
           <Body>
-            <Title>Colaborar</Title>
+            <Title>Registrar ofrecimiento</Title>
           </Body>
         </Header>
         <Content>
@@ -331,4 +331,4 @@ const mapStateToProps = state => ({
   auth: state.auth,
 });
 
-export default connect(mapStateToProps, undefined)(RegistrarColaboraciones);
+export default connect(mapStateToProps, undefined)(RegistrarOfrecimiento);

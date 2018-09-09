@@ -113,7 +113,9 @@ class RegistrarColaboraciones extends Component {
   }
 
   getCantidadVoluntarios(v) {
-    return '' + v.participaciones.length + '/'+ v.cantidad;
+    let contador = 0;
+    v.participaciones.forEach((c) => { contador += c.cantidad});
+    return '' + contador + '/'+ v.cantidad;
   }
 
   getTablaVoluntarios() {

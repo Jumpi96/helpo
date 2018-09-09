@@ -60,13 +60,17 @@ class EventoCard extends Component {
     const necesidades = this.props.evento.necesidades;
     if (voluntarios && necesidades) {
       for (let i = 0; i < voluntarios.length; i++) {
+        contadorTemp = 0;
         contadorNecesidades += voluntarios[i].cantidad;
-        contadorCubiertas += voluntarios[i].participaciones.length;
+        for (let j = 0; j < voluntarios[i].participaciones.length; j++) {
+          contadorTemp += voluntarios[i].participaciones[j].cantidad;
+        }
+        contadorCubiertas += contadorTemp;
       }
       for (let i = 0; i < necesidades.length; i++) {
         contadorTemp = 0;
         contadorNecesidades += necesidades[i].cantidad;
-        for (let j = 0; j < necesidades[i].colaboraciones; i++) {
+        for (let j = 0; j < necesidades[i].colaboraciones.length; j++) {
           contadorTemp += necesidades[i].colaboraciones[j].cantidad;
         }
         contadorCubiertas += contadorTemp;

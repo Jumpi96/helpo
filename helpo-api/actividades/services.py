@@ -1,4 +1,4 @@
-from actividades.models import Evento, Necesidad, Colaboracion, Voluntario, Participacion, LogMensaje, Mensaje
+from actividades.models import Evento, Necesidad, Colaboracion, Voluntario, Participacion, LogMensaje, Mensaje, Pedido
 from common.notifications import send_mail_to_list, send_mail_to
 from common.templates import render_mensaje_evento
 from users.models import User
@@ -15,7 +15,7 @@ def send_mail_mensaje_evento(mensaje, evento_id):
                       )
     for participante in participantes:
         LogMensaje.objects.create(
-            voluntario_id=participante.id, mensaje_id=mensaje.id)
+            colaborador_id=participante.id, mensaje_id=mensaje.id)
 
 
 def get_participantes_evento(evento_id):
@@ -25,31 +25,31 @@ def get_participantes_evento(evento_id):
         colaboraciones = Colaboracion.objects.filter(
             necesidad_material_id=necesidad.id)
         for colaboracion in colaboraciones:
-            if colaboracion.voluntario_id not in participantes:
-                participantes.append(colaboracion.voluntario_id)
+            if colaboracion.colaborador_id not in participantes:
+                participantes.append(colaboracion.colaborador_id)
     voluntarios = Voluntario.objects.filter(evento_id=evento_id)
     for voluntario in voluntarios:
         participaciones = Participacion.objects.filter(
             necesidad_voluntario_id=voluntario.id)
         for participacion in participaciones:
-            if participacion.voluntario_id not in participantes:
-                participantes.append(participacion.voluntario_id)
+            if participacion.colaborador_id not in participantes:
+                participantes.append(participacion.colaborador_id)
     return User.objects.filter(id__in=participantes)
 
 
-def send_previous_mail_evento(evento_id, voluntario_id):
+def send_previous_mail_evento(evento_id, colaborador_id):
     mensajes = Mensaje.objects.filter(evento_id=evento_id)
     evento = Evento.objects.filter(id=evento_id).first()
-    voluntario_email = User.objects.filter(id=voluntario_id).first().email
+    colaborador_email = User.objects.filter(id=colaborador_id).first().email
     for mensaje in mensajes:
-        if len(LogMensaje.objects.filter(mensaje_id=mensaje.id, voluntario_id=voluntario_id)) == 0:
-            send_mail_to(voluntario_email,
+        if len(LogMensaje.objects.filter(mensaje_id=mensaje.id, usuario_id=colaborador_id)) == 0:
+            send_mail_to(colaborador_email,
                          "helpo - " + mensaje.asunto +
                          " (" + evento.nombre + ")",
                          render_mensaje_evento(evento, mensaje.mensaje)
                          )
             LogMensaje.objects.create(
-                voluntario_id=voluntario_id, mensaje_id=mensaje.id)
+                usuario_id=colaborador_id, mensaje_id=mensaje.id)
 
 
 def notificar_cambio_evento(request_data):
@@ -81,12 +81,12 @@ def _get_usuarios(evento):
     necesidades = Necesidad.objects.filter(evento=evento['id']).values('id')
     voluntarios = Voluntario.objects.filter(evento=evento['id']).values('id')
     colaboraciones = Colaboracion.objects.filter(
-        necesidad_material__in=necesidades).values('voluntario')
+        necesidad_material__in=necesidades).values('colaborador')
     participaciones = Participacion.objects.filter(
-        necesidad_voluntario__in=voluntarios).values('voluntario')
-    usuarios_1 = [colaboracion['voluntario']
+        necesidad_voluntario__in=voluntarios).values('colaborador')
+    usuarios_1 = [colaboracion['colaborador']
                   for colaboracion in colaboraciones]
-    usuarios_2 = [participacion['voluntario']
+    usuarios_2 = [participacion['colaborador']
                   for participacion in participaciones]
     return usuarios_1 + usuarios_2
 
@@ -112,7 +112,17 @@ def _send_participacion_email(participacion, titulo_email):
     subject_utf = u"Registro de su participación en Helpo"
     from common.templates import render_participacion_email
     content = render_participacion_email(participacion, titulo_email)
-    voluntario_mail = participacion.voluntario.email
+    colaborador_mail = participacion.colaborador.email
     from common.notifications import send_mail_to
-    send_mail_to(voluntario_mail,
+    send_mail_to(colaborador_mail,
                  html_subject=subject_utf, html_content=content)
+
+def create_pedido_voluntario(user, necesidad_voluntario):
+    evento_id = Voluntario.objects.get(id=necesidad_voluntario).evento_id
+    if len(Pedido.objects.filter(evento_id=evento_id).filter(empresa_id=user.id)) == 0:
+        Pedido.objects.create(evento_id=evento_id, empresa_id=user.id, aceptado=0)
+
+def create_pedido_necesidad(user, necesidad_material):
+    evento_id = Necesidad.objects.get(id=necesidad_material).evento_id
+    if len(Pedido.objects.filter(evento_id=evento_id).filter(empresa_id=user.id)) == 0:
+        Pedido.objects.create(evento_id=evento_id, empresa_id=user.id, aceptado=0)

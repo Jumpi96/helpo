@@ -20,11 +20,14 @@ import styles from './../RegistrarColaboraciones/styles';
 import api from '../../../api';
 
 
-class RegistrarColaboraciones extends React.Component {
+class RegistrarOfrecimiento extends React.Component {
   constructor(props) {
     super(props);
     const { params } = this.props.navigation.state;
     const evento = params.evento;
+    if (this.empresaTienePedido(parametro)) {
+      this.props.navigation.navigate('LaunchScreen');
+    }
     this.state = {
       evento: {id: evento},
       necesidades: [],
@@ -51,6 +54,19 @@ class RegistrarColaboraciones extends React.Component {
       .catch((error) => {
         this.setState({ error: "Hubo un problema al cargar su información." });
       })
+  }
+
+  empresaTienePedido(evento) {
+    api.get('/actividades/pedidos/')
+      .then(res => {
+        const pedidos = res.data;
+        return pedidos.filter(n => n.evento_id === evento && n.aceptado !== 0).length > 0;
+      })
+      .catch((error) => {
+        if (error.response){ console.log(error.response.status) }
+        else { console.log('Error: ', error.message)}
+      })
+    return false;
   }
 
   getNecesidadVoluntario(necesidades) {
@@ -204,7 +220,7 @@ class RegistrarColaboraciones extends React.Component {
         evento: this.state.evento.id,
       };
       this.setState({ necesidadModificada: undefined });
-      this.props.navigation.navigate('AgregarColaboracion', { colaboracion });
+      this.props.navigation.navigate('AgregarOfrecimiento', { colaboracion });
     } else if (button.text === 'Eliminar') {
       this.deleteColaboracion(this.state.necesidadModificada);
     } else if (button.text === 'Colaborar') {
@@ -220,7 +236,7 @@ class RegistrarColaboraciones extends React.Component {
         evento: this.state.evento,
       };
       this.setState({ necesidadModificada: undefined });
-      this.props.navigation.navigate('AgregarColaboracion', { colaboracion });
+      this.props.navigation.navigate('AgregarOfrecimiento', { colaboracion });
     }
   }
 
@@ -255,7 +271,7 @@ class RegistrarColaboraciones extends React.Component {
         evento: this.state.evento.id,
       };
       this.setState({ necesidadModificada: undefined });
-      this.props.navigation.navigate('AgregarColaboracion', { colaboracion: participacion });
+      this.props.navigation.navigate('AgregarOfrecimiento', { colaboracion: participacion });
     } else if (button.text === 'Eliminar') {
       this.deleteParticipacion();
       this.setState({ necesidadModificada: undefined });
@@ -307,7 +323,7 @@ class RegistrarColaboraciones extends React.Component {
             </Button>
           </Left>
           <Body>
-            <Title>Colaborar</Title>
+            <Title>Registrar ofrecimiento</Title>
           </Body>
         </Header>
         <Content>
@@ -331,4 +347,4 @@ const mapStateToProps = state => ({
   auth: state.auth,
 });
 
-export default connect(mapStateToProps, undefined)(RegistrarColaboraciones);
+export default connect(mapStateToProps, undefined)(RegistrarOfrecimiento);

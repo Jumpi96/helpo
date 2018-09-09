@@ -53,14 +53,14 @@ class ComentarEvento extends React.Component {
     const voluntarios = evento.voluntarios;
     let filtroNecesidades;
     for (let i=0; i < necesidades.length; i++) {
-      filtroNecesidades = necesidades[i].colaboraciones.filter(c => c.voluntario.id === usuario);
+      filtroNecesidades = necesidades[i].colaboraciones.filter(c => c.colaborador.id === usuario);
       if (filtroNecesidades.length > 0 && filtroNecesidades[0].retroalimentacion) {
         return true;
       }
     }
     let filtroVoluntarios;
     for (let i=0; i < voluntarios.length; i++) {
-      filtroVoluntarios = voluntarios[i].participaciones.filter(c => c.voluntario.id === usuario);
+      filtroVoluntarios = voluntarios[i].participaciones.filter(c => c.colaborador.id === usuario);
       if (filtroVoluntarios.length > 0 && filtroVoluntarios[0].retroalimentacion) {
         return true;
       }

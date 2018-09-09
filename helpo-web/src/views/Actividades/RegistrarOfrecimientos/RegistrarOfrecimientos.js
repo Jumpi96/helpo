@@ -1,19 +1,18 @@
 import React, { Component } from 'react';
 import { Button, Table, Card, CardHeader, CardBody } from 'reactstrap';
 import { connect } from "react-redux";
-import { auth } from '../../../../actions';
-import './RegistrarColaboraciones.css';
-import api from '../../../../api';
-import ModalRegistrarColaboracion from './ModalRegistrarColaboracion/ModalRegistrarColaboracion';
+import { auth } from '../../../actions';
+import './RegistrarOfrecimientos.css';
+import api from '../../../api';
+import ModalRegistrarOfrecimiento from './ModalRegistrarOfrecimiento/ModalRegistrarOfrecimiento';
 
-
-class RegistrarColaboraciones extends Component {
+class RegistrarOfrecimientos extends Component {
   constructor(props){
     super(props);
     const urlParams = new URLSearchParams(this.props.location.search)
     const parametro = urlParams.get('evento');
     let evento;
-    if (parametro) {
+    if (parametro && !this.empresaTienePedido(parametro)) {
       evento = parametro;
     } else {
       this.props.history.push({ pathname: '/dashboard' });
@@ -36,6 +35,19 @@ class RegistrarColaboraciones extends Component {
 
   getUserId() {
     return this.props.auth.user.id;
+  }
+
+  empresaTienePedido(evento) {
+    api.get('/actividades/pedidos/')
+      .then(res => {
+        const pedidos = res.data;
+        return pedidos.filter(n => n.evento_id === evento && n.aceptado !== 0).length > 0;
+      })
+      .catch((error) => {
+        if (error.response){ console.log(error.response.status) }
+        else { console.log('Error: ', error.message)}
+      })
+    return false;
   }
 
   loadNecesidadesYVoluntarios() {
@@ -70,6 +82,10 @@ class RegistrarColaboraciones extends Component {
     return n.colaboraciones.filter(c => c.colaborador.id === this.getUserId()).length > 0;
   }
 
+  existeParticipacion(n) {
+    return n.participaciones.filter(c => c.colaborador.id === this.getUserId()).length > 0;
+  }
+
   getTablaNecesidades() {
     return this.state.necesidades.map((n) =>
       <tr>
@@ -102,6 +118,25 @@ class RegistrarColaboraciones extends Component {
     }
   }
 
+  getBotonesVoluntario(n) {
+    if (this.existeParticipacion(n)) {
+      return (
+        <td>
+          <Button onClick={() => this.editParticipacion(n.id)}
+            color="warning" style={{marginRight: 10}}>Modificar</Button>
+          <Button onClick={() => this.deleteParticipacion(n.id)}
+            color="danger">Eliminar</Button>
+        </td>
+      );
+    } else {
+      return (
+        <td>
+          <Button onClick={() => this.newParticipacion(n.id)} color="primary">Ofrecer</Button>
+        </td>
+      );
+    }
+  }
+
   selectFuncion(e) {
     this.setState({ funcionVoluntario: parseInt(e.target.value, 10) });
   }
@@ -118,8 +153,7 @@ class RegistrarColaboraciones extends Component {
     return '' + contador + '/'+ v.cantidad;
   }
 
-  getTablaVoluntarios() {
-    const funcion = this.state.funcionVoluntario;
+  getTablaVoluntarios() { 
     const voluntarios = [];
     for (let i = 0; i < this.state.voluntarios.length; i++) {
       voluntarios.push(
@@ -128,15 +162,7 @@ class RegistrarColaboraciones extends Component {
           <td>{this.state.voluntarios[i].funcion.nombre}</td>
           <td>{this.state.voluntarios[i].descripcion}</td>
           <td>{this.getCantidadVoluntarios(this.state.voluntarios[i])}</td>
-          <td>
-            <input 
-              type="radio"
-              value={this.state.voluntarios[i].id}
-              checked={funcion === this.state.voluntarios[i].id}
-              onClick={this.selectFuncion}
-            />
-          </td>
-          <td></td>
+          {this.getBotonesVoluntario(this.state.voluntarios[i])}
         </tr>
       )
     }
@@ -149,25 +175,10 @@ class RegistrarColaboraciones extends Component {
             <th>Descripción</th>
             <th>Participando</th>
             <th></th>
-            <th></th>
           </tr>
         </thead>
         <tbody>
           {voluntarios}
-          <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>No participa</td>
-            <td>
-              <input 
-                type="radio"
-                value={0} checked={funcion === 0}
-                onClick={this.selectFuncion}
-              />
-            </td>
-            <td><Button color="primary" onClick={() => this.openModalParticipacion()}>Ofrecer</Button></td>
-          </tr>
         </tbody>
       </Table>
     );
@@ -185,6 +196,20 @@ class RegistrarColaboraciones extends Component {
       comentarios: undefined,
     }
     this.setState({ colaboracionModificada: colaboracion });
+  }
+
+  newParticipacion(idVoluntario) {
+    const voluntario = this.state.voluntarios.filter(v => v.id === idVoluntario)[0];
+    const participacion = {
+      id: idVoluntario,
+      cantidad_anterior: 0,
+      cantidad: undefined,
+      cantidad_restante: this.getCantidadRestante(voluntario, 0),
+      funcion: voluntario.funcion,
+      descripcion: voluntario.descripcion,
+      comentarios: undefined,
+    }
+    this.setState({ colaboracionModificada: participacion });
   }
 
   getCantidadRestante(necesidad, aportado) {
@@ -212,27 +237,6 @@ class RegistrarColaboraciones extends Component {
     this.setState({ colaboracionModificada: colaboracion });
   }
 
-
-  openModalParticipacion() {
-    const voluntario = this.state.voluntarios.filter(v => v.id === this.state.funcionVoluntario)[0];
-    const participacionVoluntario = this.getNecesidadVoluntario(this.state.voluntarios) === this.state.funcionVoluntario;
-    if (!participacionVoluntario) {
-      if (this.state.funcionVoluntario !== 0) {
-        const participacion = {
-          id: this.state.funcionVoluntario,
-          cantidad_anterior: participacionVoluntario,
-          cantidad: participacionVoluntario,
-          cantidad_restante: this.getCantidadRestante(voluntario, participacionVoluntario),
-          funcion: voluntario.funcion,
-          descripcion: voluntario.descripcion,
-          comentarios: undefined,
-        }
-        this.setState({ colaboracionModificada: participacion });
-      } else {
-        this.deleteParticipacion();
-      }
-    }
-  }
 
   saveColaboracionModal(guardar) {
     if (guardar) {
@@ -341,7 +345,7 @@ class RegistrarColaboraciones extends Component {
     const nuevaParticipacion = {
       comentario: participacion.comentarios,
       necesidad_voluntario_id: participacion.id,
-      cantidad: 1,
+      cantidad: participacion.cantidad
     };
     if (this.getNecesidadVoluntario(this.state.voluntarios) !== this.state.funcionVoluntario) {
       this.deleteParticipacion();
@@ -368,7 +372,7 @@ class RegistrarColaboraciones extends Component {
       <div className="animated fadeIn">
         <Card>
           <CardHeader>
-            <i className="fa fa-align-justify"></i> Complete sus colaboraciones para {nombreEvento}
+            <i className="fa fa-align-justify"></i> Complete su ofrecimiento para {nombreEvento}
           </CardHeader>
           <CardBody>
             <form>
@@ -392,7 +396,7 @@ class RegistrarColaboraciones extends Component {
             </form>
           </CardBody>
         </Card>
-        <ModalRegistrarColaboracion 
+        <ModalRegistrarOfrecimiento 
           open={this.state.colaboracionModificada} handleChange={this.handleModalChange}
           colaboracion={this.state.colaboracionModificada} closeModal={this.saveColaboracionModal} 
         />
@@ -415,4 +419,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
   
-export default connect(mapStateToProps, mapDispatchToProps)(RegistrarColaboraciones);
+export default connect(mapStateToProps, mapDispatchToProps)(RegistrarOfrecimientos);

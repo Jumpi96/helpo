@@ -27,6 +27,11 @@ const ConsultarPerfil = Loadable({
   loading: Loading,
 });
 
+const RegistrarOfrecimientos = Loadable({
+  loader: () => import('./views/Actividades/RegistrarOfrecimientos/RegistrarOfrecimientos'),
+  loading: Loading,
+});
+
 const Dashboard = Loadable({
   loader: () => import('./views/Home/Home'),
   loading: Loading,
@@ -37,10 +42,10 @@ const Dashboard = Loadable({
 const routes = [
   { path: '/', exact: true, name: 'Home', component: DefaultLayout },
   { path: '/dashboard', name: 'helpo', component: Dashboard },
-
   { path: '/actividades/consultar-eventos', name: 'Consultar eventos', component: ConsultarEventosPage },
   { path: '/actividades/consultar-evento/', name: 'Consultar evento', component: ConsultarEventosView },
   { path: '/perfiles/perfil-empresa', name: 'Perfil empresa', component: ModificarPerfilEmpresa },
+  { path: '/actividades/registrar-colaboraciones', name: 'Registrar ofrecimiento', component: RegistrarOfrecimientos },
   { path: '/perfil/:usuarioId?', name: 'Perfil de usuario', component: ConsultarPerfil }
 ];
 

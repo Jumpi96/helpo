@@ -65,7 +65,7 @@ class VerColaboracionesEvento extends React.Component {
   getFuncionVoluntario(voluntarios) {
     const userId = this.getUserId();
     for (let i = 0; i < voluntarios.length; i += 1) {
-      if (voluntarios[i].participaciones.filter(p => p.voluntario.id === userId)) {
+      if (voluntarios[i].participaciones.filter(p => p.colaborador.id === userId)) {
         return voluntarios[i];
       }
     }
@@ -76,7 +76,7 @@ class VerColaboracionesEvento extends React.Component {
     let contador = 0;
     let userId = this.getUserId();
     n.colaboraciones.forEach((c) => {
-      if (c.voluntario.id === userId) {
+      if (c.colaborador.id === userId) {
         contador += c.cantidad;
       };
     });

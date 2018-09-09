@@ -25,6 +25,9 @@ class RegistrarOfrecimiento extends React.Component {
     super(props);
     const { params } = this.props.navigation.state;
     const evento = params.evento;
+    if (this.empresaTienePedido(parametro)) {
+      this.props.navigation.navigate('LaunchScreen');
+    }
     this.state = {
       evento: {id: evento},
       necesidades: [],
@@ -51,6 +54,19 @@ class RegistrarOfrecimiento extends React.Component {
       .catch((error) => {
         this.setState({ error: "Hubo un problema al cargar su información." });
       })
+  }
+
+  empresaTienePedido(evento) {
+    api.get('/actividades/pedidos/')
+      .then(res => {
+        const pedidos = res.data;
+        return pedidos.filter(n => n.evento_id === evento && n.aceptado !== 0).length > 0;
+      })
+      .catch((error) => {
+        if (error.response){ console.log(error.response.status) }
+        else { console.log('Error: ', error.message)}
+      })
+    return false;
   }
 
   getNecesidadVoluntario(necesidades) {

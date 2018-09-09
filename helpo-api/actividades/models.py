@@ -112,7 +112,7 @@ class Propuesta(IndexedTimeStampedModel):
         (1, 'aceptado'),
     )
     empresa = models.ForeignKey(User, null=False)
-    evento = models.ForeignKey(Evento, related_name='ofrecimientos', null=False, on_delete=models.CASCADE)
+    evento = models.ForeignKey(Evento, related_name='propuestas', null=False, on_delete=models.CASCADE)
     aceptado = models.PositiveSmallIntegerField(choices=OFRECIMIENTO_STATUS, default=0, null=False, blank=False)
     comentario = models.CharField(max_length=280, null=True)
 

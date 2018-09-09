@@ -226,13 +226,19 @@ class ConsultaVoluntarioSerializer(serializers.ModelSerializer):
         model = Voluntario
         fields = ('id', 'descripcion', 'cantidad', 'funcion', 'funcion_id', 'participaciones')
 
+class PropuestaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Propuesta
+        fields = '__all__'
+
 class ConsultaNecesidadesSerializer(serializers.ModelSerializer):
     necesidades = ConsultaNecesidadSerializer(many=True)
     voluntarios = ConsultaVoluntarioSerializer(many=True)
+    propuestas = PropuestaSerializer(many=True)
 
     class Meta:
         model = Evento
-        fields = ('id', 'nombre', 'necesidades', 'voluntarios', 'fecha_hora_inicio')
+        fields = ('id', 'nombre', 'necesidades', 'voluntarios', 'fecha_hora_inicio', 'propuestas')
 
 class ConsultaEventoSerializer(serializers.ModelSerializer):
     ubicacion = UbicacionSerializer()
@@ -271,9 +277,3 @@ class MensajeSerializer(serializers.ModelSerializer):
         mensaje = Mensaje.objects.create(**validated_data)
         send_mail_mensaje_evento(mensaje, validated_data.get('evento').id)
         return mensaje
-
-class PropuestaSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Propuesta
-        fields = '__all__'

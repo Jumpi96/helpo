@@ -3,6 +3,8 @@ package com.helpomobile;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.reactlibrary.RNGooglePlacePickerPackage;
+import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
 import com.geektime.rnonesignalandroid.ReactNativeOneSignalPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
@@ -26,6 +28,8 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNGooglePlacePickerPackage(),
+            new ReactNativeConfigPackage(),
             new ReactNativeOneSignalPackage(),
             new VectorIconsPackage(),
             new RNDeviceInfo()

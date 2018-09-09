@@ -14,15 +14,15 @@ const TablaVoluntario = ( props ) => {
     for ( let participacion of participaciones ) {
       const participacionData = {
         //Si comentario o dni son undefined, toman valor "-"
-        apellido: participacion.voluntario.apellido,
-        nombre: participacion.voluntario.nombre,
-        dni: participacion.voluntario.dni ? participacion.voluntario.dni : "-",
+        apellido: participacion.colaborador.apellido,
+        nombre: participacion.colaborador.nombre,
+        dni: participacion.colaborador.dni ? participacion.colaborador.dni : "-",
         comentario: participacion.comentario ? participacion.comentario : "-",
         idParticipacion: participacion.id,
         participo: participacion.participo,
         retroalimentacion_ong: participacion.retroalimentacion_ong,
         checkedBox: () => {},
-        idVoluntario: participacion.voluntario.id
+        idVoluntario: participacion.colaborador.id
       }
       dataArray.push(participacionData)      
     }    

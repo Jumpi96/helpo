@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from actividades.models import Evento, RubroEvento, Ubicacion, CategoriaRecurso, \
     Recurso, Necesidad, Contacto, Funcion, Voluntario, Participacion, Colaboracion, Comentario, Mensaje, EventoImagen, \
-    Pedido
+    Propuesta
 from actividades.services import send_mail_mensaje_evento, send_previous_mail_evento
 from users.serializers import UserSerializer, ColaboradorInfoSerializer
 from users.models import User
@@ -272,8 +272,8 @@ class MensajeSerializer(serializers.ModelSerializer):
         send_mail_mensaje_evento(mensaje, validated_data.get('evento').id)
         return mensaje
 
-class PedidoSerializer(serializers.ModelSerializer):
+class PropuestaSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = Pedido
+        model = Propuesta
         fields = '__all__'

@@ -1,4 +1,4 @@
-from actividades.models import Evento, Necesidad, Colaboracion, Voluntario, Participacion, LogMensaje, Mensaje, Pedido
+from actividades.models import Evento, Necesidad, Colaboracion, Voluntario, Participacion, LogMensaje, Mensaje, Propuesta
 from common.notifications import send_mail_to_list, send_mail_to
 from common.templates import render_mensaje_evento
 from users.models import User
@@ -117,12 +117,12 @@ def _send_participacion_email(participacion, titulo_email):
     send_mail_to(colaborador_mail,
                  html_subject=subject_utf, html_content=content)
 
-def create_pedido_voluntario(user, necesidad_voluntario):
+def create_propuesta_voluntario(user, necesidad_voluntario):
     evento_id = Voluntario.objects.get(id=necesidad_voluntario).evento_id
-    if len(Pedido.objects.filter(evento_id=evento_id).filter(empresa_id=user.id)) == 0:
-        Pedido.objects.create(evento_id=evento_id, empresa_id=user.id, aceptado=0)
+    if len(Propuesta.objects.filter(evento_id=evento_id).filter(empresa_id=user.id)) == 0:
+        Propuesta.objects.create(evento_id=evento_id, empresa_id=user.id, aceptado=0)
 
-def create_pedido_necesidad(user, necesidad_material):
+def create_propuesta_necesidad(user, necesidad_material):
     evento_id = Necesidad.objects.get(id=necesidad_material).evento_id
-    if len(Pedido.objects.filter(evento_id=evento_id).filter(empresa_id=user.id)) == 0:
-        Pedido.objects.create(evento_id=evento_id, empresa_id=user.id, aceptado=0)
+    if len(Propuesta.objects.filter(evento_id=evento_id).filter(empresa_id=user.id)) == 0:
+        Propuesta.objects.create(evento_id=evento_id, empresa_id=user.id, aceptado=0)

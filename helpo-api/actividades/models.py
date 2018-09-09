@@ -93,7 +93,6 @@ class ActividadesTasks(models.Model):
     execute_date = models.DateTimeField(null=False, blank=False)
 
 class EventoImagen(models.Model):
-
     url = models.TextField()    
     evento = models.ForeignKey(Evento, null=False, blank=False)
     
@@ -106,7 +105,7 @@ class LogMensaje(IndexedTimeStampedModel):
     mensaje = models.ForeignKey(Mensaje, related_name='envios', null=False, on_delete=models.CASCADE)
     usuario = models.ForeignKey(User, null=False)
 
-class Pedido(IndexedTimeStampedModel):
+class Propuesta(IndexedTimeStampedModel):
     OFRECIMIENTO_STATUS = (
         (-1, 'rechazado'),
         (0, 'pendiente'),
@@ -115,4 +114,5 @@ class Pedido(IndexedTimeStampedModel):
     empresa = models.ForeignKey(User, null=False)
     evento = models.ForeignKey(Evento, related_name='ofrecimientos', null=False, on_delete=models.CASCADE)
     aceptado = models.PositiveSmallIntegerField(choices=OFRECIMIENTO_STATUS, default=0, null=False, blank=False)
+    comentario = models.CharField(max_length=280, null=True)
 

@@ -207,10 +207,10 @@ urlpatterns = [
         view=actividades_views.MensajeReadUpdateDeleteView.as_view(),
         name="get_put_delete_mensaje"
     ),
-    # {% url "api:pedidos" evento.id %}
+    # {% url "api:propuestas" evento.id %}
     url(
-        regex=r"^actividades/pedidos/$",
-        view=actividades_views.PedidoEmpresaCreateReadView.as_view(),
-        name="get_post_pedido"
+        regex=r"^actividades/propuestas/$",
+        view=actividades_views.PropuestaEmpresaCreateReadView.as_view(),
+        name="get_post_propuesta"
     ),
 ]

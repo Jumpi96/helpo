@@ -10,15 +10,15 @@ from rest_framework import status
 from datetime import datetime
 from actividades.models import Evento, RubroEvento, CategoriaRecurso, Recurso, Necesidad, \
     Contacto, Voluntario, Funcion, Participacion, Colaboracion, Comentario, Mensaje, EventoImagen, \
-    Pedido
+    Propuesta
 from knox.models import AuthToken
 from users.models import User
 from actividades.serializers import EventoSerializer, RubroEventoSerializer, \
     CategoriaRecursoSerializer, RecursoSerializer, NecesidadSerializer, ContactoSerializer, \
     ConsultaEventoSerializer, VoluntarioSerializer, FuncionSerializer, ConsultaNecesidadesSerializer, \
     ParticipacionSerializer, ColaboracionSerializer, ComentarioSerializer, MensajeSerializer, EventoImagenSerializer, \
-    PedidoSerializer
-from actividades.services import create_pedido_necesidad, create_pedido_voluntario
+    PropuestaSerializer
+from actividades.services import create_propuesta_necesidad, create_propuesta_voluntario
 from common.functions import get_token_user, calc_distance_locations
 
 class RubroEventoCreateReadView(ListCreateAPIView):
@@ -313,7 +313,7 @@ class ColaboracionCreateReadView(ListCreateAPIView):
         user = User.objects.get(id=get_token_user(self.request))
         if serializer.is_valid():
             if user.user_type == 3:
-                create_pedido_necesidad(user, request_data['necesidad_material_id'])
+                create_propuesta_necesidad(user, request_data['necesidad_material_id'])
             serializer.save(colaborador_id=user.id)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -349,7 +349,7 @@ class ParticipacionCreateReadView(ListCreateAPIView):
             from actividades.services import send_participacion_create_email
             send_participacion_create_email(serializer.instance)
             if user.user_type == 3:
-                create_pedido_voluntario(user, request.data['necesidad_voluntario_id'])
+                create_propuesta_voluntario(user, request.data['necesidad_voluntario_id'])
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -485,14 +485,14 @@ class MensajeReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     serializer_class = MensajeSerializer
     lookup_field = 'id'
 
-class PedidoEmpresaCreateReadView(ListCreateAPIView):
+class PropuestaEmpresaCreateReadView(ListCreateAPIView):
     """
-    API endpoint para crear o ver todos los eventos de la organización
+    API endpoint para crear o ver todas las propuestas de la empresa
     """
     permission_classes = [permissions.IsAuthenticated, ]
-    serializer_class = PedidoSerializer
+    serializer_class = PropuestaSerializer
 
     def get_queryset(self):
-        queryset = Pedido.objects.all()
+        queryset = Propuesta.objects.all()
         queryset = queryset.filter(empresa_id=get_token_user(self.request))
         return queryset

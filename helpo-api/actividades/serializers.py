@@ -202,9 +202,10 @@ class ParticipacionSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         necesidad_voluntario = validated_data.get('necesidad_voluntario')
         participaciones = Participacion.objects.filter(necesidad_voluntario_id=necesidad_voluntario.id)
+        cantidad = validated_data.get('cantidad')
         suma_participantes = 0
-        for c in colaboraciones:
-            suma_participantes += c.cantidad
+        for p in participaciones:
+            suma_participantes += p.cantidad
         if (suma_participantes + cantidad) <= necesidad_voluntario.cantidad:
             colaborador_id = validated_data['colaborador_id']
             participacion = Participacion.objects.create(necesidad_voluntario_id=necesidad_voluntario.id, vigente=True, **validated_data)

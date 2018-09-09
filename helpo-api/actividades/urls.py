@@ -209,7 +209,7 @@ urlpatterns = [
     ),
     # {% url "api:pedidos" evento.id %}
     url(
-        regex=r"^actividades/pedidos/(?P<id>[-\w]+)/$",
+        regex=r"^actividades/pedidos/$",
         view=actividades_views.PedidoEmpresaCreateReadView.as_view(),
         name="get_post_pedido"
     ),

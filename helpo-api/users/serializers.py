@@ -246,21 +246,18 @@ class ColaboradorInfoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'nombre', 'dni', 'apellido')
+        fields = ('id', 'nombre', 'identificador', 'apellido')
 
     def get_apellido(self, obj):
-        voluntario = VoluntarioProfile.objects.get(usuario=obj.id)
-        if voluntario != None:
-            return voluntario.apellido
-        else:
-            return EmpresaProfile.objects.get(usuario=obj.id).nombre
+        if obj.user_type != 3:
+            return VoluntarioProfile.objects.get(usuario=obj.id).apellido
     
     def get_identificador(self, obj):
-        voluntario = VoluntarioProfile.objects.get(usuario=obj.id)
-        if voluntario != None:
-            return voluntario.dni
-        else:
+        if obj.user_type == 3:
             return EmpresaProfile.objects.get(usuario=obj.id).cuit
+        else:
+            return VoluntarioProfile.objects.get(usuario=obj.id).dni
+            
 
 class DeviceIDSerializer(serializers.ModelSerializer):
 

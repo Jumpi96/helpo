@@ -62,6 +62,11 @@ const OrganizacionesPage = Loadable({
   loading: Loading,
 })
 
+const ConsultarPatrocinadores = Loadable({
+  loader: () => import('./views/Actividades/ConsultarPatrocinadores/ConsultarPatrocinadores'),
+  loading: Loading,
+})
+
 const Dashboard = Loadable({
   loader: () => import('./views/Home/Home'),
   loading: Loading,
@@ -80,6 +85,7 @@ const routes = [
   { path: '/actividades/registrar-necesidades', name: 'Registrar necesidades', component: RegistrarNecesidades },
   { path: '/actividades/consultar-colaboraciones/:eventoId', name: 'Consultar Colaboraciones', component: ConsultarColaboraciones },
   { path: '/actividades/mensajes', name: 'Mensajes de evento', component: ListadoMensajes },
+  { path: '/actividades/patrocinadores', name: 'Administración de patrocinadores', component: ConsultarPatrocinadores },
   { path: '/perfiles/perfil-organizacion', name: 'Perfil organizacion', component: ModificarPerfilOrganizacion },
   { path: '/perfil/:usuarioId?', name: 'Perfil de usuario', component: ConsultarPerfil },
   { path: '/actividades/album/:eventoId', name: 'Album de Evento', component: AlbumImagenes },

@@ -143,6 +143,8 @@ class EventoView extends React.Component {
         return (
           <button disabled className="btn btn-danger">Propuesta rechazada</button>
         );
+      default:
+        return undefined;
     }    
   }
 

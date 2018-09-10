@@ -22,6 +22,11 @@ import CompartirEvento from '../CompartirEvento/CompartirEvento';
 
 class ConsultaEvento extends React.Component {
 
+  constructor(props) {
+    super(props);
+    this.navigateColaborar = this.navigateColaborar.bind(this);
+  }
+
   getListaNecesidades(evento) {
     return evento.necesidades.map(n =>
       <ListItem icon key={n.id}>
@@ -43,6 +48,14 @@ class ConsultaEvento extends React.Component {
         </Right>
       </ListItem>
     );
+  }
+
+  navigateColaborar(evento) {
+    if (this.props.auth.user.user_type === 2) {
+      this.props.navigation.navigate('RegistrarColaboraciones', { evento: evento.id })
+    } else {
+      this.props.navigation.navigate('RegistrarOfrecimiento', { evento: evento.id })
+    }
   }
 
   getListaVoluntarios(evento) {
@@ -110,11 +123,11 @@ class ConsultaEvento extends React.Component {
           <Body>
             <Title>{evento.nombre}</Title>
           </Body>
-          {this.props.auth.user.user_type === 2 ?
+          {this.props.auth.user.user_type > 1 ?
             <Right>
               <Button
                 transparent
-                onPress={() => this.props.navigation.navigate('RegistrarColaboraciones', { evento: evento.id })}>
+                onPress={() => this.navigateColaborar(evento)}>
                 <Text>Colaborar</Text>
               </Button>
             </Right> : undefined

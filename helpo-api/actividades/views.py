@@ -9,12 +9,16 @@ from rest_framework.response import Response
 from rest_framework import status
 from datetime import datetime
 from actividades.models import Evento, RubroEvento, CategoriaRecurso, Recurso, Necesidad, \
-    Contacto, Voluntario, Funcion, Participacion, Colaboracion, Comentario, Mensaje, EventoImagen
+    Contacto, Voluntario, Funcion, Participacion, Colaboracion, Comentario, Mensaje, EventoImagen, \
+    Propuesta
 from knox.models import AuthToken
+from users.models import User
 from actividades.serializers import EventoSerializer, RubroEventoSerializer, \
     CategoriaRecursoSerializer, RecursoSerializer, NecesidadSerializer, ContactoSerializer, \
     ConsultaEventoSerializer, VoluntarioSerializer, FuncionSerializer, ConsultaNecesidadesSerializer, \
-    ParticipacionSerializer, ColaboracionSerializer, ComentarioSerializer, MensajeSerializer, EventoImagenSerializer
+    ParticipacionSerializer, ColaboracionSerializer, ComentarioSerializer, MensajeSerializer, EventoImagenSerializer, \
+    PropuestaSerializer
+from actividades.services import create_propuesta_necesidad, create_propuesta_voluntario
 from common.functions import get_token_user, calc_distance_locations
 
 class RubroEventoCreateReadView(ListCreateAPIView):
@@ -206,12 +210,12 @@ class EventoVoluntarioCreateReadView(ListCreateAPIView):
 
     def get_eventos(self, user):
         eventos = []
-        colaboraciones = Colaboracion.objects.filter(voluntario_id=user)
+        colaboraciones = Colaboracion.objects.filter(colaborador_id=user)
         for colaboracion in colaboraciones:
             necesidad = Necesidad.objects.filter(id=colaboracion.necesidad_material_id).first()
             if necesidad.evento_id not in eventos:
                 eventos.append(necesidad.evento_id)
-        participaciones = Participacion.objects.filter(voluntario_id=user)
+        participaciones = Participacion.objects.filter(colaborador_id=user)
         for participacion in participaciones:
             necesidad = Voluntario.objects.filter(id=participacion.necesidad_voluntario_id).first()
             if necesidad.evento_id not in eventos:
@@ -222,6 +226,7 @@ class ConsultaEventosOrganizacionCreateReadView(ListCreateAPIView):
     """
     API endpoint para ver todos los eventos próximos
     """
+    
     serializer_class = ConsultaEventoSerializer
 
     def get_queryset(self):
@@ -305,8 +310,11 @@ class ColaboracionCreateReadView(ListCreateAPIView):
 
     def create(self, request):
         serializer = ColaboracionSerializer(data=request.data)
+        user = User.objects.get(id=get_token_user(self.request))
         if serializer.is_valid():
-            serializer.save(voluntario_id=get_token_user(self.request))
+            if user.user_type == 3:
+                create_propuesta_necesidad(user, request_data['necesidad_material_id'])
+            serializer.save(colaborador_id=user.id)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -336,12 +344,14 @@ class ParticipacionCreateReadView(ListCreateAPIView):
     def create(self, request):
         serializer = ParticipacionSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save(voluntario_id=get_token_user(self.request))
+            user = User.objects.get(id=get_token_user(self.request))
+            serializer.save(colaborador_id=user.id)
             from actividades.services import send_participacion_create_email
             send_participacion_create_email(serializer.instance)
+            if user.user_type == 3:
+                create_propuesta_voluntario(user, request.data['necesidad_voluntario_id'])
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 class ParticipacionReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     """
@@ -474,3 +484,15 @@ class MensajeReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     queryset = Mensaje.objects.all()
     serializer_class = MensajeSerializer
     lookup_field = 'id'
+
+class PropuestaEmpresaCreateReadView(ListCreateAPIView):
+    """
+    API endpoint para crear o ver todas las propuestas de la empresa
+    """
+    permission_classes = [permissions.IsAuthenticated, ]
+    serializer_class = PropuestaSerializer
+
+    def get_queryset(self):
+        queryset = Propuesta.objects.all()
+        queryset = queryset.filter(empresa_id=get_token_user(self.request))
+        return queryset

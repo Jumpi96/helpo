@@ -14,16 +14,16 @@ const TablaColaboracion = ( props ) => {
     for ( let colaboracion of colaboraciones ) {
       const colaboracionData = {
         //Si comentario o dni son undefined, toman valor "-"
-        apellido: colaboracion.voluntario.apellido,
-        nombre: colaboracion.voluntario.nombre,
-        dni: colaboracion.voluntario.dni ? colaboracion.voluntario.dni : "-",
+        apellido: colaboracion.colaborador.apellido,
+        nombre: colaboracion.colaborador.nombre,
+        dni: colaboracion.colaborador.dni ? colaboracion.colaborador.dni : "-",
         cantidad: colaboracion.cantidad,
         comentario: colaboracion.comentario ? colaboracion.comentario : "-",
         idColaboracion: colaboracion.id,
         retroalimentacion_ong: colaboracion.retroalimentacion_ong,
         checkedBox: () => {},
         entregado: colaboracion.entregado,
-        idVoluntario: colaboracion.voluntario.id
+        idVoluntario: colaboracion.colaborador.id
       }
       dataArray.push(colaboracionData)      
     }    

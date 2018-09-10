@@ -102,6 +102,11 @@ const itemsEmp = [
 	  'name': 'Consultar eventos',
 	},
 	{
+		'key': 'MisPropuestas',
+		'routeName': 'MisPropuestas',
+		'name': 'Mis propuestas'
+	},
+	{
 	  'key': 'Configuracion',
 	  'routeName': 'Configuracion',
 	  'name': 'Configuración'

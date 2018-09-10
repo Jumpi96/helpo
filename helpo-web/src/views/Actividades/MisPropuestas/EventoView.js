@@ -5,7 +5,6 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import moment from 'moment';
 import { auth } from '../../../actions';
-import ModalEliminarItem from '../../common/ModalEliminarItem/ModalEliminarItem';
 import * as eventoActions from '../../../actions/eventoActions';
 import './Eventos.css';
 
@@ -13,12 +12,8 @@ class EventoView extends React.Component {
   constructor(props) {
     super(props);
     this.state = { 
-      isEditing: false,
       evento: this.props.evento,
-      saving: false,
-      showModalEliminar: false
     }
-    this.toggleDelete = this.toggleDelete.bind(this);
     this.toggleEdit = this.toggleEdit.bind(this);
     this.toggleView = this.toggleView.bind(this);
     this.confirmDeleteNecesidad = this.confirmDeleteNecesidad.bind(this);
@@ -46,12 +41,7 @@ class EventoView extends React.Component {
       pathname: '/actividades/consultar-evento', 
       search: '?id=' + this.state.evento.id,
     });
-  }
-
-  toggleDelete() {
-    this.setState({ showModalEliminar: true });
-  }
-
+  } 
 
   UNSAFE_componentWillReceiveProps(nextProps) {
     if (this.props.evento.id !== nextProps.evento.id) {
@@ -88,27 +78,29 @@ class EventoView extends React.Component {
   }
 
   getTablaVoluntarios(voluntarios) {
-    const voluntario = this.getFuncionVoluntario(voluntarios);
-    if (voluntario) {
-      return (
-        <tr>
-          <td><i className="cui-user"></i></td>
-          <td>{voluntario.funcion.nombre}</td>
-          <td>{voluntario.descripcion}</td>
-        </tr>
-      )
-    }
-  }
-
-  getFuncionVoluntario(voluntarios) {
-    let userId = this.getUserId();
-    let filtroVoluntarios;
-    for (let i = 0; i < voluntarios.length; i += 1) {
-      filtroVoluntarios = voluntarios[i].participaciones.filter(p => p.colaborador.id === userId);
-      if (filtroVoluntarios.length > 0) {
-        return voluntarios[i];
+    const listaVoluntarios = [];
+    let cantidad;
+    voluntarios.forEach(n => {
+      cantidad = this.getCantidadVoluntarios(n);
+      if (cantidad > 0) {
+        listaVoluntarios.push(
+          <tr>
+            <td><i className="cui-user"></i></td>
+            <td>{n.funcion.nombre}</td>
+            <td>{n.descripcion}</td>
+            <td>{cantidad}</td>
+          </tr>
+        )
       }
+    });
+    if (listaVoluntarios.length > 0) {
+      return(
+        <tbody>
+          {listaVoluntarios}
+        </tbody>
+      );
     }
+    return undefined;
   }
 
   getCantidadNecesidades(n) {
@@ -122,6 +114,56 @@ class EventoView extends React.Component {
     return contador;
   }
 
+  getCantidadVoluntarios(v) {
+    let contador = 0;
+    let userId = this.getUserId();
+    v.participaciones.forEach((p) => {
+      if (p.colaborador.id === userId) {
+        contador += p.cantidad;
+      };
+    });
+    return contador;
+  }
+
+  getPropuesta() {
+    return this.state.evento.propuestas.filter(p => p.empresa === this.getUserId())[0];
+  }
+
+  getBotonEstado() {
+    switch (this.getPropuesta().aceptado) {
+      case 0:
+        return (
+          <button disabled className="btn btn-warning">Propuesta pendiente</button>
+        );
+      case 1:
+        return (
+          <button disabled className="btn btn-success">Propuesta aceptada</button>
+        );
+      case 2:
+        return (
+          <button disabled className="btn btn-danger">Propuesta rechazada</button>
+        );
+      default:
+        return undefined;
+    }    
+  }
+
+  getComentario(propuesta) {
+    if (propuesta.comentario !== null) {
+      return (
+        <div className="row">
+          <div className="form-group col-md-4">
+            <b className="float-right">Comentario de la ONG</b>
+          </div>
+          <div className="form-group col-md-8">
+            <p>{propuesta.comentario}</p>
+          </div>
+        </div>
+      )
+    }
+    return undefined;
+  }
+
   getUserId() {
     return this.props.auth.user.id;
   }
@@ -129,6 +171,7 @@ class EventoView extends React.Component {
   render() {
     if (this.state.evento.nombre) {
       const evento = this.state.evento;
+      const propuesta = this.getPropuesta();
       const listaNecesidades = this.getTablaNecesidades(evento.necesidades);
       const listaVoluntarios = this.getTablaVoluntarios(evento.voluntarios);
       return (
@@ -136,6 +179,22 @@ class EventoView extends React.Component {
           <div className="row">
             <div className="form-group">
               <h1>{evento.nombre}</h1>
+            </div>
+          </div>
+          <div className="row">
+            <div className="form-group col-md-4">
+              <b className="float-right">Fecha de propuesta</b>
+            </div>
+            <div className="form-group col-md-8">
+              <p>{moment(propuesta.created).format('DD/MM/YYYY HH:mm')}</p>
+            </div>
+          </div>
+          <div className="row">
+            <div className="form-group col-md-4">
+              <b className="float-right" name="estado">Estado</b>
+            </div>
+            <div className="form-group col-md-8">
+              {this.getBotonEstado()}
             </div>
           </div>
           {listaNecesidades ?
@@ -159,29 +218,32 @@ class EventoView extends React.Component {
                   <th></th>
                   <th>Función</th>
                   <th>Descripción</th>
+                  <th>Cantidad</th>
                 </tr>
               </thead>
-              <tbody>
-                {listaVoluntarios}
-              </tbody>
+              {listaVoluntarios}
             </Table> : undefined
           }
           <button
             onClick={this.toggleEdit}
-            hidden={moment(evento.fecha_hora_inicio)<=moment()}
+            hidden={moment(evento.fecha_hora_inicio)>moment() || propuesta.aceptado === -1}
             className="btn btn-warning"
           >
             Editar colaboraciones
           </button>
-          <button
-            onClick={this.toggleView}
-            hidden={moment(evento.fecha_hora_inicio)>moment()}
-            className="btn btn-warning"
-          >
-            Comentar evento
-          </button>
-          <ModalEliminarItem open={this.state.showModalEliminar} nombre={this.state.evento.nombre}
-            closeModal={this.confirmDeleteNecesidad}/>
+          {propuesta.aceptado === -1 ?
+            this.getComentario(propuesta) : undefined
+          }
+          {moment(evento.fecha_hora_inicio)>moment() && propuesta.aceptado !== -1 ?
+            <button
+              onClick={this.toggleView}
+              className="btn btn-warning"
+            >
+              Comentar evento
+            </button>
+            : undefined
+          }
+          
         </div>
       );
     } else {

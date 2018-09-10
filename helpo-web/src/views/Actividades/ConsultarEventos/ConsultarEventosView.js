@@ -45,9 +45,9 @@ class ConsultarEventosView extends React.Component {
     });
   }
 
-  esVoluntario() {
+  esONG() {
     if (this.props.auth.user) {
-      return this.props.auth.user.user_type === 2;
+      return this.props.auth.user.user_type === 1;
     } else {
       return false;
     }
@@ -191,7 +191,7 @@ class ConsultarEventosView extends React.Component {
               {listaNecesidades || listaVoluntarios ? (
                 <button
                   onClick={this.toggleColaborar}
-                  hidden={moment(evento.fecha_hora_inicio) <= moment() || !this.esVoluntario()}
+                  hidden={moment(evento.fecha_hora_inicio) <= moment() || this.esONG()}
                   className="btn btn-warning offset-md-10"
                 >
                   Colaborar

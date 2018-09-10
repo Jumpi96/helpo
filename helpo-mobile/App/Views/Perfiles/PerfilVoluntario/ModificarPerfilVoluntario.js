@@ -18,7 +18,10 @@ import {
   Text,
   TextInput,
   Picker,
+  Thumbnail,
+  Separator,
 } from 'native-base';
+import styles from './styles'
 
 class ModificarPerfilVoluntario extends Component {
   constructor(props) {
@@ -33,25 +36,13 @@ class ModificarPerfilVoluntario extends Component {
       habilidades: this.props.data.habilidades == null ? '' : this.props.data.habilidades,
       avatar_url: this.props.data.avatar.url,
       showModal: false,
-      modalType: 'success',
       errors: [],
       avatar_changed: false,
     }
-    this.renderNombre  = this.renderNombre.bind(this);
-    this.renderDni = this.renderDni.bind(this);
-    this.renderTelefono = this.renderTelefono.bind(this);
-    this.handleNombreChange = this.handleNombreChange.bind(this);
-    this.handleDniChange = this.handleDniChange.bind(this);
-    this.handleTelefonoChange = this.handleTelefonoChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.onSelectFile = this.onSelectFile.bind(this);
-    this.showModal = this.showModal.bind(this);
     this.handleAvatarChange = this.handleAvatarChange.bind(this);
-    this.renderGustos = this.renderGustos.bind(this);
-    this.handleGustosChange = this.handleGustosChange.bind(this);
-    this.renderHabilidades = this.renderHabilidades.bind(this);
-    this.handleHabilidadesChange = this.handleHabilidadesChange.bind(this);
-    this.handleSexoChange = this.handleSexoChange.bind(this);
+    this.validateData = this.validateData.bind(this);
   }
 
   onSelectFile(event) {
@@ -69,101 +60,7 @@ class ModificarPerfilVoluntario extends Component {
       reader.readAsDataURL(event.target.files[0])
     }
   }
-  /**/
-  renderSexo() {
-    return (
-      <Picker
-        selectedValue={this.state.sexo}
-        onValueChange={(itemValue) => this.setState({sexo: itemValue})}>
-        <Picker.Item label="Java" value="" />
-        <Picker.Item label="JavaScript" value="Hombre" />
-        <Picker.Item label="JavaScript" value="Mujer" />
-        <Picker.Item label="JavaScript" value="Otro" />
-      </Picker>
-    );
-  }
 
-  renderGustos() {
-    return (
-      <TextInput
-        multiline={true}
-        numberOfLines={5}
-        onChangeText={(text) => this.setState({gustos:text})}
-        value={this.state.gustos}
-      />
-    );
-  }
-
-  renderHabilidades() {
-    return (
-      <TextInput
-      multiline={true}
-      numberOfLines={5}
-      onChangeText={(text) => this.setState({habilidades:text})}
-      value={this.state.habilidades}
-    />
-    );
-  }
-
-  renderNombre() {
-    return (
-      <Item floatingLabel>
-        <Label>Nombre</Label>
-        <Input
-          value={this.state.nombre}
-          onChangeText={text => this.setState({ nombre: text })}
-        />
-      </Item>
-    );    
-  }
-
-  renderApellido() {
-    return (
-      <Item floatingLabel>
-      <Label>Apellido</Label>
-      <Input
-        value={this.state.apellido}
-        onChangeText={text => this.setState({ apellido: text })}
-      />
-    </Item>
-    );    
-  }
-
-  renderEmail() {
-    return (
-      <Item floatingLabel>
-      <Label>Email</Label>
-      <Input
-        value={this.state.email}
-        onChangeText={text => this.setState({ email: text })}
-      />
-    </Item>
-    );    
-  }
-
-  renderTelefono() {
-    return (
-      <Item floatingLabel>
-        <Label>Teléfono</Label>
-        <Input
-          value={this.state.telefono}
-          onChangeText={text => this.setState({ telefono: text })}
-        />
-      </Item>
-    );      
-  }
-
-  renderDni() {
-    return (
-      <Item floatingLabel>
-        <Label>DNI</Label>
-        <Input
-          value={this.state.dni}
-          onChangeText={text => this.setState({ dni: text })}
-        />
-      </Item>
-    );  
-  }
 
   handleAvatarChange(avatar_url) {
     this.setState({
@@ -229,13 +126,11 @@ class ModificarPerfilVoluntario extends Component {
           if (res.status === 200) {
             this.setState({
               showModal: true,
-              modalType: 'success'
             })
           }
           else {
             this.setState({
               showModal: true, // Hay que poner alerts o algo, ver como lo resolvio la Juli
-              modalType: 'failure',
             })
           }
         })
@@ -254,7 +149,7 @@ class ModificarPerfilVoluntario extends Component {
             </Button>
           </Left>
           <Body>
-            <Title>Registrar evento</Title>
+            <Title>Modificar perfil</Title>
           </Body>
           <Right>
             <Button transparent onPress={() => {this.handleSubmit}}>
@@ -269,24 +164,81 @@ class ModificarPerfilVoluntario extends Component {
           <Separator bordered noTopBorder>
             <Text>Datos personales</Text>
           </Separator>
-            {this.renderNombre}
+          
+            <Item floatingLabel>
+              <Label>Nombre</Label>
+              <Input
+                value={this.state.nombre}
+                onChangeText={text => this.setState({ nombre: text })}
+              />
+            </Item>
             <Text style={styles.validationMessage}>{this.state.errors.nombre}</Text>
-            {this.renderAellido}
+
+            <Item floatingLabel>
+              <Label>Apellido</Label>
+              <Input
+                value={this.state.apellido}
+                onChangeText={text => this.setState({ apellido: text })}
+              />
+            </Item>
             <Text style={styles.validationMessage}>{this.state.errors.apellido}</Text>
-            {this.renderEmail}
+
+            <Item floatingLabel>
+              <Label>Email</Label>
+              <Input
+                value={this.state.email}
+                onChangeText={text => this.setState({ email: text })}
+              />
+            </Item>
             <Text style={styles.validationMessage}>{this.state.errors.email}</Text>
-            {this.renderTelefono}
+
+            <Item floatingLabel>
+              <Label>Teléfono</Label>
+              <Input
+                value={this.state.telefono}
+                onChangeText={text => this.setState({ telefono: text })}
+              />
+            </Item>
             <Text style={styles.validationMessage}>{this.state.errors.telefono}</Text>
-            {this.renderDni}
+
+            <Item floatingLabel>
+              <Label>DNI</Label>
+              <Input
+                value={this.state.dni}
+                onChangeText={text => this.setState({ dni: text })}
+              />
+            </Item>
             <Text style={styles.validationMessage}>{this.state.errors.dni}</Text>
-            {this.renderSexo}
+
+            <Picker
+              selectedValue={this.state.sexo}
+              onValueChange={(itemValue) => this.setState({sexo: itemValue})}>
+              <Picker.Item label="Java" value="" />
+              <Picker.Item label="JavaScript" value="Hombre" />
+              <Picker.Item label="JavaScript" value="Mujer" />
+              <Picker.Item label="JavaScript" value="Otro" />
+            </Picker>
+            <Text style={styles.validationMessage}>{this.state.errors.sexo}</Text>
+
             <Separator bordered noTopBorder>
             <Text>Extras</Text>
             </Separator>
-            <Text style={styles.validationMessage}>{this.state.errors.sexo}</Text>
-            {this.renderGustos}
+
+            <TextInput
+              multiline={true}
+              numberOfLines={5}
+              onChangeText={(text) => this.setState({gustos:text})}
+              value={this.state.gustos}
+            />
             <Text style={styles.validationMessage}>{this.state.errors.gustos}</Text>
-            {this.renderHabilidades}
+
+            <TextInput
+              multiline={true}
+              numberOfLines={5}
+              onChangeText={(text) => this.setState({habilidades:text})}
+              value={this.state.habilidades}
+            />
+
           </Form>
         </Content>
       </Container>

@@ -93,7 +93,7 @@ class VerColaboracionesEvento extends React.Component {
       return (
         <View>
           <Separator bordered noTopBorder>
-            <Text>Necesidades</Text>
+            <Text>Voluntarios</Text>
           </Separator>
           <ListItem icon key={voluntario.id}>
             <Left>

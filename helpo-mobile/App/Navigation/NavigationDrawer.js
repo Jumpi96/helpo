@@ -23,6 +23,8 @@ import NuevoMensaje from '../Views/Actividades/MensajesEvento/NuevoMensaje';
 import OrganizacionesPage from '../Views/Organizaciones/OrganizacionesPage';
 import AgregarOfrecimiento from "../Views/Actividades/RegistrarOfrecimiento/AgregarOfrecimiento";
 import RegistrarOfrecimiento from "../Views/Actividades/RegistrarOfrecimiento/RegistrarOfrecimiento";
+import MisPropuestas from '../Views/Actividades/MisPropuestas/MisPropuestas';
+import VerPropuestaEvento from '../Views/Actividades/MisPropuestas/VerPropuestaEvento';
 
  
 const NavigationDrawer = DrawerNavigator({
@@ -47,7 +49,9 @@ const NavigationDrawer = DrawerNavigator({
 	NuevoMensaje: { screen: NuevoMensaje },
 	OrganizacionesPage: { screen: OrganizacionesPage },
 	AgregarOfrecimiento: { screen: AgregarOfrecimiento },
-	RegistrarOfrecimiento: { screen: RegistrarOfrecimiento }
+	RegistrarOfrecimiento: { screen: RegistrarOfrecimiento },
+	MisPropuestas: { screen: MisPropuestas },
+	VerPropuestaEvento: { screen: VerPropuestaEvento }
   },
   {
 	initialRouteName: "LaunchScreen",

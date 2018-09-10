@@ -147,16 +147,7 @@ class EventoView extends React.Component {
   }
 
   getComentario(propuesta) {
-    if (propuesta.comentario === null) {
-      return (
-        <button
-          onClick={this.toggleView}
-          className="btn btn-warning"
-        >
-          Comentar evento
-        </button>
-      )
-    } else {
+    if (propuesta.comentario !== null) {
       return (
         <div className="row">
           <div className="form-group col-md-4">
@@ -168,6 +159,7 @@ class EventoView extends React.Component {
         </div>
       )
     }
+    return undefined;
   }
 
   getUserId() {
@@ -237,9 +229,16 @@ class EventoView extends React.Component {
           >
             Editar colaboraciones
           </button>
-          {
-            moment(evento.fecha_hora_inicio)>moment() && propuesta.aceptado !== -1 ?
-              this.getComentario(propuesta)
+          {propuesta.aceptado === -1 ?
+            this.getComentario(propuesta) : undefined
+          }
+          {moment(evento.fecha_hora_inicio)>moment() && propuesta.aceptado !== -1 ?
+            <button
+              onClick={this.toggleView}
+              className="btn btn-warning"
+            >
+              Comentar evento
+            </button>
             : undefined
           }
           

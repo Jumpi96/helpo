@@ -32,6 +32,11 @@ const MisColaboraciones = Loadable({
   loading: Loading,
 })
 
+const OrganizacionesPage = Loadable({
+  loader: () => import('./views/Organizaciones/OrganizacionesPage.js'),
+  loading: Loading,
+})
+
 const Dashboard = Loadable({
   loader: () => import('./views/Home/Home'),
   loading: Loading,
@@ -46,7 +51,8 @@ const routes = [
   { path: '/actividades/consultar-evento/', name: 'Consultar evento', component: ConsultarEventosView },
   { path: '/actividades/registrar-colaboraciones', name: 'Registrar colaboraciones', component: RegistrarColaboraciones },
   { path: '/actividades/mis-colaboraciones', name: 'Mis colaboraciones', component: MisColaboraciones },
-  { path: '/perfil/:usuarioId?', name: 'Perfil de usuario', component: ConsultarPerfil }
+  { path: '/perfil/:usuarioId?', name: 'Perfil de usuario', component: ConsultarPerfil },
+  { path: '/organizaciones', name: 'Organizaciones', component: OrganizacionesPage },
 ];
 
 export default routes;

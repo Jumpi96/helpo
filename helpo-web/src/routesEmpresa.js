@@ -37,6 +37,11 @@ const MisPropuestas = Loadable({
   loading: Loading,
 })
 
+const OrganizacionesPage = Loadable({
+  loader: () => import('./views/Organizaciones/OrganizacionesPage.js'),
+  loading: Loading,
+})
+
 const Dashboard = Loadable({
   loader: () => import('./views/Home/Home'),
   loading: Loading,
@@ -52,7 +57,8 @@ const routes = [
   { path: '/perfiles/perfil-empresa', name: 'Perfil empresa', component: ModificarPerfilEmpresa },
   { path: '/actividades/registrar-colaboraciones', name: 'Registrar ofrecimiento', component: RegistrarOfrecimientos },
   { path: '/actividades/mis-propuestas', name: 'Mis propuestas', component: MisPropuestas },
-  { path: '/perfil/:usuarioId?', name: 'Perfil de usuario', component: ConsultarPerfil }
+  { path: '/perfil/:usuarioId?', name: 'Perfil de usuario', component: ConsultarPerfil },
+  { path: '/organizaciones', name: 'Organizaciones', component: OrganizacionesPage },
 ];
 
 export default routes;

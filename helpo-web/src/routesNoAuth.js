@@ -22,6 +22,11 @@ const OrganizacionesPage = Loadable({
   loading: Loading,
 })
 
+const ConsultarPerfil = Loadable({
+  loader: () => import('./views/Perfiles/ConsultarPerfilGenerico'),
+  loading: Loading,
+});
+
 const Dashboard = Loadable({
   loader: () => import('./views/Home/HomeNoAuth'),
   loading: Loading,
@@ -35,6 +40,7 @@ const routes = [
   { path: '/noAuth/actividades/consultar-eventos', name: 'Consultar eventos', component: ConsultarEventosPage },
   { path: '/noAuth/actividades/consultar-evento/', name: 'Consultar evento', component: ConsultarEventosView },
   { path: '/noAuth/organizaciones', name: 'Organizaciones', component: OrganizacionesPage },
+  { path: '/noAuth/perfil/:usuarioId?', name: 'Perfil de usuario', component: ConsultarPerfil }
 ];
 
 export default routes;

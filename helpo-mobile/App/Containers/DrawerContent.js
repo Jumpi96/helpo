@@ -13,11 +13,6 @@ const itemsNoAuth = [
 		'name': 'Home'
 	},
 	{
-		'key': 'OrganizacionesPage',
-		'routeName': 'OrganizacionesPage',
-		'name': 'Organizaciones Helpo'
-	},
-	{
 		'key': 'Login',
 		'routeName': 'Login',
 		'name': 'Iniciar sesión'
@@ -41,6 +36,11 @@ const itemsOrg = [
 	  'name': 'Eventos',
 	},
 	{
+		'key': 'OrganizacionesPage',
+		'routeName': 'OrganizacionesPage',
+		'name': 'Organizaciones'
+	},
+	{
 	  'key': 'RegistrarEvento',
 	  'routeName': 'RegistrarEvento',
 	  'name': 'Nuevo evento',
@@ -49,11 +49,6 @@ const itemsOrg = [
 	  'key': 'MisEventos',
 	  'routeName': 'MisEventos',
 	  'name': 'Mis eventos',
-	},
-	{
-		'key': 'OrganizacionesPage',
-		'routeName': 'OrganizacionesPage',
-		'name': 'Organizaciones Helpo'
 	},
 	{
 		'key': 'ConsultarPerfilGenerico',
@@ -65,8 +60,6 @@ const itemsOrg = [
 	  'routeName': 'Configuracion',
 	  'name': 'Configuración'
 	}
-
-
 ]
 
 const itemsVol = [
@@ -81,14 +74,14 @@ const itemsVol = [
 		'name': 'Eventos'
 	},
 	{
+		'key': 'OrganizacionesPage',
+		'routeName': 'OrganizacionesPage',
+		'name': 'Organizaciones'
+	},
+	{
 		'key': 'MisColaboraciones',
 		'routeName': 'MisColaboraciones',
 		'name': 'Mis colaboraciones'
-	},
-	{
-		'key': 'OrganizacionesPage',
-		'routeName': 'OrganizacionesPage',
-		'name': 'Organizaciones Helpo'
 	},
 	{
 		'key': 'ConsultarPerfilGenerico',
@@ -113,6 +106,11 @@ const itemsEmp = [
 	  'key': 'ConsultarEventos',
 	  'routeName': 'ConsultarEventos',
 	  'name': 'Eventos',
+	},
+	{
+		'key': 'OrganizacionesPage',
+		'routeName': 'OrganizacionesPage',
+		'name': 'Organizaciones'
 	},
 	{
 		'key': 'MisPropuestas',

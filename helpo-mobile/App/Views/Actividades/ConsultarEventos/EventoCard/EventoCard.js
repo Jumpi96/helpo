@@ -43,7 +43,7 @@ class EventoCard extends Component {
       <Card style={styles.mb}>
         <CardItem bordered>
           <Left>
-            <Thumbnail source={helpoImages.launchscreenLogo} />
+            <Thumbnail source={{uri: evento.organizacion.avatar}} />
             <Body>
               <Text>{evento.organizacion ? evento.nombre + ' - ' + evento.organizacion.nombre : undefined }</Text>
               <Text note>{moment(evento.fecha_hora_inicio).format('DD/MM/YYYY HH:mm')}</Text>

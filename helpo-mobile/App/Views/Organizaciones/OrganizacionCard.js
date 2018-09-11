@@ -13,7 +13,7 @@ class OrganizacionCard extends Component {
       <Card style={styles.mb}>
         <CardItem bordered>
           <Left>
-            <Thumbnail source={organizacion.usuario.avatar} />
+            <Thumbnail source={{uri: organizacion.usuario.avatar}} />
             <Body>
               <Text style={{ fontWeight: '600' }}>{organizacion.usuario.nombre ? organizacion.usuario.nombre : undefined }</Text>
             </Body>
@@ -28,7 +28,7 @@ class OrganizacionCard extends Component {
         </CardItem>
         <CardItem style={{ paddingVertical: 0 }}>
           <Left>
-            <Button onPress={() => this.props.openEvento()}>
+            <Button onPress={this.props.openPerfil}>
               <Icon name="navigate" />
               <Text>Ver perfil</Text>
             </Button>

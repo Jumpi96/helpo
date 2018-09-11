@@ -2,45 +2,46 @@ import React, { Component } from 'react';
 import { Container, Header, Title, Content, Button, Icon, Left, Right, Body, Item, Label, Input, Text } from 'native-base';
 import api from '../../api';
 import styles from './styles';
-import moment from 'moment';
 
 import OrganizacionCard from './OrganizacionCard';
 
-class OrganizacionesPage extends React.Component {  
+class OrganizacionesPage extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
       nombre: '',
-      error:'',
-      organizaciones:[],
+      error: '',
+      organizaciones: [],
     };
     this.componentDidMount = this.componentDidMount.bind(this);
     this.buscarOrganizaciones = this.buscarOrganizaciones.bind(this);
+    this.toggleOpen = this.toggleOpen.bind(this);
   }
 
   componentDidMount() {  // Suponiendo  que res son todas las organizaciones
     api.get(`/perfiles/perfil_organizacion/`)
-    .then( (res) => {
-      this.setState({
-        organizaciones: res.data,        
+      .then((res) => {
+        this.setState({
+          organizaciones: res.data,
+        })
       })
-    })
-  }  
+  }
 
-  renderListadoOrganizaciones(organizaciones){
-    if(organizaciones.length === 0){
-      return(
-        <Text>Todavía no hay Organizaciones Helpo registradas.</Text>
+  renderListadoOrganizaciones(organizaciones) {
+    if (organizaciones.length === 0) {
+      return (
+        <Text>Todavía no hay organizaciones registradas.</Text>
       )
     }
-    else{
-      return(
-        organizaciones.map(organizacion =>      
+    else {
+      return (
+        organizaciones.map(organizacion =>
           <OrganizacionCard
             organizacion={organizacion}
             key={organizacion.id} footer
             color="primary" auth={this.props.auth}
+            openPerfil={() => this.toggleOpen(organizacion)}
             link={'/perfiles/perfil_organizacion/' + organizacion.usuario.id} // Ver que link va
           />
         )
@@ -48,22 +49,28 @@ class OrganizacionesPage extends React.Component {
     }
   }
 
-  buscarOrganizaciones(organizaciones){
-    if(this.state.nombre !== ''){
+  buscarOrganizaciones(organizaciones) {
+    if (this.state.nombre !== '') {
       const organizacionesFiltradas = organizaciones.filter(organizacion => this.contieneNombre(organizacion));
       return organizacionesFiltradas;
     }
     else return organizaciones;
   }
 
-  contieneNombre(organizacion){
+  contieneNombre(organizacion) {
     return organizacion.usuario.nombre.toLowerCase().includes(this.state.nombre.toLowerCase())
   }
 
-  mostrarError(organizaciones){
-    if(organizaciones.length === 0){
+  mostrarError(organizaciones) {
+    if (organizaciones.length === 0) {
       <Text style={styles.validationMessage}>No se encontraron coincidencias.</Text>
-    }        
+    }
+  }
+
+  toggleOpen(organizacion) {
+    // TODO: consultar perfil
+    // this.props.navigation.navigate('ConsultarPerfilGenerico', { user_id: organizacion.id });
+    this.props.navigation.navigate('LaunchScreen');
   }
 
   render() {
@@ -77,17 +84,17 @@ class OrganizacionesPage extends React.Component {
             </Button>
           </Left>
           <Body>
-            <Title>Organizaciones Helpo</Title>
+            <Title>Organizaciones</Title>
           </Body>
         </Header>
 
         <Item>
-        <Label>Buscar una Organización Helpo:</Label>
-        <Input
-        value={this.state.nombre}
-        onChangeText={text => this.setState({ nombre: text })}
-        />
-        {this.mostrarError}
+          <Label style={{fontWeight: 'bold', marginLeft: 15}}>Buscar:</Label>
+          <Input
+            value={this.state.nombre}
+            onChangeText={text => this.setState({ nombre: text })}
+          />
+          {this.mostrarError}
         </Item>
 
         <Content padder>
@@ -98,5 +105,5 @@ class OrganizacionesPage extends React.Component {
     );
   }
 }
-  
+
 export default OrganizacionesPage;

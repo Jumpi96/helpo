@@ -13,11 +13,6 @@ const itemsNoAuth = [
 		'name': 'Home'
 	},
 	{
-		'key': 'OrganizacionesPage',
-		'routeName': 'OrganizacionesPage',
-		'name': 'Organizaciones Helpo'
-	},
-	{
 		'key': 'Login',
 		'routeName': 'Login',
 		'name': 'Iniciar sesión'
@@ -41,6 +36,11 @@ const itemsOrg = [
 	  'name': 'Consultar eventos',
 	},
 	{
+		'key': 'OrganizacionesPage',
+		'routeName': 'OrganizacionesPage',
+		'name': 'Organizaciones'
+	},
+	{
 	  'key': 'RegistrarEvento',
 	  'routeName': 'RegistrarEvento',
 	  'name': 'Nuevo evento',
@@ -49,11 +49,6 @@ const itemsOrg = [
 	  'key': 'MisEventos',
 	  'routeName': 'MisEventos',
 	  'name': 'Mis eventos',
-	},
-	{
-		'key': 'OrganizacionesPage',
-		'routeName': 'OrganizacionesPage',
-		'name': 'Organizaciones Helpo'
 	},
 	{
 	  'key': 'Configuracion',
@@ -74,14 +69,14 @@ const itemsVol = [
 		'name': 'Consultar eventos'
 	},
 	{
+		'key': 'OrganizacionesPage',
+		'routeName': 'OrganizacionesPage',
+		'name': 'Organizaciones'
+	},
+	{
 		'key': 'MisColaboraciones',
 		'routeName': 'MisColaboraciones',
 		'name': 'Mis colaboraciones'
-	},
-	{
-		'key': 'OrganizacionesPage',
-		'routeName': 'OrganizacionesPage',
-		'name': 'Organizaciones Helpo'
 	},
 	{
 		'key': 'Configuracion',
@@ -100,6 +95,11 @@ const itemsEmp = [
 	  'key': 'ConsultarEventos',
 	  'routeName': 'ConsultarEventos',
 	  'name': 'Consultar eventos',
+	},
+	{
+		'key': 'OrganizacionesPage',
+		'routeName': 'OrganizacionesPage',
+		'name': 'Organizaciones'
 	},
 	{
 		'key': 'MisPropuestas',

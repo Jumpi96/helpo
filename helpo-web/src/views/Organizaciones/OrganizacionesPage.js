@@ -1,5 +1,6 @@
 import React from 'react';
 import { Card, CardHeader, CardBody } from 'reactstrap';
+import { connect } from 'react-redux';
 import api from '../../api';
 import './Organizaciones.css';
 import OrganizacionesList from './OrganizacionesList'
@@ -37,7 +38,7 @@ class OrganizacionesPage extends React.Component {
     else{
       return(
         <CardBody>
-            <OrganizacionesList organizaciones={organizaciones}/>
+          <OrganizacionesList organizaciones={organizaciones} auth={this.props.auth}/>
         </CardBody>
       )
     }
@@ -61,4 +62,9 @@ class OrganizacionesPage extends React.Component {
 
 }
   
-export default OrganizacionesPage;
+function mapStateToProps(state, ownProps) {
+  return {
+    auth: state.auth,
+  }
+}
+export default connect(mapStateToProps, undefined)(OrganizacionesPage);

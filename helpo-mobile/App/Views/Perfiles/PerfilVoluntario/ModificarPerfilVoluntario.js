@@ -160,7 +160,6 @@ class ModificarPerfilVoluntario extends Component {
 
         <Content>
           <Form>
-          <Thumbnail large center source={{uri: this.props.data.avatar.url}} />
           <Separator bordered noTopBorder>
             <Text>Datos personales</Text>
           </Separator>

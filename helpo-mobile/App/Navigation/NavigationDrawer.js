@@ -25,6 +25,8 @@ import AgregarOfrecimiento from "../Views/Actividades/RegistrarOfrecimiento/Agre
 import RegistrarOfrecimiento from "../Views/Actividades/RegistrarOfrecimiento/RegistrarOfrecimiento";
 import MisPropuestas from '../Views/Actividades/MisPropuestas/MisPropuestas';
 import VerPropuestaEvento from '../Views/Actividades/MisPropuestas/VerPropuestaEvento';
+import ConsultarPerfilGenerico from '../Views/Perfiles/ConsultarPerfilGenerico';
+
 
  
 const NavigationDrawer = DrawerNavigator({
@@ -51,7 +53,8 @@ const NavigationDrawer = DrawerNavigator({
 	AgregarOfrecimiento: { screen: AgregarOfrecimiento },
 	RegistrarOfrecimiento: { screen: RegistrarOfrecimiento },
 	MisPropuestas: { screen: MisPropuestas },
-	VerPropuestaEvento: { screen: VerPropuestaEvento }
+	VerPropuestaEvento: { screen: VerPropuestaEvento },
+	ConsultarPerfilGenerico: { screen: ConsultarPerfilGenerico },
   },
   {
 	initialRouteName: "LaunchScreen",

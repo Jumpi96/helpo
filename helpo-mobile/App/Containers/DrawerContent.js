@@ -38,7 +38,7 @@ const itemsOrg = [
 	{
 	  'key': 'ConsultarEventos',
 	  'routeName': 'ConsultarEventos',
-	  'name': 'Consultar eventos',
+	  'name': 'Eventos',
 	},
 	{
 	  'key': 'RegistrarEvento',
@@ -78,12 +78,17 @@ const itemsVol = [
 	{
 		'key': 'ConsultarEventos',
 		'routeName': 'ConsultarEventos',
-		'name': 'Consultar eventos'
+		'name': 'Eventos'
 	},
 	{
 		'key': 'MisColaboraciones',
 		'routeName': 'MisColaboraciones',
 		'name': 'Mis colaboraciones'
+	},
+	{
+		'key': 'OrganizacionesPage',
+		'routeName': 'OrganizacionesPage',
+		'name': 'Organizaciones Helpo'
 	},
 	{
 		'key': 'ConsultarPerfilGenerico',
@@ -107,12 +112,17 @@ const itemsEmp = [
 	{
 	  'key': 'ConsultarEventos',
 	  'routeName': 'ConsultarEventos',
-	  'name': 'Consultar eventos',
+	  'name': 'Eventos',
 	},
 	{
 		'key': 'MisPropuestas',
 		'routeName': 'MisPropuestas',
 		'name': 'Mis propuestas'
+	},
+	{
+		'key': 'OrganizacionesPage',
+		'routeName': 'OrganizacionesPage',
+		'name': 'Organizaciones Helpo'
 	},
 	{
 		'key': 'ConsultarPerfilGenerico',

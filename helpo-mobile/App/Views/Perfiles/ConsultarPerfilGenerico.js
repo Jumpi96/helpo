@@ -6,7 +6,22 @@ import ConsultarPerfilVoluntario from './PerfilVoluntario/ConsultarPerfilVolunta
 //import ModificarPerfilOrganizacion from './PerfilOrganizacion/ModificarPerfilOrganizacion'
 //import ModificarPerfilEmpresa from './PerfilEmpresa/ModificarPerfilEmpresa'
 import ModificarPerfilVoluntario from './PerfilVoluntario/ModificarPerfilVoluntario'
-import { View, Container } from 'native-base';
+import {
+  Container,
+  Header,
+  Title,
+  Content,
+  Button,
+  Label,
+  ListItem,
+  Body,
+  Left,
+  Right,
+  Icon,
+  Thumbnail,
+  Text,
+  Separator,
+} from 'native-base';
 
 class ConsultarPerfilGenerico extends Component {
   constructor(props) {
@@ -121,7 +136,7 @@ class ConsultarPerfilGenerico extends Component {
         />)
 
       default:
-        return (<p>Error</p>)
+        return (<Text>Error</Text>)
     }
   }
 
@@ -160,41 +175,11 @@ class ConsultarPerfilGenerico extends Component {
         />)
 
       default:
-        return (<p>Error</p>)
+        return (<Text>Error </Text>)
     }
   }
 
-  renderConsultarOtro() {
-    switch (this.state.userType) {
-      case 1:
-        return (<ConsultarPerfilOrganizacion
-          id={this.state.userId}
-          nombre={this.state.nombre}
-          email={this.state.email}
-          data={this.state.data}
-          switchToModificar={this.switchToModificar}
-        />)
 
-      case 2:
-        return (<ConsultarPerfilVoluntario
-          nombre={this.state.nombre}
-          email={this.state.email}
-          data={this.state.data}
-          switchToModificar={this.switchToModificar}
-        />)
-
-      case 3:
-        return (<ConsultarPerfilEmpresa
-          nombre={this.state.nombre}
-          email={this.state.email}
-          data={this.state.data}
-          switchToModificar={this.switchToModificar}
-        />)
-
-      default:
-        return (<p>Error</p>)
-    }
-  }
 
   renderConsultar() {
     switch (this.state.userType) {
@@ -241,15 +226,6 @@ class ConsultarPerfilGenerico extends Component {
     else { return this.renderConsultarOtro()}
   }
 
-  renderComponente() {
-    if (this.state.loggedUser && this.state.modificar) {
-      return this.renderModificar()
-    }
-    else if (this.state.loggedUser && !this.state.modificar) {
-      return this.renderConsultar()
-    }
-    else { return this.renderConsultarOtro() }
-  }
 
   render() {
     return (

@@ -21,7 +21,8 @@ class Login extends Component {
   handleSubmit(e) {
     e.preventDefault();
     const auth = this.props.auth;
-    this.props.login(this.state.email, this.state.password);
+    const email = this.state.email.toLowerCase();
+    this.props.login(email, this.state.password);
     if (auth.isAuthenticated) {
       this.props.navigation.navigate("LaunchScreen");
     }

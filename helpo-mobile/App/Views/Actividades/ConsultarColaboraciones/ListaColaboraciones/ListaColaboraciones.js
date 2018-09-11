@@ -15,8 +15,8 @@ const ListaColaboraciones = (props) => {
   const { necesidad, colaboraciones } = props
   let items = []
   for (let colaboracion of colaboraciones ) {
-    const nombre = colaboracion.voluntario.nombre
-    const apellido = colaboracion.voluntario.apellido
+    const nombre = colaboracion.colaborador.nombre
+    const apellido = colaboracion.colaborador.apellido
     const cantidad = colaboracion.cantidad
     const entregado = colaboracion.entregado
     const item = (

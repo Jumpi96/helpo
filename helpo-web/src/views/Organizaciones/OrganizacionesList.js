@@ -11,8 +11,7 @@ class OrganizacionesList extends React.Component {
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.buscarOrganizaciones = this.buscarOrganizaciones.bind(this);
-
-
+    this.getLink = this.getLink.bind(this);
   }
 
   handleInputChange(event) {
@@ -34,6 +33,13 @@ class OrganizacionesList extends React.Component {
 
   contieneNombre(organizacion) {
     return organizacion.usuario.nombre.toLowerCase().includes(this.state.nombre.toLowerCase())
+  }
+
+  getLink(organizacion) {
+    if (this.props.auth.isAuthenticated) {
+      return '/perfil/' + organizacion.usuario.id;
+    }
+    return '/noAuth/perfil/' + organizacion.usuario.id;
   }
 
   render() {
@@ -60,7 +66,7 @@ class OrganizacionesList extends React.Component {
                   organizacion={organizacion}
                   key={organizacion.id} footer
                   color="primary" auth={this.props.auth}
-                  link={'/perfiles/perfil_organizacion/' + organizacion.usuario.id} // Ver que link va
+                  link={this.getLink(organizacion)} // Ver que link va
                 />
               </Col>
             </Row>

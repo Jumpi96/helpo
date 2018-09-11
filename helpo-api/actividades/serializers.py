@@ -227,6 +227,7 @@ class ConsultaVoluntarioSerializer(serializers.ModelSerializer):
         fields = ('id', 'descripcion', 'cantidad', 'funcion', 'funcion_id', 'participaciones')
 
 class PropuestaSerializer(serializers.ModelSerializer):
+    empresa = UserSerializer()
     class Meta:
         model = Propuesta
         fields = '__all__'

@@ -42,7 +42,7 @@ class Album extends React.Component {
 
   renderItem = ({item}) => {
     //item debe ser un array de 1-3 imagenes
-    return <GridRow imagenes={item} />
+    return <GridRow imagenes={item} navigation={this.props.navigation}/>
   }
   
   render() {

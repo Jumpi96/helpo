@@ -33,7 +33,7 @@ class AlbumEvento extends React.Component {
 
   render() {
     return (
-      <Album imagenes={images}/>
+      <Album imagenes={images} navigation={this.props.navigation}/>
     )
   }
 }

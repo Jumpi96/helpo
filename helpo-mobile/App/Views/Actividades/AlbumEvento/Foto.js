@@ -10,9 +10,9 @@ height(*)
 class Foto extends React.Component {
 
   render() {
-    console.tron.log(this.props)
     return (
-      <TouchableOpacity>
+      <TouchableOpacity 
+        onPress={() => this.props.navigation.navigate('DetalleImagen', { imagen: this.props.imagen})}>
         <Image
         style={{ height: 120, width: this.props.width }}
         source={{ uri: this.props.imagen.url}}

@@ -8,6 +8,7 @@ import ConsultarColaboraciones from '../Views/Actividades/ConsultarColaboracione
 import DetalleColaboracion from '../Views/Actividades/ConsultarColaboraciones/ListaColaboraciones/DetalleColaboracion'
 import DetalleParticipacion from '../Views/Actividades/ConsultarColaboraciones/ListaVoluntarios/DetalleParticipacion'
 import AlbumEvento from '../Views/Actividades/AlbumEvento/AlbumEvento'
+import DetalleImagen from '../Views/Actividades/AlbumEvento/DetalleImagen'
 
 // Manifest of possible screens
 const PrimaryNav = StackNavigator({
@@ -15,7 +16,8 @@ const PrimaryNav = StackNavigator({
 		ConsultarColaboraciones: { screen: ConsultarColaboraciones},
     DetalleColaboracion: {screen: DetalleColaboracion},
     DetalleParticipacion: {screen: DetalleParticipacion},
-    AlbumEvento: { screen: AlbumEvento }
+    AlbumEvento: { screen: AlbumEvento },
+    DetalleImagen: { screen: DetalleImagen }
   },
   // Default config for all screens
   {

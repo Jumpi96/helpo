@@ -56,6 +56,11 @@ const itemsOrg = [
 		'name': 'Organizaciones Helpo'
 	},
 	{
+		'key': 'ConsultarPerfilGenerico',
+		'routeName': 'ConsultarPerfilGenerico',
+		'name': 'Mi perfil'
+	},
+	{
 	  'key': 'Configuracion',
 	  'routeName': 'Configuracion',
 	  'name': 'Configuración'
@@ -81,9 +86,9 @@ const itemsVol = [
 		'name': 'Mis colaboraciones'
 	},
 	{
-		'key': 'OrganizacionesPage',
-		'routeName': 'OrganizacionesPage',
-		'name': 'Organizaciones Helpo'
+		'key': 'ConsultarPerfilGenerico',
+		'routeName': 'ConsultarPerfilGenerico',
+		'name': 'Mi perfil'
 	},
 	{
 		'key': 'Configuracion',
@@ -108,6 +113,11 @@ const itemsEmp = [
 		'key': 'MisPropuestas',
 		'routeName': 'MisPropuestas',
 		'name': 'Mis propuestas'
+	},
+	{
+		'key': 'ConsultarPerfilGenerico',
+		'routeName': 'ConsultarPerfilGenerico',
+		'name': 'Mi perfil'
 	},
 	{
 	  'key': 'Configuracion',

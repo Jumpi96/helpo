@@ -86,7 +86,7 @@ class ConsultarPerfilVoluntario extends Component {
       <Container style={styles.container}>
         <Header>
           <Left>
-            <Button transparent onPress={() => this.props.navigation.navigate("LaunchScreen")}>
+            <Button transparent onPress={this.props.goBack}>
               <Icon name="arrow-back" />
             </Button>
           </Left>

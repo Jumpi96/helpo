@@ -11,10 +11,10 @@ class GridRow extends React.Component {
     const deviceWidth = Dimensions.get('window').width;
     const fotoWidth = deviceWidth / 3
     return (
-      <View>
-        {this.props.imagenes.map(imagen => {
+      <View style={{flex: 1, flexDirection: 'row'}}>
+        {this.props.imagenes.map(imagen => (
           <Foto imagen={imagen} width={fotoWidth}/>
-        })}
+        ))}
       </View>
     )
   }

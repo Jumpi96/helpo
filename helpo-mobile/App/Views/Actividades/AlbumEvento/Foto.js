@@ -10,14 +10,14 @@ height(*)
 class Foto extends React.Component {
 
   render() {
-    
+    console.tron.log(this.props)
     return (
-      <TouchableHighlight>
+      <TouchableOpacity>
         <Image
-        style={{ height: 200, width: this.props.width }}
-        source={this.props.imagen.url}
+        style={{ height: 120, width: this.props.width }}
+        source={{ uri: this.props.imagen.url}}
         />
-      </TouchableHighlight>
+      </TouchableOpacity>
     )
   }
 }

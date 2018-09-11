@@ -15,6 +15,11 @@ removeImagen(*)
 
 class Album extends React.Component {
 
+  constructor(props) {
+    super(props)
+    this.transformImagenesArray = this.transformImagenesArray.bind(this)
+  }
+
   transformImagenesArray(imagenes) {
     /*
     Divide un array de imagenes en arrays de length 3
@@ -23,12 +28,12 @@ class Album extends React.Component {
     */ 
     const imgArray = []
     let tmpArray = []
-    for (imagen in imagenes) {
+    for (imagen of imagenes) {
       tmpArray.push(imagen)      
       if (tmpArray.length === 3) {
         imgArray.push(tmpArray)
         tmpArray = []
-      }      
+      }
     }
     //Si al final no queda vacio tmpArray lo meto al imgArray
     if (tmpArray.length !== 0) { imgArray.push(tmpArray) }
@@ -36,15 +41,17 @@ class Album extends React.Component {
   }
 
   renderItem = ({item}) => {
-    
+    //item debe ser un array de 1-3 imagenes
+    return <GridRow imagenes={item} />
   }
   
   render() {
+    const imagenes = this.props.imagenes
     return (
       <Container>
         <ContainerHeader titulo='Test' goBack={() => null}/>
         {this.props.imagenes.length !== 0
-        ? <FlatList/>
+        ? <FlatList data={this.transformImagenesArray(imagenes)} renderItem={this.renderItem} />
         : <Text>No hay fotito</Text>}
       </Container>
     )

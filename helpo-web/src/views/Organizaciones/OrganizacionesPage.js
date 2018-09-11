@@ -37,7 +37,7 @@ class OrganizacionesPage extends React.Component {
     else{
       return(
         <CardBody>
-            <OrganizacionesList organizaciones={organizaciones}/>
+          <OrganizacionesList organizaciones={organizaciones}/>
         </CardBody>
       )
     }

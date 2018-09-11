@@ -15,8 +15,8 @@ const ListaVoluntarios = (props) => {
   const { funcion, participaciones } = props
   let items = []
   for (let participacion of participaciones ) {
-    const nombre = participacion.voluntario.nombre
-    const apellido = participacion.voluntario.apellido
+    const nombre = participacion.colaborador.nombre
+    const apellido = participacion.colaborador.apellido
     const participo = participacion.participo
     const item = (
       <ListItem

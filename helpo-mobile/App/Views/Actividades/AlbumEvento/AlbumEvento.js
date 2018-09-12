@@ -1,5 +1,7 @@
 import React from 'react'
 import Album from './Album'
+import { connect } from 'react-redux'
+import AlbumEventoActions from '../../../Redux/AlbumEventoRedux'
 
 const images = [
   {
@@ -28,13 +30,33 @@ const images = [
     evento: 25
   },
 ]
+/*
+eventoId
+*/
 
 class AlbumEvento extends React.Component {
 
+  componentDidMount() {
+    //this.props.fetchImagenes(this.props.eventoId)
+    this.props.fetchImagenes(20)
+  }
+
   render() {
     return (
-      <Album imagenes={images} navigation={this.props.navigation}/>
+      <Album imagenes={this.props.imagenes} navigation={this.props.navigation}/>
     )
   }
 }
-export default AlbumEvento
+
+const mapStateToProps = state => ({
+  imagenes: state.albumEvento.imagenes,
+  fetching: state.albumEvento.fetching,
+  // error =  true o false
+  error: state.albumEvento.error
+})
+
+const mapDispatchToProps = dispatch => ({
+  fetchImagenes: eventoId => dispatch(AlbumEventoActions.albumFetchImagenes(eventoId))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(AlbumEvento)

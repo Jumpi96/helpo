@@ -1,4 +1,4 @@
-import { takeLatest, all } from 'redux-saga/effects'
+import { takeLatest, all, take } from 'redux-saga/effects'
 import API from '../Services/Api'
 import FixtureAPI from '../Services/FixtureApi'
 import DebugConfig from '../Config/DebugConfig'
@@ -8,12 +8,14 @@ import DebugConfig from '../Config/DebugConfig'
 import { StartupTypes } from '../Redux/StartupRedux'
 import { GithubTypes } from '../Redux/GithubRedux'
 import { ConsultarColabsTypes } from '../Redux/ConsultarColabsRedux'
+import { AlbumEventoTypes } from '../Redux/AlbumEventoRedux'
 
 /* ------------- Sagas ------------- */
 
 import { startup } from './StartupSagas'
 import { getUserAvatar } from './GithubSagas'
 import { getConsultarColabs, updateColaboracion, updateParticipacion } from './ConsultarColabsSagas'
+import { fetchImagenesAlbumEvento } from './AlbumEventoSagas'
 
 /* ------------- API ------------- */
 
@@ -33,6 +35,7 @@ export default function * root () {
 
     takeLatest(ConsultarColabsTypes.CONSULTAR_COLABS_REQUEST, getConsultarColabs),
     takeLatest(ConsultarColabsTypes.CONSULTAR_COLABS_CHANGE_COL, updateColaboracion),
-    takeLatest(ConsultarColabsTypes.CONSULTAR_COLABS_CHANGE_PAR, updateParticipacion)
+    takeLatest(ConsultarColabsTypes.CONSULTAR_COLABS_CHANGE_PAR, updateParticipacion),
+    takeLatest(AlbumEventoTypes.ALBUM_FETCH_IMAGENES, fetchImagenesAlbumEvento)
   ])
 }

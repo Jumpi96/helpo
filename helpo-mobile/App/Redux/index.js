@@ -10,7 +10,8 @@ export const reducers = combineReducers({
   auth: require('./AuthRedux').reducer,
   evento: require('./EventoRedux').reducer,
   rubroEvento: require('./RubroEventoRedux').reducer,
-  consultarColabs: require('./ConsultarColabsRedux').reducer
+  consultarColabs: require('./ConsultarColabsRedux').reducer,
+  albumEvento: require('./AlbumEventoRedux').reducer
 })
 
 export default () => {

@@ -14,7 +14,7 @@ class Foto extends React.Component {
       <TouchableOpacity 
         onPress={() => this.props.navigation.navigate('DetalleImagen', { imagen: this.props.imagen})}>
         <Image
-        style={{ height: 120, width: this.props.width }}
+        style={{ height: 120, width: this.props.width, resizeMode: 'stretch' }}
         source={{ uri: this.props.imagen.url}}
         />
       </TouchableOpacity>

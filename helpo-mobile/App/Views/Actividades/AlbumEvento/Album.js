@@ -1,5 +1,5 @@
 import React from 'react'
-import { Container, Text } from 'native-base'
+import { Container, Text, Fab, Icon } from 'native-base'
 import ContainerHeader from '../../../Components/ContainerHeader'
 import { FlatList } from 'react-native'
 import GridRow from './GridRow'
@@ -53,6 +53,9 @@ class Album extends React.Component {
         {this.props.imagenes.length !== 0
         ? <FlatList data={this.transformImagenesArray(imagenes)} renderItem={this.renderItem} />
         : <Text>No hay fotito</Text>}
+        <Fab style={{ backgroundColor: 'green' }} onPress={this.props.addImagen}>
+          <Icon color='white' type='Entypo' name='plus'/>
+        </Fab>
       </Container>
     )
   }

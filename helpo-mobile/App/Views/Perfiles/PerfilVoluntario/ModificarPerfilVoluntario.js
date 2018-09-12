@@ -124,6 +124,7 @@ class ModificarPerfilVoluntario extends Component {
         api.put(`/perfiles/perfil_voluntario/${this.props.data.usuario.id}/`, submitData)
           .then(res => {
             if (res.status === 200) {
+              this.props.switchToConsultar = true;
               this.setState({
                 showModal: true,
               })
@@ -144,7 +145,7 @@ class ModificarPerfilVoluntario extends Component {
       <Container style={styles.container}>
         <Header>
           <Left>
-            <Button transparent onPress={() => { this.props.switchToConsultar }}>
+            <Button transparent onPress={this.props.switchToConsultar }>
               <Icon name="arrow-back" />
             </Button>
           </Left>
@@ -152,8 +153,8 @@ class ModificarPerfilVoluntario extends Component {
             <Title>Modificar perfil</Title>
           </Body>
           <Right>
-            <Button transparent onPress={() => { this.handleSubmit }}>
-              <Icon name="confirm" />
+            <Button transparent onPress={this.handleSubmit}>
+            <Text>Guardar</Text>
             </Button>
           </Right>
         </Header>
@@ -182,15 +183,7 @@ class ModificarPerfilVoluntario extends Component {
             </Item>
             <Text style={styles.validationMessage}>{this.state.errors.apellido}</Text>
 
-            <Item floatingLabel>
-              <Label>Email</Label>
-              <Input
-                value={this.state.email}
-                onChangeText={text => this.setState({ email: text })}
-              />
-            </Item>
-            <Text style={styles.validationMessage}>{this.state.errors.email}</Text>
-
+            
             <Item floatingLabel>
               <Label>Teléfono</Label>
               <Input
@@ -212,10 +205,10 @@ class ModificarPerfilVoluntario extends Component {
             <Picker
               selectedValue={this.state.sexo}
               onValueChange={(itemValue) => this.setState({ sexo: itemValue })}>
-              <Picker.Item label="Java" value="" />
-              <Picker.Item label="JavaScript" value="Hombre" />
-              <Picker.Item label="JavaScript" value="Mujer" />
-              <Picker.Item label="JavaScript" value="Otro" />
+              <Picker.Item label="Sexo" value="" />
+              <Picker.Item label="Hombre" value="Hombre" />
+              <Picker.Item label="Mujer" value="Mujer" />
+              <Picker.Item label="Otro" value="Otro" />
             </Picker>
             <Text style={styles.validationMessage}>{this.state.errors.sexo}</Text>
 
@@ -244,6 +237,10 @@ class ModificarPerfilVoluntario extends Component {
                 value={this.state.habilidades}
               />
             </Item>
+
+            <Button transparent onPress={this.handleSubmit}>
+            <Text>Guardar</Text>
+            </Button>
 
           </Form>
         </Content>

@@ -25,7 +25,7 @@ import styles from './styles'
 
 class ModificarPerfilVoluntario extends Component {
   constructor(props) {
-    super(props); 
+    super(props);
     this.state = {
       nombre: this.props.nombre,
       // Checkeo null porque si es null react tira un warning (https://github.com/reactstrap/reactstrap/issues/570)
@@ -68,11 +68,11 @@ class ModificarPerfilVoluntario extends Component {
       avatar_changed: true,
     })
   }
-  
+
   async prepareSubmitData() {
     const newData = this.state
     let avatar_url = this.props.data.avatar.url
-    if (this.state.avatar_changed ) {
+    if (this.state.avatar_changed) {
       const rx = /\/9j\/.*/gm
       const encondedAvatar = rx.exec(this.state.avatar_url)[0]
       avatar_url = await uploadImage(encondedAvatar)
@@ -81,8 +81,8 @@ class ModificarPerfilVoluntario extends Component {
       }
     }
     const submitData = {
-      avatar: {url: avatar_url},
-    }    
+      avatar: { url: avatar_url },
+    }
     if (newData.dni !== "") {
       submitData.dni = newData.dni
     }
@@ -117,26 +117,26 @@ class ModificarPerfilVoluntario extends Component {
   }
 
   handleSubmit() {
-    this.prepareSubmitData().then( submitData => {
+    this.prepareSubmitData().then(submitData => {
       console.log("DATA")
       console.log(submitData)
       if (this.validateData(submitData)) {
         api.put(`/perfiles/perfil_voluntario/${this.props.data.usuario.id}/`, submitData)
-        .then(res => {
-          if (res.status === 200) {
-            this.setState({
-              showModal: true,
-            })
-          }
-          else {
-            this.setState({
-              showModal: true, // Hay que poner alerts o algo, ver como lo resolvio la Juli
-            })
-          }
-        })
+          .then(res => {
+            if (res.status === 200) {
+              this.setState({
+                showModal: true,
+              })
+            }
+            else {
+              this.setState({
+                showModal: true, // Hay que poner alerts o algo, ver como lo resolvio la Juli
+              })
+            }
+          })
       }
       console.log(this.state.errors)
-    }) 
+    })
   }
 
   render() {
@@ -144,7 +144,7 @@ class ModificarPerfilVoluntario extends Component {
       <Container style={styles.container}>
         <Header>
           <Left>
-            <Button transparent onPress={() => {this.props.switchToConsultar}}>
+            <Button transparent onPress={() => { this.props.switchToConsultar }}>
               <Icon name="arrow-back" />
             </Button>
           </Left>
@@ -152,7 +152,7 @@ class ModificarPerfilVoluntario extends Component {
             <Title>Modificar perfil</Title>
           </Body>
           <Right>
-            <Button transparent onPress={() => {this.handleSubmit}}>
+            <Button transparent onPress={() => { this.handleSubmit }}>
               <Icon name="confirm" />
             </Button>
           </Right>
@@ -160,10 +160,10 @@ class ModificarPerfilVoluntario extends Component {
 
         <Content>
           <Form>
-          <Separator bordered noTopBorder>
-            <Text>Datos personales</Text>
-          </Separator>
-          
+            <Separator bordered noTopBorder>
+              <Text>Datos personales</Text>
+            </Separator>
+
             <Item floatingLabel>
               <Label>Nombre</Label>
               <Input
@@ -211,7 +211,7 @@ class ModificarPerfilVoluntario extends Component {
 
             <Picker
               selectedValue={this.state.sexo}
-              onValueChange={(itemValue) => this.setState({sexo: itemValue})}>
+              onValueChange={(itemValue) => this.setState({ sexo: itemValue })}>
               <Picker.Item label="Java" value="" />
               <Picker.Item label="JavaScript" value="Hombre" />
               <Picker.Item label="JavaScript" value="Mujer" />
@@ -220,23 +220,30 @@ class ModificarPerfilVoluntario extends Component {
             <Text style={styles.validationMessage}>{this.state.errors.sexo}</Text>
 
             <Separator bordered noTopBorder>
-            <Text>Extras</Text>
+              <Text>Extras</Text>
             </Separator>
 
-            <TextInput
-              multiline={true}
-              numberOfLines={5}
-              onChangeText={(text) => this.setState({gustos:text})}
-              value={this.state.gustos}
-            />
+            <Item floatingLabel>
+              <Label>Gustos</Label>
+              <Input
+                value={this.state.dni}
+                multiline={true}
+                numberOfLines={5}
+                value={this.state.gustos}
+                onChangeText={text => this.setState({ gustos: text })}
+              />
+            </Item>
             <Text style={styles.validationMessage}>{this.state.errors.gustos}</Text>
 
-            <TextInput
-              multiline={true}
-              numberOfLines={5}
-              onChangeText={(text) => this.setState({habilidades:text})}
-              value={this.state.habilidades}
-            />
+            <Item floatingLabel>
+              <Label>Habilidades</Label>
+              <Input
+                multiline={true}
+                numberOfLines={5}
+                onChangeText={(text) => this.setState({ habilidades: text })}
+                value={this.state.habilidades}
+              />
+            </Item>
 
           </Form>
         </Content>

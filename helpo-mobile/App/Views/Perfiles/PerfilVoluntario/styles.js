@@ -15,5 +15,11 @@ export default {
   },
   label: {
     marginRight: 10,
+  },
+  validationMessage: {
+    color: '#ff0000',
+    marginTop: 5,
+    marginLeft: 20,
+    marginBottom: 2.5,
   }
 };

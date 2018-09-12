@@ -61,4 +61,3 @@ android/keystores/debug.keystore
 # I don't feel so good iOS
 third-party/
 ios/Index/
-.plist

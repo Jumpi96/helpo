@@ -79,6 +79,44 @@ class EventoCard extends Component {
     return contadorNecesidades > 0 ? (contadorCubiertas / contadorNecesidades) * 100 : 0;
   }
 
+  getPatrocinadores() {
+    const { evento } = this.props;
+    const propuestas_aceptadas = evento.propuestas.filter(p => p.aceptado === 1);
+    if (propuestas_aceptadas.length > 0) {
+      const propuesta_aleatoria = this.getPropuestaAleatoria(propuestas_aceptadas);
+      const resto_propuestas = propuestas_aceptadas.filter(p => p.id !== propuesta_aleatoria.id);
+      const cadena_patrocinadores = this.getCadenaPatrocinadores(propuesta_aleatoria, resto_propuestas);
+      return (
+        <div>
+          <h4>Con la ayuda de</h4>
+          <div className="row">
+            <img
+              src={getImagen(propuesta_aleatoria.empresa.avatar)}
+              alt="ONG"
+              style={{ width: '50px', height: '50px' }}
+            />
+            <p>{cadena_patrocinadores}</p>
+          </div>
+        </div>
+      );
+    }
+  }
+
+  getPropuestaAleatoria(propuestas) {
+    return propuestas[Math.floor((Math.random() * propuestas.length))];
+  }
+
+  getCadenaPatrocinadores(propuesta_aleatoria, resto_propuestas) {
+    let resultado = propuesta_aleatoria.empresa.nombre;
+    if (resto_propuestas.length > 0) {
+      for (let i = 0; i < resto_propuestas.length - 1; i += 1) {
+        resultado = resultado + ', ' + resto_propuestas[i].empresa.nombre;
+      }
+      resultado = resultado + ', ' + resto_propuestas[resto_propuestas.length-1].empresa.nombre;
+    }
+    return resultado + '.';
+  }
+
   render() {
     const {
       evento,
@@ -109,16 +147,23 @@ class EventoCard extends Component {
       <Card className={classes} {...attributes}>
         <CardBody>
           <div>
-            <img
-              src={getImagen(evento.organizacion ? evento.organizacion.avatar : undefined)}
-              alt="ONG"
-              style={{ width: '75px', height: '75px' }}
-            />
-            <div className="h4 m-0">{moment(evento.fecha_hora_inicio).format('DD/MM/YYYY')}</div>
-            <div>
-              {evento.organizacion ?
-                evento.nombre + ' - ' + evento.organizacion.nombre : undefined
-              }
+            <div className="row">
+              <div className="col-md-6">
+                <img
+                  src={getImagen(evento.organizacion ? evento.organizacion.avatar : undefined)}
+                  alt="ONG"
+                  style={{ width: '75px', height: '75px' }}
+                />
+                <div className="h4 m-0">{moment(evento.fecha_hora_inicio).format('DD/MM/YYYY')}</div>
+                <div>
+                  {evento.organizacion ?
+                    evento.nombre + ' - ' + evento.organizacion.nombre : undefined
+                  }
+                </div>
+              </div>
+              <div className="col-md-6">
+                {this.getPatrocinadores()}
+              </div>
             </div>
             <Progress className={progress.style} color={progress.color} value={progress.value} />
             <div className="col-md-6">

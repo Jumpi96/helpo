@@ -6,6 +6,7 @@ import React, { Component } from 'react';
 import api from '../../api';
 import SignUpPresentation from './SignUpPresentation';
 import validateEmail from '../../Lib/ValidateEmail';
+import {Alert} from 'react-native'
 
 
 class SignUp extends Component {
@@ -28,7 +29,6 @@ class SignUp extends Component {
     this.handleUserTypeSelect = this.handleUserTypeSelect.bind(this);
     this.handleValueChange = this.handleValueChange.bind(this);
     this.onSubmitData = this.onSubmitData.bind(this);
-    // this.renderErrorList = this.renderErrorList.bind(this);
   }
 
   onSubmitData() {
@@ -41,11 +41,27 @@ class SignUp extends Component {
         apellido: this.state.apellido,
       };
       api.post("/auth/sign_up/", usuario)
-      .then((res) => { this.setState({ errors: { ...this.state.errors, nombre: 'Se registro' } }); });
-       // TODO: UX, rta 200 => "Su cuenta se registro, verificar mail, otra => Hubo problemas"
-    } else {
-     //
+      .then(res => {
+        if(res.status === 200) {
+          Alert.alert(
+            'Registro usuario',
+            '¡Se ha registrado exitosamente en Helpo!',
+            [{text: 'Volver', onPress: () => this.props.navigation.navigate('LaunchScreen')}]
+          );
+        }
     }
+  )
+      .catch (res => {
+        if(res.status !== 200) {
+          Alert.alert(
+            'Registro usuario',
+            'Error: ya existe un usuario con ese mail',
+            [{text: 'Volver'}]
+          );
+        }
+      }
+    )
+  }
   }
 
   handleUserTypeSelect(user_type) {
@@ -79,7 +95,7 @@ class SignUp extends Component {
         break;
       }
       case 'email': {
-        this.setState({ email: value });
+        this.setState({ email: value.toLowerCase() });
         break;
       }
       case 'password': {

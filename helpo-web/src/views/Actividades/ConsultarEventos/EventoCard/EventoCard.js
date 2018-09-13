@@ -34,7 +34,7 @@ class EventoCard extends Component {
           <span class="badge badge-primary badge-pill">{necesidad.cantidad}</span>
         </li>
       )
-      
+
     });
     return necesidades;
   }
@@ -60,35 +60,39 @@ class EventoCard extends Component {
     const necesidades = this.props.evento.necesidades;
     if (voluntarios && necesidades) {
       for (let i = 0; i < voluntarios.length; i++) {
+        contadorTemp = 0;
         contadorNecesidades += voluntarios[i].cantidad;
-        contadorCubiertas += voluntarios[i].participaciones.length;
+        for (let j = 0; j < voluntarios[i].participaciones.length; j++) {
+          contadorTemp += voluntarios[i].participaciones[j].cantidad;
+        }
+        contadorCubiertas += contadorTemp;
       }
       for (let i = 0; i < necesidades.length; i++) {
         contadorTemp = 0;
         contadorNecesidades += necesidades[i].cantidad;
-        for (let j = 0; j < necesidades[i].colaboraciones; i++) {
+        for (let j = 0; j < necesidades[i].colaboraciones.length; j++) {
           contadorTemp += necesidades[i].colaboraciones[j].cantidad;
         }
         contadorCubiertas += contadorTemp;
       }
     }
-    return contadorNecesidades > 0 ? (contadorCubiertas/contadorNecesidades) * 100 : 0;
+    return contadorNecesidades > 0 ? (contadorCubiertas / contadorNecesidades) * 100 : 0;
   }
 
   render() {
-    const { 
+    const {
       evento,
-      className, 
-      cssModule, 
-      children, 
-      variant, 
+      className,
+      cssModule,
+      children,
+      variant,
       link,
       color,
-      ...attributes } 
+      ...attributes }
       = this.props;
 
     // demo purposes only
-    const progress = { style: '', color: color, value: this.getEventoPorcentaje()};
+    const progress = { style: '', color: color, value: this.getEventoPorcentaje() };
     const card = { style: '', bgColor: '' };
 
     if (variant === 'inverse') {
@@ -104,32 +108,32 @@ class EventoCard extends Component {
     return (
       <Card className={classes} {...attributes}>
         <CardBody>
-        <div>
-          <img
-            src={getImagen(evento.organizacion ? evento.organizacion.avatar : undefined )}
-            alt="ONG"
-            style={{width:'75px', height:'75px'}} 
-          />
-          <div className="h4 m-0">{moment(evento.fecha_hora_inicio).format('DD/MM/YYYY')}</div>
           <div>
-            {evento.organizacion ?
-              evento.nombre + ' - ' + evento.organizacion.nombre : undefined
-            }
-          </div>
-          <Progress className={progress.style} color={progress.color} value={progress.value} />
-          <div className="col-md-6">
-            <ul className="list-group">
-              {this.getNecesidades()}
-              {this.getVoluntarios()}
-            </ul>
-          </div>
-          
-          <Link to={link}>
-            <button className="btn btn-primary pull-right">
-              + Ver más
+            <img
+              src={getImagen(evento.organizacion ? evento.organizacion.avatar : undefined)}
+              alt="ONG"
+              style={{ width: '75px', height: '75px' }}
+            />
+            <div className="h4 m-0">{moment(evento.fecha_hora_inicio).format('DD/MM/YYYY')}</div>
+            <div>
+              {evento.organizacion ?
+                evento.nombre + ' - ' + evento.organizacion.nombre : undefined
+              }
+            </div>
+            <Progress className={progress.style} color={progress.color} value={progress.value} />
+            <div className="col-md-6">
+              <ul className="list-group">
+                {this.getNecesidades()}
+                {this.getVoluntarios()}
+              </ul>
+            </div>
+
+            <Link to={link}>
+              <button className="btn btn-primary pull-right">
+                + Ver más
             </button>
-          </Link>
-        </div>
+            </Link>
+          </div>
         </CardBody>
       </Card>
     );

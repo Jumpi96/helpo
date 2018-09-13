@@ -3,6 +3,20 @@ import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 
 class ModalNuevoMensaje extends Component {
 
+  constructor(props) {
+    super(props);
+    this.handleChangeAsunto = this.handleChangeAsunto.bind(this);
+    this.handleChangeMensaje = this.handleChangeMensaje.bind(this);
+  }
+
+  handleChangeAsunto(e) {
+    this.props.updateMensaje(e.target.value, this.props.mensaje);
+  }
+
+  handleChangeMensaje(e) {
+    this.props.updateMensaje(this.props.asunto, e.target.value);
+  }
+
   render() {
     return (
       <div className="animated fadeIn">
@@ -10,9 +24,20 @@ class ModalNuevoMensaje extends Component {
           className='modal-warning'>
           <ModalHeader>Nuevo mensaje</ModalHeader>
           <ModalBody>
-            <textarea className="form-control" rows="4" onChange={this.props.updateMensaje  }
-              value={this.props.mensaje} maxLength={1000} placeholder="Escribe tu mensaje..."
-            />
+            <div className="form-group">
+              <label for="asunto">Asunto</label>
+              <input className="form-control" name="asunto" 
+                onChange={this.handleChangeAsunto} 
+                value={this.props.asunto}
+              />
+            </div>
+            <div className="form-group">
+              <label for="mensaje">Mensaje</label>
+              <textarea className="form-control" rows="4"
+                onChange={this.handleChangeMensaje} 
+                value={this.props.mensaje} maxLength={1000} placeholder="Escribe tu mensaje..."
+              />
+            </div>
           </ModalBody>
           <ModalFooter>
             <Button color="warning" onClick={() => this.props.closeModal(true)}>Enviar</Button>{' '}

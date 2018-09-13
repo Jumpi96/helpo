@@ -20,29 +20,39 @@ import ComentarEvento from '../Views/Actividades/ComentarEvento/ComentarEvento';
 import FiltroEventos from '../Views/Actividades/ConsultarEventos/FiltroEventos/FiltroEventos';
 import MensajesEvento from '../Views/Actividades/MensajesEvento/MensajesEvento';
 import NuevoMensaje from '../Views/Actividades/MensajesEvento/NuevoMensaje';
-import AlbumEvento from '../Views/Actividades/AlbumEvento/AlbumEvento'
+import OrganizacionesPage from '../Views/Organizaciones/OrganizacionesPage';
+import AgregarOfrecimiento from "../Views/Actividades/RegistrarOfrecimiento/AgregarOfrecimiento";
+import RegistrarOfrecimiento from "../Views/Actividades/RegistrarOfrecimiento/RegistrarOfrecimiento";
+import MisPropuestas from '../Views/Actividades/MisPropuestas/MisPropuestas';
+import VerPropuestaEvento from '../Views/Actividades/MisPropuestas/VerPropuestaEvento';
+import AlbumEvento from '../Views/Actividades/AlbumEvento/AlbumEvento';
  
 const NavigationDrawer = DrawerNavigator({
-		LaunchScreen: { screen: LaunchScreen },
-		Login: { screen: Login },
-		SignUp: { screen: SignUp },
-		Configuracion: { screen: Configuracion },
-		ConsultarEventos: { screen: ConsultarEventos },
-		ConsultarEvento: { screen: ConsultarEvento },
-		RegistrarColaboraciones: { screen: RegistrarColaboraciones },
-		AgregarColaboracion: { screen: AgregarColaboracion },
-		RegistrarEvento: { screen: RegistrarEvento },
-		RegistrarNecesidades: { screen: RegistrarNecesidades },
-		MisEventos: { screen: MisEventos },
-		VerEvento: { screen: VerEvento },
-		EditarEvento: { screen: EditarEvento },
-		MisColaboraciones: { screen: MisColaboraciones },
-		VerColaboracionesEvento: { screen: VerColaboracionesEvento },
-		ComentarEvento: { screen: ComentarEvento },
-		FiltroEventos: { screen: FiltroEventos },
-		MensajesEvento: { screen: MensajesEvento },
-		NuevoMensaje: { screen: NuevoMensaje },
-		AlbumEvento: { screen: AlbumEvento },
+	LaunchScreen: { screen: LaunchScreen },
+	Login: { screen: Login },
+	SignUp: { screen: SignUp },
+	Configuracion: { screen: Configuracion },
+	ConsultarEventos: { screen: ConsultarEventos },
+	ConsultarEvento: { screen: ConsultarEvento },
+	RegistrarColaboraciones: { screen: RegistrarColaboraciones },
+	AgregarColaboracion: { screen: AgregarColaboracion },
+	RegistrarEvento: { screen: RegistrarEvento },
+	RegistrarNecesidades: { screen: RegistrarNecesidades },
+	MisEventos: { screen: MisEventos },
+	VerEvento: { screen: VerEvento },
+	EditarEvento: { screen: EditarEvento },
+	MisColaboraciones: { screen: MisColaboraciones },
+	VerColaboracionesEvento: { screen: VerColaboracionesEvento },
+	ComentarEvento: { screen: ComentarEvento },
+	FiltroEventos: { screen: FiltroEventos },
+	MensajesEvento: { screen: MensajesEvento },
+	NuevoMensaje: { screen: NuevoMensaje },
+	OrganizacionesPage: { screen: OrganizacionesPage },
+	AgregarOfrecimiento: { screen: AgregarOfrecimiento },
+	RegistrarOfrecimiento: { screen: RegistrarOfrecimiento },
+	MisPropuestas: { screen: MisPropuestas },
+	VerPropuestaEvento: { screen: VerPropuestaEvento },
+	AlbumEvento: { screen: AlbumEvento }
   },
   {
 	initialRouteName: "LaunchScreen",

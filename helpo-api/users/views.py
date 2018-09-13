@@ -1,4 +1,5 @@
 from django.shortcuts import render  # noqa
+import decouple
 from rest_framework import generics, permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -66,6 +67,13 @@ class RubroOrganizacionReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     serializer_class = RubroOrganizacionSerializer
     lookup_field = 'id'
 
+class OrgProfileCreateReadView(ListCreateAPIView):
+    """
+    API endpoint para crear o ver todos los perfiles de organización
+    """
+    queryset = OrganizacionProfile.objects.all()
+    serializer_class = OrganizacionProfileSerializer
+
 class OrgProfileReadUpdateDeleteView(RetrieveUpdateAPIView):
     """
     API endpoint para leer, actualizar o eliminar un perfil de organizacion
@@ -114,8 +122,8 @@ def refreshToken():
     access_token_reference = AppValues.objects.get(key="imgurAccessToken")
     postData = {
       'refresh_token': refresh_token_reference.value,
-      'client_id': '1e76d5b484ecae3',
-      'client_secret': '9b7c999acc773472aeb30b32b44e47f7fde4ff64',
+      'client_id': decouple.config('IMGUR_CLIENT_ID'),
+      'client_secret': decouple.config('IMGUR_CLIENT_SECRET'),
       'grant_type': 'refresh_token',
     }
     res = requests.post("https://api.imgur.com/oauth2/token", postData)

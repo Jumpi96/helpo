@@ -117,7 +117,10 @@ class RegistrarEvento extends React.Component {
   handleValidation() {
     let formIsValid = true;
     const errors = this.state.errors;
-
+    const inicio = moment(this.state.fecha_hora_inicio);
+    const fin = moment(this.state.fecha_hora_fin);
+    const actual = moment(new Date());
+    
     if (!this.state.nombre) {
       formIsValid = false;
       errors.nombre = 'Debe ingresar un nombre.';
@@ -128,16 +131,23 @@ class RegistrarEvento extends React.Component {
       formIsValid = false;
       errors.fechas = 'Las fechas ingresadas no son válidas.';
     } else {
-      const inicio = moment(this.state.fecha_hora_inicio);
-      const fin = moment(this.state.fecha_hora_fin);
-      const ahora = moment(new Date());
-      if (moment.duration(fin.diff(inicio)).asHours() > 24 ||
-          inicio < ahora ||
-          moment.duration(fin.diff(inicio)).asHours() < 0) {
+      if (inicio.days() === actual.days() && (inicio.hours() >= actual.hours() || inicio.hours() < actual.hours())) {
         formIsValid = false;
-        errors.fechas = 'Las fecha de fin debe ser mayor a la de inicio y ' +
-          'la actividad no durar más de 24 horas.';
-      }
+        errors.fechas = "No es posible organizar el evento en el mismo día"
+      } else 
+        if (inicio < actual) {
+          formIsValid = false;
+          errors.fechas = 'La fecha de inicio debe ser posterior a la fecha actual'; 
+        } else 
+          if (fin < inicio) {
+            formIsValid = false;
+            errors.fechas = 'La fecha de inicio debe ser anterior a la fecha de fin del evento'
+          } else
+            if (moment.duration(fin.diff(inicio)).asHours() > 24 && inicio < fin) {
+            formIsValid = false;
+            errors.fechas = 'El evento no puede durar más de 24 horas'
+            } 
+            else {errors.fechas = undefined;}
     }
     if (this.state.rubro_id === 0) {
       formIsValid = false;

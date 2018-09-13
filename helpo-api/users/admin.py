@@ -23,10 +23,8 @@ class CustomUserAdmin(UserAdmin):
             'fields': ('email', 'password1', 'password2')}),
     )
 
-
-class AppValuesAdmin(admin.ModelAdmin):
-    list_display = ('key', 'value')
-
+class CustomAppValuesAdmin(admin.ModelAdmin):
+    list_display = ['key', 'value']
 
 admin.site.register(User, CustomUserAdmin)
-admin.site.register(AppValues, AppValuesAdmin)
+admin.site.register(AppValues, CustomAppValuesAdmin)

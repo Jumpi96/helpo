@@ -29,6 +29,11 @@ export default {
         icon: 'icon-cursor'
       },
       {
+        name: 'Mis propuestas',
+        url: '/actividades/mis-propuestas',
+        icon: 'icon-star'
+      },
+      {
         title: true,
         name: 'Perfil',
         wrapper: {            // optional wrapper object

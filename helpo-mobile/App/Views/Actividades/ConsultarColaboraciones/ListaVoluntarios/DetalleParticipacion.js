@@ -21,7 +21,7 @@ class DetalleParticipacion extends React.Component {
   handleRetroalimentacion() {
     const mensaje = { 
       evento: this.props.eventoId, 
-      voluntario: this.props.participacion.voluntario.id
+      voluntario: this.props.participacion.colaborador.id
     };
     api.post('feedbacks/retroalimentacion_ong/', mensaje)
       .then((res) => {
@@ -97,10 +97,10 @@ class DetalleParticipacion extends React.Component {
         <ContainerHeader titulo='Detalle participacion' goBack={this.props.navigation.goBack}/>
         <FlatList
           data={[
-            {key: 'Nombre', value: this.props.participacion.voluntario.nombre},
-            {key: 'Apellido', value: this.props.participacion.voluntario.apellido},
+            {key: 'Nombre', value: this.props.participacion.colaborador.nombre},
+            {key: 'Apellido', value: this.props.participacion.colaborador.apellido},
             {key: 'Comentario', value: this.props.participacion.comentario},
-            {key: 'Dni', value: this.props.participacion.voluntario.dni},
+            {key: 'Dni', value: this.props.participacion.colaborador.dni},
             {key: 'Participo', value: this.state.participo},
             {key: 'Retroalimentación', value: this.state.retroalimentacion}
           ]}

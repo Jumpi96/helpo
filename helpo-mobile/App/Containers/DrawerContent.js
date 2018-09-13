@@ -36,6 +36,11 @@ const itemsOrg = [
 	  'name': 'Consultar eventos',
 	},
 	{
+		'key': 'OrganizacionesPage',
+		'routeName': 'OrganizacionesPage',
+		'name': 'Organizaciones'
+	},
+	{
 	  'key': 'RegistrarEvento',
 	  'routeName': 'RegistrarEvento',
 	  'name': 'Nuevo evento',
@@ -70,6 +75,11 @@ const itemsVol = [
 		'name': 'Consultar eventos'
 	},
 	{
+		'key': 'OrganizacionesPage',
+		'routeName': 'OrganizacionesPage',
+		'name': 'Organizaciones'
+	},
+	{
 		'key': 'MisColaboraciones',
 		'routeName': 'MisColaboraciones',
 		'name': 'Mis colaboraciones'
@@ -91,6 +101,16 @@ const itemsEmp = [
 	  'key': 'ConsultarEventos',
 	  'routeName': 'ConsultarEventos',
 	  'name': 'Consultar eventos',
+	},
+	{
+		'key': 'OrganizacionesPage',
+		'routeName': 'OrganizacionesPage',
+		'name': 'Organizaciones'
+	},
+	{
+		'key': 'MisPropuestas',
+		'routeName': 'MisPropuestas',
+		'name': 'Mis propuestas'
 	},
 	{
 	  'key': 'Configuracion',

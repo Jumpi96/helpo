@@ -22,11 +22,11 @@ async function refreshToken() {
   Si retorna 'error' hubo un error y no se completo la funcion con exito
 */
 async function uploadImage(encodedimg) {
-  let access_token = AsyncStorage.getItem('imgur_access_token')
+  let access_token = await AsyncStorage.getItem('imgur_access_token')
   let url = ''
   if ( access_token === "null" ) {
      await refreshToken()
-     access_token = AsyncStorage.getItem('imgur_access_token')
+     access_token = await AsyncStorage.getItem('imgur_access_token')
   }      
 
   const axiosConf = {
@@ -51,7 +51,7 @@ async function uploadImage(encodedimg) {
   }
   catch (error) {
     if (error.response.status === 403) {
-      AsyncStorage.setItem('imgur_access_token', "null")
+      await AsyncStorage.setItem('imgur_access_token', "null")
       url = 'recall'
     }
     else {
@@ -63,8 +63,8 @@ async function uploadImage(encodedimg) {
 
 async function handleImageUpload(image) {
 
-  const rx = /data.*base64,(.*)/gm
-  const encondedAvatar = rx.exec(image)[1]
+  // El picker de imagenes te lo da ya encodeado bien
+  const encondedAvatar = image
 
   let avatar_url = "URL NO ASIGNADA"
   avatar_url = await uploadImage(encondedAvatar)

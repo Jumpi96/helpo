@@ -27,6 +27,21 @@ const ConsultarPerfil = Loadable({
   loading: Loading,
 });
 
+const RegistrarOfrecimientos = Loadable({
+  loader: () => import('./views/Actividades/RegistrarOfrecimientos/RegistrarOfrecimientos'),
+  loading: Loading,
+});
+
+const MisPropuestas = Loadable({
+  loader: () => import('./views/Actividades/MisPropuestas/EventoPage.js'),
+  loading: Loading,
+})
+
+const OrganizacionesPage = Loadable({
+  loader: () => import('./views/Organizaciones/OrganizacionesPage.js'),
+  loading: Loading,
+})
+
 const Dashboard = Loadable({
   loader: () => import('./views/Home/Home'),
   loading: Loading,
@@ -37,11 +52,13 @@ const Dashboard = Loadable({
 const routes = [
   { path: '/', exact: true, name: 'Home', component: DefaultLayout },
   { path: '/dashboard', name: 'helpo', component: Dashboard },
-
   { path: '/actividades/consultar-eventos', name: 'Consultar eventos', component: ConsultarEventosPage },
   { path: '/actividades/consultar-evento/', name: 'Consultar evento', component: ConsultarEventosView },
   { path: '/perfiles/perfil-empresa', name: 'Perfil empresa', component: ModificarPerfilEmpresa },
-  { path: '/perfil/:usuarioId?', name: 'Perfil de usuario', component: ConsultarPerfil }
+  { path: '/actividades/registrar-colaboraciones', name: 'Registrar ofrecimiento', component: RegistrarOfrecimientos },
+  { path: '/actividades/mis-propuestas', name: 'Mis propuestas', component: MisPropuestas },
+  { path: '/perfil/:usuarioId?', name: 'Perfil de usuario', component: ConsultarPerfil },
+  { path: '/organizaciones', name: 'Organizaciones', component: OrganizacionesPage },
 ];
 
 export default routes;

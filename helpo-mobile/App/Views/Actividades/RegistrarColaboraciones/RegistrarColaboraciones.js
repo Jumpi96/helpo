@@ -16,7 +16,7 @@ import {
   ActionSheet,
   Separator,
 } from 'native-base';
-import styles from './styles';
+import styles from './../RegistrarColaboraciones/styles';
 import api from '../../../api';
 
 
@@ -25,7 +25,6 @@ class RegistrarColaboraciones extends React.Component {
     super(props);
     const { params } = this.props.navigation.state;
     const evento = params.evento;
-    console.warn(evento)
     this.state = {
       evento: {id: evento},
       necesidades: [],
@@ -57,7 +56,7 @@ class RegistrarColaboraciones extends React.Component {
   getNecesidadVoluntario(necesidades) {
     const usuario = this.getUserId();
     for (let i=0; i < necesidades.length; i++) {
-      if (necesidades[i].participaciones.filter(c => c.voluntario_id === usuario).length > 0){
+      if (necesidades[i].participaciones.filter(c => c.colaborador.id === usuario).length > 0){
         return necesidades[i].id;
       }
     }
@@ -66,8 +65,9 @@ class RegistrarColaboraciones extends React.Component {
 
   getBotonesVoluntario(idVoluntario) {
     const voluntario = this.state.voluntarios.filter(n => n.id === idVoluntario)[0];
-    if (voluntario.participaciones.filter(n => n.voluntario_id === this.getUserId()).length > 0) {
+    if (voluntario.participaciones.filter(n => n.colaborador.id === this.getUserId()).length > 0) {
       return [
+        { text: 'Modificar', icon: 'color-filter', iconColor: '#fa213b' },
         { text: 'Eliminar', icon: 'trash', iconColor: '#fa213b' },
         { text: 'Cancelar', icon: 'close', iconColor: '#25de5b' },
       ];
@@ -80,7 +80,7 @@ class RegistrarColaboraciones extends React.Component {
 
   getBotonesNecesidades(idNecesidad) {
     const necesidad = this.state.necesidades.filter(n => n.id === idNecesidad)[0];
-    const colaboraciones_usuario = necesidad.colaboraciones.filter(n => n.voluntario_id === this.getUserId());
+    const colaboraciones_usuario = necesidad.colaboraciones.filter(n => n.colaborador.id === this.getUserId());
     if (colaboraciones_usuario.length > 0) {
       return [
         { text: 'Modificar', icon: 'color-filter', iconColor: '#fa213b' },
@@ -138,7 +138,9 @@ class RegistrarColaboraciones extends React.Component {
   }
 
   getCantidadVoluntarios(v) {
-    return '' + v.participaciones.length + '/'+ v.cantidad;
+    let contador = 0;
+    v.participaciones.forEach((p) => { contador += p.cantidad });
+    return '' + contador + '/'+ v.cantidad;
   }
 
   getCantidadNecesidades(n) {
@@ -189,7 +191,7 @@ class RegistrarColaboraciones extends React.Component {
   handleActionNecesidad(button) {
     if (button.text === 'Modificar') {
       const necesidad = this.state.necesidades.filter(v => v.id === this.state.necesidadModificada)[0];
-      const colaboracionAnterior = necesidad.colaboraciones.filter(c => c.voluntario_id === this.getUserId())[0];
+      const colaboracionAnterior = necesidad.colaboraciones.filter(c => c.colaborador.id === this.getUserId())[0];
       const colaboracion = {
         id: this.state.necesidadModificada,
         colaboracion_anterior: colaboracionAnterior.id,
@@ -224,7 +226,7 @@ class RegistrarColaboraciones extends React.Component {
 
   getColaboracionAnterior(necesidadId) {
     const necesidad = this.state.necesidades.filter(n => n.id === necesidadId)[0];
-    return necesidad.colaboraciones.filter(c => c.voluntario_id === this.getUserId())[0].id;
+    return necesidad.colaboraciones.filter(c => c.colaborador.id === this.getUserId())[0].id;
   }
 
   deleteColaboracion(idNecesidad) {
@@ -287,7 +289,7 @@ class RegistrarColaboraciones extends React.Component {
     const usuario = this.getUserId();
     let participaciones;
     for (let i=0; i < necesidades.length; i += 1) {
-      participaciones = necesidades[i].participaciones.filter(c => c.voluntario_id === usuario);
+      participaciones = necesidades[i].participaciones.filter(c => c.colaborador.id === usuario);
       if (participaciones.length > 0) {
         return participaciones[0].id;
       }

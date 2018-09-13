@@ -179,7 +179,7 @@ class ConsultarEventosView extends React.Component {
                 </div>
               ) : undefined
               }
-              {this.getPropuestas(evento.propuestas)}
+              {evento.propuestas.length > 0 && this.getPropuestas(evento.propuestas)}
               {listaNecesidades ? (
                 <div className="row">
                   <div className="form-group col-md-3">

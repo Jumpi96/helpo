@@ -16,9 +16,11 @@ import {
   Text,
   Label,
   View,
+  Thumbnail,
 } from 'native-base';
 import styles from './styles';
 import CompartirEvento from '../CompartirEvento/CompartirEvento';
+import { helpoImages } from '../../../Themes';
 
 class ConsultaEvento extends React.Component {
 
@@ -99,6 +101,44 @@ class ConsultaEvento extends React.Component {
         </Body>
       </ListItem>
     );
+  }
+
+  getPropuestas(propuestas) {
+    const listaPropuestas = [];
+    propuestas = this.shuffle(propuestas);
+    propuestas.forEach((p) => {
+      listaPropuestas.push(
+        <ListItem thumbnail key={p.id}>
+          <Left>
+            <Thumbnail small
+              source={helpoImages.launchscreenLogo}
+              onPress={() => this.togglePerfil(p.empresa.id)}
+            />
+          </Left>
+          <Body>
+            <Text>
+              {p.empresa.nombre}
+            </Text>
+          </Body>
+        </ListItem>
+      );
+    })
+    return (
+      <View>
+        <Separator bordered noTopBorder>
+          <Text>Con la ayuda de</Text>
+        </Separator>
+        {listaPropuestas}
+      </View>
+    )
+  }
+
+  shuffle(a) {
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
   }
 
   render() {
@@ -182,6 +222,7 @@ class ConsultaEvento extends React.Component {
             </View>
           ) : undefined
           }
+          {evento.propuestas.length > 0 && this.getPropuestas(evento.propuestas)}
           {evento.voluntarios.length > 0 ? (
             <View>
               <Separator bordered noTopBorder>

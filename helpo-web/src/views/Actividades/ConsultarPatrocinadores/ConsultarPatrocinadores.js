@@ -97,14 +97,34 @@ class ConsultarPatrocinadores extends Component {
   }
 
   handleCloseModal(respuesta) {
-    if (respuesta === 1) {
-      //TODO: Guardar respuesta.
+    const propuesta = this.state.propuestaModal;
+    if (respuesta === 1) {      
+      propuesta.aceptado = 1;
+      api.put('/actividades/propuestas/' + propuesta.id + '/', propuesta)
+        .then((res) => {
+          this.loadEvento();
+        })
+        .catch((error) => {
+          if (error.response) { console.log(error.response.status) }
+          else { console.log('Error: ', error.message) }
+        })
     } else if (respuesta === -1) {
       if (this.state.confirmRechazo) {
-        if (this.state.comentario) {
-          //TODO: Guardar respuesta y comentario
+        const { comentario } = this.state;
+        if (comentario) {
+          propuesta.aceptado = -1;
+          propuesta.comentario = comentario;
+          api.put('/actividades/propuestas/' + propuesta.id + '/', propuesta)
+            .then((res) => {
+              this.loadEvento();
+            })
+            .catch((error) => {
+              if (error.response) { console.log(error.response.status) }
+              else { console.log('Error: ', error.message) }
+            })    
+        } else {
+          return;
         }
-        return;
       } else {
         this.setState({ confirmRechazo: true });
         return;

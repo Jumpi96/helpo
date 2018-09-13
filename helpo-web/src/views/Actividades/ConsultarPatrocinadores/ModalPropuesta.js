@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Table, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import './ConsultarPatrocinadores.css';
 
 class ModalPropuesta extends Component {
 
@@ -11,7 +12,7 @@ class ModalPropuesta extends Component {
   }
 
   getTablaPropuesta() {
-    const { evento, propuesta } = this.props;
+    const { evento } = this.props;
     const listaNecesidades = [];
     let cantidad;
     evento.necesidades.forEach(n => {
@@ -94,7 +95,7 @@ class ModalPropuesta extends Component {
           >
             <ModalHeader>Administrar propuesta de {propuesta.empresa.nombre}</ModalHeader>
             <ModalBody>
-            <p>Una vez aceptada la propuesta, <b>la empresa aparecerá como patrocinadora del evento.</b> La respuesta no es modificable.</p>
+              <p>Una vez aceptada la propuesta, <b>la empresa aparecerá como patrocinadora del evento.</b> La respuesta no es modificable.</p>
               {this.getTablaPropuesta()}
               <textarea
                 className="form-control"
@@ -105,9 +106,13 @@ class ModalPropuesta extends Component {
               />
             </ModalBody>
             <ModalFooter>
-              <button className="btn btn-success" onClick={() => this.props.closeModal(1)}>Aceptar</button>
-              <button className="btn btn-danger" onClick={() => this.props.closeModal(-1)}>Rechazar</button>
-              <button className="btn" onClick={() => this.props.closeModal(0)}>Cancelar</button>
+              {propuesta.aceptado === 0 ?
+                <div>
+                  <button className="btn btn-success" onClick={() => this.props.closeModal(1)}>Aceptar</button>
+                  <button className="btn btn-danger" onClick={() => this.props.closeModal(-1)}>Rechazar</button>
+                </div>
+              : undefined}
+              <button className="btn" onClick={() => this.props.closeModal(0)}>Salir</button>
             </ModalFooter>
           </Modal>
         </div>

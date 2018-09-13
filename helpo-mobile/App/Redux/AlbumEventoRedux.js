@@ -6,9 +6,11 @@ import Immutable from 'seamless-immutable'
 const { Types, Creators } = createActions({
   albumFetchImagenes: ['evento'],
   albumFetchSuccess: ['imagenes'],
-  albumFetchFailure: [],
+  albumFetchFailure: null,
   albumAddImage: ['imagen'],
-  albumRemoveImage: ['imagen']
+  albumUploadImage: ['url', 'eventoId'],
+  albumRemoveImage: ['imagen'],
+  albumUploadProps: ['props']
 })
 
 export const AlbumEventoTypes = Types
@@ -20,6 +22,7 @@ export const INITIAL_STATE = Immutable({
   imagenes: [],
   fetching: null,
   error: null,
+  props: {}
 })
 
 /* ------------- Selectors ------------- */
@@ -34,11 +37,23 @@ export const AlbumEventoSelectors = {
 export const request = (state) =>
   state.merge({ fetching: true })
 
+// Actualiza varios props de albumEvento
+export const props = (state, action) => {
+  const props = action.props
+  const isOwner = props.ongId === props.ownerId ? true : false
+  props.isOwner = isOwner
+  return state.merge({ props })
+}
+
 // successful api lookup
 export const success = (state, action) => {
   const { imagenes } = action
   return state.merge({ fetching: false, error: null, imagenes })
 }
+
+// Add imagen to album
+export const add = (state, action) =>
+  state.merge({ imagenes: [...state.imagenes, action.imagen] })
 
 // Something went wrong somewhere.
 export const failure = state =>
@@ -50,5 +65,7 @@ export const failure = state =>
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.ALBUM_FETCH_IMAGENES]: request,
   [Types.ALBUM_FETCH_SUCCESS]: success,
+  [Types.ALBUM_ADD_IMAGE]: add,
   [Types.ALBUM_FETCH_FAILURE]: failure,
+  [Types.ALBUM_UPLOAD_PROPS]: props
 })

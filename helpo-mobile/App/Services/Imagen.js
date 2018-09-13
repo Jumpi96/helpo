@@ -50,10 +50,10 @@ async function uploadImage(encodedimg) {
 }
 
 async function handleImageUpload(image) {
-
-  const rx = /data.*base64,(.*)/gm
-  const encondedAvatar = rx.exec(image)[1]
-
+  
+  // Saque regex de web, porque en mobile me dan bien la data de la imagen
+  const encondedAvatar = image
+  
   let avatar_url = "URL NO ASIGNADA"
   avatar_url = await uploadImage(encondedAvatar)
   if (avatar_url === 'recall') {

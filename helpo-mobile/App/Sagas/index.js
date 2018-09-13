@@ -15,7 +15,7 @@ import { AlbumEventoTypes } from '../Redux/AlbumEventoRedux'
 import { startup } from './StartupSagas'
 import { getUserAvatar } from './GithubSagas'
 import { getConsultarColabs, updateColaboracion, updateParticipacion } from './ConsultarColabsSagas'
-import { fetchImagenesAlbumEvento } from './AlbumEventoSagas'
+import { fetchImagenesAlbumEvento, uploadImagenAlbumEvento } from './AlbumEventoSagas'
 
 /* ------------- API ------------- */
 
@@ -36,6 +36,7 @@ export default function * root () {
     takeLatest(ConsultarColabsTypes.CONSULTAR_COLABS_REQUEST, getConsultarColabs),
     takeLatest(ConsultarColabsTypes.CONSULTAR_COLABS_CHANGE_COL, updateColaboracion),
     takeLatest(ConsultarColabsTypes.CONSULTAR_COLABS_CHANGE_PAR, updateParticipacion),
-    takeLatest(AlbumEventoTypes.ALBUM_FETCH_IMAGENES, fetchImagenesAlbumEvento)
+    takeLatest(AlbumEventoTypes.ALBUM_FETCH_IMAGENES, fetchImagenesAlbumEvento),
+    takeLatest(AlbumEventoTypes.ALBUM_UPLOAD_IMAGE, uploadImagenAlbumEvento)    
   ])
 }

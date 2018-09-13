@@ -2,42 +2,26 @@ import React from 'react'
 import Album from './Album'
 import { connect } from 'react-redux'
 import AlbumEventoActions from '../../../Redux/AlbumEventoRedux'
+import api from '../../../api'
 
-const images = [
-  {
-    url: 'https://i.imgur.com/PhKRLNx.png',
-    id: 1,
-    evento: 25
-  },
-  {
-    url: 'https://i.imgur.com/pNjuenD.jpg',
-    id: 2,
-    evento: 25
-  },
-  {
-    url: 'https://i.imgur.com/4bbjY6m.jpg',
-    id: 3,
-    evento: 25
-  },
-  {
-    url: 'https://i.imgur.com/CXKFlVb.jpg',
-    id: 4,
-    evento: 25
-  },
-  {
-    url: 'https://i.imgur.com/CPERPkh.jpg',
-    id: 5,
-    evento: 25
-  },
-]
 /*
 eventoId
 */
 
 class AlbumEvento extends React.Component {
 
-  componentDidMount() {
+  async componentDidMount() {
     //this.props.fetchImagenes(this.props.eventoId)
+    const eventoId = 20
+    const response = await api.get(`actividades/consulta_eventos/${eventoId}/`)
+    const props = await {
+      evento: response.data.nombre,
+      eventoId: response.data.id,
+      ongId: response.data.organizacion.id,
+      ong: response.data.organizacion.nombre,
+      ownerId: this.props.ownerId // #Negrada by Gonza
+    }
+    this.props.uploadProps(props)
     this.props.fetchImagenes(20)
   }
 
@@ -52,11 +36,18 @@ const mapStateToProps = state => ({
   imagenes: state.albumEvento.imagenes,
   fetching: state.albumEvento.fetching,
   // error =  true o false
-  error: state.albumEvento.error
+  error: state.albumEvento.error,
+  ong: state.albumEvento.props.ong,
+  ongId: state.albumEvento.props.ongId,
+  evento: state.albumEvento.props.evento,
+  eventoId: state.albumEvento.props.eventoId,
+  ownerId: state.auth.user.id,
+  isOwner: state.albumEvento.props.isOwner
 })
 
 const mapDispatchToProps = dispatch => ({
-  fetchImagenes: eventoId => dispatch(AlbumEventoActions.albumFetchImagenes(eventoId))
+  fetchImagenes: eventoId => dispatch(AlbumEventoActions.albumFetchImagenes(eventoId)),
+  uploadProps: props => dispatch(AlbumEventoActions.albumUploadProps(props))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(AlbumEvento)

@@ -29,4 +29,17 @@ export function * fetchImagenesAlbumEvento(action) {
   }
 }
 
+export function * uploadImagenAlbumEvento(action) {
+  // upload imagen (url) to api
+  const { url, eventoId } = action
+  const postData = { url: url, evento: eventoId }
+  const apiCall = postData => api.post('/actividades/imagenes/', postData)
+  // Calls apiCall and it passes postData as a parameter
+  const response = yield call(apiCall, postData)
+  if (response) {
+    yield put(AlbumEventoActions.albumAddImage(response.data))
+  } else {
+    yield put(AlbumEventoActions.albumFetchFailure())
+  }
+}
 

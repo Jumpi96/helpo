@@ -7,9 +7,7 @@ import ImagenSelecter from '../../../../utils/ImagenSelecter'
 import { handleImageUpload } from '../../../../utils/Imagen'
 import api from '../../../../api'
 
-/* TODO: Por ahora solo anda el album si se ingresa desde el ButtonGoAlbum
-         Desirable, armar un redux llamada api que busque la info q hace falta
-         Probablemente deje de ser desirable y pase a ser mandatory ༼ つ ◕_ ◕ ༽つ */
+/*  ༼ つ ◕_ ◕ ༽つ Bore was here */
 
 class AlbumImagenes extends React.Component {
 

@@ -39,6 +39,15 @@
     </item>
     <item
         is-multidex="false"
+        jar="/home/agustin/repos/helpo/helpo-mobile/android/app/build/intermediates/exploded-aar/helpoMobile/react-native-config/unspecified/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="712b8618027e9a1af00a9902747c2dd10eae8949">
+        <dex dex="/home/agustin/repos/helpo/helpo-mobile/android/app/build/intermediates/pre-dexed/debug/helpoMobile-react-native-config-unspecified_f36754fa6e0998308d28f182fc3bb72fc0583760.jar" />
+    </item>
+    <item
+        is-multidex="false"
         jar="/home/agustin/repos/helpo/helpo-mobile/android/app/build/intermediates/exploded-aar/com.android.support/support-v4/25.2.0/jars/classes.jar"
         jumboMode="false"
         optimize="true"
@@ -72,6 +81,15 @@
         revision="23.0.1"
         sha1="d86429b0f0b3f3cafbeb78dda1b9d89119ccb05d">
         <dex dex="/home/agustin/repos/helpo/helpo-mobile/android/app/build/intermediates/pre-dexed/debug/com.android.support-appcompat-v7-23.0.1_ef4f9b67575d6092736dd084bb4dac2e2acd425a.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/agustin/repos/helpo/helpo-mobile/android/app/build/intermediates/exploded-aar/helpoMobile/react-native-image-picker/unspecified/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="af58b72490ea9a9922b58a2773266ef8cdc6f3ec">
+        <dex dex="/home/agustin/repos/helpo/helpo-mobile/android/app/build/intermediates/pre-dexed/debug/helpoMobile-react-native-image-picker-unspecified_f58b7013cd5a275de13337ae8425b2b8d7990fa2.jar" />
     </item>
     <item
         is-multidex="false"
@@ -111,12 +129,30 @@
     </item>
     <item
         is-multidex="false"
+        jar="/home/agustin/repos/helpo/helpo-mobile/android/app/build/intermediates/exploded-aar/com.onesignal/OneSignal/3.8.3/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="bf6612d60ed35a3c41a708b94f83ec376c955382">
+        <dex dex="/home/agustin/repos/helpo/helpo-mobile/android/app/build/intermediates/pre-dexed/debug/com.onesignal-OneSignal-3.8.3_ed9055ea7a4910675c2f6fd61271b2a25b9b1e99.jar" />
+    </item>
+    <item
+        is-multidex="false"
         jar="/home/agustin/repos/helpo/helpo-mobile/android/app/build/intermediates/exploded-aar/com.android.support/support-compat/25.2.0/jars/classes.jar"
         jumboMode="false"
         optimize="true"
         revision="23.0.1"
         sha1="67eb33110dbacb46a48175b08ae0c96761d2c17d">
         <dex dex="/home/agustin/repos/helpo/helpo-mobile/android/app/build/intermediates/pre-dexed/debug/com.android.support-support-compat-25.2.0_55872ad30b4133668bc8b03c94cb2bdc5f1c3e1c.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/agustin/repos/helpo/helpo-mobile/android/app/build/intermediates/exploded-aar/helpoMobile/react-native-onesignal/unspecified/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="fbc012903caf898d5f384d2ea2e8323dd412041d">
+        <dex dex="/home/agustin/repos/helpo/helpo-mobile/android/app/build/intermediates/pre-dexed/debug/helpoMobile-react-native-onesignal-unspecified_50b6cc25528bbe0ebfab7542abafa9305e511ed6.jar" />
     </item>
     <item
         is-multidex="false"
@@ -153,6 +189,24 @@
         revision="23.0.1"
         sha1="f4f80cc3b042585ed61d7bc0866d0b4ac1ed5e9d">
         <dex dex="/home/agustin/repos/helpo/helpo-mobile/android/app/build/intermediates/pre-dexed/debug/helpoMobile-react-native-device-info-unspecified_7c1288a99bda83983f40c1fe6b32a9b262b9c55c.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/agustin/repos/helpo/helpo-mobile/android/app/build/intermediates/exploded-aar/helpoMobile/react-native-google-place-picker/unspecified/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="6332a0fbc2eae22ae9088a1abdc30952b3212fc9">
+        <dex dex="/home/agustin/repos/helpo/helpo-mobile/android/app/build/intermediates/pre-dexed/debug/helpoMobile-react-native-google-place-picker-unspecified_e9d29667446b28266475b1298d53aae5d30da804.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/agustin/repos/helpo/helpo-mobile/android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-location/11.0.4/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="41f47bbcd281fdb1e42e220220ab3bfa1da591e0">
+        <dex dex="/home/agustin/repos/helpo/helpo-mobile/android/app/build/intermediates/pre-dexed/debug/com.google.android.gms-play-services-location-11.0.4_bfef85bf0104309ebdc1ae2aaa43789844a9dec1.jar" />
     </item>
     <item
         is-multidex="false"

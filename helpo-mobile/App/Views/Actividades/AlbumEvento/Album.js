@@ -33,9 +33,7 @@ class Album extends React.Component {
     };
     ImagePicker.showImagePicker(options, async (response) => {
       // Paso la data de la imagen a Imagen para subirla a imgur
-      console.tron.log(response)
       const url = await handleImageUpload(response.data)
-      console.tron.log(url)
       this.props.uploadImagen(url, 20)
     })
   }
@@ -62,14 +60,15 @@ class Album extends React.Component {
 
   renderItem = ({item}) => {
     //item debe ser un array de 1-3 imagenes
-    return <GridRow imagenes={item} navigation={this.props.navigation}/>
+    return <GridRow titulo={this.props.titulo} imagenes={item} navigation={this.props.navigation}/>
   }
   
   render() {
     const imagenes = this.props.imagenes
+    const header = this.props.titulo
     return (
       <Container>
-        <ContainerHeader titulo='Test' goBack={() => null}/>
+        <ContainerHeader titulo={this.props.titulo} goBack={() => null}/>
         {this.props.imagenes.length !== 0
         ? <FlatList data={this.transformImagenesArray(imagenes)} renderItem={this.renderItem} />
         : <Text>No hay fotito</Text>}

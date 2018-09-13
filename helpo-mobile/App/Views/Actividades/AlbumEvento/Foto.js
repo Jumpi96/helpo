@@ -5,6 +5,7 @@ import { TouchableOpacity, Image } from 'react-native'
 imagen
 width
 height(*)
+titulo
  */
 
 class Foto extends React.Component {
@@ -12,7 +13,7 @@ class Foto extends React.Component {
   render() {
     return (
       <TouchableOpacity 
-        onPress={() => this.props.navigation.navigate('DetalleImagen', { imagen: this.props.imagen})}>
+        onPress={() => this.props.navigation.navigate('DetalleImagen', { imagen: this.props.imagen, titulo: this.props.titulo})}>
         <Image
         style={{ height: 120, width: this.props.width, resizeMode: 'stretch' }}
         source={{ uri: this.props.imagen.url}}

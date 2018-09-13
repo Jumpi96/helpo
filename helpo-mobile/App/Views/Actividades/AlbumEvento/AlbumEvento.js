@@ -27,7 +27,11 @@ class AlbumEvento extends React.Component {
 
   render() {
     return (
-      <Album imagenes={this.props.imagenes} navigation={this.props.navigation}/>
+      <Album 
+        imagenes={this.props.imagenes} 
+        navigation={this.props.navigation}
+        titulo={this.props.ong + " - " + this.props.evento}
+      />
     )
   }
 }

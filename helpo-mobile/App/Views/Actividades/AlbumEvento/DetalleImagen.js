@@ -6,6 +6,7 @@ import { ScrollView, Image, Dimensions } from 'react-native'
 /*
 imagen
 removeImagen
+titulo
 */
 
 class DetalleImagen extends React.Component {
@@ -20,11 +21,12 @@ class DetalleImagen extends React.Component {
   
   render() {
     const imagen = this.props.navigation.state.params.imagen
+    const titulo = this.props.navigation.state.params.titulo
     const deviceWidth = Dimensions.get('window').width;
     Image.getSize(imagen.url, (width, height) => this.setState({width, height}))
     return (
       <Container>
-        <ContainerHeader backgroundColor='#1f1f1f' titulo='Test' goBack={() => null}/>
+        <ContainerHeader backgroundColor='#1f1f1f' titulo={titulo} goBack={() => null}/>
         <ScrollView contentContainerStyle={{ 
               flex: 1,
               backgroundColor: '#1f1f1f',

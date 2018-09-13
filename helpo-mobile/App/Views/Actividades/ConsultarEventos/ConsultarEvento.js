@@ -20,13 +20,14 @@ import {
 } from 'native-base';
 import styles from './styles';
 import CompartirEvento from '../CompartirEvento/CompartirEvento';
-import { helpoImages } from '../../../Themes';
+
 
 class ConsultaEvento extends React.Component {
 
   constructor(props) {
     super(props);
     this.navigateColaborar = this.navigateColaborar.bind(this);
+    this.togglePerfil = this.togglePerfil.bind(this);
   }
 
   getListaNecesidades(evento) {
@@ -103,17 +104,20 @@ class ConsultaEvento extends React.Component {
     );
   }
 
+  togglePerfil(empresa) {
+    // TODO: Consultar perfil
+    // this.props.navigation.navigate('ConsultarPerfilGenerico', { user_id: empresa });
+    this.props.navigation.navigate('LaunchScreen');
+  }
+
   getPropuestas(propuestas) {
     const listaPropuestas = [];
     propuestas = this.shuffle(propuestas);
     propuestas.forEach((p) => {
       listaPropuestas.push(
-        <ListItem thumbnail key={p.id}>
+        <ListItem thumbnail key={p.id} onPress={() => this.togglePerfil(p.empresa.id)}>
           <Left>
-            <Thumbnail small
-              source={helpoImages.launchscreenLogo}
-              onPress={() => this.togglePerfil(p.empresa.id)}
-            />
+            <Thumbnail small source={{ uri: p.empresa.avatar }} />
           </Left>
           <Body>
             <Text>

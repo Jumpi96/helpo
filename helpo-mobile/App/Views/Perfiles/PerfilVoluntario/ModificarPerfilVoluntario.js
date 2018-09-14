@@ -154,7 +154,7 @@ class ModificarPerfilVoluntario extends Component {
           </Body>
           <Right>
             <Button transparent onPress={this.handleSubmit}>
-            <Text>Guardar</Text>
+              <Text>Guardar</Text>
             </Button>
           </Right>
         </Header>

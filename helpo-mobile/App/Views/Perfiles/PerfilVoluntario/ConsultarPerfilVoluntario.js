@@ -95,7 +95,7 @@ class ConsultarPerfilVoluntario extends Component {
           </Body>
           <Right>
             <Button transparent onPress={this.props.switchToModificar}> 
-              <Icon name="edit" />
+              <Text>Modificar</Text>
             </Button>
           </Right>
         </Header>

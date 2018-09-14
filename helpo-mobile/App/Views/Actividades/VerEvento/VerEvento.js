@@ -69,6 +69,18 @@ class VerEvento extends React.Component {
     }
   }
 
+  handlePropuestas(evento) {
+    if (moment(evento.fecha_hora_inicio) > moment()) {
+      this.props.navigation.navigate('VerPatrocinadores', { evento: evento.id });
+    } else {
+      Toast.show({
+        text: 'No se pueden modificar propuestas de un evento finalizado.',
+        position: 'bottom',
+        buttonText: 'OK',
+      });
+    }
+  }
+
   render() {
     const deleteButtons = [
       { text: 'Eliminar', icon: 'trash', iconColor: '#fa213b' },
@@ -165,10 +177,15 @@ class VerEvento extends React.Component {
             onPress={() => this.setState({ fabActive: !this.state.fabActive })}
           >
             <IconNB name="md-add" />
-            <Button style={{ backgroundColor: '#34A34F' }}
+            <Button style={{ backgroundColor: '#F4BF42' }}
               onPress={() => { this.handleEdit(evento) }}
             >
               <Icon name="color-filter" />
+            </Button>
+            <Button style={{ backgroundColor: '#34A34F' }}
+              onPress={() => { this.handlePropuestas(evento) }}
+            >
+              <Icon family="Entypo" name="briefcase" />
             </Button>
             <Button
               style={{ backgroundColor: '#FD3C2D' }}

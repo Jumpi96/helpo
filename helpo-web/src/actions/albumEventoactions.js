@@ -17,7 +17,7 @@ export function fetchEventoImagenes(eventoId) {
 // Borra la imagen en la api
 export function deleteEventoImagen(imagen) {
   return function(dispatch) {
-    api.delete(`/actividades/imagen/${imagen.id}`)
+    api.delete(`/actividades/imagen/${imagen.id}/`)
     .then( response => {
       dispatch(removeEventoImagen(imagen))
     })

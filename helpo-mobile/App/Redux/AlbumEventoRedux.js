@@ -55,6 +55,14 @@ export const success = (state, action) => {
 export const add = (state, action) =>
   state.merge({ imagenes: [...state.imagenes, action.imagen] })
 
+// Remove imagen from album
+export const remove = (state, action) => {
+  const index = state.imagenes.indexOf(action.imagen)
+  return state.merge({ 
+    imagenes: [...state.imagenes.slice(0, index), ...state.imagenes.slice(index+1, state.length)]
+   })
+}
+
 // Something went wrong somewhere.
 export const failure = state =>
   state.merge({ fetching: false, error: true, imagenes: [] })
@@ -67,5 +75,6 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.ALBUM_FETCH_SUCCESS]: success,
   [Types.ALBUM_ADD_IMAGE]: add,
   [Types.ALBUM_FETCH_FAILURE]: failure,
-  [Types.ALBUM_UPLOAD_PROPS]: props
+  [Types.ALBUM_UPLOAD_PROPS]: props,
+  [Types.ALBUM_REMOVE_IMAGE]: remove
 })

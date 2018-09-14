@@ -43,3 +43,17 @@ export function * uploadImagenAlbumEvento(action) {
   }
 }
 
+export function * deleteImagenAlbumEvento(action) {
+    // upload imagen (url) to api
+    const { imagen } = action
+    const imagenId = imagen.id 
+    const apiCall = imagenId => api.delete(`/actividades/imagen/${imagenId}/`)
+    // Calls apiCall and it passes postData as a parameter
+    const response = yield call(apiCall, imagenId)
+    if (response) {
+      // No hago nada porq la borro de redux sea exitoso o no
+    } else {
+      yield put(AlbumEventoActions.albumFetchFailure())
+    }
+}
+

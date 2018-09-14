@@ -2,6 +2,8 @@ import React from 'react'
 import { Container, Fab, Icon } from 'native-base'
 import ContainerHeader from '../../../Components/ContainerHeader'
 import { ScrollView, Image, Dimensions } from 'react-native'
+import { connect } from 'react-redux'
+import AlbumEventoActions from '../../../Redux/AlbumEventoRedux'
 
 /*
 imagen
@@ -20,13 +22,14 @@ class DetalleImagen extends React.Component {
   }
   
   render() {
+    const goBack = () => this.props.navigation.goBack()
     const imagen = this.props.navigation.state.params.imagen
     const titulo = this.props.navigation.state.params.titulo
     const deviceWidth = Dimensions.get('window').width;
     Image.getSize(imagen.url, (width, height) => this.setState({width, height}))
     return (
       <Container>
-        <ContainerHeader backgroundColor='#1f1f1f' titulo={titulo} goBack={() => null}/>
+        <ContainerHeader backgroundColor='#1f1f1f' titulo={titulo} goBack={goBack}/>
         <ScrollView contentContainerStyle={{ 
               flex: 1,
               backgroundColor: '#1f1f1f',
@@ -43,7 +46,7 @@ class DetalleImagen extends React.Component {
             
           />
         </ScrollView>
-        <Fab style={{ backgroundColor: 'red' }} onPress={this.props.removeImagen}>
+        <Fab style={{ backgroundColor: 'red' }} onPress={() => {this.props.removeImagen(imagen); goBack()}}>
           <Icon color='white' type='Entypo' name='cross'/>
         </Fab>
       </Container>
@@ -51,5 +54,8 @@ class DetalleImagen extends React.Component {
   }
 }
 
+const mapDispatchToProps = dispatch => ({
+  removeImagen: imagen => dispatch(AlbumEventoActions.albumRemoveImage(imagen))
+})
 
-export default DetalleImagen
+export default connect(null, mapDispatchToProps)(DetalleImagen)

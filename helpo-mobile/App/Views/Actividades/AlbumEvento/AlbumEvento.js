@@ -12,7 +12,7 @@ class AlbumEvento extends React.Component {
 
   async componentDidMount() {
     //this.props.fetchImagenes(this.props.eventoId)
-    const eventoId = 20
+    const eventoId = 19
     const response = await api.get(`actividades/consulta_eventos/${eventoId}/`)
     const props = await {
       evento: response.data.nombre,
@@ -30,7 +30,7 @@ class AlbumEvento extends React.Component {
       <Album 
         imagenes={this.props.imagenes} 
         navigation={this.props.navigation}
-        titulo={this.props.ong + " - " + this.props.evento}
+        titulo={this.props.evento}
       />
     )
   }

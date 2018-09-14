@@ -65,23 +65,35 @@ class Album extends React.Component {
   
   render() {
     const imagenes = this.props.imagenes
-    const header = this.props.titulo
+    const mensaje = this.props.fetching ? 'Cargando imagenes...' : 'No hay imagenes en el album'
     return (
       <Container>
         <ContainerHeader titulo={this.props.titulo} goBack={() => null}/>
+
+        {/* Si no hay imagenes, muestro un mensaje */}
         {this.props.imagenes.length !== 0
         ? <FlatList data={this.transformImagenesArray(imagenes)} renderItem={this.renderItem} />
-        : <Text>No hay fotito</Text>}
-        <Fab style={{ backgroundColor: 'green' }} onPress={this.addImagen}>
+        : <Text>{mensaje}</Text>}
+
+        {/* Si usuario isOwner, dejo agregar foto */}
+        {this.props.isOwner ? 
+        (<Fab style={{ backgroundColor: 'green' }} onPress={this.addImagen}>
           <Icon color='white' type='Entypo' name='plus'/>
-        </Fab>
+        </Fab>)
+        : undefined }
+
       </Container>
     )
   }
 }
 
+const mapStateToProps = state => ({
+  isOwner: state.albumEvento.props.isOwner,
+  fetching: state.albumEvento.fetching
+})
+
 const mapDispatchToProps = dispatch => ({
   uploadImagen: (url, eventoId) => dispatch(AlbumEventoActions.albumUploadImage(url, eventoId))
 })
 
-export default connect(null, mapDispatchToProps)(Album)
+export default connect(mapStateToProps, mapDispatchToProps)(Album)

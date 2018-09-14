@@ -46,16 +46,23 @@ class DetalleImagen extends React.Component {
             
           />
         </ScrollView>
-        <Fab style={{ backgroundColor: 'red' }} onPress={() => {this.props.removeImagen(imagen); goBack()}}>
+        {/* Si usuario isOwner, dejo agregar foto */}
+        {this.props.isOwner ? 
+        (<Fab style={{ backgroundColor: 'red' }} onPress={() => {this.props.removeImagen(imagen); goBack()}}>
           <Icon color='white' type='Entypo' name='cross'/>
-        </Fab>
+         </Fab>)
+        : undefined }        
       </Container>
     )
   }
 }
 
+const mapStateToProps = state => ({
+  isOwner: state.albumEvento.props.isOwner
+})
+
 const mapDispatchToProps = dispatch => ({
   removeImagen: imagen => dispatch(AlbumEventoActions.albumRemoveImage(imagen))
 })
 
-export default connect(null, mapDispatchToProps)(DetalleImagen)
+export default connect(mapStateToProps, mapDispatchToProps)(DetalleImagen)

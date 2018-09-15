@@ -68,7 +68,7 @@ class Album extends React.Component {
     const mensaje = this.props.fetching ? 'Cargando imagenes...' : 'No hay imagenes en el album'
     return (
       <Container>
-        <ContainerHeader titulo={this.props.titulo} goBack={() => null}/>
+        <ContainerHeader titulo={this.props.titulo} goBack={() => this.props.navigation.goBack()}/>
 
         {/* Si no hay imagenes, muestro un mensaje */}
         {this.props.imagenes.length !== 0

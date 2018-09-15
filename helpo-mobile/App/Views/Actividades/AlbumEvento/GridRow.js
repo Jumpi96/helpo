@@ -19,7 +19,12 @@ class GridRow extends React.Component {
     return (
       <View style={{flex: 1, flexDirection: 'row'}}>
         {this.props.imagenes.map(imagen => (
-          <Foto titulo={this.props.titulo} imagen={imagen} width={fotoWidth} navigation={this.props.navigation}/>
+          <Foto 
+            key={imagen.id} 
+            titulo={this.props.titulo} 
+            imagen={imagen} 
+            width={fotoWidth} 
+            navigation={this.props.navigation}/>
         ))}
       </View>
     )

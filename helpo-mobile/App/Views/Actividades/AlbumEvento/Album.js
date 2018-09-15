@@ -41,7 +41,7 @@ class Album extends React.Component {
     ImagePicker.showImagePicker(options, async (response) => {
       // Paso la data de la imagen a Imagen para subirla a imgur
       const url = await handleImageUpload(response.data)
-      this.props.uploadImagen(url, 20)
+      this.props.uploadImagen(url, this.props.eventoId)
     })
   }
 
@@ -69,6 +69,9 @@ class Album extends React.Component {
     //item debe ser un array de 1-3 imagenes
     return <GridRow titulo={this.props.titulo} imagenes={item} navigation={this.props.navigation}/>
   }
+
+  //Esto es para que la flatList no me joda que faltan keys
+  keyExtractor = (item, index) => index
   
   render() {
     const imagenes = this.props.imagenes
@@ -79,7 +82,10 @@ class Album extends React.Component {
 
         {/* Si no hay imagenes, muestro un mensaje */}
         {this.props.imagenes.length !== 0
-        ? <FlatList data={this.transformImagenesArray(imagenes)} renderItem={this.renderItem} />
+        ? <FlatList 
+            data={this.transformImagenesArray(imagenes)} 
+            keyExtractor={this.keyExtractor}
+            renderItem={this.renderItem} />
         : <Text>{mensaje}</Text>}
 
         {/* Si usuario isOwner, dejo agregar foto */}
@@ -96,7 +102,8 @@ class Album extends React.Component {
 
 const mapStateToProps = state => ({
   isOwner: state.albumEvento.props.isOwner,
-  fetching: state.albumEvento.fetching
+  fetching: state.albumEvento.fetching,
+  eventoId: state.albumEvento.props.eventoId
 })
 
 const mapDispatchToProps = dispatch => ({

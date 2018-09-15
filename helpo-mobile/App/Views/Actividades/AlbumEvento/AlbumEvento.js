@@ -17,7 +17,7 @@ class AlbumEvento extends React.Component {
 
   async componentDidMount() {
     //this.props.fetchImagenes(this.props.eventoId)
-    const eventoId = this.props.eventoId
+    const eventoId = this.props.navigation.state.params.eventoId
     const response = await api.get(`actividades/consulta_eventos/${eventoId}/`)
     const props = await {
       evento: response.data.nombre,

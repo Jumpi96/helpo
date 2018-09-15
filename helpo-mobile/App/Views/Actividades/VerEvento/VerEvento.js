@@ -147,7 +147,7 @@ class VerEvento extends React.Component {
           </ListItem>
           <GoAlbum             
             visible={evento.estado >= 2 ? true : false} // Solo visible si evento comenzo o finalizo
-            eventoId={evento.id}
+            eventoId={this.props.navigation.state.params.evento.id}
             navigation={this.props.navigation}
           />
           <ListItem 

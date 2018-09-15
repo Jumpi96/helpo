@@ -5,18 +5,29 @@ class ModalImagen extends React.Component {
 
   constructor(props) {
     super(props)
-    this.removeImagen = this.removeImagen.bind(this)
+    this.state = {
+      borrando: false
+    }
+    this.removeImagen = this.removeImagen.bind(this)    
   }
 
   //Borra la imagen y cierra modal
   removeImagen() {
-    this.props.remove(this.props.imagen)
-    this.props.toggle()
+    if (this.state.borrando) {
+      this.props.remove(this.props.imagen)
+      this.props.toggle()
+    }
+    else {
+      this.setState({
+        borrando: true
+      })
+    }    
   }
 
   render() {
     
     const imageRemove = (
+    <div>
       <Button 
         style={{ width: 100 }} 
         color='danger'
@@ -24,11 +35,20 @@ class ModalImagen extends React.Component {
         >
           Remover
       </Button>
+      {this.state.borrando 
+      ? <p style={{ color: 'white'}}>
+          Si realmente desea remover la imagen presione nuevamente el boton
+        </p> 
+      : undefined}
+    </div>
     )
 
     return (
-      <Modal isOpen={this.props.open} toggle={this.props.toggle}>     
-        <div style={{ backgroundColor: 'gray' }} >   
+      <Modal 
+        isOpen={this.props.open} 
+        toggle={this.props.toggle} 
+        onClosed={() => this.setState({ borrando: false })}>     
+        <div style={{ backgroundColor: 'black' }} >   
           {/* Si es el owner del album habilito para remover la imagen */}
           {this.props.isOwner ? imageRemove : undefined}
           <img

@@ -8,11 +8,16 @@ import api from '../../../api'
 eventoId
 */
 
+/*
+Busca toda la informacion desde la Api, prepara las props
+y se las pasa al componente Album que renderiza el album en si
+*/
+
 class AlbumEvento extends React.Component {
 
   async componentDidMount() {
     //this.props.fetchImagenes(this.props.eventoId)
-    const eventoId = 19
+    const eventoId = this.props.eventoId
     const response = await api.get(`actividades/consulta_eventos/${eventoId}/`)
     const props = await {
       evento: response.data.nombre,
@@ -22,7 +27,7 @@ class AlbumEvento extends React.Component {
       ownerId: this.props.ownerId // #Negrada by Gonza
     }
     this.props.uploadProps(props)
-    this.props.fetchImagenes(this.props.eventoId)
+    this.props.fetchImagenes(eventoId)
   }
 
   render() {

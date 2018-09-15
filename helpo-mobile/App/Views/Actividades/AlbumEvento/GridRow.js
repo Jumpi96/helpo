@@ -7,6 +7,11 @@ imagenes [1-3]
 titulo
 */
 
+/*
+Renderiza una de las filas en la grilla de imagenes
+del album (Filas de 1 a 3 imagenes)
+*/
+
 class GridRow extends React.Component {
   render() {
     const deviceWidth = Dimensions.get('window').width;

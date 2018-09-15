@@ -8,6 +8,12 @@ height(*)
 titulo
  */
 
+ /*
+ Este componenente renderiza la Foto/Boton
+ en el componente GridRow, y cuando se presiona te 
+ lleva al detalle de la imagen
+ */
+
 class Foto extends React.Component {
 
   render() {

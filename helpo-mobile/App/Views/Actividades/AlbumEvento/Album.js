@@ -17,6 +17,13 @@ uploadImagen
 removeImagen(*)
 */
 
+/*
+Recibe las imagenes, y dependiendo cuantas sean, 
+renderiza las filas de la grilla del album.
+Tambien muestra el boton para agregar imagenes si el
+ID del usuario logeado y el de la ong dueña del evento coincide
+*/
+
 class Album extends React.Component {
 
   constructor(props) {

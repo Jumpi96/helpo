@@ -11,6 +11,11 @@ removeImagen
 titulo
 */
 
+/*
+Muestra una sola imagen y da opcion de removerla del
+album si el usuario logeado es el dueño del evento
+*/
+
 class DetalleImagen extends React.Component {
 
   constructor(props) {
@@ -24,11 +29,11 @@ class DetalleImagen extends React.Component {
   }
 
   openRemoveImagenModal() {
+    // Abre el modal
     this.setState({
       modalVisible: true
     })
   }
-  // () => {this.props.removeImagen(imagen); goBack()}
   render() {
     const goBack = () => this.props.navigation.goBack()
     const imagen = this.props.navigation.state.params.imagen

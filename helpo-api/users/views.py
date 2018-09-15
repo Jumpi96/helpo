@@ -4,11 +4,13 @@ from rest_framework import generics, permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.generics import ListCreateAPIView
+from rest_framework.generics import ListAPIView
+from rest_framework.generics import DestroyAPIView
 from rest_framework.generics import RetrieveUpdateDestroyAPIView, RetrieveUpdateAPIView
 from knox.models import AuthToken
 from django.contrib.auth import get_user_model
-from users.models import RubroOrganizacion, OrganizacionProfile, VoluntarioProfile, EmpresaProfile, AppValues, User, DeviceID
-from users.serializers import CreateUserSerializer, UserSerializer, LoginUserSerializer, RubroOrganizacionSerializer, OrganizacionProfileSerializer, VoluntarioProfileSerializer, EmpresaProfileSerializer, VerificationMailSerializer, AppValuesSerializer, DeviceIDSerializer
+from users.models import RubroOrganizacion, OrganizacionProfile, VoluntarioProfile, EmpresaProfile, AppValues, User, DeviceID, Suscripcion
+from users.serializers import CreateUserSerializer, UserSerializer, LoginUserSerializer, RubroOrganizacionSerializer, OrganizacionProfileSerializer, VoluntarioProfileSerializer, EmpresaProfileSerializer, VerificationMailSerializer, AppValuesSerializer, DeviceIDSerializer, SuscripcionSerializer, SuscripcionSerializerLista
 import time
 import requests
 
@@ -165,3 +167,28 @@ class DeviceIDReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     queryset = DeviceID.objects.all()
     serializer_class = DeviceIDSerializer
     lookup_field = 'player_id'
+
+
+class SuscripcionListCreateView(ListCreateAPIView):
+    """
+    API endpoint para crear o listar todas las suscripciones de un usuario
+    """
+    queryset = Suscripcion.objects.all()
+    serializer_class = SuscripcionSerializer
+    lookup_field = 'id'
+
+class SuscripcionDestroyView(DestroyAPIView):
+    """
+    API endpoint para borrar una suscripcion en particular
+    """
+    queryset = Suscripcion.objects.all()
+    serializer_class = SuscripcionSerializer
+    lookup_field = 'id'
+
+class SuscripcionListUserView(ListAPIView):
+    """
+    API endpoint para listar todos las suscripciones de un usuario
+    """
+    queryset = Suscripcion.objects.all()
+    serializer_class = SuscripcionSerializerLista
+    lookup_field = 'usuario'

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import authenticate
-from users.models import User, RubroOrganizacion, OrganizacionProfile, Ubicacion, Imagen, VoluntarioProfile, EmpresaProfile, UserVerification, AppValues, DeviceID
+from users.models import User, RubroOrganizacion, OrganizacionProfile, Ubicacion, Imagen, VoluntarioProfile, EmpresaProfile, UserVerification, AppValues, DeviceID, Suscripcion
 from django.core.exceptions import ObjectDoesNotExist
 
 
@@ -264,3 +264,19 @@ class DeviceIDSerializer(serializers.ModelSerializer):
     class Meta:
         model = DeviceID
         fields = ('player_id', 'email')
+
+
+class SuscripcionSerializer(serializers.ModelSerializer):   
+
+    class Meta:
+        model = Suscripcion
+        fields = ('id', 'usuario', 'organizacion')
+
+class SuscripcionSerializerLista(serializers.ModelSerializer):   
+
+    usuario = UserSerializer()
+    organizacion = UserSerializer()
+
+    class Meta:
+        model = Suscripcion
+        fields = ('id', 'usuario', 'organizacion')

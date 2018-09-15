@@ -27,6 +27,7 @@ class EventoView extends React.Component {
     this.confirmDeleteNecesidad = this.confirmDeleteNecesidad.bind(this);
     this.toggleConsultarColaboraciones = this.toggleConsultarColaboraciones.bind(this);
     this.toggleMensajes = this.toggleMensajes.bind(this);
+    this.togglePatrocinadores = this.togglePatrocinadores.bind(this);
   }
 
   toggleEdit() {
@@ -82,6 +83,13 @@ class EventoView extends React.Component {
   toggleMensajes() {
     this.props.history.push({
       pathname: '/actividades/mensajes',
+      search: '?evento=' + this.state.evento.id,
+    });
+  }
+
+  togglePatrocinadores() {
+    this.props.history.push({
+      pathname: '/actividades/patrocinadores',
       search: '?evento=' + this.state.evento.id,
     });
   }
@@ -198,6 +206,12 @@ class EventoView extends React.Component {
               className="btn btn-warning"
             >
               Ver mensajes
+            </button>
+            <button
+              onClick={this.togglePatrocinadores}
+              className="btn btn-warning"
+            >
+              Ver patrocinadores
             </button>
           </div>
           <div className="form-group">

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, CardHeader, CardBody, Table } from 'reactstrap';
 import { connect } from "react-redux";
+import { Link } from 'react-router-dom';
 import moment from 'moment';
 import api from '../../../api';
 import './Eventos.css';
@@ -36,6 +37,43 @@ class ConsultarEventosView extends React.Component {
 
   componentDidMount() {
     this.loadEvento();
+  }
+
+  getPropuestas(propuestas) {
+    const listaPropuestas = [];
+    propuestas = this.shuffle(propuestas);
+    propuestas.forEach((p) => {
+      listaPropuestas.push(
+        <div className="row">
+          <img
+            src={getImagen(p.empresa.avatar)}
+            alt="ONG"
+            style={{ width: '50px', height: '50px' }}
+          />
+          <Link to={"/perfil/" + p.empresa.id} className="nombreEmpresa">
+            <a >{p.empresa.nombre}</a>
+          </Link>
+        </div>
+      )
+    })
+    return (
+      <div className="row">
+        <div className="form-group col-md-3">
+          <b className="float-right">Empresas patrocinadoras</b>
+        </div>
+        <div className="form-group col-md-9">
+          {listaPropuestas}
+        </div>
+      </div>
+    )
+  }
+
+  shuffle(a) {
+    for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
   }
 
   toggleColaborar() {
@@ -141,6 +179,7 @@ class ConsultarEventosView extends React.Component {
                 </div>
               ) : undefined
               }
+              {evento.propuestas.length > 0 && this.getPropuestas(evento.propuestas)}
               {listaNecesidades ? (
                 <div className="row">
                   <div className="form-group col-md-3">

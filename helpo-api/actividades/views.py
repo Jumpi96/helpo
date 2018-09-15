@@ -496,3 +496,12 @@ class PropuestaEmpresaCreateReadView(ListCreateAPIView):
         queryset = Propuesta.objects.all()
         queryset = queryset.filter(empresa_id=get_token_user(self.request))
         return queryset
+
+class PropuestaReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
+    """
+    API endpoint para leer, actualizar o eliminar una propuesta
+    """
+    permission_classes = [permissions.IsAuthenticated, ]
+    queryset = Propuesta.objects.all()
+    serializer_class = PropuestaSerializer
+    lookup_field = 'id'

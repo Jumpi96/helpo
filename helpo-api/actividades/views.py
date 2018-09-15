@@ -233,6 +233,7 @@ class ConsultaEventosOrganizacionCreateReadView(ListCreateAPIView):
         queryset = Evento.objects.all()
         if 'organizacion' in self.request.query_params:
             queryset = queryset.filter(organizacion_id=self.request.query_params.get('organizacion'))
+            queryset = queryset.filter(id_in=get_eventos_empresa(self.request.query_params.get('empresa')))
         else:
             queryset = queryset.filter(fecha_hora_inicio__gte=datetime.today())
         if 'fecha_desde' in self.request.query_params:
@@ -264,6 +265,11 @@ class ConsultaEventosOrganizacionCreateReadView(ListCreateAPIView):
             if calc_distance_locations(latitud, longitud, e.ubicacion.latitud, e.ubicacion.longitud) <= kms
         ]
         return ids
+    
+    def get_eventos_empresa(self, empresa):
+        eventos = []
+        propuestas = Propuesta.objects.filter(empresa_id=empresa, aceptado=1)
+        return propuestas
     
     def get_eventos(self, params):
         eventos = []

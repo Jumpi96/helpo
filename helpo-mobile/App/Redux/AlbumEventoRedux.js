@@ -20,7 +20,7 @@ export default Creators
 
 export const INITIAL_STATE = Immutable({
   imagenes: [],
-  fetching: null,
+  fetching: true,
   error: null,
   props: {}
 })

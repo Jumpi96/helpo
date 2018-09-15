@@ -227,6 +227,7 @@ class ConsultaVoluntarioSerializer(serializers.ModelSerializer):
         fields = ('id', 'descripcion', 'cantidad', 'funcion', 'funcion_id', 'participaciones')
 
 class PropuestaSerializer(serializers.ModelSerializer):
+    empresa = UserSerializer(read_only=True)
     class Meta:
         model = Propuesta
         fields = '__all__'
@@ -251,12 +252,13 @@ class ConsultaEventoSerializer(serializers.ModelSerializer):
     voluntarios = ConsultaVoluntarioSerializer(many=True)
     comentarios = ComentarioSerializer(many=True)
     organizacion = UserSerializer()
+    propuestas = PropuestaSerializer(many=True)
 
     class Meta:
         model = Evento
         fields = ('id', 'nombre', 'descripcion', 'fecha_hora_inicio',
             'fecha_hora_fin', 'rubro', 'rubro_id', 'ubicacion', 'contacto', 'organizacion_id',
-            'necesidades', 'organizacion', 'voluntarios', 'comentarios', 'estado')
+            'necesidades', 'organizacion', 'voluntarios', 'comentarios', 'estado', 'propuestas')
 
 class EventoImagenSerializer(serializers.ModelSerializer):
 

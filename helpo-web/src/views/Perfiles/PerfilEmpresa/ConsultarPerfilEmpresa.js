@@ -105,7 +105,9 @@ class ConsultarPerfilEmpresa extends Component {
   }
 
   getLinkVerEventos() {
-    return '/actividades/consultar-eventos?empresa=' + this.props.data.usuario.id;
+    if (this.props.data.usuario) {
+      return '/actividades/consultar-eventos?empresa=' + this.props.data.usuario.id;
+    }
   }
 
   render() {

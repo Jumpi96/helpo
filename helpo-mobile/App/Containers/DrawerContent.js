@@ -49,13 +49,7 @@ const itemsOrg = [
 	  'key': 'MisEventos',
 	  'routeName': 'MisEventos',
 	  'name': 'Mis eventos',
-	},
-	//#SACAR
-	{
-		'key': 'Album',
-		'routeName': 'AlbumEvento',
-		'name': 'AlbumEvento'
-	},
+	},	
 	{
 	  'key': 'Configuracion',
 	  'routeName': 'Configuracion',

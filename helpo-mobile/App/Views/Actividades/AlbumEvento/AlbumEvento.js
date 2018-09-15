@@ -22,7 +22,7 @@ class AlbumEvento extends React.Component {
       ownerId: this.props.ownerId // #Negrada by Gonza
     }
     this.props.uploadProps(props)
-    this.props.fetchImagenes(20)
+    this.props.fetchImagenes(this.props.eventoId)
   }
 
   render() {

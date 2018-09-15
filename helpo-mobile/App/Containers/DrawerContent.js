@@ -49,7 +49,7 @@ const itemsOrg = [
 	  'key': 'MisEventos',
 	  'routeName': 'MisEventos',
 	  'name': 'Mis eventos',
-	},
+	},	
 	{
 	  'key': 'Configuracion',
 	  'routeName': 'Configuracion',

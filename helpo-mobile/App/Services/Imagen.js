@@ -1,7 +1,19 @@
 import api from "../api"
 const axios = require('axios')
-import { AsyncStorage } from 'react-native';
+import { AsyncStorage } from 'react-native'
 
+
+// Pide access_token a la api y lo guarda en localStorage
+// Devuelve true si tuvo exito y false si fallo
+async function refreshToken() {    
+  try {
+    const response = await api.get('imgurToken/')
+    AsyncStorage.setItem('imgur_access_token', response.data.value)
+    return true
+  } catch (error) {
+    return false 
+  }    
+}
 
 /*
   Sube una imagen codificada en base64 a Imgur,
@@ -10,14 +22,14 @@ import { AsyncStorage } from 'react-native';
   Si retorna 'error' hubo un error y no se completo la funcion con exito
 */
 async function uploadImage(encodedimg) {
-  let access_token = AsyncStorage.getItem('imgur_access_token')
+  let access_token = await AsyncStorage.getItem('imgur_access_token')
   let url = ''
+  if ( access_token === "null" ) {
+     await refreshToken()
+     access_token = await AsyncStorage.getItem('imgur_access_token')
+  }      
 
-  if ( access_token == null ) {
-    refreshToken()
-  }
-  
-  await axios({
+  const axiosConf = {
     method: 'post',
     url: 'https://api.imgur.com/3/image',
     data: {
@@ -26,39 +38,47 @@ async function uploadImage(encodedimg) {
     headers: {
       Authorization: `Bearer ${access_token}`
     }
-  })
-  .then( response => { 
-    if (response.status === 200) {
+  }
+  try {
+    const response = await axios(axiosConf)
+    const status = response.status
+    if (status === 200) {
       url = response.data.data.link
     }
-    else if ( response.status === 400 && response.data.error.code === 500 ) {
-      AsyncStorage.setItem('imgur_access_token', null)
-      url = 'recall'
-    }
-    else {      
+    else {
       url = 'errorUncatched'
     }
-  })
-  .catch( error => {
-    if ( error.response.status === 400 && error.response.data.error.code === 500 ) {
-      AsyncStorage.setItem('imgur_access_token', null)
+  }
+  catch (error) {
+    if (error.response.status === 403) {
+      await AsyncStorage.setItem('imgur_access_token', "null")
       url = 'recall'
     }
-    else { url = 'errorCatched'}
-  })
+    else {
+      url = 'errorCatched: '+ error
+    }
+  }
   return url
 }
 
-function refreshToken() {
-  api.get('imgurToken/')
-  .then(res => {    
-    AsyncStorage.setItem('imgur_access_token', res.data.value)
-  })
+async function handleImageUpload(image) {
+
+  // El picker de imagenes te lo da ya encodeado bien
+  const encondedAvatar = image
+
+  let avatar_url = "URL NO ASIGNADA"
+  avatar_url = await uploadImage(encondedAvatar)
+  if (avatar_url === 'recall') {
+    avatar_url = await uploadImage(encondedAvatar)
+  }
+
+  return avatar_url
 }
+
 
 function getImagen(url) {
   return url
 }
 
 
-export { uploadImage, getImagen }
+export { uploadImage, getImagen, handleImageUpload }

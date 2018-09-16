@@ -59,6 +59,22 @@ def render_was_full_colaboracion_email(necesidad_material):
     return render_mail('was-full-colaboracion-email.html', dict_context)
 
 
+def render_inicio_evento_email(evento):
+    dict_context = dict(
+        evento=evento,
+        action_url="https://www.helpo.com.ar/#/redirect/evento?id=" + str(evento.id)
+    )
+    return render_mail('inicio-evento-email.html', dict_context)
+
+
+def render_fin_evento_email(evento):
+    dict_context = dict(
+        evento=evento,
+        action_url="https://www.helpo.com.ar/#/redirect/evento?id=" + str(evento.id)
+    )
+    return render_mail('fin-evento-email.html', dict_context)
+
+
 def render_mail(html_template, dict_context):
     template = loader.get_template(html_template)
     html_content = template.render(dict_context)

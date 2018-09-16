@@ -139,7 +139,7 @@ class EventoView extends React.Component {
         return (
           <button disabled className="btn btn-success">Propuesta aceptada</button>
         );
-      case 2:
+      case -1:
         return (
           <button disabled className="btn btn-danger">Propuesta rechazada</button>
         );
@@ -152,10 +152,10 @@ class EventoView extends React.Component {
     if (propuesta.comentario !== null) {
       return (
         <div className="row">
-          <div className="form-group col-md-4">
+          <div className="form-group col-md-5">
             <b className="float-right">Comentario de la ONG</b>
           </div>
-          <div className="form-group col-md-8">
+          <div className="form-group col-md-7">
             <p>{propuesta.comentario}</p>
           </div>
         </div>
@@ -182,18 +182,18 @@ class EventoView extends React.Component {
             </div>
           </div>
           <div className="row">
-            <div className="form-group col-md-4">
+            <div className="form-group col-md-5">
               <b className="float-right">Fecha de propuesta</b>
             </div>
-            <div className="form-group col-md-8">
+            <div className="form-group col-md-7">
               <p>{moment(propuesta.created).format('DD/MM/YYYY HH:mm')}</p>
             </div>
           </div>
           <div className="row">
-            <div className="form-group col-md-4">
+            <div className="form-group col-md-5">
               <b className="float-right" name="estado">Estado</b>
             </div>
-            <div className="form-group col-md-8">
+            <div className="form-group col-md-7">
               {this.getBotonEstado()}
             </div>
           </div>

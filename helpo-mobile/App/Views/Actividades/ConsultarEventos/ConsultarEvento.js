@@ -119,18 +119,20 @@ class ConsultaEvento extends React.Component {
     const listaPropuestas = [];
     propuestas = this.shuffle(propuestas);
     propuestas.forEach((p) => {
-      listaPropuestas.push(
-        <ListItem thumbnail key={p.id} onPress={() => this.togglePerfil(p.empresa.id)}>
-          <Left>
-            <Thumbnail small source={{ uri: p.empresa.avatar }} />
-          </Left>
-          <Body>
-            <Text>
-              {p.empresa.nombre}
-            </Text>
-          </Body>
-        </ListItem>
-      );
+      if (p.aceptado === 1) {
+        listaPropuestas.push(
+          <ListItem thumbnail key={p.id} onPress={() => this.togglePerfil(p.empresa.id)}>
+            <Left>
+              <Thumbnail small source={{ uri: p.empresa.avatar }} />
+            </Left>
+            <Body>
+              <Text>
+                {p.empresa.nombre}
+              </Text>
+            </Body>
+          </ListItem>
+        );
+      }
     })
     return (
       <View>

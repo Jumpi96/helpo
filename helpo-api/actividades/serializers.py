@@ -267,6 +267,7 @@ class PropuestaSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         new_instance = super().update(instance, validated_data)
         response_propuesta(new_instance)
+        print (new_instance.aceptado)
         if new_instance.aceptado == -1:
             deny_propuesta(new_instance)
         return new_instance

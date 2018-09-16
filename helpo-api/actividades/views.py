@@ -17,7 +17,7 @@ from actividades.serializers import EventoSerializer, RubroEventoSerializer, \
     CategoriaRecursoSerializer, RecursoSerializer, NecesidadSerializer, ContactoSerializer, \
     ConsultaEventoSerializer, VoluntarioSerializer, FuncionSerializer, ConsultaNecesidadesSerializer, \
     ParticipacionSerializer, ColaboracionSerializer, ComentarioSerializer, MensajeSerializer, EventoImagenSerializer, \
-    PropuestaSerializer
+    PropuestaSerializer, ConsultaAllNecesidadesSerializer
 from actividades.services import create_propuesta
 from common.functions import get_token_user, calc_distance_locations
 

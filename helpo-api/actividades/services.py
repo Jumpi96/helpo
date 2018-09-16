@@ -179,9 +179,11 @@ def deny_propuesta(propuesta):
             colaborador_id=propuesta.empresa.id)
     for c in colaboraciones:
         c.vigente = False
+        c.save()
     participaciones = Participacion.objects.filter(
         necesidad_voluntario__evento_id=propuesta.evento.id).filter(
             colaborador_id=propuesta.empresa.id)
     for p in participaciones:
         p.vigente = False
+        c.save()
 

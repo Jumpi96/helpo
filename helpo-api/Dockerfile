@@ -10,7 +10,6 @@ RUN pipenv install --dev --system
 ADD . /code/
 # cron installation for periodic command scheduler
 RUN apt-get update && apt-get install -y --no-install-recommends cron \
-    && rm -rf /var/lib/apt/lists/* \
-    && cat cronjob >> /etc/crontab
+    && rm -rf /var/lib/apt/lists/* && crontab cronjob
 EXPOSE 8000
 ENTRYPOINT ["./entrypoint.sh"]

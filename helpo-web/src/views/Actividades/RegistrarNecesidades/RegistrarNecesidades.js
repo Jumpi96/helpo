@@ -205,19 +205,19 @@ class RegistrarNecesidades extends Component {
 
   cleanNecesidad() {
     this.setState({
-      descripcion_necesidad: undefined,
-      cantidad_necesidad: undefined,
-      recurso_id: undefined,
-      necesidad: undefined
+      descripcion_necesidad: '',
+      cantidad_necesidad: '',
+      recurso_id: '',
+      necesidad: ''
     });
   }
 
   cleanVoluntario() {
     this.setState({
-      descripcion_voluntario: undefined,
-      cantidad_voluntario: undefined,
-      funcion_id: undefined,
-      voluntario: undefined
+      descripcion_voluntario: '',
+      cantidad_voluntario: '',
+      funcion_id: '',
+      voluntario: ''
     });
   }
 
@@ -410,6 +410,7 @@ class RegistrarNecesidades extends Component {
                     <input type="text" 
                       name="descripcion_voluntario" className="form-control"
                       placeholder="Descripción"
+                      ref="descripcion"
                       value={this.state.descripcion_voluntario} 
                       onChange={this.handleInputChange}
                     />

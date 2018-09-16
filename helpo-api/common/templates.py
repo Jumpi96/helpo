@@ -31,6 +31,13 @@ def render_mensaje_evento(evento, mensaje):
     return render_mail('mensaje-evento.html', dict_context)
 
 
+def render_full_participacion_email(necesidad_voluntario):
+    dict_context = dict(
+        voluntario=necesidad_voluntario
+    )
+    return render_mail('full-participacion-email.html', dict_context)
+
+
 def render_mail(html_template, dict_context):
     template = loader.get_template(html_template)
     html_content = template.render(dict_context)

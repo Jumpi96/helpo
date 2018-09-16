@@ -2,7 +2,7 @@ from rest_framework import serializers
 from actividades.models import Evento, RubroEvento, Ubicacion, CategoriaRecurso, \
     Recurso, Necesidad, Contacto, Funcion, Voluntario, Participacion, Colaboracion, Comentario, Mensaje, EventoImagen, \
     Propuesta
-from actividades.services import send_mail_mensaje_evento, send_previous_mail_evento
+from actividades.services import send_mail_mensaje_evento, send_previous_mail_evento, send_full_participacion_mail
 from users.serializers import UserSerializer, ColaboradorInfoSerializer
 from users.models import User
 
@@ -210,6 +210,8 @@ class ParticipacionSerializer(serializers.ModelSerializer):
             colaborador_id = validated_data['colaborador_id']
             participacion = Participacion.objects.create(necesidad_voluntario_id=necesidad_voluntario.id, vigente=True, **validated_data)
             send_previous_mail_evento(necesidad_voluntario.evento_id, colaborador_id)
+            if (suma_participantes + cantidad) == necesidad_voluntario.cantidad:
+                send_full_participacion_mail(necesidad_voluntario)
             return participacion
         else:
             raise serializers.ValidationError()

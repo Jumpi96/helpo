@@ -4,7 +4,7 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <title>Helpo: participaci&oacute;n</title>
+  <title>Helpo: participaci&oacute;n completa</title>
   <style type="text/css" rel="stylesheet" media="all">
     /* Base ------------------------------ */
     *:not(br):not(tr):not(html) {
@@ -182,6 +182,7 @@
 
     /*Media Queries ------------------------------ */
     @media only screen and (max-width: 600px) {
+
       .email-body_inner,
       .email-footer {
         width: 100% !important;
@@ -204,8 +205,8 @@
           <!-- Logo -->
           <tr>
             <td align="center" class="email-masthead">
-              <img class="email-masthead_logo" src="https://s3-us-west-2.amazonaws.com/helpo-aws/logo_principal.png" alt="Helpo" width="120"
-                height="140">
+              <img class="email-masthead_logo" src="https://s3-us-west-2.amazonaws.com/helpo-aws/logo_principal.png"
+                alt="Helpo" width="120" height="140">
             </td>
           </tr>
           <!-- Email Body -->
@@ -215,8 +216,9 @@
                 <!-- Body content -->
                 <tr>
                   <td class="content-cell">
-                    <h1>Notificaci&oacute;n de su participaci&oacute;n en Helpo</h1>
-                    <p>{{titulo}}</p>
+                    <h1>Necesidad cubierta en su evento de Helpo</h1>
+                    <p>Se ha alcanzado la cantidad de voluntarios requeridos para la funci&oacute;n
+                      {{voluntario.funcion.nombre}} en su evento {{voluntario.evento.nombre}}.</p>
                     <!-- Action -->
                     <table class="body-action" align="center" width="100%" cellpadding="0" cellspacing="0">
                       <tr>
@@ -224,31 +226,33 @@
                           <div>
                             <h2>Datos del evento</h2>
                             <ul style="list-style-type:disc">
-                              <li>Nombre: {{participacion.necesidad_voluntario.evento.nombre}}</li>
-                              <li>Organizaci&oacute;n: {{participacion.necesidad_voluntario.evento.organizacion.nombre}}</li>
-                              <li>Descripci&oacute;n: {{participacion.necesidad_voluntario.evento.descripcion|default:"Sin descripci&oacute;n"}}</li>
+                              <li>Nombre: {{voluntario.evento.nombre}}</li>
+                              <li>Organizaci&oacute;n: {{voluntario.evento.organizacion.nombre}}</li>
+                              <li>Descripci&oacute;n: {{voluntario.evento.descripcion|default:"Sin
+                                descripci&oacute;n"}}</li>
                               <li>Fecha:</li>
                               <ul style="list-style-type:circle">
-                                <li>Inicio: {{participacion.necesidad_voluntario.evento.fecha_hora_inicio}}</li>
-                                <li>Fin: {{participacion.necesidad_voluntario.evento.fecha_hora_fin}}</li>
+                                <li>Inicio: {{voluntario.evento.fecha_hora_inicio}}</li>
+                                <li>Fin: {{voluntario.evento.fecha_hora_fin}}</li>
                               </ul>
                               <li>Ubicaci&oacute;n:</li>
                               <ul style="list-style-type:circle">
-                                <li>Latitud: {{evento.ubicacion.latitud|default:"No definida"}}</li>
-                                <li>Longitud: {{evento.ubicacion.longitud|default:"No definida"}}</li>
-                                <li>Notas: {{evento.ubicacion.notas|default:"Sin notas"}}</li>
+                                <li>Latitud: {{voluntario.evento.ubicacion.latitud|default:"No definida"}}</li>
+                                <li>Longitud: {{voluntario.evento.ubicacion.longitud|default:"No definida"}}</li>
+                                <li>Notas: {{voluntario.evento.ubicacion.notas|default:"Sin notas"}}</li>
                               </ul>
                             </ul>
-                            <h2>Datos de su participaci&oacute;n</h2>
+                            <h2>Datos de la necesidad cubierta</h2>
                             <ul style="list-style-type:disc">
-                              <li>Funci&oacute;n: {{participacion.necesidad_voluntario.funcion.nombre}}</li>
-                              <li>Descripci&oacute;n: {{participacion.necesidad_voluntario.descripcion|default:"Sin descripci&oacute;n"}}</li>
+                              <li>Funci&oacute;n: {{voluntario.funcion.nombre}}</li>
+                              <li>Cantidad: {{voluntario.cantidad}}</li>
+                              <li>Descripci&oacute;n: {{voluntario.descripcion|default:"Sin descripci&oacute;n"}}</li>
                             </ul>
                           </div>
                         </td>
                       </tr>
                     </table>
-                    <p>Gracias,<br>Equipo Helpo</p>
+                    <p>Saludos,<br>Equipo Helpo</p>
                     <!-- Sub copy -->
                     <table class="body-sub">
                       <tr>

@@ -1,6 +1,6 @@
 from actividades.models import Evento, Necesidad, Colaboracion, Voluntario, Participacion, LogMensaje, Mensaje, Propuesta
 from common.notifications import send_mail_to_list, send_mail_to
-from common.templates import render_mensaje_evento
+from common.templates import render_mensaje_evento, render_full_participacion_email
 from users.models import User
 
 
@@ -50,6 +50,12 @@ def send_previous_mail_evento(evento_id, colaborador_id):
                          )
             LogMensaje.objects.create(
                 usuario_id=colaborador_id, mensaje_id=mensaje.id)
+
+
+def send_full_participacion_mail(necesidad_voluntario):
+    organizacion_email = necesidad_voluntario.evento.organizacion.email
+    send_mail_to(organizacion_email, "Necesidad cubierta en Helpo",
+                 render_full_participacion_email(necesidad_voluntario))
 
 
 def notificar_cambio_evento(request_data):
@@ -117,12 +123,16 @@ def _send_participacion_email(participacion, titulo_email):
     send_mail_to(colaborador_mail,
                  html_subject=subject_utf, html_content=content)
 
+
 def create_propuesta_voluntario(user, necesidad_voluntario):
     evento_id = Voluntario.objects.get(id=necesidad_voluntario).evento_id
     if len(Propuesta.objects.filter(evento_id=evento_id).filter(empresa_id=user.id)) == 0:
-        Propuesta.objects.create(evento_id=evento_id, empresa_id=user.id, aceptado=0)
+        Propuesta.objects.create(
+            evento_id=evento_id, empresa_id=user.id, aceptado=0)
+
 
 def create_propuesta_necesidad(user, necesidad_material):
     evento_id = Necesidad.objects.get(id=necesidad_material).evento_id
     if len(Propuesta.objects.filter(evento_id=evento_id).filter(empresa_id=user.id)) == 0:
-        Propuesta.objects.create(evento_id=evento_id, empresa_id=user.id, aceptado=0)
+        Propuesta.objects.create(
+            evento_id=evento_id, empresa_id=user.id, aceptado=0)

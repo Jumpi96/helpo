@@ -320,7 +320,7 @@ class ColaboracionCreateReadView(ListCreateAPIView):
         user = User.objects.get(id=get_token_user(self.request))
         if serializer.is_valid():
             if user.user_type == 3:
-                create_propuesta(user, request_data['necesidad_material_id'], False)
+                create_propuesta(user, request.data['necesidad_material_id'], False)
             serializer.save(colaborador_id=user.id)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -23,14 +23,16 @@ def get_participantes_evento(evento_id):
     necesidades = Necesidad.objects.filter(evento_id=evento_id)
     for necesidad in necesidades:
         colaboraciones = Colaboracion.objects.filter(
-            necesidad_material_id=necesidad.id)
+            necesidad_material_id=necesidad.id, vigente=True
+        )
         for colaboracion in colaboraciones:
             if colaboracion.colaborador_id not in participantes:
                 participantes.append(colaboracion.colaborador_id)
     voluntarios = Voluntario.objects.filter(evento_id=evento_id)
     for voluntario in voluntarios:
         participaciones = Participacion.objects.filter(
-            necesidad_voluntario_id=voluntario.id)
+            necesidad_voluntario_id=voluntario.id, vigente=True
+        )
         for participacion in participaciones:
             if participacion.colaborador_id not in participantes:
                 participantes.append(participacion.colaborador_id)
@@ -81,9 +83,9 @@ def _get_usuarios(evento):
     necesidades = Necesidad.objects.filter(evento=evento['id']).values('id')
     voluntarios = Voluntario.objects.filter(evento=evento['id']).values('id')
     colaboraciones = Colaboracion.objects.filter(
-        necesidad_material__in=necesidades).values('colaborador')
+        necesidad_material__in=necesidades, vigente=True).values('colaborador')
     participaciones = Participacion.objects.filter(
-        necesidad_voluntario__in=voluntarios).values('colaborador')
+        necesidad_voluntario__in=voluntarios, vigente=True).values('colaborador')
     usuarios_1 = [colaboracion['colaborador']
                   for colaboracion in colaboraciones]
     usuarios_2 = [participacion['colaborador']
@@ -169,3 +171,17 @@ def response_propuesta(propuesta):
         _send_push_response_propuesta([propuesta.empresa.id], propuesta)
     except:
         pass
+
+
+def deny_propuesta(propuesta):
+    colaboraciones = Colaboracion.objects.filter(
+        necesidad_material__evento_id=propuesta.evento.id).filter(
+            colaborador_id=propuesta.empresa.id)
+    for c in colaboraciones:
+        c.vigente = False
+    participaciones = Participacion.objects.filter(
+        necesidad_voluntario__evento_id=propuesta.evento.id).filter(
+            colaborador_id=propuesta.empresa.id)
+    for p in participaciones:
+        p.vigente = False
+

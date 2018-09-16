@@ -2,7 +2,7 @@ from rest_framework import serializers
 from actividades.models import Evento, RubroEvento, Ubicacion, CategoriaRecurso, \
     Recurso, Necesidad, Contacto, Funcion, Voluntario, Participacion, Colaboracion, Comentario, Mensaje, EventoImagen, \
     Propuesta
-from actividades.services import send_mail_mensaje_evento, send_previous_mail_evento, response_propuesta
+from actividades.services import send_mail_mensaje_evento, send_previous_mail_evento, response_propuesta, deny_propuesta
 from users.serializers import UserSerializer, ColaboradorInfoSerializer
 from users.models import User
 
@@ -138,7 +138,7 @@ class ColaboracionSerializer(serializers.ModelSerializer):
     
     def create(self, validated_data):
         necesidad_material = validated_data.get('necesidad_material')
-        colaboraciones = Colaboracion.objects.filter(necesidad_material_id=necesidad_material.id)
+        colaboraciones = Colaboracion.objects.filter(necesidad_material_id=necesidad_material.id, vigente=True)
         cantidad = validated_data.get('cantidad')
         suma_colaboraciones = 0
         for c in colaboraciones:
@@ -179,11 +179,16 @@ class ColaboracionSerializer(serializers.ModelSerializer):
 
 
 class ConsultaNecesidadSerializer(serializers.ModelSerializer):
-    colaboraciones = ColaboracionSerializer(many=True)
+    colaboraciones = serializers.SerializerMethodField()
     recurso = RecursoSerializer(read_only=True)
     recurso_id = serializers.PrimaryKeyRelatedField(
         queryset=Recurso.objects.all(), source='recurso', write_only=True
     )
+
+    def get_colaboraciones(self, necesidad):
+        queryset = Colaboracion.objects.filter(necesidad_material=necesidad, vigente=True)
+        serializer = ColaboracionSerializer(instance=queryset, many=True)
+        return serializer.data
 
     class Meta:
         model = Necesidad
@@ -201,7 +206,7 @@ class ParticipacionSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         necesidad_voluntario = validated_data.get('necesidad_voluntario')
-        participaciones = Participacion.objects.filter(necesidad_voluntario_id=necesidad_voluntario.id)
+        participaciones = Participacion.objects.filter(necesidad_voluntario_id=necesidad_voluntario.id, vigente=True)
         cantidad = validated_data.get('cantidad')
         suma_participantes = 0
         for p in participaciones:
@@ -216,11 +221,16 @@ class ParticipacionSerializer(serializers.ModelSerializer):
 
 
 class ConsultaVoluntarioSerializer(serializers.ModelSerializer):
-    participaciones = ParticipacionSerializer(many=True)
+    participaciones = serializers.SerializerMethodField()
     funcion = FuncionSerializer(read_only=True)
     funcion_id = serializers.PrimaryKeyRelatedField(
         queryset=Funcion.objects.all(), source='funcion', write_only=True
     )
+
+    def get_participaciones(self, voluntario):
+        queryset = Participacion.objects.filter(necesidad_voluntario=voluntario, vigente=True)
+        serializer = ParticipacionSerializer(instance=queryset, many=True)
+        return serializer.data
 
     class Meta:
         model = Voluntario
@@ -235,6 +245,8 @@ class PropuestaSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         new_instance = super().update(instance, validated_data)
         response_propuesta(new_instance)
+        if new_instance.aceptado == -1:
+            deny_propuesta(new_instance)
         return new_instance
 
 class ConsultaNecesidadesSerializer(serializers.ModelSerializer):

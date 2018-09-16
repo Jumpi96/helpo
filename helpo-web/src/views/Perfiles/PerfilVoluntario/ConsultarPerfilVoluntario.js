@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
-import { Card, CardHeader , Button } from 'reactstrap';
+import { Card, CardHeader , Button, CardTitle, CardText, CardBody, CardColumns } from 'reactstrap';
 import { getImagen } from '../../../utils/Imagen'
 
 const perfilPropTypes = {
@@ -14,6 +14,8 @@ const perfilPropTypes = {
     habilidades: PropTypes.string,
     sexo: PropTypes.string,
     apellido: PropTypes.string,
+    manos: PropTypes.number,
+    eventos: PropTypes.number,
     avatar: PropTypes.shape({
       id: PropTypes.number,
       url: PropTypes.string,
@@ -33,8 +35,10 @@ class ConsultarPerfilVoluntario extends Component {
     this.renderApellido = this.renderApellido.bind(this);
     this.renderGustos = this.renderGustos.bind(this);
     this.renderHabilidades = this.renderHabilidades.bind(this);
-
+    this.renderManos = this.renderManos.bind(this);
+    this.renderEventos = this.renderEventos.bind(this);
   }
+
   renderSexo() {
     if (this.props.data.sexo == null) {
       return <p class='text-muted'> No hay valor ingresado</p>
@@ -85,69 +89,114 @@ class ConsultarPerfilVoluntario extends Component {
     return <p> {this.props.data.descripcion}</p>      
   }  
 
+  renderManos() {
+    if (this.props.data.manos == null) {
+      return <p className='text-muted'> - </p>
+    }
+    return <p> {this.props.data.manos}</p>      
+  }
+
+  renderEventos() {
+    if (this.props.data.eventos == null) {
+      return <p className='text-muted'> - </p>
+    }
+    return <p> {this.props.data.eventos}</p>      
+  }
+
   render() {    
     return (      
       <Card>
-        <CardHeader>
-          <i className="fa fa-align-justify"></i> Perfil
-        </CardHeader>
-        <div class='container'>
-        
-        <div style={{ alignItems: 'center' }} class='row'>
-          <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', height: '150px'}} class='col-2'>            
-            <p style={{ textAlign: 'right' }} 
-               class='h4'>{this.props.nombre} {this.renderApellido()}</p>
+      <CardHeader>
+        <i className="fa fa-align-justify"></i> Perfil
+      </CardHeader>
+      <CardBody>
+        <div className="row">
+          <div className="col-md-8">
+            <div className="row" style={{ height: '110px'}}>
+              <div className="col-md-3">
+                <p style={{ textAlign: 'right' }} className='h4'>{this.props.nombre}{this.renderApellido()}</p>
+              </div>
+              <div className="col-md-5">
+                <img
+                  className='rounded-circle'
+                  src={getImagen(this.props.data.avatar.url)}
+                  alt="avatar"
+                  width="100" 
+                  height="100"
+                />
+              </div>
+            </div>
+            <div className='row'>
+              <div className="col-md-3">
+                <p style={{ textAlign: 'right' }} className='font-weight-bold' htmlFor="mail">Mail</p>
+              </div>
+              <div className="col-md-5">
+                <p>{this.props.email}</p>
+              </div>
+            </div>
+            <div className='row'>
+              <div className="col-md-3">
+                <p style={{ textAlign: 'right' }} className='font-weight-bold' htmlFor="telefono">Teléfono</p>
+              </div>
+              <div className="col-md-5">
+                {this.renderTelefono()} 
+              </div>
+            </div>
+            <div className='row'>
+              <div className="col-md-3">
+                <p style={{ textAlign: 'right' }} className='font-weight-bold' htmlFor="dni">DNI</p>
+              </div>
+              <div className="col-md-5">
+                {this.renderDni()} 
+              </div>
+            </div>
+            <div className='row'>
+              <div className="col-md-3">
+                <p style={{ textAlign: 'right' }} className='font-weight-bold' htmlFor="sexo">Sexo</p>
+              </div>
+              <div className="col-md-5">
+                {this.renderSexo()} 
+              </div>
+            </div>
+            <div className='row'>
+              <div className="col-md-3">
+              <p style={{ paddingLeft: 0 ,textAlign: 'right' }} className='font-weight-bold' htmlFor="gustos">Gustos</p> 
+              </div>
+              <div className="col-md-5">
+                {this.renderGustos()} 
+              </div>
+            </div>
+            <div className='row'>
+              <div className="col-md-3">
+              <p style={{ paddingLeft: 0 ,textAlign: 'right' }} className='font-weight-bold' htmlFor="habilidades">Habilidades</p> 
+              </div>
+              <div className="col-md-5">
+                {this.renderHabilidades()} 
+              </div>
+            </div>
+            <div className="row">
+              <div class="col-md-5 col-md-offset-3">
+                <div style={{ width: '500px', justifyContent: 'center' ,display: 'flex', marginBottom: '10px' }} class='row offster-md-4'>          
+                  {this.props.sinModificar ? "" : <Button onClick={this.props.switchToModificar} color='primary'>Modificar Datos</Button>}
+                </div>
+              </div>
+            </div>
+          </div>  
+          <div className="col-md-4">
+            <CardColumns>
+              <Card className="text-center" body inverse color="primary" style={{height:100, width:100, borderColor:'white'}}>
+                <CardTitle><i class="fa fa-hand-stop-o fa-2x"></i></CardTitle>
+                <CardText style={{fontSize:20}}>{this.renderManos()}</CardText>
+              </Card >
+              <Card className="text-center" body inverse color="primary" style={{height:100, width:100,borderColor:'white'}}>
+                <CardTitle><i class="fa fa-calendar-check-o fa-2x"></i></CardTitle>
+                <CardText style={{fontSize:20}}>{this.renderEventos()}</CardText>
+             </Card> 
+            </CardColumns>
           </div>
-          <div class='col-6'>
-            <img
-              class='rounded-circle'
-              src={getImagen(this.props.data.avatar.url)}
-              alt="avatar"
-              width="100" 
-              height="100"
-            />
-          </div>
         </div>
-          
-        <div class='row'>
-            <p style={{ textAlign: 'right' }} class='font-weight-bold col-2' htmlFor="mail">Mail</p>
-            <div class='col-6'><p>{this.props.email}</p></div>
-        </div>
-
-        <div class='row'>
-            <p style={{ textAlign: 'right' }} class='font-weight-bold col-2' htmlFor="telefono">Teléfono</p>
-            <div class='col-6'>{this.renderTelefono()}</div>
-        </div>
-
-        <div class='row'>          
-            <p style={{ textAlign: 'right' }} class='font-weight-bold col-2' htmlFor="dni">DNI</p>
-            <div class='col-6'>{this.renderDni()}</div>
-        </div>
-        
-        {/**/}
-        <div class='row'>        
-            <p style={{ textAlign: 'right' }} class='font-weight-bold col-2' htmlFor="sexo">Sexo</p>
-            <div class='col-6'>{this.renderSexo()}</div>    
-        </div>
-
-        <div class='row'>        
-            <p style={{ textAlign: 'right' }} class='font-weight-bold col-2' htmlFor="gustos">Gustos</p>
-            <div class='col-6'>{this.renderGustos()}</div>    
-        </div>
-
-        <div class='row'>        
-            <p style={{ textAlign: 'right' }} class='font-weight-bold col-2' htmlFor="habilidades">Habilidades</p>
-            <div class='col-6'>{this.renderHabilidades()}</div>    
-        </div>
-        {/**/}            
-
-        <div style={{ width: '500px', justifyContent: 'center' ,display: 'flex', marginBottom: '10px' }} class='row offster-md-4'>          
-          {this.props.sinModificar
-          ? "" 
-          : <Button onClick={this.props.switchToModificar} color='primary'>Modificar Datos</Button>}
-        </div>  
-        </div>
-      </Card>
+      </CardBody>
+    </Card>
     );
   }
 }

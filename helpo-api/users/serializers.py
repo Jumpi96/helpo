@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import authenticate
 from users.models import User, RubroOrganizacion, OrganizacionProfile, Ubicacion, Imagen, VoluntarioProfile, EmpresaProfile, UserVerification, AppValues, DeviceID
+from actividades.models import Participacion, Evento, Colaboracion
 from django.core.exceptions import ObjectDoesNotExist
 
 
@@ -73,11 +74,13 @@ class OrganizacionProfileSerializer(serializers.ModelSerializer):
     ubicacion = UbicacionSerializer(required=False)
     avatar = ImagenSerializer(required=False)
     usuario = UserSerializer(read_only=True)
+    manos = serializers.SerializerMethodField()
+    eventos = serializers.SerializerMethodField()
 
     class Meta:
         model = OrganizacionProfile
-        fields = ('verificada', 'telefono', 'cuit', 'descripcion', 'rubro', 'avatar', 'ubicacion', 'usuario')
-        read_only_fields = ('usuario','verificada')
+        fields = ('verificada', 'telefono', 'cuit', 'descripcion', 'rubro', 'avatar', 'ubicacion', 'usuario','manos','eventos')
+        read_only_fields = ('usuario','verificada','manos','eventos')
 
     def update(self, instance, validated_data):
         rubro_data = None
@@ -125,6 +128,16 @@ class OrganizacionProfileSerializer(serializers.ModelSerializer):
                 instance.avatar = nuevaImagen
         instance.save()
         return instance
+
+    def get_manos(self, obj):
+        participaciones = Participacion.objects.filter(retroalimentacion_ong=True).filter(necesidad_voluntario__evento__organizacion_id=obj.usuario_id).count()
+        colaboraciones = Colaboracion.objects.filter(retroalimentacion_ong=True).filter(necesidad_material__evento__organizacion_id=obj.usuario_id).count()
+        manos = participaciones + colaboraciones
+        return manos
+
+    def get_eventos(self, obj):
+        eventos = Evento.objects.filter(organizacion_id=obj.usuario_id).count()
+        return eventos
 
 class EmpresaProfileSerializer(serializers.ModelSerializer):
     rubro = RubroOrganizacionSerializer(required=False)
@@ -187,11 +200,13 @@ class EmpresaProfileSerializer(serializers.ModelSerializer):
 class VoluntarioProfileSerializer(serializers.ModelSerializer):
     avatar = ImagenSerializer(required=False)   
     usuario = UserSerializer(read_only=True) 
+    manos = serializers.SerializerMethodField()
+    participacioneventos = serializers.SerializerMethodField()
 
     class Meta:
         model = VoluntarioProfile
-        fields = ( 'telefono', 'apellido', 'dni', 'sexo', 'gustos', 'habilidades', 'avatar', 'usuario')
-        read_only_fields = ('usuario',)
+        fields = ( 'telefono', 'apellido', 'dni', 'sexo', 'gustos', 'habilidades', 'avatar', 'usuario','manos','participacioneventos')
+        read_only_fields = ('usuario','manos','participacioneventos')
 
     def update(self, instance, validated_data):
         avatar_data = None
@@ -220,6 +235,27 @@ class VoluntarioProfileSerializer(serializers.ModelSerializer):
                 instance.avatar = nuevaImagen
         instance.save()
         return instance
+
+    def get_manos(self, obj):
+        participaciones = 0
+        colaboraciones = 0
+        participaciones = Participacion.objects.filter(retroalimentacion_voluntario=True).filter(voluntario_id=obj.usuario_id).count()
+        colaboraciones = Colaboracion.objects.filter(retroalimentacion_voluntario=True).filter(voluntario_id=obj.usuario_id).distinct('necesidad_material__evento').count()
+        manos = participaciones + colaboraciones
+        return manos
+
+    def get_participacioneventos(self, obj):
+        cantidad = []
+        participaciones = Participacion.objects.filter(voluntario_id=obj.usuario_id)
+        colaboraciones = Colaboracion.objects.filter(voluntario_id=obj.usuario_id).distinct('necesidad_material__evento')
+        for c in colaboraciones:
+            if c.necesidad_material.evento_id not in cantidad:
+                cantidad.append(c.necesidad_material.evento_id)
+        for p in participaciones:
+            if p.necesidad_voluntario.evento_id not in cantidad:
+                cantidad.append(p.necesidad_voluntario.evento_id)
+        participacioneventos = Evento.objects.filter(id__in = cantidad).count()
+        return participacioneventos    
         
 class VerificationMailSerializer(serializers.Serializer):    
     token = serializers.CharField()

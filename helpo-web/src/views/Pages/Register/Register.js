@@ -234,6 +234,10 @@ class Register extends Component {
       isValid = false;
     }
     //Contraseña
+    if (this.state.password.length < 8){
+      errors.contraseña = "La contraseña debe tener al menos 8 dígitos"
+      isValid = false; 
+    }
     if (this.state.password === "" || this.state.repeat === "") {
       errors.contraseña = "Debe ingresar la contraseña en ambos campos";
       isValid = false;

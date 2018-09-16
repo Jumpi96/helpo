@@ -15,7 +15,7 @@ def send_mail_mensaje_evento(mensaje, evento_id):
                       )
     for participante in participantes:
         LogMensaje.objects.create(
-            colaborador_id=participante.id, mensaje_id=mensaje.id)
+            usuario_id=participante.id, mensaje_id=mensaje.id)
 
 
 def get_participantes_evento(evento_id):
@@ -117,12 +117,55 @@ def _send_participacion_email(participacion, titulo_email):
     send_mail_to(colaborador_mail,
                  html_subject=subject_utf, html_content=content)
 
-def create_propuesta_voluntario(user, necesidad_voluntario):
-    evento_id = Voluntario.objects.get(id=necesidad_voluntario).evento_id
-    if len(Propuesta.objects.filter(evento_id=evento_id).filter(empresa_id=user.id)) == 0:
-        Propuesta.objects.create(evento_id=evento_id, empresa_id=user.id, aceptado=0)
+def _send_mail_propuesta(usuarios_id, propuesta):
+    subject_utf = u"Propuesta para evento: " + propuesta.evento.nombre
+    from common.templates import render_propuesta
+    content = render_propuesta(propuesta)
+    from common.notifications import send_mail_to_id_list
+    send_mail_to_id_list(ids_to=usuarios_id,
+                         html_subject=subject_utf, html_content=content)
 
-def create_propuesta_necesidad(user, necesidad_material):
-    evento_id = Necesidad.objects.get(id=necesidad_material).evento_id
+def _send_push_propuesta(usuarios_id, propuesta):
+    en_msg = "The event " + propuesta.evento.nombre + " has a new proposal"
+    es_msg = "El evento " + propuesta.evento.nombre + " tiene una nueva propuesta"
+    from common.notifications import send_push_notification_to_id_list
+    send_push_notification_to_id_list(
+        usuarios_id, "New proposal", "Nueva propuesta", en_msg, es_msg)
+
+def _send_nueva_propuesta(propuesta):
+    try:
+        _send_mail_propuesta([propuesta.evento.organizacion.id, propuesta.empresa.id], propuesta)
+        _send_push_propuesta([propuesta.evento.organizacion.id], propuesta)
+    except:
+        pass
+
+def create_propuesta(user, necesidad, es_voluntario):
+    if es_voluntario:
+        evento_id = Voluntario.objects.get(id=necesidad).evento_id
+    else:
+        evento_id = Necesidad.objects.get(id=necesidad).evento_id
     if len(Propuesta.objects.filter(evento_id=evento_id).filter(empresa_id=user.id)) == 0:
-        Propuesta.objects.create(evento_id=evento_id, empresa_id=user.id, aceptado=0)
+        propuesta = Propuesta.objects.create(evento_id=evento_id, empresa_id=user.id, aceptado=0)
+        _send_nueva_propuesta(propuesta)
+
+def _send_mail_response_propuesta(usuarios_id, propuesta):
+    subject_utf = u"Respuesta a tu propuesta para evento: " + propuesta.evento.nombre
+    from common.templates import render_respuesta_propuesta
+    content = render_respuesta_propuesta(propuesta)
+    from common.notifications import send_mail_to_id_list
+    send_mail_to_id_list(ids_to=usuarios_id,
+                         html_subject=subject_utf, html_content=content)
+
+def _send_push_response_propuesta(usuarios_id, propuesta):
+    en_msg = "The organization answered your proposal to " + propuesta.evento.nombre
+    es_msg = "La organización respondió a tu propuesta para " + propuesta.evento.nombre
+    from common.notifications import send_push_notification_to_id_list
+    send_push_notification_to_id_list(
+        usuarios_id, "Proposal answer", "Respuesta a su propuesta", en_msg, es_msg)
+
+def response_propuesta(propuesta):
+    try:
+        _send_mail_response_propuesta([propuesta.empresa.id], propuesta)
+        _send_push_response_propuesta([propuesta.empresa.id], propuesta)
+    except:
+        pass

@@ -12,9 +12,11 @@ class ConsultarEventosPage extends React.Component {
     super(props);
     const urlParams = new URLSearchParams(this.props.location.search)
     const organizacion = urlParams.get('organizacion');
+    const empresa = urlParams.get('empresa');
     this.state = {
       eventos: [],
       organizacion,
+      empresa,
       ong: []
     }
     this.loadEventos = this.loadEventos.bind(this);
@@ -26,7 +28,14 @@ class ConsultarEventosPage extends React.Component {
   }
 
   componentDidMount() {
-    const ruta = this.state.organizacion ? '?organizacion=' + this.state.organizacion : '';
+    let ruta;
+    if (this.state.organizacion) {
+      ruta = '?organizacion=' + this.state.organizacion;
+    } else if (this.state.empresa) {
+      ruta = '?empresa=' + this.state.empresa;
+    } else {
+      ruta = '';
+    }
     this.loadEventos(ruta);
     if (this.state.organizacion) { this.loadONG() };
   }
@@ -59,7 +68,11 @@ class ConsultarEventosPage extends React.Component {
     if (eventos.length === 0) {
       return (
         <CardBody>
-          <ConsultarEventosFilter updatePath={this.loadEventos} organizacion={this.state.organizacion} />
+          <ConsultarEventosFilter
+            updatePath={this.loadEventos}
+            organizacion={this.state.organizacion}
+            empresa={this.state.empresa}
+          />
           <br />
           <label>&emsp;Todav&iacute;a no hay eventos registrados</label>
         </CardBody>

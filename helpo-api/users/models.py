@@ -184,8 +184,8 @@ class Suscripcion(models.Model):
     organizacion
     (Aclaracion porque ambos son "USER")
     """
-    usuario =  models.ForeignKey(User, related_name="usuario")
-    organizacion = models.ForeignKey(User, related_name="organizacion")
+    usuario =  models.ForeignKey(User, related_name="suscripcion")
+    organizacion = models.ForeignKey(User, related_name="suscriptor")
 
     class Meta:
         # Esto hace que solo pueda haber un par usuario-organizacion

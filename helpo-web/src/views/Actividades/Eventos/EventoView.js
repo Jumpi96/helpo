@@ -193,6 +193,14 @@ class EventoView extends React.Component {
                 Consultar colaboraciones
             </button>
             </Link>
+            {/* Renderiza boton Ver album si empezo evento */}
+            {this.props.evento.estado > 1 
+                  ? (
+                    <Link to={`/actividades/album/${this.props.evento.id}`}>
+                      <button className="btn btn-warning">Ver Album</button>
+                    </Link>
+                  ) 
+                  : undefined}
             <button
               onClick={this.toggleMensajes}
               className="btn btn-warning"

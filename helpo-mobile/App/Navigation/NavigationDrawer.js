@@ -27,6 +27,7 @@ import MisPropuestas from '../Views/Actividades/MisPropuestas/MisPropuestas';
 import VerPropuestaEvento from '../Views/Actividades/MisPropuestas/VerPropuestaEvento';
 import ConsultarPerfilGenerico from '../Views/Perfiles/ConsultarPerfilGenerico';
 
+import AlbumEvento from '../Views/Actividades/AlbumEvento/AlbumEvento';
 import VerPatrocinadores from '../Views/Actividades/VerPatrocinadores/VerPatrocinadores';
 import VerPropuestaPatrocinador from '../Views/Actividades/VerPatrocinadores/VerPropuestaPatrocinador'
 import ResponderPropuesta from '../Views/Actividades/VerPatrocinadores/ResponderPropuesta';
@@ -58,10 +59,10 @@ const NavigationDrawer = DrawerNavigator({
 	MisPropuestas: { screen: MisPropuestas },
 	VerPropuestaEvento: { screen: VerPropuestaEvento },
 	ConsultarPerfilGenerico: { screen: ConsultarPerfilGenerico },
+	AlbumEvento: { screen: AlbumEvento },
 	VerPatrocinadores: { screen: VerPatrocinadores },
 	VerPropuestaPatrocinador: { screen: VerPropuestaPatrocinador },
-	ResponderPropuesta: { screen: ResponderPropuesta },
-
+	ResponderPropuesta: { screen: ResponderPropuesta }
   },
   {
 	initialRouteName: "LaunchScreen",

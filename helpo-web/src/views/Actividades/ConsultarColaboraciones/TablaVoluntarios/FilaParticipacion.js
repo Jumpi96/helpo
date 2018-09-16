@@ -43,7 +43,7 @@ const FilaParticipacionConnected = ( props ) => {
       return (
         <BotonHelpo
           disabled={true}
-          mensaje={'Ya diste una mano al voluntario por su participación.'}
+          mensaje={'Ya diste una mano al colaborador por su participación.'}
           titulo={'Dar una mano'}
           onClick={undefined}
         />
@@ -52,7 +52,7 @@ const FilaParticipacionConnected = ( props ) => {
       return (
         <BotonHelpo
           disabled={false}
-          mensaje={'Da una mano al voluntario por su participación.'}
+          mensaje={'Da una mano al colaborador por su participación.'}
           titulo={'Dar una mano'}
           onClick={handleRetroalimentacion}
         />
@@ -61,7 +61,7 @@ const FilaParticipacionConnected = ( props ) => {
   }
 
   const handleRetroalimentacion = () => {
-    const mensaje = { evento: evento.id, voluntario: idVoluntario };
+    const mensaje = { evento: evento.id, voluntario: idVoluntario, es_colaboracion: false };
     api.post('feedbacks/retroalimentacion_ong/', mensaje)
       .then((res) => {
         props.fetchData(evento.id);

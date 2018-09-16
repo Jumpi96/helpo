@@ -17,7 +17,7 @@ from actividades.serializers import EventoSerializer, RubroEventoSerializer, \
     CategoriaRecursoSerializer, RecursoSerializer, NecesidadSerializer, ContactoSerializer, \
     ConsultaEventoSerializer, VoluntarioSerializer, FuncionSerializer, ConsultaNecesidadesSerializer, \
     ParticipacionSerializer, ColaboracionSerializer, ComentarioSerializer, MensajeSerializer, EventoImagenSerializer, \
-    PropuestaSerializer
+    PropuestaSerializer, ConsultaAllNecesidadesSerializer
 from actividades.services import create_propuesta
 from common.functions import get_token_user, calc_distance_locations
 
@@ -200,7 +200,7 @@ class EventoVoluntarioCreateReadView(ListCreateAPIView):
     API endpoint para crear o ver todos los eventos de la organización
     """
     permission_classes = [permissions.IsAuthenticated, ]
-    serializer_class = ConsultaNecesidadesSerializer
+    serializer_class = ConsultaAllNecesidadesSerializer
 
     def get_queryset(self):
         lista_eventos = self.get_eventos(get_token_user(self.request))
@@ -416,11 +416,11 @@ class ConsultaNecesidadesReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
 def RetroalimentacionVoluntarioEvento(request):
     try:
         user = get_token_user(request)
-        colaboraciones = Colaboracion.objects.filter(voluntario_id=user).filter(necesidad_material__evento_id=request.data['evento'])
+        colaboraciones = Colaboracion.objects.filter(colaborador_id=user).filter(necesidad_material__evento_id=request.data['evento'])
         for c in colaboraciones:
             c.retroalimentacion_voluntario = True
             c.save()
-        participaciones = Participacion.objects.filter(voluntario_id=user).filter(necesidad_voluntario__evento_id=request.data['evento'])
+        participaciones = Participacion.objects.filter(colaborador_id=user).filter(necesidad_voluntario__evento_id=request.data['evento'])
         for p in participaciones:
             p.retroalimentacion_voluntario = True
             p.save()
@@ -432,14 +432,16 @@ def RetroalimentacionVoluntarioEvento(request):
 def RetroalimentacionONGEvento(request):
     try:
         voluntario = request.data['voluntario']
-        colaboraciones = Colaboracion.objects.filter(voluntario_id=voluntario).filter(necesidad_material__evento_id=request.data['evento'])
-        for c in colaboraciones:
-            c.retroalimentacion_ong = True
-            c.save()
-        participaciones = Participacion.objects.filter(voluntario_id=voluntario).filter(necesidad_voluntario__evento_id=request.data['evento'])
-        for p in participaciones:
-            p.retroalimentacion_ong = True
-            p.save()
+        if request.data['es_colaboracion']:
+            colaboraciones = Colaboracion.objects.filter(colaborador_id=voluntario).filter(necesidad_material__evento_id=request.data['evento'])
+            for c in colaboraciones:
+                c.retroalimentacion_ong = True
+                c.save()
+        else:
+            participaciones = Participacion.objects.filter(colaborador_id=voluntario).filter(necesidad_voluntario__evento_id=request.data['evento'])
+            for p in participaciones:
+                p.retroalimentacion_ong = True
+                p.save()
         return Response(request.data, status=status.HTTP_201_CREATED)
     except:
        return Response(status=status.HTTP_400_BAD_REQUEST)

@@ -87,7 +87,7 @@ class ConsultarPatrocinadores extends Component {
         return (
           <button disabled className="btn btn-success">Propuesta aceptada</button>
         );
-      case 2:
+      case -1:
         return (
           <button disabled className="btn btn-danger">Propuesta rechazada</button>
         );

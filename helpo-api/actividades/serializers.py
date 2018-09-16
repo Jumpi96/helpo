@@ -164,11 +164,10 @@ class ColaboracionSerializer(serializers.ModelSerializer):
         titulo_email = u"Usted ha modificado su colaboración en un Evento. Los nuevos datos son:"
         self.send_colaboracion_email(colaborador_id, evento, new_instance, titulo_email)
         colaboraciones = Colaboracion.objects.filter(necesidad_material_id=necesidad_material.id)
-        cantidad = validated_data.get('cantidad')
         suma_colaboraciones = 0
         for c in colaboraciones:
             suma_colaboraciones += c.cantidad
-        if (suma_colaboraciones + cantidad) == necesidad_material.cantidad:
+        if suma_colaboraciones == necesidad_material.cantidad:
             send_full_colaboracion_mail(necesidad_material)
         return new_instance
     

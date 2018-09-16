@@ -194,6 +194,17 @@ class ConsultaNecesidadSerializer(serializers.ModelSerializer):
         model = Necesidad
         fields = ('id', 'descripcion', 'cantidad', 'recurso', 'recurso_id', 'colaboraciones')
 
+class ConsultaAllNecesidadSerializer(serializers.ModelSerializer):
+    colaboraciones = ColaboracionSerializer(many=True)
+    recurso = RecursoSerializer(read_only=True)
+    recurso_id = serializers.PrimaryKeyRelatedField(
+        queryset=Recurso.objects.all(), source='recurso', write_only=True
+    )
+
+    class Meta:
+        model = Necesidad
+        fields = ('id', 'descripcion', 'cantidad', 'recurso', 'recurso_id', 'colaboraciones')
+
 class ParticipacionSerializer(serializers.ModelSerializer):
     necesidad_voluntario_id = serializers.PrimaryKeyRelatedField(
         queryset=Voluntario.objects.all(), source='necesidad_voluntario'
@@ -236,6 +247,17 @@ class ConsultaVoluntarioSerializer(serializers.ModelSerializer):
         model = Voluntario
         fields = ('id', 'descripcion', 'cantidad', 'funcion', 'funcion_id', 'participaciones')
 
+class ConsultaAllVoluntarioSerializer(serializers.ModelSerializer):
+    participaciones = ParticipacionSerializer(many=True)
+    funcion = FuncionSerializer(read_only=True)
+    funcion_id = serializers.PrimaryKeyRelatedField(
+        queryset=Funcion.objects.all(), source='funcion', write_only=True
+    )
+
+    class Meta:
+        model = Voluntario
+        fields = ('id', 'descripcion', 'cantidad', 'funcion', 'funcion_id', 'participaciones')
+
 class PropuestaSerializer(serializers.ModelSerializer):
     empresa = UserSerializer(read_only=True)
     class Meta:
@@ -248,6 +270,16 @@ class PropuestaSerializer(serializers.ModelSerializer):
         if new_instance.aceptado == -1:
             deny_propuesta(new_instance)
         return new_instance
+
+class ConsultaAllNecesidadesSerializer(serializers.ModelSerializer):
+    necesidades = ConsultaAllNecesidadSerializer(many=True)
+    voluntarios = ConsultaAllVoluntarioSerializer(many=True)
+    propuestas = PropuestaSerializer(many=True)
+
+    class Meta:
+        model = Evento
+        fields = ('id', 'nombre', 'necesidades', 'voluntarios', 'fecha_hora_inicio', 'propuestas')
+
 
 class ConsultaNecesidadesSerializer(serializers.ModelSerializer):
     necesidades = ConsultaNecesidadSerializer(many=True)

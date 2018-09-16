@@ -200,7 +200,7 @@ class EventoVoluntarioCreateReadView(ListCreateAPIView):
     API endpoint para crear o ver todos los eventos de la organización
     """
     permission_classes = [permissions.IsAuthenticated, ]
-    serializer_class = ConsultaNecesidadesSerializer
+    serializer_class = ConsultaAllNecesidadesSerializer
 
     def get_queryset(self):
         lista_eventos = self.get_eventos(get_token_user(self.request))

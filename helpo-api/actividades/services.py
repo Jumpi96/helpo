@@ -15,7 +15,7 @@ def send_mail_mensaje_evento(mensaje, evento_id):
                       )
     for participante in participantes:
         LogMensaje.objects.create(
-            colaborador_id=participante.id, mensaje_id=mensaje.id)
+            usuario_id=participante.id, mensaje_id=mensaje.id)
 
 
 def get_participantes_evento(evento_id):

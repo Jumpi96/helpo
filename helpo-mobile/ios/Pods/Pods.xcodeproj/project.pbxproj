@@ -7,71 +7,30 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		05CDAC78386A2F44BCA384FC8E0A6CD8 /* Pods-helpoMobileTests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 2659DE033072F0829A0E776C201EA14E /* Pods-helpoMobileTests-dummy.m */; };
-		0866C634FA64117795FA184B389A54C3 /* Pods-helpoMobile-tvOSTests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 0853FBF0174EDA840BEC1E32FEA8F3DD /* Pods-helpoMobile-tvOSTests-dummy.m */; };
-		7306118372B04AB1F10D2CA732A358AD /* Pods-helpoMobile-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 38FC54A8EDABEF4CC5C822EA3E910980 /* Pods-helpoMobile-dummy.m */; };
+		7306118372B04AB1F10D2CA732A358AD /* Pods-helpoMobile-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 51FB56515D48C52EBB351A285FFB5EC9 /* Pods-helpoMobile-dummy.m */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		2D0670DE07B2A1BCD7AAE0515509F870 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = B9B62A4131CE30010EA3A647B70CF4C3;
-			remoteInfo = "Pods-helpoMobile";
-		};
-		98386A286A7313B8C8FC4D12072F469D /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = B9B62A4131CE30010EA3A647B70CF4C3;
-			remoteInfo = "Pods-helpoMobile";
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
-		0853FBF0174EDA840BEC1E32FEA8F3DD /* Pods-helpoMobile-tvOSTests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-helpoMobile-tvOSTests-dummy.m"; sourceTree = "<group>"; };
-		09B6F64FA35D3290809D79FF8304E85F /* Pods-helpoMobile-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-helpoMobile-acknowledgements.plist"; sourceTree = "<group>"; };
-		0B167EF04BA94197BC22B41D9C1E2861 /* Pods-helpoMobileTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-helpoMobileTests.release.xcconfig"; sourceTree = "<group>"; };
-		1AF083B11F4238503AC8DB1116DE4168 /* Pods-helpoMobileTests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-helpoMobileTests-acknowledgements.markdown"; sourceTree = "<group>"; };
-		230AFB63BF2C5D46D2A57FDA75A3DEA3 /* libPods-helpoMobile-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-helpoMobile-tvOSTests.a"; path = "libPods-helpoMobile-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		230C34272CEDE3048D74AB1258142A11 /* Pods-helpoMobile-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-helpoMobile-acknowledgements.markdown"; sourceTree = "<group>"; };
-		2659DE033072F0829A0E776C201EA14E /* Pods-helpoMobileTests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-helpoMobileTests-dummy.m"; sourceTree = "<group>"; };
-		2B445F5548FCC84BFDB21598C479A68A /* Pods-helpoMobile-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-helpoMobile-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
-		38FC54A8EDABEF4CC5C822EA3E910980 /* Pods-helpoMobile-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-helpoMobile-dummy.m"; sourceTree = "<group>"; };
-		3F4E309946918A9CCE6CA322A9B0E205 /* Pods-helpoMobile-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-helpoMobile-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
-		4477D5BBBD2390A2399F3D803D7D0051 /* Pods-helpoMobileTests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-helpoMobileTests-frameworks.sh"; sourceTree = "<group>"; };
-		44E5BE8F45C8E30994EDF5AEF7135E9B /* Pods-helpoMobile.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-helpoMobile.debug.xcconfig"; sourceTree = "<group>"; };
-		4A47354915220B7D601459636BCC7230 /* Pods-helpoMobile-tvOSTests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-helpoMobile-tvOSTests-acknowledgements.markdown"; sourceTree = "<group>"; };
-		507EF402D9733A8541392CB7BB9A237B /* Pods-helpoMobileTests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-helpoMobileTests-acknowledgements.plist"; sourceTree = "<group>"; };
-		5A00282CE931C2A1C411146A0A7D6EED /* Pods-helpoMobile-tvOSTests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-helpoMobile-tvOSTests-acknowledgements.plist"; sourceTree = "<group>"; };
-		5A382B0F3EBE0EA059F8BC2AE5CEC854 /* Pods-helpoMobile-tvOSTests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-helpoMobile-tvOSTests-frameworks.sh"; sourceTree = "<group>"; };
-		60A93AB5D672AF869AC9556B89354DE1 /* libPods-helpoMobileTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-helpoMobileTests.a"; path = "libPods-helpoMobileTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		7F511BAAE7559956E2A08DA3081E5981 /* libPods-helpoMobile.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-helpoMobile.a"; path = "libPods-helpoMobile.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		8A1E90A7A31812983A8B15A1F5A74D50 /* Pods-helpoMobile-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-helpoMobile-frameworks.sh"; sourceTree = "<group>"; };
+		07790BD46C0A51AE9AF086D8F62242CC /* GooglePlacePicker.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GooglePlacePicker.framework; path = Frameworks/GooglePlacePicker.framework; sourceTree = "<group>"; };
+		2091F396E3C0627FDF739037F51B0F43 /* GoogleMaps.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleMaps.framework; path = Subspecs/Maps/Frameworks/GoogleMaps.framework; sourceTree = "<group>"; };
+		2256E9F2E70DF4827A9AEAF412EDA15E /* GoogleMapsCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleMapsCore.framework; path = Subspecs/Maps/Frameworks/GoogleMapsCore.framework; sourceTree = "<group>"; };
+		2DF17B5E7D5F87D48E5DDE49A1F859D1 /* GoogleMaps.bundle */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "wrapper.plug-in"; name = GoogleMaps.bundle; path = Subspecs/Maps/Frameworks/GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle; sourceTree = "<group>"; };
+		44E19490A21B5A3783642C6926423BE6 /* Pods-helpoMobile-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-helpoMobile-resources.sh"; sourceTree = "<group>"; };
+		51FB56515D48C52EBB351A285FFB5EC9 /* Pods-helpoMobile-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-helpoMobile-dummy.m"; sourceTree = "<group>"; };
+		686B0BB58178568B8D7FCFC1ECD8406E /* Pods-helpoMobile.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-helpoMobile.release.xcconfig"; sourceTree = "<group>"; };
+		6D5D9B825D38B1EDBCC6D5D3A8D24BC6 /* Pods-helpoMobile-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-helpoMobile-acknowledgements.plist"; sourceTree = "<group>"; };
+		6F3CBE5D4C815BDF991D6C0B96832F58 /* Pods-helpoMobile-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-helpoMobile-frameworks.sh"; sourceTree = "<group>"; };
+		74B70147A64EA87FBB49D8E109B64F98 /* GoogleMapsBase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleMapsBase.framework; path = Subspecs/Base/Frameworks/GoogleMapsBase.framework; sourceTree = "<group>"; };
+		78BFAAF13AF8460E07E74355DE25E367 /* libPods-helpoMobile.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-helpoMobile.a"; path = "libPods-helpoMobile.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		834AEECD09A46D761ECEBDF06CD89F74 /* Pods-helpoMobile.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-helpoMobile.debug.xcconfig"; sourceTree = "<group>"; };
 		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		BF08E7EC58D31939954571B2F51EC24C /* Pods-helpoMobileTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-helpoMobileTests.debug.xcconfig"; sourceTree = "<group>"; };
-		DB3CD1C23DAB1D60793DAB13B172455A /* Pods-helpoMobile-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-helpoMobile-resources.sh"; sourceTree = "<group>"; };
-		E0C66129189C5EE79330D69C0AA61449 /* Pods-helpoMobile-tvOSTests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-helpoMobile-tvOSTests-resources.sh"; sourceTree = "<group>"; };
-		EB6F71F61D03028A477C9A57293CD361 /* Pods-helpoMobileTests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-helpoMobileTests-resources.sh"; sourceTree = "<group>"; };
-		FBD5A8CC130639F5FEFBEAFA5D8A298F /* Pods-helpoMobile.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-helpoMobile.release.xcconfig"; sourceTree = "<group>"; };
+		955D3A22EB34AB333524A949DC729F6B /* GooglePlaces.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GooglePlaces.framework; path = Frameworks/GooglePlaces.framework; sourceTree = "<group>"; };
+		9CDEB7D9DA4608851BB2D30B72ECE685 /* Pods-helpoMobile-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-helpoMobile-acknowledgements.markdown"; sourceTree = "<group>"; };
+		F769EDE7CC5A77CDBE3B2309AF3BD5FA /* GooglePlacePicker.bundle */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "wrapper.plug-in"; name = GooglePlacePicker.bundle; path = Frameworks/GooglePlacePicker.framework/Versions/A/Resources/GooglePlacePicker.bundle; sourceTree = "<group>"; };
+		F8567FFA809DD02B36CFB593922A14EA /* GooglePlaces.bundle */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "wrapper.plug-in"; name = GooglePlaces.bundle; path = Frameworks/GooglePlaces.framework/Versions/A/Resources/GooglePlaces.bundle; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		1B0BC76E8531788AC0E65DE847782E42 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		BFED2B9D44830A90019E22CF592FCE1B /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		F3839AFDFCCDD87356B3B0620CCA7432 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -82,6 +41,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		057612C31241123A1B53E2F8FEE23AB0 /* GooglePlaces */ = {
+			isa = PBXGroup;
+			children = (
+				8BA44F82F96D164DA342FB09A0BEE150 /* Frameworks */,
+				9595338FF99D6E406412D70BB160C308 /* Resources */,
+			);
+			name = GooglePlaces;
+			path = GooglePlaces;
+			sourceTree = "<group>";
+		};
 		0F8D2E47FE03D3B91B51069F7C273AF4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -89,44 +58,36 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		2DC94DCC1CAB02473AD6C4A5C8239B68 /* Pods-helpoMobile-tvOSTests */ = {
+		3F20701D063E27EA3A0A1DE7FFE4AF5D /* Targets Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				4A47354915220B7D601459636BCC7230 /* Pods-helpoMobile-tvOSTests-acknowledgements.markdown */,
-				5A00282CE931C2A1C411146A0A7D6EED /* Pods-helpoMobile-tvOSTests-acknowledgements.plist */,
-				0853FBF0174EDA840BEC1E32FEA8F3DD /* Pods-helpoMobile-tvOSTests-dummy.m */,
-				5A382B0F3EBE0EA059F8BC2AE5CEC854 /* Pods-helpoMobile-tvOSTests-frameworks.sh */,
-				E0C66129189C5EE79330D69C0AA61449 /* Pods-helpoMobile-tvOSTests-resources.sh */,
-				2B445F5548FCC84BFDB21598C479A68A /* Pods-helpoMobile-tvOSTests.debug.xcconfig */,
-				3F4E309946918A9CCE6CA322A9B0E205 /* Pods-helpoMobile-tvOSTests.release.xcconfig */,
+				72FF3249262307AAB2438BB25DF3AF2C /* Pods-helpoMobile */,
 			);
-			name = "Pods-helpoMobile-tvOSTests";
-			path = "Target Support Files/Pods-helpoMobile-tvOSTests";
+			name = "Targets Support Files";
 			sourceTree = "<group>";
 		};
-		45913BD422BC5F54FB18DCCF63F075E6 /* Pods-helpoMobile */ = {
+		72FF3249262307AAB2438BB25DF3AF2C /* Pods-helpoMobile */ = {
 			isa = PBXGroup;
 			children = (
-				230C34272CEDE3048D74AB1258142A11 /* Pods-helpoMobile-acknowledgements.markdown */,
-				09B6F64FA35D3290809D79FF8304E85F /* Pods-helpoMobile-acknowledgements.plist */,
-				38FC54A8EDABEF4CC5C822EA3E910980 /* Pods-helpoMobile-dummy.m */,
-				8A1E90A7A31812983A8B15A1F5A74D50 /* Pods-helpoMobile-frameworks.sh */,
-				DB3CD1C23DAB1D60793DAB13B172455A /* Pods-helpoMobile-resources.sh */,
-				44E5BE8F45C8E30994EDF5AEF7135E9B /* Pods-helpoMobile.debug.xcconfig */,
-				FBD5A8CC130639F5FEFBEAFA5D8A298F /* Pods-helpoMobile.release.xcconfig */,
+				9CDEB7D9DA4608851BB2D30B72ECE685 /* Pods-helpoMobile-acknowledgements.markdown */,
+				6D5D9B825D38B1EDBCC6D5D3A8D24BC6 /* Pods-helpoMobile-acknowledgements.plist */,
+				51FB56515D48C52EBB351A285FFB5EC9 /* Pods-helpoMobile-dummy.m */,
+				6F3CBE5D4C815BDF991D6C0B96832F58 /* Pods-helpoMobile-frameworks.sh */,
+				44E19490A21B5A3783642C6926423BE6 /* Pods-helpoMobile-resources.sh */,
+				834AEECD09A46D761ECEBDF06CD89F74 /* Pods-helpoMobile.debug.xcconfig */,
+				686B0BB58178568B8D7FCFC1ECD8406E /* Pods-helpoMobile.release.xcconfig */,
 			);
 			name = "Pods-helpoMobile";
 			path = "Target Support Files/Pods-helpoMobile";
 			sourceTree = "<group>";
 		};
-		7C97C961F0E3AC8A97054D681D8BEA34 /* Targets Support Files */ = {
+		7A999BD5B4C2C01904FC59776164FBE1 /* Maps */ = {
 			isa = PBXGroup;
 			children = (
-				45913BD422BC5F54FB18DCCF63F075E6 /* Pods-helpoMobile */,
-				2DC94DCC1CAB02473AD6C4A5C8239B68 /* Pods-helpoMobile-tvOSTests */,
-				857FD189B1E930C754E7CF24CE133B28 /* Pods-helpoMobileTests */,
+				E06B488730A4D2D60155C0F5B250113B /* Frameworks */,
+				A70C9D5B5ADE1DDE20CC891BF30AD31D /* Resources */,
 			);
-			name = "Targets Support Files";
+			name = Maps;
 			sourceTree = "<group>";
 		};
 		7DB346D0F39D3F0E887471402A8071AB = {
@@ -134,54 +95,119 @@
 			children = (
 				93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */,
 				0F8D2E47FE03D3B91B51069F7C273AF4 /* Frameworks */,
-				B6CC0C7F48735AFC021505A10BF128C9 /* Products */,
-				7C97C961F0E3AC8A97054D681D8BEA34 /* Targets Support Files */,
+				C62832EC902B481843EFC870F9D95CC2 /* Pods */,
+				DF24249A0FF5642E33AD2475053E6E5C /* Products */,
+				3F20701D063E27EA3A0A1DE7FFE4AF5D /* Targets Support Files */,
 			);
 			sourceTree = "<group>";
 		};
-		857FD189B1E930C754E7CF24CE133B28 /* Pods-helpoMobileTests */ = {
+		8BA44F82F96D164DA342FB09A0BEE150 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				1AF083B11F4238503AC8DB1116DE4168 /* Pods-helpoMobileTests-acknowledgements.markdown */,
-				507EF402D9733A8541392CB7BB9A237B /* Pods-helpoMobileTests-acknowledgements.plist */,
-				2659DE033072F0829A0E776C201EA14E /* Pods-helpoMobileTests-dummy.m */,
-				4477D5BBBD2390A2399F3D803D7D0051 /* Pods-helpoMobileTests-frameworks.sh */,
-				EB6F71F61D03028A477C9A57293CD361 /* Pods-helpoMobileTests-resources.sh */,
-				BF08E7EC58D31939954571B2F51EC24C /* Pods-helpoMobileTests.debug.xcconfig */,
-				0B167EF04BA94197BC22B41D9C1E2861 /* Pods-helpoMobileTests.release.xcconfig */,
+				955D3A22EB34AB333524A949DC729F6B /* GooglePlaces.framework */,
 			);
-			name = "Pods-helpoMobileTests";
-			path = "Target Support Files/Pods-helpoMobileTests";
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		B6CC0C7F48735AFC021505A10BF128C9 /* Products */ = {
+		8D7452F072AE52572A3EDF54A4B20163 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				7F511BAAE7559956E2A08DA3081E5981 /* libPods-helpoMobile.a */,
-				230AFB63BF2C5D46D2A57FDA75A3DEA3 /* libPods-helpoMobile-tvOSTests.a */,
-				60A93AB5D672AF869AC9556B89354DE1 /* libPods-helpoMobileTests.a */,
+				74B70147A64EA87FBB49D8E109B64F98 /* GoogleMapsBase.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		8FFA7EAE118844748AD9685060A6B673 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				8D7452F072AE52572A3EDF54A4B20163 /* Frameworks */,
+			);
+			name = Base;
+			sourceTree = "<group>";
+		};
+		9335B78F64E389AD6BD28E5033911D2C /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				F769EDE7CC5A77CDBE3B2309AF3BD5FA /* GooglePlacePicker.bundle */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		9595338FF99D6E406412D70BB160C308 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				F8567FFA809DD02B36CFB593922A14EA /* GooglePlaces.bundle */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		9C0A1FBBD02B7528347BC7FB84DE24F5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				07790BD46C0A51AE9AF086D8F62242CC /* GooglePlacePicker.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A70C9D5B5ADE1DDE20CC891BF30AD31D /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				2DF17B5E7D5F87D48E5DDE49A1F859D1 /* GoogleMaps.bundle */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		C62832EC902B481843EFC870F9D95CC2 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				E5C0912CEC7444CFF51EFFE502270519 /* GoogleMaps */,
+				CCA175DF4D87459CA14C4E01BCFDEF95 /* GooglePlacePicker */,
+				057612C31241123A1B53E2F8FEE23AB0 /* GooglePlaces */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		CCA175DF4D87459CA14C4E01BCFDEF95 /* GooglePlacePicker */ = {
+			isa = PBXGroup;
+			children = (
+				9C0A1FBBD02B7528347BC7FB84DE24F5 /* Frameworks */,
+				9335B78F64E389AD6BD28E5033911D2C /* Resources */,
+			);
+			name = GooglePlacePicker;
+			path = GooglePlacePicker;
+			sourceTree = "<group>";
+		};
+		DF24249A0FF5642E33AD2475053E6E5C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				78BFAAF13AF8460E07E74355DE25E367 /* libPods-helpoMobile.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		E06B488730A4D2D60155C0F5B250113B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2091F396E3C0627FDF739037F51B0F43 /* GoogleMaps.framework */,
+				2256E9F2E70DF4827A9AEAF412EDA15E /* GoogleMapsCore.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E5C0912CEC7444CFF51EFFE502270519 /* GoogleMaps */ = {
+			isa = PBXGroup;
+			children = (
+				8FFA7EAE118844748AD9685060A6B673 /* Base */,
+				7A999BD5B4C2C01904FC59776164FBE1 /* Maps */,
+			);
+			name = GoogleMaps;
+			path = GoogleMaps;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		35643E723F32CDAB0D40005A9902DA80 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		8A8F0BE5AA345D17DBE0735A59918509 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		D3E7AA32876A515566D30F1794DD367E /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -191,42 +217,6 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		34B058EAF6266D2DDFE9642E48AD801A /* Pods-helpoMobile-tvOSTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 20FAD4A8BE8CEFFF406021752B65D18B /* Build configuration list for PBXNativeTarget "Pods-helpoMobile-tvOSTests" */;
-			buildPhases = (
-				D3E7AA32876A515566D30F1794DD367E /* Headers */,
-				13577A70B3013A84B221E09B03EF164D /* Sources */,
-				BFED2B9D44830A90019E22CF592FCE1B /* Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				0C4FD2F7D0D3A19CE704BF697B4AC98E /* PBXTargetDependency */,
-			);
-			name = "Pods-helpoMobile-tvOSTests";
-			productName = "Pods-helpoMobile-tvOSTests";
-			productReference = 230AFB63BF2C5D46D2A57FDA75A3DEA3 /* libPods-helpoMobile-tvOSTests.a */;
-			productType = "com.apple.product-type.library.static";
-		};
-		79AE0526FC66E05842AF5EFDF295DDF2 /* Pods-helpoMobileTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 1371CAC493B53FFB851EC3ADEBD573E2 /* Build configuration list for PBXNativeTarget "Pods-helpoMobileTests" */;
-			buildPhases = (
-				35643E723F32CDAB0D40005A9902DA80 /* Headers */,
-				3D83A39B95B4E79A736678EA4AD99727 /* Sources */,
-				1B0BC76E8531788AC0E65DE847782E42 /* Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				27DE3654FA6DFE81CB3AEDEB3AED09FC /* PBXTargetDependency */,
-			);
-			name = "Pods-helpoMobileTests";
-			productName = "Pods-helpoMobileTests";
-			productReference = 60A93AB5D672AF869AC9556B89354DE1 /* libPods-helpoMobileTests.a */;
-			productType = "com.apple.product-type.library.static";
-		};
 		B9B62A4131CE30010EA3A647B70CF4C3 /* Pods-helpoMobile */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = B4F58D09C0D679C36750A31F8CC276AF /* Build configuration list for PBXNativeTarget "Pods-helpoMobile" */;
@@ -241,7 +231,7 @@
 			);
 			name = "Pods-helpoMobile";
 			productName = "Pods-helpoMobile";
-			productReference = 7F511BAAE7559956E2A08DA3081E5981 /* libPods-helpoMobile.a */;
+			productReference = 78BFAAF13AF8460E07E74355DE25E367 /* libPods-helpoMobile.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -261,34 +251,16 @@
 				en,
 			);
 			mainGroup = 7DB346D0F39D3F0E887471402A8071AB;
-			productRefGroup = B6CC0C7F48735AFC021505A10BF128C9 /* Products */;
+			productRefGroup = DF24249A0FF5642E33AD2475053E6E5C /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				B9B62A4131CE30010EA3A647B70CF4C3 /* Pods-helpoMobile */,
-				34B058EAF6266D2DDFE9642E48AD801A /* Pods-helpoMobile-tvOSTests */,
-				79AE0526FC66E05842AF5EFDF295DDF2 /* Pods-helpoMobileTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		13577A70B3013A84B221E09B03EF164D /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				0866C634FA64117795FA184B389A54C3 /* Pods-helpoMobile-tvOSTests-dummy.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		3D83A39B95B4E79A736678EA4AD99727 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				05CDAC78386A2F44BCA384FC8E0A6CD8 /* Pods-helpoMobileTests-dummy.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		C107E12559E4199365D9BE9040A7B5E7 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -299,44 +271,7 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin PBXTargetDependency section */
-		0C4FD2F7D0D3A19CE704BF697B4AC98E /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "Pods-helpoMobile";
-			target = B9B62A4131CE30010EA3A647B70CF4C3 /* Pods-helpoMobile */;
-			targetProxy = 98386A286A7313B8C8FC4D12072F469D /* PBXContainerItemProxy */;
-		};
-		27DE3654FA6DFE81CB3AEDEB3AED09FC /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "Pods-helpoMobile";
-			target = B9B62A4131CE30010EA3A647B70CF4C3 /* Pods-helpoMobile */;
-			targetProxy = 2D0670DE07B2A1BCD7AAE0515509F870 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
-
 /* Begin XCBuildConfiguration section */
-		373963C7D64A64299873F1105A3C2569 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3F4E309946918A9CCE6CA322A9B0E205 /* Pods-helpoMobile-tvOSTests.release.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				MACH_O_TYPE = staticlib;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
 		96434B6C8FF320C976A10DAD7174A4BB /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -398,7 +333,7 @@
 		};
 		A922D55F7178BEC717D6D7C27511C8FC /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FBD5A8CC130639F5FEFBEAFA5D8A298F /* Pods-helpoMobile.release.xcconfig */;
+			baseConfigurationReference = 686B0BB58178568B8D7FCFC1ECD8406E /* Pods-helpoMobile.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -420,28 +355,7 @@
 		};
 		BC0C05E687AB10AA733DCFB8CC2F4757 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 44E5BE8F45C8E30994EDF5AEF7135E9B /* Pods-helpoMobile.debug.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				MACH_O_TYPE = staticlib;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		C266BA6BAF3B11AC232595B51D4A251D /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = BF08E7EC58D31939954571B2F51EC24C /* Pods-helpoMobileTests.debug.xcconfig */;
+			baseConfigurationReference = 834AEECD09A46D761ECEBDF06CD89F74 /* Pods-helpoMobile.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -524,70 +438,9 @@
 			};
 			name = Debug;
 		};
-		D655922E7DF7A141DA852B628598A4ED /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0B167EF04BA94197BC22B41D9C1E2861 /* Pods-helpoMobileTests.release.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				MACH_O_TYPE = staticlib;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
-		DD42F2EAC1803F04009CC0F618435974 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2B445F5548FCC84BFDB21598C479A68A /* Pods-helpoMobile-tvOSTests.debug.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				MACH_O_TYPE = staticlib;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1371CAC493B53FFB851EC3ADEBD573E2 /* Build configuration list for PBXNativeTarget "Pods-helpoMobileTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				C266BA6BAF3B11AC232595B51D4A251D /* Debug */,
-				D655922E7DF7A141DA852B628598A4ED /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		20FAD4A8BE8CEFFF406021752B65D18B /* Build configuration list for PBXNativeTarget "Pods-helpoMobile-tvOSTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				DD42F2EAC1803F04009CC0F618435974 /* Debug */,
-				373963C7D64A64299873F1105A3C2569 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

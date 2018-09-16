@@ -4,19 +4,17 @@
 target 'helpoMobile' do
   # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
   # use_frameworks!
-  pod 'GooglePlaces', '2.1'
-  pod 'GoogleMaps', '2.1'
-  pod 'GooglePlacePicker', '2.1'
+
   # Pods for helpoMobile
 
-  target 'helpoMobile-tvOSTests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
 
-  target 'helpoMobileTests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
+
+  # react-native-google-place-picker dependencies
+
+  pod 'GooglePlacePicker', '= 2.0.1'
+  pod 'GooglePlaces', '= 2.0.1'
+  pod 'GoogleMaps', '= 2.0.1'
+
 
 end
+

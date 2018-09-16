@@ -270,7 +270,9 @@ class ConsultaEventosOrganizacionCreateReadView(ListCreateAPIView):
     def get_eventos_empresa(self, empresa):
         eventos = []
         propuestas = Propuesta.objects.filter(empresa_id=empresa, aceptado=1)
-        return propuestas
+        for p in propuestas:
+            eventos.append(p.evento.id)
+        return eventos
     
     def get_eventos(self, params):
         eventos = []

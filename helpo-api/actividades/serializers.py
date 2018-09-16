@@ -2,7 +2,7 @@ from rest_framework import serializers
 from actividades.models import Evento, RubroEvento, Ubicacion, CategoriaRecurso, \
     Recurso, Necesidad, Contacto, Funcion, Voluntario, Participacion, Colaboracion, Comentario, Mensaje, EventoImagen, \
     Propuesta
-from actividades.services import send_mail_mensaje_evento, send_previous_mail_evento, send_full_participacion_mail
+from actividades.services import send_mail_mensaje_evento, send_previous_mail_evento, send_full_participacion_mail, send_full_colaboracion_mail
 from users.serializers import UserSerializer, ColaboradorInfoSerializer
 from users.models import User
 
@@ -149,6 +149,8 @@ class ColaboracionSerializer(serializers.ModelSerializer):
             evento = validated_data['necesidad_material'].evento   
             titulo_email = "Usted se ha registrado para colaborar con los siguientes datos:"         
             self.send_colaboracion_email(colaborador_id, evento, colaboracion, titulo_email)
+            if (suma_colaboraciones + cantidad) == necesidad_material.cantidad:
+                send_full_colaboracion_mail(necesidad_material)
             return colaboracion
         else:
             raise serializers.ValidationError()
@@ -157,9 +159,17 @@ class ColaboracionSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         new_instance = super().update(instance, validated_data)
         colaborador_id = instance.colaborador.id
-        evento = validated_data['necesidad_material'].evento  
+        necesidad_material = validated_data.get('necesidad_material')
+        evento = necesidad_material.evento  
         titulo_email = u"Usted ha modificado su colaboración en un Evento. Los nuevos datos son:"
         self.send_colaboracion_email(colaborador_id, evento, new_instance, titulo_email)
+        colaboraciones = Colaboracion.objects.filter(necesidad_material_id=necesidad_material.id)
+        cantidad = validated_data.get('cantidad')
+        suma_colaboraciones = 0
+        for c in colaboraciones:
+            suma_colaboraciones += c.cantidad
+        if (suma_colaboraciones + cantidad) == necesidad_material.cantidad:
+            send_full_colaboracion_mail(necesidad_material)
         return new_instance
     
     # la continuacion de la negrada de Gon

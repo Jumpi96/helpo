@@ -38,6 +38,13 @@ def render_full_participacion_email(necesidad_voluntario):
     return render_mail('full-participacion-email.html', dict_context)
 
 
+def render_full_colaboracion_email(necesidad_material):
+    dict_context = dict(
+        necesidad=necesidad_material
+    )
+    return render_mail('full-colaboracion-email.html', dict_context)
+
+
 def render_mail(html_template, dict_context):
     template = loader.get_template(html_template)
     html_content = template.render(dict_context)

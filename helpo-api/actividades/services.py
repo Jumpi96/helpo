@@ -1,6 +1,6 @@
 from actividades.models import Evento, Necesidad, Colaboracion, Voluntario, Participacion, LogMensaje, Mensaje, Propuesta
 from common.notifications import send_mail_to_list, send_mail_to
-from common.templates import render_mensaje_evento, render_full_participacion_email, render_full_colaboracion_email
+from common.templates import render_mensaje_evento, render_full_participacion_email, render_full_colaboracion_email, render_was_full_colaboracion_email, render_was_full_participacion_email
 from users.models import User
 
 
@@ -58,10 +58,21 @@ def send_full_participacion_mail(necesidad_voluntario):
                  render_full_participacion_email(necesidad_voluntario))
 
 
+def send_was_full_participacion_mail(necesidad_voluntario):
+    organizacion_email = necesidad_voluntario.evento.organizacion.email
+    send_mail_to(organizacion_email, "Necesidad pendiente en Helpo",
+                 render_was_full_participacion_email(necesidad_voluntario))
+
 def send_full_colaboracion_mail(necesidad_material):
     organizacion_email = necesidad_material.evento.organizacion.email
     send_mail_to(organizacion_email, "Necesidad cubierta en Helpo",
                  render_full_colaboracion_email(necesidad_material))
+
+
+def send_was_full_colaboracion_mail(necesidad_material):
+    organizacion_email = necesidad_material.evento.organizacion.email
+    send_mail_to(organizacion_email, "Necesidad pendiente en Helpo",
+                 render_was_full_colaboracion_email(necesidad_material))
 
 
 def notificar_cambio_evento(request_data):

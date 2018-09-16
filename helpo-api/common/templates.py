@@ -38,11 +38,25 @@ def render_full_participacion_email(necesidad_voluntario):
     return render_mail('full-participacion-email.html', dict_context)
 
 
+def render_was_full_participacion_email(necesidad_voluntario):
+    dict_context = dict(
+        voluntario=necesidad_voluntario
+    )
+    return render_mail('was-full-participacion-email.html', dict_context)
+
+
 def render_full_colaboracion_email(necesidad_material):
     dict_context = dict(
         necesidad=necesidad_material
     )
     return render_mail('full-colaboracion-email.html', dict_context)
+
+
+def render_was_full_colaboracion_email(necesidad_material):
+    dict_context = dict(
+        necesidad=necesidad_material
+    )
+    return render_mail('was-full-colaboracion-email.html', dict_context)
 
 
 def render_mail(html_template, dict_context):

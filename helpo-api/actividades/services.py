@@ -150,7 +150,7 @@ def create_propuesta(user, necesidad, es_voluntario):
 
 def _send_mail_response_propuesta(usuarios_id, propuesta):
     subject_utf = u"Respuesta a tu propuesta para evento: " + propuesta.evento.nombre
-    from common.templates import render_propuesta
+    from common.templates import render_respuesta_propuesta
     content = render_respuesta_propuesta(propuesta)
     from common.notifications import send_mail_to_id_list
     send_mail_to_id_list(ids_to=usuarios_id,
@@ -167,5 +167,5 @@ def response_propuesta(propuesta):
     try:
         _send_mail_response_propuesta([propuesta.empresa.id], propuesta)
         _send_push_response_propuesta([propuesta.empresa.id], propuesta)
-    except expression as identifier:
+    except:
         pass

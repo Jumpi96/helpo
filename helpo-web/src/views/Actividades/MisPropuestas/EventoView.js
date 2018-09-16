@@ -234,7 +234,7 @@ class EventoView extends React.Component {
           {propuesta.aceptado === -1 ?
             this.getComentario(propuesta) : undefined
           }
-          {moment(evento.fecha_hora_inicio)>moment() && propuesta.aceptado !== -1 ?
+          {moment(evento.fecha_hora_inicio)<moment() && propuesta.aceptado !== -1 ?
             <button
               onClick={this.toggleView}
               className="btn btn-warning"

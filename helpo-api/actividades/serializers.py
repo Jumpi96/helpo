@@ -234,7 +234,7 @@ class PropuestaSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         new_instance = super().update(instance, validated_data)
-        self.response_propuesta(new_instance)
+        response_propuesta(new_instance)
         return new_instance
 
 class ConsultaNecesidadesSerializer(serializers.ModelSerializer):

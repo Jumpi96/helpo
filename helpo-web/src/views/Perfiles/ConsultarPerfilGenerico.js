@@ -6,6 +6,7 @@ import ConsultarPerfilVoluntario from './PerfilVoluntario/ConsultarPerfilVolunta
 import ModificarPerfilOrganizacion from './PerfilOrganizacion/ModificarPerfilOrganizacion'
 import ModificarPerfilEmpresa from './PerfilEmpresa/ModificarPerfilEmpresa'
 import ModificarPerfilVoluntario from './PerfilVoluntario/ModificarPerfilVoluntario'
+import BotonSuscripcion from '../Suscripcion/BotonSuscripcion/BotonSuscripcion'
 
 class ConsultarPerfilGenerico extends Component {
   constructor(props) {
@@ -214,6 +215,7 @@ class ConsultarPerfilGenerico extends Component {
   render() {
     return (
     <div>
+      <BotonSuscripcion/>
       {this.renderComponente()}
     </div>
     );

@@ -35,8 +35,10 @@ def handle_evento_change_notification(sender, instance, created, **kwags):
 
     if created:
         for user in users:
+            pass
             #Notificar cuando se crea el evento
     elif instance.estado == 1:
         # Cuando un evento creado se modifica
         for user in users:
+            pass
             #Notificar modificacion de evento

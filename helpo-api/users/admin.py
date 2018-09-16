@@ -26,6 +26,5 @@ class CustomUserAdmin(UserAdmin):
 class CustomAppValuesAdmin(admin.ModelAdmin):
     list_display = ['key', 'value']
 
-
 admin.site.register(User, CustomUserAdmin)
 admin.site.register(AppValues, CustomAppValuesAdmin)

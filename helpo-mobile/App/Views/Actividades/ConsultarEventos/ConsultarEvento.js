@@ -20,6 +20,7 @@ import {
 } from 'native-base';
 import styles from './styles';
 import CompartirEvento from '../CompartirEvento/CompartirEvento';
+import GoAlbum from '../AlbumEvento/GoAlbum'
 
 
 class ConsultaEvento extends React.Component {
@@ -245,6 +246,11 @@ class ConsultaEvento extends React.Component {
             </View>
           ) : undefined
           }
+          <GoAlbum             
+            visible={evento.estado >= 2 ? true : false} // Solo visible si evento comenzo o finalizo
+            eventoId={evento.id}
+            navigation={this.props.navigation}
+          />
           <CompartirEvento evento={params.evento} />
         </Content>
       </Container>

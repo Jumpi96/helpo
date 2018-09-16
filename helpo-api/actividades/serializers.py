@@ -2,7 +2,7 @@ from rest_framework import serializers
 from actividades.models import Evento, RubroEvento, Ubicacion, CategoriaRecurso, \
     Recurso, Necesidad, Contacto, Funcion, Voluntario, Participacion, Colaboracion, Comentario, Mensaje, EventoImagen, \
     Propuesta
-from actividades.services import send_mail_mensaje_evento, send_previous_mail_evento
+from actividades.services import send_mail_mensaje_evento, send_previous_mail_evento, response_propuesta
 from users.serializers import UserSerializer, ColaboradorInfoSerializer
 from users.models import User
 
@@ -232,6 +232,11 @@ class PropuestaSerializer(serializers.ModelSerializer):
         model = Propuesta
         fields = '__all__'
 
+    def update(self, instance, validated_data):
+        new_instance = super().update(instance, validated_data)
+        response_propuesta(new_instance)
+        return new_instance
+
 class ConsultaNecesidadesSerializer(serializers.ModelSerializer):
     necesidades = ConsultaNecesidadSerializer(many=True)
     voluntarios = ConsultaVoluntarioSerializer(many=True)
@@ -265,6 +270,8 @@ class EventoImagenSerializer(serializers.ModelSerializer):
     class Meta:
         model = EventoImagen
         fields = ('id', 'url', 'evento')
+        read_only_fields = ('id',)
+
 
 class MensajeSerializer(serializers.ModelSerializer):
     evento_id = serializers.PrimaryKeyRelatedField(

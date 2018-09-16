@@ -20,6 +20,7 @@ class ImagenSelecter extends React.Component {
   }
 
   onSelectFile(event) {
+    // Toma el archivo y lo retorna encodedado en base 64
     if (event.target.files && event.target.files.length > 0) {
       const reader = new FileReader()
       reader.addEventListener(

@@ -9,7 +9,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         
-        now = timezone.now() - timezone.timedelta(hours=3)
+        now = timezone.now()   
+        print(now)
         tasks = ActividadesTasks.objects.all().filter(execute_date__lte=now)         
 
         for task in tasks:

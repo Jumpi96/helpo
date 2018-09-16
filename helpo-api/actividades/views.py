@@ -18,7 +18,7 @@ from actividades.serializers import EventoSerializer, RubroEventoSerializer, \
     ConsultaEventoSerializer, VoluntarioSerializer, FuncionSerializer, ConsultaNecesidadesSerializer, \
     ParticipacionSerializer, ColaboracionSerializer, ComentarioSerializer, MensajeSerializer, EventoImagenSerializer, \
     PropuestaSerializer
-from actividades.services import create_propuesta_necesidad, create_propuesta_voluntario
+from actividades.services import create_propuesta
 from common.functions import get_token_user, calc_distance_locations
 
 class RubroEventoCreateReadView(ListCreateAPIView):
@@ -233,6 +233,8 @@ class ConsultaEventosOrganizacionCreateReadView(ListCreateAPIView):
         queryset = Evento.objects.all()
         if 'organizacion' in self.request.query_params:
             queryset = queryset.filter(organizacion_id=self.request.query_params.get('organizacion'))
+        elif 'empresa' in self.request.query_params:
+            queryset = queryset.filter(id__in=self.get_eventos_empresa(self.request.query_params.get('empresa')))
         else:
             queryset = queryset.filter(fecha_hora_inicio__gte=datetime.today())
         if 'fecha_desde' in self.request.query_params:
@@ -264,6 +266,13 @@ class ConsultaEventosOrganizacionCreateReadView(ListCreateAPIView):
             if calc_distance_locations(latitud, longitud, e.ubicacion.latitud, e.ubicacion.longitud) <= kms
         ]
         return ids
+    
+    def get_eventos_empresa(self, empresa):
+        eventos = []
+        propuestas = Propuesta.objects.filter(empresa_id=empresa, aceptado=1)
+        for p in propuestas:
+            eventos.append(p.evento.id)
+        return eventos
     
     def get_eventos(self, params):
         eventos = []
@@ -313,7 +322,7 @@ class ColaboracionCreateReadView(ListCreateAPIView):
         user = User.objects.get(id=get_token_user(self.request))
         if serializer.is_valid():
             if user.user_type == 3:
-                create_propuesta_necesidad(user, request_data['necesidad_material_id'])
+                create_propuesta(user, request.data['necesidad_material_id'], False)
             serializer.save(colaborador_id=user.id)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -346,10 +355,11 @@ class ParticipacionCreateReadView(ListCreateAPIView):
         if serializer.is_valid():
             user = User.objects.get(id=get_token_user(self.request))
             serializer.save(colaborador_id=user.id)
-            from actividades.services import send_participacion_create_email
-            send_participacion_create_email(serializer.instance)
             if user.user_type == 3:
-                create_propuesta_voluntario(user, request.data['necesidad_voluntario_id'])
+                create_propuesta(user, request.data['necesidad_voluntario_id'], True)
+            else:
+                from actividades.services import send_participacion_create_email
+                send_participacion_create_email(serializer.instance)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -365,8 +375,10 @@ class ParticipacionReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     def destroy(self, request, *args, **kwargs):
         participacion_id = request.path.split("/actividades/participaciones/",1)[1][:-1]
         participacion = Participacion.objects.get(id=participacion_id)
-        from actividades.services import send_participacion_destroy_email
-        send_participacion_destroy_email(participacion)        
+        user = User.objects.get(id=get_token_user(self.request))
+        if user.user_type != 3:
+            from actividades.services import send_participacion_destroy_email
+            send_participacion_destroy_email(participacion)
         return super().destroy(request, *args, **kwargs)
 
 

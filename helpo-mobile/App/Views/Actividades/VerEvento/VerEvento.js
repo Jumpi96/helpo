@@ -22,6 +22,7 @@ import {
 import api from '../../../api';
 import styles from './styles';
 import CompartirEvento from '../CompartirEvento/CompartirEvento';
+import GoAlbum from '../AlbumEvento/GoAlbum'
 
 class VerEvento extends React.Component {
 
@@ -156,6 +157,11 @@ class VerEvento extends React.Component {
               <Text>Ver Colaboraciones</Text>
             </Body>
           </ListItem>
+          <GoAlbum             
+            visible={evento.estado >= 2 ? true : false} // Solo visible si evento comenzo o finalizo
+            eventoId={this.props.navigation.state.params.evento.id}
+            navigation={this.props.navigation}
+          />
           <ListItem 
             button 
             onPress={() => this.props.navigation.navigate('MensajesEvento', {

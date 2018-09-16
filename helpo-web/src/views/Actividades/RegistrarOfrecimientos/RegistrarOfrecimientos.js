@@ -12,7 +12,7 @@ class RegistrarOfrecimientos extends Component {
     const urlParams = new URLSearchParams(this.props.location.search)
     const parametro = urlParams.get('evento');
     let evento;
-    if (parametro && !this.empresaTienePedido(parametro)) {
+    if (parametro && !this.empresaTienePropuesta(parametro)) {
       evento = parametro;
     } else {
       this.props.history.push({ pathname: '/dashboard' });
@@ -37,11 +37,11 @@ class RegistrarOfrecimientos extends Component {
     return this.props.auth.user.id;
   }
 
-  empresaTienePedido(evento) {
-    api.get('/actividades/pedidos/')
+  empresaTienePropuesta(evento) {
+    api.get('/actividades/propuestas/')
       .then(res => {
-        const pedidos = res.data;
-        return pedidos.filter(n => n.evento_id === evento && n.aceptado !== 0).length > 0;
+        const propuestas = res.data;
+        return propuestas.filter(n => n.evento === evento && n.aceptado !== 0).length > 0;
       })
       .catch((error) => {
         if (error.response){ console.log(error.response.status) }

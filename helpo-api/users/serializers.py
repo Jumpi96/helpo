@@ -201,12 +201,12 @@ class VoluntarioProfileSerializer(serializers.ModelSerializer):
     avatar = ImagenSerializer(required=False)   
     usuario = UserSerializer(read_only=True) 
     manos = serializers.SerializerMethodField()
-    participacioneventos = serializers.SerializerMethodField()
+    eventos = serializers.SerializerMethodField()
 
     class Meta:
         model = VoluntarioProfile
-        fields = ( 'telefono', 'apellido', 'dni', 'sexo', 'gustos', 'habilidades', 'avatar', 'usuario','manos','participacioneventos')
-        read_only_fields = ('usuario','manos','participacioneventos')
+        fields = ( 'telefono', 'apellido', 'dni', 'sexo', 'gustos', 'habilidades', 'avatar', 'usuario','manos','eventos')
+        read_only_fields = ('usuario','manos','eventos')
 
     def update(self, instance, validated_data):
         avatar_data = None
@@ -237,25 +237,23 @@ class VoluntarioProfileSerializer(serializers.ModelSerializer):
         return instance
 
     def get_manos(self, obj):
-        participaciones = 0
-        colaboraciones = 0
-        participaciones = Participacion.objects.filter(retroalimentacion_voluntario=True).filter(voluntario_id=obj.usuario_id).count()
-        colaboraciones = Colaboracion.objects.filter(retroalimentacion_voluntario=True).filter(voluntario_id=obj.usuario_id).distinct('necesidad_material__evento').count()
+        participaciones = Participacion.objects.filter(retroalimentacion_voluntario=True).filter(colaborador_id=obj.usuario_id).count()
+        colaboraciones = Colaboracion.objects.filter(retroalimentacion_voluntario=True).filter(colaborador_id=obj.usuario_id).distinct('necesidad_material__evento').count()
         manos = participaciones + colaboraciones
         return manos
 
-    def get_participacioneventos(self, obj):
+    def get_eventos(self, obj):
         cantidad = []
-        participaciones = Participacion.objects.filter(voluntario_id=obj.usuario_id)
-        colaboraciones = Colaboracion.objects.filter(voluntario_id=obj.usuario_id).distinct('necesidad_material__evento')
+        participaciones = Participacion.objects.filter(colaborador_id=obj.usuario_id)
+        colaboraciones = Colaboracion.objects.filter(colaborador_id=obj.usuario_id).distinct('necesidad_material__evento')
         for c in colaboraciones:
             if c.necesidad_material.evento_id not in cantidad:
                 cantidad.append(c.necesidad_material.evento_id)
         for p in participaciones:
             if p.necesidad_voluntario.evento_id not in cantidad:
                 cantidad.append(p.necesidad_voluntario.evento_id)
-        participacioneventos = Evento.objects.filter(id__in = cantidad).count()
-        return participacioneventos    
+        eventos = Evento.objects.filter(id__in = cantidad).count()
+        return eventos    
         
 class VerificationMailSerializer(serializers.Serializer):    
     token = serializers.CharField()

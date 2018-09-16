@@ -29,7 +29,7 @@ def handle_evento_change_notification(sender, instance, created, **kwags):
     esta crea o modifica un evento
     """
     # Busco la ong dueña del evento
-    organizacion = User.objects.get(instance.organizacion)
+    organizacion = User.objects.get(pk=instance.organizacion.id)
     # Busco todos los usuarios que tengo que notificar
     users = User.objects.filter(suscripcion__organizacion=organizacion)
 

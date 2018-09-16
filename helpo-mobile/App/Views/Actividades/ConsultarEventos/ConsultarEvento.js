@@ -95,7 +95,11 @@ class ConsultaEvento extends React.Component {
         </Left>
         <Body>
           <Text>
-            {n.voluntario.nombre + ' ' + n.voluntario.apellido}
+            {
+              n.voluntario.apellido != null ?
+                n.voluntario.nombre + ' ' + n.voluntario.apellido
+                : n.voluntario.nombre
+            }
           </Text>
           <Text numberOfLines={2} note>
             {n.comentario}
@@ -246,7 +250,7 @@ class ConsultaEvento extends React.Component {
             </View>
           ) : undefined
           }
-          <GoAlbum             
+          <GoAlbum
             visible={evento.estado >= 2 ? true : false} // Solo visible si evento comenzo o finalizo
             eventoId={evento.id}
             navigation={this.props.navigation}

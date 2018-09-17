@@ -130,10 +130,10 @@ class RegistrarEvento extends React.Component {
         isNaN(Date.parse(this.state.fecha_hora_fin))) {
       formIsValid = false;
       errors.fechas = 'Las fechas ingresadas no son válidas.';
-    } else {
-      if (inicio.days() === actual.days() && (inicio.hours() >= actual.hours() || inicio.hours() < actual.hours())) {
-        formIsValid = false;
-        errors.fechas = "No es posible organizar el evento en el mismo día"
+    //} else { Se deshabilita validacion para no crear eventos un mismo dia, tener en cuneta que una Campaña SI puede comenzar el mismo dia que se crea
+      //if (inicio.days() === actual.days() && (inicio.hours() >= actual.hours() || inicio.hours() < actual.hours())) {
+        //formIsValid = false;
+        //errors.fechas = "No es posible organizar el evento en el mismo día"
       } else 
         if (inicio < actual) {
           formIsValid = false;

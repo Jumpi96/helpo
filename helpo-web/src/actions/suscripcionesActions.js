@@ -35,6 +35,7 @@ export function createSuscripcion(userId, ongId) {
     }
     api.post('/user/suscripciones/', postData)
       .then(response => {
+        // Hago fetchSuscripciones asi se actualiza todo el estado de forma mas facil
         dispatch(fetchSuscripciones(userId))
       })
       .catch(error => {

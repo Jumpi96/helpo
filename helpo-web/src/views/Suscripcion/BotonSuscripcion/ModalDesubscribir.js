@@ -2,6 +2,8 @@ import React from 'react'
 import { Modal, ModalFooter, ModalBody, Button } from 'reactstrap'
 
 /*
+Modal para confirmar desuscripcion
+
 Props:
   open
   toggle

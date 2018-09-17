@@ -3,6 +3,13 @@ import { Button } from 'reactstrap'
 import { connect } from 'react-redux'
 import * as actions from '../../../actions/suscripcionesActions'
 
+/*
+Boton para crear una suscripcion a una ONG (Funciona para cualquier usuario)
+props:
+  usuario(id)
+  organizacion(id)
+*/
+
 class BotonSubscribir extends React.Component {
 
   render() {

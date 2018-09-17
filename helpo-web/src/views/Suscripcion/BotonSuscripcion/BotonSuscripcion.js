@@ -7,7 +7,11 @@ import { connect } from 'react-redux'
 
 
 /*
-organizacion (id)
+Componente que hace todo el manejo de  la suscripcion/desuscripcion.
+USAR ESTE
+
+Props:
+  organizacion (id)
 */
 class BotonSuscripcion extends React.Component {
 
@@ -31,6 +35,7 @@ class BotonSuscripcion extends React.Component {
   }
 
   isSubscribed() {
+    // True si suscrito - False si no suscrito
     if (this.getSuscripcion(this.props.usuario, this.props.organizacion) === null) {
       return false
     }

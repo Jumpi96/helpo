@@ -4,6 +4,12 @@ import { connect } from 'react-redux'
 import * as actions from '../../../actions/suscripcionesActions'
 import ModalDesubscribir from './ModalDesubscribir'
 
+/*
+Boton para iniciar el borrado de una suscripcion
+props:
+  suscripcion
+*/
+
 class BotonDesubscribir extends React.Component {
 
   constructor(props) {
@@ -20,7 +26,7 @@ class BotonDesubscribir extends React.Component {
       modalOpen: !modalOpen
     })
   }
-//
+
   render() {
     return (
       <div>

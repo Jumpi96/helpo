@@ -375,10 +375,17 @@ class ParticipacionReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     def destroy(self, request, *args, **kwargs):
         participacion_id = request.path.split("/actividades/participaciones/",1)[1][:-1]
         participacion = Participacion.objects.get(id=participacion_id)
+        from actividades.services import send_participacion_destroy_email, send_was_full_participacion_mail
         user = User.objects.get(id=get_token_user(self.request))
         if user.user_type != 3:
-            from actividades.services import send_participacion_destroy_email
             send_participacion_destroy_email(participacion)
+        necesidad_voluntario = participacion.necesidad_voluntario
+        participaciones = Participacion.objects.filter(necesidad_voluntario_id=necesidad_voluntario.id)
+        suma_participantes = 0
+        for p in participaciones:
+            suma_participantes += p.cantidad
+        if suma_participantes == necesidad_voluntario.cantidad:
+            send_was_full_participacion_mail(necesidad_voluntario)
         return super().destroy(request, *args, **kwargs)
 
 

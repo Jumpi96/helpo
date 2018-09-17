@@ -7897,7 +7897,7 @@ react-native-elements@0.19.1:
     opencollective "^1.0.3"
     prop-types "^15.5.8"
 
-react-native-google-place-picker@1.2.1:
+react-native-google-place-picker@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/react-native-google-place-picker/-/react-native-google-place-picker-1.2.1.tgz#8b014d60102f72364e0dcf4ec63811c291f80708"
 

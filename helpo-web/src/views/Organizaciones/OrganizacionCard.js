@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import { mapToCssModules } from 'reactstrap/lib/utils';
 import { getImagen } from '../../utils/Imagen';
+import BotonSuscripcion from '../Suscripcion/BotonSuscripcion/BotonSuscripcion'
 
 class OrganizacionCard extends Component {
   render() {
@@ -46,6 +47,7 @@ class OrganizacionCard extends Component {
                 + Ver perfil
                 </button>
             </Link>
+            <BotonSuscripcion organizacion={organizacion.usuario.id}/>
           </div>
         </CardBody>
       </Card>

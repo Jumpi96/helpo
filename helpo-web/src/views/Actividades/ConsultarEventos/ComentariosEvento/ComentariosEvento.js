@@ -43,7 +43,7 @@ class ComentariosEvento extends Component {
     const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
     this.setState({
-        [name]: value
+      [name]: value
     });
   }
 
@@ -58,8 +58,8 @@ class ComentariosEvento extends Component {
         this.props.update();
       })
       .catch((error) => {
-        if (error.response){ console.log(error.response.status) }
-        else { console.log('Error: ', error.message)}
+        if (error.response) { console.log(error.response.status) }
+        else { console.log('Error: ', error.message) }
       });
   }
 
@@ -67,19 +67,53 @@ class ComentariosEvento extends Component {
     return this.props.evento.comentarios.filter(c => c.voluntario.id === usuario).length > 0;
   }
 
+  esPatrocinadora(voluntario) {
+    return this.props.evento.propuestas.filter(p => p.empresa.id === voluntario && p.aceptado === 1).length > 0;
+  }
+
   getOpiniones() {
-    if (this.props.evento.comentarios.length > 0) {
-      const opiniones = this.props.evento.comentarios.map((c) =>
-        <div className="row">
-          <div className="col-md-2">
-            <p className="text-right font-weight-bold">{c.voluntario.nombre + " " + c.voluntario.apellido}</p>
+    const { comentarios } = this.props.evento;
+    if (comentarios.length > 0) {
+      const opiniones_empresas = [];
+      const opiniones_voluntarios = [];
+      let comentario;
+      for (let i = 0; i < comentarios.length; i++) {
+        comentario = (
+          <div className="row">
+            <div className="col-md-2">
+              <p className="text-right font-weight-bold">{
+                comentarios[i].voluntario.apellido !== null ?
+                  comentarios[i].voluntario.nombre + " " + comentarios[i].voluntario.apellido
+                  : comentarios[i].voluntario.nombre
+              }</p>
+            </div>
+            <div className="col-md-10">
+              <p>{comentarios[i].comentario}</p>
+            </div>
           </div>
-          <div className="col-md-10">
-            <p>{c.comentario}</p>
-          </div>
+        );
+        if (this.esPatrocinadora(comentarios[i].voluntario_id)) {
+          opiniones_empresas.push(comentario);
+        } else {
+          opiniones_voluntarios.push(comentario);
+        }
+      }
+      return (
+        <div>
+          {opiniones_empresas.length > 0 ?
+            <div>
+              <h3>Opiniones de patrocinadores</h3>
+              {opiniones_empresas}
+            </div> : undefined
+          }
+          {opiniones_voluntarios.length > 0 ?
+            <div>
+              <h3>Opiniones de voluntarios</h3>
+              {opiniones_voluntarios}
+            </div> : undefined
+          }
         </div>
-      );
-      return opiniones;
+      )
     }
   }
 
@@ -87,16 +121,16 @@ class ComentariosEvento extends Component {
     const necesidades = evento.necesidades;
     const voluntarios = evento.voluntarios;
     let filtroNecesidades;
-    for (let i=0; i < necesidades.length; i++) {
+    for (let i = 0; i < necesidades.length; i++) {
       filtroNecesidades = necesidades[i].colaboraciones.filter(c => c.colaborador.id === usuario);
-      if (filtroNecesidades.length > 0 && filtroNecesidades[0].retroalimentacion) {
+      if (filtroNecesidades.length > 0 && filtroNecesidades[0].retroalimentacion_voluntario) {
         return true;
       }
     }
     let filtroVoluntarios;
-    for (let i=0; i < voluntarios.length; i++) {
+    for (let i = 0; i < voluntarios.length; i++) {
       filtroVoluntarios = voluntarios[i].participaciones.filter(c => c.colaborador.id === usuario);
-      if (filtroVoluntarios.length > 0 && filtroVoluntarios[0].retroalimentacion) {
+      if (filtroVoluntarios.length > 0 && filtroVoluntarios[0].retroalimentacion_voluntario) {
         return true;
       }
     }
@@ -109,8 +143,8 @@ class ComentariosEvento extends Component {
         this.props.update();
       })
       .catch((error) => {
-        if (error.response){ console.log(error.response.status) }
-        else { console.log('Error: ', error.message)}
+        if (error.response) { console.log(error.response.status) }
+        else { console.log('Error: ', error.message) }
       })
   }
 
@@ -138,13 +172,13 @@ class ComentariosEvento extends Component {
   participante(evento, usuario) {
     const necesidades = evento.necesidades;
     const voluntarios = evento.voluntarios;
-    for (let i=0; i < necesidades.length; i++) {
-      if (necesidades[i].colaboraciones.filter(c => c.colaborador.id === usuario).length > 0){
+    for (let i = 0; i < necesidades.length; i++) {
+      if (necesidades[i].colaboraciones.filter(c => c.colaborador.id === usuario).length > 0) {
         return true;
       }
     }
-    for (let i=0; i < voluntarios.length; i++) {
-      if (voluntarios[i].participaciones.filter(c => c.colaborador.id === usuario).length > 0){
+    for (let i = 0; i < voluntarios.length; i++) {
+      if (voluntarios[i].participaciones.filter(c => c.colaborador.id === usuario).length > 0) {
         return true;
       }
     }
@@ -162,10 +196,10 @@ class ComentariosEvento extends Component {
         <h2>Opiniones del evento</h2>
         {this.state.participante ?
           this.getOpcionRetroalimentacion()
-        : undefined}
+          : undefined}
         {this.state.participante ?
           this.getOpcionComentar()
-        : undefined}
+          : undefined}
         <br />
         {opiniones}
       </div>
@@ -178,5 +212,5 @@ const mapStateToProps = state => {
     auth: state.auth,
   }
 }
-  
+
 export default connect(mapStateToProps, undefined)(ComentariosEvento);

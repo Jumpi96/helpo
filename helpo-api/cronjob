@@ -1,2 +1,3 @@
-PATH={##TU PATH CABEZON##}
-*/1 * * * * cd {PATH al repo}/helpo/helpo-api && pipenv run python manage.py process_tasks
+SHELL=/bin/sh
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+*/1 * * * * cd /code && python manage.py process_tasks

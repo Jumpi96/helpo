@@ -43,18 +43,20 @@ class ConsultarEventosView extends React.Component {
     const listaPropuestas = [];
     propuestas = this.shuffle(propuestas);
     propuestas.forEach((p) => {
-      listaPropuestas.push(
-        <div className="row">
-          <img
-            src={getImagen(p.empresa.avatar)}
-            alt="ONG"
-            style={{ width: '50px', height: '50px' }}
-          />
-          <Link to={"/perfil/" + p.empresa.id} className="nombreEmpresa">
-            <a >{p.empresa.nombre}</a>
-          </Link>
-        </div>
-      )
+      if (p.aceptado === 1) {
+        listaPropuestas.push(
+          <div className="row">
+            <img
+              src={getImagen(p.empresa.avatar)}
+              alt="ONG"
+              style={{ width: '50px', height: '50px' }}
+            />
+            <Link to={"/perfil/" + p.empresa.id} className="nombreEmpresa">
+              <a >{p.empresa.nombre}</a>
+            </Link>
+          </div>
+        )
+      }
     })
     return (
       <div className="row">
@@ -70,8 +72,8 @@ class ConsultarEventosView extends React.Component {
 
   shuffle(a) {
     for (let i = a.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [a[i], a[j]] = [a[j], a[i]];
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
     }
     return a;
   }
@@ -240,19 +242,19 @@ class ConsultarEventosView extends React.Component {
               {moment(evento.fecha_hora_inicio) <= moment() && this.props.auth.user ? (
                 <ComentariosEvento evento={evento} update={this.loadEvento} />
               ) : undefined
-              }                
-                {/* Renderiza boton Ver album si empezo evento */}
-                {this.state.evento.estado > 1 
-                  ? (
-                <div className="row">   
-                  <div className="form-group col-md-3">
-                   <b name="compartir" className="float-right">Album</b>
-                  </div>
-                  <div className="form-group col-md-9">
-                    <ButtonGoAlbum eventoId={this.state.evento.id}/>
-                  </div>
-                </div>) 
-                  : undefined}              
+              }
+              {/* Renderiza boton Ver album si empezo evento */}
+              {this.state.evento.estado > 1
+                ? (
+                  <div className="row">
+                    <div className="form-group col-md-3">
+                      <b name="compartir" className="float-right">Album</b>
+                    </div>
+                    <div className="form-group col-md-9">
+                      <ButtonGoAlbum eventoId={this.state.evento.id} />
+                    </div>
+                  </div>)
+                : undefined}
               <div className="row">
                 <div className="form-group col-md-3">
                   <b name="compartir" className="float-right">Compartir</b>

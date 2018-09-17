@@ -1,6 +1,6 @@
 from actividades.models import Evento, Necesidad, Colaboracion, Voluntario, Participacion, LogMensaje, Mensaje, Propuesta
-from common.notifications import send_mail_to_list, send_mail_to
-from common.templates import render_mensaje_evento
+from common.notifications import send_mail_to_list, send_mail_to, send_mail_to_id_list, send_mail_to_id, send_push_notification_to_id_list
+from common.templates import render_participacion_email, render_cambio_evento_email, render_mensaje_evento, render_full_participacion_email, render_full_colaboracion_email, render_was_full_colaboracion_email, render_was_full_participacion_email, render_inicio_evento_email, render_fin_evento_email
 from users.models import User
 
 
@@ -23,14 +23,16 @@ def get_participantes_evento(evento_id):
     necesidades = Necesidad.objects.filter(evento_id=evento_id)
     for necesidad in necesidades:
         colaboraciones = Colaboracion.objects.filter(
-            necesidad_material_id=necesidad.id)
+            necesidad_material_id=necesidad.id, vigente=True
+        )
         for colaboracion in colaboraciones:
             if colaboracion.colaborador_id not in participantes:
                 participantes.append(colaboracion.colaborador_id)
     voluntarios = Voluntario.objects.filter(evento_id=evento_id)
     for voluntario in voluntarios:
         participaciones = Participacion.objects.filter(
-            necesidad_voluntario_id=voluntario.id)
+            necesidad_voluntario_id=voluntario.id, vigente=True
+        )
         for participacion in participaciones:
             if participacion.colaborador_id not in participantes:
                 participantes.append(participacion.colaborador_id)
@@ -52,6 +54,30 @@ def send_previous_mail_evento(evento_id, colaborador_id):
                 usuario_id=colaborador_id, mensaje_id=mensaje.id)
 
 
+def send_full_participacion_mail(necesidad_voluntario):
+    organizacion_email = necesidad_voluntario.evento.organizacion.email
+    send_mail_to(organizacion_email, "Necesidad cubierta en Helpo",
+                 render_full_participacion_email(necesidad_voluntario))
+
+
+def send_was_full_participacion_mail(necesidad_voluntario):
+    organizacion_email = necesidad_voluntario.evento.organizacion.email
+    send_mail_to(organizacion_email, "Necesidad pendiente en Helpo",
+                 render_was_full_participacion_email(necesidad_voluntario))
+
+
+def send_full_colaboracion_mail(necesidad_material):
+    organizacion_email = necesidad_material.evento.organizacion.email
+    send_mail_to(organizacion_email, "Necesidad cubierta en Helpo",
+                 render_full_colaboracion_email(necesidad_material))
+
+
+def send_was_full_colaboracion_mail(necesidad_material):
+    organizacion_email = necesidad_material.evento.organizacion.email
+    send_mail_to(organizacion_email, "Necesidad pendiente en Helpo",
+                 render_was_full_colaboracion_email(necesidad_material))
+
+
 def notificar_cambio_evento(request_data):
     usuarios_id = _get_usuarios(request_data)
     evento = _get_evento(request_data)
@@ -62,28 +88,25 @@ def notificar_cambio_evento(request_data):
 def _send_push(usuarios_id, evento):
     en_msg = "The event " + evento.nombre + " has changed"
     es_msg = "El evento " + evento.nombre + " ha sido modificado"
-    from common.notifications import send_push_notification_to_id_list
     send_push_notification_to_id_list(
         usuarios_id, "Event changed", "Cambio en Evento", en_msg, es_msg)
 
 
 def _send_mail(usuarios_id, evento):
     subject_utf = u"Modificación en el evento: " + evento.nombre
-    from common.templates import render_cambio_evento_email
     content = render_cambio_evento_email(evento)
-    from common.notifications import send_mail_to_id_list
     send_mail_to_id_list(ids_to=usuarios_id,
                          html_subject=subject_utf, html_content=content)
 
 
 def _get_usuarios(evento):
     from actividades.models import Necesidad, Voluntario, Colaboracion, Participacion
-    necesidades = Necesidad.objects.filter(evento=evento['id']).values('id')
-    voluntarios = Voluntario.objects.filter(evento=evento['id']).values('id')
+    necesidades = Necesidad.objects.filter(evento=evento.id).values('id')
+    voluntarios = Voluntario.objects.filter(evento=evento.id).values('id')
     colaboraciones = Colaboracion.objects.filter(
-        necesidad_material__in=necesidades).values('colaborador')
+        necesidad_material__in=necesidades, vigente=True).values('colaborador')
     participaciones = Participacion.objects.filter(
-        necesidad_voluntario__in=voluntarios).values('colaborador')
+        necesidad_voluntario__in=voluntarios, vigente=True).values('colaborador')
     usuarios_1 = [colaboracion['colaborador']
                   for colaboracion in colaboraciones]
     usuarios_2 = [participacion['colaborador']
@@ -110,12 +133,17 @@ def send_participacion_destroy_email(participacion):
 
 def _send_participacion_email(participacion, titulo_email):
     subject_utf = u"Registro de su participación en Helpo"
-    from common.templates import render_participacion_email
     content = render_participacion_email(participacion, titulo_email)
     colaborador_mail = participacion.colaborador.email
-    from common.notifications import send_mail_to
     send_mail_to(colaborador_mail,
                  html_subject=subject_utf, html_content=content)
+
+
+def create_propuesta_voluntario(user, necesidad_voluntario):
+    evento_id = Voluntario.objects.get(id=necesidad_voluntario).evento_id
+    if len(Propuesta.objects.filter(evento_id=evento_id).filter(empresa_id=user.id)) == 0:
+        Propuesta.objects.create(
+            evento_id=evento_id, empresa_id=user.id, aceptado=0)
 
 def _send_mail_propuesta(usuarios_id, propuesta):
     subject_utf = u"Propuesta para evento: " + propuesta.evento.nombre
@@ -145,7 +173,8 @@ def create_propuesta(user, necesidad, es_voluntario):
     else:
         evento_id = Necesidad.objects.get(id=necesidad).evento_id
     if len(Propuesta.objects.filter(evento_id=evento_id).filter(empresa_id=user.id)) == 0:
-        propuesta = Propuesta.objects.create(evento_id=evento_id, empresa_id=user.id, aceptado=0)
+        Propuesta.objects.create(
+            evento_id=evento_id, empresa_id=user.id, aceptado=0)
         _send_nueva_propuesta(propuesta)
 
 def _send_mail_response_propuesta(usuarios_id, propuesta):
@@ -169,3 +198,61 @@ def response_propuesta(propuesta):
         _send_push_response_propuesta([propuesta.empresa.id], propuesta)
     except:
         pass
+
+
+def deny_propuesta(propuesta):
+    colaboraciones = Colaboracion.objects.filter(
+        necesidad_material__evento_id=propuesta.evento.id).filter(
+            colaborador_id=propuesta.empresa.id)
+    for c in colaboraciones:
+        c.vigente = False
+        c.save()
+    participaciones = Participacion.objects.filter(
+        necesidad_voluntario__evento_id=propuesta.evento.id).filter(
+            colaborador_id=propuesta.empresa.id)
+    for p in participaciones:
+        p.vigente = False
+        c.save()
+
+def notificar_inicio_evento(evento):
+    colaboradores_id = _get_usuarios(evento)
+    organizacion_id = evento.organizacion.id
+    __send_inicio_mail(colaboradores_id, organizacion_id, evento)
+    __send_inicio_push(colaboradores_id, organizacion_id, evento)
+
+
+def __send_inicio_mail(colaboradores_id, organizacion_id, evento):
+    colaboradores_id.append(organizacion_id)
+    subject_utf = u"Helpo: el evento " + evento.nombre + " ha comenzado"
+    send_mail_to_id_list(colaboradores_id, subject_utf,
+                         render_inicio_evento_email(evento))
+
+
+def __send_inicio_push(colaboradores_id, organizacion_id, evento):
+    colaboradores_id.append(organizacion_id)
+    en_msg = "The event " + evento.nombre + " has started"
+    es_msg = "El evento " + evento.nombre + " ha comenzado"
+    send_push_notification_to_id_list(
+        colaboradores_id, "Event started", "Inicio de Evento", en_msg, es_msg)
+
+
+def notificar_fin_evento(evento):
+    colaboradores_id = _get_usuarios(evento)
+    organizacion_id = evento.organizacion.id
+    __send_fin_mail(colaboradores_id, organizacion_id, evento)
+    __send_fin_push(colaboradores_id, organizacion_id, evento)
+
+
+def __send_fin_mail(colaboradores_id, organizacion_id, evento):
+    colaboradores_id.append(organizacion_id)
+    subject_utf = u"Helpo: el evento " + evento.nombre + " ha finalizado"
+    send_mail_to_id_list(colaboradores_id, subject_utf,
+                         render_fin_evento_email(evento))
+
+
+def __send_fin_push(colaboradores_id, organizacion_id, evento):
+    colaboradores_id.append(organizacion_id)
+    en_msg = "The event " + evento.nombre + " has finished"
+    es_msg = "El evento " + evento.nombre + " ha finalizado"
+    send_push_notification_to_id_list(
+        colaboradores_id, "Event finished", "Evento finalizado", en_msg, es_msg)

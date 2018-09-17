@@ -21,7 +21,8 @@ class DetalleParticipacion extends React.Component {
   handleRetroalimentacion() {
     const mensaje = { 
       evento: this.props.eventoId, 
-      voluntario: this.props.participacion.colaborador.id
+      voluntario: this.props.participacion.colaborador.id,
+      es_colaboracion: false
     };
     api.post('feedbacks/retroalimentacion_ong/', mensaje)
       .then((res) => {

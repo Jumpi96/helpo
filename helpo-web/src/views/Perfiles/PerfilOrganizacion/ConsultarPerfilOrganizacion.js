@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types'
-import { Card, CardHeader, Button } from 'reactstrap';
-import { Gmaps, Marker } from 'react-gmaps';
+import { Card, CardHeader, Button, CardTitle, CardText, CardBody, CardColumns } from 'reactstrap';
+import {Gmaps, Marker} from 'react-gmaps';
 import { getImagen } from '../../../utils/Imagen'
 import BotonSuscripcion from '../../Suscripcion/BotonSuscripcion/BotonSuscripcion'
 //https://github.com/MicheleBertoli/react-gmaps
@@ -15,6 +15,8 @@ const perfilPropTypes = {
     telefono: PropTypes.number,
     cuit: PropTypes.number,
     descripcion: PropTypes.string,
+    manos: PropTypes.number,
+    eventos: PropTypes.number,
     rubro: PropTypes.shape({
       id: PropTypes.number,
       nombre: PropTypes.string,
@@ -41,6 +43,8 @@ class ConsultarPerfilOrganizacion extends Component {
     this.renderDescripcion = this.renderDescripcion.bind(this);
     this.renderRubro = this.renderRubro.bind(this);
     this.renderTelefono = this.renderTelefono.bind(this);
+    this.renderManos = this.renderManos.bind(this);
+    this.renderEventos = this.renderEventos.bind(this);
     this.getLinkVerEventos = this.getLinkVerEventos.bind(this);
   }
 
@@ -71,6 +75,20 @@ class ConsultarPerfilOrganizacion extends Component {
       return <p className='text-muted'> No hay valor ingresado</p>
     }
     return <p> {this.props.data.descripcion}</p>
+  }
+
+  renderManos() {
+    if (this.props.data.manos == null) {
+      return <p className='text-muted'> - </p>
+    }
+    return <p> {this.props.data.manos}</p>      
+  }
+
+  renderEventos() {
+    if (this.props.data.eventos == null) {
+      return <p className='text-muted'> - </p>
+    }
+    return <p> {this.props.data.eventos}</p>      
   }
 
   mostrarUbicacion() {
@@ -113,67 +131,95 @@ class ConsultarPerfilOrganizacion extends Component {
     const link = this.getLinkVerEventos();
     return (
       <Card>
-        <CardHeader>
-          <i className="fa fa-align-justify"></i> Perfil
-        </CardHeader>
-        <div className='container'>
-
-          <div style={{ alignItems: 'center' }} className='row'>
-            <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', height: '150px' }} className='col-2'>
-              <p style={{ textAlign: 'right' }}
-                className='h4'>{this.props.nombre}</p>
+      <CardHeader>
+        <i className="fa fa-align-justify"></i> Perfil
+      </CardHeader>
+      <CardBody>
+        <div className="row">
+          <div className="col-md-8">
+            <div className="row" style={{ height: '110px'}}>
+              <div className="col-md-3">
+                <p style={{ textAlign: 'right' }} className='h4'>{this.props.nombre}</p>
+              </div>
+              <div className="col-md-5">
+                <img
+                  className='rounded-circle'
+                  src={getImagen(this.props.data.avatar.url)}
+                  alt="avatar"
+                  width="100" 
+                  height="100"
+                />
+              </div>
             </div>
-            <div className='col-6'>
-              <img
-                className='rounded-circle'
-                src={getImagen(this.props.data.avatar.url)}
-                alt="avatar"
-                width="100"
-                height="100"
-              />
+            <div className='row'>
+              <div className="col-md-3">
+                <p style={{ textAlign: 'right' }} className='font-weight-bold' htmlFor="mail">Mail</p>
+              </div>
+              <div className="col-md-5">
+                <p>{this.props.email}</p>
+              </div>
+            </div>
+            <div className='row'>
+              <div className="col-md-3">
+                <p style={{ textAlign: 'right' }} className='font-weight-bold' htmlFor="telefono">Teléfono</p>
+              </div>
+              <div className="col-md-5">
+                {this.renderTelefono()} 
+              </div>
+            </div>
+            <div className='row'>
+              <div className="col-md-3">
+                <p style={{ textAlign: 'right' }} className='font-weight-bold' htmlFor="cuit">CUIT</p>
+              </div>
+              <div className="col-md-5">
+                {this.renderCuit()} 
+              </div>
+            </div>
+            <div className='row'>
+              <div className="col-md-3">
+                <p style={{ textAlign: 'right' }} className='font-weight-bold' htmlFor="telefono">Rubro</p>
+              </div>
+              <div className="col-md-5">
+                {this.renderRubro()} 
+              </div>
+            </div>
+            <div className='row'>
+              <div className="col-md-3">
+              <p style={{ paddingLeft: 0 ,textAlign: 'right' }} className='font-weight-bold' htmlFor="descripcion">Descripción</p> 
+              </div>
+              <div className="col-md-5">
+                {this.renderDescripcion()} 
+              </div>
+            </div>
+            {this.mostrarUbicacion()}
+            <div style={{ width: '500px', justifyContent: 'center' ,display: 'flex', marginBottom: '10px' }} className='row offster-md-4'>
+              <div className="col-md-4">
+                <Button onClick={this.props.switchToModificar} color='primary'>Modificar Datos</Button>
+              </div>
+            </div>
+            <div style={{ width: '500px', justifyContent: 'center' ,display: 'flex', marginBottom: '10px' }} className='row offster-md-4'>
+              <div className="col-md-4">
+                <Link to={link}>
+                  <button className='btn btn-primary'>Ver eventos organizados</button>
+                </Link>
+              </div>
             </div>
           </div>
-
-          <div className='row'>
-            <p style={{ textAlign: 'right' }} className='font-weight-bold col-2' htmlFor="mail">Mail</p>
-            <div className='col-6'><p>{this.props.email}</p></div>
-          </div>
-
-          <div className='row'>
-            <p style={{ textAlign: 'right' }} className='font-weight-bold col-2' htmlFor="telefono">Teléfono</p>
-            <div className='col-6'>{this.renderTelefono()}</div>
-          </div>
-
-          <div className='row'>
-            <p style={{ textAlign: 'right' }} className='font-weight-bold col-2' htmlFor="cuit">CUIT</p>
-            <div className='col-6'>{this.renderCuit()}</div>
-          </div>
-
-          <div className='row'>
-            <p style={{ textAlign: 'right' }} className='font-weight-bold col-2' htmlFor="telefono">Rubro</p>
-            <div className='col-6'>{this.renderRubro()}</div>
-          </div>
-
-          <div className='row'>
-            <p style={{ paddingLeft: 0, textAlign: 'right' }} className='font-weight-bold col-2' htmlFor="descripcion">Descripción</p>
-            <div className='col-6'>{this.renderDescripcion()}</div>
-          </div>
-
-          {this.mostrarUbicacion()}
-
-          <div style={{ width: '500px', justifyContent: 'center', display: 'flex', marginBottom: '10px' }} className='row offster-md-4'>
-            <Button onClick={this.props.switchToModificar} color='primary'>Modificar Datos</Button>
-          </div>
-          <div style={{ width: '500px', justifyContent: 'center', display: 'flex', marginBottom: '10px' }} className='row offster-md-4'>
-            <Link to={link}>
-              <button className='btn btn-primary'>Ver eventos organizados</button>
-            </Link>
-          </div>
-          <div style={{ width: '500px', justifyContent: 'center', display: 'flex', marginBottom: '10px' }} className='row offster-md-4'>
-            <BotonSuscripcion organizacion={this.props.id} />
+          <div className="col-md-4">
+            <CardColumns>
+              <Card className="text-center" body inverse color="primary" style={{height:100, width:100, borderColor:'white'}}>
+                <CardTitle><i class="fa fa-hand-stop-o fa-2x"></i></CardTitle>
+                <CardText style={{fontSize:20}}>{this.renderManos()}</CardText>
+              </Card >
+              <Card className="text-center" body inverse color="primary" style={{height:100, width:100,borderColor:'white'}}>
+                <CardTitle><i class="fa fa-calendar-check-o fa-2x"></i></CardTitle>
+                <CardText style={{fontSize:20}}>{this.renderEventos()}</CardText>
+             </Card> 
+            </CardColumns>
           </div>
         </div>
-      </Card>
+      </CardBody>
+    </Card>
     );
   }
 }

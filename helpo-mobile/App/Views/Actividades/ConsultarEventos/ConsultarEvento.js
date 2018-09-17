@@ -95,7 +95,11 @@ class ConsultaEvento extends React.Component {
         </Left>
         <Body>
           <Text>
-            {n.voluntario.nombre + ' ' + n.voluntario.apellido}
+            {
+              n.voluntario.apellido != null ?
+                n.voluntario.nombre + ' ' + n.voluntario.apellido
+                : n.voluntario.nombre
+            }
           </Text>
           <Text numberOfLines={2} note>
             {n.comentario}
@@ -115,18 +119,20 @@ class ConsultaEvento extends React.Component {
     const listaPropuestas = [];
     propuestas = this.shuffle(propuestas);
     propuestas.forEach((p) => {
-      listaPropuestas.push(
-        <ListItem thumbnail key={p.id} onPress={() => this.togglePerfil(p.empresa.id)}>
-          <Left>
-            <Thumbnail small source={{ uri: p.empresa.avatar }} />
-          </Left>
-          <Body>
-            <Text>
-              {p.empresa.nombre}
-            </Text>
-          </Body>
-        </ListItem>
-      );
+      if (p.aceptado === 1) {
+        listaPropuestas.push(
+          <ListItem thumbnail key={p.id} onPress={() => this.togglePerfil(p.empresa.id)}>
+            <Left>
+              <Thumbnail small source={{ uri: p.empresa.avatar }} />
+            </Left>
+            <Body>
+              <Text>
+                {p.empresa.nombre}
+              </Text>
+            </Body>
+          </ListItem>
+        );
+      }
     })
     return (
       <View>
@@ -246,7 +252,7 @@ class ConsultaEvento extends React.Component {
             </View>
           ) : undefined
           }
-          <GoAlbum             
+          <GoAlbum
             visible={evento.estado >= 2 ? true : false} // Solo visible si evento comenzo o finalizo
             eventoId={evento.id}
             navigation={this.props.navigation}

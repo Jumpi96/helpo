@@ -234,8 +234,8 @@
                               </ul>
                               <li>Ubicaci&oacute;n:</li>
                               <ul style="list-style-type:circle">
-                                <li>Latitud: {{evento.ubicacion.latitud}}</li>
-                                <li>Longitud: {{evento.ubicacion.longitud}}</li>
+                                <li>Latitud: {{evento.ubicacion.latitud|default:"No definida"}}</li>
+                                <li>Longitud: {{evento.ubicacion.longitud|default:"No definida"}}</li>
                                 <li>Notas: {{evento.ubicacion.notas|default:"Sin notas"}}</li>
                               </ul>
                             </ul>

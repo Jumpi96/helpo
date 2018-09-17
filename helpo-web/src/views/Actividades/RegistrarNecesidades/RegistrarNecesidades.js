@@ -148,40 +148,36 @@ class RegistrarNecesidades extends Component {
   }
 
   handleValidationNecesidad() {
+    this.setState({error_necesidad:''}); 
     let formIsValid = true;
     var error = this.state.error_necesidad;
-    if (this.state.recurso_id === 0 || 
-      !this.state.recurso_id) {
+    if (this.state.recurso_id === 0 || !this.state.recurso_id) {
       formIsValid = false;
       error = "Hubo un problema al cargar los recursos.";
-    } else {
-      error = undefined;
-    }
-    if (!this.state.descripcion_necesidad) {
+    } else if (!this.state.cantidad_necesidad) {
+      formIsValid = false;
+      error = "Debe ingresar una cantidad para la necesidad.";
+    } else if (!this.state.descripcion_necesidad) {
       formIsValid = false;
       error = "Debe ingresar una descripción para la necesidad.";
-    } else {
-      error = undefined;
     }
     this.setState({error_necesidad: error});
     return formIsValid;
   }
 
   handleValidationVoluntario() {
+    this.setState({error_voluntario:''}); 
     let formIsValid = true;
     var error = this.state.error_voluntario;
-    if (this.state.funcion_id === 0 || 
-      !this.state.funcion_id) {
+    if (this.state.funcion_id === 0 || !this.state.funcion_id) {
       formIsValid = false;
       error = "Hubo un problema al cargar las funciones.";
-    } else {
-      error = undefined;
-    }
-    if (!this.state.descripcion_voluntario) {
+    } else if (!this.state.cantidad_voluntario) {
+      formIsValid = false;
+      error = "Debe ingresar una cantidad para la necesidad de voluntario.";
+    } else if (!this.state.descripcion_voluntario) {
       formIsValid = false;
       error = "Debe ingresar una descripción para la necesidad de voluntario.";
-    } else {
-      error = undefined;
     }
     this.setState({error_voluntario: error});
     return formIsValid;
@@ -207,8 +203,9 @@ class RegistrarNecesidades extends Component {
     this.setState({
       descripcion_necesidad: '',
       cantidad_necesidad: '',
-      recurso_id: '',
-      necesidad: ''
+      //recurso_id: '',
+      necesidad: '',
+      error_necesidad:''
     });
   }
 
@@ -216,8 +213,9 @@ class RegistrarNecesidades extends Component {
     this.setState({
       descripcion_voluntario: '',
       cantidad_voluntario: '',
-      funcion_id: '',
-      voluntario: ''
+      //funcion_id: 0,
+      voluntario: '',
+      error_voluntario:'',
     });
   }
 

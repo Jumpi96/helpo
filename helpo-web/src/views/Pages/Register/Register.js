@@ -6,6 +6,7 @@ import validateEmail from "../../../utils/ValidateEmail";
 import api from "../../../api"
 import ModalRegistroExitoso from './ModalRegistroExitoso';
 import './Register.css';
+import logo from '../../../assets/img/brand/logo_principal.svg' 
 
 class Register extends Component {
   constructor(props) {
@@ -261,7 +262,7 @@ class Register extends Component {
 		    <div className="container">
 				  <div className="panel-heading">
 	          <div className="panel-title text-center">
-	            <h1 className="title">Helpo</h1>
+              <img src={logo} alt="Helpo" width="150" height="150"></img>
 	          </div>
 	        </div>
 	      </div> 

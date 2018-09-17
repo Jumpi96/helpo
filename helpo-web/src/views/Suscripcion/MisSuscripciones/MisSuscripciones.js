@@ -41,12 +41,14 @@ class MisSuscripciones extends React.Component {
         <ListGroupItem
           style={{ display: 'flex', justifyContent: 'space-between' }}
           key={suscripcion.organizacion.id}>
-          <p 
+          <p
             className="font-weight-bold"
             style={{ fontSize: 16 }}>{suscripcion.organizacion.nombre}</p>
-          <div>
-            <BotonPerfil id={suscripcion.organizacion.id} />
-            <div>
+          <div style={{ display: 'inline-block' }}>
+            <div style={{ display: 'inline-block' }}>
+              <BotonPerfil id={suscripcion.organizacion.id} />
+            </div>
+            <div style={{ display: 'inline-block', marginLeft: 10 }}>
               <BotonSuscripcion organizacion={suscripcion.organizacion.id} />
             </div>
           </div>

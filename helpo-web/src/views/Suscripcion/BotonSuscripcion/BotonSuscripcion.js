@@ -43,7 +43,7 @@ class BotonSuscripcion extends React.Component {
   }
 
   render() {    
-    const { usuario, organizacion } = this.props
+    const { usuario, organizacion, user_type } = this.props
     const suscripcion = this.getSuscripcion(usuario, organizacion)
     let boton = <BotonCargando />
 
@@ -61,13 +61,15 @@ class BotonSuscripcion extends React.Component {
         organizacion={organizacion}
       />
     }
-    return boton
+    // Si es voluntario aparece el boton
+    return (user_type === 2) ? boton : undefined
   }
 }
 
 const mapStateToProps = state => ({
   suscripciones: state.suscripciones.items,
   usuario: state.auth.user.id,
+  user_type: state.auth.user.user_type,
   loading: state.suscripciones.loading
 })
 

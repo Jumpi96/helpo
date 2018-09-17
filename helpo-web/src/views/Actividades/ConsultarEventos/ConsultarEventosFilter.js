@@ -143,6 +143,9 @@ class ConsultarEventosFilter extends React.Component {
     if (this.props.organizacion) {
       ruta += 'organizacion=' + this.props.organizacion + '&';
     }
+    if (this.props.empresa) {
+      ruta += 'empresa=' + this.props.empresa + '&';
+    }
     if (materiales.length > 0) {
       ruta += 'necesidades=';
       materiales.forEach(function (m) {

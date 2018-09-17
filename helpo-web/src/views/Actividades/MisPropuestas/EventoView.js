@@ -126,7 +126,7 @@ class EventoView extends React.Component {
   }
 
   getPropuesta() {
-    return this.state.evento.propuestas.filter(p => p.empresa === this.getUserId())[0];
+    return this.state.evento.propuestas.filter(p => p.empresa.id === this.getUserId())[0];
   }
 
   getBotonEstado() {
@@ -139,7 +139,7 @@ class EventoView extends React.Component {
         return (
           <button disabled className="btn btn-success">Propuesta aceptada</button>
         );
-      case 2:
+      case -1:
         return (
           <button disabled className="btn btn-danger">Propuesta rechazada</button>
         );
@@ -152,10 +152,10 @@ class EventoView extends React.Component {
     if (propuesta.comentario !== null) {
       return (
         <div className="row">
-          <div className="form-group col-md-4">
+          <div className="form-group col-md-5">
             <b className="float-right">Comentario de la ONG</b>
           </div>
-          <div className="form-group col-md-8">
+          <div className="form-group col-md-7">
             <p>{propuesta.comentario}</p>
           </div>
         </div>
@@ -182,18 +182,18 @@ class EventoView extends React.Component {
             </div>
           </div>
           <div className="row">
-            <div className="form-group col-md-4">
+            <div className="form-group col-md-5">
               <b className="float-right">Fecha de propuesta</b>
             </div>
-            <div className="form-group col-md-8">
+            <div className="form-group col-md-7">
               <p>{moment(propuesta.created).format('DD/MM/YYYY HH:mm')}</p>
             </div>
           </div>
           <div className="row">
-            <div className="form-group col-md-4">
+            <div className="form-group col-md-5">
               <b className="float-right" name="estado">Estado</b>
             </div>
-            <div className="form-group col-md-8">
+            <div className="form-group col-md-7">
               {this.getBotonEstado()}
             </div>
           </div>
@@ -226,7 +226,7 @@ class EventoView extends React.Component {
           }
           <button
             onClick={this.toggleEdit}
-            hidden={moment(evento.fecha_hora_inicio)>moment() || propuesta.aceptado === -1}
+            hidden={moment(evento.fecha_hora_inicio)<moment() || propuesta.aceptado === -1}
             className="btn btn-warning"
           >
             Editar colaboraciones
@@ -234,7 +234,7 @@ class EventoView extends React.Component {
           {propuesta.aceptado === -1 ?
             this.getComentario(propuesta) : undefined
           }
-          {moment(evento.fecha_hora_inicio)>moment() && propuesta.aceptado !== -1 ?
+          {moment(evento.fecha_hora_inicio)<moment() && propuesta.aceptado !== -1 ?
             <button
               onClick={this.toggleView}
               className="btn btn-warning"

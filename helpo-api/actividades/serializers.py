@@ -2,7 +2,7 @@ from rest_framework import serializers
 from actividades.models import Evento, RubroEvento, Ubicacion, CategoriaRecurso, \
     Recurso, Necesidad, Contacto, Funcion, Voluntario, Participacion, Colaboracion, Comentario, Mensaje, EventoImagen, \
     Propuesta
-from actividades.services import send_mail_mensaje_evento, send_previous_mail_evento
+from actividades.services import send_mail_mensaje_evento, send_previous_mail_evento, response_propuesta, deny_propuesta, send_full_participacion_mail, send_full_colaboracion_mail, send_was_full_colaboracion_mail
 from users.serializers import UserSerializer, ColaboradorInfoSerializer
 from users.models import User
 
@@ -138,7 +138,7 @@ class ColaboracionSerializer(serializers.ModelSerializer):
     
     def create(self, validated_data):
         necesidad_material = validated_data.get('necesidad_material')
-        colaboraciones = Colaboracion.objects.filter(necesidad_material_id=necesidad_material.id)
+        colaboraciones = Colaboracion.objects.filter(necesidad_material_id=necesidad_material.id, vigente=True)
         cantidad = validated_data.get('cantidad')
         suma_colaboraciones = 0
         for c in colaboraciones:
@@ -149,26 +149,48 @@ class ColaboracionSerializer(serializers.ModelSerializer):
             evento = validated_data['necesidad_material'].evento   
             titulo_email = "Usted se ha registrado para colaborar con los siguientes datos:"         
             self.send_colaboracion_email(colaborador_id, evento, colaboracion, titulo_email)
+            if (suma_colaboraciones + cantidad) == necesidad_material.cantidad:
+                send_full_colaboracion_mail(necesidad_material)
             return colaboracion
         else:
             raise serializers.ValidationError()
 
 
     def update(self, instance, validated_data):
-        new_instance = super().update(instance, validated_data)
         colaborador_id = instance.colaborador.id
-        evento = validated_data['necesidad_material'].evento  
+        necesidad_material = validated_data.get('necesidad_material')
+        evento = necesidad_material.evento
+        colaboraciones = Colaboracion.objects.filter(necesidad_material_id=necesidad_material.id)
+        suma_colaboraciones_iniciales = 0
+        for c in colaboraciones:
+            suma_colaboraciones_iniciales += c.cantidad
+        if suma_colaboraciones_iniciales == necesidad_material.cantidad:
+            send_was_full_colaboracion_mail(necesidad_material)
+        new_instance = super().update(instance, validated_data)
         titulo_email = u"Usted ha modificado su colaboración en un Evento. Los nuevos datos son:"
         self.send_colaboracion_email(colaborador_id, evento, new_instance, titulo_email)
+        colaboraciones = Colaboracion.objects.filter(necesidad_material_id=necesidad_material.id)
+        suma_colaboraciones = 0
+        for c in colaboraciones:
+            suma_colaboraciones += c.cantidad
+        if suma_colaboraciones == necesidad_material.cantidad:
+            send_full_colaboracion_mail(necesidad_material)
         return new_instance
     
     # la continuacion de la negrada de Gon
     def destroy(self, colaboracion_id):
         colaboracion = Colaboracion.objects.get(id=colaboracion_id)
         colaborador_id = colaboracion.colaborador.id
-        evento = colaboracion.necesidad_material.evento
+        necesidad_material = colaboracion.necesidad_material
+        evento = necesidad_material.evento
         titulo_email = u"Usted ha cancelado su colaboración en el siguiente Evento:"
         self.send_colaboracion_email(colaborador_id, evento, colaboracion, titulo_email)
+        colaboraciones = Colaboracion.objects.filter(necesidad_material_id=necesidad_material.id)
+        suma_colaboraciones = 0
+        for c in colaboraciones:
+            suma_colaboraciones += c.cantidad
+        if suma_colaboraciones == necesidad_material.cantidad:
+            send_was_full_colaboracion_mail(necesidad_material)
 
     def send_colaboracion_email(self, colaborador_id, evento, colaboracion, titulo_email):
         subject_utf = u"Registro de su colaboración en Helpo"
@@ -179,6 +201,22 @@ class ColaboracionSerializer(serializers.ModelSerializer):
 
 
 class ConsultaNecesidadSerializer(serializers.ModelSerializer):
+    colaboraciones = serializers.SerializerMethodField()
+    recurso = RecursoSerializer(read_only=True)
+    recurso_id = serializers.PrimaryKeyRelatedField(
+        queryset=Recurso.objects.all(), source='recurso', write_only=True
+    )
+
+    def get_colaboraciones(self, necesidad):
+        queryset = Colaboracion.objects.filter(necesidad_material=necesidad, vigente=True)
+        serializer = ColaboracionSerializer(instance=queryset, many=True)
+        return serializer.data
+
+    class Meta:
+        model = Necesidad
+        fields = ('id', 'descripcion', 'cantidad', 'recurso', 'recurso_id', 'colaboraciones')
+
+class ConsultaAllNecesidadSerializer(serializers.ModelSerializer):
     colaboraciones = ColaboracionSerializer(many=True)
     recurso = RecursoSerializer(read_only=True)
     recurso_id = serializers.PrimaryKeyRelatedField(
@@ -201,7 +239,7 @@ class ParticipacionSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         necesidad_voluntario = validated_data.get('necesidad_voluntario')
-        participaciones = Participacion.objects.filter(necesidad_voluntario_id=necesidad_voluntario.id)
+        participaciones = Participacion.objects.filter(necesidad_voluntario_id=necesidad_voluntario.id, vigente=True)
         cantidad = validated_data.get('cantidad')
         suma_participantes = 0
         for p in participaciones:
@@ -210,12 +248,30 @@ class ParticipacionSerializer(serializers.ModelSerializer):
             colaborador_id = validated_data['colaborador_id']
             participacion = Participacion.objects.create(necesidad_voluntario_id=necesidad_voluntario.id, vigente=True, **validated_data)
             send_previous_mail_evento(necesidad_voluntario.evento_id, colaborador_id)
+            if (suma_participantes + cantidad) == necesidad_voluntario.cantidad:
+                send_full_participacion_mail(necesidad_voluntario)
             return participacion
         else:
             raise serializers.ValidationError()
 
 
 class ConsultaVoluntarioSerializer(serializers.ModelSerializer):
+    participaciones = serializers.SerializerMethodField()
+    funcion = FuncionSerializer(read_only=True)
+    funcion_id = serializers.PrimaryKeyRelatedField(
+        queryset=Funcion.objects.all(), source='funcion', write_only=True
+    )
+
+    def get_participaciones(self, voluntario):
+        queryset = Participacion.objects.filter(necesidad_voluntario=voluntario, vigente=True)
+        serializer = ParticipacionSerializer(instance=queryset, many=True)
+        return serializer.data
+
+    class Meta:
+        model = Voluntario
+        fields = ('id', 'descripcion', 'cantidad', 'funcion', 'funcion_id', 'participaciones')
+
+class ConsultaAllVoluntarioSerializer(serializers.ModelSerializer):
     participaciones = ParticipacionSerializer(many=True)
     funcion = FuncionSerializer(read_only=True)
     funcion_id = serializers.PrimaryKeyRelatedField(
@@ -231,6 +287,24 @@ class PropuestaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Propuesta
         fields = '__all__'
+
+    def update(self, instance, validated_data):
+        new_instance = super().update(instance, validated_data)
+        response_propuesta(new_instance)
+        print (new_instance.aceptado)
+        if new_instance.aceptado == -1:
+            deny_propuesta(new_instance)
+        return new_instance
+
+class ConsultaAllNecesidadesSerializer(serializers.ModelSerializer):
+    necesidades = ConsultaAllNecesidadSerializer(many=True)
+    voluntarios = ConsultaAllVoluntarioSerializer(many=True)
+    propuestas = PropuestaSerializer(many=True)
+
+    class Meta:
+        model = Evento
+        fields = ('id', 'nombre', 'necesidades', 'voluntarios', 'fecha_hora_inicio', 'propuestas')
+
 
 class ConsultaNecesidadesSerializer(serializers.ModelSerializer):
     necesidades = ConsultaNecesidadSerializer(many=True)

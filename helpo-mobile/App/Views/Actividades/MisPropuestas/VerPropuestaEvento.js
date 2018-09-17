@@ -141,7 +141,7 @@ class VerPropuestaEvento extends React.Component {
   }
 
   getPropuesta() {
-    return this.state.evento.propuestas.filter(p => p.empresa === this.getUserId())[0];
+    return this.state.evento.propuestas.filter(p => p.empresa.id === this.getUserId())[0];
   }
 
   getBotonEstado() {

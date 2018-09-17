@@ -215,39 +215,24 @@
                 <!-- Body content -->
                 <tr>
                   <td class="content-cell">
-                    <h1>Notificaci&oacute;n de su participaci&oacute;n en Helpo</h1>
-                    <p>{{titulo}}</p>
+                    <h1>Notificaci&oacute;n de nueva propuesta en Helpo</h1>
+                    <p>{{propuesta.evento.nombre}}</p>
                     <!-- Action -->
                     <table class="body-action" align="center" width="100%" cellpadding="0" cellspacing="0">
                       <tr>
                         <td align="left">
                           <div>
-                            <h2>Datos del evento</h2>
+                            <h2>Datos de la propuesta</h2>
                             <ul style="list-style-type:disc">
-                              <li>Nombre: {{participacion.necesidad_voluntario.evento.nombre}}</li>
-                              <li>Organizaci&oacute;n: {{participacion.necesidad_voluntario.evento.organizacion.nombre}}</li>
-                              <li>Descripci&oacute;n: {{participacion.necesidad_voluntario.evento.descripcion|default:"Sin descripci&oacute;n"}}</li>
-                              <li>Fecha:</li>
-                              <ul style="list-style-type:circle">
-                                <li>Inicio: {{participacion.necesidad_voluntario.evento.fecha_hora_inicio}}</li>
-                                <li>Fin: {{participacion.necesidad_voluntario.evento.fecha_hora_fin}}</li>
-                              </ul>
-                              <li>Ubicaci&oacute;n:</li>
-                              <ul style="list-style-type:circle">
-                                <li>Latitud: {{evento.ubicacion.latitud|default:"No definida"}}</li>
-                                <li>Longitud: {{evento.ubicacion.longitud|default:"No definida"}}</li>
-                                <li>Notas: {{evento.ubicacion.notas|default:"Sin notas"}}</li>
-                              </ul>
-                            </ul>
-                            <h2>Datos de su participaci&oacute;n</h2>
-                            <ul style="list-style-type:disc">
-                              <li>Funci&oacute;n: {{participacion.necesidad_voluntario.funcion.nombre}}</li>
-                              <li>Descripci&oacute;n: {{participacion.necesidad_voluntario.descripcion|default:"Sin descripci&oacute;n"}}</li>
+                              <li>Nombre del evento: {{propuesta.evento.nombre}}</li>
+                              <li>Empresa: {{propuesta.empresa.nombre}}</li>
+                              <li>Organizaci&oacute;n: {{propuesta.evento.organizacion.nombre}}</li>
                             </ul>
                           </div>
                         </td>
                       </tr>
                     </table>
+                    <a href="www.helpo.com.ar">Vea la propuesta desde www.helpo.com.ar</a>
                     <p>Gracias,<br>Equipo Helpo</p>
                     <!-- Sub copy -->
                     <table class="body-sub">

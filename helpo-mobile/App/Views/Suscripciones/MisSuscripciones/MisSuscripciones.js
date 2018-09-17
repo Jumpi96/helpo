@@ -4,6 +4,7 @@ import SuscripcionesRedux from '../../../Redux/SuscripcionesRedux'
 import ContainerHeader from '../../../Components/ContainerHeader'
 import { Container, Text } from 'native-base'
 import { FlatList, View } from 'react-native'
+import BotonSuscripcion from '../BotonSuscripcion/BotonSuscripcion'
 
 
 class MisSuscripciones extends React.Component {
@@ -43,14 +44,39 @@ class MisSuscripciones extends React.Component {
 
   renderItem = (suscripcion) => {
     return (
-      <View
-        key={suscripcion.id}>
-        <Text>{suscripcion.organizacion.nombre}</Text>
+      <View style={{ 
+          justifyContent: 'space-between',
+          alignItems: 'center' }}>
+        {/* Cajita que bordea nombre ong */}
+        <View style={{
+          backgroundColor: '#f1f1f1',
+          width: '100%',
+          paddingVertical: 15,
+          justifyContent: 'center',
+          alignItems: 'center',
+          margin: 10
+        }}>
+          <Text style={{ fontSize: 18 }}>{suscripcion.organizacion.nombre}</Text>
+        </View>        
+        {/* View para centralizar boton */}
+        <View>
+          <BotonSuscripcion organizacion={suscripcion.organizacion.id} />
+        </View>
       </View>
     )
   }
 
+  keyExtractor = (item, index) => index
+  
+
   render() {
+
+    const separatorStyle = {
+      height: 2,
+      backgroundColor: '#bababa',
+      margin: 6
+    }
+
     return (
       <Container>
         <ContainerHeader
@@ -61,6 +87,9 @@ class MisSuscripciones extends React.Component {
           ? <Text>No tiene suscripciones</Text>
           : <FlatList
             data={this.getSuscripciones()}
+            keyExtractor={this.keyExtractor}
+            ItemSeparatorComponent={() => <View style={separatorStyle}/>}
+            ListHeaderComponent={() => <View style={{ marginTop: 10 }}/>}
             renderItem={({ item }) => this.renderItem(item)} />
         }
       </Container>

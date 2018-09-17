@@ -10,6 +10,7 @@ const { Types, Creators } = createActions({
   suscripcionesCreate: ['usuario', 'organizacion'],
   suscripcionesCreateFailed: null,
   suscripcionesDelete: ['suscripcion'],
+  suscripcionesDeleteSuccess: ['suscripcion'],
   suscripcionesDeleteFailed: null
 })
 
@@ -36,12 +37,12 @@ export const SuscripcionesSelectors = {
 export const request = (state) =>
   state.merge({ loading: true })
 
-  export const remove = (state, action) => {
-    const index = state.items.indexOf(action.suscripcion)
-    return state.merge({ 
-      items: [...state.items.slice(0, index), ...state.items.slice(index+1, state.items.length)]
-     })
-  }
+export const remove = (state, action) => {
+  const index = state.items.indexOf(action.suscripcion)
+  return state.merge({
+    items: [...state.items.slice(0, index), ...state.items.slice(index + 1, state.items.length)]
+  })
+}
 
 // successful api lookup
 export const success = (state, action) => {
@@ -62,5 +63,6 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.SUSCRIPCIONES_FETCH_SUCCESS]: success,
   [Types.SUSCRIPCIONES_FETCH_FAILED]: failure,
   [Types.SUSCRIPCIONES_CREATE_FAILED]: failure,
+  [Types.SUSCRIPCIONES_DELETE_SUCCESS]: remove,
   [Types.SUSCRIPCIONES_DELETE_FAILED]: failure,
 })

@@ -1,0 +1,80 @@
+import React from 'react'
+import BotonCargando from './BotonCargando'
+import BotonSuscribir from './BotonSuscribir'
+import BotonDesubscribir from './BotonDesubscribir'
+import { connect } from 'react-redux'
+import SuscripcionesRedux from '../../../Redux/SuscripcionesRedux'
+
+
+/*
+Componente que hace todo el manejo de  la suscripcion/desuscripcion.
+USAR ESTE
+
+Props:
+  organizacion (id)
+*/
+class BotonSuscripcion extends React.Component {
+
+  componentDidMount() {
+    this.props.fetchSuscripciones(this.props.usuario)
+  }
+
+  getSuscripcion(userId, ongId) {
+    /*Devuelve la suscripcion del userId a ongId o null,
+    dependiendo si existe o no en las suscripciones cargados
+    en el state  */
+    const suscripciones = this.props.suscripciones 
+    for (var suscripcion of suscripciones) {
+      const usuario = suscripcion.usuario.id
+      const ong = suscripcion.organizacion.id
+      if (usuario === userId && ong === ongId) {
+        return suscripcion
+      }
+    }
+    return null
+  }
+
+  isSubscribed() {
+    // True si suscrito - False si no suscrito
+    if (this.getSuscripcion(this.props.usuario, this.props.organizacion) === null) {
+      return false
+    }
+    return true
+  }
+
+  render() {    
+    const { usuario, organizacion, user_type } = this.props
+    const suscripcion = this.getSuscripcion(usuario, organizacion)
+    let boton = <BotonCargando />
+
+    if (this.props.loading) {
+      boton = <BotonCargando />
+    }    
+    else if (this.isSubscribed() === true) {
+      boton = <BotonDesubscribir        
+        suscripcion={suscripcion}
+      />
+    }
+    else {
+      boton = <BotonSuscribir
+        usuario={usuario}
+        organizacion={organizacion}
+      />
+    }
+    // Si es voluntario aparece el boton
+    return (user_type === 2) ? boton : null
+  }
+}
+
+const mapStateToProps = state => ({
+  suscripciones: state.suscripciones.items,
+  usuario: state.auth.user.id,
+  user_type: state.auth.user.user_type,
+  loading: state.suscripciones.loading
+})
+
+const mapDispatchToProps = dispatch => ({
+  fetchSuscripciones: userId => dispatch(SuscripcionesRedux.suscripcionesFetch(userId))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(BotonSuscripcion)

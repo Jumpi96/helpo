@@ -32,7 +32,11 @@ class OrganizacionCard extends Component {
             <Button onPress={this.props.openPerfil}>
               <Icon name="navigate" />
               <Text>Ver perfil</Text>
-            </Button>
+            </Button>            
+          </Left>
+        </CardItem>
+        <CardItem style={{ paddingVertical: 0 }}>
+          <Left>
             <BotonSuscripcion organizacion={organizacion.usuario.id}/>
           </Left>
         </CardItem>

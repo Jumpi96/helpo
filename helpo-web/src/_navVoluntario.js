@@ -47,5 +47,10 @@
       url: '/perfil/',
       icon: 'icon-pencil',
     },
+    {
+      name: 'Mis suscripciones',
+      url: '/suscripciones/',
+      icon: 'icon-pencil',
+    },
   ],
 };

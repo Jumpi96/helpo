@@ -341,28 +341,28 @@ class ModificarPerfilEmpresa extends Component {
           <i className="fa fa-align-justify"></i> Modificar Perfil
         </CardHeader>
       <form>
-        <div style={{ marginTop:'20px' }} class='container'>
+        <div style={{ marginTop:'20px' }} className='container'>
         
-        <div style={{ alignItems: 'center' }} class='row'>
-          {/*<div style={{flexDirection: 'column', alignItems: 'flex-end',display: 'flex', justifyContent: 'center', height: '150px'}} class='col'> 
+        <div style={{ alignItems: 'center' }} className='row'>
+          {/*<div style={{flexDirection: 'column', alignItems: 'flex-end',display: 'flex', justifyContent: 'center', height: '150px'}} className='col'> 
             <div style={{ display: 'flex', height: '50px', width: '100%', justifyContent: 'flex-end', alignItems: 'center' }} >
               <p style={{ textAlign: 'right' }} 
-                 class='h4'>Nombre</p>
+                 className='h4'>Nombre</p>
             </div>   
             <div style={{ display: 'flex', height: '50px',width: '100%', justifyContent: 'flex-end', alignItems: 'center'}} >       
               <p style={{ textAlign: 'right' }} 
-                 class='h4'>{this.renderNombre()}</p>
+                 className='h4'>{this.renderNombre()}</p>
             </div>
             </div>*/
             //SI SE DECIDE PODER CAMBIAR NOMBRE EN PERFIL, USAR ESTE CODIGO
           }
-          <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', height: '150px'}}  class='col-2'>            
+          <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', height: '150px'}}  className='col-2'>            
               <p style={{ textAlign: 'right' }} 
-                 class='h4'>{this.props.nombre}</p>
+                 className='h4'>{this.props.nombre}</p>
           </div>
-          <div class='col-6'>
+          <div className='col-6'>
             <img
-              class='rounded-circle'
+              className='rounded-circle'
               src={this.state.avatar_url}
               alt="avatar"
               width="100" 
@@ -372,44 +372,44 @@ class ModificarPerfilEmpresa extends Component {
           </div>
         </div>
           
-        <div class='row'>
-            <p style={{ textAlign: 'right' }} class='font-weight-bold col-2' htmlFor="mail">Mail</p>
-            <div class='col-6'><p>{this.props.email}</p></div>
+        <div className='row'>
+            <p style={{ textAlign: 'right' }} className='font-weight-bold col-2' htmlFor="mail">Mail</p>
+            <div className='col-6'><p>{this.props.email}</p></div>
         </div>
 
-        <div class='row'>
-            <p style={{ paddingTop: '8px',textAlign: 'right' }} class='font-weight-bold col-2' htmlFor="telefono">Teléfono</p>
-            <div class='col-6'>{this.renderTelefono()}</div>
+        <div className='row'>
+            <p style={{ paddingTop: '8px',textAlign: 'right' }} className='font-weight-bold col-2' htmlFor="telefono">Teléfono</p>
+            <div className='col-6'>{this.renderTelefono()}</div>
         </div>
 
-        <div class='row'>   
-            <p style={{ paddingTop: '8px',textAlign: 'right' }} class='font-weight-bold col-2'           htmlFor="cuit">CUIT</p>            
-            <div class='col-6'>{this.renderCuit()}</div>
+        <div className='row'>   
+            <p style={{ paddingTop: '8px',textAlign: 'right' }} className='font-weight-bold col-2'           htmlFor="cuit">CUIT</p>            
+            <div className='col-6'>{this.renderCuit()}</div>
         </div>
 
-        <div class='row'>        
-            <p style={{ textAlign: 'right' }} class='font-weight-bold col-2' htmlFor="telefono">Rubro</p>
-            <div class='col-6'>{this.renderRubro()}</div>    
+        <div className='row'>        
+            <p style={{ textAlign: 'right' }} className='font-weight-bold col-2' htmlFor="telefono">Rubro</p>
+            <div className='col-6'>{this.renderRubro()}</div>    
         </div>                       
 
-        <div class='row'>          
-          <p style={{ textAlign: 'right' }} class='font-weight-bold col-2' htmlFor="descripcion">Descripción</p> 
-          <div class='col-6'>{this.renderDescripcion()}</div>    
+        <div className='row'>          
+          <p style={{ textAlign: 'right' }} className='font-weight-bold col-2' htmlFor="descripcion">Descripción</p> 
+          <div className='col-6'>{this.renderDescripcion()}</div>    
         </div>      
 
-        <div class='row'>
-          <p class='font-weight-bold col-2' htmlFor="ubicacion" style={{ textAlign: 'right' }}>Ubicación</p>
-          <div class='col-6' style={{ marginBottom: '5px' }}>{this.renderUbicacion()}</div>
+        <div className='row'>
+          <p className='font-weight-bold col-2' htmlFor="ubicacion" style={{ textAlign: 'right' }}>Ubicación</p>
+          <div className='col-6' style={{ marginBottom: '5px' }}>{this.renderUbicacion()}</div>
         </div>      
 
-        <div style={{ margin: '20px' }} class='row'>
-          <div style={{ display: 'flex', justifyContent: 'flex-end' }} class='col-2'>
-            <button onClick={this.handleSubmit} type="button" class="btn btn-primary">
+        <div style={{ margin: '20px' }} className='row'>
+          <div style={{ display: 'flex', justifyContent: 'flex-end' }} className='col-2'>
+            <button onClick={this.handleSubmit} type="button" className="btn btn-primary">
               Guardar Cambios
             </button>
           </div>
-          <div class='col-6'>
-            <button type="button" class="btn btn-danger" onClick={this.props.switchToConsultar}>
+          <div className='col-6'>
+            <button type="button" className="btn btn-danger" onClick={this.props.switchToConsultar}>
               Volver
             </button>
           </div>

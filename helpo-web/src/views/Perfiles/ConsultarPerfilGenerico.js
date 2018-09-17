@@ -213,7 +213,7 @@ class ConsultarPerfilGenerico extends Component {
 
   render() {
     return (
-    <div>
+    <div>      
       {this.renderComponente()}
     </div>
     );

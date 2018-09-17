@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 class SuccessPresentation extends Component {
     render() {
         return (            
-        <div class="card" 
+        <div className="card" 
             style={
                 {width: "18rem",
                  margin: "auto",

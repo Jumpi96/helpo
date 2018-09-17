@@ -83,4 +83,23 @@ urlpatterns = [
         view=users_views.DeviceIDReadUpdateDeleteView.as_view(),
         name="get_put_delete_device_id"
     ),
+    #####
+    # {% url "api:suscripciones"  %}
+    url(
+        regex=r"^user/suscripciones/$",
+        view=users_views.SuscripcionCreateView.as_view(),
+        name="get_put_delete_device_id"
+    ),
+    # {% url "api:suscripciones" id:(id de la suscripcion) %}
+    url(
+        regex=r"^user/suscripcion/(?P<id>[-\w]+)/$",
+        view=users_views.SuscripcionDestroyView.as_view(),
+        name="get_put_delete_device_id"
+    ),
+    # {% url "api:suscripciones" usuario:(usuario)  %}
+    url(
+        regex=r"^user/suscripciones/(?P<usuario>[-\w]+)/$",
+        view=users_views.SuscripcionListUserView.as_view(),
+        name="get_put_delete_device_id"
+    ),
 ]

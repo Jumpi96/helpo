@@ -46,28 +46,28 @@ class ConsultarPerfilEmpresa extends Component {
   renderTelefono() {
     //Si uso == va a dar True para null y undefined
     if (this.props.data.telefono == null) {
-      return <p class='text-muted'> No hay valor ingresado</p>
+      return <p className='text-muted'> No hay valor ingresado</p>
     }
     return <p> {this.props.data.telefono}</p>
   }
 
   renderCuit() {
     if (this.props.data.cuit == null) {
-      return <p class='text-muted'> No hay valor ingresado</p>
+      return <p className='text-muted'> No hay valor ingresado</p>
     }
     return <p> {this.props.data.cuit}</p>
   }
 
   renderRubro() {
     if (this.props.data.rubro == null) {
-      return <p class='text-muted'> No hay valor ingresado</p>
+      return <p className='text-muted'> No hay valor ingresado</p>
     }
     return <p> {this.props.data.rubro.nombre}</p>
   }
 
   renderDescripcion() {
     if (this.props.data.descripcion == null) {
-      return <p class='text-muted'> No hay valor ingresado</p>
+      return <p className='text-muted'> No hay valor ingresado</p>
     }
     return <p> {this.props.data.descripcion}</p>
   }
@@ -78,12 +78,12 @@ class ConsultarPerfilEmpresa extends Component {
     else {
       const params = { v: '3.exp', key: process.env.GOOGLE_API_KEY }
       return (
-        <div class='row' style={{ marginBottom: '20px' }} >
-          <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }} class='col-2'>
-            <p style={{ textAlign: 'right' }} class='font-weight-bold' htmlFor="descripcion">Ubicación</p>
+        <div className='row' style={{ marginBottom: '20px' }} >
+          <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }} className='col-2'>
+            <p style={{ textAlign: 'right' }} className='font-weight-bold' htmlFor="descripcion">Ubicación</p>
           </div>
 
-          <div class='col-6'>
+          <div className='col-6'>
             <Gmaps
               width={'300px'}
               height={'300px'}
@@ -117,16 +117,16 @@ class ConsultarPerfilEmpresa extends Component {
         <CardHeader>
           <i className="fa fa-align-justify"></i> Perfil
         </CardHeader>
-        <div class='container'>
+        <div className='container'>
 
-          <div style={{ alignItems: 'center' }} class='row'>
-            <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', height: '150px' }} class='col-2'>
+          <div style={{ alignItems: 'center' }} className='row'>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', height: '150px' }} className='col-2'>
               <p style={{ textAlign: 'right' }}
-                class='h4'>{this.props.nombre}</p>
+                className='h4'>{this.props.nombre}</p>
             </div>
-            <div class='col-6'>
+            <div className='col-6'>
               <img
-                class='rounded-circle'
+                className='rounded-circle'
                 src={getImagen(this.props.data.avatar.url)}
                 alt="avatar"
                 width="100"
@@ -135,34 +135,34 @@ class ConsultarPerfilEmpresa extends Component {
             </div>
           </div>
 
-          <div class='row'>
-            <p style={{ textAlign: 'right' }} class='font-weight-bold col-2' htmlFor="mail">Mail</p>
-            <div class='col-6'><p>{this.props.email}</p></div>
+          <div className='row'>
+            <p style={{ textAlign: 'right' }} className='font-weight-bold col-2' htmlFor="mail">Mail</p>
+            <div className='col-6'><p>{this.props.email}</p></div>
           </div>
 
-          <div class='row'>
-            <p style={{ textAlign: 'right' }} class='font-weight-bold col-2' htmlFor="telefono">Teléfono</p>
-            <div class='col-6'>{this.renderTelefono()}</div>
+          <div className='row'>
+            <p style={{ textAlign: 'right' }} className='font-weight-bold col-2' htmlFor="telefono">Teléfono</p>
+            <div className='col-6'>{this.renderTelefono()}</div>
           </div>
 
-          <div class='row'>
-            <p style={{ textAlign: 'right' }} class='font-weight-bold col-2' htmlFor="cuit">CUIT</p>
-            <div class='col-6'>{this.renderCuit()}</div>
+          <div className='row'>
+            <p style={{ textAlign: 'right' }} className='font-weight-bold col-2' htmlFor="cuit">CUIT</p>
+            <div className='col-6'>{this.renderCuit()}</div>
           </div>
 
-          <div class='row'>
-            <p style={{ textAlign: 'right' }} class='font-weight-bold col-2' htmlFor="telefono">Rubro</p>
-            <div class='col-6'>{this.renderRubro()}</div>
+          <div className='row'>
+            <p style={{ textAlign: 'right' }} className='font-weight-bold col-2' htmlFor="telefono">Rubro</p>
+            <div className='col-6'>{this.renderRubro()}</div>
           </div>
 
-          <div class='row'>
-            <p style={{ paddingLeft: 0, textAlign: 'right' }} class='font-weight-bold col-2' htmlFor="descripcion">Descripción</p>
-            <div class='col-6'>{this.renderDescripcion()}</div>
+          <div className='row'>
+            <p style={{ paddingLeft: 0, textAlign: 'right' }} className='font-weight-bold col-2' htmlFor="descripcion">Descripción</p>
+            <div className='col-6'>{this.renderDescripcion()}</div>
           </div>
 
           {this.mostrarUbicacion()}
 
-          <div style={{ width: '500px', justifyContent: 'center', display: 'flex', marginBottom: '10px' }} class='row offster-md-4'>
+          <div style={{ width: '500px', justifyContent: 'center', display: 'flex', marginBottom: '10px' }} className='row offster-md-4'>
             {this.props.sinModificar
               ? ""
               : <Button onClick={this.props.switchToModificar} color='primary'>Modificar Datos</Button>}

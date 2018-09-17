@@ -19,14 +19,10 @@ class BotonSuscripcion extends React.Component {
     /*Devuelve la suscripcion del userId a ongId o null,
     dependiendo si existe o no en las suscripciones cargados
     en el state  */
-    const suscripciones = this.props.suscripciones
-    console.log("Suscripciones")    
-    console.log(suscripciones)
+    const suscripciones = this.props.suscripciones 
     for (var suscripcion of suscripciones) {
       const usuario = suscripcion.usuario.id
       const ong = suscripcion.organizacion.id
-      console.log("Usuario: "+usuario)
-      console.log("ong: "+ong)
       if (usuario === userId && ong === ongId) {
         return suscripcion
       }
@@ -44,8 +40,6 @@ class BotonSuscripcion extends React.Component {
   render() {    
     const { usuario, organizacion } = this.props
     const suscripcion = this.getSuscripcion(usuario, organizacion)
-    console.log(this.isSubscribed())
-    console.log(suscripcion)
     let boton = <BotonCargando />
 
     if (this.props.loading) {

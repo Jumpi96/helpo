@@ -2,17 +2,39 @@ import React from 'react'
 import { Button } from 'reactstrap'
 import { connect } from 'react-redux'
 import * as actions from '../../../actions/suscripcionesActions'
+import ModalDesubscribir from './ModalDesubscribir'
 
 class BotonDesubscribir extends React.Component {
-  
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      modalOpen: false
+    }
+    this.toggleModal = this.toggleModal.bind(this)
+  }
+
+  toggleModal() {
+    const modalOpen = this.state.modalOpen
+    this.setState({
+      modalOpen: !modalOpen
+    })
+  }
+//
   render() {
-    return  (
-      <Button 
-        color='danger' 
-        style={{ height: 35, width: 160 }}
-        onClick={() => this.props.deleteSuscripcion(this.props.suscripcion)}>
-        <p bold >Cancelar Subscripcion</p>
-      </Button>
+    return (
+      <div>
+        <Button
+          color='danger'
+          style={{ height: 35, width: 160 }}
+          onClick={this.toggleModal}>
+          <p>Cancelar Subscripcion</p>
+        </Button>
+        <ModalDesubscribir 
+          open={this.state.modalOpen} 
+          toggle={this.toggleModal} 
+          deleteSuscripcion={() => this.props.deleteSuscripcion(this.props.suscripcion)}/>
+      </div>
     )
   }
 }

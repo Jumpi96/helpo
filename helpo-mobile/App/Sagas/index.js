@@ -41,8 +41,8 @@ export default function * root () {
     takeLatest(AlbumEventoTypes.ALBUM_FETCH_IMAGENES, fetchImagenesAlbumEvento),
     takeLatest(AlbumEventoTypes.ALBUM_UPLOAD_IMAGE, uploadImagenAlbumEvento),
     takeLatest(AlbumEventoTypes.ALBUM_REMOVE_IMAGE, deleteImagenAlbumEvento),
-    takeLatest(SuscripcionTypes.SUSCRIPCIONES_FETCH, fetchSuscripciones),
-    takeLatest(SuscripcionTypes.SUSCRIPCIONES_CREATE, createSuscripcion),
-    takeLatest(SuscripcionTypes.SUSCRIPCIONES_DELETE, deleteSuscripcion)
+    takeLatest(SuscripcionesTypes.SUSCRIPCIONES_FETCH, fetchSuscripciones),
+    takeLatest(SuscripcionesTypes.SUSCRIPCIONES_CREATE, createSuscripcion),
+    takeLatest(SuscripcionesTypes.SUSCRIPCIONES_DELETE, deleteSuscripcion),
   ])
 }

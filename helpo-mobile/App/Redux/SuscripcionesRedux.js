@@ -46,7 +46,7 @@ export const request = (state) =>
 // successful api lookup
 export const success = (state, action) => {
   const { suscripciones } = action
-  return state.merge({ loading: false, error: null, suscripciones })
+  return state.merge({ loading: false, error: null, items: suscripciones })
 }
 
 

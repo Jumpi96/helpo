@@ -4,6 +4,7 @@ import {
   Button, Icon, Card, CardItem, Text, Thumbnail, Right, Left, Body, Item, Container, Header, Title, Content, Label, Input
  } from 'native-base';
 import styles from './styles';
+import BotonSuscripcion from '../Suscripciones/BotonSuscripcion/BotonSuscripcion'
 
 class OrganizacionCard extends Component {
 
@@ -32,6 +33,7 @@ class OrganizacionCard extends Component {
               <Icon name="navigate" />
               <Text>Ver perfil</Text>
             </Button>
+            <BotonSuscripcion organizacion={organizacion.usuario.id}/>
           </Left>
         </CardItem>
       </Card>

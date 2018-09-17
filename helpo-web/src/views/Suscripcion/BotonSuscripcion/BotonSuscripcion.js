@@ -8,7 +8,9 @@ import { connect } from 'react-redux'
 
 /*
 Componente que hace todo el manejo de  la suscripcion/desuscripcion.
-USAR ESTE
+/----------\
+| USAR ESTE|
+\----------/
 
 Props:
   organizacion (id)

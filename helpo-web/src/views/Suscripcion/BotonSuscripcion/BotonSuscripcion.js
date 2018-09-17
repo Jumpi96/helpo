@@ -62,7 +62,7 @@ class BotonSuscripcion extends React.Component {
       />
     }
     // Si es voluntario aparece el boton
-    return (user_type === 2) ? boton : undefined
+    return (user_type === 2) ? boton : null
   }
 }
 

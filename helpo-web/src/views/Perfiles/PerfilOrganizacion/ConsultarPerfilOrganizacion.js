@@ -79,7 +79,7 @@ class ConsultarPerfilOrganizacion extends Component {
       const params = {v: '3.exp', key: process.env.GOOGLE_API_KEY}
       return (      
         <div className='row' style={{ marginBottom: '20px'}} >   
-        <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center'}} class='col-2'>
+        <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center'}} className='col-2'>
         <p style={{ textAlign: 'right'}} className='font-weight-bold' htmlFor="descripcion">Ubicación</p>
         </div>
 

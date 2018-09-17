@@ -26,12 +26,12 @@ class EventoCard extends Component {
     const arrayNecesidades = this.props.evento.necesidades ? this.props.evento.necesidades : [];
     const necesidades = arrayNecesidades.slice(0, 2).map((necesidad) => {
       return (
-        <li class="list-group-item d-flex justify-content-between align-items-center">
+        <li className="list-group-item d-flex justify-content-between align-items-center">
           {
             necesidad.recurso.categoria.nombre + ' - ' +
             necesidad.recurso.nombre
           }
-          <span class="badge badge-primary badge-pill">{necesidad.cantidad}</span>
+          <span className="badge badge-primary badge-pill">{necesidad.cantidad}</span>
         </li>
       )
 
@@ -43,9 +43,9 @@ class EventoCard extends Component {
     const arrayVoluntarios = this.props.evento.voluntarios ? this.props.evento.voluntarios : [];
     const necesidades = arrayVoluntarios.slice(0, 2).map((voluntario) => {
       return (
-        <li class="list-group-item d-flex justify-content-between align-items-center">
+        <li className="list-group-item d-flex justify-content-between align-items-center">
           {voluntario.funcion.nombre}
-          <span class="badge badge-primary badge-pill">{voluntario.cantidad}</span>
+          <span className="badge badge-primary badge-pill">{voluntario.cantidad}</span>
         </li>
       )
     });

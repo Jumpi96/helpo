@@ -22,8 +22,8 @@ export default class BotonHelpo extends React.Component {
   render() {
     return (
       <div>
-        <button class="btn btn-warning" id="btnHelpo" disabled={this.props.disabled} onClick={this.props.onClick}>
-          <i class="icon-helpo"></i>{this.props.titulo}
+        <button className="btn btn-warning" id="btnHelpo" disabled={this.props.disabled} onClick={this.props.onClick}>
+          <i className="icon-helpo"></i>{this.props.titulo}
         </button>
         <Tooltip placement="right" isOpen={this.state.tooltipOpen} target="btnHelpo" toggle={this.toggle}>
           {this.props.mensaje}

@@ -37,28 +37,28 @@ class ConsultarPerfilVoluntario extends Component {
   }
   renderSexo() {
     if (this.props.data.sexo == null) {
-      return <p class='text-muted'> No hay valor ingresado</p>
+      return <p className='text-muted'> No hay valor ingresado</p>
     }
     return <p> {this.props.data.sexo}</p>      
   }
 
   renderApellido() {
     if (this.props.data.apellido == null) {
-      return <p class='text-muted'> No hay valor ingresado</p>
+      return <p className='text-muted'> No hay valor ingresado</p>
     }
     return <p> {this.props.data.apellido}</p>      
   }
 
   renderGustos() {
     if (this.props.data.gustos == null) {
-      return <p class='text-muted'> No hay valor ingresado</p>
+      return <p className='text-muted'> No hay valor ingresado</p>
     }
     return <p> {this.props.data.gustos}</p>      
   }
 
   renderHabilidades() {
     if (this.props.data.habilidades == null) {
-      return <p class='text-muted'> No hay valor ingresado</p>
+      return <p className='text-muted'> No hay valor ingresado</p>
     }
     return <p> {this.props.data.habilidades}</p>      
   }
@@ -66,21 +66,21 @@ class ConsultarPerfilVoluntario extends Component {
   renderTelefono() {
     //Si uso == va a dar True para null y undefined
     if (this.props.data.telefono == null) {
-      return <p class='text-muted'> No hay valor ingresado</p>
+      return <p className='text-muted'> No hay valor ingresado</p>
     }
     return <p> {this.props.data.telefono}</p>      
   }
 
   renderDni() {
     if (this.props.data.dni == null) {
-      return <p class='text-muted'> No hay valor ingresado</p>
+      return <p className='text-muted'> No hay valor ingresado</p>
     }
     return <p> {this.props.data.dni}</p>      
   }
 
   renderDescripcion() {
     if (this.props.data.descripcion == null) {
-      return <p class='text-muted'> No hay valor ingresado</p>
+      return <p className='text-muted'> No hay valor ingresado</p>
     }
     return <p> {this.props.data.descripcion}</p>      
   }  
@@ -91,16 +91,16 @@ class ConsultarPerfilVoluntario extends Component {
         <CardHeader>
           <i className="fa fa-align-justify"></i> Perfil
         </CardHeader>
-        <div class='container'>
+        <div className='container'>
         
-        <div style={{ alignItems: 'center' }} class='row'>
-          <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', height: '150px'}} class='col-2'>            
+        <div style={{ alignItems: 'center' }} className='row'>
+          <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', height: '150px'}} className='col-2'>            
             <p style={{ textAlign: 'right' }} 
-               class='h4'>{this.props.nombre} {this.renderApellido()}</p>
+               className='h4'>{this.props.nombre} {this.renderApellido()}</p>
           </div>
-          <div class='col-6'>
+          <div className='col-6'>
             <img
-              class='rounded-circle'
+              className='rounded-circle'
               src={getImagen(this.props.data.avatar.url)}
               alt="avatar"
               width="100" 
@@ -109,39 +109,39 @@ class ConsultarPerfilVoluntario extends Component {
           </div>
         </div>
           
-        <div class='row'>
-            <p style={{ textAlign: 'right' }} class='font-weight-bold col-2' htmlFor="mail">Mail</p>
-            <div class='col-6'><p>{this.props.email}</p></div>
+        <div className='row'>
+            <p style={{ textAlign: 'right' }} className='font-weight-bold col-2' htmlFor="mail">Mail</p>
+            <div className='col-6'><p>{this.props.email}</p></div>
         </div>
 
-        <div class='row'>
-            <p style={{ textAlign: 'right' }} class='font-weight-bold col-2' htmlFor="telefono">Teléfono</p>
-            <div class='col-6'>{this.renderTelefono()}</div>
+        <div className='row'>
+            <p style={{ textAlign: 'right' }} className='font-weight-bold col-2' htmlFor="telefono">Teléfono</p>
+            <div className='col-6'>{this.renderTelefono()}</div>
         </div>
 
-        <div class='row'>          
-            <p style={{ textAlign: 'right' }} class='font-weight-bold col-2' htmlFor="dni">DNI</p>
-            <div class='col-6'>{this.renderDni()}</div>
+        <div className='row'>          
+            <p style={{ textAlign: 'right' }} className='font-weight-bold col-2' htmlFor="dni">DNI</p>
+            <div className='col-6'>{this.renderDni()}</div>
         </div>
         
         {/**/}
-        <div class='row'>        
-            <p style={{ textAlign: 'right' }} class='font-weight-bold col-2' htmlFor="sexo">Sexo</p>
-            <div class='col-6'>{this.renderSexo()}</div>    
+        <div className='row'>        
+            <p style={{ textAlign: 'right' }} className='font-weight-bold col-2' htmlFor="sexo">Sexo</p>
+            <div className='col-6'>{this.renderSexo()}</div>    
         </div>
 
-        <div class='row'>        
-            <p style={{ textAlign: 'right' }} class='font-weight-bold col-2' htmlFor="gustos">Gustos</p>
-            <div class='col-6'>{this.renderGustos()}</div>    
+        <div className='row'>        
+            <p style={{ textAlign: 'right' }} className='font-weight-bold col-2' htmlFor="gustos">Gustos</p>
+            <div className='col-6'>{this.renderGustos()}</div>    
         </div>
 
-        <div class='row'>        
-            <p style={{ textAlign: 'right' }} class='font-weight-bold col-2' htmlFor="habilidades">Habilidades</p>
-            <div class='col-6'>{this.renderHabilidades()}</div>    
+        <div className='row'>        
+            <p style={{ textAlign: 'right' }} className='font-weight-bold col-2' htmlFor="habilidades">Habilidades</p>
+            <div className='col-6'>{this.renderHabilidades()}</div>    
         </div>
         {/**/}            
 
-        <div style={{ width: '500px', justifyContent: 'center' ,display: 'flex', marginBottom: '10px' }} class='row offster-md-4'>          
+        <div style={{ width: '500px', justifyContent: 'center' ,display: 'flex', marginBottom: '10px' }} className='row offster-md-4'>          
           {this.props.sinModificar
           ? "" 
           : <Button onClick={this.props.switchToModificar} color='primary'>Modificar Datos</Button>}

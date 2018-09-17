@@ -215,7 +215,7 @@ class ConsultarPerfilGenerico extends Component {
   render() {
     return (
     <div>
-      <BotonSuscripcion/>
+      <BotonSuscripcion organizacion={82} />
       {this.renderComponente()}
     </div>
     );

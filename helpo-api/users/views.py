@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework.generics import ListCreateAPIView
 from rest_framework.generics import ListAPIView
 from rest_framework.generics import DestroyAPIView
+from rest_framework.generics import CreateAPIView
 from rest_framework.generics import RetrieveUpdateDestroyAPIView, RetrieveUpdateAPIView
 from knox.models import AuthToken
 from django.contrib.auth import get_user_model
@@ -169,7 +170,7 @@ class DeviceIDReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     lookup_field = 'player_id'
 
 
-class SuscripcionListCreateView(ListCreateAPIView):
+class SuscripcionCreateView(CreateAPIView):
     """
     API endpoint para crear o listar todas las suscripciones de un usuario
     """
@@ -185,10 +186,11 @@ class SuscripcionDestroyView(DestroyAPIView):
     serializer_class = SuscripcionSerializer
     lookup_field = 'id'
 
-class SuscripcionListUserView(ListAPIView):
+class SuscripcionListUserView(APIView):
     """
     API endpoint para listar todos las suscripciones de un usuario
-    """
-    queryset = Suscripcion.objects.all()
-    serializer_class = SuscripcionSerializerLista
-    lookup_field = 'usuario'
+    """   
+    def get(self, request, usuario, format=None):
+        suscripciones = Suscripcion.objects.filter(usuario=usuario)
+        serializer = SuscripcionSerializerLista(suscripciones, many=True)
+        return Response(serializer.data)

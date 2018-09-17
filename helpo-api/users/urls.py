@@ -87,7 +87,7 @@ urlpatterns = [
     # {% url "api:suscripciones"  %}
     url(
         regex=r"^user/suscripciones/$",
-        view=users_views.SuscripcionListCreateView.as_view(),
+        view=users_views.SuscripcionCreateView.as_view(),
         name="get_put_delete_device_id"
     ),
     # {% url "api:suscripciones" id:(id de la suscripcion) %}

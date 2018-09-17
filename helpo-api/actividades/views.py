@@ -458,14 +458,13 @@ class EventoImagenListView(APIView):
     """ API endpoint para ver todas las imagenes de un evento """
 
     def get(self, request, evento, format=None):
-        print(request)
         imagenes = EventoImagen.objects.all().filter(evento=evento)
         serializer = EventoImagenSerializer(imagenes, many=True)
         return Response(serializer.data)
 
 class EventoImagenCreateView(CreateAPIView):
 
-    """ APU endpoint para crear una imagen de un evento """
+    """ API endpoint para crear una imagen de un evento """
 
     queryset = EventoImagen.objects.all()
     serializer_class = EventoImagenSerializer

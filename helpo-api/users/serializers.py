@@ -273,7 +273,7 @@ class SuscripcionSerializer(serializers.ModelSerializer):
         fields = ('id', 'usuario', 'organizacion')
 
 class SuscripcionSerializerLista(serializers.ModelSerializer):   
-
+    
     usuario = UserSerializer()
     organizacion = UserSerializer()
 

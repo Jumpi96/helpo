@@ -1,8 +1,4 @@
 import React from "react";
-import { connect } from 'react-redux';
-import { Actions } from 'react-native-router-flux';
-import { actions } from 'react-native-navigation-redux-helpers';
-import { FormValidationMessage } from "react-native-elements";
 import {
   Container,
   Header,
@@ -18,35 +14,24 @@ import {
   Form,
   Text
 } from "native-base";
-import { openDrawer } from '../../../../actions/drawer';
 import api from '../../../../api';
 import SelectorItem from './SelectorItem/SelectorItem';
+import styles from '../styles';
 
-const {
-  popRoute,
-} = actions;
 
 
 class AgregarNecesidad extends React.Component {
 
-  static propTypes = {
-    openDrawer: React.PropTypes.func,
-    popRoute: React.PropTypes.func,
-    navigation: React.PropTypes.shape({
-      key: React.PropTypes.string,
-    }),
-    evento: React.PropTypes.number,
-  }
-
-  constructor(props){
+  constructor(props) {
     super(props);
-    const evento = this.props.evento;
+    const { params } = this.props.navigation.state;
+    const { evento } = params;
     this.state = {
-        evento: evento,
-        cantidad: undefined,
-        recurso_id: 0,
-        descripcion: undefined,
-        error: undefined
+      evento: evento,
+      cantidad: undefined,
+      recurso_id: 0,
+      descripcion: undefined,
+      error: undefined
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleItemChange = this.handleItemChange.bind(this);
@@ -71,9 +56,9 @@ class AgregarNecesidad extends React.Component {
       .then(res => {
         console.log(res);
         console.log(res.data);
-        Actions.registrarNecesidades({ id: this.state.evento });
+        this.props.navigation.navigate('RegistrarNecesidades', { id: this.state.evento });
       }).catch(function (error) {
-        if (error.response){ console.log(error.response.status); }
+        if (error.response) { console.log(error.response.status); }
         else { console.log("Error: ", error.message); }
         this.setState({ error: "Hubo un problema al cargar su información." });
       });
@@ -88,7 +73,7 @@ class AgregarNecesidad extends React.Component {
       error = "Hubo un problema al cargar los recursos.";
     }
     // eslint-disable-next-line
-    if (!isNaN(this.state.cantidad) && parseInt(this.state.cantidad)<=0) {
+    if (!isNaN(this.state.cantidad) && parseInt(this.state.cantidad) <= 0) {
       formIsValid = false;
       error = "La cantidad ingresada no es válida.";
     }
@@ -96,7 +81,7 @@ class AgregarNecesidad extends React.Component {
       formIsValid = false;
       error = "La descripción ingresada no es válida.";
     }
-    this.setState({error: error});
+    this.setState({ error: error });
     return formIsValid;
   }
 
@@ -105,12 +90,12 @@ class AgregarNecesidad extends React.Component {
     this.setState({ recurso_id: parseInt(r) });
   }
 
-  render(){
+  render() {
     return (
       <Container>
         <Header>
           <Left>
-            <Button transparent onPress={() => Actions.pop()}>
+            <Button transparent onPress={() => this.props.navigation.navigate('RegistrarNecesidades', { id: this.state.evento })}>
               <Icon name="arrow-back" />
             </Button>
           </Left>
@@ -123,19 +108,18 @@ class AgregarNecesidad extends React.Component {
           <Form>
             <SelectorItem
               item={this.state.recurso_id}
-              onItemChange={this.handleItemChange}/>
+              onItemChange={this.handleItemChange} />
             <Item floatingLabel>
               <Label>Descripción</Label>
               <Input value={this.state.descripcion}
-                onChangeText={(text) => this.setState({descripcion: text})}/>
+                onChangeText={(text) => this.setState({ descripcion: text })} />
             </Item>
             <Item floatingLabel>
               <Label>Cantidad</Label>
               <Input value={this.state.cantidad} keyboardType="numeric"
-                onChangeText={(text) => this.setState({cantidad: text})}/>
+                onChangeText={(text) => this.setState({ cantidad: text })} />
             </Item>
-
-            <FormValidationMessage>{this.state.error}</FormValidationMessage>
+            <Text style={styles.validationMessage}>{this.state.error}</Text>
             <Button block style={{ margin: 15, marginTop: 50 }}
               onPress={this.handleSubmit} >
               <Text>Guardar necesidad</Text>
@@ -147,16 +131,4 @@ class AgregarNecesidad extends React.Component {
   }
 }
 
-function bindAction(dispatch) {
-  return {
-    openDrawer: () => dispatch(openDrawer()),
-    popRoute: key => dispatch(popRoute(key)),
-  };
-}
-
-const mapStateToProps = state => ({
-  navigation: state.cardNavigation,
-  themeState: state.drawer.themeState,
-});
-
-export default connect(mapStateToProps, bindAction)(AgregarNecesidad);
+export default AgregarNecesidad;

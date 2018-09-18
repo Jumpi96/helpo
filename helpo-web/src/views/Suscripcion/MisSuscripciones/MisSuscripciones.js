@@ -62,10 +62,10 @@ class MisSuscripciones extends React.Component {
     return (
       <Card>
         <CardHeader>
-          <i className="fa fa-align-justify"></i>Mis Suscripciones
+          <i className="fa fa-align-justify"></i>Mis suscripciones
         </CardHeader>
         <CardBody>
-          <h1 style={{ fontSize: 24 }}>Mis Suscripciones</h1>
+          <h1 style={{ fontSize: 24 }}>Mis suscripciones</h1>
           <ListGroup>
             {this.renderFilas()}
           </ListGroup>

@@ -52,21 +52,16 @@ class AgregarColaboracion extends React.Component {
   handleValidation() {
     let formIsValid = true;
     let error = this.state.error;
+    const cantidad = this.state.colaboracion.funcion ? 1 : this.state.colaboracion.cantidad;
 
-    if (this.state.colaboracion.funcion) {
-      if (this.state.colaboracion.cantidad_restante === 0) {
-        formIsValid = false;
-        error = 'El cupo para participar se encuentra ocupado.';
-      }
-    } else {
-      if (this.state.colaboracion.cantidad <= 0) {
+      if (cantidad <= 0) {
         formIsValid = false;
         error = 'La cantidad ingresada no es válida.';
-      } else if (this.state.colaboracion.cantidad_restante < this.state.colaboracion.cantidad) {
+      } else if (this.state.colaboracion.cantidad_restante < cantidad) {
         formIsValid = false;
         error = 'La cantidad ingresada es mayor al cupo disponible';
       }
-    }
+    
     this.setState({ error });
     return formIsValid;
   }
@@ -105,6 +100,7 @@ class AgregarColaboracion extends React.Component {
       const nuevaParticipacion = {
         comentario: colaboracion.comentarios,
         necesidad_voluntario_id: colaboracion.id,
+        cantidad: 1
       };
       api.post('/actividades/participaciones/', nuevaParticipacion)
         .then(() => {

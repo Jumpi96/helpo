@@ -254,6 +254,7 @@ class RegistrarColaboraciones extends React.Component {
         comentarios: undefined,
         evento: this.state.evento.id,
       };
+      this.deleteParticipacion();
       this.setState({ necesidadModificada: undefined });
       this.props.navigation.navigate('AgregarColaboracion', { colaboracion: participacion });
     } else if (button.text === 'Eliminar') {
@@ -267,7 +268,7 @@ class RegistrarColaboraciones extends React.Component {
     if (!necesidad.funcion) {
       necesidad.colaboraciones.forEach((c) => { contador += c.cantidad; });
     } else {
-      contador = necesidad.participaciones.length;
+      necesidad.participaciones.forEach((c) => { contador += c.cantidad; });
     }
     return necesidad.cantidad - contador + aportado;
   }

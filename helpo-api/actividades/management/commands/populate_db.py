@@ -14,30 +14,31 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
 
         def __set_images():
-            imgur_default_image, created = Imagen.objects.get_or_create(
-                isExternal=True,
-                url='https://i.imgur.com/cXItNWF.png'
-            )
-            print('- imgur_default_image: {0}, Created: {1}'.format(
-                str(imgur_default_image.url), str(created)))
-            imgur_last_refresh, created = AppValues.objects.get_or_create(
-                key='imgurLastRefresh',
-                value='0'
-            )
-            print('- imgurLastRefresh: {0}, Created: {1}'.format(
-                str(imgur_last_refresh.value), str(created)))
-            imgur_refresh_token, created = AppValues.objects.get_or_create(
-                key='imgurRefreshToken',
-                value=config('IMGUR_REFRESH_TOKEN')
-            )
-            print('- imgurRefreshToken: {0}, Created: {1}'.format(
-                str(imgur_refresh_token.value), str(created)))
-            imgur_access_token, created = AppValues.objects.get_or_create(
-                key='imgurAccessToken',
-                value=config('IMGUR_ACCESS_TOKEN')
-            )
-            print('- imgurAccessToken: {0}, Created: {1}'.format(
-                str(imgur_access_token.value), str(created)))
+            if not AppValues.objects.filter(key='imgurRefreshToken').exists():
+                imgur_refresh_token, created = AppValues.objects.get_or_create(
+                    key='imgurRefreshToken',
+                    value=config('IMGUR_REFRESH_TOKEN')
+                )
+                print('- imgurRefreshToken: {0}, Created: {1}'.format(
+                    str(imgur_refresh_token.value), str(created)))
+                imgur_access_token, created = AppValues.objects.get_or_create(
+                    key='imgurAccessToken',
+                    value=config('IMGUR_ACCESS_TOKEN')
+                )
+                print('- imgurAccessToken: {0}, Created: {1}'.format(
+                    str(imgur_access_token.value), str(created)))
+                imgur_default_image, created = Imagen.objects.get_or_create(
+                    isExternal=True,
+                    url='https://i.imgur.com/cXItNWF.png'
+                )
+                print('- imgur_default_image: {0}, Created: {1}'.format(
+                    str(imgur_default_image.url), str(created)))
+                imgur_last_refresh, created = AppValues.objects.get_or_create(
+                    key='imgurLastRefresh',
+                    value='0'
+                )
+                print('- imgurLastRefresh: {0}, Created: {1}'.format(
+                    str(imgur_last_refresh.value), str(created)))
 
         def __set_rubros_evento():
             path = os.path.dirname(__file__) + "/rubros_evento.csv"
@@ -110,7 +111,8 @@ class Command(BaseCommand):
             with open(path) as f:
                 reader = csv.reader(f)
                 i = 0
-                ropa, created = CategoriaRecurso.objects.get_or_create(nombre="Ropa")
+                ropa, created = CategoriaRecurso.objects.get_or_create(
+                    nombre="Ropa")
                 for row in reader:
                     obj, created = Recurso.objects.get_or_create(
                         nombre=row[0],
@@ -126,7 +128,8 @@ class Command(BaseCommand):
             with open(path) as f:
                 reader = csv.reader(f)
                 i = 0
-                alimento, created = CategoriaRecurso.objects.get_or_create(nombre="Alimento")
+                alimento, created = CategoriaRecurso.objects.get_or_create(
+                    nombre="Alimento")
                 for row in reader:
                     obj, created = Recurso.objects.get_or_create(
                         nombre=row[0],
@@ -141,7 +144,7 @@ class Command(BaseCommand):
         print('----------------------\n')
 
         print('Setting Images Prerequisites')
-        # __set_images()
+        __set_images()
         print('----------------------\n')
 
         print('Setting Rubros Evento')

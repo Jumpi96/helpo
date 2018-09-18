@@ -214,7 +214,7 @@ class RegistrarOfrecimientos extends Component {
     if (!necesidad.funcion) {
       necesidad.colaboraciones.forEach((c) => { contador += c.cantidad });
     } else {
-      contador = necesidad.participaciones.length;
+      necesidad.participaciones.forEach((c) => { contador += c.cantidad });
     }
     return necesidad.cantidad - contador + aportado;
   }
@@ -232,6 +232,21 @@ class RegistrarOfrecimientos extends Component {
       comentarios: colaboracionAnterior.comentario,
     }
     this.setState({ colaboracionModificada: colaboracion });
+  }
+
+  editParticipacion(idParticipacion) {
+    const voluntario = this.state.voluntarios.filter(v => v.id === idParticipacion)[0];
+    const participacionAnterior = voluntario.participaciones.filter(c => c.colaborador.id === this.getUserId())[0];
+    const participacion = {
+      id: idParticipacion,
+      cantidad_anterior: participacionAnterior.cantidad,
+      cantidad: participacionAnterior.cantidad,
+      cantidad_restante: this.getCantidadRestante(voluntario, participacionAnterior.cantidad),
+      funcion: voluntario.funcion,
+      descripcion: voluntario.descripcion,
+      comentarios: participacionAnterior.comentario,
+    }
+    this.setState({ colaboracionModificada: participacion });
   }
 
 
@@ -262,9 +277,9 @@ class RegistrarOfrecimientos extends Component {
     return undefined;
   }
 
-  deleteParticipacion() {
-    const participacionAEliminar = this.getIdParticipacionVoluntario();
-    api.delete('/actividades/participaciones/' + participacionAEliminar + '/')
+  deleteParticipacion(participacion_id) {
+    const participacionAnterior = this.getParticipacionAnterior(participacion_id);
+    api.delete('/actividades/participaciones/' + participacionAnterior + '/')
       .then(res => {
         console.log(res);
         console.log(res.data);
@@ -319,6 +334,26 @@ class RegistrarOfrecimientos extends Component {
       });
   }
 
+  saveEditParticipacion(participacion) {
+    const participacionAnterior = this.getParticipacionAnterior(participacion.id);
+    const nuevaParticipacion = {
+      id: participacionAnterior,
+      cantidad: participacion.cantidad,
+      comentario: participacion.comentarios,
+      necesidad_voluntario_id: participacion.id,
+    }
+    api.put('/actividades/participaciones/' + participacionAnterior + '/', nuevaParticipacion)
+      .then(res => {
+        console.log(res);
+        console.log(res.data);
+        this.loadNecesidadesYVoluntarios();
+      }).catch(function (error) {
+        if (error.response) { console.log(error.response.status) }
+        else { console.log('Error: ', error.message) }
+        this.setState({ error_necesidad: "Hubo un problema al cargar su información." });
+      });
+  }
+
   deleteColaboracion(idNecesidad) {
     const colaboracionAnterior = this.getColaboracionAnterior(idNecesidad);
     api.delete('/actividades/colaboraciones/' + colaboracionAnterior + '/')
@@ -338,25 +373,31 @@ class RegistrarOfrecimientos extends Component {
     return necesidad.colaboraciones.filter(c => c.colaborador.id === this.getUserId())[0].id;
   }
 
+  getParticipacionAnterior(voluntarioId) {
+    const voluntario = this.state.voluntarios.filter(n => n.id === voluntarioId)[0];
+    return voluntario.participaciones.filter(c => c.colaborador.id === this.getUserId())[0].id;
+  }
+
   saveParticipacion(participacion) {
-    const nuevaParticipacion = {
-      comentario: participacion.comentarios,
-      necesidad_voluntario_id: participacion.id,
-      cantidad: participacion.cantidad
-    };
-    if (this.getNecesidadVoluntario(this.state.voluntarios) !== this.state.funcionVoluntario) {
-      this.deleteParticipacion();
+    if (participacion.cantidad_anterior > 0) {
+      this.saveEditParticipacion(participacion);
+    } else {
+      const nuevaParticipacion = {
+        comentario: participacion.comentarios,
+        necesidad_voluntario_id: participacion.id,
+        cantidad: participacion.cantidad
+      };
+      api.post('/actividades/participaciones/', nuevaParticipacion)
+        .then(res => {
+          console.log(res);
+          console.log(res.data);
+          this.loadNecesidadesYVoluntarios();
+        }).catch(function (error) {
+          if (error.response) { console.log(error.response.status) }
+          else { console.log('Error: ', error.message) }
+          this.setState({ error_necesidad: "Hubo un problema al cargar su información." });
+        });
     }
-    api.post('/actividades/participaciones/', nuevaParticipacion)
-      .then(res => {
-        console.log(res);
-        console.log(res.data);
-        this.loadNecesidadesYVoluntarios();
-      }).catch(function (error) {
-        if (error.response) { console.log(error.response.status) }
-        else { console.log('Error: ', error.message) }
-        this.setState({ error_necesidad: "Hubo un problema al cargar su información." });
-      });
   }
 
   handleModalChange(colaboracion) {

@@ -26,7 +26,7 @@ class AgregarOfrecimiento extends React.Component {
     super(props);
     const { params } = this.props.navigation.state;
     const colaboracion = params.colaboracion;
-    this.state = { 
+    this.state = {
       colaboracion,
       error: undefined
     };
@@ -52,20 +52,14 @@ class AgregarOfrecimiento extends React.Component {
     let formIsValid = true;
     let error = this.state.error;
 
-    if (this.state.colaboracion.funcion) {
-      if (this.state.colaboracion.cantidad_restante === 0) {
-        formIsValid = false;
-        error = 'El cupo para participar se encuentra ocupado.';
-      }
-    } else {
-      if (this.state.colaboracion.cantidad <= 0) {
-        formIsValid = false;
-        error = 'La cantidad ingresada no es válida.';
-      } else if (this.state.colaboracion.cantidad_restante < this.state.colaboracion.cantidad) {
-        formIsValid = false;
-        error = 'La cantidad ingresada es mayor al cupo disponible';
-      }
+    if (this.state.colaboracion.cantidad <= 0) {
+      formIsValid = false;
+      error = 'La cantidad ingresada no es válida.';
+    } else if (this.state.colaboracion.cantidad_restante < this.state.colaboracion.cantidad) {
+      formIsValid = false;
+      error = 'La cantidad ingresada es mayor al cupo disponible';
     }
+
     this.setState({ error });
     return formIsValid;
   }
@@ -81,21 +75,39 @@ class AgregarOfrecimiento extends React.Component {
   }
 
   editColaboracion() {
-    const colaboracion = this.state.colaboracion;
-    const nuevaColaboracion = {
-      id: colaboracion.colaboracion_anterior,
-      cantidad: colaboracion.cantidad,
-      comentario: colaboracion.comentarios,
-      necesidad_material_id: colaboracion.id,
-    };
-    api.put('/actividades/colaboraciones/' + colaboracion.colaboracion_anterior + '/', nuevaColaboracion)
-      .then(() => {
-        this.props.navigation.navigate('RegistrarOfrecimiento', { evento: this.getIdEvento() });
-      }).catch(function (error) {
-        if (error.response){ console.log(error.response.status) }
-        else { console.log('Error: ', error.message)}
-        this.setState({ error: "Hubo un problema al cargar su información." });
-      });
+    const { colaboracion } = this.state;
+    if (this.state.colaboracion.funcion) {
+      const nuevaParticipacion = {
+        id: colaboracion.colaboracion_anterior,
+        cantidad: colaboracion.cantidad,
+        comentario: colaboracion.comentarios,
+        necesidad_voluntario_id: colaboracion.id,
+      };
+      api.put('/actividades/participaciones/' + colaboracion.colaboracion_anterior + '/', nuevaParticipacion)
+        .then(() => {
+          this.props.navigation.navigate('RegistrarOfrecimiento', { evento: this.getIdEvento() });
+        }).catch(function (error) {
+          if (error.response) { console.log(error.response.status) }
+          else { console.log('Error: ', error.message) }
+          this.setState({ error: "Hubo un problema al cargar su información." });
+        });
+    } else {
+      const nuevaColaboracion = {
+        id: colaboracion.colaboracion_anterior,
+        cantidad: colaboracion.cantidad,
+        comentario: colaboracion.comentarios,
+        necesidad_material_id: colaboracion.id,
+      };
+      api.put('/actividades/colaboraciones/' + colaboracion.colaboracion_anterior + '/', nuevaColaboracion)
+        .then(() => {
+          this.props.navigation.navigate('RegistrarOfrecimiento', { evento: this.getIdEvento() });
+        }).catch(function (error) {
+          if (error.response) { console.log(error.response.status) }
+          else { console.log('Error: ', error.message) }
+          this.setState({ error: "Hubo un problema al cargar su información." });
+        });
+
+    }
   }
 
   newColaboracion() {
@@ -110,8 +122,8 @@ class AgregarOfrecimiento extends React.Component {
         .then(() => {
           this.props.navigation.navigate('RegistrarOfrecimiento', { evento: this.getIdEvento() });
         }).catch(function (error) {
-          if (error.response){ console.log(error.response.status) }
-          else { console.log('Error: ', error.message)}
+          if (error.response) { console.log(error.response.status) }
+          else { console.log('Error: ', error.message) }
           this.setState({ error: "Hubo un problema al cargar su información." });
         });
     } else {
@@ -124,8 +136,8 @@ class AgregarOfrecimiento extends React.Component {
         .then(() => {
           this.props.navigation.navigate('RegistrarOfrecimiento', { evento: this.getIdEvento() });
         }).catch(function (error) {
-          if (error.response){ console.log(error.response.status) }
-          else { console.log('Error: ', error.message)}
+          if (error.response) { console.log(error.response.status) }
+          else { console.log('Error: ', error.message) }
           this.setState({ error: "Hubo un problema al cargar su información." });
         });
     }

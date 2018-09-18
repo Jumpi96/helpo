@@ -81,7 +81,7 @@ const itemsVol = [
 	{
 		'key': 'MisSuscripciones',
 		'routeName': 'MisSuscripciones',
-		'name': 'Mis Suscripciones'
+		'name': 'Mis suscripciones'
 	},
 	{
 		'key': 'Configuracion',

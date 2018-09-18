@@ -150,7 +150,6 @@ android {
 }
 
 dependencies {
-    compile project(':react-native-google-place-picker')
     compile project(':react-native-config')
     compile project(':react-native-onesignal')
     compile project(':react-native-vector-icons')

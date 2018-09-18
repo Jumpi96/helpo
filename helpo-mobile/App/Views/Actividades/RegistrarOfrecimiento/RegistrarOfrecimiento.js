@@ -25,9 +25,6 @@ class RegistrarOfrecimiento extends React.Component {
     super(props);
     const { params } = this.props.navigation.state;
     const evento = params.evento;
-    if (this.empresaTienePedido(parametro)) {
-      this.props.navigation.navigate('LaunchScreen');
-    }
     this.state = {
       evento: {id: evento},
       necesidades: [],
@@ -44,6 +41,9 @@ class RegistrarOfrecimiento extends React.Component {
     api.get('/actividades/consulta_necesidades/' + this.state.evento.id + '/')
       .then(res => {
         const necesidadesData = res.data;
+        if (this.empresaTienePropuesta(this.state.evento.id, necesidadesData.propuestas)) {
+          this.props.history.push({ pathname: '/dashboard' });
+        }
         this.setState({
           necesidades: necesidadesData.necesidades,
           voluntarios: necesidadesData.voluntarios,
@@ -56,17 +56,11 @@ class RegistrarOfrecimiento extends React.Component {
       })
   }
 
-  empresaTienePedido(evento) {
-    api.get('/actividades/pedidos/')
-      .then(res => {
-        const pedidos = res.data;
-        return pedidos.filter(n => n.evento_id === evento && n.aceptado !== 0).length > 0;
-      })
-      .catch((error) => {
-        if (error.response){ console.log(error.response.status) }
-        else { console.log('Error: ', error.message)}
-      })
-    return false;
+  empresaTienePropuesta(evento, propuestas) {
+    const filtro = propuestas.filter(
+      n => n.evento.toString() === evento && n.aceptado !== 0 && n.empresa.id === this.getUserId()
+    )
+    return filtro.length > 0;
   }
 
   getNecesidadVoluntario(necesidades) {

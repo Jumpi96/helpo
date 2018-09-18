@@ -7,9 +7,10 @@ ADD Pipfile.lock /code/
 RUN pip install pipenv
 RUN pipenv install --system
 RUN pipenv install --dev --system
-ADD . /code/
 # cron installation for periodic command scheduler
+ADD cronjob /code/
 RUN apt-get update && apt-get install -y --no-install-recommends cron \
     && rm -rf /var/lib/apt/lists/* && crontab cronjob
+ADD . /code/
 EXPOSE 8000
 ENTRYPOINT ["./entrypoint.sh"]

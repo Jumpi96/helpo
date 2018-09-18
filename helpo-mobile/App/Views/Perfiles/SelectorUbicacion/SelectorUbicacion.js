@@ -6,7 +6,7 @@ import {
   Input,
   Content
 } from "native-base";
-import RNGooglePlacePicker from "react-native-google-place-picker";
+//import RNGooglePlacePicker from "react-native-google-place-picker";
 
 class SelectorUbicacion extends React.Component {
   constructor(props){
@@ -46,11 +46,11 @@ class SelectorUbicacion extends React.Component {
   }
 
   seleccionarUbicacion() {
-    RNGooglePlacePicker.show((response) => {
+    /*RNGooglePlacePicker.show((response) => {
       if (!response.didCancel && !response.error) {
         this.handleCoordenadasChange(response);
       }
-    });
+    });*/
   }
 
   render(){

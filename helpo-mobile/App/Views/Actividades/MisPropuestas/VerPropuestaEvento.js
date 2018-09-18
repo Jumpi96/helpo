@@ -170,16 +170,16 @@ class VerPropuestaEvento extends React.Component {
   getBotonRedireccion() {
     const propuesta = this.getPropuesta();
     const { evento } = this.state;
-    if (moment(evento.fecha_hora_inicio) > moment()) {
-      if (propuesta.aceptado !== -1) {
+    if (moment(evento.fecha_hora_inicio) < moment()) {
+      if (propuesta.aceptado === 1) {
         return (
-          <Button transparent onPress={() => this.props.navigation.navigate('', { evento: evento.id })}>
+          <Button transparent onPress={() => this.props.navigation.navigate('ComentarEvento', { evento: evento.id })}>
             <Text>Comentar</Text>
           </Button>
         )
       }
     } else {
-      if (propuesta.aceptado !== -1) {
+      if (propuesta.aceptado >= 0) {
         return (
           <Button transparent onPress={() => this.props.navigation.navigate('RegistrarOfrecimiento', { evento: evento.id })}>
             <Text>Modificar</Text>

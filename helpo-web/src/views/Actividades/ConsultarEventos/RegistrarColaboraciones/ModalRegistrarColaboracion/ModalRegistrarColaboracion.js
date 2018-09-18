@@ -82,11 +82,12 @@ class ModalRegistrarColaboracion extends Component {
   handleValidation() {
     let formIsValid = true;
     let error = this.state.error;
+    const cantidad = this.props.colaboracion.funcion ? 1 : this.props.colaboracion.cantidad;
 
-    if (this.props.colaboracion.cantidad <= 0) {
+    if (cantidad <= 0) {
       formIsValid = false;
       error = 'La cantidad ingresada no es válida.';
-    } else if (this.props.colaboracion.cantidad_restante < this.props.colaboracion.cantidad) {
+    } else if (this.props.colaboracion.cantidad_restante < cantidad) {
       formIsValid = false;
       error = 'La cantidad ingresada es mayor al cupo disponible';
     }

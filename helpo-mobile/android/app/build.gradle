@@ -101,8 +101,8 @@ android {
         applicationId "com.helpomobile"
         minSdkVersion 16
         targetSdkVersion 26
-        versionCode 3
-        versionName "1.1"
+        versionCode 4
+        versionName "1.2"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -150,7 +150,6 @@ android {
 }
 
 dependencies {
-    compile project(':react-native-google-place-picker')
     compile project(':react-native-config')
     compile project(':react-native-onesignal')
     compile project(':react-native-vector-icons')

@@ -116,32 +116,34 @@ class ConsultaEvento extends React.Component {
   }
 
   getPropuestas(propuestas) {
-    const listaPropuestas = [];
-    propuestas = this.shuffle(propuestas);
-    propuestas.forEach((p) => {
-      if (p.aceptado === 1) {
-        listaPropuestas.push(
-          <ListItem thumbnail key={p.id} onPress={() => this.togglePerfil(p.empresa.id)}>
-            <Left>
-              <Thumbnail small source={{ uri: p.empresa.avatar }} />
-            </Left>
-            <Body>
-              <Text>
-                {p.empresa.nombre}
-              </Text>
-            </Body>
-          </ListItem>
-        );
-      }
-    })
-    return (
-      <View>
-        <Separator bordered noTopBorder>
-          <Text>Con la ayuda de</Text>
-        </Separator>
-        {listaPropuestas}
-      </View>
-    )
+    if (propuestas.filter(p => p.aceptado === 1).length > 0) {
+      const listaPropuestas = [];
+      propuestas = this.shuffle(propuestas);
+      propuestas.forEach((p) => {
+        if (p.aceptado === 1) {
+          listaPropuestas.push(
+            <ListItem thumbnail key={p.id} onPress={() => this.togglePerfil(p.empresa.id)}>
+              <Left>
+                <Thumbnail small source={{ uri: p.empresa.avatar }} />
+              </Left>
+              <Body>
+                <Text>
+                  {p.empresa.nombre}
+                </Text>
+              </Body>
+            </ListItem>
+          );
+        }
+      })
+      return (
+        <View>
+          <Separator bordered noTopBorder>
+            <Text>Con la ayuda de</Text>
+          </Separator>
+          {listaPropuestas}
+        </View>
+      )
+    }
   }
 
   shuffle(a) {
@@ -233,7 +235,7 @@ class ConsultaEvento extends React.Component {
             </View>
           ) : undefined
           }
-          {evento.propuestas.length > 0 && this.getPropuestas(evento.propuestas)}
+          {this.getPropuestas(evento.propuestas)}
           {evento.voluntarios.length > 0 ? (
             <View>
               <Separator bordered noTopBorder>

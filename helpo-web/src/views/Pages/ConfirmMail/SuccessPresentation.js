@@ -3,6 +3,15 @@ import logo from '../../../assets/img/brand/logo_principal.svg'
 import { Button, Card, CardBody, CardGroup, Row } from 'reactstrap';
 
 class SuccessPresentation extends Component {
+    
+    constuctor() {
+        this.handlePageChange = this.handlePageChange.bind(this);
+      }
+  
+    handlePageChange() {
+      window.location.hash = "/login";
+    }
+
     render() {
         return (
             <div class="container">
@@ -18,7 +27,7 @@ class SuccessPresentation extends Component {
                             <CardBody className="text-center">
                                 <h1>¡Gracias por registrarte!</h1>
                                 <p className="text-muted">Inicia sesión para comenzar a utilizar Helpo</p>
-                                <Button color="primary" type="submit" className="px-4">Iniciar sesión</Button>
+                                <Button onClick={this.handlePageChange} color="primary" type="submit" className="px-4">Iniciar sesión</Button>
                             </CardBody>
                         </Card>
                     </CardGroup>

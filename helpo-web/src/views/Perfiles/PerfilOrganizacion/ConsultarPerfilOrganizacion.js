@@ -193,7 +193,9 @@ class ConsultarPerfilOrganizacion extends Component {
             {this.mostrarUbicacion()}
             <div style={{ width: '500px', justifyContent: 'center' ,display: 'flex', marginBottom: '10px' }} className='row offster-md-4'>
               <div className="col-md-4">
-                <Button onClick={this.props.switchToModificar} color='primary'>Modificar Datos</Button>
+              {this.props.sinModificar
+              ? ""
+              : <Button onClick={this.props.switchToModificar} color='primary'>Modificar Datos</Button>}
               </div>
             </div>
             <div style={{ width: '500px', justifyContent: 'center' ,display: 'flex', marginBottom: '10px' }} className='row offster-md-4'>

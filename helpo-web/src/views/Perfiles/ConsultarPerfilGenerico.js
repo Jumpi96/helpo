@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import api from '../../api';
 import ConsultarPerfilOrganizacion from './PerfilOrganizacion/ConsultarPerfilOrganizacion'
 import ConsultarPerfilEmpresa from './PerfilEmpresa/ConsultarPerfilEmpresa'
@@ -26,6 +27,15 @@ class ConsultarPerfilGenerico extends Component {
     this.renderComponente = this.renderComponente.bind(this)
     this.switchToConsultar = this.switchToConsultar.bind(this)
     this.switchToModificar = this.switchToModificar.bind(this)
+    this.isLoggedUser = this.isLoggedUser.bind(this)
+  }
+
+  isLoggedUser() {
+    // Retorna true si el perfil es del usuario logeado, sino retorna false
+    if (this.props.logeadoId === this.state.userId) {
+      return true
+    }
+    else { return false }
   }
 
   getApiCall(userType) {
@@ -143,7 +153,7 @@ class ConsultarPerfilGenerico extends Component {
                   email={this.state.email}
                   data={this.state.data}
                   switchToModificar={this.switchToModificar}
-                  sinModificar={true}
+                  sinModificar={!this.isLoggedUser()}
                   />)
 
       case 2:
@@ -152,7 +162,7 @@ class ConsultarPerfilGenerico extends Component {
                   email={this.state.email}
                   data={this.state.data}
                   switchToModificar={this.switchToModificar}
-                  sinModificar={true}
+                  sinModificar={!this.isLoggedUser()}
                   /> )
 
       case 3:
@@ -161,7 +171,7 @@ class ConsultarPerfilGenerico extends Component {
                   email={this.state.email}
                   data={this.state.data}
                   switchToModificar={this.switchToModificar}
-                  sinModificar={true}
+                  sinModificar={!this.isLoggedUser()}
                   /> )
 
       default:
@@ -178,6 +188,7 @@ class ConsultarPerfilGenerico extends Component {
                   email={this.state.email}
                   data={this.state.data}
                   switchToModificar={this.switchToModificar}
+                  sinModificar={!this.isLoggedUser()}
                   />)
 
       case 2:
@@ -186,6 +197,7 @@ class ConsultarPerfilGenerico extends Component {
                   email={this.state.email}
                   data={this.state.data}
                   switchToModificar={this.switchToModificar}
+                  sinModificar={!this.isLoggedUser()}
                   /> )
 
       case 3:
@@ -194,6 +206,7 @@ class ConsultarPerfilGenerico extends Component {
                   email={this.state.email}
                   data={this.state.data}
                   switchToModificar={this.switchToModificar}
+                  sinModificar={!this.isLoggedUser()}
                   /> )
 
       default:
@@ -220,4 +233,8 @@ class ConsultarPerfilGenerico extends Component {
   }
 }
 
-export default ConsultarPerfilGenerico;
+const mapStateToProps = state => ({
+  logeadoId: state.auth.user.id
+})
+
+export default connect(mapStateToProps)(ConsultarPerfilGenerico);

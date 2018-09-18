@@ -11,7 +11,8 @@ export const reducers = combineReducers({
   evento: require('./EventoRedux').reducer,
   rubroEvento: require('./RubroEventoRedux').reducer,
   consultarColabs: require('./ConsultarColabsRedux').reducer,
-  albumEvento: require('./AlbumEventoRedux').reducer
+  albumEvento: require('./AlbumEventoRedux').reducer,
+  suscripciones: require('./SuscripcionesRedux').reducer
 })
 
 export default () => {

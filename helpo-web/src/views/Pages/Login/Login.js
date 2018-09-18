@@ -24,9 +24,9 @@ class Login extends Component {
       return <Redirect to="/" />
     } else {
       return (
-      <div class="container">
-            <div class="panel-heading">
-              <div class="panel-title text-center">
+      <div className="container">
+            <div className="panel-heading">
+              <div className="panel-title text-center">
                 <img src={logo} alt="Helpo" width="150" height="150"></img>
               </div>
             </div>

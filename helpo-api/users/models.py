@@ -176,3 +176,18 @@ class AppValues(models.Model):
 class DeviceID(models.Model):
     player_id = models.TextField(primary_key=True)
     email = models.EmailField(max_length=255)
+
+
+class Suscripcion(models.Model):
+    """
+    En la suscripcion Usuario seria quien esta suscripto a
+    organizacion
+    (Aclaracion porque ambos son "USER")
+    """
+    usuario =  models.ForeignKey(User, related_name="suscripcion")
+    organizacion = models.ForeignKey(User, related_name="suscriptor")
+
+    class Meta:
+        # Esto hace que solo pueda haber un par usuario-organizacion
+        unique_together = ('usuario', 'organizacion')
+

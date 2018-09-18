@@ -34,6 +34,11 @@
       icon: 'icon-star'
     },
     {
+      name: 'Organizaciones',
+      url: '/organizaciones',
+      icon: 'icon-calendar'
+    },
+    {
       title: true,
       name: 'Perfil',
       wrapper: {            // optional wrapper object
@@ -45,6 +50,11 @@
     {
       name: 'Mi perfil',
       url: '/perfil/',
+      icon: 'icon-pencil',
+    },
+    {
+      name: 'Mis suscripciones',
+      url: '/suscripciones/',
       icon: 'icon-pencil',
     },
   ],

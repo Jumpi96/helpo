@@ -144,11 +144,13 @@ class EmpresaProfileSerializer(serializers.ModelSerializer):
     ubicacion = UbicacionSerializer(required=False)
     avatar = ImagenSerializer(required=False)    
     usuario = UserSerializer(read_only=True)
+    manos = serializers.SerializerMethodField()
+    eventos = serializers.SerializerMethodField()
 
     class Meta:
         model = EmpresaProfile
-        fields = ( 'telefono', 'cuit', 'descripcion', 'rubro', 'avatar', 'ubicacion', 'usuario')
-        read_only_fields = ('usuario',)
+        fields = ( 'telefono', 'cuit', 'descripcion', 'rubro', 'avatar', 'ubicacion', 'usuario', 'manos', 'eventos')
+        read_only_fields = ('usuario','manos','eventos')
 
     def update(self, instance, validated_data):
         rubro_data = None
@@ -196,6 +198,25 @@ class EmpresaProfileSerializer(serializers.ModelSerializer):
                 instance.avatar = nuevaImagen
         instance.save()
         return instance
+
+    def get_manos(self, obj):
+        participaciones = Participacion.objects.filter(retroalimentacion_voluntario=True).filter(colaborador_id=obj.usuario_id).count()
+        colaboraciones = Colaboracion.objects.filter(retroalimentacion_voluntario=True).filter(colaborador_id=obj.usuario_id).distinct('necesidad_material__evento').count()
+        manos = participaciones + colaboraciones
+        return manos
+
+    def get_eventos(self, obj):
+        cantidad = []
+        participaciones = Participacion.objects.filter(colaborador_id=obj.usuario_id)
+        colaboraciones = Colaboracion.objects.filter(colaborador_id=obj.usuario_id).distinct('necesidad_material__evento')
+        for c in colaboraciones:
+            if c.necesidad_material.evento_id not in cantidad:
+                cantidad.append(c.necesidad_material.evento_id)
+        for p in participaciones:
+            if p.necesidad_voluntario.evento_id not in cantidad:
+                cantidad.append(p.necesidad_voluntario.evento_id)
+        eventos = Evento.objects.filter(id__in = cantidad).count()
+        return eventos    
 
 class VoluntarioProfileSerializer(serializers.ModelSerializer):
     avatar = ImagenSerializer(required=False)   

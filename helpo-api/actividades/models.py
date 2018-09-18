@@ -5,6 +5,9 @@ from users.models import User
 class RubroEvento(models.Model):
     nombre = models.CharField(max_length=100)
 
+    def __str__(self):
+        return self.nombre    
+
 class Ubicacion(models.Model):
     latitud = models.FloatField()
     longitud = models.FloatField()
@@ -42,25 +45,43 @@ class CategoriaRecurso(models.Model):
     nombre = models.CharField(max_length=100)
     icono = models.CharField(max_length=50, null=True)
 
+    def __str__(self):
+        return self.nombre
+
 class Recurso(models.Model):
 
     nombre = models.CharField(max_length=50)
     categoria = models.ForeignKey(CategoriaRecurso, null=False, on_delete=models.PROTECT)
 
+    def __str__(self):
+        return self.nombre
+
 class Necesidad(models.Model):
+
     descripcion = models.CharField(max_length=140, null=True)
     cantidad = models.IntegerField()
     recurso = models.ForeignKey(Recurso, null=False, on_delete=models.PROTECT)
     evento = models.ForeignKey(Evento, related_name='necesidades', null=False, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.evento + '-' + self.recurso
+
 class Funcion(models.Model):
+
     nombre = models.CharField(max_length=50)
 
+    def __str__(self):
+        return self.nombre
+
 class Voluntario(models.Model):
+
     descripcion = models.CharField(max_length=140, null=True)
     cantidad = models.IntegerField()
     funcion = models.ForeignKey(Funcion, null=False, on_delete=models.PROTECT)
-    evento = models.ForeignKey(Evento, related_name='voluntarios', null=False, on_delete=models.CASCADE)
+    evento = models.ForeignKey(Evento, related_name='voluntarios', null=False, on_delete=models.CASCADE)    
+
+    def __str__(self):
+        return self.evento + '-' + self.funcion
 
 class Comentario(models.Model):
     evento = models.ForeignKey(Evento, related_name='comentarios', null=False, on_delete=models.CASCADE)

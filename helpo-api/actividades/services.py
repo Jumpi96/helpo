@@ -214,40 +214,40 @@ def deny_propuesta(propuesta):
         p.vigente = False
         c.save()
 
-def notificar_inicio_evento(evento):
+def notificar_inicio_evento(evento, cron_exec=False):
     colaboradores_id = _get_usuarios(evento)
     organizacion_id = evento.organizacion.id
-    __send_inicio_mail(colaboradores_id, organizacion_id, evento)
-    __send_inicio_push(colaboradores_id, organizacion_id, evento)
+    __send_inicio_mail(colaboradores_id, organizacion_id, evento, cron_exec)
+    __send_inicio_push(colaboradores_id, organizacion_id, evento, cron_exec)
 
 
-def __send_inicio_mail(colaboradores_id, organizacion_id, evento):
+def __send_inicio_mail(colaboradores_id, organizacion_id, evento, cron_exec):
     colaboradores_id.append(organizacion_id)
     subject_utf = u"Helpo: el evento " + evento.nombre + " ha comenzado"
     send_mail_to_id_list(colaboradores_id, subject_utf,
-                         render_inicio_evento_email(evento))
+                         render_inicio_evento_email(evento), thread_daemon=not cron_exec)
 
 
-def __send_inicio_push(colaboradores_id, organizacion_id, evento):
+def __send_inicio_push(colaboradores_id, organizacion_id, evento, cron_exec):
     colaboradores_id.append(organizacion_id)
     en_msg = "The event " + evento.nombre + " has started"
     es_msg = "El evento " + evento.nombre + " ha comenzado"
     send_push_notification_to_id_list(
-        colaboradores_id, "Event started", "Inicio de Evento", en_msg, es_msg)
+        colaboradores_id, "Event started", "Inicio de Evento", en_msg, es_msg, thread_daemon=not cron_exec)
 
 
-def notificar_fin_evento(evento):
+def notificar_fin_evento(evento, cron_exec=False):
     colaboradores_id = _get_usuarios(evento)
     organizacion_id = evento.organizacion.id
-    __send_fin_mail(colaboradores_id, organizacion_id, evento)
-    __send_fin_push(colaboradores_id, organizacion_id, evento)
+    __send_fin_mail(colaboradores_id, organizacion_id, evento, cron_exec)
+    __send_fin_push(colaboradores_id, organizacion_id, evento, cron_exec)
 
 
 def __send_fin_mail(colaboradores_id, organizacion_id, evento):
     colaboradores_id.append(organizacion_id)
     subject_utf = u"Helpo: el evento " + evento.nombre + " ha finalizado"
     send_mail_to_id_list(colaboradores_id, subject_utf,
-                         render_fin_evento_email(evento))
+                         render_fin_evento_email(evento), thread_daemon=not cron_exec)
 
 
 def __send_fin_push(colaboradores_id, organizacion_id, evento):
@@ -255,4 +255,4 @@ def __send_fin_push(colaboradores_id, organizacion_id, evento):
     en_msg = "The event " + evento.nombre + " has finished"
     es_msg = "El evento " + evento.nombre + " ha finalizado"
     send_push_notification_to_id_list(
-        colaboradores_id, "Event finished", "Evento finalizado", en_msg, es_msg)
+        colaboradores_id, "Event finished", "Evento finalizado", en_msg, es_msg, thread_daemon=not cron_exec)

@@ -41,28 +41,28 @@ class ConsultarPerfilVoluntario extends Component {
 
   renderSexo() {
     if (this.props.data.sexo == null) {
-      return <p class='text-muted'> No hay valor ingresado</p>
+      return <p className='text-muted'> No hay valor ingresado</p>
     }
     return <p> {this.props.data.sexo}</p>      
   }
 
   renderApellido() {
     if (this.props.data.apellido == null) {
-      return <p class='text-muted'> No hay valor ingresado</p>
+      return <p className='text-muted'> No hay valor ingresado</p>
     }
     return <p> {this.props.data.apellido}</p>      
   }
 
   renderGustos() {
     if (this.props.data.gustos == null) {
-      return <p class='text-muted'> No hay valor ingresado</p>
+      return <p className='text-muted'> No hay valor ingresado</p>
     }
     return <p> {this.props.data.gustos}</p>      
   }
 
   renderHabilidades() {
     if (this.props.data.habilidades == null) {
-      return <p class='text-muted'> No hay valor ingresado</p>
+      return <p className='text-muted'> No hay valor ingresado</p>
     }
     return <p> {this.props.data.habilidades}</p>      
   }
@@ -70,21 +70,21 @@ class ConsultarPerfilVoluntario extends Component {
   renderTelefono() {
     //Si uso == va a dar True para null y undefined
     if (this.props.data.telefono == null) {
-      return <p class='text-muted'> No hay valor ingresado</p>
+      return <p className='text-muted'> No hay valor ingresado</p>
     }
     return <p> {this.props.data.telefono}</p>      
   }
 
   renderDni() {
     if (this.props.data.dni == null) {
-      return <p class='text-muted'> No hay valor ingresado</p>
+      return <p className='text-muted'> No hay valor ingresado</p>
     }
     return <p> {this.props.data.dni}</p>      
   }
 
   renderDescripcion() {
     if (this.props.data.descripcion == null) {
-      return <p class='text-muted'> No hay valor ingresado</p>
+      return <p className='text-muted'> No hay valor ingresado</p>
     }
     return <p> {this.props.data.descripcion}</p>      
   }  

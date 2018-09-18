@@ -9,6 +9,7 @@ import { StartupTypes } from '../Redux/StartupRedux'
 import { GithubTypes } from '../Redux/GithubRedux'
 import { ConsultarColabsTypes } from '../Redux/ConsultarColabsRedux'
 import { AlbumEventoTypes } from '../Redux/AlbumEventoRedux'
+import { SuscripcionesTypes } from '../Redux/SuscripcionesRedux'
 
 /* ------------- Sagas ------------- */
 
@@ -16,6 +17,7 @@ import { startup } from './StartupSagas'
 import { getUserAvatar } from './GithubSagas'
 import { getConsultarColabs, updateColaboracion, updateParticipacion } from './ConsultarColabsSagas'
 import { fetchImagenesAlbumEvento, uploadImagenAlbumEvento, deleteImagenAlbumEvento } from './AlbumEventoSagas'
+import { fetchSuscripciones, createSuscripcion, deleteSuscripcion } from './SuscripcionesSagas'
 
 /* ------------- API ------------- */
 
@@ -38,6 +40,9 @@ export default function * root () {
     takeLatest(ConsultarColabsTypes.CONSULTAR_COLABS_CHANGE_PAR, updateParticipacion),
     takeLatest(AlbumEventoTypes.ALBUM_FETCH_IMAGENES, fetchImagenesAlbumEvento),
     takeLatest(AlbumEventoTypes.ALBUM_UPLOAD_IMAGE, uploadImagenAlbumEvento),
-    takeLatest(AlbumEventoTypes.ALBUM_REMOVE_IMAGE, deleteImagenAlbumEvento)
+    takeLatest(AlbumEventoTypes.ALBUM_REMOVE_IMAGE, deleteImagenAlbumEvento),
+    takeLatest(SuscripcionesTypes.SUSCRIPCIONES_FETCH, fetchSuscripciones),
+    takeLatest(SuscripcionesTypes.SUSCRIPCIONES_CREATE, createSuscripcion),
+    takeLatest(SuscripcionesTypes.SUSCRIPCIONES_DELETE, deleteSuscripcion),
   ])
 }

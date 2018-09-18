@@ -39,7 +39,7 @@ class ModalImagen extends React.Component {
       ? <p style={{ color: 'white'}}>
           Si realmente desea remover la imagen presione nuevamente el boton
         </p> 
-      : undefined}
+      : null}
     </div>
     )
 
@@ -50,7 +50,7 @@ class ModalImagen extends React.Component {
         onClosed={() => this.setState({ borrando: false })}>     
         <div style={{ backgroundColor: 'black' }} >   
           {/* Si es el owner del album habilito para remover la imagen */}
-          {this.props.isOwner ? imageRemove : undefined}
+          {this.props.isOwner ? imageRemove : null}
           <img
             src={this.props.url}
             alt='Foto'

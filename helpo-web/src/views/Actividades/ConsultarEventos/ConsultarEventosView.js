@@ -120,7 +120,7 @@ class ConsultarEventosView extends React.Component {
       }
       if (evento.contacto.length > 0) {
         listaContactos = evento.contacto.map((contacto) =>
-          <li class="col-md-6 list-group-item">{contacto.nombre} - {contacto.email} - {contacto.telefono}</li>
+          <li className="col-md-6 list-group-item">{contacto.nombre} - {contacto.email} - {contacto.telefono}</li>
         );
       }
       return (
@@ -176,7 +176,7 @@ class ConsultarEventosView extends React.Component {
                     <b name="contactos" className="float-right">Contactos</b>
                   </div>
                   <div className="form-group col-md-9">
-                    <ul class="list-group">{listaContactos}</ul>
+                    <ul className="list-group">{listaContactos}</ul>
                   </div>
                 </div>
               ) : undefined

@@ -79,6 +79,11 @@ const itemsVol = [
 		'name': 'Mis colaboraciones'
 	},
 	{
+		'key': 'MisSuscripciones',
+		'routeName': 'MisSuscripciones',
+		'name': 'Mis Suscripciones'
+	},
+	{
 		'key': 'Configuracion',
 		'routeName': 'Configuracion',
 		'name': 'Configuración'

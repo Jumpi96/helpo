@@ -118,11 +118,21 @@ LOGGING = {
             'class': 'logging.FileHandler',
             'filename': str(os.path.abspath(os.path.dirname(sys.argv[0]))) + '/logs/debug.log',
         },
+        'file_warning': {
+            'level': 'WARNING',
+            'class': 'logging.FileHandler',
+            'filename': str(os.path.abspath(os.path.dirname(sys.argv[0]))) + '/logs/warning.log',
+        },
     },
     'loggers': {
         'django': {
             'handlers': ['console', 'file'],
             'level': 'DEBUG',
+            'propagate': True,
+        },
+        'django_warning': {
+            'handlers': ['file_warning'],
+            'level': 'WARNING',
             'propagate': True,
         },
     },

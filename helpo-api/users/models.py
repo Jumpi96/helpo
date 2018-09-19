@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from decouple import config
 from hashlib import sha256
+from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from common.models import IndexedTimeStampedModel
@@ -75,7 +76,7 @@ class UserManager(BaseUserManager):
         bash = uncutbash[22:36]
         self.create_user_verification(user, bash)
 
-        mail_from = "registro@helpo.com.ar"
+        mail_from = settings.REGISTER_EMAIL
         subject = "Verifique su registro en Helpo"
         url_confirmation = '%s/#/confirmMail/%s' % (config('URL_CLIENT', default='localhost:3000'), bash)
         from common.templates import render_verify_email

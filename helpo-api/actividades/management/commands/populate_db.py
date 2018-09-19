@@ -140,6 +140,40 @@ class Command(BaseCommand):
                     print('- recursos_alimento_{0}: {1}, Created: {2}'.format(
                         str(i), str(obj.nombre), str(created)))
 
+        def __set_recursos_calzado():
+            path = os.path.dirname(__file__) + "/recursos_calzado.csv"
+            with open(path) as f:
+                reader = csv.reader(f)
+                i = 0
+                calzado, created = CategoriaRecurso.objects.get_or_create(
+                    nombre="Calzado")
+                for row in reader:
+                    obj, created = Recurso.objects.get_or_create(
+                        nombre=row[0],
+                        categoria=calzado
+                        # aca se podria agregar icono
+                    )
+                    i += 1
+                    print('- recursos_calzado_{0}: {1}, Created: {2}'.format(
+                        str(i), str(obj.nombre), str(created)))
+
+        def __set_recursos_juguete():
+            path = os.path.dirname(__file__) + "/recursos_juguete.csv"
+            with open(path) as f:
+                reader = csv.reader(f)
+                i = 0
+                juguetes, created = CategoriaRecurso.objects.get_or_create(
+                    nombre="Juguetes")
+                for row in reader:
+                    obj, created = Recurso.objects.get_or_create(
+                        nombre=row[0],
+                        categoria=juguetes
+                        # aca se podria agregar icono
+                    )
+                    i += 1
+                    print('- recursos_juguetes_{0}: {1}, Created: {2}'.format(
+                        str(i), str(obj.nombre), str(created)))
+
         print('Populating Database...')
         print('----------------------\n')
 
@@ -164,14 +198,22 @@ class Command(BaseCommand):
         __set_funciones_voluntario()
         print('----------------------\n')
 
-        print('Setting Categorias Recurso')
-        __set_categorias_recurso()
+        print('Setting Recursos Alimento')
+        __set_recursos_alimento()
+        print('----------------------\n')
+
+        print('Setting Recursos Calzado')
+        __set_recursos_calzado()
+        print('----------------------\n')
+
+        print('Setting Recursos Juguete')
+        __set_recursos_juguete()
         print('----------------------\n')
 
         print('Setting Recursos Ropa')
         __set_recursos_ropa()
         print('----------------------\n')
 
-        print('Setting Recursos Alimento')
-        __set_recursos_alimento()
+        print('Setting Categorias Recurso')
+        __set_categorias_recurso()
         print('----------------------\n')

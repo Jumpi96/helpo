@@ -3,7 +3,7 @@ import csv
 from django.core.management.base import BaseCommand, CommandError
 from decouple import config
 from actividades.models import RubroEvento, Funcion, CategoriaRecurso, Recurso
-from users.models import AppValues, Imagen, RubroOrganizacion, RubroEmpresa
+from users.models import AppValues, Imagen, RubroOrganizacion, RubroEmpresa, User, UserManager
 
 
 class Command(BaseCommand):
@@ -12,20 +12,31 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
+        def __set_super_user():
+            if not User.objects.filter(email='helpoweb@gmail.com').exists():
+                created = User.objects.create_superuser(
+                    email="helpoweb@gmail.com",
+                    nombre="Helpo",
+                    password=config('SECRET_KEY'),
+                    user_type=1
+                )
+                print('- superuser: helpoweb@gmail.com, Created: {0}'.format(
+                    str(created)))
+
         def __set_images():
             if not AppValues.objects.filter(key='imgurRefreshToken').exists():
                 imgur_refresh_token, created = AppValues.objects.get_or_create(
                     key='imgurRefreshToken',
                     value=config('IMGUR_REFRESH_TOKEN')
                 )
-                print('- imgurRefreshToken: {0}, Created: {1}'.format(
-                    str(imgur_refresh_token.value), str(created)))
+                print('- imgurRefreshToken: FROM ENV, Created: {0}'.format(
+                    str(created)))
                 imgur_access_token, created = AppValues.objects.get_or_create(
                     key='imgurAccessToken',
                     value=config('IMGUR_ACCESS_TOKEN')
                 )
-                print('- imgurAccessToken: {0}, Created: {1}'.format(
-                    str(imgur_access_token.value), str(created)))
+                print('- imgurAccessToken: FROM ENV, Created: {0}'.format(
+                    str(created)))
                 imgur_default_image, created = Imagen.objects.get_or_create(
                     isExternal=True,
                     url='https://i.imgur.com/cXItNWF.png'
@@ -114,6 +125,10 @@ class Command(BaseCommand):
                             str(categoria.nombre), str(j), str(recurso.nombre), str(created)))
 
         print('Populating Database...')
+        print('----------------------\n')
+
+        print('Setting Superuser')
+        __set_super_user()
         print('----------------------\n')
 
         print('Setting Images Prerequisites')

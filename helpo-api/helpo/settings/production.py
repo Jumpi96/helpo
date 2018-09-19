@@ -1,3 +1,5 @@
+import os
+import sys
 from decouple import Csv, config
 from .base import *  # noqa
 
@@ -19,7 +21,7 @@ DATABASES = {
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 
 STATIC_ROOT = base_dir_join('staticfiles')
-STATIC_URL = '/static/'
+STATIC_URL = '/staticfiles/'
 
 MEDIA_ROOT = base_dir_join('mediafiles')
 MEDIA_URL = '/media/'
@@ -111,17 +113,19 @@ LOGGING = {
             'class': 'logging.StreamHandler',
             'formatter': 'standard',
         },
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': str(os.path.abspath(os.path.dirname(sys.argv[0]))) + '/logs/debug.log',
+        },
     },
     'loggers': {
-        '': {
-            'handlers': ['console'],
-            'level': 'INFO'
+        'django': {
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+            'propagate': True,
         },
-        'celery': {
-            'handlers': ['console'],
-            'level': 'INFO'
-        }
-    }
+    },
 }
 
 JS_REVERSE_JS_MINIFY = False

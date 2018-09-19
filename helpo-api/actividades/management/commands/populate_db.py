@@ -97,81 +97,21 @@ class Command(BaseCommand):
                 reader = csv.reader(f)
                 i = 0
                 for row in reader:
-                    obj, created = CategoriaRecurso.objects.get_or_create(
+                    categoria, created = CategoriaRecurso.objects.get_or_create(
                         nombre=row[0],
                         # aca se podria agregar icono
                     )
                     i += 1
                     print('- categoria_recurso_{0}: {1}, Created: {2}'.format(
-                        str(i), str(obj.nombre), str(created)))
-
-        def __set_recursos_ropa():
-            path = os.path.dirname(__file__) + "/recursos_ropa.csv"
-            with open(path) as f:
-                reader = csv.reader(f)
-                i = 0
-                ropa, created = CategoriaRecurso.objects.get_or_create(
-                    nombre="Ropa")
-                for row in reader:
-                    obj, created = Recurso.objects.get_or_create(
-                        nombre=row[0],
-                        categoria=ropa
-                        # aca se podria agregar icono
-                    )
-                    i += 1
-                    print('- recursos_ropa_{0}: {1}, Created: {2}'.format(
-                        str(i), str(obj.nombre), str(created)))
-
-        def __set_recursos_alimento():
-            path = os.path.dirname(__file__) + "/recursos_alimento.csv"
-            with open(path) as f:
-                reader = csv.reader(f)
-                i = 0
-                alimento, created = CategoriaRecurso.objects.get_or_create(
-                    nombre="Alimento")
-                for row in reader:
-                    obj, created = Recurso.objects.get_or_create(
-                        nombre=row[0],
-                        categoria=alimento
-                        # aca se podria agregar icono
-                    )
-                    i += 1
-                    print('- recursos_alimento_{0}: {1}, Created: {2}'.format(
-                        str(i), str(obj.nombre), str(created)))
-
-        def __set_recursos_calzado():
-            path = os.path.dirname(__file__) + "/recursos_calzado.csv"
-            with open(path) as f:
-                reader = csv.reader(f)
-                i = 0
-                calzado, created = CategoriaRecurso.objects.get_or_create(
-                    nombre="Calzado")
-                for row in reader:
-                    obj, created = Recurso.objects.get_or_create(
-                        nombre=row[0],
-                        categoria=calzado
-                        # aca se podria agregar icono
-                    )
-                    i += 1
-                    print('- recursos_calzado_{0}: {1}, Created: {2}'.format(
-                        str(i), str(obj.nombre), str(created)))
-
-        def __set_recursos_juguete():
-            path = os.path.dirname(__file__) + "/recursos_juguete.csv"
-            with open(path) as f:
-                reader = csv.reader(f)
-                i = 0
-                juguetes, created = CategoriaRecurso.objects.get_or_create(
-                    nombre="Juguetes")
-                for row in reader:
-                    obj, created = Recurso.objects.get_or_create(
-                        nombre=row[0],
-                        categoria=juguetes
-                        # aca se podria agregar icono
-                    )
-                    i += 1
-                    print('- recursos_juguetes_{0}: {1}, Created: {2}'.format(
-                        str(i), str(obj.nombre), str(created)))
+                        str(i), str(categoria.nombre), str(created)))
+                    for j in range(1, len(row)-1):
+                        recurso, created = Recurso.objects.get_or_create(
+                            nombre=row[j],
+                            categoria=categoria
+                            # aca se podria agregar icono
+                        )
+                        print('- recursos_{0}_{1}: {2}, Created: {3}'.format(
+                            str(categoria.nombre), str(j), str(recurso.nombre), str(created)))
 
         print('Populating Database...')
         print('----------------------\n')
@@ -194,22 +134,6 @@ class Command(BaseCommand):
 
         print('Setting Funciones Voluntario')
         __set_funciones_voluntario()
-        print('----------------------\n')
-
-        print('Setting Recursos Alimento')
-        __set_recursos_alimento()
-        print('----------------------\n')
-
-        print('Setting Recursos Calzado')
-        __set_recursos_calzado()
-        print('----------------------\n')
-
-        print('Setting Recursos Juguete')
-        __set_recursos_juguete()
-        print('----------------------\n')
-
-        print('Setting Recursos Ropa')
-        __set_recursos_ropa()
         print('----------------------\n')
 
         print('Setting Categorias Recurso')

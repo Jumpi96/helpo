@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import authenticate
-from users.models import User, RubroOrganizacion, OrganizacionProfile, Ubicacion, Imagen, VoluntarioProfile, EmpresaProfile, UserVerification, AppValues, DeviceID, Suscripcion
+from users.models import User, RubroOrganizacion, RubroEmpresa, OrganizacionProfile, Ubicacion, Imagen, VoluntarioProfile, EmpresaProfile, UserVerification, AppValues, DeviceID, Suscripcion
 from actividades.models import Participacion, Evento, Colaboracion
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -62,6 +62,11 @@ class UbicacionSerializer(serializers.ModelSerializer):
 class RubroOrganizacionSerializer(serializers.ModelSerializer):
     class Meta:
         model = RubroOrganizacion
+        fields = ('id', 'nombre')
+
+class RubroEmpresaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RubroEmpresa
         fields = ('id', 'nombre')
 
 class ImagenSerializer(serializers.ModelSerializer):
@@ -140,7 +145,7 @@ class OrganizacionProfileSerializer(serializers.ModelSerializer):
         return eventos
 
 class EmpresaProfileSerializer(serializers.ModelSerializer):
-    rubro = RubroOrganizacionSerializer(required=False)
+    rubro = RubroEmpresaSerializer(required=False)
     ubicacion = UbicacionSerializer(required=False)
     avatar = ImagenSerializer(required=False)    
     usuario = UserSerializer(read_only=True)
@@ -176,7 +181,7 @@ class EmpresaProfileSerializer(serializers.ModelSerializer):
         instance.descripcion = validated_data.get('descripcion', instance.descripcion) 
 
         if rubro_data != None:
-            nuevoRubro = RubroOrganizacion.objects.get(nombre=rubro_data["nombre"])
+            nuevoRubro = RubroEmpresa.objects.get(nombre=rubro_data["nombre"])
             instance.rubro = nuevoRubro       
         
         if ubicacion_data != None:

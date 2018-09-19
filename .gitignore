@@ -67,3 +67,6 @@ pgadmin/*
 
 # SSL Certs
 certs/
+
+# Logging
+logs/

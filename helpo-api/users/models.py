@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from decouple import config
 from hashlib import sha256
+from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from common.models import IndexedTimeStampedModel
@@ -20,6 +21,9 @@ class RubroOrganizacion(models.Model):
     # TODO: Ver como arreglar eso, por ahora workaround -> Sacar Unique=True
     nombre = models.CharField(max_length=100)
 
+class RubroEmpresa(models.Model):
+    nombre = models.CharField(max_length=100)
+
 class Ubicacion(models.Model):
     latitud = models.FloatField()
     longitud = models.FloatField()
@@ -37,7 +41,7 @@ class OrganizacionProfile(Profile):
 class EmpresaProfile(Profile):
     telefono = models.BigIntegerField(null=True)
     cuit = models.BigIntegerField(blank=True, null=True)
-    rubro = models.ForeignKey(RubroOrganizacion, on_delete=models.SET_NULL, blank=True, null=True)
+    rubro = models.ForeignKey(RubroEmpresa, on_delete=models.SET_NULL, blank=True, null=True)
     avatar = models.ForeignKey(Imagen, on_delete=models.SET_NULL, blank=True, null=True)
     ubicacion = models.ForeignKey(Ubicacion, on_delete=models.SET_NULL,blank=True, null=True)
     descripcion = models.TextField(blank=True, null=True)
@@ -75,7 +79,7 @@ class UserManager(BaseUserManager):
         bash = uncutbash[22:36]
         self.create_user_verification(user, bash)
 
-        mail_from = "registro@helpo.com.ar"
+        mail_from = settings.REGISTER_EMAIL
         subject = "Verifique su registro en Helpo"
         url_confirmation = '%s/#/confirmMail/%s' % (config('URL_CLIENT', default='localhost:3000'), bash)
         from common.templates import render_verify_email

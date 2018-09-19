@@ -10,8 +10,8 @@ from rest_framework.generics import CreateAPIView
 from rest_framework.generics import RetrieveUpdateDestroyAPIView, RetrieveUpdateAPIView
 from knox.models import AuthToken
 from django.contrib.auth import get_user_model
-from users.models import RubroOrganizacion, OrganizacionProfile, VoluntarioProfile, EmpresaProfile, AppValues, User, DeviceID, Suscripcion
-from users.serializers import CreateUserSerializer, UserSerializer, LoginUserSerializer, RubroOrganizacionSerializer, OrganizacionProfileSerializer, VoluntarioProfileSerializer, EmpresaProfileSerializer, VerificationMailSerializer, AppValuesSerializer, DeviceIDSerializer, SuscripcionSerializer, SuscripcionSerializerLista
+from users.models import RubroOrganizacion, RubroEmpresa, OrganizacionProfile, VoluntarioProfile, EmpresaProfile, AppValues, User, DeviceID, Suscripcion
+from users.serializers import CreateUserSerializer, UserSerializer, LoginUserSerializer, RubroOrganizacionSerializer, RubroEmpresaSerializer, OrganizacionProfileSerializer, VoluntarioProfileSerializer, EmpresaProfileSerializer, VerificationMailSerializer, AppValuesSerializer, DeviceIDSerializer, SuscripcionSerializer, SuscripcionSerializerLista
 import time
 import requests
 
@@ -68,6 +68,21 @@ class RubroOrganizacionReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     """
     queryset = RubroOrganizacion.objects.all()
     serializer_class = RubroOrganizacionSerializer
+    lookup_field = 'id'
+
+class RubroEmpresaCreateReadView(ListCreateAPIView):
+    """
+    API endpoint para crear o ver todos los rubros de empresa
+    """
+    queryset = RubroEmpresa.objects.all()
+    serializer_class = RubroEmpresaSerializer
+
+class RubroEmpresaReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
+    """
+    API endpoint para leer, actualizar o eliminar un rubro de empresa
+    """
+    queryset = RubroEmpresa.objects.all()
+    serializer_class = RubroEmpresaSerializer
     lookup_field = 'id'
 
 class OrgProfileCreateReadView(ListCreateAPIView):

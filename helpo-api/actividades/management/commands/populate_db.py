@@ -3,8 +3,7 @@ import csv
 from django.core.management.base import BaseCommand, CommandError
 from decouple import config
 from actividades.models import RubroEvento, Funcion, CategoriaRecurso, Recurso
-from users.models import AppValues, Imagen, RubroOrganizacion
-#from users.models import RubroEmpresa
+from users.models import AppValues, Imagen, RubroOrganizacion, RubroEmpresa
 
 
 class Command(BaseCommand):
@@ -190,8 +189,7 @@ class Command(BaseCommand):
         print('----------------------\n')
 
         print('Setting Rubros Empresa')
-        # uncomment this and import when future issue is implemented
-        # __set_rubros_ong()
+        __set_rubros_empresa()
         print('----------------------\n')
 
         print('Setting Funciones Voluntario')

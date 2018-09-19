@@ -21,6 +21,9 @@ class RubroOrganizacion(models.Model):
     # TODO: Ver como arreglar eso, por ahora workaround -> Sacar Unique=True
     nombre = models.CharField(max_length=100)
 
+class RubroEmpresa(models.Model):
+    nombre = models.CharField(max_length=100)
+
 class Ubicacion(models.Model):
     latitud = models.FloatField()
     longitud = models.FloatField()
@@ -38,7 +41,7 @@ class OrganizacionProfile(Profile):
 class EmpresaProfile(Profile):
     telefono = models.BigIntegerField(null=True)
     cuit = models.BigIntegerField(blank=True, null=True)
-    rubro = models.ForeignKey(RubroOrganizacion, on_delete=models.SET_NULL, blank=True, null=True)
+    rubro = models.ForeignKey(RubroEmpresa, on_delete=models.SET_NULL, blank=True, null=True)
     avatar = models.ForeignKey(Imagen, on_delete=models.SET_NULL, blank=True, null=True)
     ubicacion = models.ForeignKey(Ubicacion, on_delete=models.SET_NULL,blank=True, null=True)
     descripcion = models.TextField(blank=True, null=True)

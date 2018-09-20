@@ -25,9 +25,6 @@ class RegistrarOfrecimiento extends React.Component {
     super(props);
     const { params } = this.props.navigation.state;
     const evento = params.evento;
-    if (this.empresaTienePedido(parametro)) {
-      this.props.navigation.navigate('LaunchScreen');
-    }
     this.state = {
       evento: {id: evento},
       necesidades: [],
@@ -44,6 +41,9 @@ class RegistrarOfrecimiento extends React.Component {
     api.get('/actividades/consulta_necesidades/' + this.state.evento.id + '/')
       .then(res => {
         const necesidadesData = res.data;
+        if (this.empresaTienePropuesta(this.state.evento.id, necesidadesData.propuestas)) {
+          this.props.history.push({ pathname: '/dashboard' });
+        }
         this.setState({
           necesidades: necesidadesData.necesidades,
           voluntarios: necesidadesData.voluntarios,
@@ -56,17 +56,11 @@ class RegistrarOfrecimiento extends React.Component {
       })
   }
 
-  empresaTienePedido(evento) {
-    api.get('/actividades/pedidos/')
-      .then(res => {
-        const pedidos = res.data;
-        return pedidos.filter(n => n.evento_id === evento && n.aceptado !== 0).length > 0;
-      })
-      .catch((error) => {
-        if (error.response){ console.log(error.response.status) }
-        else { console.log('Error: ', error.message)}
-      })
-    return false;
+  empresaTienePropuesta(evento, propuestas) {
+    const filtro = propuestas.filter(
+      n => n.evento.toString() === evento && n.aceptado !== 0 && n.empresa.id === this.getUserId()
+    )
+    return filtro.length > 0;
   }
 
   getNecesidadVoluntario(necesidades) {
@@ -245,6 +239,11 @@ class RegistrarOfrecimiento extends React.Component {
     return necesidad.colaboraciones.filter(c => c.colaborador.id === this.getUserId())[0].id;
   }
 
+  getParticipacionAnterior(voluntarioId) {
+    const voluntario = this.state.voluntarios.filter(n => n.id === voluntarioId)[0];
+    return voluntario.participaciones.filter(c => c.colaborador.id === this.getUserId())[0].id;
+  }
+
   deleteColaboracion(idNecesidad) {
     const colaboracionAnterior = this.getColaboracionAnterior(idNecesidad);
     api.delete('/actividades/colaboraciones/' + colaboracionAnterior + '/')
@@ -273,8 +272,24 @@ class RegistrarOfrecimiento extends React.Component {
       this.setState({ necesidadModificada: undefined });
       this.props.navigation.navigate('AgregarOfrecimiento', { colaboracion: participacion });
     } else if (button.text === 'Eliminar') {
-      this.deleteParticipacion();
+      this.deleteParticipacion(this.state.necesidadModificada);
       this.setState({ necesidadModificada: undefined });
+    } else if (button.text === 'Modificar') {
+      const voluntario = this.state.voluntarios.filter(v => v.id === this.state.necesidadModificada)[0];
+      const participacionAnterior = voluntario.participaciones.filter(c => c.colaborador.id === this.getUserId())[0];
+      const participacion = {
+        id: this.state.necesidadModificada,
+        colaboracion_anterior: participacionAnterior.id,
+        cantidad_anterior: participacionAnterior.cantidad,
+        cantidad: participacionAnterior.cantidad,
+        cantidad_restante: this.getCantidadRestante(voluntario, participacionAnterior.cantidad),
+        funcion: voluntario.funcion,
+        descripcion: voluntario.descripcion,
+        comentarios: participacionAnterior.comentario,
+        evento: this.state.evento.id,
+      };
+      this.setState({ necesidadModificada: undefined });
+      this.props.navigation.navigate('AgregarOfrecimiento', { colaboracion: participacion });
     }
   }
 
@@ -283,14 +298,14 @@ class RegistrarOfrecimiento extends React.Component {
     if (!necesidad.funcion) {
       necesidad.colaboraciones.forEach((c) => { contador += c.cantidad; });
     } else {
-      contador = necesidad.participaciones.length;
+      necesidad.participaciones.forEach((c) => { contador += c.cantidad });
     }
     return necesidad.cantidad - contador + aportado;
   }
 
-  deleteParticipacion() {
-    const participacionAEliminar = this.getIdParticipacionVoluntario();
-    api.delete('/actividades/participaciones/' + participacionAEliminar + '/')
+  deleteParticipacion(voluntario_id) {
+    const participacionAnterior = this.getParticipacionAnterior(voluntario_id);
+    api.delete('/actividades/participaciones/' + participacionAnterior + '/')
       .then(() => {
         this.loadNecesidadesYVoluntarios();
       }).catch(function (error) {

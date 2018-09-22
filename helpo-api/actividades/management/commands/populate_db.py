@@ -127,12 +127,12 @@ class Command(BaseCommand):
         print('Populating Database...')
         print('----------------------\n')
 
-        print('Setting Superuser')
-        __set_super_user()
-        print('----------------------\n')
-
         print('Setting Images Prerequisites')
         __set_images()
+        print('----------------------\n')
+
+        print('Setting Superuser')
+        __set_super_user()
         print('----------------------\n')
 
         print('Setting Rubros Evento')

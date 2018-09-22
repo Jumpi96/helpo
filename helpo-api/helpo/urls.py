@@ -9,7 +9,7 @@ from rest_framework_swagger.views import get_swagger_view
 
 schema_view = get_swagger_view(title='Helpo API')
 
-urlpatterns = [ 
+urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'auth/', include('knox.urls'))
 ]
@@ -22,5 +22,4 @@ if settings.DEBUG:
     urlpatterns = [
         url(r'^__debug__/', include(debug_toolbar.urls)),
     ] + urlpatterns
-
-urlpatterns += [ url(r'^docs/', schema_view) ]
+    urlpatterns += [url(r'^docs/', schema_view)]

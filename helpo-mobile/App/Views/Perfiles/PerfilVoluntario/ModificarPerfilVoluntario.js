@@ -237,11 +237,6 @@ class ModificarPerfilVoluntario extends Component {
                 value={this.state.habilidades}
               />
             </Item>
-
-            <Button transparent onPress={this.handleSubmit}>
-            <Text>Guardar</Text>
-            </Button>
-
           </Form>
         </Content>
       </Container>

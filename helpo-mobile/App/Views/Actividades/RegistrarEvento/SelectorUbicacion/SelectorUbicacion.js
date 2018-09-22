@@ -6,7 +6,7 @@ import {
   Input,
   Content
 } from "native-base";
-import RNGooglePlacePicker from "react-native-google-place-picker";
+//import RNGooglePlacePicker from "react-native-google-place-picker";
 
 class SelectorUbicacion extends React.Component {
   constructor(props){

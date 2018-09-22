@@ -1,195 +1,120 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types'
-import { Card, CardHeader, Button } from 'reactstrap';
 import {
   Container,
   Header,
   Title,
   Content,
   Button,
-  Item,
   Label,
-  Input,
+  ListItem,
   Body,
   Left,
   Right,
   Icon,
-  Form,
+  Thumbnail,
   Text,
+  Separator,
 } from 'native-base';
-import {Gmaps, Marker} from 'react-gmaps';
-import { getImagen } from '../../../Lib/Imagen'
-//https://github.com/MicheleBertoli/react-gmaps
+import styles from './styles';
+import { getImagen } from '../../../Lib/Imagen';
 
-const perfilPropTypes = {
-  nombre: PropTypes.string.isRequired,
-  email: PropTypes.string.isRequired,
-  data: PropTypes.shape({
-    verificada: PropTypes.bool,
-    telefono: PropTypes.number,
-    cuit: PropTypes.number,
-    descripcion: PropTypes.string,
-    rubro: PropTypes.shape({
-      id: PropTypes.number,
-      nombre: PropTypes.string,
-    }),
-    avatar: PropTypes.shape({
-      id: PropTypes.number,
-      url: PropTypes.string,
-    }),
-    ubicacion: PropTypes.shape({
-      latitud: PropTypes.number,
-      longitud: PropTypes.number,
-      notas: PropTypes.string,
-    }),
-  }),
-  switchToModificar: PropTypes.func.isRequired,
-}
 
 class ConsultarPerfilOrganizacion extends Component {
   constructor(props) {
     super(props); 
-    this.mostrarUbicacion = this.mostrarUbicacion.bind(this);
-    this.renderCuit = this.renderCuit.bind(this);
-    this.renderDescripcion = this.renderDescripcion.bind(this);
+    this.renderDescripcion = this.renderDescripcion.bind(this);    
     this.renderRubro = this.renderRubro.bind(this);
-    this.renderTelefono = this.renderTelefono.bind(this);
-    this.getLinkVerEventos = this.getLinkVerEventos.bind(this);
+    this.renderTelefono = this.renderTelefono.bind(this);    
+    this.renderDescripcion = this.renderDescripcion.bind(this);
+    this.renderCuit = this.renderCuit.bind(this);
+  }
+
+  renderRubro() {
+    if (this.props.data.rubro == null) {
+      return <Text class='text-muted'> No hay valor ingresado</Text>
+    }
+    return <Text> {this.props.data.rubro}</Text>      
   }
 
   renderTelefono() {
     //Si uso == va a dar True para null y undefined
     if (this.props.data.telefono == null) {
-      return <p class='text-muted'> No hay valor ingresado</p>
+      return <Text class='text-muted'> No hay valor ingresado</Text>
     }
-    return <p> {this.props.data.telefono}</p>      
+    return <Text> {this.props.data.telefono}</Text>      
   }
 
   renderCuit() {
     if (this.props.data.cuit == null) {
-      return <p class='text-muted'> No hay valor ingresado</p>
+      return <Text class='text-muted'> No hay valor ingresado</Text>
     }
-    return <p> {this.props.data.cuit}</p>      
-  }
-
-  renderRubro() {
-    if (this.props.data.rubro == null) {
-      return <p class='text-muted'> No hay valor ingresado</p>
-    }
-    return <p> {this.props.data.rubro.nombre}</p>      
+    return <Text> {this.props.data.cuit}</Text>      
   }
 
   renderDescripcion() {
     if (this.props.data.descripcion == null) {
-      return <p class='text-muted'> No hay valor ingresado</p>
+      return <Text class='text-muted'> No hay valor ingresado</Text>
     }
-    return <p> {this.props.data.descripcion}</p>      
-  }
-
-  mostrarUbicacion() {
-    if(this.props.data.ubicacion == null || (this.props.data.ubicacion.latitud === 0 && this.props.data.ubicacion.longitud === 0)){
-    }
-    else{
-      const params = {v: '3.exp', key: process.env.GOOGLE_API_KEY}
-      return (      
-        <div class='row' style={{ marginBottom: '20px'}} >   
-        <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center'}} class='col-2'>
-        <p style={{ textAlign: 'right'}} class='font-weight-bold' htmlFor="descripcion">Ubicación</p>
-        </div>
-
-        <div class='col-6'>
-        <Gmaps
-          width={'300px'}
-          height={'300px'}
-          lat={this.props.data.ubicacion.latitud}
-          lng={this.props.data.ubicacion.longitud}
-          zoom={12}
-          params={params}>
-          <Marker
-            lat={this.props.data.ubicacion.latitud}
-            lng={this.props.data.ubicacion.longitud}
-          />
-        </Gmaps>
-        
-        <p style={{ marginTop: '10px' }}>{this.props.data.ubicacion.notas}</p>
-        </div>
-      </div>
-       )         
-    }
+    return <Text> {this.props.data.descripcion}</Text>      
   }  
-  
-  getLinkVerEventos() {
-    return '/actividades/consultar-eventos?organizacion=' + this.props.id;
-  }
 
   render() {
-    const link = this.getLinkVerEventos();
-    return (      
-      <Container>
+    return (
+      <Container style={styles.container}>
         <Header>
-          <i className="fa fa-align-justify"></i> Perfil
+          <Left>
+            <Button transparent onPress={this.props.goBack}>
+              <Icon name="arrow-back" />
+            </Button>
+          </Left>
+          <Body>
+            <Title>Perfil</Title>
+          </Body>
+          <Right>
+            <Button transparent onPress={this.props.switchToModificar}> 
+              <Text>Modificar</Text>
+            </Button>
+          </Right>
         </Header>
+        <Content>
+          <Thumbnail large center/>
+          <Separator bordered noTopBorder>
+            <Text>Datos personales</Text>
+          </Separator>
+          <ListItem>
+            <Label style={styles.label}>Nombre</Label>
+            <Text>{this.props.nombre}</Text>
+          </ListItem>          
 
-        <Container>
-        
-          <div style={{ alignItems: 'center' }} class='row'>
-            <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', height: '150px'}} class='col-2'>            
-              <p style={{ textAlign: 'right' }} 
-                class='h4'>{this.props.nombre}</p>
-            </div>
-            <div class='col-6'>
-              <img
-                class='rounded-circle'
-                src={getImagen(this.props.data.avatar.url)}
-                alt="avatar"
-                width="100" 
-                height="100"
-              />
-            </div>
-          </div>
-            
-          <div class='row'>
-              <p style={{ textAlign: 'right' }} class='font-weight-bold col-2' htmlFor="mail">Mail</p>
-              <div class='col-6'><p>{this.props.email}</p></div>
-          </div>
+          <ListItem>
+            <Label style={styles.label}>Mail</Label>
+            <Text>{this.props.email}</Text>
+          </ListItem>
 
-          <div class='row'>
-              <p style={{ textAlign: 'right' }} class='font-weight-bold col-2' htmlFor="telefono">Teléfono</p>
-              <div class='col-6'>{this.renderTelefono()}</div>
-          </div>
+          <ListItem>
+            <Label style={styles.label}>Teléfono</Label>
+            {this.renderTelefono}
+          </ListItem>
 
-          <div class='row'>          
-              <p style={{ textAlign: 'right' }} class='font-weight-bold col-2' htmlFor="cuit">CUIT</p>
-              <div class='col-6'>{this.renderCuit()}</div>
-          </div>
+          <ListItem>
+            <Label style={styles.label}>CUIT</Label>
+            {this.renderCuit}
+          </ListItem>
 
-          <div class='row'>        
-              <p style={{ textAlign: 'right' }} class='font-weight-bold col-2' htmlFor="telefono">Rubro</p>
-              <div class='col-6'>{this.renderRubro()}</div>    
-          </div>                       
+          <ListItem>
+            <Label style={styles.label}>Rubro</Label>
+            {this.renderRubro}
+          </ListItem>
 
-          <div class='row'>          
-            <p style={{ paddingLeft: 0 ,textAlign: 'right' }} class='font-weight-bold col-2' htmlFor="descripcion">Descripción</p> 
-            <div class='col-6'>{this.renderDescripcion()}</div>    
-          </div>             
+          <ListItem>
+            <Label style={styles.label}>Descripción</Label>
+            {this.renderDescripcion}
+          </ListItem>
 
-          {this.mostrarUbicacion()}
-
-          <div style={{ width: '500px', justifyContent: 'center' ,display: 'flex', marginBottom: '10px' }} class='row offster-md-4'>          
-            <Button onClick={this.props.switchToModificar} color='primary'>Modificar Datos</Button>
-          </div>
-          <div style={{ width: '500px', justifyContent: 'center' ,display: 'flex', marginBottom: '10px' }} class='row offster-md-4'>          
-            <Link to={link}>
-              <button className='btn btn-primary'>Ver eventos organizados</button>
-            </Link>
-          </div>
-
-        </Container>      
+        </Content>
       </Container>
     );
   }
 }
-ConsultarPerfilOrganizacion.propTypes = perfilPropTypes;
 
 export default ConsultarPerfilOrganizacion;

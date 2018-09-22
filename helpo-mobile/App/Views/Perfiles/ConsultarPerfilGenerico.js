@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import api from '../../api';
-//import ConsultarPerfilOrganizacion from './PerfilOrganizacion/ConsultarPerfilOrganizacion'
-//import ConsultarPerfilEmpresa from './PerfilEmpresa/ConsultarPerfilEmpresa'
+import ConsultarPerfilOrganizacion from './PerfilOrganizacion/ConsultarPerfilOrganizacion'
 import ConsultarPerfilVoluntario from './PerfilVoluntario/ConsultarPerfilVoluntario'
 //import ModificarPerfilOrganizacion from './PerfilOrganizacion/ModificarPerfilOrganizacion'
 //import ModificarPerfilEmpresa from './PerfilEmpresa/ModificarPerfilEmpresa'
@@ -146,16 +145,6 @@ class ConsultarPerfilGenerico extends Component {
 
   renderConsultarOtro() {
     switch (this.state.userType) {
-      case 1:
-        return (<ConsultarPerfilOrganizacion
-          id={this.state.userId}
-          nombre={this.state.nombre}
-          email={this.state.email}
-          data={this.state.data}
-          switchToModificar={this.switchToModificar}
-          goBack={this.goBack}
-        />)
-
       case 2:
         return (<ConsultarPerfilVoluntario
           nombre={this.state.nombre}
@@ -165,34 +154,20 @@ class ConsultarPerfilGenerico extends Component {
           goBack={this.goBack}
         />)
 
-      case 3:
-        return (<ConsultarPerfilEmpresa
+      default:
+        return (<ConsultarPerfilOrganizacion
+          id={this.state.userId}
           nombre={this.state.nombre}
           email={this.state.email}
           data={this.state.data}
           switchToModificar={this.switchToModificar}
           goBack={this.goBack}
         />)
-
-      default:
-        return (<Text>Error </Text>)
     }
   }
 
-
-
   renderConsultar() {
     switch (this.state.userType) {
-      case 1:
-        return (<ConsultarPerfilOrganizacion
-          id={this.state.userId}
-          nombre={this.state.nombre}
-          email={this.state.email}
-          data={this.state.data}
-          switchToModificar={this.switchToModificar}
-          goBack={this.goBack}
-        />)
-
       case 2:
         return (<ConsultarPerfilVoluntario
           nombre={this.state.nombre}
@@ -202,19 +177,17 @@ class ConsultarPerfilGenerico extends Component {
           goBack={this.goBack}
         />)
 
-      case 3:
-        return (<ConsultarPerfilEmpresa
+      default:
+        return (<ConsultarPerfilOrganizacion
+          id={this.state.userId}
           nombre={this.state.nombre}
           email={this.state.email}
           data={this.state.data}
           switchToModificar={this.switchToModificar}
           goBack={this.goBack}
         />)
-
-      default:
-      //return ( <Text>Error</Text> )        
     }
-  }  
+  }
 
   renderComponente() {
     if (this.state.loggedUser && this.state.modificar) {
@@ -223,7 +196,7 @@ class ConsultarPerfilGenerico extends Component {
     else if (this.state.loggedUser && !this.state.modificar) {
       return this.renderConsultar()
     }
-    else { return this.renderConsultarOtro()}
+    else { return this.renderConsultarOtro() }
   }
 
 

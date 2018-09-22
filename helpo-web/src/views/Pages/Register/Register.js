@@ -6,7 +6,9 @@ import validateEmail from "../../../utils/ValidateEmail";
 import api from "../../../api"
 import ModalRegistroExitoso from './ModalRegistroExitoso';
 import './Register.css';
-import logo from '../../../assets/img/brand/logo_principal.svg' 
+import logo from '../../../assets/img/brand/logo_principal.svg';
+import GoogleLogin from 'react-google-login';
+import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
 
 class Register extends Component {
   constructor(props) {
@@ -257,6 +259,16 @@ class Register extends Component {
 
   render() {
     const user_type = this.state.user_type;
+    const responseGoogle = (response) => {
+      console.log("google console");
+      console.log(response);
+      // this.signup(response, 'google');
+    }
+    const responseFacebook = (response) => {
+      console.log("facebook console");
+      console.log(response);
+      // this.signup(response, 'facebook');
+    }
     return (
       <body>
 		    <div className="container">
@@ -339,10 +351,23 @@ class Register extends Component {
                   <CardFooter className="p-4">
                     <Row>
                       <Col xs="12" sm="6">
-                        <Button className="btn-facebook" block><span>Facebook</span></Button>
+                        <FacebookLogin
+                          appId="343119846258901"
+                          autoLoad={false}
+                          fields="name,email,picture"
+                          callback={responseFacebook}
+                          render={renderProps => (
+                            <Button onClick={renderProps.onClick} className="btn-facebook" block><span>Facebook</span></Button>
+                          )} />
+                        {/* <Button className="btn-facebook" block><span>Facebook</span></Button> */}
                       </Col>
                       <Col xs="12" sm="6">
-                        <Button className="btn-twitter" block><span>Twitter</span></Button>
+                        <GoogleLogin
+                          clientId="93328850687-681u9fksr6g52g2bebbj1qu8thldgaq6.apps.googleusercontent.com"
+                          buttonText="Google"
+                          onSuccess={responseGoogle}
+                          onFailure={responseGoogle} />
+                        {/* <Button className="btn-google" block><span>Google</span></Button> */}
                       </Col>
                     </Row>
                   </CardFooter>

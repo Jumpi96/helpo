@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Card, CardBody, CardHeader } from 'reactstrap'
 import api from '../../api';
 import ConsultarPerfilOrganizacion from './PerfilOrganizacion/ConsultarPerfilOrganizacion'
 import ConsultarPerfilEmpresa from './PerfilEmpresa/ConsultarPerfilEmpresa'
@@ -111,6 +112,17 @@ class ConsultarPerfilGenerico extends Component {
     })
   }
 
+  loading = () => (
+    <Card>
+      <CardHeader>
+        <i className="fa fa-align-justify"></i> Perfil
+      </CardHeader>
+      <CardBody>
+        <p style={{ fontSize: 14 }}>Espere unos segundos, se esta cargando la pagina...</p>
+      </CardBody>
+    </Card>
+  )
+
   renderModificar() {        
     switch (this.state.userType) {
       case 1:
@@ -140,7 +152,7 @@ class ConsultarPerfilGenerico extends Component {
                   /> )
 
       default:
-        return ( <p>Error</p> )        
+        return ( this.loading() )        
     }
   }  
 
@@ -175,7 +187,7 @@ class ConsultarPerfilGenerico extends Component {
                   /> )
 
       default:
-        return ( <p>Error</p> )        
+        return ( this.loading() )        
     }
   }
 
@@ -210,7 +222,7 @@ class ConsultarPerfilGenerico extends Component {
                   /> )
 
       default:
-        return ( <p>Error</p> )        
+        return ( this.loading() )        
     }
   }  
 

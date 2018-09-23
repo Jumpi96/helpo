@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import ugettext_lazy as _
 
-from .models import User, AppValues, Imagen, Suscripcion, RubroOrganizacion, OrganizacionProfile, Ubicacion, EmpresaProfile, VoluntarioProfile
+from .models import User, AppValues, Imagen, Suscripcion, RubroOrganizacion, OrganizacionProfile, Ubicacion, EmpresaProfile, VoluntarioProfile, RubroEmpresa
 
 
 class CustomUserAdmin(UserAdmin):
@@ -47,6 +47,9 @@ class EmpresaProfileAdmin(admin.ModelAdmin):
 class VoluntarioProfileAdmin(admin.ModelAdmin):
     list_display = ['id', 'usuario', 'sexo', 'apellido', 'dni', 'telefono', 'avatar', 'gustos', 'habilidades'] 
 
+class RubroEmpresaAdmin(admin.ModelAdmin):
+    list_display = ['id', 'nombre']
+
 admin.site.register(User, CustomUserAdmin)
 admin.site.register(AppValues, CustomAppValuesAdmin)
 admin.site.register(Imagen, ImagenAdmin)
@@ -56,3 +59,4 @@ admin.site.register(Ubicacion, UbicacionAdmin)
 admin.site.register(OrganizacionProfile, OrganizacionProfileAdmin)
 admin.site.register(EmpresaProfile, EmpresaProfileAdmin)
 admin.site.register(VoluntarioProfile, VoluntarioProfileAdmin)
+admin.site.register(RubroEmpresa, RubroEmpresaAdmin)

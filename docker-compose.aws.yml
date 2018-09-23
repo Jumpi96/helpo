@@ -19,6 +19,8 @@ services:
       - helpo-api/.env
     expose:
       - "8000"
+    volumes:
+      - ./logs/django:/code/logs
     depends_on:
       - db
   web:
@@ -33,6 +35,7 @@ services:
       - "8443:8443"
     volumes:
       - ./certs:/certs
+      - ./logs/nginx:/var/log/nginx
     depends_on:
       - db
       - api

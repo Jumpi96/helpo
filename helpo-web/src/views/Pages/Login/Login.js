@@ -27,7 +27,11 @@ class Login extends Component {
     api.post(url, body, {headers})
     .then(res => {
       if(res.status === 200) {
-        this.props.loginGoogle(nombre, email, password, user_type, apellido, id_token);
+        if(url === "/auth/exists_google/") {
+          this.props.loginGoogle(nombre, email, password, user_type, apellido, id_token);
+        } else if (url === "/auth/exists_facebook/") {
+          this.props.loginFacebook(nombre, email, password, user_type, apellido, id_token);
+        }
       }
     }
     )

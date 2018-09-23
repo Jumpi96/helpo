@@ -6,6 +6,7 @@ import { Container, Header, Title, Content, Button, Item, Label, Input, Body, Le
 import styles from './styles';
 import { login } from '../../Redux/actions/auth'
 import { GoogleSignin, GoogleSigninButton } from 'react-native-google-signin';
+import { FBLogin, FBLoginManager } from 'react-native-facebook-login';
 
 class Login extends Component {
 
@@ -70,6 +71,7 @@ class Login extends Component {
             color={GoogleSigninButton.Color.Dark}
             onPress={this._signIn}
             disabled={this.state.isSigninInProgress} />
+          <FBLogin />
         </Content>
       </Container>
     );

@@ -162,6 +162,7 @@ dependencies {
         exclude group: "com.google.android.gms" // very important
     }
     implementation 'com.google.android.gms:play-services-auth:15.0.0'
+    implementation project(':react-native-facebook-login')
 }
 
 // Run this once to be able to run the application with BUCK

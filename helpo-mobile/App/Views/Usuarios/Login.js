@@ -5,7 +5,7 @@ import { Container, Header, Title, Content, Button, Item, Label, Input, Body, Le
 
 import styles from './styles';
 import { login } from '../../Redux/actions/auth'
-
+import { GoogleSignin, GoogleSigninButton } from 'react-native-google-signin';
 
 class Login extends Component {
 
@@ -32,7 +32,7 @@ class Login extends Component {
       <Container style={styles.container}>
         <Header>
           <Left>
-            <Button transparent 
+            <Button transparent
               onPress={() => this.props.navigation.navigate("LaunchScreen")}>
               <Icon name="arrow-back" />
             </Button>
@@ -64,6 +64,12 @@ class Login extends Component {
               <Text style={styles.validationMessage}>{this.props.errors[0].message}</Text>
             </Item>
           )}
+          <GoogleSigninButton
+            style={{ width: 312, height: 48 }}
+            size={GoogleSigninButton.Size.Wide}
+            color={GoogleSigninButton.Color.Dark}
+            onPress={this._signIn}
+            disabled={this.state.isSigninInProgress} />
         </Content>
       </Container>
     );

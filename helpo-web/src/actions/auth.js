@@ -74,6 +74,28 @@ export const loginGoogle = (nombre, email, password, user_type, apellido, id_tok
   }
 }
 
+export const loginFacebook = (nombre, email, password, user_type, apellido, id_token) => {
+  return (dispatch, getState) => {
+    let headers = {"Content-Type": "application/json"};
+    let body = JSON.stringify({nombre, email, password, user_type, apellido, id_token});
+
+    return api.post("/auth/facebook/", body, {headers})
+      .then(res => {
+        dispatch({type: 'LOGIN_SUCCESSFUL', data: res.data });
+        return res.data;
+      })
+      .catch(e => {
+        if (e.response.status === 403 || e.response.status === 401) {
+          dispatch({type: "AUTHENTICATION_ERROR", data: e.response.data});
+          throw e.response.data;
+        } else {
+          dispatch({type: "LOGIN_FAILED", data: e.response.data});
+          throw e.response.data;
+        }
+      })
+  }
+}
+
 export const register = (email, password) => {
   return (dispatch, getState) => {
     let headers = {"Content-Type": "application/json"};

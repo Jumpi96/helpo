@@ -25,10 +25,22 @@ class Login extends Component {
     const nombre = response.profileObj.givenName;
     const email = response.profileObj.email;
     const password = response.profileObj.email;
+    // To Do:
     const user_type = 2;
     const apellido = response.profileObj.familyName;
     const id_token = response.tokenId;
     this.props.loginGoogle(nombre, email, password, user_type, apellido, id_token);
+  }
+
+  onSubmitFacebook(response) {        
+    const nombre = response.name;
+    const email = response.email;
+    const password = response.email;
+    // To Do:
+    const user_type = 2;
+    const apellido = response.name;
+    const id_token = response.accessToken;
+    this.props.loginFacebook(nombre, email, password, user_type, apellido, id_token);
   }
 
   render() {
@@ -40,7 +52,7 @@ class Login extends Component {
     const responseFacebook = (response) => {
       console.log("facebook console");
       console.log(response);
-      // this.signup(response, 'facebook');
+      this.onSubmitFacebook(response);
     }
     if (this.props.isAuthenticated) {
       return <Redirect to="/" />
@@ -152,7 +164,10 @@ const mapDispatchToProps = dispatch => {
     },
     loginGoogle: (nombre, email, password, user_type, apellido, id_token) => {
       return dispatch(auth.loginGoogle(nombre, email, password, user_type, apellido, id_token));
-    }
+    },
+    loginFacebook: (nombre, email, password, user_type, apellido, id_token) => {
+      return dispatch(auth.loginFacebook(nombre, email, password, user_type, apellido, id_token));
+    },
   };
 }
 

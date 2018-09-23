@@ -40,3 +40,14 @@ def get_datos_token_google(token):
                 'foto': foto
             }
     return None
+
+
+def get_datos_token_facebook(token):
+    if token is not None:
+        r = requests.get(
+            'https://graph.facebook.com/me?access_token=%s' % (access_token))
+        if r.status_code == 200:
+            json = r.json()
+            name = json.get("name")
+            return name
+    return None

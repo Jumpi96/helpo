@@ -11,7 +11,7 @@ from rest_framework.generics import RetrieveUpdateDestroyAPIView, RetrieveUpdate
 from knox.models import AuthToken
 from django.contrib.auth import get_user_model
 from users.models import RubroOrganizacion, RubroEmpresa, OrganizacionProfile, VoluntarioProfile, EmpresaProfile, AppValues, User, DeviceID, Suscripcion
-from users.serializers import GoogleAuthSerializer, CreateUserSerializer, UserSerializer, LoginUserSerializer, RubroOrganizacionSerializer, RubroEmpresaSerializer, OrganizacionProfileSerializer, VoluntarioProfileSerializer, EmpresaProfileSerializer, VerificationMailSerializer, AppValuesSerializer, DeviceIDSerializer, SuscripcionSerializer, SuscripcionSerializerLista
+from users.serializers import FacebookAuthSerializer, GoogleAuthSerializer, CreateUserSerializer, UserSerializer, LoginUserSerializer, RubroOrganizacionSerializer, RubroEmpresaSerializer, OrganizacionProfileSerializer, VoluntarioProfileSerializer, EmpresaProfileSerializer, VerificationMailSerializer, AppValuesSerializer, DeviceIDSerializer, SuscripcionSerializer, SuscripcionSerializerLista
 import time
 import requests
 
@@ -26,6 +26,9 @@ class GoogleAuthView(generics.GenericAPIView):
             "user": UserSerializer(user, context=self.get_serializer_context()).data,
             "token": AuthToken.objects.create(user)
         })
+
+class FacebookAuthView(GoogleAuthView):
+    serializer_class = FacebookAuthSerializer
 
 class CreateUserView(generics.GenericAPIView):
     serializer_class = CreateUserSerializer

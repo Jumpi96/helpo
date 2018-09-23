@@ -47,6 +47,11 @@ const Dashboard = Loadable({
   loading: Loading,
 });
 
+const AlbumImagenes = Loadable({
+  loader: () => import('./views/Actividades/ConsultarEventos/AlbumImagenes/AlbumImagenes'),
+  loading: Loading,
+})
+
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
@@ -57,6 +62,7 @@ const routes = [
   { path: '/perfiles/perfil-empresa', name: 'Perfil empresa', component: ModificarPerfilEmpresa },
   { path: '/actividades/registrar-colaboraciones', name: 'Registrar ofrecimiento', component: RegistrarOfrecimientos },
   { path: '/actividades/mis-propuestas', name: 'Mis propuestas', component: MisPropuestas },
+  { path: '/actividades/album/:eventoId', name: 'Album de Evento', component: AlbumImagenes },
   { path: '/perfil/:usuarioId?', name: 'Perfil de usuario', component: ConsultarPerfil },
   { path: '/organizaciones', name: 'Organizaciones', component: OrganizacionesPage },
 ];

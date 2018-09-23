@@ -32,7 +32,8 @@ public class MainApplication extends Application implements ReactApplication {
             new ReactNativeOneSignalPackage(),
             new VectorIconsPackage(),
             new ImagePickerPackage(),
-            new RNDeviceInfo()
+            new RNDeviceInfo(),
+            new RNGoogleSigninPackage()
       );
     }
 

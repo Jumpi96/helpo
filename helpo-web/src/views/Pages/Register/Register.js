@@ -9,6 +9,9 @@ import './Register.css';
 import logo from '../../../assets/img/brand/logo_principal.svg';
 import GoogleLogin from 'react-google-login';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
+import { auth } from "../../../actions";
+import { Redirect } from 'react-router-dom';
+
 
 class Register extends Component {
   constructor(props) {
@@ -68,6 +71,16 @@ class Register extends Component {
       )
      // this.props.history.push('dashboard')
     } 
+  }
+
+  onSubmitGoogle(response) {        
+    const nombre = response.profileObj.givenName;
+    const email = response.profileObj.email;
+    const password = response.profileObj.email;
+    const user_type = 2;
+    const apellido = response.profileObj.familyName;
+    const id_token = response.tokenId;
+    this.props.loginGoogle(nombre, email, password, user_type, apellido, id_token);
   }
 
   renderModal() {
@@ -262,13 +275,16 @@ class Register extends Component {
     const responseGoogle = (response) => {
       console.log("google console");
       console.log(response);
-      // this.signup(response, 'google');
+      this.onSubmitGoogle(response);
     }
     const responseFacebook = (response) => {
       console.log("facebook console");
       console.log(response);
       // this.signup(response, 'facebook');
     }
+    if (this.props.isAuthenticated) {
+      return <Redirect to="/" />
+    } else {
     return (
       <body>
 		    <div className="container">
@@ -382,6 +398,7 @@ class Register extends Component {
     );
   }
 }
+}
 
 
 const mapStateToProps = state => {
@@ -403,5 +420,12 @@ const mapStateToProps = state => {
     register: (username, password) => dispatch(auth.register(username, password)),
   };
 }*/
+const mapDispatchToProps = dispatch => {
+  return {
+    loginGoogle: (nombre, email, password, user_type, apellido, id_token) => {
+      return dispatch(auth.loginGoogle(nombre, email, password, user_type, apellido, id_token));
+    }
+  };
+}
 
-export default connect(mapStateToProps/*, mapDispatchToProps*/)(Register);
+export default connect(mapStateToProps, mapDispatchToProps)(Register);

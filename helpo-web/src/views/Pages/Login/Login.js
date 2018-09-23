@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import { Button, Card, CardBody, CardGroup, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
 import { connect } from "react-redux";
-import {auth} from "../../../actions";
+import { auth } from "../../../actions";
 import logo from '../../../assets/img/brand/logo_principal.svg' 
 import GoogleLogin from 'react-google-login';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
@@ -21,11 +21,21 @@ class Login extends Component {
     this.props.login(this.state.email, this.state.password);
   }
 
+  onSubmitGoogle(response) {        
+    const nombre = response.profileObj.givenName;
+    const email = response.profileObj.email;
+    const password = response.profileObj.email;
+    const user_type = 2;
+    const apellido = response.profileObj.familyName;
+    const id_token = response.tokenId;
+    this.props.loginGoogle(nombre, email, password, user_type, apellido, id_token);
+  }
+
   render() {
     const responseGoogle = (response) => {
       console.log("google console");
       console.log(response);
-      // this.signup(response, 'google');
+      this.onSubmitGoogle(response);
     }
     const responseFacebook = (response) => {
       console.log("facebook console");
@@ -139,6 +149,9 @@ const mapDispatchToProps = dispatch => {
   return {
     login: (email, password) => {
       return dispatch(auth.login(email, password));
+    },
+    loginGoogle: (nombre, email, password, user_type, apellido, id_token) => {
+      return dispatch(auth.loginGoogle(nombre, email, password, user_type, apellido, id_token));
     }
   };
 }

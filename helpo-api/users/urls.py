@@ -2,6 +2,12 @@ from django.conf.urls import url
 from users import views as users_views
 
 urlpatterns = [ 
+    # {% url "api:google" %}
+    url(
+        regex=r"^auth/google/$",
+        view=users_views.GoogleAuthView.as_view(),
+        name="google_auth"
+    ),
     # {% url "api:sign_up" %}
     url(
         regex=r"^auth/sign_up/$",

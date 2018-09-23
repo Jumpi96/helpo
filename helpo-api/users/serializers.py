@@ -1,8 +1,40 @@
 from rest_framework import serializers
 from django.contrib.auth import authenticate
-from users.models import User, RubroOrganizacion, RubroEmpresa, OrganizacionProfile, Ubicacion, Imagen, VoluntarioProfile, EmpresaProfile, UserVerification, AppValues, DeviceID, Suscripcion
+from users.models import User, UserWrapper, RubroOrganizacion, RubroEmpresa, OrganizacionProfile, Ubicacion, Imagen, VoluntarioProfile, EmpresaProfile, UserVerification, AppValues, DeviceID, Suscripcion
 from actividades.models import Participacion, Evento, Colaboracion
 from django.core.exceptions import ObjectDoesNotExist
+from common.functions import get_datos_token_google
+from hashlib import sha256
+
+
+class GoogleAuthSerializer(serializers.ModelSerializer):
+    apellido = serializers.CharField(max_length=50, allow_null=True)
+
+    class Meta:
+        model = UserWrapper
+        fields = ('nombre','email','password','user_type','apellido','id_token')
+        write_only_fields = ('apellido')
+
+    def validate(self, data):
+        if data:
+            token = data.get('id_token')
+            datos_google = get_datos_token_google(token)
+        if datos_google:
+            user_email = datos_google.get('email')
+            if user_email:
+                user_qs = User.objects.filter(email=user_email)
+                if len(user_qs) == 0:
+                    email_encoded = user_email.encode('utf-8')
+                    user_password = str(sha256(email_encoded))[:64]
+                    kwargs = {'avatar': datos_google.get(
+                        'foto'), 'apellido': datos_google.get('apellido')}
+                    user = User.objects.create_user(user_email, datos_google.get('nombre'), user_password, data.get(
+                        'user_type'), **kwargs)
+                    return user
+                else:
+                    user = user_qs.first()
+                    return user
+        raise serializers.ValidationError("Unable to log in with provided Google Token")
 
 
 class CreateUserSerializer(serializers.ModelSerializer):

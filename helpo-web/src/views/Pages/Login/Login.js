@@ -6,14 +6,46 @@ import { auth } from "../../../actions";
 import logo from '../../../assets/img/brand/logo_principal.svg' 
 import GoogleLogin from 'react-google-login';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
+import api from "../../../api"
+import ModalRegistroExitoso from '../Register/ModalRegistroExitoso';
 
 class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
       email: "",
-      password: ""
+      password: "",
+      showModalRegistro: false,
+      modalType: 'success'
     }
+    this.showModalRegistro = this.showModalRegistro.bind(this);
+  }
+
+  exists(url, nombre, email, password, user_type, apellido, id_token) {
+    let headers = {"Content-Type": "application/json"};
+    let body = JSON.stringify({nombre, email, password, user_type, apellido, id_token});
+    api.post(url, body, {headers})
+    .then(res => {
+      if(res.status === 200) {
+        this.props.loginGoogle(nombre, email, password, user_type, apellido, id_token);
+      }
+    }
+    )
+    .catch (
+      e => {
+        if (e.response.status === 404 || e.response.status === 400) {
+          this.setState({
+            showModalRegistro: true,
+            modalType: "success",
+          });
+        } else {
+          this.setState({
+            showModalRegistro: true,
+            modalType: "failure",
+          });
+        }
+      }
+    );
   }
 
   onSubmit = (e) => {
@@ -25,33 +57,55 @@ class Login extends Component {
     const nombre = response.profileObj.givenName;
     const email = response.profileObj.email;
     const password = response.profileObj.email;
-    // To Do:
     const user_type = 2;
     const apellido = response.profileObj.familyName;
     const id_token = response.tokenId;
-    this.props.loginGoogle(nombre, email, password, user_type, apellido, id_token);
+    const url = "/auth/exists_google/";
+    this.exists(url, nombre, email, password, user_type, apellido, id_token);
   }
 
   onSubmitFacebook(response) {        
     const nombre = response.name;
     const email = response.email;
     const password = response.email;
-    // To Do:
     const user_type = 2;
     const apellido = response.name;
     const id_token = response.accessToken;
-    this.props.loginFacebook(nombre, email, password, user_type, apellido, id_token);
+    const url = "/auth/exists_facebook/";
+    this.exists(url, nombre, email, password, user_type, apellido, id_token);
+  }
+
+  renderModal() {
+    if (this.state.showModalRegistro) {
+      if (this.state.modalType === "success") {
+        return (
+          <ModalRegistroExitoso
+            body='Debe seleccionar su tipo de usuario'
+            onCancel={() => this.props.history.push('register')}
+          />)  
+      }
+      else {
+        return (
+          <ModalRegistroExitoso
+            body='Error al iniciar sesión'
+            onCancel={() => {this.setState({ showModalRegistro: false })}}
+          />
+        )
+      }      
+    }
+  }
+
+  showModalRegistro() {
+    this.setState({
+      showModalRegistro: true,
+    })
   }
 
   render() {
     const responseGoogle = (response) => {
-      // console.log("google console");
-      // console.log(response);
       this.onSubmitGoogle(response);
     }
     const responseFacebook = (response) => {
-      // console.log("facebook console");
-      // console.log(response);
       this.onSubmitFacebook(response);
     }
     if (this.props.isAuthenticated) {
@@ -132,9 +186,10 @@ class Login extends Component {
                   </CardGroup>
               </Row>
         </form>
+        {this.renderModal()}
       </div>
       );
-    } 
+    }
   }
 }
 

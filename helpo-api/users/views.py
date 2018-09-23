@@ -1,6 +1,6 @@
 from django.shortcuts import render  # noqa
 import decouple
-from rest_framework import generics, permissions
+from rest_framework import generics, permissions, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.generics import ListCreateAPIView
@@ -15,6 +15,18 @@ from users.serializers import FacebookAuthSerializer, GoogleAuthSerializer, Crea
 import time
 import requests
 
+
+class GoogleExistsView(generics.GenericAPIView):
+    serializer_class = GoogleAuthSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.exists(request.data):
+            return Response(serializer.initial_data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=HTTP_404_NOT_FOUND)
+
+class FacebookExistsView(GoogleExistsView):
+    serializer_class = FacebookAuthSerializer
 
 class GoogleAuthView(generics.GenericAPIView):
     serializer_class = GoogleAuthSerializer

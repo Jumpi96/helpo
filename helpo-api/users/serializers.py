@@ -35,6 +35,18 @@ class GoogleAuthSerializer(serializers.ModelSerializer):
                         user = user_qs.first()
                         return user
         raise serializers.ValidationError("Unable to log in with provided Google Token")
+    
+    def exists(self, data):
+        if data:
+            token = data.get('id_token')
+            datos_google = get_datos_token_google(token)
+            if datos_google:
+                user_email = datos_google.get('email')
+                if user_email:
+                    user = User.objects.filter(email=user_email).first()
+                    if user:
+                        return user
+        raise serializers.ValidationError("Unable to find user with provided Google Token")
 
 class FacebookAuthSerializer(GoogleAuthSerializer):
     def validate(self, data):
@@ -60,6 +72,17 @@ class FacebookAuthSerializer(GoogleAuthSerializer):
                         return user
         raise serializers.ValidationError("Unable to log in with provided Facebook Token")
 
+    def exists(self, data):
+        if data:
+            token = data.get('id_token')
+            user_name = get_datos_token_facebook(token)
+            if user_name:
+                user_email = data.get('email')
+                if user_email:
+                    user = User.objects.filter(email=user_email).first()
+                    if user:
+                        return user
+        raise serializers.ValidationError("Unable to find user with provided Facebook Token")
 
 class CreateUserSerializer(serializers.ModelSerializer):
     apellido = serializers.CharField(max_length=50, allow_null=True)

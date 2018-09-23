@@ -3,6 +3,7 @@
 buildscript {
     repositories {
         jcenter()
+        google()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.1.2'
@@ -22,6 +23,17 @@ allprojects {
         maven {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
             url "$rootDir/../node_modules/react-native/android"
+        }
+    }
+}
+
+subprojects {
+    project.configurations.all {
+        resolutionStrategy.eachDependency { details ->
+            if (details.requested.group == 'com.android.support'
+                    && !details.requested.name.contains('multidex') ) {
+                details.useVersion "26.1.0"
+            }
         }
     }
 }

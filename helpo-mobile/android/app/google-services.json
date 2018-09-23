@@ -39,6 +39,58 @@
     },
     {
       "client_info": {
+        "mobilesdk_app_id": "1:93328850687:android:60ef589990757d20",
+        "android_client_info": {
+          "package_name": "com.helpomobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "93328850687-m4iunm94jt15227q3nv2ko4276f3esgj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.helpomobile",
+            "certificate_hash": "d8e0ae729dcf8b68d53a68e737159c6099b5c61e"
+          }
+        },
+        {
+          "client_id": "93328850687-5gh8f6b1on36kqmauto07gsldi2b64cj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.helpomobile",
+            "certificate_hash": "7df925b918c50e612a369d2c6ea4f5133255fbab"
+          }
+        },
+        {
+          "client_id": "93328850687-681u9fksr6g52g2bebbj1qu8thldgaq6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCz8k97WfhUkrU4M0S_vF7-shDt015r6eo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "93328850687-681u9fksr6g52g2bebbj1qu8thldgaq6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:93328850687:android:c86364a8ce9e3b0d",
         "android_client_info": {
           "package_name": "com.rnonesignal"

@@ -55,10 +55,14 @@ class UserManager(BaseUserManager):
 
         avatar = Imagen.objects.get(id=1)
         if "avatar" in kwargs:
-            new_avatar = Imagen.objects.create(isExternal=True, url=kwargs["avatar"])
-            if new_avatar:
-                avatar = new_avatar
-        
+            avatar_url = kwargs["avatar"]
+            if avatar_url:
+                new_avatar = Imagen.objects.create(isExternal=True, url=avatar_url)
+                if new_avatar:
+                    avatar = new_avatar
+
+        if type(user_type) is str:
+            user_type = int(user_type)
         if user_type == 1:
             profile = OrganizacionProfile.objects.create(usuario=user, avatar=avatar)
         elif user_type == 2:

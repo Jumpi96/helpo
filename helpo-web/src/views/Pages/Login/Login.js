@@ -45,13 +45,13 @@ class Login extends Component {
 
   render() {
     const responseGoogle = (response) => {
-      console.log("google console");
-      console.log(response);
+      // console.log("google console");
+      // console.log(response);
       this.onSubmitGoogle(response);
     }
     const responseFacebook = (response) => {
-      console.log("facebook console");
-      console.log(response);
+      // console.log("facebook console");
+      // console.log(response);
       this.onSubmitFacebook(response);
     }
     if (this.props.isAuthenticated) {

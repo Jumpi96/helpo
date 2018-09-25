@@ -6,8 +6,6 @@
 *.pem
 # */settings/local.py
 */staticfiles/*
-helpo-api/staticfiles/
-*/staticfiles/*
 /mediafiles/*
 __pycache__/
 

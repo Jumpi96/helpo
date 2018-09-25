@@ -26,7 +26,8 @@ import RegistrarOfrecimiento from "../Views/Actividades/RegistrarOfrecimiento/Re
 import MisPropuestas from '../Views/Actividades/MisPropuestas/MisPropuestas';
 import VerPropuestaEvento from '../Views/Actividades/MisPropuestas/VerPropuestaEvento';
 import ConsultarPerfilGenerico from '../Views/Perfiles/ConsultarPerfilGenerico';
-
+import ModificarPerfilVoluntario from '../Views/Perfiles/PerfilVoluntario/ModificarPerfilVoluntario';
+//import ModificarPerfilOrganizacion from '../Views/Perfiles/PerfilOrganizacion/ModificarPerfilOrganizacion';
 import AlbumEvento from '../Views/Actividades/AlbumEvento/AlbumEvento';
 import VerPatrocinadores from '../Views/Actividades/VerPatrocinadores/VerPatrocinadores';
 import VerPropuestaPatrocinador from '../Views/Actividades/VerPatrocinadores/VerPropuestaPatrocinador'
@@ -62,7 +63,9 @@ const NavigationDrawer = DrawerNavigator({
 	AlbumEvento: { screen: AlbumEvento },
 	VerPatrocinadores: { screen: VerPatrocinadores },
 	VerPropuestaPatrocinador: { screen: VerPropuestaPatrocinador },
-	ResponderPropuesta: { screen: ResponderPropuesta }
+	ResponderPropuesta: { screen: ResponderPropuesta },
+	ModificarPerfilVoluntario: { screen: ModificarPerfilVoluntario },
+	//ModificarPerfilOrganizacion: { screen: ModificarPerfilOrganizacion }
   },
   {
 	initialRouteName: "LaunchScreen",

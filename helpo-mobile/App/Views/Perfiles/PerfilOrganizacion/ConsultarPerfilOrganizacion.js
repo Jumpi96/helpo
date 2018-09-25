@@ -21,99 +21,104 @@ import { getImagen } from '../../../Lib/Imagen';
 
 class ConsultarPerfilOrganizacion extends Component {
   constructor(props) {
-    super(props); 
-    this.renderDescripcion = this.renderDescripcion.bind(this);    
+    super(props);
+    this.renderDescripcion = this.renderDescripcion.bind(this);
     this.renderRubro = this.renderRubro.bind(this);
-    this.renderTelefono = this.renderTelefono.bind(this);    
+    this.renderTelefono = this.renderTelefono.bind(this);
     this.renderDescripcion = this.renderDescripcion.bind(this);
     this.renderCuit = this.renderCuit.bind(this);
   }
 
   renderRubro() {
     if (this.props.data.rubro == null) {
-      return <Text class='text-muted'> No hay valor ingresado</Text>
+      return <Text style={styles.textMuted}> No hay valor ingresado</Text>
     }
-    return <Text> {this.props.data.rubro}</Text>      
+    return <Text> {this.props.data.rubro}</Text>
   }
 
   renderTelefono() {
     //Si uso == va a dar True para null y undefined
     if (this.props.data.telefono == null) {
-      return <Text class='text-muted'> No hay valor ingresado</Text>
+      return <Text style={styles.textMuted}> No hay valor ingresado</Text>
     }
-    return <Text> {this.props.data.telefono}</Text>      
+    return <Text> {this.props.data.telefono}</Text>
   }
 
   renderCuit() {
     if (this.props.data.cuit == null) {
-      return <Text class='text-muted'> No hay valor ingresado</Text>
+      return <Text style={styles.textMuted}> No hay valor ingresado</Text>
     }
-    return <Text> {this.props.data.cuit}</Text>      
+    return <Text> {this.props.data.cuit}</Text>
   }
 
   renderDescripcion() {
     if (this.props.data.descripcion == null) {
-      return <Text class='text-muted'> No hay valor ingresado</Text>
+      return <Text style={styles.textMuted}> No hay valor ingresado</Text>
     }
-    return <Text> {this.props.data.descripcion}</Text>      
-  }  
+    return <Text> {this.props.data.descripcion}</Text>
+  }
 
   render() {
-    return (
-      <Container style={styles.container}>
-        <Header>
-          <Left>
-            <Button transparent onPress={this.props.goBack}>
-              <Icon name="arrow-back" />
-            </Button>
-          </Left>
-          <Body>
-            <Title>Perfil</Title>
-          </Body>
-          <Right>
-            <Button transparent onPress={this.props.switchToModificar}> 
-              <Text>Modificar</Text>
-            </Button>
-          </Right>
-        </Header>
-        <Content>
-          <Thumbnail large center/>
-          <Separator bordered noTopBorder>
-            <Text>Datos personales</Text>
-          </Separator>
-          <ListItem>
-            <Label style={styles.label}>Nombre</Label>
-            <Text>{this.props.nombre}</Text>
-          </ListItem>          
+    if (this.props.data.avatar) {
+      return (
+        <Container style={styles.container}>
+          <Header>
+            <Left>
+              <Button transparent onPress={this.props.goBack}>
+                <Icon name="arrow-back" />
+              </Button>
+            </Left>
+            <Body>
+              <Title>Perfil</Title>
+            </Body>
+            <Right>
+              <Button transparent onPress={this.props.switchToModificar}>
+                <Text>Modificar</Text>
+              </Button>
+            </Right>
+          </Header>
+          <Content>
+            <Thumbnail large center source={{ uri: this.props.data.avatar.url }} />
+            <Separator bordered noTopBorder>
+              <Text>Datos personales</Text>
+            </Separator>
+            <ListItem>
+              <Label style={styles.label}>Nombre</Label>
+              <Text>{this.props.nombre}</Text>
+            </ListItem>
 
-          <ListItem>
-            <Label style={styles.label}>Mail</Label>
-            <Text>{this.props.email}</Text>
-          </ListItem>
+            <ListItem>
+              <Label style={styles.label}>Mail</Label>
+              <Text>{this.props.email}</Text>
+            </ListItem>
 
-          <ListItem>
-            <Label style={styles.label}>Teléfono</Label>
-            {this.renderTelefono}
-          </ListItem>
+            <ListItem>
+              <Label style={styles.label}>Teléfono</Label>
+              {this.renderTelefono()}
+            </ListItem>
 
-          <ListItem>
-            <Label style={styles.label}>CUIT</Label>
-            {this.renderCuit}
-          </ListItem>
+            <ListItem>
+              <Label style={styles.label}>CUIT</Label>
+              {this.renderCuit()}
+            </ListItem>
 
-          <ListItem>
-            <Label style={styles.label}>Rubro</Label>
-            {this.renderRubro}
-          </ListItem>
+            <ListItem>
+              <Label style={styles.label}>Rubro</Label>
+              {this.renderRubro()}
+            </ListItem>
 
-          <ListItem>
-            <Label style={styles.label}>Descripción</Label>
-            {this.renderDescripcion}
-          </ListItem>
+            <ListItem>
+              <Label style={styles.label}>Descripción</Label>
+              {this.renderDescripcion()}
+            </ListItem>
 
-        </Content>
-      </Container>
-    );
+          </Content>
+        </Container>
+      );
+    } else {
+      return <Text></Text>
+    }
+
   }
 }
 

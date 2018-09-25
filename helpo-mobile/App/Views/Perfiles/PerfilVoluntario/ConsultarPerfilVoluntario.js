@@ -33,28 +33,28 @@ class ConsultarPerfilVoluntario extends Component {
   }
   renderSexo() {
     if (this.props.data.sexo == null) {
-      return <Text class='text-muted'> No hay valor ingresado</Text>
+      return <Text style={styles.textMuted}> No hay valor ingresado.</Text>
     }
     return <Text> {this.props.data.sexo}</Text>      
   }
 
   renderApellido() {
     if (this.props.data.apellido == null) {
-      return <Text class='text-muted'> No hay valor ingresado</Text>
+      return <Text style={styles.textMuted}> No hay valor ingresado.</Text>
     }
     return <Text> {this.props.data.apellido}</Text>      
   }
 
   renderGustos() {
     if (this.props.data.gustos == null) {
-      return <Text class='text-muted'> No hay valor ingresado</Text>
+      return <Text style={styles.textMuted}> No hay valor ingresado.</Text>
     }
     return <Text> {this.props.data.gustos}</Text>      
   }
 
   renderHabilidades() {
     if (this.props.data.habilidades == null) {
-      return <Text class='text-muted'> No hay valor ingresado</Text>
+      return <Text style={styles.textMuted}> No hay valor ingresado.</Text>
     }
     return <Text> {this.props.data.habilidades}</Text>      
   }
@@ -62,21 +62,21 @@ class ConsultarPerfilVoluntario extends Component {
   renderTelefono() {
     //Si uso == va a dar True para null y undefined
     if (this.props.data.telefono == null) {
-      return <Text class='text-muted'> No hay valor ingresado</Text>
+      return <Text style={styles.textMuted}> No hay valor ingresado.</Text>
     }
     return <Text> {this.props.data.telefono}</Text>      
   }
 
   renderDni() {
     if (this.props.data.dni == null) {
-      return <Text class='text-muted'> No hay valor ingresado</Text>
+      return <Text style={styles.textMuted}> No hay valor ingresado.</Text>
     }
     return <Text> {this.props.data.dni}</Text>      
   }
 
   renderDescripcion() {
     if (this.props.data.descripcion == null) {
-      return <Text class='text-muted'> No hay valor ingresado</Text>
+      return <Text style={styles.textMuted}> No hay valor ingresado.</Text>
     }
     return <Text> {this.props.data.descripcion}</Text>      
   }  
@@ -111,7 +111,7 @@ class ConsultarPerfilVoluntario extends Component {
 
           <ListItem>
             <Label style={styles.label}>Apellido</Label>
-            {this.renderApellido}
+            {this.renderApellido()}
           </ListItem>
 
           <ListItem>
@@ -121,17 +121,17 @@ class ConsultarPerfilVoluntario extends Component {
 
           <ListItem>
             <Label style={styles.label}>Teléfono</Label>
-            {this.renderTelefono}
+            {this.renderTelefono()}
           </ListItem>
 
           <ListItem>
             <Label style={styles.label}>DNI</Label>
-            {this.renderDni}
+            {this.renderDni()}
           </ListItem>
 
           <ListItem>
             <Label style={styles.label}>Sexo</Label>
-            {this.renderSexo}
+            {this.renderSexo()}
           </ListItem>
 
           <Separator bordered noTopBorder>
@@ -140,12 +140,12 @@ class ConsultarPerfilVoluntario extends Component {
 
           <ListItem>
             <Label style={styles.label}>Gustos</Label>
-            {this.renderGustos}
+            {this.renderGustos()}
           </ListItem>
 
           <ListItem>
             <Label style={styles.label}>Habilidades</Label>
-            {this.renderHabilidades}
+            {this.renderHabilidades()}
           </ListItem>
 
         </Content>

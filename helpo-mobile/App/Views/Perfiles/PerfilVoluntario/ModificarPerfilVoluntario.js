@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import api from '../../../api'
 import { uploadImage } from '../../../Lib/Imagen'
+import ImagePicker from 'react-native-image-picker';
+import { handleImageUpload } from '../../../Services/Imagen';
 import {
   Container,
   Header,
@@ -16,6 +18,7 @@ import {
   Icon,
   Form,
   Text,
+  ListItem,
   TextInput,
   Picker,
   Thumbnail,
@@ -27,220 +30,182 @@ class ModificarPerfilVoluntario extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      nombre: this.props.nombre,
-      // Checkeo null porque si es null react tira un warning (https://github.com/reactstrap/reactstrap/issues/570)
-      telefono: this.props.data.telefono == null ? '' : this.props.data.telefono,
-      dni: this.props.data.dni == null ? '' : this.props.data.dni,
-      sexo: this.props.data.sexo == null ? '' : this.props.data.sexo,
-      gustos: this.props.data.gustos == null ? '' : this.props.data.gustos,
-      habilidades: this.props.data.habilidades == null ? '' : this.props.data.habilidades,
-      avatar_url: this.props.data.avatar.url,
-      showModal: false,
+      voluntario: undefined,
       errors: [],
-      avatar_changed: false,
     }
+    this.handleChange = this.handleChange.bind(this);
+    this.handleChangeSexo = this.handleChangeSexo.bind(this);
+    this.handleValidation = this.handleValidation.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.onSelectFile = this.onSelectFile.bind(this);
-    this.handleAvatarChange = this.handleAvatarChange.bind(this);
-    this.validateData = this.validateData.bind(this);
+    this.addImagen = this.addImagen.bind(this);
   }
 
-  onSelectFile(event) {
-    if (event.target.files && event.target.files.length > 0) {
-      const reader = new FileReader()
-      reader.addEventListener(
-        'load',
-        () =>
-          this.setState({
-            avatar_url: reader.result,
-            avatar_changed: true,
-          }),
-        false
-      )
-      reader.readAsDataURL(event.target.files[0])
-    }
-  }
-
-
-  handleAvatarChange(avatar_url) {
-    this.setState({
-      avatar_url: avatar_url,
-      avatar_changed: true,
+  async addImagen() {
+    // Llamo al imagePicker y hago todo el procesamiento de cargar una imagen
+    //Options for the image picker
+    const options = {
+      title: 'Seleccionar Imagen',
+    };
+    ImagePicker.showImagePicker(options, async (response) => {
+      // Paso la data de la imagen a Imagen para subirla a imgur
+      const url = await handleImageUpload(response.data)
+      this.props.uploadImagen(url, this.props.eventoId)
     })
   }
 
-  async prepareSubmitData() {
-    const newData = this.state
-    let avatar_url = this.props.data.avatar.url
-    if (this.state.avatar_changed) {
-      const rx = /\/9j\/.*/gm
-      const encondedAvatar = rx.exec(this.state.avatar_url)[0]
-      avatar_url = await uploadImage(encondedAvatar)
-      if (avatar_url === 'recall') {
-        avatar_url = await uploadImage(encondedAvatar)
-      }
-    }
-    const submitData = {
-      avatar: { url: avatar_url },
-    }
-    if (newData.dni !== "") {
-      submitData.dni = newData.dni
-    }
-    if (newData.gustos !== "") {
-      submitData.gustos = newData.gustos
-    }
-    if (newData.habilidades !== "") {
-      submitData.habilidades = newData.habilidades
-    }
-    if (newData.sexo !== "") {
-      submitData.sexo = newData.sexo
-    }
-    if (newData.telefono !== "") {
-      submitData.telefono = newData.telefono
-    }
-    return submitData
-  }
-
-  validateData(submitData) {
-    if (submitData.avatar.url === 'error' || submitData.avatar.url == null) {
-      let errors = this.state.errors
-      errors.push("Imagen upload failure")
-      this.setState({
-        errors: errors
+  componentDidMount() {
+    let voluntario = {};
+    api.get('/auth/user/')
+      .then(res => {
+        voluntario.nombre = res.data.nombre;
+        voluntario.apellido = res.data.apellido;
+        return api.get(`/perfiles/perfil_voluntario/${res.data.id}/`)
       })
-      return false
-    }
-    this.setState({
-      avatar_url: submitData.avatar.url
-    })
-    return true
+      .then(res => {
+        this.setState({
+          voluntario: Object.assign(voluntario, res.data)
+        });
+        console.warn()
+      });
+  }
+
+  handleChange(item, text) {
+    const { voluntario } = this.state;
+    voluntario[item] = text;
+    this.setState({ voluntario });
+  }
+
+  handleChangeSexo(value) {
+    const { voluntario } = this.state;
+    voluntario.sexo = value;
+    this.setState({ voluntario });
   }
 
   handleSubmit() {
-    this.prepareSubmitData().then(submitData => {
-      console.log("DATA")
-      console.log(submitData)
-      if (this.validateData(submitData)) {
-        api.put(`/perfiles/perfil_voluntario/${this.props.data.usuario.id}/`, submitData)
-          .then(res => {
-            if (res.status === 200) {
-              this.props.switchToConsultar = true;
-              this.setState({
-                showModal: true,
-              })
-            }
-            else {
-              this.setState({
-                showModal: true, // Hay que poner alerts o algo, ver como lo resolvio la Juli
-              })
-            }
-          })
-      }
-      console.log(this.state.errors)
-    })
+    const { voluntario } = this.state;
+    if (this.handleValidation()) {
+      api.put('perfiles/perfil_voluntario/' + voluntario.usuario.id + '/', voluntario)
+        .then((res) => {
+          this.props.navigation.navigate('ConsultarPerfilGenerico');
+        })
+    }
+  }
+
+  handleValidation() {
+    let formIsValid = true;
+    const errors = this.state.errors;
+    const { voluntario } = this.state;
+
+    if (Number.isNaN(voluntario.dni)) {
+      formIsValid = false;
+      errors.dni = 'Debe ingresar un DNI válido.';
+    } else { errors.dni = undefined; }
+
+    this.setState({ errors: errors });
+    return formIsValid;
   }
 
   render() {
-    return (
-      <Container style={styles.container}>
-        <Header>
-          <Left>
-            <Button transparent onPress={this.props.switchToConsultar }>
-              <Icon name="arrow-back" />
-            </Button>
-          </Left>
-          <Body>
-            <Title>Modificar perfil</Title>
-          </Body>
-          <Right>
-            <Button transparent onPress={this.handleSubmit}>
-              <Text>Guardar</Text>
-            </Button>
-          </Right>
-        </Header>
+    if (this.state.voluntario) {
+      return (
+        <Container style={styles.container} >
+          <Header>
+            <Left>
+              <Button transparent onPress={() => this.props.navigation.navigate('ConsultarPerfilGenerico')}>
+                <Icon name="arrow-back" />
+              </Button>
+            </Left>
+            <Body>
+              <Title>Modificar perfil</Title>
+            </Body>
+            <Right>
+              <Button transparent onPress={this.handleSubmit}>
+                <Text>Guardar</Text>
+              </Button>
+            </Right>
+          </Header>
 
-        <Content>
-          <Form>
-            <Separator bordered noTopBorder>
-              <Text>Datos personales</Text>
-            </Separator>
+          <Content>
+            <Form>
+              <Item onPress={this.addImagen}>
+                <Thumbnail large center source={{uri: this.state.voluntario.avatar.url}} />
+              </Item>
+              <Separator bordered noTopBorder>
+                <Text>Datos personales</Text>
+              </Separator>
 
-            <Item floatingLabel>
-              <Label>Nombre</Label>
-              <Input
-                value={this.state.nombre}
-                onChangeText={text => this.setState({ nombre: text })}
-              />
-            </Item>
-            <Text style={styles.validationMessage}>{this.state.errors.nombre}</Text>
+              <ListItem>
+                <Label style={styles.label}>Nombre</Label>
+                <Text>{this.state.voluntario.nombre}</Text>
+              </ListItem>
 
-            <Item floatingLabel>
-              <Label>Apellido</Label>
-              <Input
-                value={this.state.apellido}
-                onChangeText={text => this.setState({ apellido: text })}
-              />
-            </Item>
-            <Text style={styles.validationMessage}>{this.state.errors.apellido}</Text>
+              <ListItem>
+                <Label style={styles.label}>Apellido</Label>
+                <Text>{this.state.voluntario.apellido}</Text>
+              </ListItem>
 
-            
-            <Item floatingLabel>
-              <Label>Teléfono</Label>
-              <Input
-                value={this.state.telefono}
-                onChangeText={text => this.setState({ telefono: text })}
-              />
-            </Item>
-            <Text style={styles.validationMessage}>{this.state.errors.telefono}</Text>
+              <Item floatingLabel>
+                <Label>Teléfono</Label>
+                <Input
+                  value={this.state.voluntario.telefono !== null ? this.state.voluntario.telefono.toString() : ""}
+                  onChangeText={text => this.handleChange('telefono', text)}
+                />
+              </Item>
+              <Text style={styles.validationMessage}>{this.state.errors.telefono}</Text>
 
-            <Item floatingLabel>
-              <Label>DNI</Label>
-              <Input
-                value={this.state.dni}
-                onChangeText={text => this.setState({ dni: text })}
-              />
-            </Item>
-            <Text style={styles.validationMessage}>{this.state.errors.dni}</Text>
+              <Item floatingLabel>
+                <Label>DNI</Label>
+                <Input
+                  value={this.state.voluntario.dni !== null ? this.state.voluntario.dni.toString() : ""}
+                  onChangeText={text => this.handleChange('dni', text)}
+                />
+              </Item>
+              <Text style={styles.validationMessage}>{this.state.errors.dni}</Text>
 
-            <Picker
-              selectedValue={this.state.sexo}
-              onValueChange={(itemValue) => this.setState({ sexo: itemValue })}>
-              <Picker.Item label="Sexo" value="" />
-              <Picker.Item label="Hombre" value="Hombre" />
-              <Picker.Item label="Mujer" value="Mujer" />
-              <Picker.Item label="Otro" value="Otro" />
-            </Picker>
-            <Text style={styles.validationMessage}>{this.state.errors.sexo}</Text>
+              <ListItem>
+                <Label>Sexo</Label>
 
-            <Separator bordered noTopBorder>
-              <Text>Extras</Text>
-            </Separator>
+                <Picker
+                  selectedValue={this.state.voluntario.sexo}
+                  onValueChange={(itemValue) => this.handleChangeSexo(itemValue)}>
+                  <Picker.Item label="" value="" />
+                  <Picker.Item label="Hombre" value="Hombre" />
+                  <Picker.Item label="Mujer" value="Mujer" />
+                  <Picker.Item label="Otro" value="Otro" />
+                </Picker>
+              </ListItem>
+              <Text style={styles.validationMessage}>{this.state.errors.sexo}</Text>
 
-            <Item floatingLabel>
-              <Label>Gustos</Label>
-              <Input
-                value={this.state.dni}
-                multiline={true}
-                numberOfLines={5}
-                value={this.state.gustos}
-                onChangeText={text => this.setState({ gustos: text })}
-              />
-            </Item>
-            <Text style={styles.validationMessage}>{this.state.errors.gustos}</Text>
+              <Separator bordered noTopBorder>
+                <Text>Extras</Text>
+              </Separator>
 
-            <Item floatingLabel>
-              <Label>Habilidades</Label>
-              <Input
-                multiline={true}
-                numberOfLines={5}
-                onChangeText={(text) => this.setState({ habilidades: text })}
-                value={this.state.habilidades}
-              />
-            </Item>
-          </Form>
-        </Content>
-      </Container>
-    );
+              <Item floatingLabel>
+                <Label>Gustos</Label>
+                <Input
+                  value={this.state.voluntario.gustos}
+                  multiline={true}
+                  numberOfLines={5}
+                  onChangeText={text => this.handleChange('gustos', text)}
+                />
+              </Item>
+              <Text style={styles.validationMessage}>{this.state.errors.gustos}</Text>
+
+              <Item floatingLabel>
+                <Label>Habilidades</Label>
+                <Input
+                  multiline={true}
+                  numberOfLines={5}
+                  onChange={text => this.handleChange('habilidades', text)}
+                  value={this.state.voluntario.habilidades}
+                />
+              </Item>
+            </Form>
+          </Content>
+        </Container>
+      );
+    }
+    return (<Text></Text>)
   }
 }
 

@@ -21,5 +21,8 @@ export default {
     marginTop: 5,
     marginLeft: 20,
     marginBottom: 2.5,
+  },
+  textMuted: {
+    color: '#A9A9A9'
   }
 };

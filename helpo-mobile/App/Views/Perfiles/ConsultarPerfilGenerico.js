@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import api from '../../api';
 import ConsultarPerfilOrganizacion from './PerfilOrganizacion/ConsultarPerfilOrganizacion'
 import ConsultarPerfilVoluntario from './PerfilVoluntario/ConsultarPerfilVoluntario'
-//import ModificarPerfilOrganizacion from './PerfilOrganizacion/ModificarPerfilOrganizacion'
-//import ModificarPerfilEmpresa from './PerfilEmpresa/ModificarPerfilEmpresa'
-import ModificarPerfilVoluntario from './PerfilVoluntario/ModificarPerfilVoluntario'
 import {
   Container,
   Header,
@@ -36,11 +33,8 @@ class ConsultarPerfilGenerico extends Component {
       loggedUser: true,
     };
     this.renderConsultar = this.renderConsultar.bind(this)
-    this.renderModificar = this.renderModificar.bind(this)
     this.renderConsultarOtro = this.renderConsultarOtro.bind(this)
     this.renderComponente = this.renderComponente.bind(this)
-    this.switchToConsultar = this.switchToConsultar.bind(this)
-    this.switchToModificar = this.switchToModificar.bind(this)
     this.goBack = this.goBack.bind(this);
   }
 
@@ -90,55 +84,6 @@ class ConsultarPerfilGenerico extends Component {
       })
   }
 
-  switchToConsultar() {
-    this.componentDidMount()
-    this.setState({
-      modificar: false
-    })
-  }
-
-  switchToModificar() {
-    this.setState({
-      modificar: true
-    })
-  }
-
-  renderModificar() {
-    switch (this.state.userType) {
-      case 1:
-        return (<ModificarPerfilOrganizacion
-          nombre={this.state.nombre}
-          email={this.state.email}
-          data={this.state.data}
-          rubros={this.state.rubros}
-          switchToConsultar={this.switchToConsultar}
-          goBack={this.goBack}
-        />)
-
-      case 2:
-        return (<ModificarPerfilVoluntario
-          nombre={this.state.nombre}
-          email={this.state.email}
-          data={this.state.data}
-          switchToConsultar={this.switchToConsultar}
-          goBack={this.goBack}
-        />)
-
-      case 3:
-        return (<ModificarPerfilEmpresa
-          nombre={this.state.nombre}
-          email={this.state.email}
-          data={this.state.data}
-          rubros={this.state.rubros}
-          switchToConsultar={this.switchToConsultar}
-          goBack={this.goBack}
-        />)
-
-      default:
-        return (<Text>Error</Text>)
-    }
-  }
-
   goBack() {
     this.props.navigation.navigate("LaunchScreen");
   }
@@ -173,7 +118,7 @@ class ConsultarPerfilGenerico extends Component {
           nombre={this.state.nombre}
           email={this.state.email}
           data={this.state.data}
-          switchToModificar={this.switchToModificar}
+          switchToModificar={() => this.props.navigation.navigate('ModificarPerfilVoluntario')}
           goBack={this.goBack}
         />)
 
@@ -183,7 +128,7 @@ class ConsultarPerfilGenerico extends Component {
           nombre={this.state.nombre}
           email={this.state.email}
           data={this.state.data}
-          switchToModificar={this.switchToModificar}
+          switchToModificar={() => this.props.navigation.navigate('ModificarPerfilOrganizacion')}
           goBack={this.goBack}
         />)
     }

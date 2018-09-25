@@ -16,7 +16,7 @@ class Login extends Component {
     this.state = {
       email: '',
       password: '',
-      isSigninInProgress: false
+      isSigninInProgress: false,
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     GoogleSignin.configure({

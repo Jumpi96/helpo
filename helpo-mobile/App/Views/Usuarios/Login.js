@@ -1,11 +1,12 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Container, Header, Title, Content, Button, Item, Label, Input, Body, Left, Right, Icon, Form, Text } from 'native-base';
+import { ActionSheet, Container, Header, Title, Content, Button, Item, Label, Input, Body, Left, Right, Icon, Form, Text } from 'native-base';
 
 import styles from './styles';
-import { login } from '../../Redux/actions/auth'
-import { GoogleSignin, GoogleSigninButton } from 'react-native-google-signin';
+import { login, loginGoogleFacebook } from '../../Redux/actions/auth'
+import api from '../../api';
+import { GoogleSignin, GoogleSigninButton, statusCodes } from 'react-native-google-signin';
 import { FBLogin, FBLoginManager } from 'react-native-facebook-login';
 
 class Login extends Component {
@@ -15,15 +16,101 @@ class Login extends Component {
     this.state = {
       email: '',
       password: '',
+      isSigninInProgress: false
     };
     this.handleSubmit = this.handleSubmit.bind(this);
+    GoogleSignin.configure({
+      webClientId: '93328850687-681u9fksr6g52g2bebbj1qu8thldgaq6.apps.googleusercontent.com'
+    });
   }
+
+  preLoginGoogleFacebook = async (url, nombre, email, password, user_type, apellido, id_token) => {
+    const auth = this.props.auth;
+    this.props.loginGoogleFacebook(url, nombre, email, password, user_type, apellido, id_token);
+    if (auth.isAuthenticated) {
+      // Issue #105: Necesita dos clicks para loguear
+      this.props.navigation.navigate("LaunchScreen");
+    }
+  };
+
+  existsGoogleFacebook(url, nombre, email, password, user_type, apellido, id_token) {
+    let headers = { "Content-Type": "application/json" };
+    let body = JSON.stringify({ nombre, email, password, user_type, apellido, id_token });
+    api.post(url, body, { headers })
+      .then(res => {
+        if (res.status === 200) {
+          if (url === "/auth/exists_google/") {
+            var newUrl = "/auth/google/";
+            this.preLoginGoogleFacebook(newUrl, nombre, email, password, user_type, apellido, id_token);
+          } else if (url === "/auth/exists_facebook/") {
+            var newUrl = "/auth/facebook/";
+            this.preLoginGoogleFacebook(newUrl, nombre, email, password, user_type, apellido, id_token);
+          }
+        }
+      }
+      )
+      .catch(
+        e => {
+          if (e.response.status === 404 || e.response.status === 400) {
+            ActionSheet.show(
+              {
+                options: [
+                  { text: "Volver", icon: "close", iconColor: "#25de5b" }
+                ],
+                cancelButtonIndex: 0,
+                title: "Debe seleccionar su tipo de usuario"
+              },
+              buttonIndex => {
+                this.props.navigation.navigate('SignUp')
+              });
+          } else {
+            console.log(e);
+          }
+        }
+      );
+  }
+
+  onSubmitGoogle(userInfo) {
+    const nombre = userInfo.user.givenName;
+    const email = userInfo.user.email;
+    const password = userInfo.user.email;
+    const user_type = 2;
+    const apellido = userInfo.user.familyName;
+    const id_token = userInfo.idToken;
+    const url = "/auth/exists_google/";
+    this.existsGoogleFacebook(url, nombre, email, password, user_type, apellido, id_token);
+  }
+
+  googleSignIn = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      this.setState({ isSigninInProgress: false });
+      console.log(userInfo);
+      this.onSubmitGoogle(userInfo);
+    } catch (error) {
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        this.setState({ isSigninInProgress: false });
+        console.log(error);
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        this.setState({ isSigninInProgress: true });
+        console.log(error);
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        this.setState({ isSigninInProgress: false });
+        console.log(error);
+      } else {
+        this.setState({ isSigninInProgress: false });
+        console.log(error);
+      }
+    }
+  };
 
   handleSubmit(e) {
     e.preventDefault();
     const auth = this.props.auth;
     this.props.login(this.state.email, this.state.password);
     if (auth.isAuthenticated) {
+      // Issue #105: Necesita dos clicks para loguear
       this.props.navigation.navigate("LaunchScreen");
     }
   }
@@ -69,7 +156,7 @@ class Login extends Component {
             style={{ width: 312, height: 48 }}
             size={GoogleSigninButton.Size.Wide}
             color={GoogleSigninButton.Color.Dark}
-            onPress={this._signIn}
+            onPress={this.googleSignIn}
             disabled={this.state.isSigninInProgress} />
           <FBLogin />
         </Content>
@@ -81,6 +168,7 @@ class Login extends Component {
 function bindAction(dispatch) {
   return {
     login: (email, password) => dispatch(login(email, password)),
+    loginGoogleFacebook: (url, nombre, email, password, user_type, apellido, id_token) => dispatch(loginGoogleFacebook(url, nombre, email, password, user_type, apellido, id_token))
   };
 }
 

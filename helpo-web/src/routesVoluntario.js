@@ -42,6 +42,16 @@ const Dashboard = Loadable({
   loading: Loading,
 });
 
+const MisSuscripciones = Loadable({
+  loader: () => import('./views/Suscripcion/MisSuscripciones/MisSuscripciones'),
+  loading: Loading,
+})
+
+const AlbumImagenes = Loadable({
+  loader: () => import('./views/Actividades/ConsultarEventos/AlbumImagenes/AlbumImagenes'),
+  loading: Loading,
+})
+
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
@@ -51,8 +61,10 @@ const routes = [
   { path: '/actividades/consultar-evento/', name: 'Consultar evento', component: ConsultarEventosView },
   { path: '/actividades/registrar-colaboraciones', name: 'Registrar colaboraciones', component: RegistrarColaboraciones },
   { path: '/actividades/mis-colaboraciones', name: 'Mis colaboraciones', component: MisColaboraciones },
+  { path: '/actividades/album/:eventoId', name: 'Album de Evento', component: AlbumImagenes },
   { path: '/perfil/:usuarioId?', name: 'Perfil de usuario', component: ConsultarPerfil },
   { path: '/organizaciones', name: 'Organizaciones', component: OrganizacionesPage },
+  { path: '/suscripciones', name: 'Mis suscripciones', component: MisSuscripciones }
 ];
 
 export default routes;

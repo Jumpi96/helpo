@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Card, CardBody, CardHeader } from 'reactstrap'
 import api from '../../api';
 import ConsultarPerfilOrganizacion from './PerfilOrganizacion/ConsultarPerfilOrganizacion'
 import ConsultarPerfilEmpresa from './PerfilEmpresa/ConsultarPerfilEmpresa'
@@ -26,6 +28,15 @@ class ConsultarPerfilGenerico extends Component {
     this.renderComponente = this.renderComponente.bind(this)
     this.switchToConsultar = this.switchToConsultar.bind(this)
     this.switchToModificar = this.switchToModificar.bind(this)
+    this.isLoggedUser = this.isLoggedUser.bind(this)
+  }
+
+  isLoggedUser() {
+    // Retorna true si el perfil es del usuario logeado, sino retorna false
+    if (this.props.logeadoId === this.state.userId) {
+      return true
+    }
+    else { return false }
   }
 
   getApiCall(userType) {
@@ -101,6 +112,17 @@ class ConsultarPerfilGenerico extends Component {
     })
   }
 
+  loading = () => (
+    <Card>
+      <CardHeader>
+        <i className="fa fa-align-justify"></i> Perfil
+      </CardHeader>
+      <CardBody>
+        <p style={{ fontSize: 14 }}>Espere unos segundos, se esta cargando la pagina...</p>
+      </CardBody>
+    </Card>
+  )
+
   renderModificar() {        
     switch (this.state.userType) {
       case 1:
@@ -130,7 +152,7 @@ class ConsultarPerfilGenerico extends Component {
                   /> )
 
       default:
-        return ( <p>Error</p> )        
+        return ( this.loading() )        
     }
   }  
 
@@ -143,7 +165,7 @@ class ConsultarPerfilGenerico extends Component {
                   email={this.state.email}
                   data={this.state.data}
                   switchToModificar={this.switchToModificar}
-                  sinModificar={true}
+                  sinModificar={!this.isLoggedUser()}
                   />)
 
       case 2:
@@ -152,7 +174,7 @@ class ConsultarPerfilGenerico extends Component {
                   email={this.state.email}
                   data={this.state.data}
                   switchToModificar={this.switchToModificar}
-                  sinModificar={true}
+                  sinModificar={!this.isLoggedUser()}
                   /> )
 
       case 3:
@@ -161,11 +183,11 @@ class ConsultarPerfilGenerico extends Component {
                   email={this.state.email}
                   data={this.state.data}
                   switchToModificar={this.switchToModificar}
-                  sinModificar={true}
+                  sinModificar={!this.isLoggedUser()}
                   /> )
 
       default:
-        return ( <p>Error</p> )        
+        return ( this.loading() )        
     }
   }
 
@@ -178,6 +200,7 @@ class ConsultarPerfilGenerico extends Component {
                   email={this.state.email}
                   data={this.state.data}
                   switchToModificar={this.switchToModificar}
+                  sinModificar={!this.isLoggedUser()}
                   />)
 
       case 2:
@@ -186,6 +209,7 @@ class ConsultarPerfilGenerico extends Component {
                   email={this.state.email}
                   data={this.state.data}
                   switchToModificar={this.switchToModificar}
+                  sinModificar={!this.isLoggedUser()}
                   /> )
 
       case 3:
@@ -194,10 +218,11 @@ class ConsultarPerfilGenerico extends Component {
                   email={this.state.email}
                   data={this.state.data}
                   switchToModificar={this.switchToModificar}
+                  sinModificar={!this.isLoggedUser()}
                   /> )
 
       default:
-        return ( <p>Error</p> )        
+        return ( this.loading() )        
     }
   }  
 
@@ -213,11 +238,15 @@ class ConsultarPerfilGenerico extends Component {
 
   render() {
     return (
-    <div>
+    <div>      
       {this.renderComponente()}
     </div>
     );
   }
 }
 
-export default ConsultarPerfilGenerico;
+const mapStateToProps = state => ({
+  logeadoId: state.auth.user.id
+})
+
+export default connect(mapStateToProps)(ConsultarPerfilGenerico);

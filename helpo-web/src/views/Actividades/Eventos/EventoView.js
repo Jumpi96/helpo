@@ -113,7 +113,7 @@ class EventoView extends React.Component {
       let listaContactos;
       if (evento.contacto.length > 0) {
         listaContactos = evento.contacto.map((contacto) =>
-          <li class="list-group-item">{contacto.nombre} - {contacto.telefono}</li>
+          <li className="list-group-item">{contacto.nombre} - {contacto.telefono}</li>
         );
       }
       return (
@@ -157,7 +157,7 @@ class EventoView extends React.Component {
                 <b name="contactos" className="float-left">Contactos</b>
               </div>
               <div className="form-group col-md-6">
-                <ul class="list-group">{listaContactos}</ul>
+                <ul className="list-group">{listaContactos}</ul>
               </div>
             </div>
           ) : undefined

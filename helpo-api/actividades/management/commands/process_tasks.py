@@ -22,13 +22,13 @@ class Command(BaseCommand):
                     evento=evento, execute_date=evento.fecha_hora_fin, tipo='EVENTO_FINISH')
                 finished_task.save()
                 evento.save()
-                notificar_inicio_evento(evento)
+                notificar_inicio_evento(evento, cron_exec=True)
 
             elif task_type == 'EVENTO_FINISH':
                 evento = task.evento
                 evento.estado = 3  # finalized
                 evento.save()
-                notificar_fin_evento(evento)
+                notificar_fin_evento(evento, cron_exec=True)
 
             else:
                 print(

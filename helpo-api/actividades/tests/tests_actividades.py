@@ -3,6 +3,7 @@ from django.utils import timezone
 from rest_framework import status
 from django.test import TestCase, Client
 from django.urls import reverse
+from users.models import User
 from actividades.models import RubroEvento, Evento, Ubicacion, CategoriaRecurso, Recurso, Necesidad
 from actividades.serializers import RubroEventoSerializer, CategoriaRecursoSerializer, RecursoSerializer, \
     NecesidadSerializer
@@ -44,6 +45,11 @@ class RubroEventoTests(TestCase):
 class EventoTests(TestCase):
 
     def setUp(self):
+        self.usuario = User.objects.create(
+            email = "jsdf@mfad.com",
+            nombre = "Mi ONG",
+            user_type = 1
+        )
         self.salud = RubroEvento.objects.create(
             nombre = "Salud"
         )     
@@ -148,6 +154,11 @@ class RecursoTests(TestCase):
 class NecesidadTests(TestCase):
 
     def setUp(self):
+        self.usuario = User.objects.create(
+            email = "jsdf@mfad.com",
+            nombre = "Mi ONG",
+            user_type = 1
+        )
         self.evento = Evento.objects.create(
             nombre = "Jornada 28/04/18",
             descripcion = "Esta es una jornada de prueba",

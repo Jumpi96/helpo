@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import { Card, CardHeader, Button, CardTitle, CardText, CardBody, CardColumns } from 'reactstrap';
 import {Gmaps, Marker} from 'react-gmaps';
 import { getImagen } from '../../../utils/Imagen'
+import BotonSuscripcion from '../../Suscripcion/BotonSuscripcion/BotonSuscripcion'
 //https://github.com/MicheleBertoli/react-gmaps
 
 const perfilPropTypes = {
@@ -36,7 +37,7 @@ const perfilPropTypes = {
 
 class ConsultarPerfilOrganizacion extends Component {
   constructor(props) {
-    super(props); 
+    super(props);
     this.mostrarUbicacion = this.mostrarUbicacion.bind(this);
     this.renderCuit = this.renderCuit.bind(this);
     this.renderDescripcion = this.renderDescripcion.bind(this);
@@ -52,28 +53,28 @@ class ConsultarPerfilOrganizacion extends Component {
     if (this.props.data.telefono == null) {
       return <p className='text-muted'> No hay valor ingresado</p>
     }
-    return <p> {this.props.data.telefono}</p>      
+    return <p> {this.props.data.telefono}</p>
   }
 
   renderCuit() {
     if (this.props.data.cuit == null) {
       return <p className='text-muted'> No hay valor ingresado</p>
     }
-    return <p> {this.props.data.cuit}</p>      
+    return <p> {this.props.data.cuit}</p>
   }
 
   renderRubro() {
     if (this.props.data.rubro == null) {
       return <p className='text-muted'> No hay valor ingresado</p>
     }
-    return <p> {this.props.data.rubro.nombre}</p>      
+    return <p> {this.props.data.rubro.nombre}</p>
   }
 
   renderDescripcion() {
     if (this.props.data.descripcion == null) {
       return <p className='text-muted'> No hay valor ingresado</p>
     }
-    return <p> {this.props.data.descripcion}</p>      
+    return <p> {this.props.data.descripcion}</p>
   }
 
   renderManos() {
@@ -91,44 +92,44 @@ class ConsultarPerfilOrganizacion extends Component {
   }
 
   mostrarUbicacion() {
-    if(this.props.data.ubicacion == null || (this.props.data.ubicacion.latitud === 0 && this.props.data.ubicacion.longitud === 0)){
+    if (this.props.data.ubicacion == null || (this.props.data.ubicacion.latitud === 0 && this.props.data.ubicacion.longitud === 0)) {
     }
-    else{
-      const params = {v: '3.exp', key: process.env.GOOGLE_API_KEY}
-      return (      
-        <div className='row' style={{ marginBottom: '20px'}} >   
-        <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center'}} class='col-2'>
-        <p style={{ textAlign: 'right'}} className='font-weight-bold' htmlFor="descripcion">Ubicación</p>
-        </div>
+    else {
+      const params = { v: '3.exp', key: process.env.GOOGLE_API_KEY }
+      return (
+        <div className='row' style={{ marginBottom: '20px' }} >
+          <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }} className='col-2'>
+            <p style={{ textAlign: 'right' }} className='font-weight-bold' htmlFor="descripcion">Ubicación</p>
+          </div>
 
-        <div className='col-6'>
-        <Gmaps
-          width={'300px'}
-          height={'300px'}
-          lat={this.props.data.ubicacion.latitud}
-          lng={this.props.data.ubicacion.longitud}
-          zoom={12}
-          params={params}>
-          <Marker
-            lat={this.props.data.ubicacion.latitud}
-            lng={this.props.data.ubicacion.longitud}
-          />
-        </Gmaps>
-        
-        <p style={{ marginTop: '10px' }}>{this.props.data.ubicacion.notas}</p>
+          <div className='col-6'>
+            <Gmaps
+              width={'300px'}
+              height={'300px'}
+              lat={this.props.data.ubicacion.latitud}
+              lng={this.props.data.ubicacion.longitud}
+              zoom={12}
+              params={params}>
+              <Marker
+                lat={this.props.data.ubicacion.latitud}
+                lng={this.props.data.ubicacion.longitud}
+              />
+            </Gmaps>
+
+            <p style={{ marginTop: '10px' }}>{this.props.data.ubicacion.notas}</p>
+          </div>
         </div>
-      </div>
-       )         
+      )
     }
-  }  
-  
+  }
+
   getLinkVerEventos() {
     return '/actividades/consultar-eventos?organizacion=' + this.props.id;
   }
 
   render() {
     const link = this.getLinkVerEventos();
-    return (      
+    return (
       <Card>
       <CardHeader>
         <i className="fa fa-align-justify"></i> Perfil
@@ -193,7 +194,9 @@ class ConsultarPerfilOrganizacion extends Component {
             {this.mostrarUbicacion()}
             <div style={{ width: '500px', justifyContent: 'center' ,display: 'flex', marginBottom: '10px' }} className='row offster-md-4'>
               <div className="col-md-4">
-                <Button onClick={this.props.switchToModificar} color='primary'>Modificar Datos</Button>
+              {this.props.sinModificar
+              ? ""
+              : <Button onClick={this.props.switchToModificar} color='primary'>Modificar Datos</Button>}
               </div>
             </div>
             <div style={{ width: '500px', justifyContent: 'center' ,display: 'flex', marginBottom: '10px' }} className='row offster-md-4'>
@@ -201,7 +204,12 @@ class ConsultarPerfilOrganizacion extends Component {
                 <Link to={link}>
                   <button className='btn btn-primary'>Ver eventos organizados</button>
                 </Link>
-              </div>
+              </div>              
+            </div>
+            <div style={{ width: '500px', justifyContent: 'center' ,display: 'flex', marginBottom: '10px' }} className='row offster-md-4'>
+              <div className="col-md-4">
+                <BotonSuscripcion organizacion={this.props.id}/>
+              </div>              
             </div>
           </div>
           <div className="col-md-4">

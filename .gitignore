@@ -5,8 +5,9 @@
 *.env
 *.pem
 # */settings/local.py
-/staticfiles/*
+*/staticfiles/*
 helpo-api/staticfiles/
+*/staticfiles/*
 /mediafiles/*
 __pycache__/
 
@@ -68,3 +69,6 @@ pgadmin/*
 
 # SSL Certs
 certs/
+
+# Logging
+logs/

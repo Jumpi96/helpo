@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -67,6 +66,8 @@
 		D3996C325573440B84927C30 /* Roboto_medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A2135D8B364945E58AD9E8D3 /* Roboto_medium.ttf */; };
 		DC3DE038855B4BF6AA410B65 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 96ABA0A589C34FC285964292 /* FontAwesome.ttf */; };
 		E73620ABFA994D789F415C47 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6DD2330BCC9544BA90427320 /* Octicons.ttf */; };
+		B9E9B733556D4B2D89BB0812 /* libReactNativeConfig.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 59DA81F7FC934FC7B707286D /* libReactNativeConfig.a */; };
+		D40DBB2EB1E14A1F833F3C6B /* libRNGooglePlacePicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B21FDED3171B4DCCA5D09BE2 /* libRNGooglePlacePicker.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -447,6 +448,10 @@
 		F44561F0B5DF4DECB36C0FC1 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		F8F2AA88AECA4DF1B81C0682 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		FF8E74A0B63C4C06B64FC2A6 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
+		BAAE9278417F498390700EF7 /* ReactNativeConfig.xcodeproj */ = {isa = PBXFileReference; name = "ReactNativeConfig.xcodeproj"; path = "../node_modules/react-native-config/ios/ReactNativeConfig.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		59DA81F7FC934FC7B707286D /* libReactNativeConfig.a */ = {isa = PBXFileReference; name = "libReactNativeConfig.a"; path = "libReactNativeConfig.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		F032CA6996404E5DAF5A70F9 /* RNGooglePlacePicker.xcodeproj */ = {isa = PBXFileReference; name = "RNGooglePlacePicker.xcodeproj"; path = "../node_modules/react-native-google-place-picker/ios/RNGooglePlacePicker.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		B21FDED3171B4DCCA5D09BE2 /* libRNGooglePlacePicker.a */ = {isa = PBXFileReference; name = "libRNGooglePlacePicker.a"; path = "libRNGooglePlacePicker.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -477,12 +482,9 @@
 				8485911BB8384558B944244D /* libRNDeviceInfo.a in Frameworks */,
 				45B043CCC40743CD82B79568 /* libRNVectorIcons.a in Frameworks */,
 				18AB3726A3634ED7B244DB2D /* libRCTOneSignal.a in Frameworks */,
-				B1FEEF66B3944891954E30FC /* libReactNativeConfig.a in Frameworks */,
 				D160E0DEADF944149DA11060 /* libRNGooglePlacePicker.a in Frameworks */,
 				22E3A77D2019600AF1DE551E /* libPods-helpoMobile.a in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
+				B9E9B733556D4B2D89BB0812 /* libReactNativeConfig.a in Frameworks */,
 		2D02E4781E0B4A5D006451C7 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -763,8 +765,8 @@
 				8B7B733381C645F1B8C0D891 /* RNDeviceInfo.xcodeproj */,
 				BD4CDC2F631F479DA222C93C /* RNVectorIcons.xcodeproj */,
 				5BFDA9FFE22D4A178EF85025 /* RCTOneSignal.xcodeproj */,
-				1B38F68ACBAF4E8791C22778 /* ReactNativeConfig.xcodeproj */,
-				AEB5EA38C13B45A086DE38DC /* RNGooglePlacePicker.xcodeproj */,
+				BAAE9278417F498390700EF7 /* ReactNativeConfig.xcodeproj */,
+				F032CA6996404E5DAF5A70F9 /* RNGooglePlacePicker.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";

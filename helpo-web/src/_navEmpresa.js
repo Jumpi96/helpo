@@ -34,6 +34,11 @@ export default {
         icon: 'icon-star'
       },
       {
+        name: 'Organizaciones',
+        url: '/organizaciones',
+        icon: 'icon-calendar'
+      },
+      {
         title: true,
         name: 'Perfil',
         wrapper: {            // optional wrapper object

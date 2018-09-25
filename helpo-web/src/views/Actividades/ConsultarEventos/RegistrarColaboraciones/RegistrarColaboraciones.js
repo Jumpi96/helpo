@@ -192,7 +192,7 @@ class RegistrarColaboraciones extends Component {
     if (!necesidad.funcion) {
       necesidad.colaboraciones.forEach((c) => { contador += c.cantidad});
     } else {
-      contador = necesidad.participaciones.length;
+      necesidad.participaciones.forEach((c) => { contador += c.cantidad});
     }
     return necesidad.cantidad - contador + aportado;
   }

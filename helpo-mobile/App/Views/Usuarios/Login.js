@@ -16,7 +16,8 @@ class Login extends Component {
     this.state = {
       email: '',
       password: '',
-      isSigninInProgress: false,
+      isGoogleSigninInProgress: false,
+      isLoginFound: false,
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     GoogleSignin.configure({
@@ -24,11 +25,36 @@ class Login extends Component {
     });
   }
 
-  preLoginGoogleFacebook = async (url, nombre, email, password, user_type, apellido, id_token) => {
+  componentDidUpdate() {
+    const auth = this.props.auth;
+    if (auth.isAuthenticated) {
+      this.props.navigation.navigate('LaunchScreen');
+    }
+  }
+
+  showToast(socialNet) {
+    // No usado, lo dejo de recuerdo o como ejemplo de Toast
+    ActionSheet.show(
+      {
+        options: [
+          { text: "Cancelar", icon: "close", iconColor: "#fa213b" },
+          { text: "Aceptar", icon: "american-football", iconColor: "#2c8ef4" }
+        ],
+        title: "¿Desea iniciar sesión con " + socialNet + "?"
+      },
+      buttonIndex => {
+        if (buttonIndex === 1) {
+          this.props.navigation.navigate('LaunchScreen');
+        }
+      });
+  }
+
+  preLoginGoogleFacebook(url, nombre, email, password, user_type, apellido, id_token) {
     const auth = this.props.auth;
     this.props.loginGoogleFacebook(url, nombre, email, password, user_type, apellido, id_token);
     if (auth.isAuthenticated) {
       // Issue #105: Necesita dos clicks para loguear
+      this.setState({ isLoginFound: true });
       this.props.navigation.navigate("LaunchScreen");
     }
   };
@@ -70,6 +96,17 @@ class Login extends Component {
       );
   }
 
+  onSubmitFacebook(data) {
+    const nombre = data.profile.name;
+    const email = data.profile.email;
+    const password = data.profile.email;
+    const user_type = 2;
+    const apellido = data.profile.name;
+    const id_token = data.credentials.token;
+    const url = "/auth/exists_facebook/";
+    this.existsGoogleFacebook(url, nombre, email, password, user_type, apellido, id_token);
+  }
+
   onSubmitGoogle(userInfo) {
     const nombre = userInfo.user.givenName;
     const email = userInfo.user.email;
@@ -85,21 +122,21 @@ class Login extends Component {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
-      this.setState({ isSigninInProgress: false });
+      this.setState({ isGoogleSigninInProgress: false });
       console.log(userInfo);
       this.onSubmitGoogle(userInfo);
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-        this.setState({ isSigninInProgress: false });
+        this.setState({ isGoogleSigninInProgress: false });
         console.log(error);
       } else if (error.code === statusCodes.IN_PROGRESS) {
-        this.setState({ isSigninInProgress: true });
+        this.setState({ isGoogleSigninInProgress: true });
         console.log(error);
       } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-        this.setState({ isSigninInProgress: false });
+        this.setState({ isGoogleSigninInProgress: false });
         console.log(error);
       } else {
-        this.setState({ isSigninInProgress: false });
+        this.setState({ isGoogleSigninInProgress: false });
         console.log(error);
       }
     }
@@ -111,11 +148,13 @@ class Login extends Component {
     this.props.login(this.state.email, this.state.password);
     if (auth.isAuthenticated) {
       // Issue #105: Necesita dos clicks para loguear
+      this.setState({ isLoginFound: true });
       this.props.navigation.navigate("LaunchScreen");
     }
   }
 
   render() {
+    var _this = this;
     return (
       <Container style={styles.container}>
         <Header>
@@ -157,8 +196,41 @@ class Login extends Component {
             size={GoogleSigninButton.Size.Wide}
             color={GoogleSigninButton.Color.Dark}
             onPress={this.googleSignIn}
-            disabled={this.state.isSigninInProgress} />
-          <FBLogin />
+            disabled={this.state.isGoogleSigninInProgress} />
+          <FBLogin
+            permissions={["email"]}
+            loginBehavior={FBLoginManager.LoginBehaviors.Native}
+            onLogin={function (data) {
+              console.log("Logged in!");
+              console.log(data);
+              _this.onSubmitFacebook(data);
+            }}
+            onLogout={function () {
+              console.log("Logged out.");
+              const auth = _this.props.auth;
+              if (auth.isAuthenticated) {
+                _this.props.navigation.navigate("LaunchScreen");
+              }
+            }}
+            onLoginFound={function (data) {
+              console.log("Existing login found.");
+              console.log(data);
+            }}
+            onLoginNotFound={function () {
+              console.log("No user logged in.");
+            }}
+            onError={function (data) {
+              console.log("ERROR");
+              console.log(data);
+            }}
+            onCancel={function () {
+              console.log("User cancelled.");
+            }}
+            onPermissionsMissing={function (data) {
+              console.log("Check permissions!");
+              console.log(data);
+            }}
+          />
         </Content>
       </Container>
     );

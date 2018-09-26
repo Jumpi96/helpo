@@ -7,9 +7,10 @@ import api from '../../api';
 import SignUpPresentation from './SignUpPresentation';
 import validateEmail from '../../Lib/ValidateEmail';
 import { Alert } from 'react-native';
-import { Container, Content } from 'native-base';
+import { Container, View } from 'native-base';
 import { GoogleSignin, GoogleSigninButton, statusCodes } from 'react-native-google-signin';
 import { loginGoogleFacebook } from '../../Redux/actions/auth'
+import { FBLogin, FBLoginManager } from 'react-native-facebook-login';
 
 
 class SignUp extends Component {
@@ -28,7 +29,8 @@ class SignUp extends Component {
         email: '',
         contraseña: '',
       },
-      isSigninInProgress: false,
+      isGoogleSigninInProgress: false,
+      isLoginFound: false,
     };
     this.handleUserTypeSelect = this.handleUserTypeSelect.bind(this);
     this.handleValueChange = this.handleValueChange.bind(this);
@@ -36,6 +38,38 @@ class SignUp extends Component {
     GoogleSignin.configure({
       webClientId: '93328850687-681u9fksr6g52g2bebbj1qu8thldgaq6.apps.googleusercontent.com'
     });
+  }
+
+  componentDidUpdate() {
+    const auth = this.props.auth;
+    if (auth.isAuthenticated) {
+      Alert.alert(
+        'Registro usuario',
+        '¡Se ha registrado exitosamente en Helpo!',
+        [{ text: 'Volver', onPress: () => this.props.navigation.navigate('LaunchScreen') }]
+      );
+    }
+  }
+
+  onSubmitFacebook(data) {
+    const nombre = data.profile.name;
+    const email = data.profile.email;
+    const password = data.profile.email;
+    const user_type = 2;
+    const apellido = data.profile.name;
+    const id_token = data.credentials.token;
+    const url = "/auth/facebook/";
+    const auth = this.props.auth;
+    this.props.loginGoogleFacebook(url, nombre, email, password, user_type, apellido, id_token);
+    if (auth.isAuthenticated) {
+      // Issue #105: Necesita dos clicks para loguear
+      Alert.alert(
+        'Registro usuario',
+        '¡Se ha registrado exitosamente en Helpo!',
+        [{ text: 'Volver', onPress: () => this.props.navigation.navigate('LaunchScreen') }]
+      );
+      this.setState({ isLoginFound: true });
+    }
   }
 
   onSubmitGoogle(userInfo) {
@@ -55,6 +89,7 @@ class SignUp extends Component {
         '¡Se ha registrado exitosamente en Helpo!',
         [{ text: 'Volver', onPress: () => this.props.navigation.navigate('LaunchScreen') }]
       );
+      this.setState({ isLoginFound: true });
     }
   }
 
@@ -62,21 +97,21 @@ class SignUp extends Component {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
-      this.setState({ isSigninInProgress: false });
+      this.setState({ isGoogleSigninInProgress: false });
       console.log(userInfo);
       this.onSubmitGoogle(userInfo);
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-        this.setState({ isSigninInProgress: false });
+        this.setState({ isGoogleSigninInProgress: false });
         console.log(error);
       } else if (error.code === statusCodes.IN_PROGRESS) {
-        this.setState({ isSigninInProgress: true });
+        this.setState({ isGoogleSigninInProgress: true });
         console.log(error);
       } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-        this.setState({ isSigninInProgress: false });
+        this.setState({ isGoogleSigninInProgress: false });
         console.log(error);
       } else {
-        this.setState({ isSigninInProgress: false });
+        this.setState({ isGoogleSigninInProgress: false });
         console.log(error);
       }
     }
@@ -226,6 +261,7 @@ class SignUp extends Component {
 
   render() {
     const data = this.state;
+    var _this = this;
 
     return (
       <Container>
@@ -235,12 +271,44 @@ class SignUp extends Component {
           onTypeChange={this.handleUserTypeSelect}
           onSubmit={this.onSubmitData}
         />
-        <GoogleSigninButton
-          style={{ width: 312, height: 48 }}
-          size={GoogleSigninButton.Size.Wide}
-          color={GoogleSigninButton.Color.Dark}
-          onPress={this.googleSignIn}
-          disabled={this.state.isSigninInProgress} />
+        <View>
+          <FBLogin
+            permissions={["email"]}
+            loginBehavior={FBLoginManager.LoginBehaviors.Native}
+            onLogin={function (data) {
+              console.log("Logged in!");
+              console.log(data);
+              _this.onSubmitFacebook(data);
+            }}
+            onLogout={function () {
+              console.log("Logged out.");
+            }}
+            onLoginFound={function (data) {
+              console.log("Existing login found.");
+              console.log(data);
+            }}
+            onLoginNotFound={function () {
+              console.log("No user logged in.");
+            }}
+            onError={function (data) {
+              console.log("ERROR");
+              console.log(data);
+            }}
+            onCancel={function () {
+              console.log("User cancelled.");
+            }}
+            onPermissionsMissing={function (data) {
+              console.log("Check permissions!");
+              console.log(data);
+            }}
+          />
+          <GoogleSigninButton
+            style={{ width: 312, height: 48 }}
+            size={GoogleSigninButton.Size.Wide}
+            color={GoogleSigninButton.Color.Dark}
+            onPress={this.googleSignIn}
+            disabled={this.state.isGoogleSigninInProgress} />
+        </View>
       </Container>
     );
   }

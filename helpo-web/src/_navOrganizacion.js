@@ -29,12 +29,12 @@ export default {
         icon: 'icon-cursor'
       },
       {
-        name: 'Nuevo evento',
+        name: 'Nueva actividad',
         url: '/actividades/registrar-evento',
         icon: 'icon-pencil',
       },
       {
-        name: 'Mis eventos',
+        name: 'Mis actividades',
         url: '/actividades/evento',
         icon: 'icon-star'
       },

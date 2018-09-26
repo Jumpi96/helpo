@@ -66,7 +66,15 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
 
         avatar = Imagen.objects.get(id=1)
-        
+        if "avatar" in kwargs:
+            avatar_url = kwargs["avatar"]
+            if avatar_url:
+                new_avatar = Imagen.objects.create(isExternal=True, url=avatar_url)
+                if new_avatar:
+                    avatar = new_avatar
+
+        if type(user_type) is str:
+            user_type = int(user_type)
         if user_type == 1:
             profile = OrganizacionProfile.objects.create(usuario=user, avatar=avatar)
         elif user_type == 2:
@@ -151,6 +159,9 @@ class User(AbstractBaseUser, PermissionsMixin, IndexedTimeStampedModel):
             uv_object.delete()
             return True
         return False
+
+class UserWrapper(User):
+    id_token = models.TextField()
 
 class VoluntarioProfile(Profile):
     sexo = models.TextField(blank=True, null=True)

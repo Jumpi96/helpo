@@ -47,6 +47,28 @@ export function login(email, password) {
   };
 }
 
+export function loginGoogleFacebook(url, nombre, email, password, user_type, apellido, id_token) {
+  return (dispatch) => {
+    const headers = {"Content-Type": "application/json"};
+    const body = JSON.stringify({nombre, email, password, user_type, apellido, id_token});
+    dispositivoApi.setDispositivo(email);
+
+    return api.post(url, body, { headers })
+      .then(res => {
+        dispatch({type: 'LOGIN_SUCCESSFUL', data: res.data });
+        return res.data;
+      })
+      .catch(e => {
+        if (e.response.status === 403 || e.response.status === 401) {
+          dispatch({type: "AUTHENTICATION_ERROR", data: e.response.data});
+        } else {
+          dispatch({type: "LOGIN_FAILED", data: e.response.data});
+        }
+      })
+      .done();
+  };
+}
+
 export function register(email, password) {
   return (dispatch) => {
     const headers = { 'Content-Type': 'application/json' };

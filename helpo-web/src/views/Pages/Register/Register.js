@@ -6,7 +6,12 @@ import validateEmail from "../../../utils/ValidateEmail";
 import api from "../../../api"
 import ModalRegistroExitoso from './ModalRegistroExitoso';
 import './Register.css';
-import logo from '../../../assets/img/brand/logo_principal.svg' 
+import logo from '../../../assets/img/brand/logo_principal.svg';
+import GoogleLogin from 'react-google-login';
+import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
+import { auth } from "../../../actions";
+import { Redirect } from 'react-router-dom';
+
 
 class Register extends Component {
   constructor(props) {
@@ -66,6 +71,26 @@ class Register extends Component {
       )
      // this.props.history.push('dashboard')
     } 
+  }
+
+  onSubmitGoogle(response) {        
+    const nombre = response.profileObj.givenName;
+    const email = response.profileObj.email;
+    const password = response.profileObj.email;
+    const user_type = this.state.user_type;
+    const apellido = response.profileObj.familyName;
+    const id_token = response.tokenId;
+    this.props.loginGoogle(nombre, email, password, user_type, apellido, id_token);
+  }
+
+  onSubmitFacebook(response) {        
+    const nombre = response.name;
+    const email = response.email;
+    const password = response.email;
+    const user_type = this.state.user_type;
+    const apellido = response.name;
+    const id_token = response.accessToken;
+    this.props.loginFacebook(nombre, email, password, user_type, apellido, id_token);
   }
 
   renderModal() {
@@ -257,6 +282,19 @@ class Register extends Component {
 
   render() {
     const user_type = this.state.user_type;
+    const responseGoogle = (response) => {
+      // console.log("google console");
+      // console.log(response);
+      this.onSubmitGoogle(response);
+    }
+    const responseFacebook = (response) => {
+      // console.log("facebook console");
+      // console.log(response);
+      this.onSubmitFacebook(response);
+    }
+    if (this.props.isAuthenticated) {
+      return <Redirect to="/" />
+    } else {
     return (
       <body>
 		    <div className="container">
@@ -339,10 +377,23 @@ class Register extends Component {
                   <CardFooter className="p-4">
                     <Row>
                       <Col xs="12" sm="6">
-                        <Button className="btn-facebook" block><span>Facebook</span></Button>
+                        <FacebookLogin
+                          appId="343119846258901"
+                          autoLoad={false}
+                          fields="name,email,picture"
+                          callback={responseFacebook}
+                          render={renderProps => (
+                            <Button onClick={renderProps.onClick} className="btn-facebook" block><span>Facebook</span></Button>
+                          )} />
+                        {/* <Button className="btn-facebook" block><span>Facebook</span></Button> */}
                       </Col>
                       <Col xs="12" sm="6">
-                        <Button className="btn-twitter" block><span>Twitter</span></Button>
+                        <GoogleLogin
+                          clientId="93328850687-681u9fksr6g52g2bebbj1qu8thldgaq6.apps.googleusercontent.com"
+                          buttonText="Google"
+                          onSuccess={responseGoogle}
+                          onFailure={responseGoogle} />
+                        {/* <Button className="btn-google" block><span>Google</span></Button> */}
                       </Col>
                     </Row>
                   </CardFooter>
@@ -356,6 +407,7 @@ class Register extends Component {
 	  </body>
     );
   }
+}
 }
 
 
@@ -378,5 +430,15 @@ const mapStateToProps = state => {
     register: (username, password) => dispatch(auth.register(username, password)),
   };
 }*/
+const mapDispatchToProps = dispatch => {
+  return {
+    loginGoogle: (nombre, email, password, user_type, apellido, id_token) => {
+      return dispatch(auth.loginGoogle(nombre, email, password, user_type, apellido, id_token));
+    },
+    loginFacebook: (nombre, email, password, user_type, apellido, id_token) => {
+      return dispatch(auth.loginFacebook(nombre, email, password, user_type, apellido, id_token));
+    }
+  };
+}
 
-export default connect(mapStateToProps/*, mapDispatchToProps*/)(Register);
+export default connect(mapStateToProps, mapDispatchToProps)(Register);

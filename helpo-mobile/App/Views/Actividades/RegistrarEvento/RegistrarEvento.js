@@ -15,6 +15,8 @@ import {
   Icon,
   Form,
   Text,
+  ListItem,
+  Switch
 } from 'native-base';
 import moment from 'moment';
 import SelectorUbicacion from './SelectorUbicacion/SelectorUbicacion';
@@ -35,7 +37,7 @@ class RegistrarEvento extends React.Component {
       rubro_id: 0,
       fecha_hora_inicio: new Date(),
       fecha_hora_fin: new Date(),
-        // TODO: ubicacion que pasamos por defecto debería ser la de la ONG. Ahora, Córdoba.
+      // TODO: ubicacion que pasamos por defecto debería ser la de la ONG. Ahora, Córdoba.
       ubicacion: { latitud: -31.4201, longitud: -64.1888, notas: '' },
       contactos: [{
         nombre: '',
@@ -45,6 +47,7 @@ class RegistrarEvento extends React.Component {
       }],
       nextId: 2,
       errors: {},
+      esEvento: true
     };
     this.handleUbicacionChange = this.handleUbicacionChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -83,8 +86,8 @@ class RegistrarEvento extends React.Component {
           console.log(res);
           console.log(res.data);
           Alert.alert(
-            'Registrar evento',
-            'Se registró el evento con éxito.'
+            'Registrar actividad',
+            'Se registró la actividad con éxito.'
           );
           this.props.navigation.navigate('RegistrarNecesidades', { id: evento.id });
         }).catch((error) => {
@@ -120,34 +123,34 @@ class RegistrarEvento extends React.Component {
     const inicio = moment(this.state.fecha_hora_inicio);
     const fin = moment(this.state.fecha_hora_fin);
     const actual = moment(new Date());
-    
+
     if (!this.state.nombre) {
       formIsValid = false;
       errors.nombre = 'Debe ingresar un nombre.';
     }
 
     if (isNaN(Date.parse(this.state.fecha_hora_inicio)) ||
-        isNaN(Date.parse(this.state.fecha_hora_fin))) {
+      isNaN(Date.parse(this.state.fecha_hora_fin))) {
       formIsValid = false;
       errors.fechas = 'Las fechas ingresadas no son válidas.';
     } else {
       if (inicio.days() === actual.days() && (inicio.hours() >= actual.hours() || inicio.hours() < actual.hours())) {
-        //formIsValid = false;
-        //errors.fechas = "No es posible organizar el evento en el mismo día"
-      } else 
+        formIsValid = false;
+        errors.fechas = "No es posible organizar el evento en el mismo día"
+      } else
         if (inicio < actual) {
           formIsValid = false;
-          errors.fechas = 'La fecha de inicio debe ser posterior a la fecha actual'; 
-        } else 
+          errors.fechas = 'La fecha de inicio debe ser posterior a la fecha actual';
+        } else
           if (fin < inicio) {
             formIsValid = false;
             errors.fechas = 'La fecha de inicio debe ser anterior a la fecha de fin del evento'
           } else
             if (moment.duration(fin.diff(inicio)).asHours() > 24 && inicio < fin) {
-            formIsValid = false;
-            errors.fechas = 'El evento no puede durar más de 24 horas'
-            } 
-            else {errors.fechas = undefined;}
+              formIsValid = false;
+              errors.fechas = 'El evento no puede durar más de 24 horas'
+            }
+            else { errors.fechas = undefined; }
     }
     if (this.state.rubro_id === 0) {
       formIsValid = false;
@@ -171,9 +174,9 @@ class RegistrarEvento extends React.Component {
     for (let i = 0; i < contactos.length; i += 1) {
       // Es valido no ingresar ningun contacto
       if (contactos[i].nombre === '' &&
-      contactos[i].email === '' &&
-      contactos[i].telefono === '' &&
-      contactos.length === 1) {
+        contactos[i].email === '' &&
+        contactos[i].telefono === '' &&
+        contactos.length === 1) {
         return validacion;
       }
       if (contactos[i].nombre === '') {
@@ -265,6 +268,24 @@ class RegistrarEvento extends React.Component {
     });
   }
 
+  getMensaje() {
+    if (this.state.esEvento) {
+      return (
+        <Text>
+          Un evento es una actividad que se realiza en un día y horario determinado.
+          Voluntarios y empresas podrán aportar hasta el inicio del evento.
+        </Text>
+      );
+    } else {
+      return (
+        <Text>
+          Una campaña es una actividad que dura un período prolongado de tiempo.
+          Voluntarios y empresas podrán aportar durante toda su duración.
+        </Text>
+      );
+    }
+  }
+
   render() {
     return (
       <Container style={styles.container}>
@@ -275,13 +296,20 @@ class RegistrarEvento extends React.Component {
             </Button>
           </Left>
           <Body>
-            <Title>Registrar evento</Title>
+            <Title>Registrar actividad social</Title>
           </Body>
           <Right />
         </Header>
 
         <Content>
           <Form>
+            <ListItem>
+              {this.getMensaje()}
+            </ListItem>
+            <ListItem>
+              <Switch value={this.state.esEvento} onValueChange={(val) => this.setState({ esEvento: val })} />
+              <Label>{this.state.esEvento ? "Evento" : "Campaña"}</Label>
+            </ListItem>
             <Item floatingLabel>
               <Label>Nombre</Label>
               <Input

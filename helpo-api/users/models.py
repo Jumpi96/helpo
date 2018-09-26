@@ -37,6 +37,7 @@ class OrganizacionProfile(Profile):
     avatar = models.ForeignKey(Imagen, on_delete=models.SET_NULL, blank=True, null=True)
     ubicacion = models.ForeignKey(Ubicacion, on_delete=models.SET_NULL,blank=True, null=True)
     descripcion = models.TextField(blank=True, null=True)
+    #manos = models.IntegerField(blank=False, default=0)    
 
 class EmpresaProfile(Profile):
     telefono = models.BigIntegerField(null=True)

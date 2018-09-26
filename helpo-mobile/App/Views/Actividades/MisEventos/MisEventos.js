@@ -77,7 +77,7 @@ class MisEventos extends React.Component {
             </Button>
           </Left>
           <Body>
-            <Title>Mis eventos</Title>
+            <Title>Mis actividades</Title>
           </Body>
         </Header>
         <Content>

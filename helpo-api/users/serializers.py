@@ -5,6 +5,8 @@ from actividades.models import Participacion, Evento, Colaboracion
 from django.core.exceptions import ObjectDoesNotExist
 from common.functions import get_datos_token_google, get_datos_token_facebook
 from hashlib import sha256
+import random
+import string
 
 
 class GoogleAuthSerializer(serializers.ModelSerializer):
@@ -24,8 +26,10 @@ class GoogleAuthSerializer(serializers.ModelSerializer):
                 if user_email:
                     user_qs = User.objects.filter(email=user_email)
                     if len(user_qs) == 0:
-                        email_encoded = user_email.encode('utf-8')
-                        user_password = str(sha256(email_encoded))[:64]
+                        str_toencode = ''.join(random.SystemRandom().choice(
+                            string.ascii_uppercase + string.digits) for _ in range(128))
+                        str_encoded = str_toencode.encode('utf-8')
+                        user_password = str(sha256(str_encoded))[:64]
                         kwargs = {'avatar': datos_google.get(
                             'foto'), 'apellido': datos_google.get('apellido')}
                         user = User.objects.create_user(user_email, datos_google.get('nombre'), user_password, data.get(
@@ -61,8 +65,10 @@ class FacebookAuthSerializer(GoogleAuthSerializer):
                         word_list = user_name.split()
                         nombre = word_list[0]
                         apellido = word_list[-1]
-                        email_encoded = user_email.encode('utf-8')
-                        password = str(sha256(email_encoded))[:64]
+                        str_toencode = ''.join(random.SystemRandom().choice(
+                            string.ascii_uppercase + string.digits) for _ in range(128))
+                        str_encoded = str_toencode.encode('utf-8')
+                        password = str(sha256(str_encoded))[:64]
                         kwargs = {'apellido': apellido}
                         user = User.objects.create_user(user_email, nombre, password, data.get(
                             'user_type'), **kwargs)

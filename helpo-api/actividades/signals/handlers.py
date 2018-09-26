@@ -43,32 +43,3 @@ def handle_evento_change_notification(sender, instance, created, **kwags):
         for user in users:
             pass
             #Notificar modificacion de evento
-
-@receiver(post_save, sender=Participacion, dispatch_uid=uuid.uuid4())
-def handle_participacion_mano_change(sender, instance, created, **kwargs):
-    """
-    Actualiza la cantidad de manos de una organizacion cuando se le
-    da una mano a esta en una participacion
-    """    
-
-    def sumarMano(organizacion_id):
-        """
-        Suma +1 a las manos de la organizacion
-        """
-        perfil = OrganizacionProfile.objects.get(usuario=organizcion_id)
-        perfil.manos = F("manos") + 1
-        perfil.save()
-    
-    def restarMano(organizacion_id):
-        """
-        Suma +1 a las manos de la organizacion
-        """
-        perfil = OrganizacionProfile.objects.get(usuario=organizcion_id)
-        perfil.manos = F("manos") - 1
-        perfil.save()
-
-    mano_recibida = instance.retroalimentacion_ong
-    organizacion_id = instance.necesidad_voluntario.evento.organizacion.id
-
-    if (created and mano_recibida):
-        sumarMano()

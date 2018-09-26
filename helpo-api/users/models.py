@@ -16,18 +16,30 @@ class Imagen(models.Model):
     isExternal = models.BooleanField()
     url = models.TextField()    
 
+    def __str__(self):
+        return self.url
+
 class RubroOrganizacion(models.Model):
     # nombre deberia ser Unique=True, pero me da problemas en el serializer para hacer update
     # TODO: Ver como arreglar eso, por ahora workaround -> Sacar Unique=True
     nombre = models.CharField(max_length=100)
 
+    def __str__(self):
+        return self.nombre
+
 class RubroEmpresa(models.Model):
     nombre = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.nombre
 
 class Ubicacion(models.Model):
     latitud = models.FloatField()
     longitud = models.FloatField()
     notas = models.CharField(max_length=140, null=True)    
+
+    def __str__(self):
+        return self.notas + " [" + str(self.latitud) + ", " + str(self.longitud) + "]"
 
 class OrganizacionProfile(Profile):
     verificada = models.BooleanField(default=False)
@@ -37,7 +49,7 @@ class OrganizacionProfile(Profile):
     avatar = models.ForeignKey(Imagen, on_delete=models.SET_NULL, blank=True, null=True)
     ubicacion = models.ForeignKey(Ubicacion, on_delete=models.SET_NULL,blank=True, null=True)
     descripcion = models.TextField(blank=True, null=True)
-
+    
 class EmpresaProfile(Profile):
     telefono = models.BigIntegerField(null=True)
     cuit = models.BigIntegerField(blank=True, null=True)
@@ -201,6 +213,9 @@ class Suscripcion(models.Model):
     """
     usuario =  models.ForeignKey(User, related_name="suscripcion")
     organizacion = models.ForeignKey(User, related_name="suscriptor")
+
+    def __str__(self):
+        return self.usuario.__str__() + ' - ' + self.organizacion.__str__()
 
     class Meta:
         # Esto hace que solo pueda haber un par usuario-organizacion

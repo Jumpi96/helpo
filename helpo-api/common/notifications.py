@@ -5,6 +5,7 @@ import threading
 import time
 from random import randint
 from django.conf import settings
+import boto3
 
 
 def _get_players_id(mails):
@@ -121,3 +122,21 @@ def send_push_notification_all(en_title, es_title, en_message, es_message, threa
 
     print("Enviando notificacion push a todos, response text: %s, response code: %s" % (
         response.text, response.status_code))
+
+
+def send_sms_message_to(number="+543515056312"):
+    message = "Hello world"
+    if settings.DEBUG:
+        client = boto3.client(
+            "sns",
+            aws_access_key_id=config('AWS_ACCESS_KEY_ID'),
+            aws_secret_access_key=config('AWS_SECRET_ACCESS_KEY'),
+            region_name="us-west-2"
+        )
+        client.publish(
+            PhoneNumber=number,
+            Message=message
+        )
+        print("Enviando mensaje SMS a %s con el texto: %s" % (number, message))
+    else:
+        print("Mensajes SMS solo permitidos para produccion")

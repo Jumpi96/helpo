@@ -89,6 +89,7 @@ class UserManager(BaseUserManager):
         user = self.create_user(**kwargs)
         user.is_superuser = True
         user.is_staff = True
+        user.is_confirmed = True
         user.save(using=self._db)
         return user
 
@@ -107,10 +108,6 @@ class UserManager(BaseUserManager):
 
         from common.notifications import send_mail_to
         send_mail_to(user.email, subject, content, mail_from)
-        # from common.notifications import send_mail_to_list, send_push_notification_to_list, send_push_notification_to_id_list
-        # send_mail_to_list(["gonzaulla@gmail.com", "helpoweb@gmail.com"], "sub", "hola")
-        # send_push_notification_to_list(["techo@techo.com", "admin@admin.com"], "en", "es", "ja", "hola")
-        # send_push_notification_to_id_list([1], "en", "es", "ja", "hola")
 
     def create_user_verification(self, user, token):
         UserVerification.objects.create(usuario=user, verificationToken=token)
@@ -177,6 +174,9 @@ class UserVerification(IndexedTimeStampedModel):
     usuario = models.OneToOneField('User')
     verificationToken = models.CharField(max_length=2000)
 
+class SmsVerification(IndexedTimeStampedModel):
+    usuario = models.OneToOneField('User')
+    verificationToken = models.CharField(max_length=16)
 
 class Profile(models.Model):
     usuario = models.OneToOneField(User)

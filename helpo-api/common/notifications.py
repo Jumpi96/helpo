@@ -124,19 +124,35 @@ def send_push_notification_all(en_title, es_title, en_message, es_message, threa
         response.text, response.status_code))
 
 
-def send_sms_message_to(number="+543515056312"):
-    message = "Hello world"
-    if settings.DEBUG:
-        client = boto3.client(
-            "sns",
-            aws_access_key_id=config('AWS_ACCESS_KEY_ID'),
-            aws_secret_access_key=config('AWS_SECRET_ACCESS_KEY'),
-            region_name="us-west-2"
-        )
-        client.publish(
-            PhoneNumber=number,
-            Message=message
-        )
-        print("Enviando mensaje SMS a %s con el texto: %s" % (number, message))
+def send_sms_message_to_worker(number, message):
+    client = boto3.client(
+        "sns",
+        aws_access_key_id=config('AWS_ACCESS_KEY_ID'),
+        aws_secret_access_key=config('AWS_SECRET_ACCESS_KEY'),
+        region_name="us-west-2"
+    )
+    client.publish(
+        PhoneNumber=number,
+        Message=message
+    )
+    print("Enviando mensaje SMS a %s con el texto: %s" % (number, message))
+
+
+def send_sms_message_to(number="+543515056312", message="SMS from Helpo", thread_daemon=True):
+    if settings.DEBUG and number is not None:
+        number = __parse_number(number)
+        t = threading.Thread(
+            target=send_sms_message_to_worker, args=(number, message))
+        t.daemon = thread_daemon
+        t.start()
+
     else:
         print("Mensajes SMS solo permitidos para produccion")
+
+
+def __parse_number(number):
+    number = str(number)
+    if number[0:3] == "+54":
+        return number
+    else:
+        return "+54%s" % (number)

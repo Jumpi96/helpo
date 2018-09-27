@@ -14,6 +14,7 @@ from users.models import RubroOrganizacion, RubroEmpresa, OrganizacionProfile, V
 from users.serializers import FacebookAuthSerializer, GoogleAuthSerializer, CreateUserSerializer, UserSerializer, LoginUserSerializer, RubroOrganizacionSerializer, RubroEmpresaSerializer, OrganizacionProfileSerializer, VoluntarioProfileSerializer, EmpresaProfileSerializer, VerificationMailSerializer, AppValuesSerializer, DeviceIDSerializer, SuscripcionSerializer, SuscripcionSerializerLista
 import time
 import requests
+from users.services import send_confirmation_sms
 
 
 class GoogleExistsView(generics.GenericAPIView):
@@ -34,10 +35,6 @@ class GoogleAuthView(generics.GenericAPIView):
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         user = serializer.validate(request.data)
-        if not user.is_confirmed and user.user_type != 2:
-            return Response({
-                "user": UserSerializer(user, context=self.get_serializer_context()).data
-            }, status=status.HTTP_406_NOT_ACCEPTABLE)
         return Response({
             "user": UserSerializer(user, context=self.get_serializer_context()).data,
             "token": AuthToken.objects.create(user)
@@ -149,6 +146,20 @@ class VoluntarioProfileReadUpdateDeleteView(RetrieveUpdateAPIView):
     queryset = VoluntarioProfile.objects.all()
     serializer_class = VoluntarioProfileSerializer
     lookup_field = 'usuario'
+
+class SendSmsOrganizacionView(APIView):
+    """
+    API endpoint para leer un perfil de organizacion y enviar sms
+    """
+    def get(self, request, usuario, format=None):
+        try:
+            user = int(usuario)
+            perfil_organizacion = OrganizacionProfile.objects.filter(usuario=user).first()
+            send_confirmation_sms(perfil_organizacion)
+            serializer = OrganizacionProfileSerializer(perfil_organizacion, many=False)
+            return Response(serializer.data)
+        except ValueError:
+            return Response(None, status=status.HTTP_404_NOT_FOUND)
 
 class VerifyMailView(generics.GenericAPIView):
     serializer_class = VerificationMailSerializer

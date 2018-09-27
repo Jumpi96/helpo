@@ -8,4 +8,9 @@ urlpatterns = [
         view=reportes_views.OrganizationStats.as_view(),
         name="get_organizacion_stats"
     ),
+    url(
+        regex=r"^reportes/organizacion/genero/(?P<id>[-\w]+)/$",
+        view=reportes_views.OrganizacionVoluntariosGenero.as_view(),
+        name="get_organizacion_voluntarios_genero"
+    ),
 ]

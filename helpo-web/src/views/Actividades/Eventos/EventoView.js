@@ -98,7 +98,7 @@ class EventoView extends React.Component {
     if (this.state.isEditing) {
       return (
         <div>
-          <h1>Editar evento</h1>
+          <h1>Editar actividad</h1>
           <EventoForm
             evento={this.state.evento}
             rubros={this.props.rubrosEvento}
@@ -176,7 +176,7 @@ class EventoView extends React.Component {
               hidden={moment(evento.fecha_hora_inicio) <= moment()}
               className="btn btn-warning"
             >
-              Editar evento
+              Editar actividad
             </button>
             <button
               onClick={this.toggleEditNecesidades}
@@ -220,7 +220,7 @@ class EventoView extends React.Component {
               hidden={moment(evento.fecha_hora_inicio) <= moment()}
               className="btn btn-danger"
             >
-              Eliminar evento
+              Eliminar actividad
             </button>
           </div>
           <ModalEliminarItem open={this.state.showModalEliminar} nombre={this.state.evento.nombre}

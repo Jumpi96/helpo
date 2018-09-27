@@ -37,7 +37,7 @@ const Dashboard = Loadable({
 const routes = [
   { path: '/noAuth', exact: true, name: 'Home', component: NoAuthLayout },
   { path: '/noAuth/dashboard', name: 'helpo', component: Dashboard },
-  { path: '/noAuth/actividades/consultar-eventos', name: 'Consultar eventos', component: ConsultarEventosPage },
+  { path: '/noAuth/actividades/consultar-eventos', name: 'Consultar actividades sociales', component: ConsultarEventosPage },
   { path: '/noAuth/actividades/consultar-evento/', name: 'Consultar evento', component: ConsultarEventosView },
   { path: '/noAuth/organizaciones', name: 'Organizaciones', component: OrganizacionesPage },
   { path: '/noAuth/perfil/:usuarioId?', name: 'Perfil de usuario', component: ConsultarPerfil }

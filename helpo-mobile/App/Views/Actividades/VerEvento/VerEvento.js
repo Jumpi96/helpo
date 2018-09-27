@@ -97,6 +97,7 @@ class VerEvento extends React.Component {
         </ListItem>
       );
     }
+    const tipoEvento = evento.campaña ? "Campaña" : "Evento"
     return (
       <Container style={styles.container}>
         <Header>
@@ -106,7 +107,7 @@ class VerEvento extends React.Component {
             </Button>
           </Left>
           <Body>
-            <Title>Evento - {evento.nombre}</Title>
+            <Title>{ tipoEvento + ' - ' + evento.nombre }</Title>
           </Body>
         </Header>
         <Content>
@@ -148,25 +149,27 @@ class VerEvento extends React.Component {
           <Separator bordered noTopBorder>
             <Text>Administrar evento</Text>
           </Separator>
-          <ListItem 
-            button 
+          <ListItem
+            button
             onPress={() => this.props.navigation.navigate('ConsultarColaboraciones', {
-              eventoId: this.props.navigation.state.params.evento.id})}
-            >
+              eventoId: this.props.navigation.state.params.evento.id
+            })}
+          >
             <Body>
               <Text>Ver Colaboraciones</Text>
             </Body>
           </ListItem>
-          <GoAlbum             
+          <GoAlbum
             visible={evento.estado >= 2 ? true : false} // Solo visible si evento comenzo o finalizo
             eventoId={this.props.navigation.state.params.evento.id}
             navigation={this.props.navigation}
           />
-          <ListItem 
-            button 
+          <ListItem
+            button
             onPress={() => this.props.navigation.navigate('MensajesEvento', {
-              evento: this.props.navigation.state.params.evento.id})}
-            >
+              evento: this.props.navigation.state.params.evento.id
+            })}
+          >
             <Body>
               <Text>Mensajes de evento</Text>
             </Body>

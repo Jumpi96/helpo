@@ -202,7 +202,7 @@ class ConsultarPerfilOrganizacion extends Component {
             <div style={{ width: '500px', justifyContent: 'center' ,display: 'flex', marginBottom: '10px' }} className='row offster-md-4'>
               <div className="col-md-4">
                 <Link to={link}>
-                  <button className='btn btn-primary'>Ver eventos organizados</button>
+                  <button className='btn btn-primary'>Ver actividades organizadas</button>
                 </Link>
               </div>              
             </div>

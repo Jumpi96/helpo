@@ -11,7 +11,7 @@ from rest_framework.generics import RetrieveUpdateDestroyAPIView, RetrieveUpdate
 from knox.models import AuthToken
 from django.contrib.auth import get_user_model
 from users.models import RubroOrganizacion, RubroEmpresa, OrganizacionProfile, VoluntarioProfile, EmpresaProfile, AppValues, User, DeviceID, Suscripcion
-from users.serializers import FacebookAuthSerializer, GoogleAuthSerializer, CreateUserSerializer, UserSerializer, LoginUserSerializer, RubroOrganizacionSerializer, RubroEmpresaSerializer, OrganizacionProfileSerializer, VoluntarioProfileSerializer, EmpresaProfileSerializer, VerificationMailSerializer, AppValuesSerializer, DeviceIDSerializer, SuscripcionSerializer, SuscripcionSerializerLista
+from users.serializers import FacebookAuthSerializer, GoogleAuthSerializer, CreateUserSerializer, UserSerializer, LoginUserSerializer, RubroOrganizacionSerializer, RubroEmpresaSerializer, OrganizacionProfileSerializer, VoluntarioProfileSerializer, EmpresaProfileSerializer, VerificationMailSerializer, VerificationSmsSerializer, AppValuesSerializer, DeviceIDSerializer, SuscripcionSerializer, SuscripcionSerializerLista
 import time
 import requests
 from users.services import send_confirmation_sms
@@ -160,6 +160,33 @@ class SendSmsOrganizacionView(APIView):
             return Response(serializer.data)
         except ValueError:
             return Response(None, status=status.HTTP_404_NOT_FOUND)
+
+class SendSmsEmpresaView(APIView):
+    """
+    API endpoint para leer un perfil de empresa y enviar sms
+    """
+    def get(self, request, usuario, format=None):
+        try:
+            user = int(usuario)
+            perfil_empresa = EmpresaProfile.objects.filter(usuario=user).first()
+            send_confirmation_sms(perfil_empresa)
+            serializer = EmpresaProfileSerializer(perfil_empresa, many=False)
+            return Response(serializer.data)
+        except ValueError:
+            return Response(None, status=status.HTTP_404_NOT_FOUND)
+
+class VerifySmsView(generics.GenericAPIView):
+    serializer_class = VerificationSmsSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            return Response({
+                "verification": "Success"
+             }, status=status.HTTP_200_OK)
+        return Response({
+            "verification": "Failed"
+        }, status=status.HTTP_404_NOT_FOUND)
 
 class VerifyMailView(generics.GenericAPIView):
     serializer_class = VerificationMailSerializer

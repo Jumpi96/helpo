@@ -42,7 +42,7 @@ class UbicacionAdmin(admin.ModelAdmin):
     list_display = ['id', 'latitud', 'longitud', 'notas']
 
 class EmpresaProfileAdmin(admin.ModelAdmin):
-    list_display = ['id', 'telefono', 'cuit', 'rubro', 'avatar', 'descripcion', 'ubicacion']
+    list_display = ['id', 'verificada', 'telefono', 'cuit', 'rubro', 'avatar', 'descripcion', 'ubicacion']
 
 class VoluntarioProfileAdmin(admin.ModelAdmin):
     list_display = ['id', 'usuario', 'sexo', 'apellido', 'dni', 'telefono', 'avatar', 'gustos', 'habilidades'] 

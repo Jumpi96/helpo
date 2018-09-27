@@ -49,14 +49,33 @@ class OrganizacionProfile(Profile):
     avatar = models.ForeignKey(Imagen, on_delete=models.SET_NULL, blank=True, null=True)
     ubicacion = models.ForeignKey(Ubicacion, on_delete=models.SET_NULL,blank=True, null=True)
     descripcion = models.TextField(blank=True, null=True)
+
+    def validate_sms(self, token):        
+        sv_object = SmsVerification.objects.get(usuario=self.usuario)
+        if (sv_object.verificationToken == token):
+            self.verificada=True
+            self.save()
+            sv_object.delete()
+            return True
+        return False
     
 class EmpresaProfile(Profile):
+    verificada = models.BooleanField(default=False)
     telefono = models.BigIntegerField(null=True)
     cuit = models.BigIntegerField(blank=True, null=True)
     rubro = models.ForeignKey(RubroEmpresa, on_delete=models.SET_NULL, blank=True, null=True)
     avatar = models.ForeignKey(Imagen, on_delete=models.SET_NULL, blank=True, null=True)
     ubicacion = models.ForeignKey(Ubicacion, on_delete=models.SET_NULL,blank=True, null=True)
     descripcion = models.TextField(blank=True, null=True)
+
+    def validate_sms(self, token):        
+        sv_object = SmsVerification.objects.get(usuario=self.usuario)
+        if (sv_object.verificationToken == token):
+            self.verificada=True
+            self.save()
+            sv_object.delete()
+            return True
+        return False
 
 class UserManager(BaseUserManager):
 

@@ -349,7 +349,6 @@ class VerificationMailSerializer(serializers.Serializer):
     token = serializers.CharField()
 
     def validate(self, data):
-        print(data)
         try:
             user_verification = UserVerification.objects.get(verificationToken=data["token"])
             user = user_verification.usuario

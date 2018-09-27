@@ -23,7 +23,7 @@ class GoogleExistsView(generics.GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         if serializer.exists(request.data):
             return Response(serializer.initial_data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=HTTP_404_NOT_FOUND)
+        return Response(serializer.errors, status=status.HTTP_404_NOT_FOUND)
 
 class FacebookExistsView(GoogleExistsView):
     serializer_class = FacebookAuthSerializer
@@ -34,6 +34,10 @@ class GoogleAuthView(generics.GenericAPIView):
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         user = serializer.validate(request.data)
+        if not user.is_confirmed and user.user_type != 2:
+            return Response({
+                "user": UserSerializer(user, context=self.get_serializer_context()).data
+            }, status=status.HTTP_406_NOT_ACCEPTABLE)
         return Response({
             "user": UserSerializer(user, context=self.get_serializer_context()).data,
             "token": AuthToken.objects.create(user)
@@ -61,6 +65,10 @@ class LoginView(generics.GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user =  serializer.validated_data
+        if not user.is_confirmed and user.user_type != 2:
+            return Response({
+                "user": UserSerializer(user, context=self.get_serializer_context()).data
+            }, status=status.HTTP_406_NOT_ACCEPTABLE)
         return Response({
             "user": UserSerializer(user, context=self.get_serializer_context()).data,
             "token": AuthToken.objects.create(user)

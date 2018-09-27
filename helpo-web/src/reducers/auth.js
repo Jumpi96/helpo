@@ -21,6 +21,8 @@ export default function auth(state=initialState, action) {
         isAuthenticated: false, isLoading: false};
     case 'LOGIN_FAILED':
       return {...state, errors: {detail: 'Los datos ingresados no son correctos.'}};
+    case 'LOGIN_UNVERIFIED':
+      return {...state, errors: {detail: 'Debe verificar su cuenta. Preguntas a: consultas@helpo.com.ar'}}
     case 'REGISTRATION_FAILED':
     case 'LOGOUT_SUCCESSFUL':
       localStorage.removeItem("token");

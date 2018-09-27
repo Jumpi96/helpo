@@ -256,7 +256,7 @@ class Register extends Component {
       isValid = false;
     }
     if (errors.email === "" && !validateEmail(this.state.email)) {
-      errors.email = "Ingrese un email valido";
+      errors.email = "Ingrese un email válido";
       isValid = false;
     }
     //Contraseña

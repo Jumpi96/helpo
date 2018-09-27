@@ -273,7 +273,7 @@ class ConsultarPerfilEmpresa extends Component {
               <div style={{ display: 'flex', marginBottom: '10px' }} className='row offster-md-4'>
                 <div className="col-md-4">
                   <Link to={link}>
-                    <button className='btn btn-primary'>Ver eventos patrocinados</button>
+                    <button className='btn btn-primary'>Ver actividades patrocinadas</button>
                   </Link>
                 </div>
               </div>
@@ -307,7 +307,7 @@ class ConsultarPerfilEmpresa extends Component {
           </div>
         </CardBody>
         {this.renderModal()}
-      </Card>
+      </Card >
     );
   }
 }

@@ -94,17 +94,20 @@ class VerEvento extends React.Component {
   }
 
   render() {
-    const { evento } = this.state;
+    const deleteButtons = [
+      { text: 'Eliminar', icon: 'trash', iconColor: '#fa213b' },
+      { text: 'Cancelar', icon: 'close', iconColor: '#25de5b' },
+    ];
+    const { params } = this.props.navigation.state;
+    const evento = params.evento;
+
     if (evento.nombre) {
-      const deleteButtons = [
-        { text: 'Eliminar', icon: 'trash', iconColor: '#fa213b' },
-        { text: 'Cancelar', icon: 'close', iconColor: '#25de5b' },
-      ];
+      const tipoEvento = evento.campaña ? "Campaña" : "Evento";
       let listaContactos;
       if (evento.contacto.length > 0) {
         listaContactos = evento.contacto.map(contacto =>
           <ListItem key={contacto.nombre}>
-            <Text>{contacto.nombre} - {contacto.email} - {contacto.telefono}</Text>
+            <Text>{contacto.nombre} - {contacto.telefono}</Text>
           </ListItem>
         );
       }
@@ -117,7 +120,7 @@ class VerEvento extends React.Component {
               </Button>
             </Left>
             <Body>
-              <Title>Evento - {evento.nombre}</Title>
+              <Title>{tipoEvento + ' - ' + evento.nombre}</Title>
             </Body>
           </Header>
           <Content>
@@ -162,7 +165,7 @@ class VerEvento extends React.Component {
             <ListItem
               button
               onPress={() => this.props.navigation.navigate('ConsultarColaboraciones', {
-                eventoId: evento.id
+                eventoId: this.props.navigation.state.params.evento.id
               })}
             >
               <Body>
@@ -171,13 +174,13 @@ class VerEvento extends React.Component {
             </ListItem>
             <GoAlbum
               visible={evento.estado >= 2 ? true : false} // Solo visible si evento comenzo o finalizo
-              eventoId={evento.id}
+              eventoId={this.props.navigation.state.params.evento.id}
               navigation={this.props.navigation}
             />
             <ListItem
               button
               onPress={() => this.props.navigation.navigate('MensajesEvento', {
-                evento: evento.id
+                evento: this.props.navigation.state.params.evento.id
               })}
             >
               <Body>
@@ -227,7 +230,7 @@ class VerEvento extends React.Component {
           </View>
         </Container>
       );
-    } else { 
+    } else {
       return (<Text></Text>);
     }
   }

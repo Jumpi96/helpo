@@ -117,6 +117,16 @@ class EventoCard extends Component {
     return resultado + '.';
   }
 
+  getFecha() {
+    const { evento } = this.props;
+    if (evento.campaña) {
+      return moment(evento.fecha_hora_inicio).format('DD/MM/YYYY') +
+        " - " + moment(evento.fecha_hora_fin).format('DD/MM/YYYY');
+    } else {
+      return moment(evento.fecha_hora_inicio).format('DD/MM/YYYY HH:mm');
+    }
+  }
+
   render() {
     const {
       evento,
@@ -154,11 +164,10 @@ class EventoCard extends Component {
                   alt="ONG"
                   style={{ width: '75px', height: '75px' }}
                 />
-                <div className="h4 m-0">{moment(evento.fecha_hora_inicio).format('DD/MM/YYYY')}</div>
+                <div className="h4 m-0">{this.getFecha()}</div>
                 <div>
-                  {evento.organizacion ?
-                    evento.nombre + ' - ' + evento.organizacion.nombre : undefined
-                  }
+                  <h4>{evento.campaña ? "Campaña" : "Evento"} {"- " + evento.nombre}</h4>
+                  <h5>{evento.organizacion ? evento.organizacion.nombre : undefined}</h5>
                 </div>
               </div>
               <div className="col-md-6">

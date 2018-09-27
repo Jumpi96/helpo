@@ -152,7 +152,7 @@ class ConsultarEventosView extends React.Component {
                   alt={evento.organizacion.nombre}
                   style={{ width: '75px', height: '75px' }}
                 />
-                {' ' + evento.nombre}
+                {evento.campaña ? " Campaña" : " Evento"}{" - " + evento.nombre}
               </h1>
               <div className="row">
                 <div className="form-group col-md-3">

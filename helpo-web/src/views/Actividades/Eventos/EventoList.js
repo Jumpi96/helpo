@@ -24,7 +24,8 @@ class EventoList extends React.Component {
             header={moment(evento.fecha_hora_inicio).format('DD/MM/YYYY')} 
             key={evento.id} footer
             mainText={evento.nombre} 
-            icon="fa fa-hand-stop-o" color="primary" 
+            icon={evento.campaña ? "fa fa-calendar-plus-o" : "fa fa-hand-stop-o"}
+            color="primary" 
             link={'/actividades/evento/' + evento.id}
           />
         )}

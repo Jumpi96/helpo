@@ -336,7 +336,7 @@ class ConsultaEventoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Evento
-        fields = ('id', 'nombre', 'descripcion', 'fecha_hora_inicio',
+        fields = ('id', 'nombre', 'descripcion', 'fecha_hora_inicio', 'campaña',
             'fecha_hora_fin', 'rubro', 'rubro_id', 'ubicacion', 'contacto', 'organizacion_id',
             'necesidades', 'organizacion', 'voluntarios', 'comentarios', 'estado', 'propuestas')
 

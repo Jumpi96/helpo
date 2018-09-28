@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import api from "../../../../api"
 
 class ModalVerificarCuenta extends Component {
 
@@ -7,16 +8,61 @@ class ModalVerificarCuenta extends Component {
     super(props);
     this.state = {
       error: undefined,
+      exito: undefined,
       smsSent: false,
-      codigo: undefined
+      codigo: undefined,
+      verificada: false
     };
     this.handleCodigoChange = this.handleCodigoChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.enviarSms = this.enviarSms.bind(this);
+    this.handleAccept = this.handleAccept.bind(this);
+    this.handleCancel = this.handleCancel.bind(this);
   }
 
   enviarSms() {
-    this.setState({ smsSent: true });
+    var url = "";
+    this.setState({
+      error: undefined,
+      exito: undefined,
+    });
+    if (this.props.userType === "1") {
+      url = `/perfiles/send_sms_organizacion/${this.props.id}/`;
+    } else if (this.props.userType === "3") {
+      url = `/perfiles/send_sms_empresa/${this.props.id}/`;
+    }
+    if (url !== "") {
+      api.get(url)
+        .then(res => {
+          if (res.status === 200) {
+            this.setState({
+              smsSent: true,
+              exito: 'SMS enviado.',
+            });
+          }
+        }
+        )
+        .catch(
+          error => {
+            if (error.response.status !== 200) {
+              this.setState({
+                smsSent: false,
+                error: 'Hubo un error al enviar su SMS.',
+              })
+            }
+          }
+        );
+    }
+  }
+
+  handleAccept() {
+    const verificada = this.state.verificada;
+    this.props.onSuccess(verificada);
+  }
+
+  handleCancel() {
+    const verificada = this.state.verificada;
+    this.props.onCancel(verificada);
   }
 
   handleCodigoChange(event) {
@@ -24,9 +70,32 @@ class ModalVerificarCuenta extends Component {
   }
 
   handleSubmit() {
+    this.setState({ exito: undefined });
     if (this.handleValidation()) {
-      console.log("VERIFICADA");
-      this.setState({ error: undefined });
+      const token = this.state.codigo.toUpperCase();
+      const headers = { 'Content-Type': 'application/json' };
+      const body = JSON.stringify({ token });
+      api.post('/verify_sms/', body, { headers })
+        .then(res => {
+          if (res.status === 200) {
+            this.setState({
+              verificada: true,
+              exito: 'Cuenta verificada.',
+              error: undefined
+            });
+          }
+        }
+        )
+        .catch(
+          error => {
+            if (error.response.status !== 200) {
+              this.setState({
+                error: 'Código incorrecto',
+                exito: undefined
+              })
+            }
+          }
+        );
     }
   }
 
@@ -39,7 +108,6 @@ class ModalVerificarCuenta extends Component {
       error = 'Debe ingresar un código.';
     }
     this.setState({ error });
-    console.log(codigo);
     return formIsValid;
   }
 
@@ -89,6 +157,7 @@ class ModalVerificarCuenta extends Component {
                   <input className="form-control" placeholder="Ingrese su código"
                     value={this.state.codigo} onChange={this.handleCodigoChange} />
                   <span style={{ color: "red" }}>{this.state.error}</span>
+                  <span style={{ color: "green" }}>{this.state.exito}</span>
                 </div>
               </div>
             </div> : undefined
@@ -96,10 +165,12 @@ class ModalVerificarCuenta extends Component {
         </ModalBody>
         <ModalFooter>
           {!this.state.smsSent ?
-          <Button color="primary" onClick={this.enviarSms}>Enviar SMS</Button>: undefined }
-          {this.state.smsSent ?
-          <Button color="primary" onClick={this.handleSubmit}>Verificar cuenta</Button>: undefined } 
-          {' '}<Button color="secondary" onClick={this.props.onCancel}>Cancelar</Button>
+            <Button color="primary" onClick={this.enviarSms}>Enviar SMS</Button> : undefined}
+          {(this.state.smsSent && !this.state.verificada) ?
+            <Button color="info" onClick={this.handleSubmit}>Verificar cuenta</Button> : undefined}
+          {this.state.verificada ?
+            <Button color="success" onClick={this.handleAccept}>Aceptar</Button> : undefined}
+          {' '}<Button color="secondary" onClick={this.handleCancel}>Cancelar</Button>
         </ModalFooter>
       </Modal>
     )

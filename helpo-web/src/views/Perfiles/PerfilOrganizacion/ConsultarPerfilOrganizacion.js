@@ -64,7 +64,7 @@ class ConsultarPerfilOrganizacion extends Component {
       return <p className='text-muted'> No hay valor ingresado</p>
     }
     if (!this.props.data.verificada) {
-      return <p>{this.props.data.telefono} <span id="btnVerificar" onClick={this.togglePopover} style={{ borderRadius: '4px' }} className="btn-primary fa fa-pencil fa-fw"></span></p>  
+      return <p>{this.props.data.telefono} <span id="btnVerificar" onClick={this.togglePopover} style={{ borderRadius: '4px' }} className="btn-primary fa fa-pencil fa-fw"></span></p>
     }
     return <p>{this.props.data.telefono}</p>
   }
@@ -108,9 +108,15 @@ class ConsultarPerfilOrganizacion extends Component {
     if (this.state.showModalVerificarCuenta) {
       return (
         <ModalVerificarCuenta
-          telefono={this.props.data.telefono}
-          onSuccess={() => { this.setState({ showModalVerificarCuenta: false }) }}
-          onCancel={() => { this.setState({ showModalVerificarCuenta: false }) }}
+          telefono={this.props.data.telefono} id={this.props.id} userType="1"
+          onSuccess={(verificada) => {
+            this.props.data.verificada = verificada;
+            this.setState({ showModalVerificarCuenta: false });
+          }}
+          onCancel={(verificada) => {
+            this.props.data.verificada = verificada;
+            this.setState({ showModalVerificarCuenta: false });
+          }}
         />)
     }
   }

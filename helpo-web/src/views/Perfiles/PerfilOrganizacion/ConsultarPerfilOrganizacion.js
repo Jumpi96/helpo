@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types'
-import { Card, CardHeader, Button, CardTitle, CardText, CardBody, CardColumns, Tooltip } from 'reactstrap';
+import { Card, CardHeader, Button, CardTitle, CardText, CardBody, CardColumns, Tooltip, Popover, PopoverBody, PopoverHeader } from 'reactstrap';
 import {Gmaps, Marker} from 'react-gmaps';
 import { getImagen } from '../../../utils/Imagen'
 import BotonSuscripcion from '../../Suscripcion/BotonSuscripcion/BotonSuscripcion'
@@ -46,9 +46,11 @@ class ConsultarPerfilOrganizacion extends Component {
     this.renderManos = this.renderManos.bind(this);
     this.renderEventos = this.renderEventos.bind(this);
     this.toggle = this.toggle.bind(this);
+    this.togglePopover = this.togglePopover.bind(this);
     this.getLinkVerEventos = this.getLinkVerEventos.bind(this);
     this.state = {
-      tooltipOpen: false
+      tooltipOpen: false,
+      popoverOpen: false
     };
   }
 
@@ -57,7 +59,7 @@ class ConsultarPerfilOrganizacion extends Component {
     if (this.props.data.telefono == null) {
       return <p className='text-muted'> No hay valor ingresado</p>
     }
-    return <p> {this.props.data.telefono}</p>
+    return <p>{this.props.data.telefono} <span id="btnVerificar" onClick={this.togglePopover} style={{ borderRadius: '4px' }} class="btn-primary fa fa-pencil fa-fw"></span></p>
   }
 
   renderCuit() {
@@ -133,6 +135,12 @@ class ConsultarPerfilOrganizacion extends Component {
     });
   }
 
+  togglePopover() {
+    this.setState({
+      popoverOpen: !this.state.popoverOpen
+    });
+  }
+
   getLinkVerEventos() {
     return '/actividades/consultar-eventos?organizacion=' + this.props.id;
   }
@@ -174,7 +182,11 @@ class ConsultarPerfilOrganizacion extends Component {
                 <p style={{ textAlign: 'right' }} className='font-weight-bold' htmlFor="telefono">Teléfono</p>
               </div>
               <div className="col-md-5">
-                {this.renderTelefono()} 
+                {this.renderTelefono()}
+                <Popover placement="bottom" isOpen={this.state.popoverOpen} target="btnVerificar" toggle={this.togglePopover}>
+                  <PopoverHeader>Verificar cuenta</PopoverHeader>
+                  <PopoverBody>Si desea realizar la verificaci&oacute;n de segundo factor de su cuenta, haga click <a style={{textDecoration: "underline", color:"#F39200"}} onClick={this.props.switchToModificar}>aqu&iacute;</a></PopoverBody>
+                </Popover>
               </div>
             </div>
             <div className='row'>

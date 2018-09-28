@@ -214,10 +214,11 @@ class ConsultarPerfilOrganizacion extends Component {
                   </div>
                   <div className="col-md-5">
                     {this.renderTelefono()}
-                    <Popover placement="bottom" isOpen={this.state.popoverOpen} target="btnVerificar" toggle={this.togglePopover}>
-                      <PopoverHeader>Confirme su tel&eacute;fono</PopoverHeader>
-                      <PopoverBody>Para que su cuenta sea verificada utilizando un segundo factor de su cuenta, haga click <a style={{ textDecoration: "underline", color: "#F39200" }} onClick={this.showModalVerificarCuenta}>aqu&iacute;</a></PopoverBody>
-                    </Popover>
+                    {!this.props.data.verificada ?
+                      <Popover placement="bottom" isOpen={this.state.popoverOpen} target="btnVerificar" toggle={this.togglePopover}>
+                        <PopoverHeader>Confirme su tel&eacute;fono</PopoverHeader>
+                        <PopoverBody>Para que su cuenta sea verificada utilizando un segundo factor de su cuenta, haga click <a style={{ textDecoration: "underline", color: "#F39200" }} onClick={this.showModalVerificarCuenta}>aqu&iacute;</a></PopoverBody>
+                      </Popover> : undefined}
                   </div>
                 </div>
                 <div className='row'>

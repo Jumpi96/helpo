@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types'
 import { Card, CardHeader, Button, CardTitle, CardText, CardBody, CardColumns, Tooltip, Popover, PopoverBody, PopoverHeader } from 'reactstrap';
-import {Gmaps, Marker} from 'react-gmaps';
+import { Gmaps, Marker } from 'react-gmaps';
 import { getImagen } from '../../../utils/Imagen'
 import BotonSuscripcion from '../../Suscripcion/BotonSuscripcion/BotonSuscripcion'
+import ModalVerificarCuenta from './ModalVerificarCuenta/ModalVerificarCuenta';
 //https://github.com/MicheleBertoli/react-gmaps
 
 const perfilPropTypes = {
@@ -47,10 +48,13 @@ class ConsultarPerfilOrganizacion extends Component {
     this.renderEventos = this.renderEventos.bind(this);
     this.toggle = this.toggle.bind(this);
     this.togglePopover = this.togglePopover.bind(this);
+    this.showModalVerificarCuenta = this.showModalVerificarCuenta.bind(this);
     this.getLinkVerEventos = this.getLinkVerEventos.bind(this);
     this.state = {
       tooltipOpen: false,
-      popoverOpen: false
+      popoverOpen: false,
+      showModalVerificarCuenta: false,
+      modalType: 'success'
     };
   }
 
@@ -59,7 +63,10 @@ class ConsultarPerfilOrganizacion extends Component {
     if (this.props.data.telefono == null) {
       return <p className='text-muted'> No hay valor ingresado</p>
     }
-    return <p>{this.props.data.telefono} <span id="btnVerificar" onClick={this.togglePopover} style={{ borderRadius: '4px' }} class="btn-primary fa fa-pencil fa-fw"></span></p>
+    if (!this.props.data.verificada) {
+      return <p>{this.props.data.telefono} <span id="btnVerificar" onClick={this.togglePopover} style={{ borderRadius: '4px' }} className="btn-primary fa fa-pencil fa-fw"></span></p>  
+    }
+    return <p>{this.props.data.telefono}</p>
   }
 
   renderCuit() {
@@ -87,14 +94,31 @@ class ConsultarPerfilOrganizacion extends Component {
     if (this.props.data.manos == null) {
       return <p className='text-muted'> - </p>
     }
-    return <p> {this.props.data.manos}</p>      
+    return <p> {this.props.data.manos}</p>
   }
 
   renderEventos() {
     if (this.props.data.eventos == null) {
       return <p className='text-muted'> - </p>
     }
-    return <p> {this.props.data.eventos}</p>      
+    return <p> {this.props.data.eventos}</p>
+  }
+
+  renderModal() {
+    if (this.state.showModalVerificarCuenta) {
+      return (
+        <ModalVerificarCuenta
+          telefono={this.props.data.telefono}
+          onSuccess={() => { this.setState({ showModalVerificarCuenta: false }) }}
+          onCancel={() => { this.setState({ showModalVerificarCuenta: false }) }}
+        />)
+    }
+  }
+
+  showModalVerificarCuenta() {
+    this.setState({
+      showModalVerificarCuenta: true,
+    })
   }
 
   mostrarUbicacion() {
@@ -148,115 +172,118 @@ class ConsultarPerfilOrganizacion extends Component {
   render() {
     const link = this.getLinkVerEventos();
     return (
-      <Card>
-      <CardHeader>
-        <i className="fa fa-align-justify"></i> Perfil
+      <div>
+        <Card>
+          <CardHeader>
+            <i className="fa fa-align-justify"></i> Perfil
       </CardHeader>
-      <CardBody>
-        <div className="row">
-          <div className="col-md-8">
-            <div className="row" style={{ height: '110px'}}>
-              <div className="col-md-3">
-                <p style={{ textAlign: 'right' }} className='h4'>{this.props.nombre}</p>
+          <CardBody>
+            <div className="row">
+              <div className="col-md-8">
+                <div className="row" style={{ height: '110px' }}>
+                  <div className="col-md-3">
+                    <p style={{ textAlign: 'right' }} className='h4'>{this.props.nombre}</p>
+                  </div>
+                  <div className="col-md-5">
+                    <img
+                      className='rounded-circle'
+                      src={getImagen(this.props.data.avatar.url)}
+                      alt="avatar"
+                      width="100"
+                      height="100"
+                    />
+                  </div>
+                </div>
+                <div className='row'>
+                  <div className="col-md-3">
+                    <p style={{ textAlign: 'right' }} className='font-weight-bold' htmlFor="mail">Mail</p>
+                  </div>
+                  <div className="col-md-5">
+                    <p>{this.props.email}</p>
+                  </div>
+                </div>
+                <div className='row'>
+                  <div className="col-md-3">
+                    <p style={{ textAlign: 'right' }} className='font-weight-bold' htmlFor="telefono">Teléfono</p>
+                  </div>
+                  <div className="col-md-5">
+                    {this.renderTelefono()}
+                    <Popover placement="bottom" isOpen={this.state.popoverOpen} target="btnVerificar" toggle={this.togglePopover}>
+                      <PopoverHeader>Confirme su tel&eacute;fono</PopoverHeader>
+                      <PopoverBody>Para que su cuenta sea verificada utilizando un segundo factor de su cuenta, haga click <a style={{ textDecoration: "underline", color: "#F39200" }} onClick={this.showModalVerificarCuenta}>aqu&iacute;</a></PopoverBody>
+                    </Popover>
+                  </div>
+                </div>
+                <div className='row'>
+                  <div className="col-md-3">
+                    <p style={{ textAlign: 'right' }} className='font-weight-bold' htmlFor="cuit">CUIT</p>
+                  </div>
+                  <div className="col-md-5">
+                    {this.renderCuit()}
+                  </div>
+                </div>
+                <div className='row'>
+                  <div className="col-md-3">
+                    <p style={{ textAlign: 'right' }} className='font-weight-bold' htmlFor="telefono">Rubro</p>
+                  </div>
+                  <div className="col-md-5">
+                    {this.renderRubro()}
+                  </div>
+                </div>
+                <div className='row'>
+                  <div className="col-md-3">
+                    <p style={{ paddingLeft: 0, textAlign: 'right' }} className='font-weight-bold' htmlFor="descripcion">Descripción</p>
+                  </div>
+                  <div className="col-md-5">
+                    {this.renderDescripcion()}
+                  </div>
+                </div>
+                {this.mostrarUbicacion()}
+                <div style={{ width: '500px', justifyContent: 'center', display: 'flex', marginBottom: '10px' }} className='row offster-md-4'>
+                  <div className="col-md-4">
+                    {this.props.sinModificar
+                      ? ""
+                      : <Button onClick={this.props.switchToModificar} color='primary'>Modificar Datos</Button>}
+                  </div>
+                </div>
+                <div style={{ width: '500px', justifyContent: 'center', display: 'flex', marginBottom: '10px' }} className='row offster-md-4'>
+                  <div className="col-md-4">
+                    <Link to={link}>
+                      <button className='btn btn-primary'>Ver eventos organizados</button>
+                    </Link>
+                  </div>
+                </div>
+                <div style={{ width: '500px', justifyContent: 'center', display: 'flex', marginBottom: '10px' }} className='row offster-md-4'>
+                  <div className="col-md-4">
+                    <BotonSuscripcion organizacion={this.props.id} />
+                  </div>
+                </div>
               </div>
-              <div className="col-md-5">
-                <img
-                  className='rounded-circle'
-                  src={getImagen(this.props.data.avatar.url)}
-                  alt="avatar"
-                  width="100" 
-                  height="100"
-                />
-              </div>
-            </div>
-            <div className='row'>
-              <div className="col-md-3">
-                <p style={{ textAlign: 'right' }} className='font-weight-bold' htmlFor="mail">Mail</p>
-              </div>
-              <div className="col-md-5">
-                <p>{this.props.email}</p>
-              </div>
-            </div>
-            <div className='row'>
-              <div className="col-md-3">
-                <p style={{ textAlign: 'right' }} className='font-weight-bold' htmlFor="telefono">Teléfono</p>
-              </div>
-              <div className="col-md-5">
-                {this.renderTelefono()}
-                <Popover placement="bottom" isOpen={this.state.popoverOpen} target="btnVerificar" toggle={this.togglePopover}>
-                  <PopoverHeader>Verificar cuenta</PopoverHeader>
-                  <PopoverBody>Si desea realizar la verificaci&oacute;n de segundo factor de su cuenta, haga click <a style={{textDecoration: "underline", color:"#F39200"}} onClick={this.props.switchToModificar}>aqu&iacute;</a></PopoverBody>
-                </Popover>
-              </div>
-            </div>
-            <div className='row'>
-              <div className="col-md-3">
-                <p style={{ textAlign: 'right' }} className='font-weight-bold' htmlFor="cuit">CUIT</p>
-              </div>
-              <div className="col-md-5">
-                {this.renderCuit()} 
-              </div>
-            </div>
-            <div className='row'>
-              <div className="col-md-3">
-                <p style={{ textAlign: 'right' }} className='font-weight-bold' htmlFor="telefono">Rubro</p>
-              </div>
-              <div className="col-md-5">
-                {this.renderRubro()} 
-              </div>
-            </div>
-            <div className='row'>
-              <div className="col-md-3">
-              <p style={{ paddingLeft: 0 ,textAlign: 'right' }} className='font-weight-bold' htmlFor="descripcion">Descripción</p> 
-              </div>
-              <div className="col-md-5">
-                {this.renderDescripcion()} 
-              </div>
-            </div>
-            {this.mostrarUbicacion()}
-            <div style={{ width: '500px', justifyContent: 'center' ,display: 'flex', marginBottom: '10px' }} className='row offster-md-4'>
               <div className="col-md-4">
-              {this.props.sinModificar
-              ? ""
-              : <Button onClick={this.props.switchToModificar} color='primary'>Modificar Datos</Button>}
-              </div>
-            </div>
-            <div style={{ width: '500px', justifyContent: 'center' ,display: 'flex', marginBottom: '10px' }} className='row offster-md-4'>
-              <div className="col-md-4">
-                <Link to={link}>
-                  <button className='btn btn-primary'>Ver eventos organizados</button>
-                </Link>
-              </div>              
-            </div>
-            <div style={{ width: '500px', justifyContent: 'center' ,display: 'flex', marginBottom: '10px' }} className='row offster-md-4'>
-              <div className="col-md-4">
-                <BotonSuscripcion organizacion={this.props.id}/>
-              </div>              
-            </div>
-          </div>
-          <div className="col-md-4">
-            <CardColumns>
-              <Card className="text-center" body inverse color="primary" style={{height:100, width:100, borderColor:'white'}}>
-                <CardTitle><i class="fa fa-hand-stop-o fa-2x"></i></CardTitle>
-                <CardText style={{fontSize:20}}>{this.renderManos()}</CardText>
-              </Card >
-              <Card className="text-center" body inverse color="primary" style={{height:100, width:100,borderColor:'white'}}>
-                <CardTitle><i class="fa fa-calendar-check-o fa-2x"></i></CardTitle>
-                <CardText style={{fontSize:20}}>{this.renderEventos()}</CardText>
-             </Card>
-             { this.props.data.verificada ? 
-              <Card id="cardVerificada" className="text-center" body inverse color="primary" style={{height:100, width:100,borderColor:'white'}}>
-                <CardTitle><i class="fa fa-shield fa-3x"></i></CardTitle>
-                <Tooltip placement="right" isOpen={this.state.tooltipOpen} target="cardVerificada" toggle={this.toggle}>
-                  Cuenta verificada
+                <CardColumns>
+                  <Card className="text-center" body inverse color="primary" style={{ height: 100, width: 100, borderColor: 'white' }}>
+                    <CardTitle><i className="fa fa-hand-stop-o fa-2x"></i></CardTitle>
+                    <CardText style={{ fontSize: 20 }}>{this.renderManos()}</CardText>
+                  </Card >
+                  <Card className="text-center" body inverse color="primary" style={{ height: 100, width: 100, borderColor: 'white' }}>
+                    <CardTitle><i className="fa fa-calendar-check-o fa-2x"></i></CardTitle>
+                    <CardText style={{ fontSize: 20 }}>{this.renderEventos()}</CardText>
+                  </Card>
+                  {this.props.data.verificada ?
+                    <Card id="cardVerificada" className="text-center" body inverse color="primary" style={{ height: 100, width: 100, borderColor: 'white' }}>
+                      <CardTitle><i className="fa fa-shield fa-3x"></i></CardTitle>
+                      <Tooltip placement="right" isOpen={this.state.tooltipOpen} target="cardVerificada" toggle={this.toggle}>
+                        Cuenta verificada
                 </Tooltip>
-              </Card>
-             : null }
-            </CardColumns>
-          </div>
-        </div>
-      </CardBody>
-    </Card>
+                    </Card>
+                    : null}
+                </CardColumns>
+              </div>
+            </div>
+          </CardBody>
+        </Card>
+        {this.renderModal()}
+      </div>
     );
   }
 }

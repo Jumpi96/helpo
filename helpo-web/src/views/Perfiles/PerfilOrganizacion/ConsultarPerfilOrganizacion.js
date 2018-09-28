@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types'
-import { Card, CardHeader, Button, CardTitle, CardText, CardBody, CardColumns } from 'reactstrap';
+import { Card, CardHeader, Button, CardTitle, CardText, CardBody, CardColumns, Tooltip } from 'reactstrap';
 import {Gmaps, Marker} from 'react-gmaps';
 import { getImagen } from '../../../utils/Imagen'
 import BotonSuscripcion from '../../Suscripcion/BotonSuscripcion/BotonSuscripcion'
@@ -45,7 +45,11 @@ class ConsultarPerfilOrganizacion extends Component {
     this.renderTelefono = this.renderTelefono.bind(this);
     this.renderManos = this.renderManos.bind(this);
     this.renderEventos = this.renderEventos.bind(this);
+    this.toggle = this.toggle.bind(this);
     this.getLinkVerEventos = this.getLinkVerEventos.bind(this);
+    this.state = {
+      tooltipOpen: false
+    };
   }
 
   renderTelefono() {
@@ -121,6 +125,12 @@ class ConsultarPerfilOrganizacion extends Component {
         </div>
       )
     }
+  }
+
+  toggle() {
+    this.setState({
+      tooltipOpen: !this.state.tooltipOpen
+    });
   }
 
   getLinkVerEventos() {
@@ -221,7 +231,15 @@ class ConsultarPerfilOrganizacion extends Component {
               <Card className="text-center" body inverse color="primary" style={{height:100, width:100,borderColor:'white'}}>
                 <CardTitle><i class="fa fa-calendar-check-o fa-2x"></i></CardTitle>
                 <CardText style={{fontSize:20}}>{this.renderEventos()}</CardText>
-             </Card> 
+             </Card>
+             { this.props.data.verificada ? 
+              <Card id="cardVerificada" className="text-center" body inverse color="primary" style={{height:100, width:100,borderColor:'white'}}>
+                <CardTitle><i class="fa fa-shield fa-3x"></i></CardTitle>
+                <Tooltip placement="right" isOpen={this.state.tooltipOpen} target="cardVerificada" toggle={this.toggle}>
+                  Cuenta verificada
+                </Tooltip>
+              </Card>
+             : null }
             </CardColumns>
           </div>
         </div>

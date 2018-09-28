@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
-import { Card, CardHeader, Button } from 'reactstrap';
+import { Card, CardHeader, CardBody, CardTitle, CardColumns, Button, Tooltip } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { Gmaps, Marker } from 'react-gmaps';
 import { getImagen } from '../../../utils/Imagen'
@@ -40,7 +40,11 @@ class ConsultarPerfilEmpresa extends Component {
     this.renderDescripcion = this.renderDescripcion.bind(this);
     this.renderRubro = this.renderRubro.bind(this);
     this.renderTelefono = this.renderTelefono.bind(this);
+    this.toggle = this.toggle.bind(this);
     this.getLinkVerEventos = this.getLinkVerEventos.bind(this);
+    this.state = {
+      tooltipOpen: false
+    };
   }
 
   renderTelefono() {
@@ -104,6 +108,12 @@ class ConsultarPerfilEmpresa extends Component {
     }
   }
 
+  toggle() {
+    this.setState({
+      tooltipOpen: !this.state.tooltipOpen
+    });
+  }
+
   getLinkVerEventos() {
     if (this.props.data.usuario) {
       return '/actividades/consultar-eventos?empresa=' + this.props.data.usuario.id;
@@ -117,62 +127,85 @@ class ConsultarPerfilEmpresa extends Component {
         <CardHeader>
           <i className="fa fa-align-justify"></i> Perfil
         </CardHeader>
-        <div className='container'>
+        <CardBody>
+          <div className="row">
+            <div className="col-md-8">
+              <div style={{ alignItems: 'center' }} className='row'>
+                <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', height: '150px' }} className='col-2'>
+                  <p style={{ textAlign: 'right' }}
+                    className='h4'>{this.props.nombre}</p>
+                </div>
+                <div className='col-6'>
+                  <img
+                    className='rounded-circle'
+                    src={getImagen(this.props.data.avatar.url)}
+                    alt="avatar"
+                    width="100"
+                    height="100"
+                  />
+                </div>
+              </div>
 
-          <div style={{ alignItems: 'center' }} className='row'>
-            <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', height: '150px' }} className='col-2'>
-              <p style={{ textAlign: 'right' }}
-                className='h4'>{this.props.nombre}</p>
+              <div className='row'>
+                <p style={{ textAlign: 'right' }} className='font-weight-bold col-2' htmlFor="mail">Mail</p>
+                <div className='col-6'><p>{this.props.email}</p></div>
+              </div>
+
+              <div className='row'>
+                <p style={{ textAlign: 'right' }} className='font-weight-bold col-2' htmlFor="telefono">Teléfono</p>
+                <div className='col-6'>{this.renderTelefono()}</div>
+              </div>
+
+              <div className='row'>
+                <p style={{ textAlign: 'right' }} className='font-weight-bold col-2' htmlFor="cuit">CUIT</p>
+                <div className='col-6'>{this.renderCuit()}</div>
+              </div>
+
+              <div className='row'>
+                <p style={{ textAlign: 'right' }} className='font-weight-bold col-2' htmlFor="telefono">Rubro</p>
+                <div className='col-6'>{this.renderRubro()}</div>
+              </div>
+
+              <div className='row'>
+                <p style={{ paddingLeft: 0, textAlign: 'right' }} className='font-weight-bold col-2' htmlFor="descripcion">Descripción</p>
+                <div className='col-6'>{this.renderDescripcion()}</div>
+              </div>
+
+              {this.mostrarUbicacion()}
+
+              <div style={{ width: '500px', justifyContent: 'center', display: 'flex', marginBottom: '10px' }} className='row offster-md-4'>
+                {this.props.sinModificar
+                  ? ""
+                  : <Button onClick={this.props.switchToModificar} color='primary'>Modificar Datos</Button>}
+              </div>
+              <div style={{ width: '500px', justifyContent: 'center', display: 'flex', marginBottom: '10px' }} className='row offster-md-4'>
+                <Link to={link}>
+                  <button className='btn btn-primary'>Ver eventos patrocinados</button>
+                </Link>
+              </div>
             </div>
-            <div className='col-6'>
-              <img
-                className='rounded-circle'
-                src={getImagen(this.props.data.avatar.url)}
-                alt="avatar"
-                width="100"
-                height="100"
-              />
+            <div className="col-md-4">
+              <CardColumns>
+                {/* <Card className="text-center" body inverse color="primary" style={{ height: 100, width: 100, borderColor: 'white' }}>
+                  <CardTitle><i class="fa fa-hand-stop-o fa-2x"></i></CardTitle>
+                  <CardText style={{ fontSize: 20 }}>{this.renderManos()}</CardText>
+                </Card >
+                <Card className="text-center" body inverse color="primary" style={{ height: 100, width: 100, borderColor: 'white' }}>
+                  <CardTitle><i class="fa fa-calendar-check-o fa-2x"></i></CardTitle>
+                  <CardText style={{ fontSize: 20 }}>{this.renderEventos()}</CardText>
+                </Card> */}
+                {this.props.data.verificada ?
+                  <Card id="cardVerificada" className="text-center" body inverse color="primary" style={{ height: 100, width: 100, borderColor: 'white' }}>
+                    <CardTitle><i class="fa fa-shield fa-3x"></i></CardTitle>
+                    <Tooltip placement="right" isOpen={this.state.tooltipOpen} target="cardVerificada" toggle={this.toggle}>
+                      Cuenta verificada
+                </Tooltip>
+                  </Card>
+                  : null}
+              </CardColumns>
             </div>
           </div>
-
-          <div className='row'>
-            <p style={{ textAlign: 'right' }} className='font-weight-bold col-2' htmlFor="mail">Mail</p>
-            <div className='col-6'><p>{this.props.email}</p></div>
-          </div>
-
-          <div className='row'>
-            <p style={{ textAlign: 'right' }} className='font-weight-bold col-2' htmlFor="telefono">Teléfono</p>
-            <div className='col-6'>{this.renderTelefono()}</div>
-          </div>
-
-          <div className='row'>
-            <p style={{ textAlign: 'right' }} className='font-weight-bold col-2' htmlFor="cuit">CUIT</p>
-            <div className='col-6'>{this.renderCuit()}</div>
-          </div>
-
-          <div className='row'>
-            <p style={{ textAlign: 'right' }} className='font-weight-bold col-2' htmlFor="telefono">Rubro</p>
-            <div className='col-6'>{this.renderRubro()}</div>
-          </div>
-
-          <div className='row'>
-            <p style={{ paddingLeft: 0, textAlign: 'right' }} className='font-weight-bold col-2' htmlFor="descripcion">Descripción</p>
-            <div className='col-6'>{this.renderDescripcion()}</div>
-          </div>
-
-          {this.mostrarUbicacion()}
-
-          <div style={{ width: '500px', justifyContent: 'center', display: 'flex', marginBottom: '10px' }} className='row offster-md-4'>
-            {this.props.sinModificar
-              ? ""
-              : <Button onClick={this.props.switchToModificar} color='primary'>Modificar Datos</Button>}
-          </div>
-        </div>
-        <div style={{ width: '500px', justifyContent: 'center', display: 'flex', marginBottom: '10px' }} className='row offster-md-4'>
-          <Link to={link}>
-            <button className='btn btn-primary'>Ver eventos patrocinados</button>
-          </Link>
-        </div>
+        </CardBody>
       </Card>
     );
   }

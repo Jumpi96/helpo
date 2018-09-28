@@ -139,7 +139,7 @@ def send_sms_message_to_worker(number, message):
 
 
 def send_sms_message_to(number="+543515056312", message="SMS from Helpo", thread_daemon=True):
-    if settings.DEBUG and number is not None:
+    if not settings.DEBUG and number is not None:
         number = __parse_number(number)
         t = threading.Thread(
             target=send_sms_message_to_worker, args=(number, message))

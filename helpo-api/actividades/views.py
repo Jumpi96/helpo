@@ -320,8 +320,8 @@ class ColaboracionCreateReadView(ListCreateAPIView):
 
     def create(self, request):
         serializer = ColaboracionSerializer(data=request.data)
-        user = User.objects.get(id=get_token_user(self.request))
         if serializer.is_valid():
+            user = User.objects.get(id=get_token_user(self.request))
             if user.user_type == 3:
                 create_propuesta(user, request.data['necesidad_material_id'], False)
             serializer.save(colaborador_id=user.id)

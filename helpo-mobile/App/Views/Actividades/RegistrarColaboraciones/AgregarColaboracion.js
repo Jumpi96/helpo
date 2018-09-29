@@ -29,6 +29,7 @@ class AgregarColaboracion extends React.Component {
     const colaboracion = params.colaboracion;
     this.state = { 
       colaboracion,
+      apiToken: false,
       error: undefined
     };
 
@@ -67,12 +68,15 @@ class AgregarColaboracion extends React.Component {
   }
 
   handleSubmit() {
+    this.setState({ apiToken: true });
     if (this.handleValidation()) {
       if (this.state.colaboracion.cantidad_anterior === 0) {
         this.newColaboracion();
       } else {
         this.editColaboracion();
       }
+    } else {
+      this.setState({ apiToken: false });
     }
   }
 
@@ -199,6 +203,7 @@ class AgregarColaboracion extends React.Component {
             <Button
               block style={{ margin: 15, marginTop: 50 }}
               onPress={this.handleSubmit}
+              disabled={this.state.apiToken}
             >
               <Text>Guardar</Text>
             </Button>

@@ -3,8 +3,7 @@ import csv
 from django.core.management.base import BaseCommand, CommandError
 from decouple import config
 from actividades.models import RubroEvento, Funcion, CategoriaRecurso, Recurso
-from users.models import AppValues, Imagen, RubroOrganizacion
-#from users.models import RubroEmpresa
+from users.models import AppValues, Imagen, RubroOrganizacion, RubroEmpresa, User, UserManager
 
 
 class Command(BaseCommand):
@@ -13,20 +12,31 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
+        def __set_super_user():
+            if not User.objects.filter(email='helpoweb@gmail.com').exists():
+                created = User.objects.create_superuser(
+                    email="helpoweb@gmail.com",
+                    nombre="Helpo",
+                    password=config('SECRET_KEY'),
+                    user_type=1
+                )
+                print('- superuser: helpoweb@gmail.com, Created: {0}'.format(
+                    str(created)))
+
         def __set_images():
             if not AppValues.objects.filter(key='imgurRefreshToken').exists():
                 imgur_refresh_token, created = AppValues.objects.get_or_create(
                     key='imgurRefreshToken',
                     value=config('IMGUR_REFRESH_TOKEN')
                 )
-                print('- imgurRefreshToken: {0}, Created: {1}'.format(
-                    str(imgur_refresh_token.value), str(created)))
+                print('- imgurRefreshToken: FROM ENV, Created: {0}'.format(
+                    str(created)))
                 imgur_access_token, created = AppValues.objects.get_or_create(
                     key='imgurAccessToken',
                     value=config('IMGUR_ACCESS_TOKEN')
                 )
-                print('- imgurAccessToken: {0}, Created: {1}'.format(
-                    str(imgur_access_token.value), str(created)))
+                print('- imgurAccessToken: FROM ENV, Created: {0}'.format(
+                    str(created)))
                 imgur_default_image, created = Imagen.objects.get_or_create(
                     isExternal=True,
                     url='https://i.imgur.com/cXItNWF.png'
@@ -98,87 +108,31 @@ class Command(BaseCommand):
                 reader = csv.reader(f)
                 i = 0
                 for row in reader:
-                    obj, created = CategoriaRecurso.objects.get_or_create(
+                    categoria, created = CategoriaRecurso.objects.get_or_create(
                         nombre=row[0],
                         # aca se podria agregar icono
                     )
                     i += 1
                     print('- categoria_recurso_{0}: {1}, Created: {2}'.format(
-                        str(i), str(obj.nombre), str(created)))
-
-        def __set_recursos_ropa():
-            path = os.path.dirname(__file__) + "/recursos_ropa.csv"
-            with open(path) as f:
-                reader = csv.reader(f)
-                i = 0
-                ropa, created = CategoriaRecurso.objects.get_or_create(
-                    nombre="Ropa")
-                for row in reader:
-                    obj, created = Recurso.objects.get_or_create(
-                        nombre=row[0],
-                        categoria=ropa
-                        # aca se podria agregar icono
-                    )
-                    i += 1
-                    print('- recursos_ropa_{0}: {1}, Created: {2}'.format(
-                        str(i), str(obj.nombre), str(created)))
-
-        def __set_recursos_alimento():
-            path = os.path.dirname(__file__) + "/recursos_alimento.csv"
-            with open(path) as f:
-                reader = csv.reader(f)
-                i = 0
-                alimento, created = CategoriaRecurso.objects.get_or_create(
-                    nombre="Alimento")
-                for row in reader:
-                    obj, created = Recurso.objects.get_or_create(
-                        nombre=row[0],
-                        categoria=alimento
-                        # aca se podria agregar icono
-                    )
-                    i += 1
-                    print('- recursos_alimento_{0}: {1}, Created: {2}'.format(
-                        str(i), str(obj.nombre), str(created)))
-
-        def __set_recursos_calzado():
-            path = os.path.dirname(__file__) + "/recursos_calzado.csv"
-            with open(path) as f:
-                reader = csv.reader(f)
-                i = 0
-                calzado, created = CategoriaRecurso.objects.get_or_create(
-                    nombre="Calzado")
-                for row in reader:
-                    obj, created = Recurso.objects.get_or_create(
-                        nombre=row[0],
-                        categoria=calzado
-                        # aca se podria agregar icono
-                    )
-                    i += 1
-                    print('- recursos_calzado_{0}: {1}, Created: {2}'.format(
-                        str(i), str(obj.nombre), str(created)))
-
-        def __set_recursos_juguete():
-            path = os.path.dirname(__file__) + "/recursos_juguete.csv"
-            with open(path) as f:
-                reader = csv.reader(f)
-                i = 0
-                juguetes, created = CategoriaRecurso.objects.get_or_create(
-                    nombre="Juguetes")
-                for row in reader:
-                    obj, created = Recurso.objects.get_or_create(
-                        nombre=row[0],
-                        categoria=juguetes
-                        # aca se podria agregar icono
-                    )
-                    i += 1
-                    print('- recursos_juguetes_{0}: {1}, Created: {2}'.format(
-                        str(i), str(obj.nombre), str(created)))
+                        str(i), str(categoria.nombre), str(created)))
+                    for j in range(1, len(row)-1):
+                        recurso, created = Recurso.objects.get_or_create(
+                            nombre=row[j],
+                            categoria=categoria
+                            # aca se podria agregar icono
+                        )
+                        print('- recursos_{0}_{1}: {2}, Created: {3}'.format(
+                            str(categoria.nombre), str(j), str(recurso.nombre), str(created)))
 
         print('Populating Database...')
         print('----------------------\n')
 
         print('Setting Images Prerequisites')
         __set_images()
+        print('----------------------\n')
+
+        print('Setting Superuser')
+        __set_super_user()
         print('----------------------\n')
 
         print('Setting Rubros Evento')
@@ -190,28 +144,11 @@ class Command(BaseCommand):
         print('----------------------\n')
 
         print('Setting Rubros Empresa')
-        # uncomment this and import when future issue is implemented
-        # __set_rubros_ong()
+        __set_rubros_empresa()
         print('----------------------\n')
 
         print('Setting Funciones Voluntario')
         __set_funciones_voluntario()
-        print('----------------------\n')
-
-        print('Setting Recursos Alimento')
-        __set_recursos_alimento()
-        print('----------------------\n')
-
-        print('Setting Recursos Calzado')
-        __set_recursos_calzado()
-        print('----------------------\n')
-
-        print('Setting Recursos Juguete')
-        __set_recursos_juguete()
-        print('----------------------\n')
-
-        print('Setting Recursos Ropa')
-        __set_recursos_ropa()
         print('----------------------\n')
 
         print('Setting Categorias Recurso')

@@ -44,7 +44,7 @@ class DefaultHeader extends Component {
           </NavItem>
           <AppHeaderDropdown direction="down">
             <DropdownToggle nav>
-            {this.props.auth.user.nombre} <img src={getImagen(this.props.auth.user.avatar)} className="img-avatar" alt="admin@bootstrapmaster.com" /> {/*ACA DEBERIA IR LA FOTO DE PERFIL DEL USUARIO*/}
+            {this.props.auth.user.nombre} <img src={getImagen(this.props.auth.user.avatar)} className="img-avatar" alt="" /> {/*ACA DEBERIA IR LA FOTO DE PERFIL DEL USUARIO*/}
             </DropdownToggle>
             <DropdownMenu right style={{ right: 'auto' }}>
               <DropdownItem header tag="div" className="text-center"><strong>Perfil</strong></DropdownItem>

@@ -9,10 +9,10 @@ import {
 //import RNGooglePlacePicker from "react-native-google-place-picker";
 
 class SelectorUbicacion extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
-    this.state = { 
-      ubicacionPorDefecto : { 
+    this.state = {
+      ubicacionPorDefecto: {
         lat: this.props.ubicacion.latitud,
         lng: this.props.ubicacion.longitud
       }
@@ -26,21 +26,23 @@ class SelectorUbicacion extends React.Component {
     this.props.onUbicacionChange(ubi);
   }
 
-  handleNotasChange(text){
+  handleNotasChange(text) {
     const lat = this.props.ubicacion.latitud;
     const long = this.props.ubicacion.longitud;
-    const ubi = { latitud: lat,
-                longitud: long,
-                notas: text
+    const ubi = {
+      latitud: lat,
+      longitud: long,
+      notas: text
     };
     this.handleChange(ubi)
   }
 
-  handleCoordenadasChange(location){
+  handleCoordenadasChange(location) {
     const notas = this.props.ubicacion.notas;
-    const ubi = { latitud: location.latitude,
-                longitud: location.longitude,
-                notas: notas
+    const ubi = {
+      latitud: location.latitude,
+      longitud: location.longitude,
+      notas: notas
     };
     this.handleChange(ubi);
   }
@@ -53,15 +55,13 @@ class SelectorUbicacion extends React.Component {
     });*/
   }
 
-  render(){
+  render() {
     return (
       <Content>
-        <Item>
-          <Button block style={{marginBottom: 4}}
-            onPress={this.seleccionarUbicacion.bind(this)} >
-            <Text>Seleccionar ubicación</Text>
-          </Button>
-        </Item>
+        <Button block style={{ margin: 25 }}
+          onPress={this.seleccionarUbicacion.bind(this)} >
+          <Text>Seleccionar ubicación</Text>
+        </Button>
         <Item>
           <Input
             placeholder="Notas (Calle, número, localidad, CP)"

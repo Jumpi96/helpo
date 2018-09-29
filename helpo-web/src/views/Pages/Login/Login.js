@@ -2,16 +2,54 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import { Button, Card, CardBody, CardGroup, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
 import { connect } from "react-redux";
-import {auth} from "../../../actions";
+import { auth } from "../../../actions";
 import logo from '../../../assets/img/brand/logo_principal.svg' 
+import GoogleLogin from 'react-google-login';
+import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
+import api from "../../../api"
+import ModalRegistroExitoso from '../Register/ModalRegistroExitoso';
 
 class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
       email: "",
-      password: ""
+      password: "",
+      showModalRegistro: false,
+      modalType: 'success'
     }
+    this.showModalRegistro = this.showModalRegistro.bind(this);
+  }
+
+  exists(url, nombre, email, password, user_type, apellido, id_token) {
+    let headers = {"Content-Type": "application/json"};
+    let body = JSON.stringify({nombre, email, password, user_type, apellido, id_token});
+    api.post(url, body, {headers})
+    .then(res => {
+      if(res.status === 200) {
+        if(url === "/auth/exists_google/") {
+          this.props.loginGoogle(nombre, email, password, user_type, apellido, id_token);
+        } else if (url === "/auth/exists_facebook/") {
+          this.props.loginFacebook(nombre, email, password, user_type, apellido, id_token);
+        }
+      }
+    }
+    )
+    .catch (
+      e => {
+        if (e.response.status === 404 || e.response.status === 400) {
+          this.setState({
+            showModalRegistro: true,
+            modalType: "success",
+          });
+        } else {
+          this.setState({
+            showModalRegistro: true,
+            modalType: "failure",
+          });
+        }
+      }
+    );
   }
 
   onSubmit = (e) => {
@@ -19,7 +57,65 @@ class Login extends Component {
     this.props.login(this.state.email, this.state.password);
   }
 
+  onSubmitGoogle(response) {
+    const nombre = response.profileObj.givenName;
+    const email = response.profileObj.email;
+    const password = response.profileObj.email;
+    const user_type = 2;
+    const apellido = response.profileObj.familyName;
+    const id_token = response.tokenId;
+    const url = "/auth/exists_google/";
+    this.exists(url, nombre, email, password, user_type, apellido, id_token);
+  }
+
+  onSubmitFacebook(response) {        
+    const nombre = response.name;
+    const email = response.email;
+    const password = response.email;
+    const user_type = 2;
+    const apellido = response.name;
+    const id_token = response.accessToken;
+    const url = "/auth/exists_facebook/";
+    this.exists(url, nombre, email, password, user_type, apellido, id_token);
+  }
+
+  renderModal() {
+    if (this.state.showModalRegistro) {
+      if (this.state.modalType === "success") {
+        return (
+          <ModalRegistroExitoso
+            body='Debe seleccionar su tipo de usuario'
+            onCancel={() => this.props.history.push('register')}
+          />)  
+      }
+      else {
+        return (
+          <ModalRegistroExitoso
+            body='Error al iniciar sesión'
+            onCancel={() => {this.setState({ showModalRegistro: false })}}
+          />
+        )
+      }      
+    }
+  }
+
+  showModalRegistro() {
+    this.setState({
+      showModalRegistro: true,
+    })
+  }
+
   render() {
+    const responseGoogle = (response) => {
+      if(response && response.profileObj) {
+        this.onSubmitGoogle(response);
+      }
+    }
+    const responseFacebook = (response) => {
+      if(response && response.email) {
+        this.onSubmitFacebook(response);
+      }
+    }
     if (this.props.isAuthenticated) {
       return <Redirect to="/" />
     } else {
@@ -57,7 +153,22 @@ class Login extends Component {
                             onChange={(e) => this.setState({password: e.target.value})}/>
                         </InputGroup>
                             <Button color="primary" type="submit" className="px-4">¡Ingresá!</Button>
-                      </CardBody>
+                      </CardBody>                      
+                      <FacebookLogin
+                        appId="343119846258901"
+                        autoLoad={false}
+                        fields="name,email,picture"
+                        callback={responseFacebook}
+                        render={renderProps => (
+                          <Button onClick={renderProps.onClick} className="btn-facebook" block><span>Facebook</span></Button>
+                        )} />
+                      {/* <Button className="btn-facebook" block><span>Facebook</span></Button> */}
+                      <GoogleLogin
+                        clientId="93328850687-681u9fksr6g52g2bebbj1qu8thldgaq6.apps.googleusercontent.com"
+                        buttonText="Google"
+                        onSuccess={responseGoogle}
+                        onFailure={responseGoogle} />
+                      {/* <Button className="btn-google" block><span>Google</span></Button> */}
                     </Card>
 
                     <Card className="bg-primary p-5" col-md-6 col-xs-6>
@@ -83,9 +194,10 @@ class Login extends Component {
                   </CardGroup>
               </Row>
         </form>
+        {this.renderModal()}
       </div>
       );
-    } 
+    }
   }
 }
 
@@ -112,7 +224,13 @@ const mapDispatchToProps = dispatch => {
   return {
     login: (email, password) => {
       return dispatch(auth.login(email, password));
-    }
+    },
+    loginGoogle: (nombre, email, password, user_type, apellido, id_token) => {
+      return dispatch(auth.loginGoogle(nombre, email, password, user_type, apellido, id_token));
+    },
+    loginFacebook: (nombre, email, password, user_type, apellido, id_token) => {
+      return dispatch(auth.loginFacebook(nombre, email, password, user_type, apellido, id_token));
+    },
   };
 }
 

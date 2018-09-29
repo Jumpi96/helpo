@@ -178,7 +178,6 @@ class ConsultarPerfilOrganizacion extends Component {
   render() {
     const link = this.getLinkVerEventos();
     return (
-      <div>
         <Card>
           <CardHeader>
             <i className="fa fa-align-justify"></i> Perfil
@@ -288,9 +287,8 @@ class ConsultarPerfilOrganizacion extends Component {
               </div>
             </div>
           </CardBody>
+          {this.renderModal()}
         </Card>
-        {this.renderModal()}
-      </div>
     );
   }
 }

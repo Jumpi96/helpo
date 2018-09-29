@@ -23,5 +23,5 @@ it('renders without crashing', () => {
     <ConsultarPerfilEmpresa {...requiredProps} />
   );
   const result = renderer.getRenderOutput();    
-  expect(result.type).toBe(div);
+  expect(result.type).toBe(Card);
 });

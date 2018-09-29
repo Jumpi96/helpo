@@ -229,6 +229,7 @@ class RegistrarColaboraciones extends React.Component {
   }
 
   deleteColaboracion(idNecesidad) {
+    var _this = this;
     const colaboracionAnterior = this.getColaboracionAnterior(idNecesidad);
     api.delete('/actividades/colaboraciones/' + colaboracionAnterior + '/')
       .then(() => {
@@ -236,7 +237,7 @@ class RegistrarColaboraciones extends React.Component {
       }).catch(function (error) {
         if (error.response){ console.log(error.response.status) }
         else { console.log('Error: ', error.message)}
-        this.setState({ error_necesidad: "Hubo un problema al cargar su información." });
+        _this.setState({ error_necesidad: "Hubo un problema al cargar su información." });
       });
   }
 
@@ -273,6 +274,7 @@ class RegistrarColaboraciones extends React.Component {
   }
 
   deleteParticipacion() {
+    var _this = this;
     const participacionAEliminar = this.getIdParticipacionVoluntario();
     api.delete('/actividades/participaciones/' + participacionAEliminar + '/')
       .then(() => {
@@ -280,7 +282,7 @@ class RegistrarColaboraciones extends React.Component {
       }).catch(function (error) {
         if (error.response){ console.log(error.response.status) }
         else { console.log('Error: ', error.message)}
-        this.setState({ error_necesidad: "Hubo un problema al cargar su información." });
+        _this.setState({ error_necesidad: "Hubo un problema al cargar su información." });
       });
   }
 

@@ -79,6 +79,7 @@ class AgregarOfrecimiento extends React.Component {
   }
 
   editColaboracion() {
+    var _this = this;
     const { colaboracion } = this.state;
     if (this.state.colaboracion.funcion) {
       const nuevaParticipacion = {
@@ -93,7 +94,7 @@ class AgregarOfrecimiento extends React.Component {
         }).catch(function (error) {
           if (error.response) { console.log(error.response.status) }
           else { console.log('Error: ', error.message) }
-          this.setState({ error: "Hubo un problema al cargar su información." });
+          _this.setState({ error: "Hubo un problema al cargar su información." });
         });
     } else {
       const nuevaColaboracion = {
@@ -108,13 +109,14 @@ class AgregarOfrecimiento extends React.Component {
         }).catch(function (error) {
           if (error.response) { console.log(error.response.status) }
           else { console.log('Error: ', error.message) }
-          this.setState({ error: "Hubo un problema al cargar su información." });
+          _this.setState({ error: "Hubo un problema al cargar su información." });
         });
 
     }
   }
 
   newColaboracion() {
+    var _this = this;
     const colaboracion = this.state.colaboracion;
     if (this.state.colaboracion.funcion) {
       const nuevaParticipacion = {
@@ -128,7 +130,7 @@ class AgregarOfrecimiento extends React.Component {
         }).catch(function (error) {
           if (error.response) { console.log(error.response.status) }
           else { console.log('Error: ', error.message) }
-          this.setState({ error: "Hubo un problema al cargar su información." });
+          _this.setState({ error: "Hubo un problema al cargar su información." });
         });
     } else {
       const nuevaColaboracion = {
@@ -142,7 +144,7 @@ class AgregarOfrecimiento extends React.Component {
         }).catch(function (error) {
           if (error.response) { console.log(error.response.status) }
           else { console.log('Error: ', error.message) }
-          this.setState({ error: "Hubo un problema al cargar su información." });
+          _this.setState({ error: "Hubo un problema al cargar su información." });
         });
     }
   }

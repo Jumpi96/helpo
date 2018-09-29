@@ -81,6 +81,7 @@ class AgregarColaboracion extends React.Component {
   }
 
   editColaboracion() {
+    var _this = this;
     const colaboracion = this.state.colaboracion;
     const nuevaColaboracion = {
       id: colaboracion.colaboracion_anterior,
@@ -94,11 +95,12 @@ class AgregarColaboracion extends React.Component {
       }).catch(function (error) {
         if (error.response){ console.log(error.response.status) }
         else { console.log('Error: ', error.message)}
-        this.setState({ error: "Hubo un problema al cargar su información." });
+        _this.setState({ error: "Hubo un problema al cargar su información." });
       });
   }
 
   newColaboracion() {
+    var _this = this;
     const colaboracion = this.state.colaboracion;
     if (this.state.colaboracion.funcion) {
       const nuevaParticipacion = {
@@ -112,7 +114,7 @@ class AgregarColaboracion extends React.Component {
         }).catch(function (error) {
           if (error.response){ console.log(error.response.status) }
           else { console.log('Error: ', error.message)}
-          this.setState({ error: "Hubo un problema al cargar su información." });
+          _this.setState({ error: "Hubo un problema al cargar su información." });
         });
     } else {
       const nuevaColaboracion = {
@@ -126,7 +128,7 @@ class AgregarColaboracion extends React.Component {
         }).catch(function (error) {
           if (error.response){ console.log(error.response.status) }
           else { console.log('Error: ', error.message)}
-          this.setState({ error: "Hubo un problema al cargar su información." });
+          _this.setState({ error: "Hubo un problema al cargar su información." });
         });
     }
   }

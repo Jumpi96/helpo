@@ -1,6 +1,9 @@
+from datetime import date
+from collections import namedtuple
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from users.models import User, Suscripcion, VoluntarioProfile
+from .services import update_monthly_suscriptions
+from users.models import User, Suscripcion, VoluntarioProfile, OrganizacionSuscripcionesMensuales
 from actividades.models import Participacion, Colaboracion, Evento
 
 
@@ -18,7 +21,7 @@ class OrganizationStats(APIView):
     def total_manos(self, id):
         """
         Return the total of manos of the ONG(id)
-        """        
+        """
         participaciones = Participacion.objects.filter(retroalimentacion_ong=True).filter(
             necesidad_voluntario__evento__organizacion_id=id).count()
         colaboraciones = Colaboracion.objects.filter(retroalimentacion_ong=True).filter(
@@ -30,8 +33,8 @@ class OrganizationStats(APIView):
         """
         Return the total of eventos of the ONG(id)
         """
-        return Evento.objects.filter(organizacion__id=id).count()        
-    
+        return Evento.objects.filter(organizacion__id=id).count()
+
     def total_voluntarios(self, id):
         """
         Return the total of unique voluntarios that participated or colaborated
@@ -42,7 +45,6 @@ class OrganizationStats(APIView):
         vol_colaboraciones = User.objects.filter(
             colaboracion__necesidad_material__evento__organizacion_id=id)
         return vol_participaciones.union(vol_colaboraciones).count()
-
 
     def get(self, request, id, format=None):
         """
@@ -91,16 +93,89 @@ class OrganizacionVoluntariosGenero(APIView):
             elif genero == "otro":
                 otros = otros + 1
             else:
-                nada = nada + 1 
+                nada = nada + 1
         total = hombres + mujeres + otros + nada
-
 
         data = {
             "hombres": hombres,
             "mujeres": mujeres,
             "otros": otros,
             "nada": nada,
-            "total": total 
+            "total": total
         }
         return Response(data)
-        
+
+
+class ONGSuscripcionesPorMesView(APIView):
+    """
+    View to retrieve statistics of an organization subscriptions
+    by month
+    """
+
+    def get(self, request, id, format=None):
+        """
+        Handle GET request
+        """
+        organizacion = User.objects.get(pk=id)
+        update_monthly_suscriptions(organizacion)
+
+        monthly_subscriptions = OrganizacionSuscripcionesMensuales.objects.filter(
+            organizacion=organizacion)
+        data = []
+        data_month = []
+        aux = {
+            "suscripciones": 0,
+            "fecha": date(2000, 1, 1)
+        }
+
+        i = 1
+        last_entry = monthly_subscriptions[0]
+        data.append(last_entry.suscripciones)
+        # I cut the days in the date string
+        data_month.append(str(last_entry.fecha)[0:7])
+
+        # The loop runs until i have 10 values in data or i dont have anymore entries in the query
+        while i < len(monthly_subscriptions) and len(data) < 10:
+            entry = monthly_subscriptions[i]
+            # I use 40 to be sure there is 1 month of difference.
+            # Because this dates are always assigned to the first of the month it doesnt cause problems
+            if((last_entry.fecha - entry.fecha).days > 40):
+                # This condition is to catch all months in between entries that doesnt have an entry.
+                # In that case it gives them the same amount of subscriptions as the previous month.
+                year = 0
+                month = 0
+                if(last_entry.fecha.month == 1):
+                    year = last_entry.fecha.year - 1
+                    month = 12
+                else:
+                    year = last_entry.fecha.year
+                    month = last_entry.fecha.month - 1
+                aux["fecha"] = date(year, month, 1)
+                # I transform the dict to namedtuple so later i can access its values as if it were an object
+                aux_entry = namedtuple("Entry", aux.keys())(*aux.values())
+                entry = aux_entry
+            else:
+                i = i + 1
+            data.append(entry.suscripciones)
+            data_month.append(str(entry.fecha)[0:7])
+            last_entry = entry
+
+        response_data = {
+            "data": data,
+            "data_month": data_month,
+        }
+
+        return Response(response_data)
+
+
+class ONGEventoStats(APIView):
+    """
+    View to retrieve statistics of an organization events,
+    listing participaciones, colaboraciones and manos
+    """
+
+    def get(self, request, id, format=None):
+        """
+        Handle GET request
+        """
+        pass

@@ -1,8 +1,9 @@
 from django.dispatch import receiver
 from django.db.models import F
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_save, pre_delete
 from actividades.models import Evento, ActividadesTasks, Participacion
 from users.models import User, Suscripcion, OrganizacionProfile
+from reportes.services import update_monthly_suscriptions
 import uuid
 
 """ Module where all signal handlers for the Actividades app are defined """
@@ -43,3 +44,19 @@ def handle_evento_change_notification(sender, instance, created, **kwags):
         for user in users:
             pass
             #Notificar modificacion de evento
+
+@receiver(pre_save, sender=Suscripcion, dispatch_uid=uuid.uuid4())
+def update_monthly_suscription_on_save(sender, instance, **kwargs):
+    """
+    Previo a actualizar una suscripcion llama al metodo para
+    actualizar las suscripciones mensuales totales de la ONG
+    """
+    update_monthly_suscriptions(instance.organizacion)
+
+@receiver(pre_delete, sender=Suscripcion, dispatch_uid=uuid.uuid4())
+def update_monthly_suscription_on_delete(sender, instance, **kwargs):
+    """
+    Previo a borrar una suscripcion llama al metodo para
+    actualizar las suscripciones mensuales total de la ONG
+    """
+    update_monthly_suscriptions(instance.organizacion)

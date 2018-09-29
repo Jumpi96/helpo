@@ -19,6 +19,7 @@ class ConsultarPerfilGenerico extends Component {
       email: '',
       data: {},
       rubros: [], // [{ id: , nombre: },]
+      rubrosEmpresa: [], // [{ id: , nombre: },]
       modificar: false,
       loggedUser: true,
     };
@@ -79,9 +80,11 @@ class ConsultarPerfilGenerico extends Component {
         return api.get('/perfiles/rubros_organizacion/')
       })   
       .then( res => {
-        
         initialState.rubros = res.data
-        
+        return api.get('/perfiles/rubros_empresa/')
+      })   
+      .then( res => {
+        initialState.rubrosEmpresa = res.data
       })
       .then(() => {
         // Cambio estado aca para asegurarme que se llame todo lo anterior
@@ -92,10 +95,12 @@ class ConsultarPerfilGenerico extends Component {
           userType: initialState.userType,
           data: initialState.data,
           rubros: initialState.rubros,
+          rubrosEmpresa: initialState.rubrosEmpresa,
           loggedUser: initialState.loggedUser
         })
       })
       .catch( error => {
+        console.log(error);
       })      
   }    
 
@@ -153,7 +158,7 @@ class ConsultarPerfilGenerico extends Component {
                   nombre={this.state.nombre}
                   email={this.state.email}
                   data={this.state.data}
-                  rubros={this.state.rubros}
+                  rubros={this.state.rubrosEmpresa}
                   switchToConsultar={this.switchToConsultar}
                   /> )
 

@@ -57,7 +57,7 @@ class Login extends Component {
     this.props.login(this.state.email, this.state.password);
   }
 
-  onSubmitGoogle(response) {        
+  onSubmitGoogle(response) {
     const nombre = response.profileObj.givenName;
     const email = response.profileObj.email;
     const password = response.profileObj.email;
@@ -107,10 +107,14 @@ class Login extends Component {
 
   render() {
     const responseGoogle = (response) => {
-      this.onSubmitGoogle(response);
+      if(response && response.profileObj) {
+        this.onSubmitGoogle(response);
+      }
     }
     const responseFacebook = (response) => {
-      this.onSubmitFacebook(response);
+      if(response && response.email) {
+        this.onSubmitFacebook(response);
+      }
     }
     if (this.props.isAuthenticated) {
       return <Redirect to="/" />

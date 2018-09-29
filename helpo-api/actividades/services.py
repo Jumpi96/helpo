@@ -103,8 +103,6 @@ def _send_mail(usuarios_id, evento):
 
 def _get_usuarios(evento):
     from actividades.models import Necesidad, Voluntario, Colaboracion, Participacion
-    print("AAAAAAAAAAAAAAAAAAAAAAAAAAAA" + str(evento))
-    print("BBBBBBBBBBBBBBBBBBBBBBBBBBBBB" + str(Necesidad.objects.filter(evento=evento.id)))
     necesidades = Necesidad.objects.filter(evento=evento.id).values('id')
     voluntarios = Voluntario.objects.filter(evento=evento.id).values('id')
     colaboraciones = Colaboracion.objects.filter(

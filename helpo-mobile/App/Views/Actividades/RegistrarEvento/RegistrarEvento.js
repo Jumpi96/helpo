@@ -11,6 +11,7 @@ import {
   Input,
   Body,
   Left,
+  Separator,
   Right,
   Icon,
   Form,
@@ -35,7 +36,7 @@ class RegistrarEvento extends React.Component {
       rubro_id: 0,
       fecha_hora_inicio: new Date(),
       fecha_hora_fin: new Date(),
-        // TODO: ubicacion que pasamos por defecto debería ser la de la ONG. Ahora, Córdoba.
+      // TODO: ubicacion que pasamos por defecto debería ser la de la ONG. Ahora, Córdoba.
       ubicacion: { latitud: -31.4201, longitud: -64.1888, notas: '' },
       contactos: [{
         nombre: '',
@@ -120,34 +121,34 @@ class RegistrarEvento extends React.Component {
     const inicio = moment(this.state.fecha_hora_inicio);
     const fin = moment(this.state.fecha_hora_fin);
     const actual = moment(new Date());
-    
+
     if (!this.state.nombre) {
       formIsValid = false;
       errors.nombre = 'Debe ingresar un nombre.';
     }
 
     if (isNaN(Date.parse(this.state.fecha_hora_inicio)) ||
-        isNaN(Date.parse(this.state.fecha_hora_fin))) {
+      isNaN(Date.parse(this.state.fecha_hora_fin))) {
       formIsValid = false;
       errors.fechas = 'Las fechas ingresadas no son válidas.';
     } else {
       if (inicio.days() === actual.days() && (inicio.hours() >= actual.hours() || inicio.hours() < actual.hours())) {
         //formIsValid = false;
         //errors.fechas = "No es posible organizar el evento en el mismo día"
-      } else 
+      } else
         if (inicio < actual) {
           formIsValid = false;
-          errors.fechas = 'La fecha de inicio debe ser posterior a la fecha actual'; 
-        } else 
+          errors.fechas = 'La fecha de inicio debe ser posterior a la fecha actual';
+        } else
           if (fin < inicio) {
             formIsValid = false;
             errors.fechas = 'La fecha de inicio debe ser anterior a la fecha de fin del evento'
           } else
             if (moment.duration(fin.diff(inicio)).asHours() > 24 && inicio < fin) {
-            formIsValid = false;
-            errors.fechas = 'El evento no puede durar más de 24 horas'
-            } 
-            else {errors.fechas = undefined;}
+              formIsValid = false;
+              errors.fechas = 'El evento no puede durar más de 24 horas'
+            }
+            else { errors.fechas = undefined; }
     }
     if (this.state.rubro_id === 0) {
       formIsValid = false;
@@ -171,9 +172,9 @@ class RegistrarEvento extends React.Component {
     for (let i = 0; i < contactos.length; i += 1) {
       // Es valido no ingresar ningun contacto
       if (contactos[i].nombre === '' &&
-      contactos[i].email === '' &&
-      contactos[i].telefono === '' &&
-      contactos.length === 1) {
+        contactos[i].email === '' &&
+        contactos[i].telefono === '' &&
+        contactos.length === 1) {
         return validacion;
       }
       if (contactos[i].nombre === '') {
@@ -282,6 +283,9 @@ class RegistrarEvento extends React.Component {
 
         <Content>
           <Form>
+            <Separator bordered noTopBorder>
+              <Text>Datos del evento</Text>
+            </Separator>
             <Item floatingLabel>
               <Label>Nombre</Label>
               <Input
@@ -318,14 +322,18 @@ class RegistrarEvento extends React.Component {
               handleChange={this.handleFechaHoraFinChange}
             />
             <Text style={styles.validationMessage}>{this.state.errors.fechas}</Text>
-
+            <Separator bordered noTopBorder>
+              <Text>Ubicación</Text>
+            </Separator>
             <Item>
               <SelectorUbicacion
                 ubicacion={this.state.ubicacion}
                 onUbicacionChange={this.handleUbicacionChange}
               />
             </Item>
-            <Item>
+            <Separator bordered noTopBorder>
+              <Text>Contactos</Text>
+            </Separator>
               <RegistrarContacto
                 contactos={this.state.contactos}
                 onNombreChange={this.handleContactNombreChange}
@@ -334,12 +342,12 @@ class RegistrarEvento extends React.Component {
                 onAddContact={this.addContact}
                 onRemoveContact={this.removeContact}
               />
-            </Item>
+            
             <Text style={styles.validationMessage}>{this.state.errors.contactoNombre}</Text>
             <Text style={styles.validationMessage}>{this.state.errors.contactoContacto}</Text>
             <Text style={styles.validationMessage}>{this.state.errors.email}</Text>
             <Button
-              block style={{ margin: 15, marginTop: 50 }}
+              block style={{ margin: 10 }}
               onPress={this.handleSubmit}
             >
               <Text>Guardar Evento</Text>

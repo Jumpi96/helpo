@@ -1,6 +1,5 @@
 from users.models import SmsVerification
 from common.notifications import send_sms_message_to
-from hashlib import sha256
 import random
 import string
 
@@ -15,11 +14,8 @@ def send_confirmation_sms(perfil):
 
 
 def __generate_token():
-    str_toencode = ''.join(random.SystemRandom().choice(
-        string.ascii_uppercase + string.digits) for _ in range(16))
-    str_encoded = str_toencode.encode('utf-8')
-    uncutbash = str(sha256(str_encoded))
-    bash = uncutbash[22:28].upper()
+    bash = ''.join(random.SystemRandom().choice(
+        string.ascii_uppercase + string.digits) for _ in range(6))
     return bash
 
 

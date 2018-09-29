@@ -1,10 +1,11 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from decouple import config
-from hashlib import sha256
 from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from common.models import IndexedTimeStampedModel
+import random
+import string
 
 class Profile(models.Model):
     usuario = models.OneToOneField('User')
@@ -113,10 +114,8 @@ class UserManager(BaseUserManager):
         return user
 
     def send_confirmation_email(self, user):
-        str_to_encode = str(user.id) + user.email
-        str_encoded = str_to_encode.encode('utf-8')
-        uncutbash = str(sha256(str_encoded))
-        bash = uncutbash[22:36]
+        bash = ''.join(random.SystemRandom().choice(
+            string.ascii_uppercase + string.digits) for _ in range(16))
         self.create_user_verification(user, bash)
 
         mail_from = settings.REGISTER_EMAIL

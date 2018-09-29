@@ -17,6 +17,7 @@ import {
   Label,
   Input,
   ListItem,
+  Separator,
 } from 'native-base';
 import SelectorUbicacion from '../RegistrarEvento/SelectorUbicacion/SelectorUbicacion';
 import SelectorFechaHora from '../RegistrarEvento/SelectorFechaHora/SelectorFechaHora';
@@ -30,7 +31,7 @@ class EditarEvento extends React.Component {
   constructor(props) {
     super(props);
     const { params } = this.props.navigation.state;
-    const { evento, rubros } = params;
+    const { evento } = params;
     let { contacto } = evento;
     for (let i = 0; i < contacto.length; i += 1) {
       contacto[i].contactId = i + 1;
@@ -45,8 +46,8 @@ class EditarEvento extends React.Component {
       ubicacion: evento.ubicacion,
       nextId: contacto.length + 1,
       errors: {},
+      rubros: [],
       contacto,
-      rubros
     };
     this.handleUbicacionChange = this.handleUbicacionChange.bind(this);
     this.handleSave = this.handleSave.bind(this);
@@ -60,6 +61,16 @@ class EditarEvento extends React.Component {
     this.addContact = this.addContact.bind(this);
     this.removeContact = this.removeContact.bind(this);
     /* ------------------- */
+  }
+
+  componentDidMount() {
+    api.get('/actividades/rubros_evento/')
+      .then((res) => {
+        this.setState({ rubros: res.data });
+      })
+      .catch((error) => {
+        console.warn(error.message);
+      })
   }
 
 
@@ -82,7 +93,7 @@ class EditarEvento extends React.Component {
   updateEvento(evento) {
     api.put('/actividades/eventos/' + evento.id + '/', evento)
       .then(res => {
-        this.props.navigation.navigate('VerEvento', { evento, rubros: this.props.rubros });
+        this.props.navigation.navigate('VerEvento', { evento: evento.id });
       })
       .catch((error) => {
         if (error.response) { console.warn(error.response.status) }
@@ -241,9 +252,6 @@ class EditarEvento extends React.Component {
   }
 
   removeContact(id) {
-    if (this.state.contacto.length === 1) {
-      return;
-    }
     const newContactos = this.state.contacto;
     const indexOfRemove = newContactos.map(e => e.contactId).indexOf(id);
     newContactos.splice(indexOfRemove, 1);
@@ -275,6 +283,9 @@ class EditarEvento extends React.Component {
         </Header>
         <Content>
           <Form>
+            <Separator bordered noTopBorder>
+              <Text>Datos del evento</Text>
+            </Separator>
             <Item>
               <Label>Nombre</Label>
               <Input
@@ -319,28 +330,30 @@ class EditarEvento extends React.Component {
               handleChange={this.handleFechaHoraFinChange}
             />
             <Text style={styles.validationMessage}>{this.state.errors.fechas}</Text>
-
-            <ListItem>
+            <Separator bordered noTopBorder>
+              <Text>Ubicación</Text>
+            </Separator>
+            <Item>
               <Label>Ubicación</Label>
               <SelectorUbicacion
                 ubicacion={this.state.ubicacion}
                 onUbicacionChange={this.handleUbicacionChange}
               />
-            </ListItem>
-
-            <ListItem>
-              <RegistrarContacto
-                contactos={this.state.contacto}
-                onNombreChange={this.handleContactNombreChange}
-                onMailChange={this.handleContactMailChange}
-                onTelefonoChange={this.handleContactTelefonoChange}
-                onAddContact={this.addContact}
-                onRemoveContact={this.removeContact}
-              />
-              <Text style={styles.validationMessage}>{this.state.errors.contactoNombre}</Text>
-              <Text style={styles.validationMessage}>{this.state.errors.contactoContacto}</Text>
-              <Text style={styles.validationMessage}>{this.state.errors.email}</Text>
-            </ListItem>
+            </Item>
+            <Separator bordered noTopBorder>
+              <Text>Contactos</Text>
+            </Separator>
+            <RegistrarContacto
+              contactos={this.state.contacto}
+              onNombreChange={this.handleContactNombreChange}
+              onMailChange={this.handleContactMailChange}
+              onTelefonoChange={this.handleContactTelefonoChange}
+              onAddContact={this.addContact}
+              onRemoveContact={this.removeContact}
+            />
+            <Text style={styles.validationMessage}>{this.state.errors.contactoNombre}</Text>
+            <Text style={styles.validationMessage}>{this.state.errors.contactoContacto}</Text>
+            <Text style={styles.validationMessage}>{this.state.errors.email}</Text>
             <Button
               block style={{ margin: 10 }}
               onPress={this.handleSave}

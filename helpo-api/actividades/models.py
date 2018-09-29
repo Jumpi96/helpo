@@ -102,7 +102,7 @@ class Colaboracion(models.Model):
     retroalimentacion_ong = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.necesidad_material + ": " + str(self.cantidad)
+        return str(self.necesidad_material) + ": " + str(self.cantidad)
 
 class Participacion(models.Model):
     comentario = models.CharField(max_length=140, null=True)
@@ -115,7 +115,7 @@ class Participacion(models.Model):
     cantidad = models.IntegerField()
 
     def __str__(self):
-        return self.necesidad_voluntario + " " + self.colaborador
+        return str(self.necesidad_voluntario) + " " + self.colaborador
 
 class ActividadesTasks(models.Model):
     evento = models.ForeignKey(Evento, null=True, blank=True)

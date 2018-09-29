@@ -173,7 +173,7 @@ def create_propuesta(user, necesidad, es_voluntario):
     else:
         evento_id = Necesidad.objects.get(id=necesidad).evento_id
     if len(Propuesta.objects.filter(evento_id=evento_id).filter(empresa_id=user.id)) == 0:
-        Propuesta.objects.create(
+        propuesta = Propuesta.objects.create(
             evento_id=evento_id, empresa_id=user.id, aceptado=0)
         _send_nueva_propuesta(propuesta)
 

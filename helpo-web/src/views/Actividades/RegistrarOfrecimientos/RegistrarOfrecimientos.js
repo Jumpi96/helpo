@@ -307,6 +307,7 @@ class RegistrarOfrecimientos extends Component {
   }
 
   saveColaboracion(colaboracion) {
+    var _this = this;
     if (colaboracion.cantidad_anterior > 0) {
       this.saveEditColaboracion(colaboracion);
     } else {
@@ -323,7 +324,7 @@ class RegistrarOfrecimientos extends Component {
         }).catch(function (error) {
           if (error.response) { console.log(error.response.status) }
           else { console.log('Error: ', error.message) }
-          this.setState({ error_necesidad: "Hubo un problema al cargar su información.", apiToken: false });
+          _this.setState({ error_necesidad: "Hubo un problema al cargar su información.", apiToken: false });
         });
     }
   }

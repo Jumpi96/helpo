@@ -176,7 +176,7 @@ class ConsultaEvento extends React.Component {
           <Body>
             <Title>{evento.nombre}</Title>
           </Body>
-          {this.props.auth.user.user_type > 1 ?
+          {this.props.auth.user.user_type > 1 && moment(evento.fecha_hora_inicio) > moment() ?
             <Right>
               <Button
                 transparent

@@ -1,8 +1,8 @@
-import React from 'react';  
+import React from 'react';
 import { PropTypes } from 'prop-types';
 import { Table, Button } from 'reactstrap';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import moment from 'moment';
 import { auth } from '../../../actions';
 import ModalEliminarItem from '../../common/ModalEliminarItem/ModalEliminarItem';
@@ -10,10 +10,10 @@ import * as eventoActions from '../../../actions/eventoActions';
 import './Eventos.css';
 import { Link } from 'react-router-dom'
 
-class EventoView extends React.Component {  
+class EventoView extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { 
+    this.state = {
       isEditing: false,
       evento: this.props.evento,
       saving: false,
@@ -36,15 +36,15 @@ class EventoView extends React.Component {
   }
 
   toggleEdit() {
-    this.props.history.push({ 
-      pathname: '/actividades/registrar-colaboraciones', 
+    this.props.history.push({
+      pathname: '/actividades/registrar-colaboraciones',
       search: '?evento=' + this.state.evento.id,
     });
   }
 
   toggleView() {
-    this.props.history.push({ 
-      pathname: '/actividades/consultar-evento', 
+    this.props.history.push({
+      pathname: '/actividades/consultar-evento',
       search: '?id=' + this.state.evento.id,
     });
   }
@@ -56,9 +56,9 @@ class EventoView extends React.Component {
 
   UNSAFE_componentWillReceiveProps(nextProps) {
     if (this.props.evento.id !== nextProps.evento.id) {
-      this.setState({evento: nextProps.evento});
+      this.setState({ evento: nextProps.evento });
     }
-    this.setState({saving: false, isEditing: false});
+    this.setState({ saving: false, isEditing: false });
   }
 
   getTablaNecesidades(necesidades) {
@@ -79,7 +79,7 @@ class EventoView extends React.Component {
       }
     });
     if (listaNecesidades.length > 0) {
-      return(
+      return (
         <tbody>
           {listaNecesidades}
         </tbody>
@@ -89,16 +89,26 @@ class EventoView extends React.Component {
   }
 
   getTablaVoluntarios(voluntarios) {
-    const voluntario = this.getFuncionVoluntario(voluntarios);
-    if (voluntario) {
+    const listaVoluntarios = [];
+    voluntarios.forEach(v => {
+      if (this.esParticipante(v)) {
+        listaVoluntarios.push(
+          <tr>
+            <td><i className="cui-user"></i></td>
+            <td>{v.funcion.nombre}</td>
+            <td>{v.descripcion}</td>
+          </tr>
+        )
+      }
+    });
+    if (listaVoluntarios.length > 0) {
       return (
-        <tr>
-          <td><i className="cui-user"></i></td>
-          <td>{voluntario.funcion.nombre}</td>
-          <td>{voluntario.descripcion}</td>
-        </tr>
-      )
+        <tbody>
+          {listaVoluntarios}
+        </tbody>
+      );
     }
+    return undefined;
   }
 
   getFuncionVoluntario(voluntarios) {
@@ -121,6 +131,10 @@ class EventoView extends React.Component {
       };
     });
     return contador;
+  }
+
+  esParticipante(v) {
+    return v.participaciones.filter(p => p.colaborador.id === this.getUserId()).length > 0;
   }
 
   getUserId() {
@@ -162,32 +176,30 @@ class EventoView extends React.Component {
                   <th>Descripción</th>
                 </tr>
               </thead>
-              <tbody>
-                {listaVoluntarios}
-              </tbody>
+              {listaVoluntarios}
             </Table> : undefined
           }
           <button
             onClick={this.toggleEdit}
-            hidden={moment(evento.fecha_hora_inicio)<=moment()}
+            hidden={moment(evento.fecha_hora_inicio) <= moment()}
             className="btn btn-warning"
           >
             Editar colaboraciones
           </button>
           <Link style={{ marginLeft: 10 }} to={`/actividades/consultar-evento?id=${evento.id}`}>
             <Button color="warning">
-              Ver Evento
+              {evento.campaña ? "Ver campaña" : "Ver evento"}
             </Button>
           </Link>
           <button
             onClick={this.toggleView}
-            hidden={moment(evento.fecha_hora_inicio)>moment()}
+            hidden={moment(evento.fecha_hora_inicio) > moment()}
             className="btn btn-warning"
           >
             Comentar evento
           </button>
           <ModalEliminarItem open={this.state.showModalEliminar} nombre={this.state.evento.nombre}
-            closeModal={this.confirmDeleteNecesidad}/>
+            closeModal={this.confirmDeleteNecesidad} />
         </div>
       );
     } else {
@@ -196,12 +208,12 @@ class EventoView extends React.Component {
   }
 };
 
-EventoView.propTypes = {  
+EventoView.propTypes = {
   evento: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired
 };
 
-function mapStateToProps(state, ownProps) {  
+function mapStateToProps(state, ownProps) {
   let evento = {
     nombre: '',
     necesidades: [],
@@ -211,10 +223,10 @@ function mapStateToProps(state, ownProps) {
   if (state.eventos.length > 0) {
     evento = Object.assign({}, state.eventos.find(evento => "" + evento.id === eventoId))
   }
-  return {evento: evento, auth: state.auth};
+  return { evento: evento, auth: state.auth };
 }
 
-function mapDispatchToProps(dispatch) {  
+function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(eventoActions, dispatch),
     loadUser: () => { return dispatch(auth.loadUser()); }

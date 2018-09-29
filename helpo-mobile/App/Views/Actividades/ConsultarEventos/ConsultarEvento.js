@@ -161,7 +161,7 @@ class ConsultaEvento extends React.Component {
     if (evento.contacto.length > 0) {
       listaContactos = evento.contacto.map(contacto =>
         <ListItem key={contacto.nombre}>
-          <Text>{contacto.nombre} - {contacto.telefono}</Text>
+          <Text>{contacto.nombre} - {contacto.email} - {contacto.telefono}</Text>
         </ListItem>
       );
     }

@@ -38,13 +38,15 @@ class RegistrarEvento extends React.Component {
       fecha_hora_fin: new Date(),
       // TODO: ubicacion que pasamos por defecto debería ser la de la ONG. Ahora, Córdoba.
       ubicacion: { latitud: -31.4201, longitud: -64.1888, notas: '' },
-      contactos: [{
+      contactos: [/*{
         nombre: '',
         mail: '',
         telefono: '',
         contactId: 1,
       }],
-      nextId: 2,
+      nextId: 2,*/
+      ],
+      nextId: 1,
       errors: {},
     };
     this.handleUbicacionChange = this.handleUbicacionChange.bind(this);
@@ -98,7 +100,7 @@ class RegistrarEvento extends React.Component {
     const contactos = this.state.contactos;
     const infoContactos = [];
     // Si no hay contactos, retorno array vacio
-    if (contactos[0].nombre === '') {
+    if (contactos.length === 0) {
       return infoContactos;
     }
     for (let i = 0; i < contactos.length; i += 1) {
@@ -255,9 +257,9 @@ class RegistrarEvento extends React.Component {
   }
 
   removeContact(id) {
-    if (this.state.contactos.length === 1) {
+    /*if (this.state.contactos.length === 1) {
       return;
-    }
+    }*/
     const newContactos = this.state.contactos;
     const indexOfRemove = newContactos.map(e => e.contactId).indexOf(id);
     newContactos.splice(indexOfRemove, 1);
@@ -334,15 +336,15 @@ class RegistrarEvento extends React.Component {
             <Separator bordered noTopBorder>
               <Text>Contactos</Text>
             </Separator>
-              <RegistrarContacto
-                contactos={this.state.contactos}
-                onNombreChange={this.handleContactNombreChange}
-                onMailChange={this.handleContactMailChange}
-                onTelefonoChange={this.handleContactTelefonoChange}
-                onAddContact={this.addContact}
-                onRemoveContact={this.removeContact}
-              />
-            
+            <RegistrarContacto
+              contactos={this.state.contactos}
+              onNombreChange={this.handleContactNombreChange}
+              onMailChange={this.handleContactMailChange}
+              onTelefonoChange={this.handleContactTelefonoChange}
+              onAddContact={this.addContact}
+              onRemoveContact={this.removeContact}
+            />
+
             <Text style={styles.validationMessage}>{this.state.errors.contactoNombre}</Text>
             <Text style={styles.validationMessage}>{this.state.errors.contactoContacto}</Text>
             <Text style={styles.validationMessage}>{this.state.errors.email}</Text>

@@ -62,7 +62,7 @@ class RegistrarOfrecimientos extends Component {
       .catch((error) => {
         if (error.response) { console.log(error.response.status) }
         else { console.log('Error: ', error.message) }
-        this.setState({ error: "Hubo un problema al cargar su información." });
+        this.setState({ error: "Hubo un problema al cargar su información."});
       })
   }
 
@@ -298,7 +298,7 @@ class RegistrarOfrecimientos extends Component {
         console.log(res);
         console.log(res.data);
         this.loadNecesidadesYVoluntarios();
-      }).catch(function (error) {
+      }).catch((error) => {
         if (error.response) { console.log(error.response.status) }
         else { console.log('Error: ', error.message) }
         this.setState({ error_necesidad: "Hubo un problema al cargar su información.", apiToken: false });
@@ -320,7 +320,7 @@ class RegistrarOfrecimientos extends Component {
           console.log(res);
           console.log(res.data);
           this.loadNecesidadesYVoluntarios();
-        }).catch(function (error) {
+        }).catch((error) => {
           if (error.response) { console.log(error.response.status) }
           else { console.log('Error: ', error.message) }
           this.setState({ error_necesidad: "Hubo un problema al cargar su información.", apiToken: false });
@@ -341,7 +341,7 @@ class RegistrarOfrecimientos extends Component {
         console.log(res);
         console.log(res.data);
         this.loadNecesidadesYVoluntarios();
-      }).catch(function (error) {
+      }).catch((error) => {
         if (error.response) { console.log(error.response.status) }
         else { console.log('Error: ', error.message) }
         this.setState({ error_necesidad: "Hubo un problema al cargar su información.", apiToken: false });
@@ -361,7 +361,7 @@ class RegistrarOfrecimientos extends Component {
         console.log(res);
         console.log(res.data);
         this.loadNecesidadesYVoluntarios();
-      }).catch(function (error) {
+      }).catch((error) => {
         if (error.response) { console.log(error.response.status) }
         else { console.log('Error: ', error.message) }
         this.setState({ error_necesidad: "Hubo un problema al cargar su información.", apiToken: false });
@@ -376,7 +376,7 @@ class RegistrarOfrecimientos extends Component {
         console.log(res);
         console.log(res.data);
         this.loadNecesidadesYVoluntarios();
-      }).catch(function (error) {
+      }).catch((error) => {
         if (error.response) { console.log(error.response.status) }
         else { console.log('Error: ', error.message) }
         this.setState({ error_necesidad: "Hubo un problema al cargar su información.", apiToken: false });
@@ -407,7 +407,7 @@ class RegistrarOfrecimientos extends Component {
           console.log(res);
           console.log(res.data);
           this.loadNecesidadesYVoluntarios();
-        }).catch(function (error) {
+        }).catch((error) => {
           if (error.response) { console.log(error.response.status) }
           else { console.log('Error: ', error.message) }
           this.setState({ error_necesidad: "Hubo un problema al cargar su información.", apiToken: false });

@@ -38,13 +38,7 @@ class RegistrarEvento extends React.Component {
       fecha_hora_fin: new Date(),
       // TODO: ubicacion que pasamos por defecto debería ser la de la ONG. Ahora, Córdoba.
       ubicacion: { latitud: -31.4201, longitud: -64.1888, notas: '' },
-      contactos: [/*{
-        nombre: '',
-        mail: '',
-        telefono: '',
-        contactId: 1,
-      }],
-      nextId: 2,*/
+      contactos: [
       ],
       nextId: 1,
       errors: {},

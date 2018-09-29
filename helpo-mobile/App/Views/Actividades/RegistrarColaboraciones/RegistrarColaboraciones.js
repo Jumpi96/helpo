@@ -67,7 +67,6 @@ class RegistrarColaboraciones extends React.Component {
     const voluntario = this.state.voluntarios.filter(n => n.id === idVoluntario)[0];
     if (voluntario.participaciones.filter(n => n.colaborador.id === this.getUserId()).length > 0) {
       return [
-        { text: 'Modificar', icon: 'color-filter', iconColor: '#fa213b' },
         { text: 'Eliminar', icon: 'trash', iconColor: '#fa213b' },
         { text: 'Cancelar', icon: 'close', iconColor: '#25de5b' },
       ];

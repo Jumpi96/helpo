@@ -56,6 +56,7 @@ class RegistrarOfrecimientos extends Component {
           voluntarios: necesidadesData.voluntarios,
           evento: necesidadesData,
           funcionVoluntario: this.getNecesidadVoluntario(necesidadesData.voluntarios),
+          apiToken: false
         });
       })
       .catch((error) => {
@@ -100,16 +101,22 @@ class RegistrarOfrecimientos extends Component {
     if (this.existeColaboracion(n)) {
       return (
         <td>
-          <Button onClick={() => this.editColaboracion(n.id)}
+          <Button onClick={() => this.editColaboracion(n.id)} disabled={this.state.apiToken}
             color="warning" style={{ marginRight: 10 }}>Modificar</Button>
-          <Button onClick={() => this.deleteColaboracion(n.id)}
+          <Button onClick={() => this.deleteColaboracion(n.id)} disabled={this.state.apiToken}
             color="danger">Eliminar</Button>
         </td>
       );
     } else {
       return (
         <td>
-          <Button onClick={() => this.newColaboracion(n.id)} color="primary">Ofrecer</Button>
+          <Button
+            onClick={() => this.newColaboracion(n.id)}
+            color="primary"
+            disabled={this.state.apiToken}
+          >
+            Ofrecer
+          </Button>
         </td>
       );
     }
@@ -119,16 +126,21 @@ class RegistrarOfrecimientos extends Component {
     if (this.existeParticipacion(n)) {
       return (
         <td>
-          <Button onClick={() => this.editParticipacion(n.id)}
+          <Button onClick={() => this.editParticipacion(n.id)} disabled={this.state.apiToken}
             color="warning" style={{ marginRight: 10 }}>Modificar</Button>
-          <Button onClick={() => this.deleteParticipacion(n.id)}
+          <Button onClick={() => this.deleteParticipacion(n.id)} disabled={this.state.apiToken}
             color="danger">Eliminar</Button>
         </td>
       );
     } else {
       return (
         <td>
-          <Button onClick={() => this.newParticipacion(n.id)} color="primary">Ofrecer</Button>
+          <Button
+            onClick={() => this.newParticipacion(n.id)} color="primary"
+            disabled={this.state.apiToken}
+          >
+            Ofrecer
+          </Button>
         </td>
       );
     }
@@ -252,6 +264,7 @@ class RegistrarOfrecimientos extends Component {
 
   saveColaboracionModal(guardar) {
     if (guardar) {
+      this.setState({ apiToken: true });
       if (!this.state.colaboracionModificada.funcion) {
         this.saveColaboracion(this.state.colaboracionModificada);
       } else {
@@ -278,6 +291,7 @@ class RegistrarOfrecimientos extends Component {
   }
 
   deleteParticipacion(participacion_id) {
+    this.setState({ apiToken: true });
     const participacionAnterior = this.getParticipacionAnterior(participacion_id);
     api.delete('/actividades/participaciones/' + participacionAnterior + '/')
       .then(res => {
@@ -287,7 +301,7 @@ class RegistrarOfrecimientos extends Component {
       }).catch(function (error) {
         if (error.response) { console.log(error.response.status) }
         else { console.log('Error: ', error.message) }
-        this.setState({ error_necesidad: "Hubo un problema al cargar su información." });
+        this.setState({ error_necesidad: "Hubo un problema al cargar su información.", apiToken: false });
       });
 
   }
@@ -309,7 +323,7 @@ class RegistrarOfrecimientos extends Component {
         }).catch(function (error) {
           if (error.response) { console.log(error.response.status) }
           else { console.log('Error: ', error.message) }
-          this.setState({ error_necesidad: "Hubo un problema al cargar su información." });
+          this.setState({ error_necesidad: "Hubo un problema al cargar su información.", apiToken: false });
         });
     }
   }
@@ -330,7 +344,7 @@ class RegistrarOfrecimientos extends Component {
       }).catch(function (error) {
         if (error.response) { console.log(error.response.status) }
         else { console.log('Error: ', error.message) }
-        this.setState({ error_necesidad: "Hubo un problema al cargar su información." });
+        this.setState({ error_necesidad: "Hubo un problema al cargar su información.", apiToken: false });
       });
   }
 
@@ -350,11 +364,12 @@ class RegistrarOfrecimientos extends Component {
       }).catch(function (error) {
         if (error.response) { console.log(error.response.status) }
         else { console.log('Error: ', error.message) }
-        this.setState({ error_necesidad: "Hubo un problema al cargar su información." });
+        this.setState({ error_necesidad: "Hubo un problema al cargar su información.", apiToken: false });
       });
   }
 
   deleteColaboracion(idNecesidad) {
+    this.setState({ apiToken: true });
     const colaboracionAnterior = this.getColaboracionAnterior(idNecesidad);
     api.delete('/actividades/colaboraciones/' + colaboracionAnterior + '/')
       .then(res => {
@@ -364,7 +379,7 @@ class RegistrarOfrecimientos extends Component {
       }).catch(function (error) {
         if (error.response) { console.log(error.response.status) }
         else { console.log('Error: ', error.message) }
-        this.setState({ error_necesidad: "Hubo un problema al cargar su información." });
+        this.setState({ error_necesidad: "Hubo un problema al cargar su información.", apiToken: false });
       });
   }
 
@@ -395,7 +410,7 @@ class RegistrarOfrecimientos extends Component {
         }).catch(function (error) {
           if (error.response) { console.log(error.response.status) }
           else { console.log('Error: ', error.message) }
-          this.setState({ error_necesidad: "Hubo un problema al cargar su información." });
+          this.setState({ error_necesidad: "Hubo un problema al cargar su información.", apiToken: false });
         });
     }
   }

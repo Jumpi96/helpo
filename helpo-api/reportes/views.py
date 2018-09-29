@@ -117,6 +117,7 @@ class ONGSuscripcionesPorMesView(APIView):
         Handle GET request
         """
         organizacion = User.objects.get(pk=id)
+        # Make sure that the monthly suscriptions table is up to date
         update_monthly_suscriptions(organizacion)
 
         monthly_subscriptions = OrganizacionSuscripcionesMensuales.objects.filter(
@@ -127,16 +128,17 @@ class ONGSuscripcionesPorMesView(APIView):
             "suscripciones": 0,
             "fecha": date(2000, 1, 1)
         }
-
         i = 1
-        last_entry = monthly_subscriptions[0]
+
+        last_entry = monthly_subscriptions[0]        
         data.append(last_entry.suscripciones)
         # I cut the days in the date string
         data_month.append(str(last_entry.fecha)[0:7])
 
-        # The loop runs until i have 10 values in data or i dont have anymore entries in the query
+        # The loop runs until data has 10 values or there are no more entries in the QuerySet
         while i < len(monthly_subscriptions) and len(data) < 10:
             entry = monthly_subscriptions[i]
+
             # I use 40 to be sure there is 1 month of difference.
             # Because this dates are always assigned to the first of the month it doesnt cause problems
             if((last_entry.fecha - entry.fecha).days > 40):
@@ -155,6 +157,7 @@ class ONGSuscripcionesPorMesView(APIView):
                 aux_entry = namedtuple("Entry", aux.keys())(*aux.values())
                 entry = aux_entry
             else:
+                # If there was an entry, the i pointer is moved forward
                 i = i + 1
             data.append(entry.suscripciones)
             data_month.append(str(entry.fecha)[0:7])

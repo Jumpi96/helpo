@@ -338,7 +338,10 @@ class ColaboracionReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     # de aca para abajo, es una negrada, no queda otra, preguntarle a Gon por que
     def destroy(self, request, *args, **kwargs):
         serializer = ColaboracionSerializer(data=request.data)
-        colaboracion_id = request.path.split("/actividades/colaboraciones/",1)[1][:-1]
+        try:
+            colaboracion_id = int(request.path.split("/actividades/participaciones/",1)[1][:-1])
+        except ValueError:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         serializer.destroy(colaboracion_id)
         return super().destroy(request, *args, **kwargs)
 
@@ -373,19 +376,23 @@ class ParticipacionReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
 
     # negrada is back!
     def destroy(self, request, *args, **kwargs):
-        participacion_id = request.path.split("/actividades/participaciones/",1)[1][:-1]
+        try:
+            participacion_id = int(request.path.split("/actividades/participaciones/",1)[1][:-1])
+        except ValueError:
+            return Response(None, status=status.HTTP_400_BAD_REQUEST)
         participacion = Participacion.objects.get(id=participacion_id)
-        from actividades.services import send_participacion_destroy_email, send_was_full_participacion_mail
-        user = User.objects.get(id=get_token_user(self.request))
-        if user.user_type != 3:
-            send_participacion_destroy_email(participacion)
-        necesidad_voluntario = participacion.necesidad_voluntario
-        participaciones = Participacion.objects.filter(necesidad_voluntario_id=necesidad_voluntario.id)
-        suma_participantes = 0
-        for p in participaciones:
-            suma_participantes += p.cantidad
-        if suma_participantes == necesidad_voluntario.cantidad:
-            send_was_full_participacion_mail(necesidad_voluntario)
+        if participacion is not None:
+            from actividades.services import send_participacion_destroy_email, send_was_full_participacion_mail
+            user = User.objects.get(id=get_token_user(self.request))
+            if user.user_type != 3:
+                send_participacion_destroy_email(participacion)
+            necesidad_voluntario = participacion.necesidad_voluntario
+            participaciones = Participacion.objects.filter(necesidad_voluntario_id=necesidad_voluntario.id)
+            suma_participantes = 0
+            for p in participaciones:
+                suma_participantes += p.cantidad
+            if suma_participantes == necesidad_voluntario.cantidad:
+                send_was_full_participacion_mail(necesidad_voluntario)
         return super().destroy(request, *args, **kwargs)
 
 

@@ -1,3 +1,4 @@
+from collections import namedtuple
 from actividades.models import Evento, Necesidad, Colaboracion, Voluntario, Participacion, LogMensaje, Mensaje, Propuesta
 from common.notifications import send_mail_to_list, send_mail_to, send_mail_to_id_list, send_mail_to_id, send_push_notification_to_id_list
 from common.templates import render_participacion_email, render_cambio_evento_email, render_mensaje_evento, render_full_participacion_email, render_full_colaboracion_email, render_was_full_colaboracion_email, render_was_full_participacion_email, render_inicio_evento_email, render_fin_evento_email
@@ -79,7 +80,8 @@ def send_was_full_colaboracion_mail(necesidad_material):
 
 
 def notificar_cambio_evento(request_data):
-    usuarios_id = _get_usuarios(request_data)
+    obj_evento = namedtuple("Evento", request_data.keys())(*request_data.values())
+    usuarios_id = _get_usuarios(obj_evento)
     evento = _get_evento(request_data)
     _send_mail(usuarios_id, evento)
     _send_push(usuarios_id, evento)
@@ -101,6 +103,8 @@ def _send_mail(usuarios_id, evento):
 
 def _get_usuarios(evento):
     from actividades.models import Necesidad, Voluntario, Colaboracion, Participacion
+    print("AAAAAAAAAAAAAAAAAAAAAAAAAAAA" + str(evento))
+    print("BBBBBBBBBBBBBBBBBBBBBBBBBBBBB" + str(Necesidad.objects.filter(evento=evento.id)))
     necesidades = Necesidad.objects.filter(evento=evento.id).values('id')
     voluntarios = Voluntario.objects.filter(evento=evento.id).values('id')
     colaboraciones = Colaboracion.objects.filter(

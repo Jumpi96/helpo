@@ -276,6 +276,7 @@ class RegistrarColaboraciones extends Component {
   }
 
   deleteParticipacion() {
+    var _this = this;
     const participacionAEliminar = this.getIdParticipacionVoluntario();
     api.delete('/actividades/participaciones/' + participacionAEliminar + '/')
       .then(res => {
@@ -285,12 +286,13 @@ class RegistrarColaboraciones extends Component {
       }).catch((error) => {
         if (error.response) { console.log(error.response.status) }
         else { console.log('Error: ', error.message) }
-        this.setState({ error_necesidad: "Hubo un problema al cargar su información.", apiToken: false });
+        _this.setState({ error_necesidad: "Hubo un problema al cargar su información.", apiToken: false });
       });
 
   }
 
   saveColaboracion(colaboracion) {
+    var _this = this;
     if (colaboracion.cantidad_anterior > 0) {
       this.saveEditColaboracion(colaboracion);
     } else {
@@ -307,12 +309,13 @@ class RegistrarColaboraciones extends Component {
         }).catch((error) => {
           if (error.response) { console.log(error.response.status) }
           else { console.log('Error: ', error.message) }
-          this.setState({ error_necesidad: "Hubo un problema al cargar su información.", apiToken: false });
+          _this.setState({ error_necesidad: "Hubo un problema al cargar su información.", apiToken: false });
         });
     }
   }
 
   saveEditColaboracion(colaboracion) {
+    var _this = this;
     const colaboracionAnterior = this.getColaboracionAnterior(colaboracion.id);
     const nuevaColaboracion = {
       id: colaboracionAnterior,
@@ -328,11 +331,12 @@ class RegistrarColaboraciones extends Component {
       }).catch((error) => {
         if (error.response) { console.log(error.response.status) }
         else { console.log('Error: ', error.message) }
-        this.setState({ error_necesidad: "Hubo un problema al cargar su información.", apiToken: false });
+        _this.setState({ error_necesidad: "Hubo un problema al cargar su información.", apiToken: false });
       });
   }
 
   deleteColaboracion(idNecesidad) {
+    var _this = this;
     this.setState({ apiToken: true });
     const colaboracionAnterior = this.getColaboracionAnterior(idNecesidad);
     api.delete('/actividades/colaboraciones/' + colaboracionAnterior + '/')
@@ -343,7 +347,7 @@ class RegistrarColaboraciones extends Component {
       }).catch((error) => {
         if (error.response) { console.log(error.response.status) }
         else { console.log('Error: ', error.message) }
-        this.setState({ error_necesidad: "Hubo un problema al cargar su información.", apiToken: false });
+        _this.setState({ error_necesidad: "Hubo un problema al cargar su información.", apiToken: false });
       });
   }
 
@@ -353,6 +357,7 @@ class RegistrarColaboraciones extends Component {
   }
 
   saveParticipacion(participacion) {
+    var _this = this;
     const nuevaParticipacion = {
       comentario: participacion.comentarios,
       necesidad_voluntario_id: participacion.id,
@@ -369,7 +374,7 @@ class RegistrarColaboraciones extends Component {
       }).catch((error) => {
         if (error.response) { console.log(error.response.status) }
         else { console.log('Error: ', error.message) }
-        this.setState({ error_necesidad: "Hubo un problema al cargar su información.", apiToken: false });
+        _this.setState({ error_necesidad: "Hubo un problema al cargar su información.", apiToken: false });
       });
   }
 

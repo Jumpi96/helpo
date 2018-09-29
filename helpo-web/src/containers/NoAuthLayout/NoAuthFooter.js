@@ -27,7 +27,9 @@ class NoAuthFooter extends Component {
           </Row>
           <Row>
             <Col sm={{ size: 'auto', offset: 5}}>  
-              <a style={{color:'white'}} href="https://www.helpo.com.ar">helpo</a> &copy; Copyright {(new Date().getFullYear())} 
+              <p style={{color:'white'}}>
+                <a style={{color:'white'}} href="https://www.helpo.com.ar">helpo</a> &copy; Copyright {(new Date().getFullYear())} 
+              </p>
             </Col>
           </Row>
         </Container>

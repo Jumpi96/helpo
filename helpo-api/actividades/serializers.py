@@ -58,7 +58,12 @@ class EventoSerializer(serializers.ModelSerializer):
     
     def update(self, instance, validated_data):
         ubicacion_data = validated_data.pop('ubicacion')
-        ubicacion = Ubicacion.objects.get_or_create(**ubicacion_data)
+        ubicacion = Ubicacion.objects.filter(latitud=ubicacion_data.get('latitud'), \
+            longitud=ubicacion_data.get('longitud'), notas=ubicacion_data.get('notas'))
+        if len(ubicacion) == 0:
+            ubicacion = Ubicacion.objects.create(**ubicacion_data)
+        else:
+            ubicacion = ubicacion[0]
         contactos_data = validated_data.pop('contacto')
         Contacto.objects.filter(evento_id=instance.id).delete()
         for contacto_data in contactos_data:
@@ -67,6 +72,7 @@ class EventoSerializer(serializers.ModelSerializer):
         instance.descripcion = validated_data.get('descripcion')
         instance.fecha_hora_inicio = validated_data.get('fecha_hora_inicio')
         instance.fecha_hora_fin = validated_data.get('fecha_hora_fin')
+        instance.ubicacion = ubicacion
         instance.rubro = RubroEvento.objects.get(pk=validated_data.get('rubro').id)
         instance.save()
         return instance

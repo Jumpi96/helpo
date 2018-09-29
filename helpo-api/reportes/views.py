@@ -41,9 +41,9 @@ class OrganizationStats(APIView):
         in all the ONG events
         """
         vol_participaciones = User.objects.filter(
-            participacion__necesidad_voluntario__evento__organizacion_id=id)
+            participacion__necesidad_voluntario__evento__organizacion_id=id).filter(participacion__participo=True)
         vol_colaboraciones = User.objects.filter(
-            colaboracion__necesidad_material__evento__organizacion_id=id)
+            colaboracion__necesidad_material__evento__organizacion_id=id).filter(colaboracion__entregado=True)            
         return vol_participaciones.union(vol_colaboraciones).count()
 
     def get(self, request, id, format=None):
@@ -178,4 +178,36 @@ class ONGEventoStats(APIView):
         """
         Handle GET request
         """
-        pass
+
+        participaciones = []
+        colaboraciones = []
+        manos = []
+        eventos_nombre = []
+
+        eventos = Evento.objects.filter(organizacion=id).filter(estado=3).order_by("-fecha_hora_inicio")[:10]
+        for evento in eventos:
+            eventos_nombre.append(evento.nombre)
+
+            vol_participaciones = User.objects.filter(
+            participacion__necesidad_voluntario__evento=evento).filter(participacion__participo=True).count()
+            participaciones.append(vol_participaciones)
+
+            vol_colaboraciones = User.objects.filter(
+            colaboracion__necesidad_material__evento=evento).filter(colaboracion__entregado=True)  .count()
+            colaboraciones.append(vol_colaboraciones)
+
+            manos_participaciones = Participacion.objects.filter(retroalimentacion_ong=True).filter(
+            necesidad_voluntario__evento=evento).count()
+            manos_colaboraciones = Colaboracion.objects.filter(retroalimentacion_ong=True).filter(
+            necesidad_material__evento=evento).count()
+            vol_manos = manos_participaciones + manos_colaboraciones
+            manos.append(vol_manos)
+
+        data = {
+            "participaciones": participaciones,
+            "colaboraciones": colaboraciones,
+            "manos": manos,
+            "eventos": eventos_nombre,
+        }
+            
+        return Response(data)

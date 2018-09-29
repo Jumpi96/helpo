@@ -31,7 +31,7 @@ class Evento(IndexedTimeStampedModel):
     ubicacion = models.ForeignKey(Ubicacion, null=True, on_delete=models.SET_NULL)
     organizacion = models.ForeignKey(User, null=False)
     estado = models.PositiveSmallIntegerField(choices=EVENTO_STATUS, default=1, null=False, blank=False)
-
+    
 class Contacto(models.Model):
     nombre = models.CharField(max_length=100)
     email = models.EmailField(max_length=100,blank=True,null=True)

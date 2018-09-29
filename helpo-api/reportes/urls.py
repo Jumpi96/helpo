@@ -18,4 +18,9 @@ urlpatterns = [
         view=reportes_views.ONGSuscripcionesPorMesView.as_view(),
         name="get_organizacion_suscripciones_mes"
     ),
+    url(
+        regex=r"^reportes/organizacion/eventos/(?P<id>[-\w]+)/$",
+        view=reportes_views.ONGEventoStats.as_view(),
+        name="get_organizacion_eventos"
+    ),
 ]

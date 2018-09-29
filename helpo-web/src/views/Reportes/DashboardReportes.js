@@ -1,8 +1,32 @@
 import React from 'react'
-import { Card } from 'reactstrap'
+import { Card, CardHeader, CardBody } from 'reactstrap'
 import { Line } from 'react-chartjs-2'
+import { connect } from 'react-redux'
+
+/*
+Props:
+  ong (id - viene de redux)
+*/
 
 class DashboardReportes extends React.Component {
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      total_suscripciones: -1,
+      total_manos: -1,
+      total_eventos: -1,
+      total_voluntarios: -1,
+      grafico_suscripciones: {
+        labels: [],
+        data: []
+      }      
+    }
+  }
+
+  componentDidMount() {
+
+  }
 
   render() {    
 
@@ -34,18 +58,20 @@ class DashboardReportes extends React.Component {
     };
 
     return (
-      <Card>        
-        <Line
-          data={data}
-          width={300}
-          height={200}
-          options={{
-            maintainAspectRatio: false
-          }}
-        />
-      </Card>
+      <Card>
+          <CardHeader>
+            <i className="fa fa-align-justify"></i> Reportes
+          </CardHeader>
+          <CardBody style={{ display: 'flex', flexWrap: 'wrap' }}>
+            
+          </CardBody>
+        </Card>
     )
   }
 }
 
-export default DashboardReportes
+const mapStateToProps = state => ({
+  ong: state.auth.user.id
+})
+
+export default connect(mapStateToProps)(DashboardReportes)

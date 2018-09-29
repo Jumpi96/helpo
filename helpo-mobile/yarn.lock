@@ -5260,6 +5260,10 @@ istanbul-reports@^1.5.1:
   dependencies:
     handlebars "^4.0.3"
 
+itypeof@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/itypeof/-/itypeof-1.1.2.tgz#6fb22639dc78a414f594b3d553a5f2c2488fd022"
+
 jest-changed-files@^23.4.2:
   version "23.4.2"
   resolved "https://registry.yarnpkg.com/jest-changed-files/-/jest-changed-files-23.4.2.tgz#1eed688370cd5eebafe4ae93d34bb3b64968fe83"
@@ -7880,6 +7884,16 @@ react-native-elements@0.19.1:
     lodash.times "^4.3.2"
     opencollective "^1.0.3"
     prop-types "^15.5.8"
+
+react-native-facebook-login@^1.6.1:
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/react-native-facebook-login/-/react-native-facebook-login-1.6.1.tgz#c1c10ddccab8eb99a5c5432ea7e6ebdd2ab2319e"
+  dependencies:
+    itypeof "^1.1.2"
+
+react-native-google-signin@^1.0.0-rc6:
+  version "1.0.0-rc6"
+  resolved "https://registry.yarnpkg.com/react-native-google-signin/-/react-native-google-signin-1.0.0-rc6.tgz#13278e39551d127008e76a9c6caf532f04246f17"
 
 react-native-image-picker@^0.26.10:
   version "0.26.10"

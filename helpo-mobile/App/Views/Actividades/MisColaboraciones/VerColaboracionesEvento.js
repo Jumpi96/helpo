@@ -18,6 +18,7 @@ import {
   View,
 } from 'native-base';
 import styles from './styles';
+import { goVerEvento } from '../../../Services/NavFunctions'
 
 class VerColaboracionesEvento extends React.Component {
 
@@ -149,6 +150,13 @@ class VerColaboracionesEvento extends React.Component {
             <Label style={styles.label}>Nombre</Label>
             <Text>{evento.nombre}</Text>
           </ListItem>
+          <ListItem 
+            button 
+            onPress={() => goVerEvento(evento.id, this.props.navigation)}>
+            <Body>
+              <Text>Ver Evento</Text>
+            </Body>
+        </ListItem>
           {this.getListaNecesidades(evento)}
           {this.getListaVoluntarios(evento)}
         </Content>

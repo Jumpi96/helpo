@@ -10,6 +10,7 @@ const { Types, Creators } = createActions({
   loginSuccessful: null,
   authenticationError: null,
   loginFailed: null,
+  loginUnverified: null,
   registrationFailed: null,
   logoutSuccessful: null,
 })
@@ -55,6 +56,10 @@ export const failedLogin = (state) => {
   return state.merge ({ errors: { detail: 'Los datos ingresados no son correctos.' } })
 }
 
+export const unverifiedLogin = (state) => {
+  return state.merge ({ errors: { detail: 'Debe verificar su cuenta. Preguntas a: consultas@helpo.com.ar' } })
+}
+
 export const failedSignup = (state) => {
   return state; 
 }
@@ -72,6 +77,7 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.LOGIN_SUCCESSFUL]: logged,
   [Types.AUTHENTICATION_ERROR]: failure,
   [Types.LOGIN_FAILED]: failedLogin,
+  [Types.LOGIN_UNVERIFIED]: unverifiedLogin,
   [Types.REGISTRATION_FAILED]: failedSignup,
   [Types.LOGOUT_SUCCESSFUL]: loggedout,
 })

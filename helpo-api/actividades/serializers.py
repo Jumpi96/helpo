@@ -186,17 +186,18 @@ class ColaboracionSerializer(serializers.ModelSerializer):
     # la continuacion de la negrada de Gon
     def destroy(self, colaboracion_id):
         colaboracion = Colaboracion.objects.get(id=colaboracion_id)
-        colaborador_id = colaboracion.colaborador.id
-        necesidad_material = colaboracion.necesidad_material
-        evento = necesidad_material.evento
-        titulo_email = u"Usted ha cancelado su colaboración en el siguiente Evento:"
-        self.send_colaboracion_email(colaborador_id, evento, colaboracion, titulo_email)
-        colaboraciones = Colaboracion.objects.filter(necesidad_material_id=necesidad_material.id)
-        suma_colaboraciones = 0
-        for c in colaboraciones:
-            suma_colaboraciones += c.cantidad
-        if suma_colaboraciones == necesidad_material.cantidad:
-            send_was_full_colaboracion_mail(necesidad_material)
+        if colaboracion is not None:
+            colaborador_id = colaboracion.colaborador.id
+            necesidad_material = colaboracion.necesidad_material
+            evento = necesidad_material.evento
+            titulo_email = u"Usted ha cancelado su colaboración en el siguiente Evento:"
+            self.send_colaboracion_email(colaborador_id, evento, colaboracion, titulo_email)
+            colaboraciones = Colaboracion.objects.filter(necesidad_material_id=necesidad_material.id)
+            suma_colaboraciones = 0
+            for c in colaboraciones:
+                suma_colaboraciones += c.cantidad
+            if suma_colaboraciones == necesidad_material.cantidad:
+                send_was_full_colaboracion_mail(necesidad_material)
 
     def send_colaboracion_email(self, colaborador_id, evento, colaboracion, titulo_email):
         subject_utf = u"Registro de su colaboración en Helpo"

@@ -5,7 +5,7 @@ import { Card, CardHeader, Button, CardTitle, CardText, CardBody, CardColumns, T
 import { Gmaps, Marker } from 'react-gmaps';
 import { getImagen } from '../../../utils/Imagen'
 import BotonSuscripcion from '../../Suscripcion/BotonSuscripcion/BotonSuscripcion'
-import ModalVerificarCuenta from './ModalVerificarCuenta/ModalVerificarCuenta';
+import ModalVerificarCuenta from '../ModalVerificarCuenta/ModalVerificarCuenta';
 //https://github.com/MicheleBertoli/react-gmaps
 
 const perfilPropTypes = {
@@ -108,7 +108,7 @@ class ConsultarPerfilOrganizacion extends Component {
     if (this.state.showModalVerificarCuenta) {
       return (
         <ModalVerificarCuenta
-          telefono={this.props.data.telefono} id={this.props.id} userType="1"
+          telefono={this.props.data.telefono} id={this.props.id} userType={this.props.userType}
           onSuccess={(verificada) => {
             this.props.data.verificada = verificada;
             this.setState({ showModalVerificarCuenta: false });

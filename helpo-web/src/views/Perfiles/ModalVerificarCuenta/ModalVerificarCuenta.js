@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
-import api from "../../../../api"
+import api from "../../../api"
 
 class ModalVerificarCuenta extends Component {
 
@@ -26,9 +26,9 @@ class ModalVerificarCuenta extends Component {
       error: undefined,
       exito: undefined,
     });
-    if (this.props.userType === "1") {
+    if (this.props.userType === 1) {
       url = `/perfiles/send_sms_organizacion/${this.props.id}/`;
-    } else if (this.props.userType === "3") {
+    } else if (this.props.userType === 3) {
       url = `/perfiles/send_sms_empresa/${this.props.id}/`;
     }
     if (url !== "") {

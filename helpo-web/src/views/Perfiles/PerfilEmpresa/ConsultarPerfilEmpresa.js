@@ -64,7 +64,7 @@ class ConsultarPerfilEmpresa extends Component {
           <p>{this.props.data.telefono} <span id="btnVerificar" onClick={this.togglePopover} style={{ borderRadius: '4px' }} className="btn-primary fa fa-pencil fa-fw"></span></p>
           <Popover placement="bottom" isOpen={this.state.popoverOpen} target="btnVerificar" toggle={this.togglePopover}>
             <PopoverHeader>Confirme su tel&eacute;fono</PopoverHeader>
-            <PopoverBody>Para que su cuenta sea verificada utilizando un segundo factor de su cuenta, haga click <a style={{ textDecoration: "underline", color: "#F39200" }} onClick={this.showModalVerificarCuenta}>aqu&iacute;</a></PopoverBody>
+            <PopoverBody>Si desea verificar su cuenta utilizando un segundo factor, haga click <a style={{ textDecoration: "underline", color: "#F39200" }} onClick={this.showModalVerificarCuenta}>aqu&iacute;</a></PopoverBody>
           </Popover>
         </div>
       )

@@ -9,11 +9,9 @@ export async function goVerEvento(evento, navigation) {
   navigation: Navigation Prop
   */
   try {  
-    const rubros_response = await api.get('actividades/rubros_evento/')
-    const evento_response = await api.get(`actividades/eventos/${evento}/`)
-    const rubros = rubros_response.data
+    const evento_response = await api.get(`actividades/consulta_eventos/${evento}/`)
     const eventoData = evento_response.data
-    navigation.navigate('VerEvento', {evento: eventoData, rubros: rubros})
+    navigation.navigate('ConsultarEvento', {evento: eventoData})
   }
   catch(error) {
     console.log(error)

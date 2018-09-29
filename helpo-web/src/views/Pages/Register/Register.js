@@ -256,7 +256,7 @@ class Register extends Component {
       isValid = false;
     }
     if (errors.email === "" && !validateEmail(this.state.email)) {
-      errors.email = "Ingrese un email valido";
+      errors.email = "Ingrese un email válido";
       isValid = false;
     }
     //Contraseña
@@ -283,14 +283,14 @@ class Register extends Component {
   render() {
     const user_type = this.state.user_type;
     const responseGoogle = (response) => {
-      // console.log("google console");
-      // console.log(response);
-      this.onSubmitGoogle(response);
+      if(response && response.profileObj) {
+        this.onSubmitGoogle(response);
+      }
     }
     const responseFacebook = (response) => {
-      // console.log("facebook console");
-      // console.log(response);
-      this.onSubmitFacebook(response);
+      if(response && response.email) {
+        this.onSubmitFacebook(response);
+      }
     }
     if (this.props.isAuthenticated) {
       return <Redirect to="/" />

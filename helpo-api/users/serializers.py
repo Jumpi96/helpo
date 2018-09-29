@@ -1,10 +1,9 @@
 from rest_framework import serializers
 from django.contrib.auth import authenticate
-from users.models import User, UserWrapper, RubroOrganizacion, RubroEmpresa, OrganizacionProfile, Ubicacion, Imagen, VoluntarioProfile, EmpresaProfile, UserVerification, AppValues, DeviceID, Suscripcion
+from users.models import User, UserWrapper, RubroOrganizacion, RubroEmpresa, OrganizacionProfile, Ubicacion, Imagen, VoluntarioProfile, EmpresaProfile, SmsVerification, UserVerification, AppValues, DeviceID, Suscripcion
 from actividades.models import Participacion, Evento, Colaboracion
 from django.core.exceptions import ObjectDoesNotExist
 from common.functions import get_datos_token_google, get_datos_token_facebook
-from hashlib import sha256
 import random
 import string
 
@@ -26,10 +25,8 @@ class GoogleAuthSerializer(serializers.ModelSerializer):
                 if user_email:
                     user_qs = User.objects.filter(email=user_email)
                     if len(user_qs) == 0:
-                        str_toencode = ''.join(random.SystemRandom().choice(
-                            string.ascii_uppercase + string.digits) for _ in range(128))
-                        str_encoded = str_toencode.encode('utf-8')
-                        user_password = str(sha256(str_encoded))[:64]
+                        user_password = ''.join(random.SystemRandom().choice(
+                            string.ascii_uppercase + string.digits) for _ in range(64))
                         kwargs = {'avatar': datos_google.get(
                             'foto'), 'apellido': datos_google.get('apellido')}
                         user = User.objects.create_user(user_email, datos_google.get('nombre'), user_password, data.get(
@@ -65,10 +62,8 @@ class FacebookAuthSerializer(GoogleAuthSerializer):
                         word_list = user_name.split()
                         nombre = word_list[0]
                         apellido = word_list[-1]
-                        str_toencode = ''.join(random.SystemRandom().choice(
-                            string.ascii_uppercase + string.digits) for _ in range(128))
-                        str_encoded = str_toencode.encode('utf-8')
-                        password = str(sha256(str_encoded))[:64]
+                        password = ''.join(random.SystemRandom().choice(
+                            string.ascii_uppercase + string.digits) for _ in range(64))
                         kwargs = {'apellido': apellido}
                         user = User.objects.create_user(user_email, nombre, password, data.get(
                             'user_type'), **kwargs)
@@ -237,8 +232,8 @@ class EmpresaProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = EmpresaProfile
-        fields = ( 'telefono', 'cuit', 'descripcion', 'rubro', 'avatar', 'ubicacion', 'usuario')
-        read_only_fields = ('usuario',)
+        fields = ( 'verificada', 'telefono', 'cuit', 'descripcion', 'rubro', 'avatar', 'ubicacion', 'usuario')
+        read_only_fields = ('usuario', 'verificada')
 
     def update(self, instance, validated_data):
         rubro_data = None
@@ -344,12 +339,29 @@ class VoluntarioProfileSerializer(serializers.ModelSerializer):
                 cantidad.append(p.necesidad_voluntario.evento_id)
         eventos = Evento.objects.filter(id__in = cantidad).count()
         return eventos    
-        
+
+class VerificationSmsSerializer(serializers.Serializer):    
+    token = serializers.CharField()
+
+    def validate(self, data):
+        try:
+            sms_verification = SmsVerification.objects.get(verificationToken=data["token"])
+            user = sms_verification.usuario
+            if user.user_type == 1:
+                profile = OrganizacionProfile.objects.filter(usuario=user).first()
+                if profile.validate_sms(sms_verification.verificationToken):
+                    return True
+            elif user.user_type == 3:
+                profile = EmpresaProfile.objects.filter(usuario=user).first()
+                if profile.validate_sms(sms_verification.verificationToken):
+                    return True
+        except ObjectDoesNotExist:
+            raise serializers.ValidationError("Verification token does not match any")
+
 class VerificationMailSerializer(serializers.Serializer):    
     token = serializers.CharField()
 
     def validate(self, data):
-        print(data)
         try:
             user_verification = UserVerification.objects.get(verificationToken=data["token"])
             user = user_verification.usuario

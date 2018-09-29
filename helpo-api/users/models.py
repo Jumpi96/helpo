@@ -1,10 +1,11 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from decouple import config
-from hashlib import sha256
 from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from common.models import IndexedTimeStampedModel
+import random
+import string
 
 class Profile(models.Model):
     usuario = models.OneToOneField('User')
@@ -49,14 +50,33 @@ class OrganizacionProfile(Profile):
     avatar = models.ForeignKey(Imagen, on_delete=models.SET_NULL, blank=True, null=True)
     ubicacion = models.ForeignKey(Ubicacion, on_delete=models.SET_NULL,blank=True, null=True)
     descripcion = models.TextField(blank=True, null=True)
+
+    def validate_sms(self, token):        
+        sv_object = SmsVerification.objects.get(usuario=self.usuario)
+        if (sv_object.verificationToken == token):
+            self.verificada=True
+            self.save()
+            sv_object.delete()
+            return True
+        return False
     
 class EmpresaProfile(Profile):
+    verificada = models.BooleanField(default=False)
     telefono = models.BigIntegerField(null=True)
     cuit = models.BigIntegerField(blank=True, null=True)
     rubro = models.ForeignKey(RubroEmpresa, on_delete=models.SET_NULL, blank=True, null=True)
     avatar = models.ForeignKey(Imagen, on_delete=models.SET_NULL, blank=True, null=True)
     ubicacion = models.ForeignKey(Ubicacion, on_delete=models.SET_NULL,blank=True, null=True)
     descripcion = models.TextField(blank=True, null=True)
+
+    def validate_sms(self, token):        
+        sv_object = SmsVerification.objects.get(usuario=self.usuario)
+        if (sv_object.verificationToken == token):
+            self.verificada=True
+            self.save()
+            sv_object.delete()
+            return True
+        return False
 
 class UserManager(BaseUserManager):
 
@@ -89,14 +109,13 @@ class UserManager(BaseUserManager):
         user = self.create_user(**kwargs)
         user.is_superuser = True
         user.is_staff = True
+        user.is_confirmed = True
         user.save(using=self._db)
         return user
 
     def send_confirmation_email(self, user):
-        str_to_encode = str(user.id) + user.email
-        str_encoded = str_to_encode.encode('utf-8')
-        uncutbash = str(sha256(str_encoded))
-        bash = uncutbash[22:36]
+        bash = ''.join(random.SystemRandom().choice(
+            string.ascii_uppercase + string.digits) for _ in range(16))
         self.create_user_verification(user, bash)
 
         mail_from = settings.REGISTER_EMAIL
@@ -107,10 +126,6 @@ class UserManager(BaseUserManager):
 
         from common.notifications import send_mail_to
         send_mail_to(user.email, subject, content, mail_from)
-        # from common.notifications import send_mail_to_list, send_push_notification_to_list, send_push_notification_to_id_list
-        # send_mail_to_list(["gonzaulla@gmail.com", "helpoweb@gmail.com"], "sub", "hola")
-        # send_push_notification_to_list(["techo@techo.com", "admin@admin.com"], "en", "es", "ja", "hola")
-        # send_push_notification_to_id_list([1], "en", "es", "ja", "hola")
 
     def create_user_verification(self, user, token):
         UserVerification.objects.create(usuario=user, verificationToken=token)
@@ -177,6 +192,9 @@ class UserVerification(IndexedTimeStampedModel):
     usuario = models.OneToOneField('User')
     verificationToken = models.CharField(max_length=2000)
 
+class SmsVerification(IndexedTimeStampedModel):
+    usuario = models.OneToOneField('User')
+    verificationToken = models.CharField(max_length=16)
 
 class Profile(models.Model):
     usuario = models.OneToOneField(User)

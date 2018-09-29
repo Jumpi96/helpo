@@ -1,7 +1,7 @@
 from django.conf.urls import url
 from users import views as users_views
 
-urlpatterns = [ 
+urlpatterns = [
     # {% url "api:exists_facebook" %}
     url(
         regex=r"^auth/exists_facebook/$",
@@ -102,10 +102,28 @@ urlpatterns = [
         view=users_views.VerifyMailView.as_view(),
         name="user"
     ),
+    # {% url "api:send_sms_organizacion" %}
     url(
-      regex=r"^imgurToken/$",
-      view=users_views.ImgurTokenView.as_view(),
-      name="get_imgur_access_token"
+        regex=r"^perfiles/send_sms_organizacion/(?P<usuario>[-\w]+)/$",
+        view=users_views.SendSmsOrganizacionView.as_view(),
+        name="get_send_sms_organizacion"
+    ),
+    # {% url "api:send_sms_empresa" %}
+    url(
+        regex=r"^perfiles/send_sms_empresa/(?P<usuario>[-\w]+)/$",
+        view=users_views.SendSmsEmpresaView.as_view(),
+        name="get_send_sms_empresa"
+    ),
+    # {% url "api:verify_sms" %}
+    url(
+        regex=r"^verify_sms/$",
+        view=users_views.VerifySmsView.as_view(),
+        name="post_verify_sms"
+    ),
+    url(
+        regex=r"^imgurToken/$",
+        view=users_views.ImgurTokenView.as_view(),
+        name="get_imgur_access_token"
     ),
     # {% url "api:device_id" %}
     url(

@@ -4,6 +4,8 @@ import ShallowRenderer from 'react-test-renderer/shallow';
 import { Card } from 'reactstrap'
 
 const requiredProps = {
+  id: 1,
+  userType: 3,
   nombre: 'test',
   email: 'test@test.com',
   data: {
@@ -21,5 +23,5 @@ it('renders without crashing', () => {
     <ConsultarPerfilEmpresa {...requiredProps} />
   );
   const result = renderer.getRenderOutput();    
-  expect(result.type).toBe(Card);
+  expect(result.type).toBe(div);
 });

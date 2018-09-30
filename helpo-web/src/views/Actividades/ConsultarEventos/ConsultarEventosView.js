@@ -22,6 +22,7 @@ class ConsultarEventosView extends React.Component {
     }
     this.toggleColaborar = this.toggleColaborar.bind(this);
     this.loadEvento = this.loadEvento.bind(this);
+    this.puedeColaborar = this.puedeColaborar.bind(this);
   }
 
   loadEvento() {
@@ -91,6 +92,21 @@ class ConsultarEventosView extends React.Component {
     } else {
       return false;
     }
+  }
+
+  puedeColaborar() {
+    const { user } = this.props.auth;
+    if (user) {
+      if (user.user_type == 2) {
+        return true;
+      } else if (user.user_type == 3) {
+        const propuestas_rechazadas = this.state.evento.propuestas.filter(p => p.empresa.id === user.id && p.aceptado === -1);
+        if (propuestas_rechazadas.length === 0) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   render() {
@@ -229,13 +245,13 @@ class ConsultarEventosView extends React.Component {
                 </div>
               ) : undefined
               }
-              {listaNecesidades || listaVoluntarios ? (
+              {this.puedeColaborar() ? (
                 <button
                   onClick={this.toggleColaborar}
-                  hidden={moment(evento.fecha_hora_inicio) <= moment() || this.esONG()}
+                  hidden={moment(evento.fecha_hora_inicio) <= moment()}
                   className="btn btn-warning offset-md-10"
                 >
-                  Colaborar
+                  {this.props.auth.user === 2 ? "Colaborar" : "Patrocinar"}
               </button>
               ) : undefined
               }

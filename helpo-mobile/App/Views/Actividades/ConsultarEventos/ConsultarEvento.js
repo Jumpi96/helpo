@@ -29,6 +29,7 @@ class ConsultaEvento extends React.Component {
     super(props);
     this.navigateColaborar = this.navigateColaborar.bind(this);
     this.togglePerfil = this.togglePerfil.bind(this);
+    this.puedeColaborar = this.puedeColaborar.bind(this);
   }
 
   getListaNecesidades(evento) {
@@ -154,6 +155,21 @@ class ConsultaEvento extends React.Component {
     return a;
   }
 
+  puedeColaborar() {
+    const { user } = this.props.auth;
+    if (user) {
+      if (user.user_type == 2) {
+        return true;
+      } else if (user.user_type == 3) {
+        const propuestas_rechazadas = this.state.evento.propuestas.filter(p => p.empresa.id === user.id && p.aceptado === -1);
+        if (propuestas_rechazadas.length === 0) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
   render() {
     const { params } = this.props.navigation.state;
     const evento = params.evento;
@@ -176,7 +192,7 @@ class ConsultaEvento extends React.Component {
           <Body>
             <Title>{evento.nombre}</Title>
           </Body>
-          {this.props.auth.user.user_type > 1 && moment(evento.fecha_hora_inicio) > moment() ?
+          {this.puedeColaborar() && moment(evento.fecha_hora_inicio) > moment() ?
             <Right>
               <Button
                 transparent

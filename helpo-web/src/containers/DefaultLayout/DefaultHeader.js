@@ -7,7 +7,6 @@ import logo from '../../assets/img/brand/logo.svg'
 import sygnet from '../../assets/img/brand/sygnet.svg'
 import { connect } from "react-redux";
 import {auth} from "../../../src/actions";
-import ConsultarPerfilGenerico from "../../../src/views/Perfiles/ConsultarPerfilGenerico"
 import { getImagen } from '../../utils/Imagen';
 
 const propTypes = {

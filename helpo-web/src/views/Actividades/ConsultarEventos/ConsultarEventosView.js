@@ -251,7 +251,7 @@ class ConsultarEventosView extends React.Component {
                   hidden={moment(evento.fecha_hora_inicio) <= moment()}
                   className="btn btn-warning offset-md-10"
                 >
-                  {this.props.auth.user === 2 ? "Colaborar" : "Patrocinar"}
+                  {this.props.auth.user.user_type === 2 ? "Colaborar" : "Patrocinar"}
               </button>
               ) : undefined
               }

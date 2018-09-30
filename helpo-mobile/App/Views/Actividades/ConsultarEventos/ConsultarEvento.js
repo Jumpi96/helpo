@@ -197,7 +197,7 @@ class ConsultaEvento extends React.Component {
               <Button
                 transparent
                 onPress={() => this.navigateColaborar(evento)}>
-                <Text>Colaborar</Text>
+                <Text>{this.props.auth.user.user_type === 2 ? "Colaborar" : "Patrocinar"}</Text>
               </Button>
             </Right> : undefined
           }

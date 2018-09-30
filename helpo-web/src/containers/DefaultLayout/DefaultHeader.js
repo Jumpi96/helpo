@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Badge, DropdownItem, DropdownMenu, DropdownToggle, Nav, NavItem, NavLink } from 'reactstrap';
 import PropTypes from 'prop-types';
-
+import { Link } from 'react-router-dom';
 import { AppAsideToggler, AppHeaderDropdown, AppNavbarBrand, AppSidebarToggler } from '@coreui/react';
 import logo from '../../assets/img/brand/logo.svg'
 import sygnet from '../../assets/img/brand/sygnet.svg'
@@ -16,13 +16,7 @@ const propTypes = {
 
 const defaultProps = {};
 
-class DefaultHeader extends Component {
-
-  consultarPerfil(){
-    return(
-      <ConsultarPerfilGenerico />
-    )
-  }  
+class DefaultHeader extends Component { 
   
   render() {
 
@@ -48,13 +42,9 @@ class DefaultHeader extends Component {
             </DropdownToggle>
             <DropdownMenu right style={{ right: 'auto' }}>
               <DropdownItem header tag="div" className="text-center"><strong>Perfil</strong></DropdownItem>
-              <DropdownItem onClick={this.consultarPerfil}><i className="fa fa-user"></i>Mi perfil</DropdownItem> {/*Deberia rutear a la consulta de perfil generico*/}
+              <Link to="/perfil/"><DropdownItem onClick={this.consultarPerfil}><i className="fa fa-user"></i>Mi perfil</DropdownItem></Link>{/*Deberia rutear a la consulta de perfil generico*/}
               <DropdownItem><i className="fa fa-bell-o"></i> Notificaciones<Badge color="info" hidden>0</Badge></DropdownItem>
-              <DropdownItem><i className="fa fa-envelope-o"></i> Mensajes<Badge color="success" hidden>0</Badge></DropdownItem>
-              <DropdownItem header tag="div" className="text-center"><strong>Settings</strong></DropdownItem>
-              
               <DropdownItem><i className="fa fa-wrench"></i> Ajustes</DropdownItem>
-              
               <DropdownItem onClick={() => this.props.logout()}><i className="fa fa-lock"></i> Cerrar sesión</DropdownItem>
             </DropdownMenu>
           </AppHeaderDropdown>

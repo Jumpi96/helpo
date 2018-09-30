@@ -52,16 +52,6 @@ export default {
         },
         class: ''             // optional class names space delimited list for title item ex: "text-center"
       },
-      {
-        name: 'Mi perfil',
-        url: '/perfil/',
-        icon: 'icon-pencil',
-      },
-      {
-        name: 'Estadisticas',
-        url: '/reportes/',
-        icon: 'icon-calendar',
-      },
     ],
   };
   

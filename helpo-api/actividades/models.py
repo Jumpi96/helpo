@@ -34,7 +34,7 @@ class Evento(IndexedTimeStampedModel):
     ubicacion = models.ForeignKey(Ubicacion, null=True, on_delete=models.SET_NULL)
     organizacion = models.ForeignKey(User, null=False)
     estado = models.PositiveSmallIntegerField(choices=EVENTO_STATUS, default=1, null=False, blank=False)
-
+    
 class Contacto(models.Model):
     nombre = models.CharField(max_length=100)
     email = models.EmailField(max_length=100,blank=True,null=True)
@@ -95,19 +95,19 @@ class Colaboracion(models.Model):
     cantidad = models.IntegerField()
     comentario = models.CharField(max_length=140, null=True)
     necesidad_material = models.ForeignKey(Necesidad, related_name='colaboraciones', null=False, on_delete=models.CASCADE)
-    colaborador = models.ForeignKey(User, null=False)
+    colaborador = models.ForeignKey(User, related_name='colaboracion', null=False)
     entregado = models.BooleanField(null=False, blank=False, default=False)
     vigente = models.NullBooleanField(null=True, default=True)
     retroalimentacion_voluntario = models.BooleanField(default=False)
     retroalimentacion_ong = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.necesidad_material + ": " + str(self.cantidad)
+        return str(self.necesidad_material) + ": " + str(self.cantidad)
 
 class Participacion(models.Model):
     comentario = models.CharField(max_length=140, null=True)
     necesidad_voluntario = models.ForeignKey(Voluntario, related_name='participaciones', null=False, on_delete=models.CASCADE)
-    colaborador = models.ForeignKey(User, null=False)
+    colaborador = models.ForeignKey(User, related_name='participacion', null=False)
     participo = models.BooleanField(null=False, blank=False, default=False)
     vigente = models.NullBooleanField(null=True, default=True)
     retroalimentacion_voluntario = models.BooleanField(default=False)
@@ -115,7 +115,7 @@ class Participacion(models.Model):
     cantidad = models.IntegerField()
 
     def __str__(self):
-        return self.necesidad_voluntario + " " + self.colaborador
+        return str(self.necesidad_voluntario) + " " + self.colaborador
 
 class ActividadesTasks(models.Model):
     evento = models.ForeignKey(Evento, null=True, blank=True)
@@ -150,7 +150,7 @@ class Propuesta(IndexedTimeStampedModel):
         (0, 'pendiente'),
         (1, 'aceptado'),
     )
-    empresa = models.ForeignKey(User, null=False)
+    empresa = models.ForeignKey(User, related_name='propuestas', null=False)
     evento = models.ForeignKey(Evento, related_name='propuestas', null=False, on_delete=models.CASCADE)
     aceptado = models.SmallIntegerField(choices=OFRECIMIENTO_STATUS, default=0, null=False, blank=False)
     comentario = models.CharField(max_length=280, null=True)

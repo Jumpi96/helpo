@@ -57,6 +57,11 @@ export default {
         url: '/perfil/',
         icon: 'icon-pencil',
       },
+      {
+        name: 'Estadisticas',
+        url: '/reportes/',
+        icon: 'icon-calendar',
+      },
     ],
   };
   

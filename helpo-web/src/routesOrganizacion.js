@@ -72,6 +72,11 @@ const Dashboard = Loadable({
   loading: Loading,
 });
 
+const DashboardReportes = Loadable({
+  loader: () => import('./views/Reportes/DashboardReportes'),
+  loading: Loading,
+});
+
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
@@ -89,6 +94,7 @@ const routes = [
   { path: '/perfiles/perfil-organizacion', name: 'Perfil organizacion', component: ModificarPerfilOrganizacion },
   { path: '/perfil/:usuarioId?', name: 'Perfil de usuario', component: ConsultarPerfil },
   { path: '/actividades/album/:eventoId', name: 'Album de Evento', component: AlbumImagenes },
+  { path: '/reportes', name: 'Reportes', component: DashboardReportes },
   { path: '/organizaciones', name: 'Organizaciones', component: OrganizacionesPage },
 ];
 

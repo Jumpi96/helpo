@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from decouple import config
 from django.conf import settings
+from datetime import date
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from common.models import IndexedTimeStampedModel
@@ -97,6 +98,11 @@ class UserManager(BaseUserManager):
             user_type = int(user_type)
         if user_type == 1:
             profile = OrganizacionProfile.objects.create(usuario=user, avatar=avatar)
+            # Inicializo suscripciones mensuales de la ong
+            today = date.today()
+            previous_month = date(today.year, today.month-1, 1)
+            suscripciones_mensuales = OrganizacionSuscripcionesMensuales.objects.create(
+                organizacion=user, fecha=previous_month, suscripciones=0)
         elif user_type == 2:
             profile = VoluntarioProfile.objects.create(usuario=user, apellido=kwargs["apellido"], avatar=avatar)
         else:
@@ -238,4 +244,17 @@ class Suscripcion(models.Model):
     class Meta:
         # Esto hace que solo pueda haber un par usuario-organizacion
         unique_together = ('usuario', 'organizacion')
+
+class OrganizacionSuscripcionesMensuales(models.Model):
+    """
+    Modelo para registrar las suscripciones al final de cada mes
+    para cada organizacion
+    """
+    organizacion = models.ForeignKey(User, blank=False)
+    fecha = models.DateField()
+    suscripciones = models.IntegerField()
+
+    class Meta:
+        #Ordenados por fecha de forma descendiente
+        ordering = ["-fecha"]
 

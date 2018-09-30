@@ -4,9 +4,9 @@ from django.utils.translation import ugettext_lazy as _
 
 from .models import User, AppValues, Imagen, Suscripcion, RubroOrganizacion, OrganizacionProfile, Ubicacion, EmpresaProfile, VoluntarioProfile, RubroEmpresa
 
-
+"""
 class CustomUserAdmin(UserAdmin):
-    list_display = ('id', 'email', 'created', 'modified')
+    list_display = ('id', 'email', 'created', 'modified', 'is_confirmed')
     list_filter = ('is_active', 'is_staff', 'groups')
     search_fields = ('email',)
     ordering = ('email',)
@@ -22,6 +22,10 @@ class CustomUserAdmin(UserAdmin):
             'classes': ('wide',),
             'fields': ('email', 'password1', 'password2')}),
     )
+"""
+
+class SimpleUserAdmin(admin.ModelAdmin):
+    list_display = ['id', 'email', 'is_confirmed']
 
 class CustomAppValuesAdmin(admin.ModelAdmin):
     list_display = ['key', 'value']
@@ -50,7 +54,8 @@ class VoluntarioProfileAdmin(admin.ModelAdmin):
 class RubroEmpresaAdmin(admin.ModelAdmin):
     list_display = ['id', 'nombre']
 
-admin.site.register(User, CustomUserAdmin)
+#admin.site.register(User, CustomUserAdmin)
+admin.site.register(User, SimpleUserAdmin)
 admin.site.register(AppValues, CustomAppValuesAdmin)
 admin.site.register(Imagen, ImagenAdmin)
 admin.site.register(Suscripcion, SuscripcionAdmin)

@@ -97,9 +97,9 @@ class ConsultarEventosView extends React.Component {
   puedeColaborar() {
     const { user } = this.props.auth;
     if (user) {
-      if (user.user_type == 2) {
+      if (user.user_type === 2) {
         return true;
-      } else if (user.user_type == 3) {
+      } else if (user.user_type === 3) {
         const propuestas_rechazadas = this.state.evento.propuestas.filter(p => p.empresa.id === user.id && p.aceptado === -1);
         if (propuestas_rechazadas.length === 0) {
           return true;

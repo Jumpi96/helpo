@@ -28,6 +28,7 @@ class AgregarOfrecimiento extends React.Component {
     const colaboracion = params.colaboracion;
     this.state = {
       colaboracion,
+      apiToken: false,
       error: undefined
     };
 
@@ -65,16 +66,20 @@ class AgregarOfrecimiento extends React.Component {
   }
 
   handleSubmit() {
+    this.setState({ apiToken: true });
     if (this.handleValidation()) {
       if (this.state.colaboracion.cantidad_anterior === 0) {
         this.newColaboracion();
       } else {
         this.editColaboracion();
       }
+    } else {
+      this.setState({ apiToken: false });
     }
   }
 
   editColaboracion() {
+    var _this = this;
     const { colaboracion } = this.state;
     if (this.state.colaboracion.funcion) {
       const nuevaParticipacion = {
@@ -89,7 +94,7 @@ class AgregarOfrecimiento extends React.Component {
         }).catch(function (error) {
           if (error.response) { console.log(error.response.status) }
           else { console.log('Error: ', error.message) }
-          this.setState({ error: "Hubo un problema al cargar su información." });
+          _this.setState({ error: "Hubo un problema al cargar su información." });
         });
     } else {
       const nuevaColaboracion = {
@@ -104,13 +109,14 @@ class AgregarOfrecimiento extends React.Component {
         }).catch(function (error) {
           if (error.response) { console.log(error.response.status) }
           else { console.log('Error: ', error.message) }
-          this.setState({ error: "Hubo un problema al cargar su información." });
+          _this.setState({ error: "Hubo un problema al cargar su información." });
         });
 
     }
   }
 
   newColaboracion() {
+    var _this = this;
     const colaboracion = this.state.colaboracion;
     if (this.state.colaboracion.funcion) {
       const nuevaParticipacion = {
@@ -124,7 +130,7 @@ class AgregarOfrecimiento extends React.Component {
         }).catch(function (error) {
           if (error.response) { console.log(error.response.status) }
           else { console.log('Error: ', error.message) }
-          this.setState({ error: "Hubo un problema al cargar su información." });
+          _this.setState({ error: "Hubo un problema al cargar su información." });
         });
     } else {
       const nuevaColaboracion = {
@@ -138,7 +144,7 @@ class AgregarOfrecimiento extends React.Component {
         }).catch(function (error) {
           if (error.response) { console.log(error.response.status) }
           else { console.log('Error: ', error.message) }
-          this.setState({ error: "Hubo un problema al cargar su información." });
+          _this.setState({ error: "Hubo un problema al cargar su información." });
         });
     }
   }

@@ -161,7 +161,7 @@ class ConsultaEvento extends React.Component {
     if (evento.contacto.length > 0) {
       listaContactos = evento.contacto.map(contacto =>
         <ListItem key={contacto.nombre}>
-          <Text>{contacto.nombre} - {contacto.telefono}</Text>
+          <Text>{contacto.nombre} - {contacto.email} - {contacto.telefono}</Text>
         </ListItem>
       );
     }
@@ -176,7 +176,7 @@ class ConsultaEvento extends React.Component {
           <Body>
             <Title>{evento.nombre}</Title>
           </Body>
-          {this.props.auth.user.user_type > 1 ?
+          {this.props.auth.user.user_type > 1 && moment(evento.fecha_hora_inicio) > moment() ?
             <Right>
               <Button
                 transparent

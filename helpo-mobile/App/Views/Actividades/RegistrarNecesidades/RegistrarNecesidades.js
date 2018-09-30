@@ -40,6 +40,7 @@ class RegistrarNecesidades extends React.Component {
   }
 
   handleConfirmDeleteNecesidad(b) {
+    var _this = this;
     if (b.text === "Eliminar") {
       api.delete("/actividades/necesidades/" + this.state.necesidadModificada + "/")
         .then(res => {
@@ -49,7 +50,7 @@ class RegistrarNecesidades extends React.Component {
         }).catch(function (error) {
           if (error.response) { console.log(error.response.status); }
           else { console.log("Error: ", error.message); }
-          this.setState({ error: "Hubo un problema al cargar su información." });
+          _this.setState({ error: "Hubo un problema al cargar su información." });
         });
     }
     this.setState({
@@ -58,12 +59,13 @@ class RegistrarNecesidades extends React.Component {
   }
 
   handleConfirmDeleteVoluntario(b) {
+    var _this = this;
     if (b.text === "Eliminar") {
       api.delete("/actividades/voluntarios/" + this.state.necesidadModificada + "/")
         .then(res => {
           this.loadNecesidades();
         }).catch(function (error) {
-          this.setState({ error: "Hubo un problema al cargar su información." });
+          _this.setState({ error: "Hubo un problema al cargar su información." });
         });
     }
     this.setState({

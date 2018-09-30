@@ -102,11 +102,11 @@ export function register(email, password) {
 export function logout(email) {
     return (dispatch) => {
         const headers = { 'Content-Type': 'application/json' };
+        dispatch({ type: 'LOGOUT_SUCCESSFUL' });
 
         return api.post('/auth/logout/', JSON.stringify(''), { headers })
             .then((res) => {
                 dispositivoApi.deleteDispositivo(email);
-                dispatch({ type: 'LOGOUT_SUCCESSFUL' });
                 return res.data;
             })
             .catch((e) => {

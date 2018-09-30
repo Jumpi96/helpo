@@ -123,11 +123,6 @@ const itemsEmp = [
 		'name': 'Mis propuestas'
 	},
 	{
-		'key': 'OrganizacionesPage',
-		'routeName': 'OrganizacionesPage',
-		'name': 'Organizaciones Helpo'
-	},
-	{
 		'key': 'ConsultarPerfilGenerico',
 		'routeName': 'ConsultarPerfilGenerico',
 		'name': 'Mi perfil'

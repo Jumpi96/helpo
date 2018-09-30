@@ -4,6 +4,8 @@ import ShallowRenderer from 'react-test-renderer/shallow';
 import { Card } from 'reactstrap'
 
 const requiredProps = {
+  id: 1,
+  userType: 3,
   nombre: 'test',
   email: 'test@test.com',
   data: {

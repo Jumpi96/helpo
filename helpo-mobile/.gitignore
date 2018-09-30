@@ -57,6 +57,7 @@ android/keystores/debug.keystore
 # Misc
 #
 .env
+google-services.json
 
 # I don't feel so good iOS
 third-party/

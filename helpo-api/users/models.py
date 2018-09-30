@@ -1,10 +1,11 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from decouple import config
-from hashlib import sha256
 from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from common.models import IndexedTimeStampedModel
+import random
+import string
 
 class Profile(models.Model):
     usuario = models.OneToOneField('User')
@@ -16,18 +17,30 @@ class Imagen(models.Model):
     isExternal = models.BooleanField()
     url = models.TextField()    
 
+    def __str__(self):
+        return self.url
+
 class RubroOrganizacion(models.Model):
     # nombre deberia ser Unique=True, pero me da problemas en el serializer para hacer update
     # TODO: Ver como arreglar eso, por ahora workaround -> Sacar Unique=True
     nombre = models.CharField(max_length=100)
 
+    def __str__(self):
+        return self.nombre
+
 class RubroEmpresa(models.Model):
     nombre = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.nombre
 
 class Ubicacion(models.Model):
     latitud = models.FloatField()
     longitud = models.FloatField()
     notas = models.CharField(max_length=140, null=True)    
+
+    def __str__(self):
+        return self.notas + " [" + str(self.latitud) + ", " + str(self.longitud) + "]"
 
 class OrganizacionProfile(Profile):
     verificada = models.BooleanField(default=False)
@@ -38,13 +51,32 @@ class OrganizacionProfile(Profile):
     ubicacion = models.ForeignKey(Ubicacion, on_delete=models.SET_NULL,blank=True, null=True)
     descripcion = models.TextField(blank=True, null=True)
 
+    def validate_sms(self, token):        
+        sv_object = SmsVerification.objects.get(usuario=self.usuario)
+        if (sv_object.verificationToken == token):
+            self.verificada=True
+            self.save()
+            sv_object.delete()
+            return True
+        return False
+    
 class EmpresaProfile(Profile):
+    verificada = models.BooleanField(default=False)
     telefono = models.BigIntegerField(null=True)
     cuit = models.BigIntegerField(blank=True, null=True)
     rubro = models.ForeignKey(RubroEmpresa, on_delete=models.SET_NULL, blank=True, null=True)
     avatar = models.ForeignKey(Imagen, on_delete=models.SET_NULL, blank=True, null=True)
     ubicacion = models.ForeignKey(Ubicacion, on_delete=models.SET_NULL,blank=True, null=True)
     descripcion = models.TextField(blank=True, null=True)
+
+    def validate_sms(self, token):        
+        sv_object = SmsVerification.objects.get(usuario=self.usuario)
+        if (sv_object.verificationToken == token):
+            self.verificada=True
+            self.save()
+            sv_object.delete()
+            return True
+        return False
 
 class UserManager(BaseUserManager):
 
@@ -54,7 +86,15 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
 
         avatar = Imagen.objects.get(id=1)
-        
+        if "avatar" in kwargs:
+            avatar_url = kwargs["avatar"]
+            if avatar_url:
+                new_avatar = Imagen.objects.create(isExternal=True, url=avatar_url)
+                if new_avatar:
+                    avatar = new_avatar
+
+        if type(user_type) is str:
+            user_type = int(user_type)
         if user_type == 1:
             profile = OrganizacionProfile.objects.create(usuario=user, avatar=avatar)
         elif user_type == 2:
@@ -69,14 +109,13 @@ class UserManager(BaseUserManager):
         user = self.create_user(**kwargs)
         user.is_superuser = True
         user.is_staff = True
+        user.is_confirmed = True
         user.save(using=self._db)
         return user
 
     def send_confirmation_email(self, user):
-        str_to_encode = str(user.id) + user.email
-        str_encoded = str_to_encode.encode('utf-8')
-        uncutbash = str(sha256(str_encoded))
-        bash = uncutbash[22:36]
+        bash = ''.join(random.SystemRandom().choice(
+            string.ascii_uppercase + string.digits) for _ in range(16))
         self.create_user_verification(user, bash)
 
         mail_from = settings.REGISTER_EMAIL
@@ -87,10 +126,6 @@ class UserManager(BaseUserManager):
 
         from common.notifications import send_mail_to
         send_mail_to(user.email, subject, content, mail_from)
-        # from common.notifications import send_mail_to_list, send_push_notification_to_list, send_push_notification_to_id_list
-        # send_mail_to_list(["gonzaulla@gmail.com", "helpoweb@gmail.com"], "sub", "hola")
-        # send_push_notification_to_list(["techo@techo.com", "admin@admin.com"], "en", "es", "ja", "hola")
-        # send_push_notification_to_id_list([1], "en", "es", "ja", "hola")
 
     def create_user_verification(self, user, token):
         UserVerification.objects.create(usuario=user, verificationToken=token)
@@ -140,6 +175,9 @@ class User(AbstractBaseUser, PermissionsMixin, IndexedTimeStampedModel):
             return True
         return False
 
+class UserWrapper(User):
+    id_token = models.TextField()
+
 class VoluntarioProfile(Profile):
     sexo = models.TextField(blank=True, null=True)
     apellido = models.CharField(max_length=140, default="no apellido")
@@ -154,6 +192,9 @@ class UserVerification(IndexedTimeStampedModel):
     usuario = models.OneToOneField('User')
     verificationToken = models.CharField(max_length=2000)
 
+class SmsVerification(IndexedTimeStampedModel):
+    usuario = models.OneToOneField('User')
+    verificationToken = models.CharField(max_length=16)
 
 class Profile(models.Model):
     usuario = models.OneToOneField(User)
@@ -190,6 +231,9 @@ class Suscripcion(models.Model):
     """
     usuario =  models.ForeignKey(User, related_name="suscripcion")
     organizacion = models.ForeignKey(User, related_name="suscriptor")
+
+    def __str__(self):
+        return self.usuario.__str__() + ' - ' + self.organizacion.__str__()
 
     class Meta:
         # Esto hace que solo pueda haber un par usuario-organizacion

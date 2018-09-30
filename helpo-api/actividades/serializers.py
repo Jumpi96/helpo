@@ -58,7 +58,12 @@ class EventoSerializer(serializers.ModelSerializer):
     
     def update(self, instance, validated_data):
         ubicacion_data = validated_data.pop('ubicacion')
-        ubicacion = Ubicacion.objects.get_or_create(**ubicacion_data)
+        ubicacion = Ubicacion.objects.filter(latitud=ubicacion_data.get('latitud'), \
+            longitud=ubicacion_data.get('longitud'), notas=ubicacion_data.get('notas'))
+        if len(ubicacion) == 0:
+            ubicacion = Ubicacion.objects.create(**ubicacion_data)
+        else:
+            ubicacion = ubicacion[0]
         contactos_data = validated_data.pop('contacto')
         Contacto.objects.filter(evento_id=instance.id).delete()
         for contacto_data in contactos_data:
@@ -67,6 +72,7 @@ class EventoSerializer(serializers.ModelSerializer):
         instance.descripcion = validated_data.get('descripcion')
         instance.fecha_hora_inicio = validated_data.get('fecha_hora_inicio')
         instance.fecha_hora_fin = validated_data.get('fecha_hora_fin')
+        instance.ubicacion = ubicacion
         instance.rubro = RubroEvento.objects.get(pk=validated_data.get('rubro').id)
         instance.save()
         return instance
@@ -180,17 +186,18 @@ class ColaboracionSerializer(serializers.ModelSerializer):
     # la continuacion de la negrada de Gon
     def destroy(self, colaboracion_id):
         colaboracion = Colaboracion.objects.get(id=colaboracion_id)
-        colaborador_id = colaboracion.colaborador.id
-        necesidad_material = colaboracion.necesidad_material
-        evento = necesidad_material.evento
-        titulo_email = u"Usted ha cancelado su colaboración en el siguiente Evento:"
-        self.send_colaboracion_email(colaborador_id, evento, colaboracion, titulo_email)
-        colaboraciones = Colaboracion.objects.filter(necesidad_material_id=necesidad_material.id)
-        suma_colaboraciones = 0
-        for c in colaboraciones:
-            suma_colaboraciones += c.cantidad
-        if suma_colaboraciones == necesidad_material.cantidad:
-            send_was_full_colaboracion_mail(necesidad_material)
+        if colaboracion is not None:
+            colaborador_id = colaboracion.colaborador.id
+            necesidad_material = colaboracion.necesidad_material
+            evento = necesidad_material.evento
+            titulo_email = u"Usted ha cancelado su colaboración en el siguiente Evento:"
+            self.send_colaboracion_email(colaborador_id, evento, colaboracion, titulo_email)
+            colaboraciones = Colaboracion.objects.filter(necesidad_material_id=necesidad_material.id)
+            suma_colaboraciones = 0
+            for c in colaboraciones:
+                suma_colaboraciones += c.cantidad
+            if suma_colaboraciones == necesidad_material.cantidad:
+                send_was_full_colaboracion_mail(necesidad_material)
 
     def send_colaboracion_email(self, colaborador_id, evento, colaboracion, titulo_email):
         subject_utf = u"Registro de su colaboración en Helpo"

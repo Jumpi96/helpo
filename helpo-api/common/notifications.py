@@ -5,6 +5,7 @@ import threading
 import time
 from random import randint
 from django.conf import settings
+import boto3
 
 
 def _get_players_id(mails):
@@ -41,8 +42,11 @@ def send_mail_to_worker(url, payload, headers, mail_to, mail_from):
           (mail_to, mail_from, sleep_secs))
     time.sleep(sleep_secs)
     response = requests.request("POST", url, data=payload, headers=headers)
-    print("Mail enviado a %s desde %s, response code: %s" %
-          (mail_to, mail_from, response.status_code))
+    str_log = "Mail enviado a %s desde %s, response code: %s" % (
+        mail_to, mail_from, response.status_code)
+    if response.status_code == 500:
+        str_log += ", response text: %s" % (response.text)
+    print(str_log)
 
 
 def send_mail_to(mail_to="error@helpo.com.ar", html_subject="Error", html_content="Error", mail_from=settings.NOTIFICATION_EMAIL, thread_daemon=True):
@@ -121,3 +125,37 @@ def send_push_notification_all(en_title, es_title, en_message, es_message, threa
 
     print("Enviando notificacion push a todos, response text: %s, response code: %s" % (
         response.text, response.status_code))
+
+
+def send_sms_message_to_worker(number, message):
+    client = boto3.client(
+        "sns",
+        aws_access_key_id=config('AWS_ACCESS_KEY_ID'),
+        aws_secret_access_key=config('AWS_SECRET_ACCESS_KEY'),
+        region_name="us-west-2"
+    )
+    client.publish(
+        PhoneNumber=number,
+        Message=message
+    )
+    print("Enviando mensaje SMS a %s con el texto: %s" % (number, message))
+
+
+def send_sms_message_to(number="+543515056312", message="SMS from Helpo", thread_daemon=True):
+    if not settings.DEBUG and number is not None:
+        number = __parse_number(number)
+        t = threading.Thread(
+            target=send_sms_message_to_worker, args=(number, message))
+        t.daemon = thread_daemon
+        t.start()
+
+    else:
+        print("Mensajes SMS solo permitidos para produccion")
+
+
+def __parse_number(number):
+    number = str(number)
+    if number[0:3] == "+54":
+        return number
+    else:
+        return "+54%s" % (number)

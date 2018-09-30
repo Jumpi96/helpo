@@ -62,7 +62,8 @@ const routes = [
   { path: '/actividades/registrar-colaboraciones', name: 'Registrar colaboraciones', component: RegistrarColaboraciones },
   { path: '/actividades/mis-colaboraciones', name: 'Mis colaboraciones', component: MisColaboraciones },
   { path: '/actividades/album/:eventoId', name: 'Album de Evento', component: AlbumImagenes },
-  { path: '/perfil/:usuarioId?', name: 'Perfil de usuario', component: ConsultarPerfil },
+  { path: '/perfil/:usuarioId', name: 'Perfil de usuario', component: ConsultarPerfil },
+  { path: '/perfil/', name: 'Mi perfil', component: ConsultarPerfil },
   { path: '/organizaciones', name: 'Organizaciones', component: OrganizacionesPage },
   { path: '/suscripciones', name: 'Mis suscripciones', component: MisSuscripciones }
 ];

@@ -63,6 +63,7 @@ const NavigationDrawer = DrawerNavigator({
 	MisPropuestas: { screen: MisPropuestas },
 	VerPropuestaEvento: { screen: VerPropuestaEvento },
 	ConsultarPerfilGenerico: { screen: ConsultarPerfilGenerico },
+	ConsultarOtroPerfilGenerico: { screen: ConsultarPerfilGenerico },
 	AlbumEvento: { screen: AlbumEvento },
 	VerPatrocinadores: { screen: VerPatrocinadores },
 	VerPropuestaPatrocinador: { screen: VerPropuestaPatrocinador },

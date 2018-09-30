@@ -47,10 +47,11 @@ class ModificarPerfilOrganizacion extends Component {
     const options = {
       title: 'Seleccionar Imagen',
     };
+    this.setState({ uploadingImage: true })
     ImagePicker.showImagePicker(options, async (response) => {
       // Paso la data de la imagen a Imagen para subirla a imgur
-      const url = await handleImageUpload(response.data)
-      this.props.uploadImagen(url, this.props.eventoId)
+      const url = await handleImageUpload(response.data);
+      this.setState({ new_avatar: url, uploadingImage: false })
     })
   }
 
@@ -89,13 +90,17 @@ class ModificarPerfilOrganizacion extends Component {
 
   handleSubmit() {
     const organizacion = this.prepareData(this.state.organizacion);
+    const { new_avatar } = this.state;
+    if (new_avatar) {
+      organizacion.avatar = { url: new_avatar };
+    }
     const tipo = this.state.organizacion.usuario.user_type === 3 ? 'perfil_empresa' : 'perfil_organizacion';
     if (this.handleValidation()) {
       api.put(`/perfiles/${tipo}/${this.state.organizacion.usuario.id}/`, organizacion)
         .then((res) => {
           this.props.navigation.navigate('ConsultarPerfilGenerico');
         })
-        .catch((e) => {console.warn(e)})
+        .catch((e) => { console.warn(e) })
     }
   }
 
@@ -159,7 +164,8 @@ class ModificarPerfilOrganizacion extends Component {
           <Content>
             <Form>
               <Item onPress={this.addImagen}>
-                <Thumbnail large center source={{uri: this.state.organizacion.avatar.url}} />
+                <Thumbnail large center source={{ uri: this.state.new_avatar ? this.state.avatar_url : this.state.organizacion.avatar.url }} />
+                {this.state.uploadingImage ? <Spinner /> : undefined}
               </Item>
               <Separator bordered noTopBorder>
                 <Text>Datos personales</Text>

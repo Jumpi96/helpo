@@ -19,7 +19,7 @@ import {
   Form,
   Text,
   ListItem,
-  TextInput,
+  Spinner,
   Picker,
   Thumbnail,
   Separator,
@@ -46,10 +46,11 @@ class ModificarPerfilVoluntario extends Component {
     const options = {
       title: 'Seleccionar Imagen',
     };
+    this.setState({ uploadingImage: true })
     ImagePicker.showImagePicker(options, async (response) => {
       // Paso la data de la imagen a Imagen para subirla a imgur
-      const url = await handleImageUpload(response.data)
-      this.props.uploadImagen(url, this.props.eventoId)
+      const url = await handleImageUpload(response.data);
+      this.setState({ new_avatar: url, uploadingImage: false })
     })
   }
 
@@ -82,7 +83,10 @@ class ModificarPerfilVoluntario extends Component {
   }
 
   handleSubmit() {
-    const { voluntario } = this.state;
+    const { voluntario, new_avatar } = this.state;
+    if (new_avatar) {
+      voluntario.avatar = { url: new_avatar };
+    }
     if (this.handleValidation()) {
       api.put('perfiles/perfil_voluntario/' + voluntario.usuario.id + '/', voluntario)
         .then((res) => {
@@ -128,7 +132,8 @@ class ModificarPerfilVoluntario extends Component {
           <Content>
             <Form>
               <Item onPress={this.addImagen}>
-                <Thumbnail large center source={{uri: this.state.voluntario.avatar.url}} />
+                <Thumbnail large center source={{ uri: this.state.new_avatar ? this.state.avatar_url : this.state.voluntario.avatar.url }} />
+                {this.state.uploadingImage ? <Spinner /> : undefined}
               </Item>
               <Separator bordered noTopBorder>
                 <Text>Datos personales</Text>

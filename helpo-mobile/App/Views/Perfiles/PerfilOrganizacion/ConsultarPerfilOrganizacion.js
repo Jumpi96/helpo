@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import {
   Container,
   Header,
@@ -72,9 +73,11 @@ class ConsultarPerfilOrganizacion extends Component {
               <Title>Perfil</Title>
             </Body>
             <Right>
-              <Button transparent onPress={this.props.switchToModificar}>
-                <Text>Modificar</Text>
-              </Button>
+              {this.props.data.usuario.id === this.props.auth.user.id ?
+                <Button transparent onPress={this.props.switchToModificar}>
+                  <Text>Modificar</Text>
+                </Button>
+                : undefined}
             </Right>
           </Header>
           <Content>
@@ -122,4 +125,8 @@ class ConsultarPerfilOrganizacion extends Component {
   }
 }
 
-export default ConsultarPerfilOrganizacion;
+const mapStateToProps = state => ({
+  auth: state.auth,
+});
+
+export default connect(mapStateToProps, undefined)(ConsultarPerfilOrganizacion);

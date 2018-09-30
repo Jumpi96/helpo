@@ -4,27 +4,16 @@ import ConsultarPerfilOrganizacion from './PerfilOrganizacion/ConsultarPerfilOrg
 import ConsultarPerfilVoluntario from './PerfilVoluntario/ConsultarPerfilVoluntario'
 import {
   Container,
-  Header,
-  Title,
-  Content,
-  Button,
-  Label,
-  ListItem,
-  Body,
-  Left,
-  Right,
-  Icon,
-  Thumbnail,
-  Text,
-  Separator,
 } from 'native-base';
 
 class ConsultarPerfilGenerico extends Component {
   constructor(props) {
     super(props); //Llama a las props del padre
+    const { params } = this.props.navigation.state;
+    const user = params ? params.user : undefined;
     this.state = {
       nombre: '',
-      userId: 0, // 1: ONG, 2: Vol, 3: Empresa
+      userId: user,
       userType: 0,
       email: '',
       data: {},
@@ -53,7 +42,8 @@ class ConsultarPerfilGenerico extends Component {
 
   componentDidMount() {
     let initialState = {};
-    api.get('/auth/user/')
+    const link = this.state.userId ? `/perfiles/user/${this.state.userId}/` : '/auth/user/';
+    api.get(link)
       .then(res => {
         initialState.nombre = res.data.nombre
         initialState.userId = res.data.id
@@ -83,6 +73,7 @@ class ConsultarPerfilGenerico extends Component {
         console.log(error)
       })
   }
+ 
 
   goBack() {
     this.props.navigation.navigate("LaunchScreen");

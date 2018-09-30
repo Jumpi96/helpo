@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { helpoImages } from '../../../Themes';
+import { connect } from 'react-redux';
 import {
   Container,
   Header,
@@ -22,9 +22,9 @@ import { getImagen } from '../../../Lib/Imagen';
 
 class ConsultarPerfilVoluntario extends Component {
   constructor(props) {
-    super(props); 
+    super(props);
     this.renderDni = this.renderDni.bind(this);
-    this.renderDescripcion = this.renderDescripcion.bind(this);    
+    this.renderDescripcion = this.renderDescripcion.bind(this);
     this.renderTelefono = this.renderTelefono.bind(this);
     this.renderSexo = this.renderSexo.bind(this);
     this.renderApellido = this.renderApellido.bind(this);
@@ -35,28 +35,28 @@ class ConsultarPerfilVoluntario extends Component {
     if (this.props.data.sexo == null) {
       return <Text style={styles.textMuted}> No hay valor ingresado.</Text>
     }
-    return <Text> {this.props.data.sexo}</Text>      
+    return <Text> {this.props.data.sexo}</Text>
   }
 
   renderApellido() {
     if (this.props.data.apellido == null) {
       return <Text style={styles.textMuted}> No hay valor ingresado.</Text>
     }
-    return <Text> {this.props.data.apellido}</Text>      
+    return <Text> {this.props.data.apellido}</Text>
   }
 
   renderGustos() {
     if (this.props.data.gustos == null) {
       return <Text style={styles.textMuted}> No hay valor ingresado.</Text>
     }
-    return <Text> {this.props.data.gustos}</Text>      
+    return <Text> {this.props.data.gustos}</Text>
   }
 
   renderHabilidades() {
     if (this.props.data.habilidades == null) {
       return <Text style={styles.textMuted}> No hay valor ingresado.</Text>
     }
-    return <Text> {this.props.data.habilidades}</Text>      
+    return <Text> {this.props.data.habilidades}</Text>
   }
 
   renderTelefono() {
@@ -64,22 +64,22 @@ class ConsultarPerfilVoluntario extends Component {
     if (this.props.data.telefono == null) {
       return <Text style={styles.textMuted}> No hay valor ingresado.</Text>
     }
-    return <Text> {this.props.data.telefono}</Text>      
+    return <Text> {this.props.data.telefono}</Text>
   }
 
   renderDni() {
     if (this.props.data.dni == null) {
       return <Text style={styles.textMuted}> No hay valor ingresado.</Text>
     }
-    return <Text> {this.props.data.dni}</Text>      
+    return <Text> {this.props.data.dni}</Text>
   }
 
   renderDescripcion() {
     if (this.props.data.descripcion == null) {
       return <Text style={styles.textMuted}> No hay valor ingresado.</Text>
     }
-    return <Text> {this.props.data.descripcion}</Text>      
-  }  
+    return <Text> {this.props.data.descripcion}</Text>
+  }
 
   render() {
     return (
@@ -94,13 +94,15 @@ class ConsultarPerfilVoluntario extends Component {
             <Title>Perfil</Title>
           </Body>
           <Right>
-            <Button transparent onPress={this.props.switchToModificar}> 
-              <Text>Modificar</Text>
-            </Button>
+            {this.props.data.usuario.id === this.props.auth.user.id ?
+              <Button transparent onPress={this.props.switchToModificar}>
+                <Text>Modificar</Text>
+              </Button>
+              : undefined}
           </Right>
         </Header>
         <Content>
-          <Thumbnail large center source={{uri: this.props.data.avatar.url}} />
+          <Thumbnail large center source={{ uri: this.props.data.avatar.url }} />
           <Separator bordered noTopBorder>
             <Text>Datos personales</Text>
           </Separator>
@@ -154,4 +156,8 @@ class ConsultarPerfilVoluntario extends Component {
   }
 }
 
-export default ConsultarPerfilVoluntario;
+const mapStateToProps = state => ({
+  auth: state.auth,
+});
+
+export default connect(mapStateToProps, undefined)(ConsultarPerfilVoluntario);

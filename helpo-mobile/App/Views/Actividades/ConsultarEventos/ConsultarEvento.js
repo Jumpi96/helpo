@@ -110,9 +110,7 @@ class ConsultaEvento extends React.Component {
   }
 
   togglePerfil(empresa) {
-    // TODO: Consultar perfil
-    // this.props.navigation.navigate('ConsultarPerfilGenerico', { user_id: empresa });
-    this.props.navigation.navigate('LaunchScreen');
+    this.props.navigation.navigate('ConsultarOtroPerfilGenerico', { user: empresa });
   }
 
   getPropuestas(propuestas) {

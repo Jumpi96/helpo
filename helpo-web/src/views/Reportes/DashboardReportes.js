@@ -2,6 +2,7 @@ import React from 'react'
 import { Card, CardHeader, CardBody } from 'reactstrap'
 import { Line, Doughnut, Bar } from 'react-chartjs-2'
 import { connect } from 'react-redux'
+import { Tooltip } from 'reactstrap'
 import api from '../../api'
 
 /*
@@ -31,8 +32,20 @@ class DashboardReportes extends React.Component {
         data_participaciones: [],
         data_manos: [],
         labels: [],
-      }
+      },
+      grafico_empresas: {
+        data: [],
+        labels: []
+      },
+      tooltipOpen: false
     }
+    this.toggle = this.toggle.bind(this) 
+  }
+
+  toggle() {
+    this.setState({
+      tooltipOpen: !this.state.tooltipOpen
+    });
   }
 
   componentDidMount() {
@@ -109,6 +122,25 @@ class DashboardReportes extends React.Component {
       .catch(error => {
         // TODO: Handle errors gracefully
       })
+
+      //Busco datos de empresas
+      // --------------------------------
+      api.get(`/reportes/organizacion/empresas/${this.props.ong}/`)
+      .then(response => {
+
+        const data = response.data
+        const grafico_data = {
+          data: data.propuestas,
+          labels: data.empresas
+        }
+
+        this.setState({
+          grafico_empresas: grafico_data
+        })
+      })
+      .catch(error => {
+        // TODO: Handle errors gracefully
+      })
   }
 
   render() {
@@ -168,6 +200,20 @@ class DashboardReportes extends React.Component {
       labels: this.state.grafico_evento.labels,
     }
 
+    const empresas_data = {
+      datasets: [{
+        label: 'Propuestas aceptadas de empresas',
+        backgroundColor: 'rgba(255, 61, 255, 0.2)',
+        borderColor: 'rgba(127, 0, 127, 0.99)',
+        borderWidth: 1,
+        hoverBackgroundColor: 'rgba(255, 61, 255, 0.4)',
+        hoverBorderColor: 'rgba(127, 0, 127, 0.99)',
+        barPercentage: 0.6,
+        data: this.state.grafico_empresas.data
+      }],
+      labels: this.state.grafico_empresas.labels,
+    }
+
     const suscripciones_data = {
       labels: this.state.grafico_suscripciones.labels,
       datasets: [
@@ -195,17 +241,6 @@ class DashboardReportes extends React.Component {
       ]
     };
 
-    /*
-    <Line
-                  data={suscripciones_data}
-                  height={300}
-                  width={600}
-                  options={{
-                    maintainAspectRatio: false
-                  }}
-                />
-    */
-
     return (
       <Card>
         <CardHeader>
@@ -228,68 +263,112 @@ class DashboardReportes extends React.Component {
                 <p  style={{fontWeight: 'bold', fontSize: 14}}>Total de eventos realizados: {this.state.total_eventos}</p>
               </div>
               <div className='col'>
-                <p  style={{fontWeight: 'bold', fontSize: 14}}>Total de voluntarios participantes: {this.state.total_voluntarios}</p>
+                <p href="#" id="TooltipExample" style={{fontWeight: 'bold', fontSize: 14}}>Total de voluntarios participantes: {this.state.total_voluntarios}</p>
+                <Tooltip placement="right" isOpen={this.state.tooltipOpen} target="TooltipExample" toggle={this.toggle}>
+                  Cantidad de voluntarios unicos que participaron alguna vez en un evento
+                </Tooltip>
               </div>
             </div>
 
           </div>
           {/*Bootstrap muere a partir de aca */}
           <div style={{ alignItems: 'center' }}>
-          
-          <div style={{ marginVertical: 10 }}>
-          <Line
-              data={suscripciones_data}
-              height={300}
-              width={600}
-              options={{
-                maintainAspectRatio: false
-              }}
-            />
-          </div>
+          <div style={{
+            height: 5,
+            width: '100%',
+            borderBottom: "1px solid gray",
+            marginBottom: 30
+          }} />
 
-          <div style={{ marginVertical: 10 }}>
-            <Doughnut
-              data={generos_data}
-              height={300}
-              width={600}
-              options={{
-                maintainAspectRatio: false
-              }}
-            />
-          </div>
+            {/* Suscripciones por mes */}
+            <div style={{display: 'flex', alignItems:'center', justifyContent: 'center', width: '100%', marginTop: 40}}>
+              <p style={{fontWeight: 'bold', fontSize: 14}}>Suscripciones por mes</p>
+            </div>
+            <div style={{ marginVertical: 10 }}>          
+            <Line
+                data={suscripciones_data}
+                height={300}
+                width={600}
+                options={{
+                  maintainAspectRatio: false
+                }}
+              />
+            </div>
+            
+            {/* Demografica por genero */}
+            <div style={{display: 'flex', alignItems:'center', justifyContent: 'center', width: '100%', marginTop: 40}}>
+              <p style={{fontWeight: 'bold', fontSize: 14}}>Demográfica de voluntarios participantes</p>
+            </div>
+            <div style={{ marginVertical: 10 }}>
+              <Doughnut
+                data={generos_data}
+                height={300}
+                width={600}
+                options={{
+                  maintainAspectRatio: false
+                }}
+              />
+            </div>
+            
+            {/* Manos por evento */}
+            <div style={{display: 'flex', alignItems:'center', justifyContent: 'center', width: '100%', marginTop: 40}}>
+              <p style={{fontWeight: 'bold', fontSize: 14}}>Manos recibidas por evento</p>
+            </div>
+            <div style={{ marginVertical: 10 }}>
+              <Bar
+                data={manos_data}
+                height={300}
+                width={600}
+                options={{
+                  maintainAspectRatio: false
+                }}
+              />
+            </div>
+            
+            {/* Colaboraciones por evento */}
+            <div style={{display: 'flex', alignItems:'center', justifyContent: 'center', width: '100%', marginTop: 40}}>
+              <p style={{fontWeight: 'bold', fontSize: 14}}>Colaboraciones por evento</p>
+            </div>
+            <div style={{ marginVertical: 10 }}>
+              <Bar
+                data={colaboraciones_data}
+                height={300}
+                width={600}
+                options={{
+                  maintainAspectRatio: false
+                }}
+              />
+            </div>
 
-          <div style={{ marginVertical: 10 }}>
-            <Bar
-              data={manos_data}
-              height={300}
-              width={600}
-              options={{
-                maintainAspectRatio: false
-              }}
-            />
-          </div>
+            {/* Participaciones por evento */}
+            <div style={{display: 'flex', alignItems:'center', justifyContent: 'center', width: '100%', marginTop: 40}}>
+              <p style={{fontWeight: 'bold', fontSize: 14}}>Participaciones por evento</p>
+            </div>
+            <div style={{ marginVertical: 10 }}>
+              <Bar
+                data={participaciones_data}
+                height={300}
+                width={600}
+                options={{
+                  maintainAspectRatio: false
+                }}
+              />
+            </div>
 
-          <div style={{ marginVertical: 10 }}>
-            <Bar
-              data={colaboraciones_data}
-              height={300}
-              width={600}
-              options={{
-                maintainAspectRatio: false
-              }}
-            />
-          </div>
-
-          <div style={{ marginVertical: 10 }}>
-            <Bar
-              data={participaciones_data}
-              height={300}
-              width={600}
-              options={{
-                maintainAspectRatio: false
-              }}
-            />
-          </div>
+            {/* Empresas mas colaboradoras */}
+            <div style={{display: 'flex', alignItems:'center', justifyContent: 'center', width: '100%', marginTop: 40}}>
+              <p style={{fontWeight: 'bold', fontSize: 14}}>Empresas mas contribuidoras</p>
+            </div>
+            <div style={{ marginVertical: 10 }}>
+              <Bar
+                data={empresas_data}
+                height={300}
+                width={600}
+                options={{
+                  maintainAspectRatio: false
+                }}
+              />
+            </div>
 
           </div>
         </CardBody>

@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from .services import update_monthly_suscriptions
 from users.models import User, Suscripcion, VoluntarioProfile, OrganizacionSuscripcionesMensuales
-from actividades.models import Participacion, Colaboracion, Evento
+from actividades.models import Participacion, Colaboracion, Evento, Propuesta
 
 
 class OrganizationStats(APIView):
@@ -43,7 +43,7 @@ class OrganizationStats(APIView):
         vol_participaciones = User.objects.filter(
             participacion__necesidad_voluntario__evento__organizacion_id=id).filter(participacion__participo=True)
         vol_colaboraciones = User.objects.filter(
-            colaboracion__necesidad_material__evento__organizacion_id=id).filter(colaboracion__entregado=True)            
+            colaboracion__necesidad_material__evento__organizacion_id=id).filter(colaboracion__entregado=True)
         return vol_participaciones.union(vol_colaboraciones).count()
 
     def get(self, request, id, format=None):
@@ -130,7 +130,7 @@ class ONGSuscripcionesPorMesView(APIView):
         }
         i = 1
 
-        last_entry = monthly_subscriptions[0]        
+        last_entry = monthly_subscriptions[0]
         data.append(last_entry.suscripciones)
         # I cut the days in the date string
         data_month.append(str(last_entry.fecha)[0:7])
@@ -187,22 +187,23 @@ class ONGEventoStats(APIView):
         manos = []
         eventos_nombre = []
 
-        eventos = Evento.objects.filter(organizacion=id).filter(estado=3).order_by("-fecha_hora_inicio")[:10]
+        eventos = Evento.objects.filter(organizacion=id).filter(
+            estado=3).order_by("-fecha_hora_inicio")[:10]
         for evento in eventos:
             eventos_nombre.append(evento.nombre)
 
             vol_participaciones = User.objects.filter(
-            participacion__necesidad_voluntario__evento=evento).filter(participacion__participo=True).count()
+                participacion__necesidad_voluntario__evento=evento).filter(participacion__participo=True).count()
             participaciones.append(vol_participaciones)
 
             vol_colaboraciones = User.objects.filter(
-            colaboracion__necesidad_material__evento=evento).filter(colaboracion__entregado=True)  .count()
+                colaboracion__necesidad_material__evento=evento).filter(colaboracion__entregado=True)  .count()
             colaboraciones.append(vol_colaboraciones)
 
             manos_participaciones = Participacion.objects.filter(retroalimentacion_ong=True).filter(
-            necesidad_voluntario__evento=evento).count()
+                necesidad_voluntario__evento=evento).count()
             manos_colaboraciones = Colaboracion.objects.filter(retroalimentacion_ong=True).filter(
-            necesidad_material__evento=evento).count()
+                necesidad_material__evento=evento).count()
             vol_manos = manos_participaciones + manos_colaboraciones
             manos.append(vol_manos)
 
@@ -212,5 +213,44 @@ class ONGEventoStats(APIView):
             "manos": manos,
             "eventos": eventos_nombre,
         }
-            
+
         return Response(data)
+
+
+class ONGEmpresaStats(APIView):
+    """
+    View to retrieve statistics of the businesses that most contributed
+    to the ONG
+    """
+
+    def get(self, request, id, format=None):
+        """
+        Handle GET request
+        """
+        organizacion = User.objects.get(pk=id)
+        empresas = User.objects.filter(
+            propuestas__evento__organizacion=organizacion).distinct()
+
+        propuestas_qty = []
+        empresas_nombre = []
+
+        for empresa in empresas:
+            empresas_nombre.append(empresa.nombre)
+            cantidad = self.count_propuestas(empresa, organizacion)
+            propuestas_qty.append(cantidad)
+
+        data = {
+            "propuestas": propuestas_qty,
+            "empresas": empresas_nombre
+        }
+
+        return Response(data)
+
+    def count_propuestas(self, empresa, ong):
+        """
+        Returns how many accepted propuestas the business made
+        to the ong
+        """
+        cantidad = Propuesta.objects.filter(empresa=empresa).filter(evento__organizacion=ong).filter(
+            aceptado=1).count()
+        return cantidad

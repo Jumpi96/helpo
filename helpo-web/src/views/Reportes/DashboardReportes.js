@@ -2,8 +2,10 @@ import React from 'react'
 import { Card, CardHeader, CardBody } from 'reactstrap'
 import { Line, Doughnut, Bar } from 'react-chartjs-2'
 import { connect } from 'react-redux'
-import { Tooltip } from 'reactstrap'
+import { Tooltip, Button } from 'reactstrap'
 import api from '../../api'
+import { Page, Text, View, Document, StyleSheet, PDFDownloadLink, BlobProvider } from '@react-pdf/renderer'
+import { Route, Link } from 'react-router-dom'
 
 /*
 Props:
@@ -14,6 +16,14 @@ class DashboardReportes extends React.Component {
 
   constructor(props) {
     super(props)
+    // Creo refs para acceder a las instancias en el DOM de los graficos
+    this.suscripciones_chart = React.createRef()
+    this.generos_chart = React.createRef()
+    this.manos_chart = React.createRef()
+    this.participaciones_chart = React.createRef()
+    this.colaboraciones_chart = React.createRef()
+    this.empresas_chart = React.createRef()
+    //
     this.state = {
       total_suscripciones: null,
       total_manos: null,
@@ -39,13 +49,50 @@ class DashboardReportes extends React.Component {
       },
       tooltipOpen: false
     }
-    this.toggle = this.toggle.bind(this) 
+    this.toggle = this.toggle.bind(this)
+    this.downloadPDF = this.downloadPDF.bind(this)
   }
 
   toggle() {
+    /*
+    Abre y cierra el tooltip
+    */
     this.setState({
       tooltipOpen: !this.state.tooltipOpen
     });
+  }
+
+  downloadPDF() {
+
+    const MyDocument = () => (
+      <Document>
+        <Page>
+          <View >
+            <Text>Section #1</Text>
+          </View>
+          <View>
+            <Text>Section #2</Text>
+          </View>
+        </Page>
+      </Document>
+    )
+
+    return MyDocument
+  }
+
+  getChartsImages() {
+    /*
+    Returns an array with the images of the charts, in the same order as they appear
+    in the website
+    */
+    const images = []
+    images.push(this.suscripciones_chart.current.chartInstance.toBase64Image())
+    images.push(this.generos_chart.current.chartInstance.toBase64Image())
+    images.push(this.manos_chart.current.chartInstance.toBase64Image())
+    images.push(this.colaboraciones_chart.current.chartInstance.toBase64Image())
+    images.push(this.participaciones_chart.current.chartInstance.toBase64Image())
+    images.push(this.empresas_chart.current.chartInstance.toBase64Image())
+    return images
   }
 
   componentDidMount() {
@@ -82,10 +129,10 @@ class DashboardReportes extends React.Component {
       .catch(error => {
         // TODO: Handle errors gracefully
       })
-      
-      //Busco datos de generos
-      // --------------------------------
-      api.get(`/reportes/organizacion/genero/${this.props.ong}/`)
+
+    //Busco datos de generos
+    // --------------------------------
+    api.get(`/reportes/organizacion/genero/${this.props.ong}/`)
       .then(response => {
 
         const data = response.data
@@ -102,9 +149,9 @@ class DashboardReportes extends React.Component {
         // TODO: Handle errors gracefully
       })
 
-      //Busco datos de evento
-      // --------------------------------
-      api.get(`/reportes/organizacion/eventos/${this.props.ong}/`)
+    //Busco datos de evento
+    // --------------------------------
+    api.get(`/reportes/organizacion/eventos/${this.props.ong}/`)
       .then(response => {
 
         const data = response.data
@@ -123,9 +170,9 @@ class DashboardReportes extends React.Component {
         // TODO: Handle errors gracefully
       })
 
-      //Busco datos de empresas
-      // --------------------------------
-      api.get(`/reportes/organizacion/empresas/${this.props.ong}/`)
+    //Busco datos de empresas
+    // --------------------------------
+    api.get(`/reportes/organizacion/empresas/${this.props.ong}/`)
       .then(response => {
 
         const data = response.data
@@ -145,7 +192,7 @@ class DashboardReportes extends React.Component {
 
   render() {
 
-    const generos_data = {      
+    const generos_data = {
       datasets: [{
         data: this.state.grafico_generos.data,
         backgroundColor: [
@@ -241,29 +288,40 @@ class DashboardReportes extends React.Component {
       ]
     };
 
+    const MyDoc = () => (
+      <Document>
+        <Page>
+          <Text>Hello World</Text>
+        </Page>
+      </Document>
+    )
+
     return (
       <Card>
         <CardHeader>
           <i className="fa fa-align-justify"></i> Estadísticas
           </CardHeader>
         <CardBody style={{ display: 'flex', flexDirection: 'column' }}>
+
+          
+
           <div style={{ boxSizing: 'border-box' }}>
 
             <div className='row'>
               <div className='col'>
-                <p style={{fontWeight: 'bold', fontSize: 14}}>Total de suscriptores: {this.state.total_suscripciones}</p>
+                <p style={{ fontWeight: 'bold', fontSize: 14 }}>Total de suscriptores: {this.state.total_suscripciones}</p>
               </div>
               <div className='col'>
-                <p style={{fontWeight: 'bold', fontSize: 14}}>Total de manos recibidas: {this.state.total_manos}</p>
+                <p style={{ fontWeight: 'bold', fontSize: 14 }}>Total de manos recibidas: {this.state.total_manos}</p>
               </div>
             </div>
 
             <div className='row'>
               <div className='col'>
-                <p  style={{fontWeight: 'bold', fontSize: 14}}>Total de eventos realizados: {this.state.total_eventos}</p>
+                <p style={{ fontWeight: 'bold', fontSize: 14 }}>Total de eventos realizados: {this.state.total_eventos}</p>
               </div>
               <div className='col'>
-                <p href="#" id="TooltipExample" style={{fontWeight: 'bold', fontSize: 14}}>Total de voluntarios participantes: {this.state.total_voluntarios}</p>
+                <p href="#" id="TooltipExample" style={{ fontWeight: 'bold', fontSize: 14 }}>Total de voluntarios participantes: {this.state.total_voluntarios}</p>
                 <Tooltip placement="right" isOpen={this.state.tooltipOpen} target="TooltipExample" toggle={this.toggle}>
                   Cantidad de voluntarios unicos que participaron alguna vez en un evento
                 </Tooltip>
@@ -273,19 +331,20 @@ class DashboardReportes extends React.Component {
           </div>
           {/*Bootstrap muere a partir de aca */}
           <div style={{ alignItems: 'center' }}>
-          <div style={{
-            height: 5,
-            width: '100%',
-            borderBottom: "1px solid gray",
-            marginBottom: 30
-          }} />
+            <div style={{
+              height: 5,
+              width: '100%',
+              borderBottom: "1px solid gray",
+              marginBottom: 30
+            }} />
 
             {/* Suscripciones por mes */}
-            <div style={{display: 'flex', alignItems:'center', justifyContent: 'center', width: '100%', marginTop: 40}}>
-              <p style={{fontWeight: 'bold', fontSize: 14}}>Suscripciones por mes</p>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', marginTop: 40 }}>
+              <p style={{ fontWeight: 'bold', fontSize: 14 }}>Suscripciones por mes</p>
             </div>
-            <div style={{ marginVertical: 10 }}>          
-            <Line
+            <div style={{ marginVertical: 10 }}>
+              <Line
+                ref={this.suscripciones_chart}
                 data={suscripciones_data}
                 height={300}
                 width={600}
@@ -294,10 +353,10 @@ class DashboardReportes extends React.Component {
                 }}
               />
             </div>
-            
+
             {/* Demografica por genero */}
-            <div style={{display: 'flex', alignItems:'center', justifyContent: 'center', width: '100%', marginTop: 40}}>
-              <p style={{fontWeight: 'bold', fontSize: 14}}>Demográfica de voluntarios participantes</p>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', marginTop: 40 }}>
+              <p style={{ fontWeight: 'bold', fontSize: 14 }}>Demográfica de voluntarios participantes</p>
             </div>
             <div style={{ marginVertical: 10 }}>
               <Doughnut
@@ -309,10 +368,10 @@ class DashboardReportes extends React.Component {
                 }}
               />
             </div>
-            
+
             {/* Manos por evento */}
-            <div style={{display: 'flex', alignItems:'center', justifyContent: 'center', width: '100%', marginTop: 40}}>
-              <p style={{fontWeight: 'bold', fontSize: 14}}>Manos recibidas por evento</p>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', marginTop: 40 }}>
+              <p style={{ fontWeight: 'bold', fontSize: 14 }}>Manos recibidas por evento</p>
             </div>
             <div style={{ marginVertical: 10 }}>
               <Bar
@@ -324,10 +383,10 @@ class DashboardReportes extends React.Component {
                 }}
               />
             </div>
-            
+
             {/* Colaboraciones por evento */}
-            <div style={{display: 'flex', alignItems:'center', justifyContent: 'center', width: '100%', marginTop: 40}}>
-              <p style={{fontWeight: 'bold', fontSize: 14}}>Colaboraciones por evento</p>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', marginTop: 40 }}>
+              <p style={{ fontWeight: 'bold', fontSize: 14 }}>Colaboraciones por evento</p>
             </div>
             <div style={{ marginVertical: 10 }}>
               <Bar
@@ -341,8 +400,8 @@ class DashboardReportes extends React.Component {
             </div>
 
             {/* Participaciones por evento */}
-            <div style={{display: 'flex', alignItems:'center', justifyContent: 'center', width: '100%', marginTop: 40}}>
-              <p style={{fontWeight: 'bold', fontSize: 14}}>Participaciones por evento</p>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', marginTop: 40 }}>
+              <p style={{ fontWeight: 'bold', fontSize: 14 }}>Participaciones por evento</p>
             </div>
             <div style={{ marginVertical: 10 }}>
               <Bar
@@ -356,8 +415,8 @@ class DashboardReportes extends React.Component {
             </div>
 
             {/* Empresas mas colaboradoras */}
-            <div style={{display: 'flex', alignItems:'center', justifyContent: 'center', width: '100%', marginTop: 40}}>
-              <p style={{fontWeight: 'bold', fontSize: 14}}>Empresas mas contribuidoras</p>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', marginTop: 40 }}>
+              <p style={{ fontWeight: 'bold', fontSize: 14 }}>Empresas mas contribuidoras</p>
             </div>
             <div style={{ marginVertical: 10 }}>
               <Bar

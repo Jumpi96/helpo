@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import api from '../../../api'
-import { uploadImage } from '../../../Lib/Imagen'
+import api from '../../../api';
 import ImagePicker from 'react-native-image-picker';
 import { handleImageUpload } from '../../../Services/Imagen';
 import {
@@ -19,10 +18,9 @@ import {
   Form,
   Text,
   ListItem,
-  TextInput,
   Picker,
   Thumbnail,
-  Separator,
+  Separator
 } from 'native-base';
 import styles from './styles'
 

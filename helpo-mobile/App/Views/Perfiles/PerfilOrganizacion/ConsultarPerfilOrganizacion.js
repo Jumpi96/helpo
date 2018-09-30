@@ -14,10 +14,9 @@ import {
   Icon,
   Thumbnail,
   Text,
-  Separator,
+  Separator
 } from 'native-base';
 import styles from './styles';
-import { getImagen } from '../../../Lib/Imagen';
 
 
 class ConsultarPerfilOrganizacion extends Component {

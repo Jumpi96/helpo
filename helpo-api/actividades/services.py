@@ -229,7 +229,7 @@ def deny_propuesta(propuesta):
             colaborador_id=propuesta.empresa.id)
     for p in participaciones:
         p.vigente = False
-        c.save()
+        p.save()
 
 def notificar_inicio_evento(evento, cron_exec=False):
     colaboradores_id = _get_usuarios(evento)

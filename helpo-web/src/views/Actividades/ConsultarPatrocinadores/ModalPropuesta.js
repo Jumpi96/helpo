@@ -108,7 +108,7 @@ class ModalPropuesta extends Component {
             <ModalFooter>
               {propuesta.aceptado === 0 ?
                 <div>
-                  <button className="btn btn-success" onClick={() => this.props.closeModal(1)}>Aceptar</button>
+                  <button className="btn btn-success" disabled={this.props.confirmRechazo} onClick={() => this.props.closeModal(1)}>Aceptar</button>
                   <button className="btn btn-danger" onClick={() => this.props.closeModal(-1)}>Rechazar</button>
                 </div>
               : undefined}

@@ -6,7 +6,6 @@ import { ActionSheet, Container, Header, Title, Content, Button, Item, Label, In
 import styles from './styles';
 import { login, loginGoogleFacebook } from '../../Redux/actions/auth'
 import api from '../../api';
-import { GoogleSignin, GoogleSigninButton, statusCodes } from 'react-native-google-signin';
 import { FBLogin, FBLoginManager } from 'react-native-facebook-login';
 
 class Login extends Component {
@@ -16,13 +15,13 @@ class Login extends Component {
     this.state = {
       email: '',
       password: '',
-      isGoogleSigninInProgress: false,
+      // isGoogleSigninInProgress: false,
       isLoginFound: false,
     };
     this.handleSubmit = this.handleSubmit.bind(this);
-    GoogleSignin.configure({
-      webClientId: '93328850687-681u9fksr6g52g2bebbj1qu8thldgaq6.apps.googleusercontent.com'
-    });
+    // GoogleSignin.configure({
+    //   webClientId: '93328850687-681u9fksr6g52g2bebbj1qu8thldgaq6.apps.googleusercontent.com'
+    // });
   }
 
   componentDidUpdate() {
@@ -118,29 +117,29 @@ class Login extends Component {
     this.existsGoogleFacebook(url, nombre, email, password, user_type, apellido, id_token);
   }
 
-  googleSignIn = async () => {
-    try {
-      await GoogleSignin.hasPlayServices();
-      const userInfo = await GoogleSignin.signIn();
-      this.setState({ isGoogleSigninInProgress: false });
-      console.log(userInfo);
-      this.onSubmitGoogle(userInfo);
-    } catch (error) {
-      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-        this.setState({ isGoogleSigninInProgress: false });
-        console.log(error);
-      } else if (error.code === statusCodes.IN_PROGRESS) {
-        this.setState({ isGoogleSigninInProgress: true });
-        console.log(error);
-      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-        this.setState({ isGoogleSigninInProgress: false });
-        console.log(error);
-      } else {
-        this.setState({ isGoogleSigninInProgress: false });
-        console.log(error);
-      }
-    }
-  };
+  // googleSignIn = async () => {
+  //   try {
+  //     await GoogleSignin.hasPlayServices();
+  //     const userInfo = await GoogleSignin.signIn();
+  //     this.setState({ isGoogleSigninInProgress: false });
+  //     console.log(userInfo);
+  //     this.onSubmitGoogle(userInfo);
+  //   } catch (error) {
+  //     if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+  //       this.setState({ isGoogleSigninInProgress: false });
+  //       console.log(error);
+  //     } else if (error.code === statusCodes.IN_PROGRESS) {
+  //       this.setState({ isGoogleSigninInProgress: true });
+  //       console.log(error);
+  //     } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+  //       this.setState({ isGoogleSigninInProgress: false });
+  //       console.log(error);
+  //     } else {
+  //       this.setState({ isGoogleSigninInProgress: false });
+  //       console.log(error);
+  //     }
+  //   }
+  // };
 
   handleSubmit(e) {
     e.preventDefault();
@@ -192,12 +191,12 @@ class Login extends Component {
               <Text style={styles.validationMessage}>{this.props.errors[0].message}</Text>
             </Item>
           )}
-          <GoogleSigninButton
+          {/* <GoogleSigninButton
             style={{ width: 312, height: 48 }}
             size={GoogleSigninButton.Size.Wide}
             color={GoogleSigninButton.Color.Dark}
             onPress={this.googleSignIn}
-            disabled={this.state.isGoogleSigninInProgress} />
+            disabled={this.state.isGoogleSigninInProgress} /> */}
           <FBLogin
             permissions={["email"]}
             loginBehavior={FBLoginManager.LoginBehaviors.Native}

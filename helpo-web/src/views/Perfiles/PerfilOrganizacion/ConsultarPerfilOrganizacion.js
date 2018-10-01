@@ -47,10 +47,14 @@ class ConsultarPerfilOrganizacion extends Component {
     this.renderManos = this.renderManos.bind(this);
     this.renderEventos = this.renderEventos.bind(this);
     this.toggle = this.toggle.bind(this);
+    this.toggleEventos = this.toggleEventos.bind(this);
+    this.toggleManos = this.toggleManos.bind(this);
     this.togglePopover = this.togglePopover.bind(this);
     this.showModalVerificarCuenta = this.showModalVerificarCuenta.bind(this);
     this.getLinkVerEventos = this.getLinkVerEventos.bind(this);
     this.state = {
+      tooltipManos: false,
+      tooltipEventos: false,
       tooltipOpen: false,
       popoverOpen: false,
       showModalVerificarCuenta: false,
@@ -173,6 +177,18 @@ class ConsultarPerfilOrganizacion extends Component {
     });
   }
 
+  toggleEventos() {
+    this.setState({
+      tooltipEventos: !this.state.tooltipEventos
+    });
+  }
+
+  toggleManos() {
+    this.setState({
+      tooltipManos: !this.state.tooltipManos
+    });
+  }
+
   togglePopover() {
     this.setState({
       popoverOpen: !this.state.popoverOpen
@@ -270,18 +286,24 @@ class ConsultarPerfilOrganizacion extends Component {
             </div>
             <div className="col-md-4">
               <CardColumns>
-                <Card className="text-center" body inverse color="primary" style={{ height: 100, width: 100, borderColor: 'white' }}>
+                <Card id="cardManos" className="text-center" body inverse color="primary" style={{ height: 100, width: 100, borderColor: 'white' }}>
                   <CardTitle><i className="fa fa-hand-stop-o fa-2x"></i></CardTitle>
                   <CardText style={{ fontSize: 20 }}>{this.renderManos()}</CardText>
+                  <Tooltip placement="top" isOpen={this.state.tooltipManos} target="cardManos" toggle={this.toggleManos}>
+                      Manos acumuladas
+                  </Tooltip>
                 </Card >
-                <Card className="text-center" body inverse color="primary" style={{ height: 100, width: 100, borderColor: 'white' }}>
+                <Card id="cardEventos"className="text-center" body inverse color="primary" style={{ height: 100, width: 100, borderColor: 'white' }}>
                   <CardTitle><i className="fa fa-calendar-check-o fa-2x"></i></CardTitle>
                   <CardText style={{ fontSize: 20 }}>{this.renderEventos()}</CardText>
+                  <Tooltip placement="top" isOpen={this.state.tooltipEventos} target="cardEventos" toggle={this.toggleEventos}>
+                      Eventos organizados
+                  </Tooltip>
                 </Card>
                 {this.props.data.verificada ?
                   <Card id="cardVerificada" className="text-center" body inverse color="primary" style={{ height: 100, width: 100, borderColor: 'white' }}>
                     <CardTitle><i className="fa fa-shield fa-3x"></i></CardTitle>
-                    <Tooltip placement="right" isOpen={this.state.tooltipOpen} target="cardVerificada" toggle={this.toggle}>
+                    <Tooltip placement="top" isOpen={this.state.tooltipOpen} target="cardVerificada" toggle={this.toggle}>
                       Cuenta verificada
                 </Tooltip>
                   </Card>

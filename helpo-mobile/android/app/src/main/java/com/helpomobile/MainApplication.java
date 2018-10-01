@@ -12,7 +12,6 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.imagepicker.ImagePickerPackage;
-import co.apptailor.googlesignin.RNGoogleSigninPackage;
 import java.util.Arrays;
 import java.util.List;
 import com.magus.fblogin.FacebookLoginPackage;
@@ -34,7 +33,6 @@ public class MainApplication extends Application implements ReactApplication {
             new VectorIconsPackage(),
             new ImagePickerPackage(),
             new RNDeviceInfo(),
-            new RNGoogleSigninPackage(),
             new FacebookLoginPackage()
       );
     }

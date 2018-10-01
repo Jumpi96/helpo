@@ -215,9 +215,22 @@ class OrganizacionProfileSerializer(serializers.ModelSerializer):
         return instance
 
     def get_manos(self, obj):
-        participaciones = Participacion.objects.filter(retroalimentacion_ong=True).filter(necesidad_voluntario__evento__organizacion_id=obj.usuario_id).count()
-        colaboraciones = Colaboracion.objects.filter(retroalimentacion_ong=True).filter(necesidad_material__evento__organizacion_id=obj.usuario_id).count()
-        manos = participaciones + colaboraciones
+        participaciones = Participacion.objects.all()
+        colaboraciones = Colaboracion.objects.all()
+        dict_conteo = {}
+        manos = 0
+        for participacion in participaciones:
+            evento = participacion.necesidad_voluntario.evento
+            if participacion.retroalimentacion_voluntario and evento.organizacion.id == obj.usuario_id:
+                if not evento.id in dict_conteo:
+                    dict_conteo[evento.id] = []
+                dict_conteo[evento.id].append(participacion.colaborador)
+                manos = manos + 1
+        for colaboracion in colaboraciones:
+            evento = colaboracion.necesidad_material.evento
+            if colaboracion.retroalimentacion_voluntario and evento.organizacion.id == obj.usuario_id:
+                if not evento.id in dict_conteo or not colaboracion.colaborador in dict_conteo[evento.id]:
+                    manos = manos + 1
         return manos
 
     def get_eventos(self, obj):
@@ -234,13 +247,8 @@ class EmpresaProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = EmpresaProfile
-<<<<<<< HEAD
-        fields = ( 'telefono', 'cuit', 'descripcion', 'rubro', 'avatar', 'ubicacion', 'usuario', 'manos', 'eventos')
-        read_only_fields = ('usuario','manos','eventos')
-=======
-        fields = ( 'verificada', 'telefono', 'cuit', 'descripcion', 'rubro', 'avatar', 'ubicacion', 'usuario')
-        read_only_fields = ('usuario', 'verificada')
->>>>>>> master
+        fields = ( 'verificada', 'telefono', 'cuit', 'descripcion', 'rubro', 'avatar', 'ubicacion', 'usuario','manos','eventos')
+        read_only_fields = ('usuario', 'verificada','manos','eventos')
 
     def update(self, instance, validated_data):
         rubro_data = None
@@ -290,8 +298,8 @@ class EmpresaProfileSerializer(serializers.ModelSerializer):
         return instance
 
     def get_manos(self, obj):
-        participaciones = Participacion.objects.filter(retroalimentacion_voluntario=True).filter(colaborador_id=obj.usuario_id).count()
-        colaboraciones = Colaboracion.objects.filter(retroalimentacion_voluntario=True).filter(colaborador_id=obj.usuario_id).distinct('necesidad_material__evento').count()
+        participaciones = Participacion.objects.filter(retroalimentacion_ong=True).filter(colaborador_id=obj.usuario_id).count()
+        colaboraciones = Colaboracion.objects.filter(retroalimentacion_ong=True).filter(colaborador_id=obj.usuario_id).distinct('necesidad_material__evento').count()
         manos = participaciones + colaboraciones
         return manos
 
@@ -348,8 +356,8 @@ class VoluntarioProfileSerializer(serializers.ModelSerializer):
         return instance
 
     def get_manos(self, obj):
-        participaciones = Participacion.objects.filter(retroalimentacion_voluntario=True).filter(colaborador_id=obj.usuario_id).count()
-        colaboraciones = Colaboracion.objects.filter(retroalimentacion_voluntario=True).filter(colaborador_id=obj.usuario_id).distinct('necesidad_material__evento').count()
+        participaciones = Participacion.objects.filter(retroalimentacion_ong=True).filter(colaborador_id=obj.usuario_id).count()
+        colaboraciones = Colaboracion.objects.filter(retroalimentacion_ong=True).filter(colaborador_id=obj.usuario_id).distinct('necesidad_material__evento').count()
         manos = participaciones + colaboraciones
         return manos
 

@@ -5,7 +5,6 @@ import { Container, Header, Title, Content, Button, Item, Label, Input, Body, Le
 
 import styles from './styles';
 import { logout } from '../../Redux/actions/auth';
-import { GoogleSignin } from 'react-native-google-signin';
 
 
 class Configuracion extends Component {
@@ -15,17 +14,17 @@ class Configuracion extends Component {
     this.logout = this.logout.bind(this);
   }
   
-  googleSignOut = async () => {
-    try {
-      await GoogleSignin.revokeAccess();
-      await GoogleSignin.signOut();
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  // googleSignOut = async () => {
+  //   try {
+  //     await GoogleSignin.revokeAccess();
+  //     await GoogleSignin.signOut();
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   logout() {
-    this.googleSignOut;
+    // this.googleSignOut;
     this.props.logout(this.props.auth.email);
     this.props.navigation.navigate("LaunchScreen");
   }

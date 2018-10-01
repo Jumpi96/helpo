@@ -8,7 +8,6 @@ import SignUpPresentation from './SignUpPresentation';
 import validateEmail from '../../Lib/ValidateEmail';
 import { Alert } from 'react-native';
 import { Container, View } from 'native-base';
-import { GoogleSignin, GoogleSigninButton, statusCodes } from 'react-native-google-signin';
 import { loginGoogleFacebook } from '../../Redux/actions/auth'
 import { FBLogin, FBLoginManager } from 'react-native-facebook-login';
 
@@ -29,15 +28,15 @@ class SignUp extends Component {
         email: '',
         contraseña: '',
       },
-      isGoogleSigninInProgress: false,
+      // isGoogleSigninInProgress: false,
       isLoginFound: false,
     };
     this.handleUserTypeSelect = this.handleUserTypeSelect.bind(this);
     this.handleValueChange = this.handleValueChange.bind(this);
     this.onSubmitData = this.onSubmitData.bind(this);
-    GoogleSignin.configure({
-      webClientId: '93328850687-681u9fksr6g52g2bebbj1qu8thldgaq6.apps.googleusercontent.com'
-    });
+    // GoogleSignin.configure({
+    //   webClientId: '93328850687-681u9fksr6g52g2bebbj1qu8thldgaq6.apps.googleusercontent.com'
+    // });
   }
 
   componentDidUpdate() {
@@ -93,29 +92,29 @@ class SignUp extends Component {
     }
   }
 
-  googleSignIn = async () => {
-    try {
-      await GoogleSignin.hasPlayServices();
-      const userInfo = await GoogleSignin.signIn();
-      this.setState({ isGoogleSigninInProgress: false });
-      console.log(userInfo);
-      this.onSubmitGoogle(userInfo);
-    } catch (error) {
-      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-        this.setState({ isGoogleSigninInProgress: false });
-        console.log(error);
-      } else if (error.code === statusCodes.IN_PROGRESS) {
-        this.setState({ isGoogleSigninInProgress: true });
-        console.log(error);
-      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-        this.setState({ isGoogleSigninInProgress: false });
-        console.log(error);
-      } else {
-        this.setState({ isGoogleSigninInProgress: false });
-        console.log(error);
-      }
-    }
-  };
+  // googleSignIn = async () => {
+  //   try {
+  //     await GoogleSignin.hasPlayServices();
+  //     const userInfo = await GoogleSignin.signIn();
+  //     this.setState({ isGoogleSigninInProgress: false });
+  //     console.log(userInfo);
+  //     this.onSubmitGoogle(userInfo);
+  //   } catch (error) {
+  //     if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+  //       this.setState({ isGoogleSigninInProgress: false });
+  //       console.log(error);
+  //     } else if (error.code === statusCodes.IN_PROGRESS) {
+  //       this.setState({ isGoogleSigninInProgress: true });
+  //       console.log(error);
+  //     } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+  //       this.setState({ isGoogleSigninInProgress: false });
+  //       console.log(error);
+  //     } else {
+  //       this.setState({ isGoogleSigninInProgress: false });
+  //       console.log(error);
+  //     }
+  //   }
+  // };
 
   onSubmitData() {
     if (this.handleValidation()) {
@@ -302,12 +301,12 @@ class SignUp extends Component {
               console.log(data);
             }}
           />
-          <GoogleSigninButton
+          {/* <GoogleSigninButton
             style={{ width: 312, height: 48 }}
             size={GoogleSigninButton.Size.Wide}
             color={GoogleSigninButton.Color.Dark}
             onPress={this.googleSignIn}
-            disabled={this.state.isGoogleSigninInProgress} />
+            disabled={this.state.isGoogleSigninInProgress} /> */}
         </View>
       </Container>
     );

@@ -318,9 +318,9 @@ class RegistrarEvento extends React.Component {
               handleChange={this.handleFechaHoraFinChange}
             />
             <Text style={styles.validationMessage}>{this.state.errors.fechas}</Text>
-            <Separator bordered noTopBorder>
+            {/*<Separator bordered noTopBorder>
               <Text>Ubicación</Text>
-            </Separator>
+            </Separator>*/}
             <Item>
               <SelectorUbicacion
                 ubicacion={this.state.ubicacion}

@@ -472,6 +472,27 @@ def RetroalimentacionONGEvento(request):
     except:
        return Response(status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['POST'])
+def EntregadoNecesidadEvento(request):
+    try:
+        colaboracion = Colaboracion.objects.get(id=request.data['colaboracion'])
+        colaboracion.entregado = request.data['entregado']
+        print(request.data)
+        colaboracion.save()
+        return Response(request.data, status=status.HTTP_201_CREATED)
+    except:
+       return Response(status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def ParticipadoNecesidadEvento(request):
+    try:
+        participacion = Participacion.objects.get(id=request.data['participacion'])
+        participacion.participo = request.data['participo']
+        participacion.save()
+        return Response(request.data, status=status.HTTP_201_CREATED)
+    except:
+       return Response(status=status.HTTP_400_BAD_REQUEST)
+
 class EventoImagenRetrieveDestroyView(RetrieveDestroyAPIView):
 
     """ API endpoint para leer o eliminar una imagen de un evento """

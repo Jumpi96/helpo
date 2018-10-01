@@ -13,6 +13,9 @@ class Ubicacion(models.Model):
     longitud = models.FloatField()
     notas = models.CharField(max_length=140, null=True)
 
+    def __str__(self):
+        return self.notas + " [" + str(self.latitud) + ", " + str(self.longitud) + "]"
+
 class Evento(IndexedTimeStampedModel):
 
     EVENTO_STATUS = (
@@ -40,6 +43,9 @@ class Contacto(models.Model):
     email = models.EmailField(max_length=100,blank=True,null=True)
     telefono = models.BigIntegerField(blank=True,null=True) 
     evento = models.ForeignKey(Evento, related_name='contacto', null=False, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return "Contacto: " + self.nombre
 
 class CategoriaRecurso(models.Model):
     nombre = models.CharField(max_length=100)
@@ -89,7 +95,7 @@ class Comentario(models.Model):
     comentario = models.CharField(max_length=280, null=False)
 
     def __str__(self):
-        return "Comentario de " + self.voluntario
+        return "Comentario de " + str(self.voluntario)
 
 class Colaboracion(models.Model):
     cantidad = models.IntegerField()
@@ -115,7 +121,7 @@ class Participacion(models.Model):
     cantidad = models.IntegerField()
 
     def __str__(self):
-        return str(self.necesidad_voluntario) + " " + self.colaborador
+        return str(self.necesidad_voluntario) + " " + str(self.colaborador)
 
 class ActividadesTasks(models.Model):
     evento = models.ForeignKey(Evento, null=True, blank=True)

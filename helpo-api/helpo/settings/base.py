@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'common',
     'users',
     'actividades',
+    'reportes',
 ]
 
 MIDDLEWARE = [
@@ -129,3 +130,7 @@ CORS_ORIGIN_WHITELIST = (
 SWAGGER_SETTINGS = {
     'LOGIN_URL': '/auth/log_in/'
 }
+
+# Email
+NOTIFICATION_EMAIL = 'desarrollo@helpo.com.ar'
+REGISTER_EMAIL = 'desarrollo@helpo.com.ar'

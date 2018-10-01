@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { Card, CardHeader } from 'reactstrap';
 import api from '../../../api'
 import ModalGenerico from '../ModalGenerico'
-import { uploadImage } from '../../../utils/Imagen'
+import { uploadImage } from '../../../utils/Imagen';
 
 const perfilPropTypes = {
   nombre: PropTypes.string.isRequired,
@@ -155,7 +155,7 @@ class ModificarPerfilVoluntario extends Component {
         type="text"
         name="telefono"
         className="form-control"
-        placeholder="Telefono"
+        placeholder="Teléfono (ejemplo: 3515234567)"
         value={this.state.telefono}
         onChange={this.handleTelefonoChange}
       />)    

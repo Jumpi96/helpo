@@ -1,9 +1,89 @@
 from rest_framework import serializers
 from django.contrib.auth import authenticate
-from users.models import User, RubroOrganizacion, OrganizacionProfile, Ubicacion, Imagen, VoluntarioProfile, EmpresaProfile, UserVerification, AppValues, DeviceID, Suscripcion
+from users.models import User, UserWrapper, RubroOrganizacion, RubroEmpresa, OrganizacionProfile, Ubicacion, Imagen, VoluntarioProfile, EmpresaProfile, SmsVerification, UserVerification, AppValues, DeviceID, Suscripcion
 from actividades.models import Participacion, Evento, Colaboracion
 from django.core.exceptions import ObjectDoesNotExist
+from common.functions import get_datos_token_google, get_datos_token_facebook
+import random
+import string
 
+
+class GoogleAuthSerializer(serializers.ModelSerializer):
+    apellido = serializers.CharField(max_length=50, allow_null=True)
+
+    class Meta:
+        model = UserWrapper
+        fields = ('nombre','email','password','user_type','apellido','id_token')
+        write_only_fields = ('apellido')
+
+    def validate(self, data):
+        if data:
+            token = data.get('id_token')
+            datos_google = get_datos_token_google(token)
+            if datos_google:
+                user_email = datos_google.get('email')
+                if user_email:
+                    user_qs = User.objects.filter(email=user_email)
+                    if len(user_qs) == 0:
+                        user_password = ''.join(random.SystemRandom().choice(
+                            string.ascii_uppercase + string.digits) for _ in range(64))
+                        kwargs = {'avatar': datos_google.get(
+                            'foto'), 'apellido': datos_google.get('apellido')}
+                        user = User.objects.create_user(user_email, datos_google.get('nombre'), user_password, data.get(
+                            'user_type'), **kwargs)
+                        return user
+                    else:
+                        user = user_qs.first()
+                        return user
+        raise serializers.ValidationError("Unable to log in with provided Google Token")
+    
+    def exists(self, data):
+        if data:
+            token = data.get('id_token')
+            datos_google = get_datos_token_google(token)
+            if datos_google:
+                user_email = datos_google.get('email')
+                if user_email:
+                    user = User.objects.filter(email=user_email).first()
+                    if user:
+                        return user
+        raise serializers.ValidationError("Unable to find user with provided Google Token")
+
+class FacebookAuthSerializer(GoogleAuthSerializer):
+    def validate(self, data):
+        if data:
+            token = data.get('id_token')
+            user_name = get_datos_token_facebook(token)
+            if user_name:
+                user_email = data.get('email')
+                if user_email:
+                    user_qs = User.objects.filter(email=user_email)
+                    if len(user_qs) == 0:
+                        word_list = user_name.split()
+                        nombre = word_list[0]
+                        apellido = word_list[-1]
+                        password = ''.join(random.SystemRandom().choice(
+                            string.ascii_uppercase + string.digits) for _ in range(64))
+                        kwargs = {'apellido': apellido}
+                        user = User.objects.create_user(user_email, nombre, password, data.get(
+                            'user_type'), **kwargs)
+                        return user
+                    else:
+                        user = user_qs.first()
+                        return user
+        raise serializers.ValidationError("Unable to log in with provided Facebook Token")
+
+    def exists(self, data):
+        if data:
+            token = data.get('id_token')
+            user_name = get_datos_token_facebook(token)
+            if user_name:
+                user_email = data.get('email')
+                if user_email:
+                    user = User.objects.filter(email=user_email).first()
+                    if user:
+                        return user
+        raise serializers.ValidationError("Unable to find user with provided Facebook Token")
 
 class CreateUserSerializer(serializers.ModelSerializer):
     apellido = serializers.CharField(max_length=50, allow_null=True)
@@ -62,6 +142,11 @@ class UbicacionSerializer(serializers.ModelSerializer):
 class RubroOrganizacionSerializer(serializers.ModelSerializer):
     class Meta:
         model = RubroOrganizacion
+        fields = ('id', 'nombre')
+
+class RubroEmpresaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RubroEmpresa
         fields = ('id', 'nombre')
 
 class ImagenSerializer(serializers.ModelSerializer):
@@ -140,7 +225,7 @@ class OrganizacionProfileSerializer(serializers.ModelSerializer):
         return eventos
 
 class EmpresaProfileSerializer(serializers.ModelSerializer):
-    rubro = RubroOrganizacionSerializer(required=False)
+    rubro = RubroEmpresaSerializer(required=False)
     ubicacion = UbicacionSerializer(required=False)
     avatar = ImagenSerializer(required=False)    
     usuario = UserSerializer(read_only=True)
@@ -149,8 +234,13 @@ class EmpresaProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = EmpresaProfile
+<<<<<<< HEAD
         fields = ( 'telefono', 'cuit', 'descripcion', 'rubro', 'avatar', 'ubicacion', 'usuario', 'manos', 'eventos')
         read_only_fields = ('usuario','manos','eventos')
+=======
+        fields = ( 'verificada', 'telefono', 'cuit', 'descripcion', 'rubro', 'avatar', 'ubicacion', 'usuario')
+        read_only_fields = ('usuario', 'verificada')
+>>>>>>> master
 
     def update(self, instance, validated_data):
         rubro_data = None
@@ -178,7 +268,7 @@ class EmpresaProfileSerializer(serializers.ModelSerializer):
         instance.descripcion = validated_data.get('descripcion', instance.descripcion) 
 
         if rubro_data != None:
-            nuevoRubro = RubroOrganizacion.objects.get(nombre=rubro_data["nombre"])
+            nuevoRubro = RubroEmpresa.objects.get(nombre=rubro_data["nombre"])
             instance.rubro = nuevoRubro       
         
         if ubicacion_data != None:
@@ -275,12 +365,29 @@ class VoluntarioProfileSerializer(serializers.ModelSerializer):
                 cantidad.append(p.necesidad_voluntario.evento_id)
         eventos = Evento.objects.filter(id__in = cantidad).count()
         return eventos    
-        
+
+class VerificationSmsSerializer(serializers.Serializer):    
+    token = serializers.CharField()
+
+    def validate(self, data):
+        try:
+            sms_verification = SmsVerification.objects.get(verificationToken=data["token"])
+            user = sms_verification.usuario
+            if user.user_type == 1:
+                profile = OrganizacionProfile.objects.filter(usuario=user).first()
+                if profile.validate_sms(sms_verification.verificationToken):
+                    return True
+            elif user.user_type == 3:
+                profile = EmpresaProfile.objects.filter(usuario=user).first()
+                if profile.validate_sms(sms_verification.verificationToken):
+                    return True
+        except ObjectDoesNotExist:
+            raise serializers.ValidationError("Verification token does not match any")
+
 class VerificationMailSerializer(serializers.Serializer):    
     token = serializers.CharField()
 
     def validate(self, data):
-        print(data)
         try:
             user_verification = UserVerification.objects.get(verificationToken=data["token"])
             user = user_verification.usuario

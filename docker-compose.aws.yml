@@ -1,17 +1,6 @@
 version: '3'
 
 services:
-  db:
-    image: postgres:10.4-alpine
-    restart: always
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: db-helpo
-    expose:
-      - "5432"
-    volumes:
-      - ./postgres-data:/var/lib/postgresql/data
   api:
     build: helpo-api/.
     restart: always
@@ -19,8 +8,8 @@ services:
       - helpo-api/.env
     expose:
       - "8000"
-    depends_on:
-      - db
+    volumes:
+      - ./logs/django:/code/logs
   web:
     image: helpo/helpo_web
     restart: always
@@ -33,8 +22,8 @@ services:
       - "8443:8443"
     volumes:
       - ./certs:/certs
+      - ./logs/nginx:/var/log/nginx
     depends_on:
-      - db
       - api
   pgadmin:
     image: fenglc/pgadmin4:alpine
@@ -43,8 +32,6 @@ services:
       - ./pgadmin.env
     expose:
       - "5050"
-    depends_on:
-      - db
 
 # Meant to be used alone, made for pulling from aws
 # docker-compose -f docker-compose.aws.yml COMMAND

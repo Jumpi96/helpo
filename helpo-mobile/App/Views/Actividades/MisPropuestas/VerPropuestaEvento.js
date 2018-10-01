@@ -179,7 +179,7 @@ class VerPropuestaEvento extends React.Component {
         )
       }
     } else {
-      if (propuesta.aceptado >= 0) {
+      if (propuesta.aceptado === 0) {
         return (
           <Button transparent onPress={() => this.props.navigation.navigate('RegistrarOfrecimiento', { evento: evento.id })}>
             <Text>Modificar</Text>

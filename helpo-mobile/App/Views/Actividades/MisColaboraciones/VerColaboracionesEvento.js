@@ -18,6 +18,7 @@ import {
   View,
 } from 'native-base';
 import styles from './styles';
+import { goVerEvento } from '../../../Services/NavFunctions'
 
 class VerColaboracionesEvento extends React.Component {
 
@@ -116,6 +117,22 @@ class VerColaboracionesEvento extends React.Component {
     return undefined;
   }
 
+  getBotonOpcion(evento) {
+    if (moment(evento.fecha_hora_inicio) > moment()) {
+      return (
+        <Button transparent onPress={() => this.props.navigation.navigate('RegistrarColaboraciones', { evento: evento.id })}>
+          <Text>Modificar</Text>
+        </Button>
+      );
+    } else {
+      return (
+        <Button transparent onPress={() => this.props.navigation.navigate('ComentarEvento', { evento: evento.id })}>
+          <Text>Comentar</Text>
+        </Button>
+      );
+    }
+  }
+
   render() {
     const { params } = this.props.navigation.state;
     const evento = params.evento;
@@ -131,14 +148,7 @@ class VerColaboracionesEvento extends React.Component {
             <Title>{evento.nombre}</Title>
           </Body>
           <Right>
-          { moment(evento.fecha_hora_inicio) > moment() ?
-            <Button transparent onPress={() => this.props.navigation.navigate('RegistrarColaboraciones', { evento: evento.id })}>
-              <Text>Modificar</Text>
-            </Button> :
-            <Button transparent onPress={() => this.props.navigation.navigate('ComentarEvento', { evento: evento.id })}>
-              <Text>Comentar</Text>
-            </Button>
-          }
+            {this.getBotonOpcion(evento)}
           </Right>
         </Header>
         <Content>
@@ -148,6 +158,13 @@ class VerColaboracionesEvento extends React.Component {
           <ListItem>
             <Label style={styles.label}>Nombre</Label>
             <Text>{evento.nombre}</Text>
+          </ListItem>
+          <ListItem
+            button
+            onPress={() => goVerEvento(evento.id, this.props.navigation)}>
+            <Body>
+              <Text>Ver Evento</Text>
+            </Body>
           </ListItem>
           {this.getListaNecesidades(evento)}
           {this.getListaVoluntarios(evento)}

@@ -1,3 +1,4 @@
+from collections import namedtuple
 from actividades.models import Evento, Necesidad, Colaboracion, Voluntario, Participacion, LogMensaje, Mensaje, Propuesta
 from common.notifications import send_mail_to_list, send_mail_to, send_mail_to_id_list, send_mail_to_id, send_push_notification_to_id_list
 from common.templates import render_participacion_email, render_cambio_evento_email, render_mensaje_evento, render_full_participacion_email, render_full_colaboracion_email, render_was_full_colaboracion_email, render_was_full_participacion_email, render_inicio_evento_email, render_fin_evento_email
@@ -79,7 +80,8 @@ def send_was_full_colaboracion_mail(necesidad_material):
 
 
 def notificar_cambio_evento(request_data):
-    usuarios_id = _get_usuarios(request_data)
+    obj_evento = namedtuple("Evento", request_data.keys())(*request_data.values())
+    usuarios_id = _get_usuarios(obj_evento)
     evento = _get_evento(request_data)
     _send_mail(usuarios_id, evento)
     _send_push(usuarios_id, evento)
@@ -170,12 +172,27 @@ def _send_nueva_propuesta(propuesta):
 def create_propuesta(user, necesidad, es_voluntario):
     if es_voluntario:
         evento_id = Voluntario.objects.get(id=necesidad).evento_id
+        clean_propuesta(user.id, evento_id, True, necesidad)
     else:
         evento_id = Necesidad.objects.get(id=necesidad).evento_id
+        clean_propuesta(user.id, evento_id, False, necesidad)
     if len(Propuesta.objects.filter(evento_id=evento_id).filter(empresa_id=user.id)) == 0:
-        Propuesta.objects.create(
+        propuesta = Propuesta.objects.create(
             evento_id=evento_id, empresa_id=user.id, aceptado=0)
         _send_nueva_propuesta(propuesta)
+
+def clean_propuesta(empresa_id, evento_id, es_voluntario, necesidad_id):
+    propuestas = Propuesta.objects.filter(empresa_id=empresa_id, evento_id=evento_id)
+    if len(propuestas) > 0:
+        propuesta = propuestas[0]
+        if es_voluntario:
+            cantidad_participaciones = len(Participacion.objects.filter(necesidad_voluntario__evento=propuesta.evento, colaborador_id=empresa_id).exclude(necesidad_voluntario_id=necesidad_id))
+            cantidad_colaboraciones = len(Colaboracion.objects.filter(necesidad_material__evento=propuesta.evento, colaborador_id=empresa_id))
+        else:
+            cantidad_colaboraciones = len(Colaboracion.objects.filter(necesidad_material__evento=propuesta.evento, colaborador_id=empresa_id).exclude(necesidad_material_id=necesidad_id))
+            cantidad_participaciones = len(Participacion.objects.filter(necesidad_voluntario__evento=propuesta.evento, colaborador_id=empresa_id))
+        if cantidad_colaboraciones + cantidad_participaciones == 0:
+            propuesta.delete()
 
 def _send_mail_response_propuesta(usuarios_id, propuesta):
     subject_utf = u"Respuesta a tu propuesta para evento: " + propuesta.evento.nombre
@@ -212,7 +229,7 @@ def deny_propuesta(propuesta):
             colaborador_id=propuesta.empresa.id)
     for p in participaciones:
         p.vigente = False
-        c.save()
+        p.save()
 
 def notificar_inicio_evento(evento, cron_exec=False):
     colaboradores_id = _get_usuarios(evento)

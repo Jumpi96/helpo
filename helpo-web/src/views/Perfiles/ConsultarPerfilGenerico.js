@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Card, CardBody, CardHeader } from 'reactstrap'
 import api from '../../api';
 import ConsultarPerfilOrganizacion from './PerfilOrganizacion/ConsultarPerfilOrganizacion'
 import ConsultarPerfilEmpresa from './PerfilEmpresa/ConsultarPerfilEmpresa'
@@ -12,11 +14,12 @@ class ConsultarPerfilGenerico extends Component {
     super(props); //Llama a las props del padre
     this.state = {
       nombre: '',
-      userId: 0, // 1: ONG, 2: Vol, 3: Empresa
-      userType: 0,     
+      userId: 0, 
+      userType: 0, // 1: ONG, 2: Vol, 3: Empresa
       email: '',
       data: {},
       rubros: [], // [{ id: , nombre: },]
+      rubrosEmpresa: [], // [{ id: , nombre: },]
       modificar: false,
       loggedUser: true,
     };
@@ -26,6 +29,15 @@ class ConsultarPerfilGenerico extends Component {
     this.renderComponente = this.renderComponente.bind(this)
     this.switchToConsultar = this.switchToConsultar.bind(this)
     this.switchToModificar = this.switchToModificar.bind(this)
+    this.isLoggedUser = this.isLoggedUser.bind(this)
+  }
+
+  isLoggedUser() {
+    // Retorna true si el perfil es del usuario logeado, sino retorna false
+    if (this.props.logeadoId === this.state.userId) {
+      return true
+    }
+    else { return false }
   }
 
   getApiCall(userType) {
@@ -68,9 +80,11 @@ class ConsultarPerfilGenerico extends Component {
         return api.get('/perfiles/rubros_organizacion/')
       })   
       .then( res => {
-        
         initialState.rubros = res.data
-        
+        return api.get('/perfiles/rubros_empresa/')
+      })   
+      .then( res => {
+        initialState.rubrosEmpresa = res.data
       })
       .then(() => {
         // Cambio estado aca para asegurarme que se llame todo lo anterior
@@ -81,10 +95,12 @@ class ConsultarPerfilGenerico extends Component {
           userType: initialState.userType,
           data: initialState.data,
           rubros: initialState.rubros,
+          rubrosEmpresa: initialState.rubrosEmpresa,
           loggedUser: initialState.loggedUser
         })
       })
       .catch( error => {
+        console.log(error);
       })      
   }    
 
@@ -101,10 +117,23 @@ class ConsultarPerfilGenerico extends Component {
     })
   }
 
+  loading = () => (
+    <Card>
+      <CardHeader>
+        <i className="fa fa-align-justify"></i> Perfil
+      </CardHeader>
+      <CardBody>
+        <p style={{ fontSize: 14 }}>Espere unos segundos, se esta cargando la pagina...</p>
+      </CardBody>
+    </Card>
+  )
+
   renderModificar() {        
     switch (this.state.userType) {
       case 1:
         return (<ModificarPerfilOrganizacion 
+                  id={this.state.userId}
+                  userType={this.state.userType}
                   nombre={this.state.nombre}
                   email={this.state.email}
                   data={this.state.data}
@@ -114,6 +143,8 @@ class ConsultarPerfilGenerico extends Component {
 
       case 2:
         return ( <ModificarPerfilVoluntario 
+                  id={this.state.userId}
+                  userType={this.state.userType}
                   nombre={this.state.nombre}
                   email={this.state.email}
                   data={this.state.data}
@@ -122,15 +153,17 @@ class ConsultarPerfilGenerico extends Component {
 
       case 3:
         return ( <ModificarPerfilEmpresa 
+                  id={this.state.userId}
+                  userType={this.state.userType}
                   nombre={this.state.nombre}
                   email={this.state.email}
                   data={this.state.data}
-                  rubros={this.state.rubros}
+                  rubros={this.state.rubrosEmpresa}
                   switchToConsultar={this.switchToConsultar}
                   /> )
 
       default:
-        return ( <p>Error</p> )        
+        return ( this.loading() )        
     }
   }  
 
@@ -139,33 +172,38 @@ class ConsultarPerfilGenerico extends Component {
       case 1:
         return (<ConsultarPerfilOrganizacion
                   id={this.state.userId}
+                  userType={this.state.userType}
                   nombre={this.state.nombre}
                   email={this.state.email}
                   data={this.state.data}
                   switchToModificar={this.switchToModificar}
-                  sinModificar={true}
+                  sinModificar={!this.isLoggedUser()}
                   />)
 
       case 2:
         return ( <ConsultarPerfilVoluntario 
+                  id={this.state.userId}
+                  userType={this.state.userType}
                   nombre={this.state.nombre}
                   email={this.state.email}
                   data={this.state.data}
                   switchToModificar={this.switchToModificar}
-                  sinModificar={true}
+                  sinModificar={!this.isLoggedUser()}
                   /> )
 
       case 3:
         return ( <ConsultarPerfilEmpresa 
+                  id={this.state.userId}
+                  userType={this.state.userType}
                   nombre={this.state.nombre}
                   email={this.state.email}
                   data={this.state.data}
                   switchToModificar={this.switchToModificar}
-                  sinModificar={true}
+                  sinModificar={!this.isLoggedUser()}
                   /> )
 
       default:
-        return ( <p>Error</p> )        
+        return ( this.loading() )        
     }
   }
 
@@ -174,30 +212,38 @@ class ConsultarPerfilGenerico extends Component {
       case 1:
         return (<ConsultarPerfilOrganizacion 
                   id={this.state.userId}
+                  userType={this.state.userType}
                   nombre={this.state.nombre}
                   email={this.state.email}
                   data={this.state.data}
                   switchToModificar={this.switchToModificar}
+                  sinModificar={!this.isLoggedUser()}
                   />)
 
       case 2:
         return ( <ConsultarPerfilVoluntario
+                  id={this.state.userId}
+                  userType={this.state.userType}
                   nombre={this.state.nombre}
                   email={this.state.email}
                   data={this.state.data}
                   switchToModificar={this.switchToModificar}
+                  sinModificar={!this.isLoggedUser()}
                   /> )
 
       case 3:
         return ( <ConsultarPerfilEmpresa 
+                  id={this.state.userId}
+                  userType={this.state.userType}
                   nombre={this.state.nombre}
                   email={this.state.email}
                   data={this.state.data}
                   switchToModificar={this.switchToModificar}
+                  sinModificar={!this.isLoggedUser()}
                   /> )
 
       default:
-        return ( <p>Error</p> )        
+        return ( this.loading() )        
     }
   }  
 
@@ -220,4 +266,8 @@ class ConsultarPerfilGenerico extends Component {
   }
 }
 
-export default ConsultarPerfilGenerico;
+const mapStateToProps = state => ({
+  logeadoId: state.auth.user.id
+})
+
+export default connect(mapStateToProps)(ConsultarPerfilGenerico);

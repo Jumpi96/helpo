@@ -1,6 +1,6 @@
 import React from 'react';  
 import { PropTypes } from 'prop-types';
-import { Table } from 'reactstrap';
+import { Table, Button } from 'reactstrap';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import moment from 'moment';
@@ -8,6 +8,7 @@ import { auth } from '../../../actions';
 import ModalEliminarItem from '../../common/ModalEliminarItem/ModalEliminarItem';
 import * as eventoActions from '../../../actions/eventoActions';
 import './Eventos.css';
+import { Link } from 'react-router-dom'
 
 class EventoView extends React.Component {  
   constructor(props) {
@@ -173,6 +174,11 @@ class EventoView extends React.Component {
           >
             Editar colaboraciones
           </button>
+          <Link style={{ marginLeft: 10 }} to={`/actividades/consultar-evento?id=${evento.id}`}>
+            <Button color="warning">
+              Ver Evento
+            </Button>
+          </Link>
           <button
             onClick={this.toggleView}
             hidden={moment(evento.fecha_hora_inicio)>moment()}

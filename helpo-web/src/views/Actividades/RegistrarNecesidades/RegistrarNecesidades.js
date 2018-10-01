@@ -71,6 +71,7 @@ class RegistrarNecesidades extends Component {
   }
 
   addNecesidad(necesidad) {
+    var _this = this;
     api.post('/actividades/necesidades/', necesidad)
       .then(res => {
         console.log(res);
@@ -80,11 +81,12 @@ class RegistrarNecesidades extends Component {
       }).catch(function (error) {
         if (error.response){ console.log(error.response.status) }
         else { console.log('Error: ', error.message)}
-        this.setState({ error_necesidad: "Hubo un problema al cargar su información." });
+        _this.setState({ error_necesidad: "Hubo un problema al cargar su información." });
       });
   }
 
   addVoluntario(voluntario) {
+    var _this = this;
     api.post('/actividades/voluntarios/', voluntario)
       .then(res => {
         console.log(res);
@@ -94,11 +96,12 @@ class RegistrarNecesidades extends Component {
       }).catch(function (error) {
         if (error.response){ console.log(error.response.status) }
         else { console.log('Error: ', error.message)}
-        this.setState({ error_voluntario: "Hubo un problema al cargar su información." });
+        _this.setState({ error_voluntario: "Hubo un problema al cargar su información." });
       });
   }
 
   saveNecesidad(cantidad) {
+    var _this = this;
     if (cantidad) {
       if (this.state.necesidadModificada.funcion) {
         const nuevoVoluntario = {
@@ -117,7 +120,7 @@ class RegistrarNecesidades extends Component {
           }).catch(function (error) {
             if (error.response){ console.log(error.response.status) }
             else { console.log('Error: ', error.message)}
-            this.setState({ error: "Hubo un problema al cargar su información." });
+            _this.setState({ error: "Hubo un problema al cargar su información." });
           });
       } else {
         const nuevaNecesidad = {
@@ -136,7 +139,7 @@ class RegistrarNecesidades extends Component {
           }).catch(function (error) {
             if (error.response){ console.log(error.response.status) }
             else { console.log('Error: ', error.message)}
-            this.setState({ error: "Hubo un problema al cargar su información." });
+            _this.setState({ error: "Hubo un problema al cargar su información." });
           });
       }
       

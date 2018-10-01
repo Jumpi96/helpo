@@ -20,6 +20,7 @@ from actividades.serializers import EventoSerializer, RubroEventoSerializer, \
     PropuestaSerializer, ConsultaAllNecesidadesSerializer
 from actividades.services import create_propuesta
 from common.functions import get_token_user, calc_distance_locations
+import re
 
 class RubroEventoCreateReadView(ListCreateAPIView):
     """
@@ -319,8 +320,8 @@ class ColaboracionCreateReadView(ListCreateAPIView):
 
     def create(self, request):
         serializer = ColaboracionSerializer(data=request.data)
-        user = User.objects.get(id=get_token_user(self.request))
         if serializer.is_valid():
+            user = User.objects.get(id=get_token_user(self.request))
             if user.user_type == 3:
                 create_propuesta(user, request.data['necesidad_material_id'], False)
             serializer.save(colaborador_id=user.id)
@@ -338,8 +339,16 @@ class ColaboracionReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     # de aca para abajo, es una negrada, no queda otra, preguntarle a Gon por que
     def destroy(self, request, *args, **kwargs):
         serializer = ColaboracionSerializer(data=request.data)
-        colaboracion_id = request.path.split("/actividades/colaboraciones/",1)[1][:-1]
-        serializer.destroy(colaboracion_id)
+        pattern = "(\d+)/$"
+        sre_match = re.search(pattern, request.path)
+        if sre_match is not None:
+            try:
+                colaboracion_id = int(sre_match.groups()[0])
+                serializer.destroy(colaboracion_id)
+            except:
+                return Response(None, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response(None, status=status.HTTP_404_NOT_FOUND)
         return super().destroy(request, *args, **kwargs)
 
 
@@ -373,19 +382,29 @@ class ParticipacionReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
 
     # negrada is back!
     def destroy(self, request, *args, **kwargs):
-        participacion_id = request.path.split("/actividades/participaciones/",1)[1][:-1]
-        participacion = Participacion.objects.get(id=participacion_id)
-        from actividades.services import send_participacion_destroy_email, send_was_full_participacion_mail
-        user = User.objects.get(id=get_token_user(self.request))
-        if user.user_type != 3:
-            send_participacion_destroy_email(participacion)
-        necesidad_voluntario = participacion.necesidad_voluntario
-        participaciones = Participacion.objects.filter(necesidad_voluntario_id=necesidad_voluntario.id)
-        suma_participantes = 0
-        for p in participaciones:
-            suma_participantes += p.cantidad
-        if suma_participantes == necesidad_voluntario.cantidad:
-            send_was_full_participacion_mail(necesidad_voluntario)
+        partipacion = None
+        pattern = "(\d+)/$"
+        sre_match = re.search(pattern, request.path)
+        if sre_match is not None:
+            try:
+                participacion_id = int(sre_match.groups()[0])
+                participacion = Participacion.objects.get(id=participacion_id)
+            except:
+                return Response(None, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response(None, status=status.HTTP_404_NOT_FOUND)
+        if participacion is not None:
+            from actividades.services import send_participacion_destroy_email, send_was_full_participacion_mail
+            user = User.objects.get(id=get_token_user(self.request))
+            if user.user_type != 3:
+                send_participacion_destroy_email(participacion)
+            necesidad_voluntario = participacion.necesidad_voluntario
+            participaciones = Participacion.objects.filter(necesidad_voluntario_id=necesidad_voluntario.id)
+            suma_participantes = 0
+            for p in participaciones:
+                suma_participantes += p.cantidad
+            if suma_participantes == necesidad_voluntario.cantidad:
+                send_was_full_participacion_mail(necesidad_voluntario)
         return super().destroy(request, *args, **kwargs)
 
 

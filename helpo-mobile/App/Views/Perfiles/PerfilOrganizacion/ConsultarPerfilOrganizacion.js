@@ -1,148 +1,131 @@
 import React, { Component } from 'react';
-import ListaRubrosOrganizacion from './ListaRubrosOrganizacion/ListaRubrosOrganizaciones';
-import SelectorUbicacion from '../Actividades/RegistrarEvento/SelectorUbicacion/SelectorUbicacion';
-import api from '../../api';
-import CargadorImagenPerfil from './CargadorImagenPerfil/CargadorImagenPerfil';
+import { connect } from 'react-redux';
+import {
+  Container,
+  Header,
+  Title,
+  Content,
+  Button,
+  Label,
+  ListItem,
+  Body,
+  Left,
+  Right,
+  Icon,
+  Thumbnail,
+  Text,
+  Separator
+} from 'native-base';
+import styles from './styles';
+
 
 class ConsultarPerfilOrganizacion extends Component {
   constructor(props) {
-    super(props); //Llama a las props del padre
-    this.state = {nombre: 'organizacion',
-    cuit: '',
-    ubicacion: { latitud: 0, longitud: 0, notas:'#!None#!'},
-    mail: '',
-    telefono: '',
-    rubro: { id: 0, nombre: "none"},
-    avatar_url: 'assets/user.png',
-    descripcion: '',
-    errors: {},
-    };
+    super(props);
+    this.renderDescripcion = this.renderDescripcion.bind(this);
+    this.renderRubro = this.renderRubro.bind(this);
+    this.renderTelefono = this.renderTelefono.bind(this);
+    this.renderDescripcion = this.renderDescripcion.bind(this);
+    this.renderCuit = this.renderCuit.bind(this);
   }
 
-
-  componentDidMount() {
-    api.get(`/perfiles/perfil_organizacion/${this.props.usuarioId}`)
-    .then( (res) => {
-      let rubro = res.rubro
-      let ubicacion = res.ubicacion
-      if ( rubro == null ) {
-        rubro = { id: 0, nombre: 'none'}
-      }
-      if ( ubicacion == null ) {
-        ubicacion = { latitud: 0, longitud: 0, notas:'#!None#!'}
-      }
-      this.setState({
-        cuit: res.cuit,
-        telefono: res.telefono,
-        descripcion: res.descripcion,
-        rubro_id: rubro.id,
-        rubro_nombre: rubro.nombre,
-        avatar_url: res.avatar.url,        
-      })
-    })
-  }  
-
-  mostrarUbicacion(){
-    if(this.state.ubicacion.latitud === 0 && this.state.ubicacion.longitud === 0){
+  renderRubro() {
+    if (this.props.data.rubro == null) {
+      return <Text style={styles.textMuted}> No hay valor ingresado</Text>
     }
-    else{
-      return      
-        <SelectorUbicacion
-        name="selectorUbicacion"
-        ubicacion={this.state.ubicacion}
-      />             
+    return <Text> {this.props.data.rubro}</Text>
+  }
+
+  renderTelefono() {
+    //Si uso == va a dar True para null y undefined
+    if (this.props.data.telefono == null) {
+      return <Text style={styles.textMuted}> No hay valor ingresado</Text>
     }
+    return <Text> {this.props.data.telefono}</Text>
+  }
+
+  renderCuit() {
+    if (this.props.data.cuit == null) {
+      return <Text style={styles.textMuted}> No hay valor ingresado</Text>
+    }
+    return <Text> {this.props.data.cuit}</Text>
+  }
+
+  renderDescripcion() {
+    if (this.props.data.descripcion == null) {
+      return <Text style={styles.textMuted}> No hay valor ingresado</Text>
+    }
+    return <Text> {this.props.data.descripcion}</Text>
   }
 
   render() {
-    return (
-      <Container style={styles.container}>
-        <Header>
+    if (this.props.data.avatar) {
+      return (
+        <Container style={styles.container}>
+          <Header>
+            <Left>
+              <Button transparent onPress={this.props.goBack}>
+                <Icon name="arrow-back" />
+              </Button>
+            </Left>
+            <Body>
+              <Title>Perfil</Title>
+            </Body>
+            <Right>
+              {this.props.data.usuario.id === this.props.auth.user.id ?
+                <Button transparent onPress={this.props.switchToModificar}>
+                  <Text>Modificar</Text>
+                </Button>
+                : undefined}
+            </Right>
+          </Header>
+          <Content>
+            <Thumbnail large center source={{ uri: this.props.data.avatar.url }} />
+            <Separator bordered noTopBorder>
+              <Text>Datos personales</Text>
+            </Separator>
+            <ListItem>
+              <Label style={styles.label}>Nombre</Label>
+              <Text>{this.props.nombre}</Text>
+            </ListItem>
 
-          <Left>
-            <Button transparent onPress={() => Actions.pop()}>
-              <Icon name="arrow-back" />
-            </Button>
-          </Left>
+            <ListItem>
+              <Label style={styles.label}>Mail</Label>
+              <Text>{this.props.email}</Text>
+            </ListItem>
 
-          <Body>
-            <Title>Perfil</Title>
-          </Body>
-          <Right />
+            <ListItem>
+              <Label style={styles.label}>Teléfono</Label>
+              {this.renderTelefono()}
+            </ListItem>
 
-        </Header>
+            <ListItem>
+              <Label style={styles.label}>CUIT</Label>
+              {this.renderCuit()}
+            </ListItem>
 
-        <Content>
+            <ListItem>
+              <Label style={styles.label}>Rubro</Label>
+              {this.renderRubro()}
+            </ListItem>
 
-          <Form>
+            <ListItem>
+              <Label style={styles.label}>Descripción</Label>
+              {this.renderDescripcion()}
+            </ListItem>
 
-            <Item floatingLabel>
-              <Label>Nombre</Label>
-              <Text
-                value={this.state.nombre}
-              />
-            </Item>
+          </Content>
+        </Container>
+      );
+    } else {
+      return <Text></Text>
+    }
 
-            <Item>
-              <Image
-               style={{width: 50, height: 50}}
-               source={this.avatar_url}
-              />
-            </Item>            
-
-            <Item floatingLabel>
-              <Label>Mail</Label>
-              <Text
-                value={this.state.mail}
-              />
-            </Item>
-
-            <Item floatingLabel>
-              <Label>Teléfono</Label>
-              <Text
-                value={this.state.telefono}
-              />
-            </Item>
-            
-            <Item floatingLabel>
-              <Label>CUIT</Label>
-              <Text
-                value={this.state.cuit}
-              />
-            </Item>
-
-            <Item floatingLabel>
-              <Label>Rubro</Label>
-              <Text
-                value={this.state.rubor.nombre}
-              />         
-            </Item>
-
-            <Item>
-            {this.mostrarUbicacion()} 
-            </Item>              
-
-            <Item floatingLabel>
-              <Label>Descripción</Label>
-              <Input
-                value={this.state.descripcion}
-              />
-            </Item>     
-            
-            <Button
-              block style={{ margin: 15, marginTop: 50 }}
-              onPress={<ModificarPerfilOrganizacion />}            
-              title="Modificar Perfil"
-              >
-            </Button>
-
-          </Form>
-
-        </Content>
-
-      </Container>
-    );
   }
-
 }
-export default ConsultarPerfilOrganizacion;
+
+const mapStateToProps = state => ({
+  auth: state.auth,
+});
+
+export default connect(mapStateToProps, undefined)(ConsultarPerfilOrganizacion);

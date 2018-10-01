@@ -1,0 +1,11 @@
+{
+  organizacion : {
+    id: _,
+    total_suscriptores: _,
+    total_manos: _,
+    total_eventos: _,
+    total_voluntarios: _,
+  }
+}
+
+(true/false)participacion -> voluntario -> evento -> organizacion

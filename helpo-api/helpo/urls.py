@@ -5,22 +5,23 @@ from django.views.generic import TemplateView
 from rest_framework import routers
 from actividades import urls as actividades_urls
 from users import urls as users_urls
+from reportes import urls as reportes_urls
 from rest_framework_swagger.views import get_swagger_view
 
 schema_view = get_swagger_view(title='Helpo API')
 
-urlpatterns = [ 
+urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'auth/', include('knox.urls'))
 ]
 
 urlpatterns += actividades_urls.urlpatterns
 urlpatterns += users_urls.urlpatterns
+urlpatterns += reportes_urls.urlpatterns
 
 if settings.DEBUG:
     import debug_toolbar
     urlpatterns = [
         url(r'^__debug__/', include(debug_toolbar.urls)),
     ] + urlpatterns
-
-urlpatterns += [ url(r'^docs/', schema_view) ]
+    urlpatterns += [url(r'^docs/', schema_view)]

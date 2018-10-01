@@ -1,6 +1,6 @@
 from django.shortcuts import render  # noqa
 import decouple
-from rest_framework import generics, permissions
+from rest_framework import generics, permissions, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.generics import ListCreateAPIView
@@ -10,11 +10,38 @@ from rest_framework.generics import CreateAPIView
 from rest_framework.generics import RetrieveUpdateDestroyAPIView, RetrieveUpdateAPIView
 from knox.models import AuthToken
 from django.contrib.auth import get_user_model
-from users.models import RubroOrganizacion, OrganizacionProfile, VoluntarioProfile, EmpresaProfile, AppValues, User, DeviceID, Suscripcion
-from users.serializers import CreateUserSerializer, UserSerializer, LoginUserSerializer, RubroOrganizacionSerializer, OrganizacionProfileSerializer, VoluntarioProfileSerializer, EmpresaProfileSerializer, VerificationMailSerializer, AppValuesSerializer, DeviceIDSerializer, SuscripcionSerializer, SuscripcionSerializerLista
+from users.models import RubroOrganizacion, RubroEmpresa, OrganizacionProfile, VoluntarioProfile, EmpresaProfile, AppValues, User, DeviceID, Suscripcion
+from users.serializers import FacebookAuthSerializer, GoogleAuthSerializer, CreateUserSerializer, UserSerializer, LoginUserSerializer, RubroOrganizacionSerializer, RubroEmpresaSerializer, OrganizacionProfileSerializer, VoluntarioProfileSerializer, EmpresaProfileSerializer, VerificationMailSerializer, VerificationSmsSerializer, AppValuesSerializer, DeviceIDSerializer, SuscripcionSerializer, SuscripcionSerializerLista
 import time
 import requests
+from users.services import send_confirmation_sms
 
+
+class GoogleExistsView(generics.GenericAPIView):
+    serializer_class = GoogleAuthSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.exists(request.data):
+            return Response(serializer.initial_data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_404_NOT_FOUND)
+
+class FacebookExistsView(GoogleExistsView):
+    serializer_class = FacebookAuthSerializer
+
+class GoogleAuthView(generics.GenericAPIView):
+    serializer_class = GoogleAuthSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        user = serializer.validate(request.data)
+        return Response({
+            "user": UserSerializer(user, context=self.get_serializer_context()).data,
+            "token": AuthToken.objects.create(user)
+        })
+
+class FacebookAuthView(GoogleAuthView):
+    serializer_class = FacebookAuthSerializer
 
 class CreateUserView(generics.GenericAPIView):
     serializer_class = CreateUserSerializer
@@ -35,6 +62,10 @@ class LoginView(generics.GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user =  serializer.validated_data
+        if not user.is_confirmed and user.user_type != 2:
+            return Response({
+                "user": UserSerializer(user, context=self.get_serializer_context()).data
+            }, status=status.HTTP_406_NOT_ACCEPTABLE)
         return Response({
             "user": UserSerializer(user, context=self.get_serializer_context()).data,
             "token": AuthToken.objects.create(user)
@@ -70,6 +101,21 @@ class RubroOrganizacionReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     serializer_class = RubroOrganizacionSerializer
     lookup_field = 'id'
 
+class RubroEmpresaCreateReadView(ListCreateAPIView):
+    """
+    API endpoint para crear o ver todos los rubros de empresa
+    """
+    queryset = RubroEmpresa.objects.all()
+    serializer_class = RubroEmpresaSerializer
+
+class RubroEmpresaReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
+    """
+    API endpoint para leer, actualizar o eliminar un rubro de empresa
+    """
+    queryset = RubroEmpresa.objects.all()
+    serializer_class = RubroEmpresaSerializer
+    lookup_field = 'id'
+
 class OrgProfileCreateReadView(ListCreateAPIView):
     """
     API endpoint para crear o ver todos los perfiles de organización
@@ -100,6 +146,47 @@ class VoluntarioProfileReadUpdateDeleteView(RetrieveUpdateAPIView):
     queryset = VoluntarioProfile.objects.all()
     serializer_class = VoluntarioProfileSerializer
     lookup_field = 'usuario'
+
+class SendSmsOrganizacionView(APIView):
+    """
+    API endpoint para leer un perfil de organizacion y enviar sms
+    """
+    def get(self, request, usuario, format=None):
+        try:
+            user = int(usuario)
+            perfil_organizacion = OrganizacionProfile.objects.filter(usuario=user).first()
+            send_confirmation_sms(perfil_organizacion)
+            serializer = OrganizacionProfileSerializer(perfil_organizacion, many=False)
+            return Response(serializer.data)
+        except ValueError:
+            return Response(None, status=status.HTTP_404_NOT_FOUND)
+
+class SendSmsEmpresaView(APIView):
+    """
+    API endpoint para leer un perfil de empresa y enviar sms
+    """
+    def get(self, request, usuario, format=None):
+        try:
+            user = int(usuario)
+            perfil_empresa = EmpresaProfile.objects.filter(usuario=user).first()
+            send_confirmation_sms(perfil_empresa)
+            serializer = EmpresaProfileSerializer(perfil_empresa, many=False)
+            return Response(serializer.data)
+        except ValueError:
+            return Response(None, status=status.HTTP_404_NOT_FOUND)
+
+class VerifySmsView(generics.GenericAPIView):
+    serializer_class = VerificationSmsSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            return Response({
+                "verification": "Success"
+             }, status=status.HTTP_200_OK)
+        return Response({
+            "verification": "Failed"
+        }, status=status.HTTP_404_NOT_FOUND)
 
 class VerifyMailView(generics.GenericAPIView):
     serializer_class = VerificationMailSerializer

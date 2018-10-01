@@ -1,3 +1,5 @@
+import os
+import sys
 from decouple import Csv, config
 from .base import *  # noqa
 
@@ -8,10 +10,10 @@ SECRET_KEY = config('SECRET_KEY')
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "db-helpo",
-        "USER": "postgres",
-        "PASSWORD": "postgres",
-        "HOST": "db",
+        "NAME": config('DB_NAME'),
+        "USER": config('DB_USER'),
+        "PASSWORD": config('DB_PASSWORD'),
+        "HOST": config('DB_HOSTNAME'),
         "PORT": "5432",
     }
 }
@@ -19,7 +21,7 @@ DATABASES = {
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 
 STATIC_ROOT = base_dir_join('staticfiles')
-STATIC_URL = '/static/'
+STATIC_URL = '/staticfiles/'
 
 MEDIA_ROOT = base_dir_join('mediafiles')
 MEDIA_URL = '/media/'
@@ -111,17 +113,33 @@ LOGGING = {
             'class': 'logging.StreamHandler',
             'formatter': 'standard',
         },
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': str(os.path.abspath(os.path.dirname(sys.argv[0]))) + '/logs/debug.log',
+        },
+        'file_warning': {
+            'level': 'WARNING',
+            'class': 'logging.FileHandler',
+            'filename': str(os.path.abspath(os.path.dirname(sys.argv[0]))) + '/logs/warning.log',
+        },
     },
     'loggers': {
-        '': {
-            'handlers': ['console'],
-            'level': 'INFO'
+        'django': {
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+            'propagate': True,
         },
-        'celery': {
-            'handlers': ['console'],
-            'level': 'INFO'
-        }
-    }
+        'django_warning': {
+            'handlers': ['file_warning'],
+            'level': 'WARNING',
+            'propagate': True,
+        },
+    },
 }
 
 JS_REVERSE_JS_MINIFY = False
+
+# Email
+NOTIFICATION_EMAIL = 'notificaciones@helpo.com.ar'
+REGISTER_EMAIL = 'registro@helpo.com.ar'

@@ -22,9 +22,20 @@ class OrganizationStats(APIView):
         """
         Return the total of manos of the ONG(id)
         """
-        participaciones = Participacion.objects.filter(retroalimentacion_ong=True, necesidad_voluntario__evento__organizacion_id=id).count()
-        colaboraciones = Colaboracion.objects.filter(retroalimentacion_ong=True, necesidad_material__evento__organizacion_id=id).count()
-        manos = participaciones + colaboraciones
+        participaciones = Participacion.objects.filter(retroalimentacion_voluntario=True, necesidad_voluntario__evento__organizacion_id=id)
+        colaboraciones = Colaboracion.objects.filter(retroalimentacion_voluntario=True, necesidad_material__evento__organizacion_id=id)
+        dict_conteo = {}
+        manos = 0
+        for participacion in participaciones:
+            evento = participacion.necesidad_voluntario.evento
+            if not evento.id in dict_conteo:
+                dict_conteo[evento.id] = []
+            dict_conteo[evento.id].append(participacion.colaborador)
+            manos = manos + 1
+        for colaboracion in colaboraciones:
+            evento = colaboracion.necesidad_material.evento
+            if not evento.id in dict_conteo or not colaboracion.colaborador in dict_conteo[evento.id]:
+                manos = manos + 1
         return manos
 
     def total_eventos(self, id):
@@ -185,8 +196,8 @@ class ONGEventoStats(APIView):
         manos = []
         eventos_nombre = []
 
-        eventos = Evento.objects.filter(organizacion=id).filter(
-            estado=3).order_by("-fecha_hora_inicio")[:10]
+        eventos = Evento.objects.filter(
+            organizacion=id, estado=3).order_by("-fecha_hora_inicio")[:10]
         for evento in eventos:
             eventos_nombre.append(evento.nombre)
 

@@ -143,7 +143,7 @@ def _send_participacion_email(participacion, titulo_email):
 
 def create_propuesta_voluntario(user, necesidad_voluntario):
     evento_id = Voluntario.objects.get(id=necesidad_voluntario).evento_id
-    if len(Propuesta.objects.filter(evento_id=evento_id).filter(empresa_id=user.id)) == 0:
+    if len(Propuesta.objects.filter(evento_id=evento_id, empresa_id=user.id)) == 0:
         Propuesta.objects.create(
             evento_id=evento_id, empresa_id=user.id, aceptado=0)
 
@@ -176,7 +176,7 @@ def create_propuesta(user, necesidad, es_voluntario):
     else:
         evento_id = Necesidad.objects.get(id=necesidad).evento_id
         clean_propuesta(user.id, evento_id, False, necesidad)
-    if len(Propuesta.objects.filter(evento_id=evento_id).filter(empresa_id=user.id)) == 0:
+    if len(Propuesta.objects.filter(evento_id=evento_id, empresa_id=user.id)) == 0:
         propuesta = Propuesta.objects.create(
             evento_id=evento_id, empresa_id=user.id, aceptado=0)
         _send_nueva_propuesta(propuesta)

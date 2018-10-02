@@ -442,11 +442,11 @@ class ConsultaNecesidadesReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
 def RetroalimentacionVoluntarioEvento(request):
     try:
         user = get_token_user(request)
-        colaboraciones = Colaboracion.objects.filter(colaborador_id=user).filter(necesidad_material__evento_id=request.data['evento'])
+        colaboraciones = Colaboracion.objects.filter(colaborador_id=user, necesidad_material__evento_id=request.data['evento'])
         for c in colaboraciones:
             c.retroalimentacion_voluntario = True
             c.save()
-        participaciones = Participacion.objects.filter(colaborador_id=user).filter(necesidad_voluntario__evento_id=request.data['evento'])
+        participaciones = Participacion.objects.filter(colaborador_id=user, necesidad_voluntario__evento_id=request.data['evento'])
         for p in participaciones:
             p.retroalimentacion_voluntario = True
             p.save()
@@ -459,12 +459,12 @@ def RetroalimentacionONGEvento(request):
     try:
         voluntario = request.data['voluntario']
         if request.data['es_colaboracion']:
-            colaboraciones = Colaboracion.objects.filter(colaborador_id=voluntario).filter(necesidad_material__evento_id=request.data['evento'])
+            colaboraciones = Colaboracion.objects.filter(colaborador_id=voluntario, necesidad_material__evento_id=request.data['evento'])
             for c in colaboraciones:
                 c.retroalimentacion_ong = True
                 c.save()
         else:
-            participaciones = Participacion.objects.filter(colaborador_id=voluntario).filter(necesidad_voluntario__evento_id=request.data['evento'])
+            participaciones = Participacion.objects.filter(colaborador_id=voluntario, necesidad_voluntario__evento_id=request.data['evento'])
             for p in participaciones:
                 p.retroalimentacion_ong = True
                 p.save()

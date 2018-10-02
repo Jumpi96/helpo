@@ -221,7 +221,7 @@ class OrganizacionProfileSerializer(serializers.ModelSerializer):
         manos = 0
         for participacion in participaciones:
             evento = participacion.necesidad_voluntario.evento
-            if not evento.id in dict_conteo:
+            if not evento.id in dict_conteo:        
                 dict_conteo[evento.id] = []
             dict_conteo[evento.id].append(participacion.colaborador)
             manos = manos + 1
@@ -354,8 +354,8 @@ class VoluntarioProfileSerializer(serializers.ModelSerializer):
         return instance
 
     def get_manos(self, obj):
-        participaciones = Participacion.objects.filter(retroalimentacion_ong=True).filter(colaborador_id=obj.usuario_id).count()
-        colaboraciones = Colaboracion.objects.filter(retroalimentacion_ong=True).filter(colaborador_id=obj.usuario_id).distinct('necesidad_material__evento').count()
+        participaciones = Participacion.objects.filter(retroalimentacion_ong=True, colaborador_id=obj.usuario_id).count()
+        colaboraciones = Colaboracion.objects.filter(retroalimentacion_ong=True, colaborador_id=obj.usuario_id).distinct('necesidad_material__evento').count()
         manos = participaciones + colaboraciones
         return manos
 

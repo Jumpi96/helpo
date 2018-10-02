@@ -181,10 +181,6 @@ class AgregarColaboracion extends React.Component {
         <Content>
           <Form>
             {this.getInfoCategorias()}
-            <ListItem>
-              <Label style={styles.label}>Descripción</Label>
-              <Text>{this.state.colaboracion.descripcion}</Text>
-            </ListItem>
             {!this.state.colaboracion.funcion ?
               <Item>
                 <Label>Cantidad</Label>
@@ -194,6 +190,11 @@ class AgregarColaboracion extends React.Component {
                 />
               </Item> : undefined
             }
+            <ListItem>
+              <Label style={styles.label}>Descripción</Label>
+              <Text>{this.state.colaboracion.descripcion}</Text>
+            </ListItem>
+            
             <Item>
               <Label>Comentarios</Label>
               <Input

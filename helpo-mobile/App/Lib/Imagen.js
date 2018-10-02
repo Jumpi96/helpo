@@ -7,7 +7,7 @@ const axios = require('axios')
   Sube una imagen codificada en base64 a Imgur,
   retorna la url de la imagen si salio todo bien;
   Si retorna 'recall' hay que llamar de vuelta al metodo (se va a refreshear el token)
-  Si retorna 'error' hubo un error y no se completo la funcion con exito
+  Si retorna 'error' hubo un error y no se completo la función con exito
 */
 async function uploadImage(encodedimg) {
   let access_token = localStorage.getItem('imgur_access_token')

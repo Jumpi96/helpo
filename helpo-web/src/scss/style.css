@@ -7033,8 +7033,8 @@ a.text-dark:hover, a.text-dark:focus {
 
 .btn-google {
   display: inline-block;
-  background: rgb(209, 72, 54) none repeat scroll 0% 0%;
-  color: rgb(255, 255, 255);
+  background: #d14836 none repeat scroll 0% 0%;
+  color: white;
   width: 70%;
   padding: 0.375rem 0.75rem;
   text-align: center;
@@ -7042,8 +7042,7 @@ a.text-dark:hover, a.text-dark:focus {
   border: 1px solid transparent;
   font-size: 0.875rem;
   font-weight: 400;
-  font-family: inherit;
-}
+  font-family: inherit; }
 
 .btn-facebook {
   display: inline-block;
@@ -7058,8 +7057,7 @@ a.text-dark:hover, a.text-dark:focus {
   font-size: 0.875rem;
   font-weight: 400;
   font-family: inherit;
-  vertical-align: middle;
-}
+  vertical-align: middle; }
 
 .btn-facebook:hover {
   color: #fff;
@@ -8409,7 +8407,7 @@ canvas {
   height: 55px;
   padding: 0;
   margin-right: 0;
-  background-color: transparent; }
+  background-color: #F39200; }
 
 .app-header .navbar-brand .navbar-brand-minimized {
   display: none; }
@@ -10095,7 +10093,7 @@ html[dir="rtl"] .aside-menu-show .aside-menu {
     z-index: 1020;
     width: 100%;
     text-align: center;
-    background-color: #fff; }
+    background-color: #F39200; }
   .app-header .navbar-toggler {
     color: #fff; }
   .app-header .navbar-brand {
@@ -10674,6 +10672,12 @@ html body .app.flex-row.align-items-center {
   background-repeat: no-repeat;
   width: 20px;
   height: 14px; }
+
+.app-header .navbar-nav .dropdown-menu-right {
+  right: auto; }
+
+html body .app.flex-row.align-items-center {
+  height: 100vh; }
 
 .app-header .navbar-nav .dropdown-menu-right {
   right: auto; }

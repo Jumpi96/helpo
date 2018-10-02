@@ -22,10 +22,8 @@ class OrganizationStats(APIView):
         """
         Return the total of manos of the ONG(id)
         """
-        participaciones = Participacion.objects.filter(retroalimentacion_ong=True).filter(
-            necesidad_voluntario__evento__organizacion_id=id).count()
-        colaboraciones = Colaboracion.objects.filter(retroalimentacion_ong=True).filter(
-            necesidad_material__evento__organizacion_id=id).count()
+        participaciones = Participacion.objects.filter(retroalimentacion_ong=True, necesidad_voluntario__evento__organizacion_id=id).count()
+        colaboraciones = Colaboracion.objects.filter(retroalimentacion_ong=True, necesidad_material__evento__organizacion_id=id).count()
         manos = participaciones + colaboraciones
         return manos
 
@@ -41,9 +39,9 @@ class OrganizationStats(APIView):
         in all the ONG events
         """
         vol_participaciones = User.objects.filter(
-            participacion__necesidad_voluntario__evento__organizacion_id=id).filter(participacion__participo=True)
+            participacion__necesidad_voluntario__evento__organizacion_id=id, participacion__participo=True)
         vol_colaboraciones = User.objects.filter(
-            colaboracion__necesidad_material__evento__organizacion_id=id).filter(colaboracion__entregado=True)
+            colaboracion__necesidad_material__evento__organizacion_id=id, colaboracion__entregado=True)
         return vol_participaciones.union(vol_colaboraciones).count()
 
     def get(self, request, id, format=None):
@@ -193,17 +191,16 @@ class ONGEventoStats(APIView):
             eventos_nombre.append(evento.nombre)
 
             vol_participaciones = User.objects.filter(
-                participacion__necesidad_voluntario__evento=evento).filter(participacion__participo=True).count()
+                participacion__necesidad_voluntario__evento=evento, participacion__participo=True).count()
             participaciones.append(vol_participaciones)
 
-            vol_colaboraciones = User.objects.filter(
-                colaboracion__necesidad_material__evento=evento).filter(colaboracion__entregado=True)  .count()
+            vol_colaboraciones = User.objects.filter(colaboracion__necesidad_material__evento=evento, colaboracion__entregado=True).count() 
             colaboraciones.append(vol_colaboraciones)
+            print(vol_colaboraciones)
+            print(evento)
 
-            manos_participaciones = Participacion.objects.filter(retroalimentacion_ong=True).filter(
-                necesidad_voluntario__evento=evento).count()
-            manos_colaboraciones = Colaboracion.objects.filter(retroalimentacion_ong=True).filter(
-                necesidad_material__evento=evento).count()
+            manos_participaciones = Participacion.objects.filter(retroalimentacion_ong=True, necesidad_voluntario__evento=evento).count()
+            manos_colaboraciones = Colaboracion.objects.filter(retroalimentacion_ong=True, necesidad_material__evento=evento).count()
             vol_manos = manos_participaciones + manos_colaboraciones
             manos.append(vol_manos)
 
@@ -251,6 +248,5 @@ class ONGEmpresaStats(APIView):
         Returns how many accepted propuestas the business made
         to the ong
         """
-        cantidad = Propuesta.objects.filter(empresa=empresa).filter(evento__organizacion=ong).filter(
-            aceptado=1).count()
+        cantidad = Propuesta.objects.filter(empresa=empresa, evento__organizacion=ong, aceptado=1).count()
         return cantidad

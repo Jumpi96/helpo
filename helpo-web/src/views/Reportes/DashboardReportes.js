@@ -80,6 +80,33 @@ class DashboardReportes extends React.Component {
     return MyDocument
   }
 
+  addLastMonthSuscripcion(grafico_data, total_suscripciones) {
+    /*
+    Agrega el mes actual a las suscripciones
+    */
+    const { data, labels } = grafico_data
+
+    const length = labels.length
+    const last_label = labels[length - 1]
+    const last_year = parseInt(last_label.slice(0, 4), 10)
+    const last_month = parseInt(last_label.slice(5, 7), 10)
+    let new_label = ""
+    if (last_month === 12) {
+      const new_year = last_year + 1
+      new_label = new_year + "-01"
+    }
+    else {
+      const new_month = last_month + 1
+      let new_month_str = new_month > 10 ? new_month : "0" + new_month
+      new_label = last_year + "-" + new_month_str
+    }
+    const new_grafico_data = {
+      data: [...data, total_suscripciones],
+      labels: [...labels, new_label]
+    }
+    return new_grafico_data
+  }
+
   getChartsImages() {
     /*
     Returns an array with the images of the charts, in the same order as they appear
@@ -108,24 +135,31 @@ class DashboardReportes extends React.Component {
           total_eventos: data.total_eventos,
           total_voluntarios: data.total_voluntarios,
         })
-      })
-      .catch(error => {
-        // TODO: Handle errors gracefully
-      })
 
-    // Busco datos de suscripciones
-    // --------------------------------
-    api.get(`/reportes/organizacion/suscripciones/${this.props.ong}/`)
-      .then(response => {
-        const grafico_data = {
-          labels: response.data.data_month.reverse(),
-          data: response.data.data.reverse()
+        return data.total_suscripciones
+      })
+      .then( total_suscripciones => {
+        // Busco datos de suscripciones
+        // --------------------------------
+        // (Hago esta llamada aca para tener disponible total_suscripciones)
+        api.get(`/reportes/organizacion/suscripciones/${this.props.ong}/`)
+          .then(response => {
+            const grafico_data_pre = {
+              labels: response.data.data_month.reverse(),
+              data: response.data.data.reverse()
+            }
+
+            const grafico_data = this.addLastMonthSuscripcion(grafico_data_pre, total_suscripciones)
+
+            this.setState({
+              grafico_suscripciones: grafico_data
+            })
+          })
+          .catch(error => {
+            // TODO: Handle errors gracefully
+          })
         }
-
-        this.setState({
-          grafico_suscripciones: grafico_data
-        })
-      })
+      )
       .catch(error => {
         // TODO: Handle errors gracefully
       })
@@ -303,7 +337,7 @@ class DashboardReportes extends React.Component {
           </CardHeader>
         <CardBody style={{ display: 'flex', flexDirection: 'column' }}>
 
-          
+
 
           <div style={{ boxSizing: 'border-box' }}>
 

@@ -56,7 +56,7 @@ class SelectorUbicacion extends React.Component {
   }
 
   render() {
-    return (
+    /*return (
       <Content>
         <Button block style={{ margin: 25 }}
           onPress={this.seleccionarUbicacion.bind(this)} >
@@ -69,7 +69,8 @@ class SelectorUbicacion extends React.Component {
             onChangeText={this.handleNotasChange} />
         </Item>
       </Content>
-    );
+    );*/
+    return <Text></Text>;
   }
 }
 

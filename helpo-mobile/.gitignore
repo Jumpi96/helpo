@@ -62,3 +62,4 @@ google-services.json
 # I don't feel so good iOS
 third-party/
 ios/Index/
+ios/Pods/

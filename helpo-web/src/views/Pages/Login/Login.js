@@ -152,9 +152,8 @@ class Login extends Component {
                           <Input size="30" type="password" placeholder="Contraseña"
                             onChange={(e) => this.setState({password: e.target.value})}/>
                         </InputGroup>
-                            <Button color="primary" type="submit" className="px-4">¡Ingresá!</Button>
-                      </CardBody>                      
-                      <FacebookLogin
+                            <Button color="primary" type="submit" className="mb-4 px-4">¡Ingresá!</Button>
+                            <FacebookLogin
                         appId="343119846258901"
                         autoLoad={false}
                         fields="name,email,picture"
@@ -163,12 +162,14 @@ class Login extends Component {
                           <Button onClick={renderProps.onClick} className="btn-facebook" block><span>Facebook</span></Button>
                         )} />
                       {/* <Button className="btn-facebook" block><span>Facebook</span></Button> */}
-                      <GoogleLogin
+                      <GoogleLogin 
+                        className="btn-google"
                         clientId="93328850687-681u9fksr6g52g2bebbj1qu8thldgaq6.apps.googleusercontent.com"
                         buttonText="Google"
                         onSuccess={responseGoogle}
                         onFailure={responseGoogle} />
                       {/* <Button className="btn-google" block><span>Google</span></Button> */}
+                      </CardBody>                      
                     </Card>
 
                     <Card className="bg-primary p-5" col-md-6 col-xs-6>

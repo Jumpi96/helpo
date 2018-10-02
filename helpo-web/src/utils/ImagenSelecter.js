@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 /* 
   Este componente renderiza el boton para seleccionar archivo
-  y llama a la funcion pasada por props.callback, pasandole
+  y llama a la función pasada por props.callback, pasandole
   por parametro como string la imagen en Base64
 */
 

@@ -226,7 +226,7 @@ class EventoView extends React.Component {
           }
           <button
             onClick={this.toggleEdit}
-            hidden={moment(evento.fecha_hora_inicio)<moment() || propuesta.aceptado === -1}
+            hidden={moment(evento.fecha_hora_inicio)<moment() || propuesta.aceptado !== 0}
             className="btn btn-warning"
           >
             Editar colaboraciones

@@ -105,16 +105,16 @@ class ConsultarPerfilEmpresa extends Component {
     if (this.props.data.manos == null) {
       return <p className='text-muted'> - </p>
     }
-    return <p> {this.props.data.manos}</p>      
+    return <p> {this.props.data.manos}</p>
   }
 
   renderEventos() {
     if (this.props.data.eventos == null) {
       return <p className='text-muted'> - </p>
     }
-    return <p> {this.props.data.eventos}</p>      
+    return <p> {this.props.data.eventos}</p>
   }
-  
+
   renderModal() {
     if (this.state.showModalVerificarCuenta) {
       return (
@@ -208,9 +208,9 @@ class ConsultarPerfilEmpresa extends Component {
         <CardBody>
           <div className="row">
             <div className="col-md-8">
-              <div className="row" style={{ height: '110px' }}>
+              <div className="row" style={{ marginBottom: '5%' }}>
                 <div className="col-md-3">
-                  <p style={{ textAlign: 'right' }} className='h4'>{this.props.nombre}</p>
+                  <p style={{ textAlign: 'left' }} className='h4'>{this.props.nombre}</p>
                 </div>
                 <div className="col-md-5">
                   <img
@@ -224,7 +224,7 @@ class ConsultarPerfilEmpresa extends Component {
               </div>
               <div className='row'>
                 <div className="col-md-3">
-                  <p style={{ textAlign: 'right' }} className='font-weight-bold' htmlFor="mail">Mail</p>
+                  <p style={{ textAlign: 'left' }} className='font-weight-bold' htmlFor="mail">Mail</p>
                 </div>
                 <div className="col-md-5">
                   <p>{this.props.email}</p>
@@ -232,7 +232,7 @@ class ConsultarPerfilEmpresa extends Component {
               </div>
               <div className='row'>
                 <div className="col-md-3">
-                  <p style={{ textAlign: 'right' }} className='font-weight-bold' htmlFor="telefono">Teléfono</p>
+                  <p style={{ textAlign: 'left' }} className='font-weight-bold' htmlFor="telefono">Teléfono</p>
                 </div>
                 <div className="col-md-5">
                   {this.renderTelefono()}
@@ -240,7 +240,7 @@ class ConsultarPerfilEmpresa extends Component {
               </div>
               <div className='row'>
                 <div className="col-md-3">
-                  <p style={{ textAlign: 'right' }} className='font-weight-bold' htmlFor="cuit">CUIT</p>
+                  <p style={{ textAlign: 'left' }} className='font-weight-bold' htmlFor="cuit">CUIT</p>
                 </div>
                 <div className="col-md-5">
                   {this.renderCuit()}
@@ -248,7 +248,7 @@ class ConsultarPerfilEmpresa extends Component {
               </div>
               <div className='row'>
                 <div className="col-md-3">
-                  <p style={{ textAlign: 'right' }} className='font-weight-bold' htmlFor="telefono">Rubro</p>
+                  <p style={{ textAlign: 'left' }} className='font-weight-bold' htmlFor="telefono">Rubro</p>
                 </div>
                 <div className="col-md-5">
                   {this.renderRubro()}
@@ -256,21 +256,21 @@ class ConsultarPerfilEmpresa extends Component {
               </div>
               <div className='row'>
                 <div className="col-md-3">
-                  <p style={{ paddingLeft: 0, textAlign: 'right' }} className='font-weight-bold' htmlFor="descripcion">Descripción</p>
+                  <p style={{ paddingLeft: 0, textAlign: 'left' }} className='font-weight-bold' htmlFor="descripcion">Descripción</p>
                 </div>
                 <div className="col-md-5">
                   {this.renderDescripcion()}
                 </div>
               </div>
               {this.mostrarUbicacion()}
-              <div style={{ width: '500px', justifyContent: 'center', display: 'flex', marginBottom: '10px' }} className='row offster-md-4'>
+              <div style={{ display: 'flex', marginBottom: '10px' }} className='row offster-md-4'>
                 <div className="col-md-4">
                   {this.props.sinModificar
                     ? ""
-                    : <Button onClick={this.props.switchToModificar} color='primary'>Modificar Datos</Button>}
+                    : <Button onClick={this.props.switchToModificar} color='primary'>Modificar datos</Button>}
                 </div>
               </div>
-              <div style={{ width: '500px', justifyContent: 'center', display: 'flex', marginBottom: '10px' }} className='row offster-md-4'>
+              <div style={{ display: 'flex', marginBottom: '10px' }} className='row offster-md-4'>
                 <div className="col-md-4">
                   <Link to={link}>
                     <button className='btn btn-primary'>Ver eventos patrocinados</button>
@@ -284,16 +284,16 @@ class ConsultarPerfilEmpresa extends Component {
                   <CardTitle><i className="fa fa-hand-stop-o fa-2x"></i></CardTitle>
                   <CardText style={{ fontSize: 20 }}>{this.renderManos()}</CardText>
                   <Tooltip placement="top" isOpen={this.state.tooltipManos} target="cardManos" toggle={this.toggleManos}>
-                      Manos acumuladas
+                    Manos acumuladas
                   </Tooltip>
                 </Card >
                 <Card id="cardEventos" className="text-center" body inverse color="primary" style={{ height: 100, width: 100, borderColor: 'white' }}>
                   <CardTitle><i className="fa fa-calendar-check-o fa-2x"></i></CardTitle>
                   <CardText style={{ fontSize: 20 }}>{this.renderEventos()}</CardText>
                   <Tooltip placement="top" isOpen={this.state.tooltipEventos} target="cardEventos" toggle={this.toggleEventos}>
-                      Eventos patrocinados
+                    Eventos patrocinados
                   </Tooltip>
-                </Card> 
+                </Card>
                 {this.props.data.verificada ?
                   <Card id="cardVerificada" className="text-center" body inverse color="primary" style={{ height: 100, width: 100, borderColor: 'white' }}>
                     <CardTitle><i className="fa fa-shield fa-3x"></i></CardTitle>

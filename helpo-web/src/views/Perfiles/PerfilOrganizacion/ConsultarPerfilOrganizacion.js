@@ -264,22 +264,22 @@ class ConsultarPerfilOrganizacion extends Component {
                 </div>
               </div>
               {this.mostrarUbicacion()}
-              <div style={{display: 'flex', marginBottom: '10px' }} className='row offster-md-4'>
-                <div className="col-md-5 offset-3">
+              <div style={{ display: 'flex', marginBottom: '10px' }} className='row offster-md-4'>
+                <div className="col-md-5 offset-md-3">
                   {this.props.sinModificar
                     ? ""
-                    : <Button className='btn btn-primary' onClick={this.props.switchToModificar} color='primary'>Modificar Datos</Button>}
+                    : <Button className='btn btn-primary' onClick={this.props.switchToModificar} color='primary'>Modificar datos</Button>}
                 </div>
               </div>
-              <div style={{display: 'flex', marginBottom: '10px' }} className='row offster-md-4'>
-                <div className="col-md-5 offset-3">
+              <div style={{ display: 'flex', marginBottom: '10px' }} className='row offster-md-4'>
+                <div className="col-md-5 offset-md-3">
                   <Link to={link}>
                     <button className='btn btn-primary'>Ver eventos organizados</button>
                   </Link>
                 </div>
               </div>
-              <div style={{display: 'flex', marginBottom: '10px' }} className='row offster-md-4'>
-                <div className="col-md-5 offset-3">
+              <div style={{ display: 'flex', marginBottom: '10px' }} className='row offster-md-4'>
+                <div className="col-md-5 offset-md-3">
                   <BotonSuscripcion organizacion={this.props.id} />
                 </div>
               </div>
@@ -290,14 +290,14 @@ class ConsultarPerfilOrganizacion extends Component {
                   <CardTitle><i className="fa fa-hand-stop-o fa-2x"></i></CardTitle>
                   <CardText style={{ fontSize: 20 }}>{this.renderManos()}</CardText>
                   <Tooltip placement="top" isOpen={this.state.tooltipManos} target="cardManos" toggle={this.toggleManos}>
-                      Manos acumuladas
+                    Manos acumuladas
                   </Tooltip>
                 </Card >
-                <Card id="cardEventos"className="text-center" body inverse color="primary" style={{ height: 100, width: 100, borderColor: 'white' }}>
+                <Card id="cardEventos" className="text-center" body inverse color="primary" style={{ height: 100, width: 100, borderColor: 'white' }}>
                   <CardTitle><i className="fa fa-calendar-check-o fa-2x"></i></CardTitle>
                   <CardText style={{ fontSize: 20 }}>{this.renderEventos()}</CardText>
                   <Tooltip placement="top" isOpen={this.state.tooltipEventos} target="cardEventos" toggle={this.toggleEventos}>
-                      Eventos organizados
+                    Eventos organizados
                   </Tooltip>
                 </Card>
                 {this.props.data.verificada ?

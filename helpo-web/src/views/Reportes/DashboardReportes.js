@@ -2,10 +2,9 @@ import React from 'react'
 import { Card, CardHeader, CardBody } from 'reactstrap'
 import { Line, Doughnut, Bar } from 'react-chartjs-2'
 import { connect } from 'react-redux'
-import { Tooltip, Button } from 'reactstrap'
+import { Tooltip } from 'reactstrap'
 import api from '../../api'
-import { Page, Text, View, Document, StyleSheet, PDFDownloadLink, BlobProvider } from '@react-pdf/renderer'
-import { Route, Link } from 'react-router-dom'
+import { Page, Text, View, Document } from '@react-pdf/renderer'
 
 /*
 Props:
@@ -322,13 +321,13 @@ class DashboardReportes extends React.Component {
       ]
     };
 
-    const MyDoc = () => (
-      <Document>
-        <Page>
-          <Text>Hello World</Text>
-        </Page>
-      </Document>
-    )
+    // const MyDoc = () => (
+    //   <Document>
+    //     <Page>
+    //       <Text>Hello World</Text>
+    //     </Page>
+    //   </Document>
+    // )
 
     return (
       <Card>

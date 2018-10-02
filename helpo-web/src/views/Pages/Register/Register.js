@@ -304,7 +304,7 @@ class Register extends Component {
 	          </div>
 	        </div>
 	      </div> 
-        <div className="app flex-row align-items-center">
+        <div>
           <Container>
             <Row className="justify-content-center">
               <Col md="6">
@@ -358,7 +358,7 @@ class Register extends Component {
                         </InputGroupText>
                       </InputGroupAddon>
                       <Input type="password" 
-                             placeholder="Password" 
+                             placeholder="Contraseña" 
                              onChange={(e) => this.handleValueChange(e, "password")}/>
                     </InputGroup>
                     <InputGroup className="mb-4">
@@ -368,15 +368,13 @@ class Register extends Component {
                         </InputGroupText>
                       </InputGroupAddon>
                       <Input type="password" 
-                            placeholder="Repeat password" 
+                            placeholder="Repetir contraseña" 
                             onChange={(e) => this.handleValueChange(e, "repeat")}/>                    
                     </InputGroup>
                     <Button color="primary" onClick={() => this.onSubmitData()} block>Crear Cuenta</Button>                  
                     <ul>{this.renderErrorList()}</ul>
                   </CardBody>
-                  <CardFooter className="p-4">
-                    <Row>
-                      <Col xs="12" sm="6">
+                  <CardFooter style={{padding: '1.5rem', textAlign: 'center', display: 'block'}}>
                         <FacebookLogin
                           appId="343119846258901"
                           autoLoad={false}
@@ -386,16 +384,13 @@ class Register extends Component {
                             <Button onClick={renderProps.onClick} className="btn-facebook" block><span>Facebook</span></Button>
                           )} />
                         {/* <Button className="btn-facebook" block><span>Facebook</span></Button> */}
-                      </Col>
-                      <Col xs="12" sm="6">
-                        <GoogleLogin
+                        <GoogleLogin 
+                          className="btn-google"
                           clientId="93328850687-681u9fksr6g52g2bebbj1qu8thldgaq6.apps.googleusercontent.com"
                           buttonText="Google"
                           onSuccess={responseGoogle}
                           onFailure={responseGoogle} />
                         {/* <Button className="btn-google" block><span>Google</span></Button> */}
-                      </Col>
-                    </Row>
                   </CardFooter>
                 </Card>
               </Col>

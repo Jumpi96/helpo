@@ -8,6 +8,7 @@
     "@coreui/coreui-plugin-chartjs-custom-tooltips": "^1.2.0",
     "@coreui/icons": "^0.1.1",
     "@coreui/react": "^2.0.4",
+    "@react-pdf/renderer": "^1.0.0-alpha.18",
     "@types/googlemaps": "^3.30.11",
     "@types/markerclustererplus": "^2.1.33",
     "axios": "0.18.0",

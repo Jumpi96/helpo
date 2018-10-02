@@ -3349,9 +3349,6 @@ input[type="button"].btn-block {
 .card-link + .card-link {
   margin-left: 1.25rem; }
 
-.prueba{
-  min-width: 100%;
-}
 .card-header {
   flex: 1 1 auto;
   padding: 1.25rem;

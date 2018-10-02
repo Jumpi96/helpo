@@ -308,7 +308,7 @@ class Register extends Component {
           <Container>
             <Row className="justify-content-center">
               <Col md="6">
-                <Card className="mx-4">
+                <Card className="mx-4" style={{width: '100%'}}>
                   <CardHeader>
                    <Row>
                       <Col xs="12" sm="4">

@@ -30,13 +30,13 @@ class ConsultarColaboracionConnected extends React.Component {
     this.toggleModal(true)
     let promises = []
     for ( let key in this.props.entregados ) {
-      const patchData = { entregado: this.props.entregados[key] }
-      const promise = api.patch(`/actividades/colaboraciones/${key}/`, patchData)
+      const patchData = { entregado: this.props.entregados[key], colaboracion: key }
+      const promise = api.post(`/feedbacks/entregados/`, patchData)
       promises.push(promise)
     }
     for ( let key in this.props.participaciones ) {
-      const patchData = { participo: this.props.participaciones[key] }
-      const promise = api.patch(`/actividades/participaciones/${key}/`, patchData)
+      const patchData = { participo: this.props.participaciones[key], participacion: key };
+      const promise = api.post(`/feedbacks/participados/`, patchData)
       promises.push(promise)
     }
     axios.all(promises)

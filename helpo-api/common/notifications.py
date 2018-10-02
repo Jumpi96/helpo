@@ -42,8 +42,11 @@ def send_mail_to_worker(url, payload, headers, mail_to, mail_from):
           (mail_to, mail_from, sleep_secs))
     time.sleep(sleep_secs)
     response = requests.request("POST", url, data=payload, headers=headers)
-    print("Mail enviado a %s desde %s, response code: %s" %
-          (mail_to, mail_from, response.status_code))
+    str_log = "Mail enviado a %s desde %s, response code: %s" % (
+        mail_to, mail_from, response.status_code)
+    if response.status_code == 500:
+        str_log += ", response text: %s" % (response.text)
+    print(str_log)
 
 
 def send_mail_to(mail_to="error@helpo.com.ar", html_subject="Error", html_content="Error", mail_from=settings.NOTIFICATION_EMAIL, thread_daemon=True):

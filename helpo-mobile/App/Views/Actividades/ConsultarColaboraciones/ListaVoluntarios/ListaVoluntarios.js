@@ -6,7 +6,7 @@ import ConsultarColabsActions from '../../../../Redux/ConsultarColabsRedux'
 const noItems = (
   <ListItem>
     <Body>
-      <Text>No hay participaciones para esta funcion</Text>
+      <Text>No hay participaciones para esta función</Text>
     </Body>
   </ListItem>
 )
@@ -45,7 +45,7 @@ const ListaVoluntarios = (props) => {
   return (
     <View>
       <ListItem itemDivider>
-        <Text>{'Funcion - ' + funcion}</Text>
+        <Text>{'Función - ' + funcion}</Text>
       </ListItem>
       {items}
     </View>

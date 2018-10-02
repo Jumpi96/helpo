@@ -33,7 +33,7 @@ const itemsOrg = [
 	{
 	  'key': 'ConsultarEventos',
 	  'routeName': 'ConsultarEventos',
-	  'name': 'Consultar eventos',
+	  'name': 'Eventos',
 	},
 	{
 		'key': 'OrganizacionesPage',
@@ -51,6 +51,11 @@ const itemsOrg = [
 	  'name': 'Mis eventos',
 	},	
 	{
+		'key': 'ConsultarPerfilGenerico',
+		'routeName': 'ConsultarPerfilGenerico',
+		'name': 'Mi perfil'
+	},
+	{
 	  'key': 'Configuracion',
 	  'routeName': 'Configuracion',
 	  'name': 'Configuración'
@@ -66,7 +71,7 @@ const itemsVol = [
 	{
 		'key': 'ConsultarEventos',
 		'routeName': 'ConsultarEventos',
-		'name': 'Consultar eventos'
+		'name': 'Eventos'
 	},
 	{
 		'key': 'OrganizacionesPage',
@@ -79,6 +84,11 @@ const itemsVol = [
 		'name': 'Mis colaboraciones'
 	},
 	{
+		'key': 'ConsultarPerfilGenerico',
+		'routeName': 'ConsultarPerfilGenerico',
+		'name': 'Mi perfil'
+	},
+	{
 		'key': 'MisSuscripciones',
 		'routeName': 'MisSuscripciones',
 		'name': 'Mis suscripciones'
@@ -88,6 +98,7 @@ const itemsVol = [
 		'routeName': 'Configuracion',
 		'name': 'Configuración'
 	}
+	
 ]
 
 const itemsEmp = [
@@ -99,7 +110,7 @@ const itemsEmp = [
 	{
 	  'key': 'ConsultarEventos',
 	  'routeName': 'ConsultarEventos',
-	  'name': 'Consultar eventos',
+	  'name': 'Eventos',
 	},
 	{
 		'key': 'OrganizacionesPage',
@@ -110,6 +121,11 @@ const itemsEmp = [
 		'key': 'MisPropuestas',
 		'routeName': 'MisPropuestas',
 		'name': 'Mis propuestas'
+	},
+	{
+		'key': 'ConsultarPerfilGenerico',
+		'routeName': 'ConsultarPerfilGenerico',
+		'name': 'Mi perfil'
 	},
 	{
 	  'key': 'Configuracion',

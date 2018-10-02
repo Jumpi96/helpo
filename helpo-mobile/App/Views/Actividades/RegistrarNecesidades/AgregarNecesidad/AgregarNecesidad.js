@@ -52,6 +52,7 @@ class AgregarNecesidad extends React.Component {
   }
 
   addNecesidad(necesidad) {
+    var _this = this;
     api.post("/actividades/necesidades/", necesidad)
       .then(res => {
         console.log(res);
@@ -60,7 +61,7 @@ class AgregarNecesidad extends React.Component {
       }).catch(function (error) {
         if (error.response) { console.log(error.response.status); }
         else { console.log("Error: ", error.message); }
-        this.setState({ error: "Hubo un problema al cargar su información." });
+        _this.setState({ error: "Hubo un problema al cargar su información." });
       });
   }
 

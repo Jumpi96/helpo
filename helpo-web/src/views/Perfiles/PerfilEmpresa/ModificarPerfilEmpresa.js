@@ -41,8 +41,8 @@ const perfilPropTypes = {
 
 class ModificarPerfilEmpresa extends Component {
   constructor(props) {
-    super(props); 
-    this.rubros = [{id: 0, nombre: 'Ninguno'}].concat(this.props.rubros)
+    super(props);
+    this.rubros = [{ id: 0, nombre: 'Ninguno' }].concat(this.props.rubros)
     this.fakeProps = this.checkBeforeState(this.props.data.rubro, this.props.data.ubicacion)
     this.state = {
       nombre: this.props.nombre,
@@ -53,13 +53,13 @@ class ModificarPerfilEmpresa extends Component {
       avatar_url: this.props.data.avatar.url,
       ubicacion: this.fakeProps.ubicacion,
       rubro_id: this.fakeProps.rubro.id,
-      rubros: this.rubros,   
+      rubros: this.rubros,
       showModal: false,
       modalType: 'success',
       errors: [],
       avatar_changed: false,
     }
-    this.renderNombre  = this.renderNombre.bind(this);
+    this.renderNombre = this.renderNombre.bind(this);
     this.renderUbicacion = this.renderUbicacion.bind(this);
     this.renderCuit = this.renderCuit.bind(this);
     this.renderDescripcion = this.renderDescripcion.bind(this);
@@ -82,12 +82,12 @@ class ModificarPerfilEmpresa extends Component {
     let newRubro = rubro
     let newUbicacion = ubicacion
     if (rubro == null) {
-      newRubro = {id: 0, nombre: ""}
+      newRubro = { id: 0, nombre: "" }
     }
     if (ubicacion == null) {
-      newUbicacion = {latitud: -31.428900, longitud: -64.185424, notas: ""}
+      newUbicacion = { latitud: -31.428900, longitud: -64.185424, notas: "" }
     }
-    const respuesta = {rubro: newRubro, ubicacion: newUbicacion}
+    const respuesta = { rubro: newRubro, ubicacion: newUbicacion }
     return respuesta
   }
 
@@ -116,15 +116,15 @@ class ModificarPerfilEmpresa extends Component {
         placeholder="Nombre"
         value={this.state.nombre}
         onChange={this.handleNombreChange}
-      />)    
-    }
-  
+      />)
+  }
+
   handleNombreChange(event) {
     this.setState({
       nombre: event.target.value
     })
   }
-  
+
 
   renderTelefono() {
     return (
@@ -135,28 +135,28 @@ class ModificarPerfilEmpresa extends Component {
         placeholder="Teléfono (ejemplo: 3515234567)"
         value={this.state.telefono}
         onChange={this.handleTelefonoChange}
-      />)    
-    }
+      />)
+  }
 
   handleTelefonoChange(event) {
-      if (isNaN(event.target.value)) {
-        return;
-      }
-      this.setState({
-        telefono: event.target.value
-      });
+    if (isNaN(event.target.value)) {
+      return;
+    }
+    this.setState({
+      telefono: event.target.value
+    });
   }
 
   renderCuit() {
     return (
-    <input
-      type="text"
-      name="cuit"
-      className="form-control"
-      placeholder="Cuit"
-      value={this.state.cuit}
-      onChange={this.handleCuitChange}
-    />)
+      <input
+        type="text"
+        name="cuit"
+        className="form-control"
+        placeholder="Cuit"
+        value={this.state.cuit}
+        onChange={this.handleCuitChange}
+      />)
   }
 
   handleCuitChange(event) {
@@ -169,20 +169,20 @@ class ModificarPerfilEmpresa extends Component {
   }
 
   renderRubro() {
-    
+
     const rubro = this.state.rubro_id == null ? 0 : this.state.rubro_id
     const listaRubroEventos = this.state.rubros.map((r) =>
       <option key={r.id} value={r.id} data-key={r.id}>{r.nombre}</option>
     );
-    
-    return(
+
+    return (
       <select
         value={rubro}
         className="form-control"
         onChange={this.handleRubroChange}>
-          {listaRubroEventos}
+        {listaRubroEventos}
       </select>
-    )    
+    )
   }
 
   handleRubroChange(event) {
@@ -203,7 +203,7 @@ class ModificarPerfilEmpresa extends Component {
   renderDescripcion() {
     return (
       <textarea
-        rows= '5'
+        rows='5'
         cols='30'
         className='form-control'
         value={this.state.descripcion}
@@ -225,10 +225,10 @@ class ModificarPerfilEmpresa extends Component {
       />
     )
   }
-  
+
   handleUbicacionChange(ubi) {
     this.setState({ ubicacion: ubi });
-  }  
+  }
 
   async prepareSubmitData() {
     const oldData = {
@@ -241,9 +241,9 @@ class ModificarPerfilEmpresa extends Component {
       rubro_id: this.fakeProps.rubro.id,
     }
     const newData = this.state
-    
+
     let avatar_url = this.props.data.avatar.url
-    if ( this.state.avatar_changed ) {
+    if (this.state.avatar_changed) {
       const rx = /data.*base64,(.*)/gm
       const encondedAvatar = rx.exec(this.state.avatar_url)[1]
       avatar_url = await uploadImage(encondedAvatar)
@@ -251,10 +251,10 @@ class ModificarPerfilEmpresa extends Component {
         avatar_url = await uploadImage(encondedAvatar)
       }
     }
-    const submitData = {      
+    const submitData = {
       descripcion: newData.descripcion,
-      avatar: {url: avatar_url},
-    }    
+      avatar: { url: avatar_url },
+    }
     if (newData.cuit !== "") {
       submitData.cuit = newData.cuit
     }
@@ -262,7 +262,7 @@ class ModificarPerfilEmpresa extends Component {
       submitData.telefono = newData.telefono
     }
     if (newData.rubro_id != null && newData.rubro_id !== 0) {
-      submitData.rubro = {id: newData.rubro_id, nombre: this.state.rubros[newData.rubro_id].nombre }
+      submitData.rubro = { id: newData.rubro_id, nombre: this.state.rubros[newData.rubro_id].nombre }
     }
     if (newData.ubicacion !== oldData.ubicacion && newData.ubicacion !== this.fakeProps.ubicacion) {
       submitData.ubicacion = this.state.ubicacion
@@ -286,26 +286,26 @@ class ModificarPerfilEmpresa extends Component {
   }
 
   handleSubmit() {
-    this.prepareSubmitData().then( submitData => {
+    this.prepareSubmitData().then(submitData => {
       if (this.validateData(submitData)) {
         api.put(`/perfiles/perfil_empresa/${this.props.data.usuario.id}/`, submitData)
-        .then(res => {
-          if (res.status === 200) {
-            this.setState({
-              showModal: true,
-              modalType: 'success'
-            })
-          }
-          else {
-            this.setState({
-              showModal: true,
-              modalType: 'failure'
-            })
-          }
-        })
+          .then(res => {
+            if (res.status === 200) {
+              this.setState({
+                showModal: true,
+                modalType: 'success'
+              })
+            }
+            else {
+              this.setState({
+                showModal: true,
+                modalType: 'failure'
+              })
+            }
+          })
       }
       console.log(this.state.errors)
-    }) 
+    })
   }
 
   renderModal() {
@@ -315,16 +315,16 @@ class ModificarPerfilEmpresa extends Component {
           <ModalGenerico
             body='Se guardaron los cambios exitosamente'
             onCancel={this.props.switchToConsultar}
-          />)  
+          />)
       }
       else {
         return (
           <ModalGenerico
             body='Hubo un problema al intentar cargar los datos, por favor intentelo mas tarde'
-            onCancel={() => {this.setState({ showModal: false })}}
+            onCancel={() => { this.setState({ showModal: false }) }}
           />
         )
-      }      
+      }
     }
   }
 
@@ -334,17 +334,16 @@ class ModificarPerfilEmpresa extends Component {
     })
   }
 
-  render() {    
-    return (      
+  render() {
+    return (
       <Card>
         <CardHeader>
           <i className="fa fa-align-justify"></i> Modificar Perfil
         </CardHeader>
-      <form>
-        <div style={{ marginTop:'20px' }} className='container'>
-        
-        <div style={{ alignItems: 'center' }} className='row'>
-          {/*<div style={{flexDirection: 'column', alignItems: 'flex-end',display: 'flex', justifyContent: 'center', height: '150px'}} className='col'> 
+        <form>
+          <div style={{ marginTop: '20px' }} className='container'>
+            <div className='form-group'>
+              {/*<div style={{flexDirection: 'column', alignItems: 'flex-end',display: 'flex', justifyContent: 'center', height: '150px'}} className='col'> 
             <div style={{ display: 'flex', height: '50px', width: '100%', justifyContent: 'flex-end', alignItems: 'center' }} >
               <p style={{ textAlign: 'right' }} 
                  className='h4'>Nombre</p>
@@ -354,70 +353,69 @@ class ModificarPerfilEmpresa extends Component {
                  className='h4'>{this.renderNombre()}</p>
             </div>
             </div>*/
-            //SI SE DECIDE PODER CAMBIAR NOMBRE EN PERFIL, USAR ESTE CODIGO
-          }
-          <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', height: '150px'}}  className='col-2'>            
-              <p style={{ textAlign: 'right' }} 
-                 className='h4'>{this.props.nombre}</p>
-          </div>
-          <div className='col-6'>
-            <img
-              className='rounded-circle'
-              src={this.state.avatar_url}
-              alt="avatar"
-              width="100" 
-              height="100"
-            />
-            <input style={{ marginBottom: '10px', marginTop: '10px' }} type='file' onChange={this.onSelectFile}/>
-          </div>
-        </div>
-          
-        <div className='row'>
-            <p style={{ textAlign: 'right' }} className='font-weight-bold col-2' htmlFor="mail">Mail</p>
-            <div className='col-6'><p>{this.props.email}</p></div>
-        </div>
+                //SI SE DECIDE PODER CAMBIAR NOMBRE EN PERFIL, USAR ESTE CODIGO
+              }
+              <div style={{ display: 'flex' }} className='col-md-3'>
+                <h4>{this.props.nombre}</h4>
+              </div>
+              <div className='col-md-9'>
+                <img
+                  className='rounded-circle'
+                  src={this.state.avatar_url}
+                  alt="avatar"
+                  width="100"
+                  height="100"
+                />
+                <input style={{ marginBottom: '10px', marginTop: '10px' }} type='file' onChange={this.onSelectFile} />
+              </div>
+            </div>
 
-        <div className='row'>
-            <p style={{ paddingTop: '8px',textAlign: 'right' }} className='font-weight-bold col-2' htmlFor="telefono">Teléfono</p>
-            <div className='col-6'>{this.renderTelefono()}</div>
-        </div>
+            <div className='form-group'>
+              <p className='font-weight-bold col-md-3' htmlFor="mail">Mail</p>
+              <div className='col-md-9'><p>{this.props.email}</p></div>
+            </div>
 
-        <div className='row'>   
-            <p style={{ paddingTop: '8px',textAlign: 'right' }} className='font-weight-bold col-2'           htmlFor="cuit">CUIT</p>            
-            <div className='col-6'>{this.renderCuit()}</div>
-        </div>
+            <div className='form-group'>
+              <p className='font-weight-bold col-md-3' htmlFor="telefono">Teléfono</p>
+              <div className='col-md-9'>{this.renderTelefono()}</div>
+            </div>
 
-        <div className='row'>        
-            <p style={{ textAlign: 'right' }} className='font-weight-bold col-2' htmlFor="telefono">Rubro</p>
-            <div className='col-6'>{this.renderRubro()}</div>    
-        </div>                       
+            <div className='form-group'>
+              <p className='font-weight-bold col-md-3' htmlFor="cuit">CUIT</p>
+              <div className='col-md-9'>{this.renderCuit()}</div>
+            </div>
 
-        <div className='row'>          
-          <p style={{ textAlign: 'right' }} className='font-weight-bold col-2' htmlFor="descripcion">Descripción</p> 
-          <div className='col-6'>{this.renderDescripcion()}</div>    
-        </div>      
+            <div className='form-group'>
+              <p className='font-weight-bold col-md-3' htmlFor="telefono">Rubro</p>
+              <div className='col-md-9'>{this.renderRubro()}</div>
+            </div>
 
-        <div className='row'>
-          <p className='font-weight-bold col-2' htmlFor="ubicacion" style={{ textAlign: 'right' }}>Ubicación</p>
-          <div className='col-6' style={{ marginBottom: '5px' }}>{this.renderUbicacion()}</div>
-        </div>      
+            <div className='form-group'>
+              <p className='font-weight-bold col-md-3' htmlFor="descripcion">Descripción</p>
+              <div className='col-md-9'>{this.renderDescripcion()}</div>
+            </div>
 
-        <div style={{ margin: '20px' }} className='row'>
-          <div style={{ display: 'flex', justifyContent: 'flex-end' }} className='col-2'>
-            <button onClick={this.handleSubmit} type="button" className="btn btn-primary">
-              Guardar Cambios
+            <div className='form-group'>
+              <p className='font-weight-bold col-md-3' htmlFor="ubicacion">Ubicación</p>
+              <div className='col-md-9' style={{ marginBottom: '5px' }}>{this.renderUbicacion()}</div>
+            </div>
+
+            <div style={{ margin: '20px' }} className='row'>
+              <div style={{ display: 'flex' }} className='col-md-3'>
+                <button onClick={this.handleSubmit} type="button" className="btn btn-primary">
+                  Guardar cambios
             </button>
-          </div>
-          <div className='col-6'>
-            <button type="button" className="btn btn-danger" onClick={this.props.switchToConsultar}>
-              Volver
+              </div>
+              <div className='col-md-3'>
+                <button type="button" className="btn btn-danger" onClick={this.props.switchToConsultar}>
+                  Volver
             </button>
-          </div>
-        </div>
+              </div>
+            </div>
 
-        </div>      
-      </form>
-      {this.renderModal()}
+          </div>
+        </form>
+        {this.renderModal()}
       </Card>
     );
   }

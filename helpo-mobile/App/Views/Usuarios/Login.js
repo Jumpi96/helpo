@@ -145,7 +145,8 @@ class Login extends Component {
   handleSubmit(e) {
     e.preventDefault();
     const auth = this.props.auth;
-    this.props.login(this.state.email, this.state.password);
+    const email = this.state.email.toLowerCase();
+    this.props.login(email, this.state.password);
     if (auth.isAuthenticated) {
       // Issue #105: Necesita dos clicks para loguear
       this.setState({ isLoginFound: true });
@@ -191,6 +192,7 @@ class Login extends Component {
               <Text style={styles.validationMessage}>{this.props.errors[0].message}</Text>
             </Item>
           )}
+          {/*
           <GoogleSigninButton
             style={{ width: 312, height: 48 }}
             size={GoogleSigninButton.Size.Wide}
@@ -231,6 +233,7 @@ class Login extends Component {
               console.log(data);
             }}
           />
+          */}
         </Content>
       </Container>
     );

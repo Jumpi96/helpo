@@ -1,6 +1,7 @@
-import React from "react";
-import { Alert } from "react-native";
-import { FormValidationMessage } from "react-native-elements";
+import React, { Component } from 'react';
+import api from '../../../api';
+import ImagePicker from 'react-native-image-picker';
+import { handleImageUpload } from '../../../Services/Imagen';
 import {
   Container,
   Header,
@@ -15,229 +16,208 @@ import {
   Right,
   Icon,
   Form,
-  Text
-} from "native-base";
-import SelectorUbicacion from "./SelectorUbicacion/SelectorUbicacion"; //Preguntas si hace falta copiar y pegar el selecctor siempre o referenciarlomediante la rua en donde esta creado
-import ListaRubrosOrganizacion from "./ListaRubrosOrganizacion/ListaRubrosOrganizacion";
-import api from "../../../../api";
-import moment from "moment";
-import styles from "./styles";
-import ListaRubrosOrganizacion from "../../../../../helpo-web/src/views/Perfiles/ListaRubrosOrganizacion/ListaRubrosOrganizaciones";
-
+  Text,
+  ListItem,
+  Picker,
+  Thumbnail,
+  Separator
+} from 'native-base';
+import styles from './styles'
 
 class ModificarPerfilOrganizacion extends Component {
   constructor(props) {
-    super(props); //Llama a las props del padre
+    super(props);
     this.state = {
-    nombre: 'organizacion',
-    cuit: '',
-    ubicacion: { latitud: 0, longitud: 0, notas:'#!None#!'},
-    mail: '',
-    telefono: '',
-    rubro: { id: 0, nombre: "none"},
-    avatar_url: 'assets/user.png',
-    descripcion: '',
-    errors: {},
+      organizacion: undefined,
+      errors: [],
+    }
+    this.handleChange = this.handleChange.bind(this);
+    this.handleChangeRubro = this.handleChangeRubro.bind(this);
+    this.handleValidation = this.handleValidation.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.addImagen = this.addImagen.bind(this);
+    this.prepareData = this.prepareData.bind(this);
+  }
+
+  async addImagen() {
+    // Llamo al imagePicker y hago todo el procesamiento de cargar una imagen
+    //Options for the image picker
+    const options = {
+      title: 'Seleccionar Imagen',
     };
-
-    this.guardar = this.guardar.bind(this);
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleUbicacionChange = this.handleUbicacionChange.bind(this);
-    this.handleRubroChange = this.handleRubroChange.bind(this);
-
+    this.setState({ uploadingImage: true })
+    ImagePicker.showImagePicker(options, async (response) => {
+      // Paso la data de la imagen a Imagen para subirla a imgur
+      const url = await handleImageUpload(response.data);
+      this.setState({ new_avatar: url, uploadingImage: false })
+    })
   }
 
   componentDidMount() {
-    api.get(`/perfiles/perfil_organizacion/${this.props.usuarioId}`)
-    .then( (res) => {
-      let rubro = res.rubro
-      let ubicacion = res.ubicacion
-      if ( rubro == null ) {
-        rubro = { id: 0, nombre: 'none'}
-      }
-      if ( ubicacion == null ) {
-        ubicacion = { latitud: 0, longitud: 0, notas:'#!None#!'}
-      }
-      this.setState({
-        cuit: res.cuit,
-        telefono: res.telefono,
-        descripcion: res.descripcion,
-        rubro_id: rubro.id,
-        rubro_nombre: rubro.nombre,
-        avatar_url: res.avatar.url,        
+    let organizacion = {};
+    api.get('/auth/user/')
+      .then(res => {
+        organizacion.nombre = res.data.nombre;
+        organizacion.apellido = res.data.apellido;
+        const tipo = res.data.user_type === 3 ? 'perfil_empresa' : 'perfil_organizacion';
+        return api.get(`/perfiles/${tipo}/${res.data.id}/`)
       })
-    })
-  }  
-
-  handleInputChange(event) {
-    const target = event.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
-    const name = target.name;
-    this.setState({
-      [name]: value,
-    });
-  }
-
-  handleRubroChange(r) {
-    this.setState({ rubro_id: r });
-  }
-
-  handleUbicacionChange(ubi) {
-    this.setState({ ubicacion: ubi });
-  }
-
-  guardar(){
-    event.preventDefault();
-    if (this.handleValidation()) {
-      
-      const perfil = {};
-        perfil.nombre = this.state.nombre;
-
-        if(this.state.rubro.id != 0){
-          perfil.rubro_id = this.state.rubro_id;
-        }
-        if(this.state.ubicacion.latitud != 0){
-          perfil.ubicacion = this.state.ubicacion;
-        }        
-        perfil.cuit =  this.state.cuit;
-        perfil.mail =  this.state.mail;
-        perfil.telefono =  this.state.telefono;
-        perfil.avatar_url = this.state.avatar_url;
-        perfil.descripcion =  this.state.descripcion;
-     
-      api.put(`/perfiles/perfil_organizacion/${this.props.usuarioId}`, perfil)
-        .then((res) => {
-          this.props.history.push('dashboard'); //Fijarse que pasa con la ruta
-        }).catch(function (error) {
-          if (error.response) { console.log(error.response.status) }
-          else { console.log('Error: ', error.message) }
+      .then(res => {
+        organizacion = Object.assign(organizacion, res.data);
+        return api.get('/perfiles/rubros_organizacion/')
+      })
+      .then(res => {
+        this.setState({
+          organizacion,
+          rubros: res.data
         });
+      });
+  }
+
+  handleChange(item, text) {
+    const { organizacion } = this.state;
+    organizacion[item] = text;
+    this.setState({ organizacion });
+  }
+
+  handleChangeRubro(value) {
+    const { organizacion } = this.state;
+    organizacion.rubro = value;
+    this.setState({ organizacion });
+  }
+
+  handleSubmit() {
+    const organizacion = this.prepareData(this.state.organizacion);
+    const { new_avatar } = this.state;
+    if (new_avatar) {
+      organizacion.avatar = { url: new_avatar };
+    }
+    const tipo = this.state.organizacion.usuario.user_type === 3 ? 'perfil_empresa' : 'perfil_organizacion';
+    if (this.handleValidation()) {
+      api.put(`/perfiles/${tipo}/${this.state.organizacion.usuario.id}/`, organizacion)
+        .then((res) => {
+          this.props.navigation.navigate('ConsultarPerfilGenerico');
+        })
+        .catch((e) => { console.warn(e) })
     }
   }
 
   handleValidation() {
     let formIsValid = true;
     const errors = this.state.errors;
+    const { organizacion } = this.state;
 
-    if (!this.state.nombre) {
+    if (Number.isNaN(organizacion.cuit)) {
       formIsValid = false;
-      errors.nombre = 'Debe ingresar un nombre.';
-    } else { errors.nombre = undefined; }
-
-    {/* if (!this.state.cuit) {
-      formIsValid = false;
-      errors.cuit = 'Debe ingresar un cuit.';
+      errors.cuit = 'Debe ingresar un CUIT válido.';
     } else { errors.cuit = undefined; }
 
-    if (!this.state.telefono) {
-      formIsValid = false;
-      errors.telefono = 'Debe ingresar un teléfono.';
-    } else { errors.telefono = undefined; }
-    */}
-
-    if (this.state.rubro.id === 0) { //Revisar cuando se cambie la lista de rubros
-      formIsValid = false;
-      errors.rubro = 'Hubo un problema al cargar el rubro.';
-    } else { errors.rubro = undefined; }
-
-    this.setState({ errors });
+    this.setState({ errors: errors });
     return formIsValid;
   }
-  
-  render() {
-    return (
-      <Container style={styles.container}>
-        <Header>
-          <Left>
-            <Button transparent onPress={() => this.props.navigation.goBack()}>
-              <Icon name="arrow-back" />
-            </Button>
-          </Left>
-          <Body>
-            <Title>Modificar perfil</Title>
-          </Body>
-          <Right />
-        </Header>   
 
-        <Content>
-          <Form>
-            <Item floatingLabel>
-              <Label>Nombre</Label>
-              <Input 
-                value={this.state.nombre}
-                onChangeText={(text) => this.setState({ nombre: text })} 
-              />
-            </Item>
-            <FormValidationMessage>{this.state.errors.nombre}</FormValidationMessage>
-            
-            <PhotoUpload> // de aca hay que ver como implementar el componente https://github.com/malsapp/react-native-photo-upload
-             <Image
-              source={{
-              uri: 'https://www.sparklabs.com/forum/styles/comboot/theme/images/default_avatar.jpg'
-              }}
-             />
-            </PhotoUpload>
-            
-            <Item floatingLabel>
-              <Label>Mail</Label>
-              <Input 
-                value={this.state.mail}
-                onChangeText={(text) => this.setState({ mail: text })} 
-              />
-            </Item>
-            <FormValidationMessage>{this.state.errors.mail}</FormValidationMessage>
-
-            <Item floatingLabel>
-              <Label>Teléfono</Label>
-              <Input 
-                value={this.state.telefono}
-                onChangeText={(text) => this.setState({ telefono: text })} 
-              />
-            </Item>
-            <FormValidationMessage>{this.state.errors.telefono}</FormValidationMessage>
-
-            <Item floatingLabel>
-              <Label>CUIT</Label>
-              <Input 
-                value={this.state.cuit}
-                onChangeText={(text) => this.setState({ cuit: text })} 
-              />
-            </Item>
-            <FormValidationMessage>{this.state.errors.cuit}</FormValidationMessage>
-
-
-
-            <ListaRubrosOrganizacion
-              name="listaRubros"
-              rubro_id={this.state.rubro.id}
-              onRubroChange={this.handleRubroChange} />
-            <FormValidationMessage>{this.state.errors.rubro}</FormValidationMessage>
-
-
-            <Item>
-              <SelectorUbicacion
-                ubicacion={this.state.ubicacion}
-                onUbicacionChange={this.handleUbicacionChange} />
-            </Item>
-
-            <Item floatingLabel>
-              <Label>Descripción</Label>
-              <Input value={this.state.descripcion}
-                onChangeText={(text) => this.setState({ descripcion: text })} />
-            </Item>
-            
-
-            <Button block style={{ margin: 15, marginTop: 50 }}
-              onPress={this.handleSubmit} >
-              <Text>Guardar perfil</Text>
-            </Button>
-
-          </Form>
-        </Content>
-
-      </Container>
+  getRubros() {
+    return this.state.rubros.map((r) =>
+      <Picker.Item label={r.nombre} value={r.id}></Picker.Item>
     );
+  }
+
+  prepareData(perfil) {
+    const nuevo_perfil = {};
+    if (perfil.cuit !== null) {
+      nuevo_perfil.cuit = perfil.cuit;
+    }
+    if (perfil.descripcion !== null) {
+      nuevo_perfil.descripcion = perfil.descripcion;
+    }
+    if (perfil.rubro !== null) {
+      nuevo_perfil.rubro = perfil.rubro;
+    }
+    if (perfil.telefono !== null) {
+      nuevo_perfil.telefono = perfil.telefono;
+    }
+    return nuevo_perfil;
+  }
+
+  render() {
+    if (this.state.organizacion) {
+      return (
+        <Container style={styles.container} >
+          <Header>
+            <Left>
+              <Button transparent onPress={() => this.props.navigation.navigate('ConsultarPerfilGenerico')}>
+                <Icon name="arrow-back" />
+              </Button>
+            </Left>
+            <Body>
+              <Title>Modificar perfil</Title>
+            </Body>
+            <Right>
+              <Button transparent onPress={this.handleSubmit}>
+                <Text>Guardar</Text>
+              </Button>
+            </Right>
+          </Header>
+
+          <Content>
+            <Form>
+              <Item onPress={this.addImagen}>
+                <Thumbnail large center source={{ uri: this.state.new_avatar ? this.state.avatar_url : this.state.organizacion.avatar.url }} />
+                {this.state.uploadingImage ? <Spinner /> : undefined}
+              </Item>
+              <Separator bordered noTopBorder>
+                <Text>Datos personales</Text>
+              </Separator>
+
+              <ListItem>
+                <Label style={styles.label}>Nombre</Label>
+                <Text>{this.state.organizacion.nombre}</Text>
+              </ListItem>
+
+              <Item floatingLabel>
+                <Label>Descripción</Label>
+                <Input
+                  value={this.state.organizacion.descripcion !== null ? this.state.organizacion.descripcion.toString() : ""}
+                  onChangeText={text => this.handleChange('descripcion', text)}
+                />
+              </Item>
+              <Text style={styles.validationMessage}>{this.state.errors.descripcion}</Text>
+
+              <Item floatingLabel>
+                <Label>Teléfono</Label>
+                <Input
+                  value={this.state.organizacion.telefono !== null ? this.state.organizacion.telefono.toString() : ""}
+                  onChangeText={text => this.handleChange('telefono', text)}
+                />
+              </Item>
+              <Text style={styles.validationMessage}>{this.state.errors.telefono}</Text>
+
+              <Item floatingLabel>
+                <Label>CUIT</Label>
+                <Input
+                  value={this.state.organizacion.cuit !== null ? this.state.organizacion.cuit.toString() : ""}
+                  onChangeText={text => this.handleChange('cuit', text)}
+                />
+              </Item>
+              <Text style={styles.validationMessage}>{this.state.errors.cuit}</Text>
+
+              <ListItem>
+                <Label>Rubro</Label>
+                <Picker
+                  selectedValue={this.state.organizacion.rubro}
+                  onValueChange={(itemValue) => this.handleChangeRubro(itemValue)}>
+                  <Picker.Item label="" value="" />
+                  {this.getRubros()}
+                </Picker>
+              </ListItem>
+              <Text style={styles.validationMessage}>{this.state.errors.rubro}</Text>
+            </Form>
+          </Content>
+        </Container>
+      );
+    }
+    return (<Text></Text>)
   }
 }
 
-export default RegistrarEvento;
+export default ModificarPerfilOrganizacion;

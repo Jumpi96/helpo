@@ -30,7 +30,7 @@ const TablaVoluntario = ( props ) => {
   }
 
   const noParticipaciones = (
-    <p style={{ fontSize: '16px' }} className="text-muted text-center"> No hay participaciones para esta funcion</p>
+    <p style={{ fontSize: '16px' }} className="text-muted text-center"> No hay participaciones para esta función</p>
   )
 
   const { participaciones, funcion } = props
@@ -41,7 +41,7 @@ const TablaVoluntario = ( props ) => {
 
   return (
     <div>
-      <p className="h4" style={{ marginTop: '20px', marginBottom: '20px' }}>Funcion - {funcion}</p>
+      <p className="h4" style={{ marginTop: '20px', marginBottom: '20px' }}>Función - {funcion}</p>
       <table className="table">
         <thead>
           <tr>

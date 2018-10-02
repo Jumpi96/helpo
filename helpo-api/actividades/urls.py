@@ -165,6 +165,18 @@ urlpatterns = [
         view=actividades_views.ComentarioReadUpdateDeleteView.as_view(),
         name="get_put_delete_comentario"
     ),
+    # {% url "api:entregado" evento.id %}
+    url(
+        regex=r"^feedbacks/entregados/$",
+        view=actividades_views.EntregadoNecesidadEvento,
+        name="post_entregado_necesidad"
+    ),
+    # {% url "api:participado" evento.id %}
+    url(
+        regex=r"^feedbacks/participados/$",
+        view=actividades_views.ParticipadoNecesidadEvento,
+        name="post_participado_voluntario"
+    ),
     # {% url "api:retroalimentacion_voluntario" %}
     url(
         regex=r"^feedbacks/retroalimentacion_voluntario/$",

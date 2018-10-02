@@ -47,10 +47,14 @@ class ConsultarPerfilOrganizacion extends Component {
     this.renderManos = this.renderManos.bind(this);
     this.renderEventos = this.renderEventos.bind(this);
     this.toggle = this.toggle.bind(this);
+    this.toggleEventos = this.toggleEventos.bind(this);
+    this.toggleManos = this.toggleManos.bind(this);
     this.togglePopover = this.togglePopover.bind(this);
     this.showModalVerificarCuenta = this.showModalVerificarCuenta.bind(this);
     this.getLinkVerEventos = this.getLinkVerEventos.bind(this);
     this.state = {
+      tooltipManos: false,
+      tooltipEventos: false,
       tooltipOpen: false,
       popoverOpen: false,
       showModalVerificarCuenta: false,
@@ -173,6 +177,18 @@ class ConsultarPerfilOrganizacion extends Component {
     });
   }
 
+  toggleEventos() {
+    this.setState({
+      tooltipEventos: !this.state.tooltipEventos
+    });
+  }
+
+  toggleManos() {
+    this.setState({
+      tooltipManos: !this.state.tooltipManos
+    });
+  }
+
   togglePopover() {
     this.setState({
       popoverOpen: !this.state.popoverOpen
@@ -193,9 +209,9 @@ class ConsultarPerfilOrganizacion extends Component {
         <CardBody>
           <div className="row">
             <div className="col-md-8">
-              <div className="row" style={{ height: '110px' }}>
+              <div className="row" style={{ marginBottom: '5%' }}>
                 <div className="col-md-3">
-                  <p style={{ textAlign: 'right' }} className='h4'>{this.props.nombre}</p>
+                  <p style={{ textAlign: 'left' }} className='h4'>{this.props.nombre}</p>
                 </div>
                 <div className="col-md-5">
                   <img
@@ -209,7 +225,7 @@ class ConsultarPerfilOrganizacion extends Component {
               </div>
               <div className='row'>
                 <div className="col-md-3">
-                  <p style={{ textAlign: 'right' }} className='font-weight-bold' htmlFor="mail">Mail</p>
+                  <p style={{ textAlign: 'left' }} className='font-weight-bold' htmlFor="mail">Mail</p>
                 </div>
                 <div className="col-md-5">
                   <p>{this.props.email}</p>
@@ -217,7 +233,7 @@ class ConsultarPerfilOrganizacion extends Component {
               </div>
               <div className='row'>
                 <div className="col-md-3">
-                  <p style={{ textAlign: 'right' }} className='font-weight-bold' htmlFor="telefono">Teléfono</p>
+                  <p style={{ textAlign: 'left' }} className='font-weight-bold' htmlFor="telefono">Teléfono</p>
                 </div>
                 <div className="col-md-5">
                   {this.renderTelefono()}
@@ -225,7 +241,7 @@ class ConsultarPerfilOrganizacion extends Component {
               </div>
               <div className='row'>
                 <div className="col-md-3">
-                  <p style={{ textAlign: 'right' }} className='font-weight-bold' htmlFor="cuit">CUIT</p>
+                  <p style={{ textAlign: 'left' }} className='font-weight-bold' htmlFor="cuit">CUIT</p>
                 </div>
                 <div className="col-md-5">
                   {this.renderCuit()}
@@ -233,7 +249,7 @@ class ConsultarPerfilOrganizacion extends Component {
               </div>
               <div className='row'>
                 <div className="col-md-3">
-                  <p style={{ textAlign: 'right' }} className='font-weight-bold' htmlFor="telefono">Rubro</p>
+                  <p style={{ textAlign: 'left' }} className='font-weight-bold' htmlFor="telefono">Rubro</p>
                 </div>
                 <div className="col-md-5">
                   {this.renderRubro()}
@@ -241,47 +257,53 @@ class ConsultarPerfilOrganizacion extends Component {
               </div>
               <div className='row'>
                 <div className="col-md-3">
-                  <p style={{ paddingLeft: 0, textAlign: 'right' }} className='font-weight-bold' htmlFor="descripcion">Descripción</p>
+                  <p style={{ paddingLeft: 0, textAlign: 'left' }} className='font-weight-bold' htmlFor="descripcion">Descripción</p>
                 </div>
                 <div className="col-md-5">
                   {this.renderDescripcion()}
                 </div>
               </div>
               {this.mostrarUbicacion()}
-              <div style={{ width: '500px', justifyContent: 'center', display: 'flex', marginBottom: '10px' }} className='row offster-md-4'>
-                <div className="col-md-4">
+              <div style={{ display: 'flex', marginBottom: '10px' }} className='row offster-md-4'>
+                <div className="col-md-5 offset-md-3">
                   {this.props.sinModificar
                     ? ""
-                    : <Button onClick={this.props.switchToModificar} color='primary'>Modificar Datos</Button>}
+                    : <Button className='btn btn-primary' onClick={this.props.switchToModificar} color='primary'>Modificar datos</Button>}
                 </div>
               </div>
-              <div style={{ width: '500px', justifyContent: 'center', display: 'flex', marginBottom: '10px' }} className='row offster-md-4'>
-                <div className="col-md-4">
+              <div style={{ display: 'flex', marginBottom: '10px' }} className='row offster-md-4'>
+                <div className="col-md-5 offset-md-3">
                   <Link to={link}>
                     <button className='btn btn-primary'>Ver eventos organizados</button>
                   </Link>
                 </div>
               </div>
-              <div style={{ width: '500px', justifyContent: 'center', display: 'flex', marginBottom: '10px' }} className='row offster-md-4'>
-                <div className="col-md-4">
+              <div style={{ display: 'flex', marginBottom: '10px' }} className='row offster-md-4'>
+                <div className="col-md-5 offset-md-3">
                   <BotonSuscripcion organizacion={this.props.id} />
                 </div>
               </div>
             </div>
             <div className="col-md-4">
               <CardColumns>
-                <Card className="text-center" body inverse color="primary" style={{ height: 100, width: 100, borderColor: 'white' }}>
+                <Card id="cardManos" className="text-center" body inverse color="primary" style={{ height: 100, width: 100, borderColor: 'white' }}>
                   <CardTitle><i className="fa fa-hand-stop-o fa-2x"></i></CardTitle>
                   <CardText style={{ fontSize: 20 }}>{this.renderManos()}</CardText>
+                  <Tooltip placement="top" isOpen={this.state.tooltipManos} target="cardManos" toggle={this.toggleManos}>
+                    Manos acumuladas
+                  </Tooltip>
                 </Card >
-                <Card className="text-center" body inverse color="primary" style={{ height: 100, width: 100, borderColor: 'white' }}>
+                <Card id="cardEventos" className="text-center" body inverse color="primary" style={{ height: 100, width: 100, borderColor: 'white' }}>
                   <CardTitle><i className="fa fa-calendar-check-o fa-2x"></i></CardTitle>
                   <CardText style={{ fontSize: 20 }}>{this.renderEventos()}</CardText>
+                  <Tooltip placement="top" isOpen={this.state.tooltipEventos} target="cardEventos" toggle={this.toggleEventos}>
+                    Eventos organizados
+                  </Tooltip>
                 </Card>
                 {this.props.data.verificada ?
                   <Card id="cardVerificada" className="text-center" body inverse color="primary" style={{ height: 100, width: 100, borderColor: 'white' }}>
                     <CardTitle><i className="fa fa-shield fa-3x"></i></CardTitle>
-                    <Tooltip placement="right" isOpen={this.state.tooltipOpen} target="cardVerificada" toggle={this.toggle}>
+                    <Tooltip placement="top" isOpen={this.state.tooltipOpen} target="cardVerificada" toggle={this.toggle}>
                       Cuenta verificada
                 </Tooltip>
                   </Card>

@@ -477,7 +477,6 @@ def EntregadoNecesidadEvento(request):
     try:
         colaboracion = Colaboracion.objects.get(id=request.data['colaboracion'])
         colaboracion.entregado = request.data['entregado']
-        print(request.data)
         colaboracion.save()
         return Response(request.data, status=status.HTTP_201_CREATED)
     except:

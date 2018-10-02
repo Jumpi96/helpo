@@ -207,8 +207,6 @@ class ONGEventoStats(APIView):
 
             vol_colaboraciones = User.objects.filter(colaboracion__necesidad_material__evento=evento, colaboracion__entregado=True).count() 
             colaboraciones.append(vol_colaboraciones)
-            print(vol_colaboraciones)
-            print(evento)
 
             manos_participaciones = Participacion.objects.filter(retroalimentacion_ong=True, necesidad_voluntario__evento=evento).count()
             manos_colaboraciones = Colaboracion.objects.filter(retroalimentacion_ong=True, necesidad_material__evento=evento).count()

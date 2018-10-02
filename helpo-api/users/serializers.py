@@ -221,7 +221,7 @@ class OrganizacionProfileSerializer(serializers.ModelSerializer):
         manos = 0
         for participacion in participaciones:
             evento = participacion.necesidad_voluntario.evento
-            if not evento.id in dict_conteo:        
+            if not evento.id in dict_conteo:
                 dict_conteo[evento.id] = []
             dict_conteo[evento.id].append(participacion.colaborador)
             manos = manos + 1

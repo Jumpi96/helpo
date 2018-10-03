@@ -8,9 +8,18 @@ WORKDIR /usr/src/app
 # where available (npm@5+)
 COPY package*.json ./
 
+# Install Python
+RUN apk add --no-cache --virtual .gyp \
+    python \
+    make \
+    g++
+
 # If you are building your code for production
 RUN npm install chalk eslint node-sass-chokidar npm-run-all react-scripts redux-devtools-extension
 RUN npm install --only=production
+
+# Delete Python
+RUN apk del .gyp
 
 # Bundle app source
 COPY . .

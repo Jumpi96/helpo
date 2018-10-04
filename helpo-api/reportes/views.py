@@ -36,6 +36,7 @@ class OrganizationStats(APIView):
             evento = colaboracion.necesidad_material.evento
             if not evento.id in dict_conteo or not colaboracion.colaborador in dict_conteo[evento.id]:
                 manos = manos + 1
+        print(manos)
         return manos
 
     def total_eventos(self, id):
@@ -208,9 +209,11 @@ class ONGEventoStats(APIView):
             vol_colaboraciones = User.objects.filter(colaboracion__necesidad_material__evento=evento, colaboracion__entregado=True).count() 
             colaboraciones.append(vol_colaboraciones)
 
-            manos_participaciones = Participacion.objects.filter(retroalimentacion_ong=True, necesidad_voluntario__evento=evento).count()
-            manos_colaboraciones = Colaboracion.objects.filter(retroalimentacion_ong=True, necesidad_material__evento=evento).count()
-            vol_manos = manos_participaciones + manos_colaboraciones
+            manos_participaciones = Participacion.objects.filter(retroalimentacion_voluntario=True, necesidad_voluntario__evento=evento).values_list('colaborador')
+            manos_colaboraciones = Colaboracion.objects.filter(retroalimentacion_voluntario=True, necesidad_material__evento=evento).values_list('colaborador')
+            union = manos_participaciones.union(manos_colaboraciones)
+            
+            vol_manos = union.count()
             manos.append(vol_manos)
 
         data = {

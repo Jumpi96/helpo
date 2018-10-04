@@ -459,6 +459,7 @@ class RegistrarColaboraciones extends Component {
         this.deleteParticipacion();
       }
     }
+
     api.post('/actividades/participaciones/', nuevaParticipacion)
       .then(res => {
         console.log(res);

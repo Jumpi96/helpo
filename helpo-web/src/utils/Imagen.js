@@ -73,10 +73,33 @@ async function handleImageUpload(image) {
   return avatar_url
 }
 
+function parseBase64(image) {
+  /*
+  Parse Base64 image and returns its data
+  */
+  const rx = /data.*base64,(.*)/gm
+  return rx.exec(image)[1]
+}
+
+var BASE64_MARKER = ';base64,';
+
+function convertDataURIToBinary(dataURI) {
+  var base64Index = dataURI.indexOf(BASE64_MARKER) + BASE64_MARKER.length;
+  var base64 = dataURI.substring(base64Index);
+  var raw = window.atob(base64);
+  var rawLength = raw.length;
+  var array = new Uint8Array(new ArrayBuffer(rawLength));
+
+  for(let i = 0; i < rawLength; i++) {
+    array[i] = raw.charCodeAt(i);
+  }
+  return array;
+}
+
 
 function getImagen(url) {
   return url
 }
 
 
-export { uploadImage, getImagen, handleImageUpload }
+export { uploadImage, getImagen, handleImageUpload, parseBase64, convertDataURIToBinary }

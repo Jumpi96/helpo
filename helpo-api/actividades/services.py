@@ -1,5 +1,6 @@
 from collections import namedtuple
-from actividades.models import Evento, Necesidad, Colaboracion, Voluntario, Participacion, LogMensaje, Mensaje, Propuesta
+from django.db.models import Sum
+from actividades.models import Evento, Necesidad, Colaboracion, Voluntario, Participacion, LogMensaje, Mensaje, Propuesta, Presencia, Entrega
 from common.notifications import send_mail_to_list, send_mail_to, send_mail_to_id_list, send_mail_to_id, send_push_notification_to_id_list
 from common.templates import render_participacion_email, render_cambio_evento_email, render_mensaje_evento, render_full_participacion_email, render_full_colaboracion_email, render_was_full_colaboracion_email, render_was_full_participacion_email, render_inicio_evento_email, render_fin_evento_email
 from users.models import User
@@ -273,3 +274,31 @@ def __send_fin_push(colaboradores_id, organizacion_id, evento):
     es_msg = "El evento " + evento.nombre + " ha finalizado"
     send_push_notification_to_id_list(
         colaboradores_id, "Event finished", "Evento finalizado", en_msg, es_msg, thread_daemon=not cron_exec)
+
+def actualizar_participacion(participacion_id, participo):
+    participacion = Participacion.objects.get(id=participacion_id)
+    presencias = Presencia.objects.filter(participacion=participacion)
+    cantidad_presencias = presencias.aggregate(Sum('cantidad'))
+    if participo:
+        if cantidad_presencias < participacion.cantidad:
+            serializer = PresenciaSerializer(participacion_id=participacion.id, 
+                cantidad=participacion.cantidad-cantidad_presencias)
+            serializer.save()
+    else:
+        if cantidad_presencias == participacion.cantidad:
+            ultima_presencia = presencias.order_by('-created')[0]
+            ultima_presencia.delete()
+
+def actualizar_colaboracion(colaboracion_id, entregado):
+    colaboracion = Colaboracion.objects.get(id=colaboracion_id)
+    entregas = Entrega.objects.filter(colaboracion=colaboracion)
+    cantidad_entregas = entregas.aggregate(Sum('cantidad'))
+    if entregado:
+        if cantidad_entregas < colaboracion.cantidad:
+            serializer = EntregaSerializer(colaboracion_id=colaboracion.id, 
+                cantidad=colaboracion.cantidad-cantidad_entregas)
+            serializer.save()
+    else:
+        if cantidad_entregas == colaboracion.cantidad:
+            ultima_entrega = entregas.order_by('-created')[0]
+            ultima_entrega.delete()

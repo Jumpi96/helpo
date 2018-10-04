@@ -166,3 +166,7 @@ class Propuesta(IndexedTimeStampedModel):
 class Entrega(IndexedTimeStampedModel):
     colaboracion = models.ForeignKey(Colaboracion, related_name='entregas', null=False, on_delete=models.CASCADE)
     cantidad = models.IntegerField(null=False)
+
+class Presencia(IndexedTimeStampedModel):
+    participacion = models.ForeignKey(Participacion, related_name='entregas', null=False, on_delete=models.CASCADE)
+    cantidad = models.IntegerField(null=False)

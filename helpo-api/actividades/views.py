@@ -10,15 +10,15 @@ from rest_framework import status
 from datetime import datetime
 from actividades.models import Evento, RubroEvento, CategoriaRecurso, Recurso, Necesidad, \
     Contacto, Voluntario, Funcion, Participacion, Colaboracion, Comentario, Mensaje, EventoImagen, \
-    Propuesta
+    Propuesta, Entrega, Presencia
 from knox.models import AuthToken
 from users.models import User
 from actividades.serializers import EventoSerializer, RubroEventoSerializer, \
     CategoriaRecursoSerializer, RecursoSerializer, NecesidadSerializer, ContactoSerializer, \
     ConsultaEventoSerializer, VoluntarioSerializer, FuncionSerializer, ConsultaNecesidadesSerializer, \
     ParticipacionSerializer, ColaboracionSerializer, ComentarioSerializer, MensajeSerializer, EventoImagenSerializer, \
-    PropuestaSerializer, ConsultaAllNecesidadesSerializer
-from actividades.services import create_propuesta
+    PropuestaSerializer, ConsultaAllNecesidadesSerializer, PresenciaSerializer, EntregaSerializer
+from actividades.services import create_propuesta, actualizar_colaboracion, actualizar_participacion
 from common.functions import get_token_user, calc_distance_locations
 import re
 
@@ -475,9 +475,7 @@ def RetroalimentacionONGEvento(request):
 @api_view(['POST'])
 def EntregadoNecesidadEvento(request):
     try:
-        colaboracion = Colaboracion.objects.get(id=request.data['colaboracion'])
-        colaboracion.entregado = request.data['entregado']
-        colaboracion.save()
+        actualizar_colaboracion(request.data['colaboracion'], request.data['entregado'])
         return Response(request.data, status=status.HTTP_201_CREATED)
     except:
        return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -485,9 +483,7 @@ def EntregadoNecesidadEvento(request):
 @api_view(['POST'])
 def ParticipadoNecesidadEvento(request):
     try:
-        participacion = Participacion.objects.get(id=request.data['participacion'])
-        participacion.participo = request.data['participo']
-        participacion.save()
+        actualizar_participacion(request.data['participacion'], request.data['participo'])
         return Response(request.data, status=status.HTTP_201_CREATED)
     except:
        return Response(status=status.HTTP_400_BAD_REQUEST)

@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from actividades.models import Evento, RubroEvento, Ubicacion, CategoriaRecurso, \
     Recurso, Necesidad, Contacto, Funcion, Voluntario, Participacion, Colaboracion, Comentario, Mensaje, EventoImagen, \
-    Propuesta, Entrega
+    Propuesta, Entrega, Presencia
 from actividades.services import send_mail_mensaje_evento, send_previous_mail_evento, response_propuesta, deny_propuesta, send_full_participacion_mail, send_full_colaboracion_mail, send_was_full_colaboracion_mail
 from users.serializers import UserSerializer, ColaboradorInfoSerializer
 from users.models import User
@@ -367,3 +367,15 @@ class MensajeSerializer(serializers.ModelSerializer):
         mensaje = Mensaje.objects.create(**validated_data)
         send_mail_mensaje_evento(mensaje, validated_data.get('evento').id)
         return mensaje
+
+
+class EntregaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Entrega
+        fields = ('colaboracion', 'cantidad')
+
+
+class PresenciaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Presencia
+        fields = ('participacion', 'cantidad')

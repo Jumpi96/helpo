@@ -278,12 +278,13 @@ def __send_fin_push(colaboradores_id, organizacion_id, evento):
 def actualizar_participacion(participacion_id, participo):
     participacion = Participacion.objects.get(id=participacion_id)
     presencias = Presencia.objects.filter(participacion=participacion)
-    cantidad_presencias = presencias.aggregate(Sum('cantidad'))
+    if presencias:
+        cantidad_presencias = presencias.aggregate(Sum('cantidad'))['cantidad__sum']
+    else:
+        cantidad_presencias = 0
     if participo:
         if cantidad_presencias < participacion.cantidad:
-            serializer = PresenciaSerializer(participacion_id=participacion.id, 
-                cantidad=participacion.cantidad-cantidad_presencias)
-            serializer.save()
+            Presencia.objects.create(participacion_id=participacion.id, cantidad=participacion.cantidad-cantidad_presencias)
     else:
         if cantidad_presencias == participacion.cantidad:
             ultima_presencia = presencias.order_by('-created')[0]
@@ -292,12 +293,13 @@ def actualizar_participacion(participacion_id, participo):
 def actualizar_colaboracion(colaboracion_id, entregado):
     colaboracion = Colaboracion.objects.get(id=colaboracion_id)
     entregas = Entrega.objects.filter(colaboracion=colaboracion)
-    cantidad_entregas = entregas.aggregate(Sum('cantidad'))
+    if entregas:
+        cantidad_entregas = entregas.aggregate(Sum('cantidad'))['cantidad__sum']
+    else:
+        cantidad_entregas = 0
     if entregado:
         if cantidad_entregas < colaboracion.cantidad:
-            serializer = EntregaSerializer(colaboracion_id=colaboracion.id, 
-                cantidad=colaboracion.cantidad-cantidad_entregas)
-            serializer.save()
+            Entrega.objects.create(colaboracion_id=colaboracion.id, cantidad=colaboracion.cantidad-cantidad_entregas)
     else:
         if cantidad_entregas == colaboracion.cantidad:
             ultima_entrega = entregas.order_by('-created')[0]

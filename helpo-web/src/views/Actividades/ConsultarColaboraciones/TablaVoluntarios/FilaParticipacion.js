@@ -21,7 +21,7 @@ const FilaPropTypes = {
 }
 
 const FilaParticipacionConnected = ( props ) => {
-  const { apellido, nombre, comentario, idParticipacion, handleCheckboxChange, participo, idVoluntario, retroalimentacion_ong, evento } = props
+  const { apellido, nombre, comentario, idParticipacion, handleCheckboxChange, cantidad, presencias, idVoluntario, retroalimentacion_ong, evento } = props
 
   const perfilButton = (
     <Link to={`/perfil/${idVoluntario}`}>
@@ -81,7 +81,7 @@ const FilaParticipacionConnected = ( props ) => {
       <td><input 
             type="checkbox" 
             name={"entregado" + idParticipacion} 
-            defaultChecked={participo}
+            defaultChecked={presencias===cantidad}
             onChange={(event) => handleCheckboxChange(event.target.checked, idParticipacion)}/>
             </td>
       <td>

@@ -22,7 +22,9 @@ const TablaVoluntario = ( props ) => {
         participo: participacion.participo,
         retroalimentacion_ong: participacion.retroalimentacion_ong,
         checkedBox: () => {},
-        idVoluntario: participacion.colaborador.id
+        idVoluntario: participacion.colaborador.id,
+        cantidad: participacion.cantidad,
+        presencias: participacion.presencias
       }
       dataArray.push(participacionData)      
     }    
@@ -49,7 +51,7 @@ const TablaVoluntario = ( props ) => {
             <th scope="col">Nombre</th>
             <th scope="col"></th>
             <th scope="col">Comentario</th>
-            <th scope="col">Participó</th>
+            <th scope="col">¿Completó su participación?</th>
             <th scope="col">Retroalimentación</th>
           </tr>  
         </thead>

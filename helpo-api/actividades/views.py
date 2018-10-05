@@ -17,7 +17,7 @@ from actividades.serializers import EventoSerializer, RubroEventoSerializer, \
     CategoriaRecursoSerializer, RecursoSerializer, NecesidadSerializer, ContactoSerializer, \
     ConsultaEventoSerializer, VoluntarioSerializer, FuncionSerializer, ConsultaNecesidadesSerializer, \
     ParticipacionSerializer, ColaboracionSerializer, ComentarioSerializer, MensajeSerializer, EventoImagenSerializer, \
-    PropuestaSerializer, ConsultaAllNecesidadesSerializer, PresenciaSerializer, EntregaSerializer
+    PropuestaSerializer, ConsultaAllNecesidadesSerializer
 from actividades.services import create_propuesta, actualizar_colaboracion, actualizar_participacion
 from common.functions import get_token_user, calc_distance_locations
 import re
@@ -474,19 +474,19 @@ def RetroalimentacionONGEvento(request):
 
 @api_view(['POST'])
 def EntregadoNecesidadEvento(request):
-    try:
-        actualizar_colaboracion(request.data['colaboracion'], request.data['entregado'])
-        return Response(request.data, status=status.HTTP_201_CREATED)
-    except:
-       return Response(status=status.HTTP_400_BAD_REQUEST)
+    #try:
+    actualizar_colaboracion(request.data['colaboracion'], request.data['entregado'])
+    return Response(request.data, status=status.HTTP_201_CREATED)
+    #except:
+    #   return Response(status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
 def ParticipadoNecesidadEvento(request):
-    try:
-        actualizar_participacion(request.data['participacion'], request.data['participo'])
-        return Response(request.data, status=status.HTTP_201_CREATED)
-    except:
-       return Response(status=status.HTTP_400_BAD_REQUEST)
+    #try:
+    actualizar_participacion(request.data['participacion'], request.data['participo'])
+    return Response(request.data, status=status.HTTP_201_CREATED)
+    #except:
+    #   return Response(status=status.HTTP_400_BAD_REQUEST)
 
 class EventoImagenRetrieveDestroyView(RetrieveDestroyAPIView):
 

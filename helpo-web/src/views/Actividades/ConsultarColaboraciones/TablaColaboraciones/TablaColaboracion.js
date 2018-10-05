@@ -22,7 +22,7 @@ const TablaColaboracion = ( props ) => {
         idColaboracion: colaboracion.id,
         retroalimentacion_ong: colaboracion.retroalimentacion_ong,
         checkedBox: () => {},
-        entregado: colaboracion.entregado,
+        entregados: colaboracion.entregados,
         idVoluntario: colaboracion.colaborador.id
       }
       dataArray.push(colaboracionData)      
@@ -51,7 +51,7 @@ const TablaColaboracion = ( props ) => {
             <th scope="col"></th>
             <th scope="col">Cantidad</th>
             <th scope="col">Comentario</th>
-            <th scope="col">Entregado</th>
+            <th scope="col">¿Completó la entrega?</th>
             <th scope="col">Retroalimentación</th>
           </tr>  
         </thead>

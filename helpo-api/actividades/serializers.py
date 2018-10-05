@@ -145,7 +145,7 @@ class ColaboracionSerializer(serializers.ModelSerializer):
         from django.db.models import Sum
         entregas = Entrega.objects.filter(colaboracion=instance)
         if entregas:
-            return entregas.aggregate(Sum('cantidad'))
+            return entregas.aggregate(Sum('cantidad'))['cantidad__sum']
         return 0
     
     def create(self, validated_data):
@@ -245,10 +245,18 @@ class ParticipacionSerializer(serializers.ModelSerializer):
         queryset=Voluntario.objects.all(), source='necesidad_voluntario'
     )
     colaborador = ColaboradorInfoSerializer(read_only=True)
+    presencias = serializers.SerializerMethodField()
     
     class Meta:
         model = Participacion
-        fields = ('id', 'comentario', 'cantidad', 'necesidad_voluntario_id', 'colaborador', 'participo', 'retroalimentacion_voluntario', 'retroalimentacion_ong')
+        fields = ('id', 'comentario', 'cantidad', 'necesidad_voluntario_id', 'colaborador', 'presencias', 'retroalimentacion_voluntario', 'retroalimentacion_ong')
+
+    def get_presencias(self, instance):
+        from django.db.models import Sum
+        presencias = Presencia.objects.filter(participacion=instance)
+        if presencias:
+            return presencias.aggregate(Sum('cantidad'))['cantidad__sum']
+        return 0
 
     def create(self, validated_data):
         necesidad_voluntario = validated_data.get('necesidad_voluntario')
@@ -367,15 +375,3 @@ class MensajeSerializer(serializers.ModelSerializer):
         mensaje = Mensaje.objects.create(**validated_data)
         send_mail_mensaje_evento(mensaje, validated_data.get('evento').id)
         return mensaje
-
-
-class EntregaSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Entrega
-        fields = ('colaboracion', 'cantidad')
-
-
-class PresenciaSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Presencia
-        fields = ('participacion', 'cantidad')

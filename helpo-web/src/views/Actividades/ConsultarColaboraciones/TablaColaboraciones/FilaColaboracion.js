@@ -22,7 +22,7 @@ const FilaPropTypes = {
 }
 
 const FilaColaboracionConnected = ( props ) => {
-  const { apellido, nombre, cantidad, comentario, idColaboracion, handleCheckboxChange, entregado, idVoluntario, retroalimentacion_ong, evento } = props  
+  const { apellido, nombre, cantidad, comentario, idColaboracion, handleCheckboxChange, entregados, idVoluntario, retroalimentacion_ong, evento } = props  
 
   const perfilButton = (
     <Link to={`/perfil/${idVoluntario}`}>
@@ -83,7 +83,7 @@ const FilaColaboracionConnected = ( props ) => {
       <td><input 
             type="checkbox" 
             name={"entregado" + idColaboracion}              
-            defaultChecked={entregado}
+            defaultChecked={entregados === cantidad}
             onChange={(event) => handleCheckboxChange(event.target.checked, idColaboracion)}/>
             </td>
       <td>

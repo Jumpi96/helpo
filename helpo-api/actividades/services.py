@@ -11,7 +11,7 @@ def send_mail_mensaje_evento(mensaje, evento_id):
     evento = Evento.objects.filter(id=evento_id).first()
     email_participantes.append(evento.organizacion.email)
     send_mail_to_list(email_participantes,
-                      "helpo - " + mensaje.asunto + " (" + evento.nombre + ")",
+                      "Helpo: " + mensaje.asunto + " (" + evento.nombre + ")",
                       render_mensaje_evento(evento, mensaje.mensaje)
                       )
     for participante in participantes:
@@ -47,7 +47,7 @@ def send_previous_mail_evento(evento_id, colaborador_id):
     for mensaje in mensajes:
         if len(LogMensaje.objects.filter(mensaje_id=mensaje.id, usuario_id=colaborador_id)) == 0:
             send_mail_to(colaborador_email,
-                         "helpo - " + mensaje.asunto +
+                         "Helpo: " + mensaje.asunto +
                          " (" + evento.nombre + ")",
                          render_mensaje_evento(evento, mensaje.mensaje)
                          )

@@ -20,9 +20,11 @@ def _get_email_from_id(user_id):
 
 
 def send_mail_to_id_list(ids_to, html_subject, html_content, mail_from=settings.NOTIFICATION_EMAIL, thread_daemon=True):
+    mails_to = []
     for user_id in ids_to:
-        send_mail_to_id(user_id, html_subject, html_content,
-                        mail_from, thread_daemon)
+        mails_to.append(_get_email_from_id(user_id))
+    send_mail_to_list(mails_to, html_subject, html_content,
+                      mail_from, thread_daemon)
 
 
 def send_mail_to_id(id_to, html_subject, html_content, mail_from=settings.NOTIFICATION_EMAIL, thread_daemon=True):
@@ -31,22 +33,27 @@ def send_mail_to_id(id_to, html_subject, html_content, mail_from=settings.NOTIFI
 
 
 def send_mail_to_list(mails_to=["error@helpo.com.ar"], html_subject="Error", html_content="Error", mail_from=settings.NOTIFICATION_EMAIL, thread_daemon=True):
-    for mail in mails_to:
-        send_mail_to(mail, html_subject, html_content,
-                     mail_from, thread_daemon)
+    send_mail_to(mails_to, html_subject, html_content,
+                 mail_from, thread_daemon)
 
 
-def send_mail_to_worker(url, payload, headers, mail_to, mail_from):
-    sleep_secs = randint(5, 55)
-    print("Enviando mail a %s desde %s, dentro de %s segundos" %
-          (mail_to, mail_from, sleep_secs))
-    time.sleep(sleep_secs)
-    response = requests.request("POST", url, data=payload, headers=headers)
-    str_log = "Mail enviado a %s desde %s, response code: %s" % (
-        mail_to, mail_from, response.status_code)
-    if response.status_code == 500:
-        str_log += ", response text: %s" % (response.text)
-    print(str_log)
+def send_mail_to_worker(url, headers, mail_to, mail_from, json_subject, json_content):
+    if not isinstance(mail_to, (list, tuple)):
+        mail_to = [mail_to]
+    for mail in mail_to:
+        sleep_secs = randint(30, 90)
+        print("Enviando mail a %s desde %s, dentro de %s segundos" %
+              (mail, mail_from, sleep_secs))
+        time.sleep(sleep_secs)
+        payload = "{\n \"fromAddress\": \"%s\",\n \"toAddress\": \"%s\",\n \"subject\": %s,\n \"content\": %s\n}" \
+            % (mail_from, mail, json_subject, json_content)
+        response = requests.request("POST", url, data=payload, headers=headers)
+        str_log = "Mail enviado a %s desde %s, response code: %s" % (
+            mail, mail_from, response.status_code)
+        if response.status_code == 500:
+            str_log += ", response text: %s" % (response.text)
+            send_sms_message_to(number="+543515056312", message=str_log)
+        print(str_log)
 
 
 def send_mail_to(mail_to="error@helpo.com.ar", html_subject="Error", html_content="Error", mail_from=settings.NOTIFICATION_EMAIL, thread_daemon=True):
@@ -54,14 +61,12 @@ def send_mail_to(mail_to="error@helpo.com.ar", html_subject="Error", html_conten
     json_content = json.dumps(html_content)
     url = "https://mail.zoho.com/api/accounts/%s/messages" % (
         config('ZOHO_ACCOUNT_ID'))
-    payload = "{\n \"fromAddress\": \"%s\",\n \"toAddress\": \"%s\",\n \"subject\": %s,\n \"content\": %s\n}" \
-        % (mail_from, mail_to, json_subject, json_content)
     headers = {
         'Authorization': config('ZOHO_AUTH_TOKEN'),
         'Content-Type': "application/json; charset=utf-8"
     }
     t = threading.Thread(target=send_mail_to_worker, args=(
-        url, payload, headers, mail_to, mail_from))
+        url, headers, mail_to, mail_from, json_subject, json_content))
     t.daemon = thread_daemon
     t.start()
 

@@ -1,6 +1,7 @@
 from django.db import models
 from common.models import IndexedTimeStampedModel
 from users.models import User
+from datetime import timedelta
 
 class RubroEvento(models.Model):
     nombre = models.CharField(max_length=100)
@@ -28,6 +29,14 @@ class Evento(IndexedTimeStampedModel):
     def __str__(self):
         show = self.organizacion.nombre + " - " + self.nombre
         return show
+
+    @property
+    def get_fecha_hora_inicio(self):
+        return self.fecha_hora_inicio - timedelta(hours=3)
+
+    @property
+    def get_fecha_hora_fin(self):
+        return self.fecha_hora_fin - timedelta(hours=3)
 
     nombre = models.CharField(max_length=100)
     descripcion = models.CharField(max_length=1000, null=True)

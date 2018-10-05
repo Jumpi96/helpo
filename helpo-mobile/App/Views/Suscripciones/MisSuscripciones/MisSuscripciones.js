@@ -27,7 +27,7 @@ class MisSuscripciones extends React.Component {
     // Se encarga de manejar de donde se van a tomar las suscripciones (props o state)
     const { suscripciones } = this.state.locked ? this.state : this.props
     /*
-    Locked es para que si se desubscribe la organizacion siga en la lista
+    Locked es para que si se desuscribe la organizacion siga en la lista
     hasta que se refresque la pagina
     */
     // Este if es para asegurarme de no llamar setState innecesariamente

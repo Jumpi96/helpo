@@ -36,7 +36,6 @@ class OrganizationStats(APIView):
             evento = colaboracion.necesidad_material.evento
             if not evento.id in dict_conteo or not colaboracion.colaborador in dict_conteo[evento.id]:
                 manos = manos + 1
-        print(manos)
         return manos
 
     def total_eventos(self, id):

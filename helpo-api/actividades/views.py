@@ -237,7 +237,8 @@ class ConsultaEventosOrganizacionCreateReadView(ListCreateAPIView):
         elif 'empresa' in self.request.query_params:
             queryset = queryset.filter(id__in=self.get_eventos_empresa(self.request.query_params.get('empresa')))
         else:
-            queryset = queryset.filter(fecha_hora_inicio__gte=datetime.today())
+            from django.db.models import Q
+            queryset = queryset.filter(Q(fecha_hora_inicio__gte=datetime.today(), campaña=False) | Q(fecha_hora_fin__gte=datetime.today(), campaña=True))
         if 'fecha_desde' in self.request.query_params:
             queryset = queryset.filter(fecha_hora_inicio__gte=self.request.query_params.get('fecha_desde'))
             queryset = queryset.filter(fecha_hora_inicio__lte=self.request.query_params.get('fecha_hasta'))
@@ -474,19 +475,19 @@ def RetroalimentacionONGEvento(request):
 
 @api_view(['POST'])
 def EntregadoNecesidadEvento(request):
-    #try:
-    actualizar_colaboracion(request.data['colaboracion'], request.data['entregado'])
-    return Response(request.data, status=status.HTTP_201_CREATED)
-    #except:
-    #   return Response(status=status.HTTP_400_BAD_REQUEST)
+    try:
+        actualizar_colaboracion(request.data['colaboracion'], request.data['entregado'])
+        return Response(request.data, status=status.HTTP_201_CREATED)
+    except:
+       return Response(status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
 def ParticipadoNecesidadEvento(request):
-    #try:
-    actualizar_participacion(request.data['participacion'], request.data['participo'])
-    return Response(request.data, status=status.HTTP_201_CREATED)
-    #except:
-    #   return Response(status=status.HTTP_400_BAD_REQUEST)
+    try:
+        actualizar_participacion(request.data['participacion'], request.data['participo'])
+        return Response(request.data, status=status.HTTP_201_CREATED)
+    except:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
 class EventoImagenRetrieveDestroyView(RetrieveDestroyAPIView):
 

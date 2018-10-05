@@ -50,6 +50,8 @@ const TablaVoluntario = ( props ) => {
             <th scope="col">Apellido</th>
             <th scope="col">Nombre</th>
             <th scope="col"></th>
+            <th scope="col">Cantidad</th>
+            <th scope="col">Presencias</th>
             <th scope="col">Comentario</th>
             <th scope="col">¿Completó su participación?</th>
             <th scope="col">Retroalimentación</th>

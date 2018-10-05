@@ -77,6 +77,8 @@ const FilaParticipacionConnected = ( props ) => {
       <td>{apellido}</td>
       <td>{nombre}</td>
       <td>{perfilButton}</td>
+      <td>{cantidad}</td>
+      <td>{presencias}</td>
       <td>{comentario ? comentario : "-"}</td>
       <td><input 
             type="checkbox" 

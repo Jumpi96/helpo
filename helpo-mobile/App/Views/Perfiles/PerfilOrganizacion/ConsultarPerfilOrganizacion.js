@@ -17,6 +17,7 @@ import {
   Separator
 } from 'native-base';
 import styles from './styles';
+import BotonSuscripcion from '../../Suscripciones/BotonSuscripcion/BotonSuscripcion'
 
 
 class ConsultarPerfilOrganizacion extends Component {
@@ -113,7 +114,8 @@ class ConsultarPerfilOrganizacion extends Component {
               <Label style={styles.label}>Descripción</Label>
               {this.renderDescripcion()}
             </ListItem>
-
+            <Separator bordered noTopBorder></Separator>
+            <BotonSuscripcion organizacion={this.props.data.usuario.id}/>
           </Content>
         </Container>
       );

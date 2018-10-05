@@ -79,6 +79,7 @@ def send_was_full_colaboracion_mail(necesidad_material):
                  render_was_full_colaboracion_email(necesidad_material))
 
 
+# Bore: Asumo que request_data es un objeto Evento
 def notificar_cambio_evento(request_data):
     obj_evento = namedtuple("Evento", request_data.keys())(*request_data.values())
     usuarios_id = _get_usuarios(obj_evento)
@@ -103,8 +104,10 @@ def _send_mail(usuarios_id, evento):
 
 def _get_usuarios(evento):
     from actividades.models import Necesidad, Voluntario, Colaboracion, Participacion
+    from users.models import Suscripcion
     necesidades = Necesidad.objects.filter(evento=evento.id).values('id')
     voluntarios = Voluntario.objects.filter(evento=evento.id).values('id')
+    suscripciones = Suscripcion.objects.filter(organizacion=evento.organizacion)
     colaboraciones = Colaboracion.objects.filter(
         necesidad_material__in=necesidades, vigente=True).values('colaborador')
     participaciones = Participacion.objects.filter(
@@ -113,7 +116,8 @@ def _get_usuarios(evento):
                   for colaboracion in colaboraciones]
     usuarios_2 = [participacion['colaborador']
                   for participacion in participaciones]
-    return usuarios_1 + usuarios_2
+    usuarios_3 = [suscripcion.usuario.id for suscripcion in suscripciones]
+    return usuarios_1 + usuarios_2 + usuarios_3
 
 
 def _get_evento(evento):

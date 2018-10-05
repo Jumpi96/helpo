@@ -4,6 +4,7 @@ from django.db.models.signals import post_save, pre_save, pre_delete
 from actividades.models import Evento, ActividadesTasks, Participacion
 from users.models import User, Suscripcion, OrganizacionProfile
 from reportes.services import update_monthly_suscriptions
+from actividades.services import notificar_cambio_evento
 import uuid
 
 """ Module where all signal handlers for the Actividades app are defined """
@@ -28,7 +29,7 @@ def handle_evento_scheduling(sender, instance , created, **kwargs):
 def handle_evento_change_notification(sender, instance, created, **kwags):
     """
     Notifica a todos los ususarios suscritos a una organizacion cuando
-    esta crea o modifica un evento
+    esta crea un evento
     """
     # Busco la ong dueña del evento
     organizacion = User.objects.get(pk=instance.organizacion.id)
@@ -39,11 +40,6 @@ def handle_evento_change_notification(sender, instance, created, **kwags):
         for user in users:
             pass
             #Notificar cuando se crea el evento
-    elif instance.estado == 1:
-        # Cuando un evento creado se modifica
-        for user in users:
-            pass
-            #Notificar modificacion de evento
 
 @receiver(pre_save, sender=Suscripcion, dispatch_uid=uuid.uuid4())
 def update_monthly_suscription_on_save(sender, instance, **kwargs):

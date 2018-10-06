@@ -102,22 +102,17 @@ def _send_mail(usuarios_id, evento):
 
 
 def _get_usuarios(evento):
-    from actividades.models import Necesidad, Voluntario, Colaboracion, Participacion
-    necesidades = Necesidad.objects.filter(evento=evento.id).values('id')
-    voluntarios = Voluntario.objects.filter(evento=evento.id).values('id')
     colaboraciones = Colaboracion.objects.filter(
-        necesidad_material__in=necesidades, vigente=True).values('colaborador')
+        necesidad_material__evento_id=evento.id, vigente=True).values('colaborador')
     participaciones = Participacion.objects.filter(
-        necesidad_voluntario__in=voluntarios, vigente=True).values('colaborador')
-    usuarios_1 = [colaboracion['colaborador']
-                  for colaboracion in colaboraciones]
-    usuarios_2 = [participacion['colaborador']
-                  for participacion in participaciones]
-    return usuarios_1 + usuarios_2
+        necesidad_voluntario__evento_id=evento.id, vigente=True).values('colaborador')
+    aportes = colaboraciones.union(participaciones)
+    usuarios = [aporte['colaborador']
+                  for aporte in aportes]
+    return usuarios
 
 
 def _get_evento(evento):
-    from actividades.models import Evento
     return Evento.objects.get(id=evento['id'])
 
 

@@ -65,7 +65,7 @@ LOGGING = {
     'disable_existing_loggers': False,
     'formatters': {
         'standard': {
-            'format': '%(message)s'
+            'format': '[%(asctime)s] %(message)s'
         },
     },
     'handlers': {

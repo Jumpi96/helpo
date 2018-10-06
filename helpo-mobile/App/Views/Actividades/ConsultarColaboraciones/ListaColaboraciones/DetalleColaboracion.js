@@ -12,7 +12,8 @@ class DetalleColaboracion extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      retroalimentacion: this.props.colaboracion.retroalimentacion_ong
+      retroalimentacion: this.props.colaboracion.retroalimentacion_ong,
+      entregado: this.props.colaboracion.entregados === this.props.colaboracion.cantidad,
     }
     this.renderItem = this.renderItem.bind(this)
   }
@@ -80,7 +81,7 @@ class DetalleColaboracion extends React.Component {
         </Body>
       </ListItem>
     )
-    if(item.key === 'Entregado') {
+    if(item.key === '¿Completó su colaboración?') {
       return entregadoItem
     } else if (item.key === 'Retroalimentación') {
       if (moment(this.props.evento.fecha_hora_inicio) > moment()) {
@@ -103,7 +104,7 @@ class DetalleColaboracion extends React.Component {
             {key: 'Comentario', value: this.props.colaboracion.comentario},
             {key: 'Dni', value: this.props.colaboracion.colaborador.dni},
             {key: 'Entregados', value: this.props.colaboracion.entregados},
-            {key: 'Entregado', value: this.props.colaboracion.entregados === this.props.colaboracion.cantidad},
+            {key: '¿Completó su colaboración?', value: this.state.entregado},
             {key: 'Retroalimentación', value: this.state.retroalimentacion}
           ]}
           renderItem={({item}) => this.renderItem(item)}

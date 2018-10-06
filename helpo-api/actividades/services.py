@@ -260,14 +260,14 @@ def notificar_fin_evento(evento, cron_exec=False):
     __send_fin_push(colaboradores_id, organizacion_id, evento, cron_exec)
 
 
-def __send_fin_mail(colaboradores_id, organizacion_id, evento):
+def __send_fin_mail(colaboradores_id, organizacion_id, evento, cron_exec):
     colaboradores_id.append(organizacion_id)
     subject_utf = u"Helpo: el evento " + evento.nombre + " ha finalizado"
     send_mail_to_id_list(colaboradores_id, subject_utf,
                          render_fin_evento_email(evento), thread_daemon=not cron_exec)
 
 
-def __send_fin_push(colaboradores_id, organizacion_id, evento):
+def __send_fin_push(colaboradores_id, organizacion_id, evento, cron_exec):
     colaboradores_id.append(organizacion_id)
     en_msg = "The event " + evento.nombre + " has finished"
     es_msg = "El evento " + evento.nombre + " ha finalizado"

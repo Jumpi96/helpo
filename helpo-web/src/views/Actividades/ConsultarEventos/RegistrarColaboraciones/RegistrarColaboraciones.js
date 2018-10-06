@@ -394,19 +394,19 @@ class RegistrarColaboraciones extends Component {
     const participacion = this.getParticipacionPorId(idParticipacion);
     if (participacion.presencias === 0) {
       api.delete('/actividades/participaciones/' + idParticipacion + '/')
-      .then(res => {
-        console.log(res);
-        console.log(res.data);
-        this.loadNecesidadesYVoluntarios();
-      }).catch((error) => {
-        if (error.response) { console.log(error.response.status) }
-        else { console.log('Error: ', error.message) }
-        this.setState({ error_necesidad: "Hubo un problema al cargar su información.", apiToken: false });
-      });
+        .then(res => {
+          console.log(res);
+          console.log(res.data);
+          this.loadNecesidadesYVoluntarios();
+        }).catch((error) => {
+          if (error.response) { console.log(error.response.status) }
+          else { console.log('Error: ', error.message) }
+          this.setState({ error_necesidad: "Hubo un problema al cargar su información.", apiToken: false });
+        });
     } else {
       alert("No se puede eliminar una participación que ya fue realizada.");
     }
-   
+
   }
 
   saveColaboracion(colaboracion) {

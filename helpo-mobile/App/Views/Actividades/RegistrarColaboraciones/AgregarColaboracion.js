@@ -1,5 +1,4 @@
 import React from "react";
-import { connect } from 'react-redux';
 import {
   Container,
   Header,
@@ -61,7 +60,7 @@ class AgregarColaboracion extends React.Component {
     } else if (this.state.colaboracion.cantidad_restante < cantidad) {
       formIsValid = false;
       error = 'La cantidad ingresada es mayor al cupo disponible';
-    } else if (this.props.colaboracion.entregados > cantidad) {
+    } else if (this.state.colaboracion.entregados > cantidad) {
       formIsValid = false;
       error = 'La cantidad ingresada es menor a la colaboración ya entregada';
     }
@@ -168,8 +167,8 @@ class AgregarColaboracion extends React.Component {
   }
 
   getEntregados() {
-    if (!this.props.colaboracion.funcion) {
-      if (this.props.colaboracion.entregados > 0) {
+    if (!this.state.colaboracion.funcion) {
+      if (this.state.colaboracion.entregados > 0) {
         return (
           <ListItem>
             <Label style={styles.label}>Entregados</Label>
@@ -178,7 +177,7 @@ class AgregarColaboracion extends React.Component {
         );
       }
     } else {
-      if (this.props.colaboracion.presencias > 0) {
+      if (this.state.colaboracion.presencias > 0) {
         return (
           <ListItem>
             <Label style={styles.label}>Presencias</Label>
@@ -215,7 +214,7 @@ class AgregarColaboracion extends React.Component {
                 />
               </Item> : undefined
             }
-            {this.getEntregado()}
+            {this.getEntregados()}
             <ListItem>
               <Label style={styles.label}>Descripción</Label>
               <Text>{this.state.colaboracion.descripcion}</Text>

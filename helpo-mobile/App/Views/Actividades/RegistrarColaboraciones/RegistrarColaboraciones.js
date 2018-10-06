@@ -313,16 +313,10 @@ class RegistrarColaboraciones extends React.Component {
     }
   }
 
-  deleteParticipacion(i=0) {
-    let idParticipacion;
-    if (id === 0) {
-      idParticipacion = this.getIdParticipacionVoluntario();
-    } else {
-      idParticipacion = id;
-    }
-    const participacion = this.getParticipacionPorId(idParticipacion);
+  deleteParticipacion(idVoluntario=0) {
+    const participacion = this.getParticipacionVoluntario(idVoluntario);
     if (participacion.presencias === 0) {
-      api.delete('/actividades/participaciones/' + idParticipacion + '/')
+      api.delete('/actividades/participaciones/' + participacion.id + '/')
         .then(() => {
           this.loadNecesidadesYVoluntarios();
         }).catch(function (error) {
@@ -333,20 +327,26 @@ class RegistrarColaboraciones extends React.Component {
     } else {
       Alert.alert(
         "Eliminar participación",
-        "No se puede eliminar una participación que ya ha sido entregada."
+        "No se puede eliminar una participación que ya ha sido realizada."
       );
     }
   }
 
-  getIdParticipacionVoluntario() {
+  getParticipacionVoluntario(id=0) {
     const necesidades = this.state.voluntarios;
     const usuario = this.getUserId();
     let participaciones;
-    for (let i = 0; i < necesidades.length; i += 1) {
-      participaciones = necesidades[i].participaciones.filter(c => c.colaborador.id === usuario);
-      if (participaciones.length > 0) {
-        return participaciones[0].id;
+    if (id === 0) {
+      for (let i = 0; i < necesidades.length; i += 1) {
+        participaciones = necesidades[i].participaciones.filter(c => c.colaborador.id === usuario);
+        if (participaciones.length > 0) {
+          return participaciones[0];
+        }
       }
+    }
+    else {
+      const necesidad = this.state.voluntarios.filter(v => v.id === id)[0];
+      return necesidad.participaciones.filter(c => c.colaborador.id === usuario)[0];
     }
     return undefined;
   }

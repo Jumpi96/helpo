@@ -271,10 +271,10 @@ class SignUp extends Component {
           onTypeChange={this.handleUserTypeSelect}
           onSubmit={this.onSubmitData}
         />
-        {/*
         <View>
           <FBLogin
             permissions={["email"]}
+            style={{ margin: 15 }}
             loginBehavior={FBLoginManager.LoginBehaviors.Native}
             onLogin={function (data) {
               console.log("Logged in!");
@@ -304,13 +304,12 @@ class SignUp extends Component {
             }}
           />
           <GoogleSigninButton
-            style={{ width: 312, height: 48 }}
+            style={{ width: 312, height: 48, margin: 15 }}
             size={GoogleSigninButton.Size.Wide}
             color={GoogleSigninButton.Color.Dark}
             onPress={this.googleSignIn}
             disabled={this.state.isGoogleSigninInProgress} />
         </View>
-        */}
       </Container>
     );
   }

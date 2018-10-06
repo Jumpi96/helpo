@@ -192,15 +192,9 @@ class Login extends Component {
               <Text style={styles.validationMessage}>{this.props.errors[0].message}</Text>
             </Item>
           )}
-          {/*
-          <GoogleSigninButton
-            style={{ width: 312, height: 48 }}
-            size={GoogleSigninButton.Size.Wide}
-            color={GoogleSigninButton.Color.Dark}
-            onPress={this.googleSignIn}
-            disabled={this.state.isGoogleSigninInProgress} />
           <FBLogin
             permissions={["email"]}
+            style={{ margin: 15, marginTop: 50 }}
             loginBehavior={FBLoginManager.LoginBehaviors.Native}
             onLogin={function (data) {
               console.log("Logged in!");
@@ -233,7 +227,12 @@ class Login extends Component {
               console.log(data);
             }}
           />
-          */}
+          <GoogleSigninButton
+            style={{ width: 312, height: 48, marginLeft: 15 }}
+            size={GoogleSigninButton.Size.Wide}
+            color={GoogleSigninButton.Color.Dark}
+            onPress={this.googleSignIn}
+            disabled={this.state.isGoogleSigninInProgress} />
         </Content>
       </Container>
     );

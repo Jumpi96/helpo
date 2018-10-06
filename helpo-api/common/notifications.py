@@ -54,8 +54,9 @@ def send_mail_to_worker(url, headers, mail_to, mail_from, json_subject, json_con
             mail, mail_from, response.status_code)
         if response.status_code == 500:
             str_log += ", response text: %s" % (response.text)
-            send_sms_message_to(number="+543515056312", message=str_log)
-        log.info(str_log)
+            log.error(str_log)
+        else:
+            log.info(str_log)
 
 
 def send_mail_to(mail_to="error@helpo.com.ar", html_subject="Error", html_content="Error", mail_from=settings.NOTIFICATION_EMAIL, thread_daemon=True):

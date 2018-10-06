@@ -1,7 +1,7 @@
 from collections import namedtuple
 from actividades.models import Evento, Necesidad, Colaboracion, Voluntario, Participacion, LogMensaje, Mensaje, Propuesta
 from common.notifications import send_mail_to_list, send_mail_to, send_mail_to_id_list, send_mail_to_id, send_push_notification_to_id_list
-from common.templates import render_participacion_email, render_cambio_evento_email, render_mensaje_evento, render_full_participacion_email, render_full_colaboracion_email, render_was_full_colaboracion_email, render_was_full_participacion_email, render_inicio_evento_email, render_fin_evento_email
+from common.templates import render_participacion_email, render_cambio_evento_email, render_mensaje_evento, render_full_participacion_email, render_full_colaboracion_email, render_was_full_colaboracion_email, render_was_full_participacion_email, render_inicio_evento_email, render_fin_evento_email, render_creacion_evento_email
 from users.models import User
 
 
@@ -17,7 +17,6 @@ def send_mail_mensaje_evento(mensaje, evento_id):
     for participante in participantes:
         LogMensaje.objects.create(
             usuario_id=participante.id, mensaje_id=mensaje.id)
-
 
 def get_participantes_evento(evento_id):
     participantes = []
@@ -79,6 +78,21 @@ def send_was_full_colaboracion_mail(necesidad_material):
                  render_was_full_colaboracion_email(necesidad_material))
 
 
+def send_mail_creacion_evento(evento):
+    """
+    Manda mail de creacion de evento a todos los suscritos a la ong    
+    """
+    from users.models import Suscripcion
+    suscripciones = Suscripcion.objects.filter(organizacion=evento.organizacion)
+    usuarios_id = [suscripcion.usuario.id for suscripcion in suscripciones]
+
+    subject_utf = u"Creacion de evento: " + evento.nombre
+    content = render_creacion_evento_email(evento)
+    send_mail_to_id_list(ids_to=usuarios_id,
+                         html_subject=subject_utf, html_content=content)
+
+# Bore: Asumo que request_data es un objeto Evento
+# No es eso, es la data de la request que cambia al evento, negro sucio
 def notificar_cambio_evento(request_data):
     obj_evento = namedtuple("Evento", request_data.keys())(*request_data.values())
     usuarios_id = _get_usuarios(obj_evento)
@@ -103,8 +117,10 @@ def _send_mail(usuarios_id, evento):
 
 def _get_usuarios(evento):
     from actividades.models import Necesidad, Voluntario, Colaboracion, Participacion
+    from users.models import Suscripcion
     necesidades = Necesidad.objects.filter(evento=evento.id).values('id')
     voluntarios = Voluntario.objects.filter(evento=evento.id).values('id')
+    suscripciones = Suscripcion.objects.filter(organizacion=evento.organizacion)
     colaboraciones = Colaboracion.objects.filter(
         necesidad_material__in=necesidades, vigente=True).values('colaborador')
     participaciones = Participacion.objects.filter(
@@ -113,7 +129,8 @@ def _get_usuarios(evento):
                   for colaboracion in colaboraciones]
     usuarios_2 = [participacion['colaborador']
                   for participacion in participaciones]
-    return usuarios_1 + usuarios_2
+    usuarios_3 = [suscripcion.usuario.id for suscripcion in suscripciones]
+    return usuarios_1 + usuarios_2 + usuarios_3
 
 
 def _get_evento(evento):

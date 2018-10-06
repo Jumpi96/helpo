@@ -9,6 +9,10 @@ jobs:
       CIRCLE_TEST_REPORTS: /tmp/circleci-test-results
       PIPENV_IGNORE_VIRTUALENVS: true
       ZOHO_ACCOUNT_ID: xxxxxxxxxxxxxxxxxxx
+      ZOHO_AUTH_TOKEN: xxxxxxxxxxxxxxxxxxx
+      ONESIGNAL_REST_API_KEY: xxxxxxxxxxxxxxxxxxx
+      AWS_ACCESS_KEY_ID: xxxxxxxxxxxxxxxxxxx
+      AWS_SECRET_ACCESS_KEY: xxxxxxxxxxxxxxxxxxx
     docker:
     - image: circleci/python:3.6-jessie
     steps:

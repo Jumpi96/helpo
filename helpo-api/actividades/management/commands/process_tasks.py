@@ -22,7 +22,7 @@ class Command(BaseCommand):
         logger.setLevel(logging.DEBUG)
 
         now = timezone.now()
-        tasks = ActividadesTasks.objects.all().filter(execute_date__lte=now)
+        tasks = ActividadesTasks.objects.filter(execute_date__lte=now)
         if len(tasks) == 0:
             logger.debug(
                 'No existen actividades a ejecutar, durmiendo por 60 segundos')
@@ -38,6 +38,7 @@ class Command(BaseCommand):
                         evento=evento, execute_date=evento.fecha_hora_fin, tipo='EVENTO_FINISH')
                     finished_task.save()
                     evento.save()
+                    task.delete()
                     notificar_inicio_evento(evento, cron_exec=True)
                     logger.info(
                         'Actividad de tipo EVENTO_START ejecutada')
@@ -45,6 +46,7 @@ class Command(BaseCommand):
                     evento=task.evento
                     evento.estado=3  # finalized
                     evento.save()
+                    task.delete()
                     notificar_fin_evento(evento, cron_exec = True)
                     logger.info(
                         'Actividad de tipo EVENTO_FINISH ejecutada')

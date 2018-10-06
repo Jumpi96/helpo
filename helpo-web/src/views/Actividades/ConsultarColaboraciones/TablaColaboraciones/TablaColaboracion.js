@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 
 const tablaPropTypes = {
   necesidad: PropTypes.string.isRequired,
+  descripcion: PropTypes.string.isRequired,
   colaboraciones: PropTypes.array.isRequired,//[ {}, {} ],
 } 
 
@@ -34,7 +35,7 @@ const TablaColaboracion = ( props ) => {
     <p style={{ fontSize: '16px' }} className="text-muted text-center"> No hay colaboraciones para este recurso</p>
   )
 
-  const { colaboraciones, necesidad } = props
+  const { colaboraciones, necesidad, descripcion } = props
   let FilasColaboracion
   if ( colaboraciones.length > 0) {
     FilasColaboracion = adaptData(colaboraciones).map( (colaboracion) => <FilaColaboracion key={ colaboracion.idColaboracion } {...colaboracion}/> )
@@ -42,7 +43,7 @@ const TablaColaboracion = ( props ) => {
 
   return (
     <div>
-      <p className="h4" style={{ marginTop: '20px', marginBottom: '20px' }}>Recurso - {necesidad}</p>
+      <p className="h4" style={{ marginTop: '20px', marginBottom: '20px' }}>Recurso - {necesidad + ' - ' + descripcion}</p>
       <table className="table">
         <thead>
           <tr>

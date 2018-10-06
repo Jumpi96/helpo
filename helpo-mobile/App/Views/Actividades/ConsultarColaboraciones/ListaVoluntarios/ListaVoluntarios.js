@@ -12,7 +12,7 @@ const noItems = (
 )
 
 const ListaVoluntarios = (props) => {
-  const { funcion, participaciones } = props
+  const { funcion, participaciones, descripcion } = props
   let items = []
   for (let participacion of participaciones ) {
     const nombre = participacion.colaborador.nombre
@@ -44,7 +44,7 @@ const ListaVoluntarios = (props) => {
   return (
     <View>
       <ListItem itemDivider>
-        <Text>{'Función - ' + funcion}</Text>
+        <Text>{'Función - ' + funcion + ' - ' + descripcion}</Text>
       </ListItem>
       {items}
     </View>

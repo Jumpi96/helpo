@@ -35,7 +35,7 @@ const TablaVoluntario = ( props ) => {
     <p style={{ fontSize: '16px' }} className="text-muted text-center"> No hay participaciones para esta función</p>
   )
 
-  const { participaciones, funcion } = props
+  const { participaciones, funcion, descripcion } = props
   let Filasparticipacion
   if ( participaciones.length > 0) {
     Filasparticipacion = adaptData(participaciones).map( (participacion) => <FilaParticipacion key={ participacion.idParticipacion } {...participacion}/> )
@@ -43,7 +43,7 @@ const TablaVoluntario = ( props ) => {
 
   return (
     <div>
-      <p className="h4" style={{ marginTop: '20px', marginBottom: '20px' }}>Función - {funcion}</p>
+      <p className="h4" style={{ marginTop: '20px', marginBottom: '20px' }}>Función - {funcion + ' - ' + descripcion}</p>
       <table className="table">
         <thead>
           <tr>

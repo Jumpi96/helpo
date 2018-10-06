@@ -5,8 +5,6 @@ from actividades.services import notificar_inicio_evento, notificar_fin_evento
 import logging
 import os
 import sys
-import threading
-import time
 
 
 class Command(BaseCommand):
@@ -23,46 +21,38 @@ class Command(BaseCommand):
         logger.addHandler(hdlr)
         logger.setLevel(logging.DEBUG)
 
-        def handle_worker():
-            while True:
-                now = timezone.now()
-                tasks = ActividadesTasks.objects.all().filter(execute_date__lte=now)
-                if len(tasks) == 0:
-                    logger.debug(
-                        'No existen actividades a ejecutar, durmiendo por 60 segundos')
-                    time.sleep(60)
-                    continue
-                logger.info('Existen %s actividades a ejecutar' % len(tasks))
-                for task in tasks:
-                    logger.info('Ejecutando actividad: %s' % str(task))
-                    task_type = task.tipo
-                    if task_type == 'EVENTO_START':
-                        evento = task.evento
-                        evento.estado = 2  # in_progress
-                        finished_task = ActividadesTasks(
-                            evento=evento, execute_date=evento.fecha_hora_fin, tipo='EVENTO_FINISH')
-                        finished_task.save()
-                        evento.save()
-                        logger.debug(notificar_inicio_evento(
-                            evento, cron_exec=True))
-                        logger.info(
-                            'Actividad de tipo EVENTO_START ejecutada')
-                    elif task_type == 'EVENTO_FINISH':
-                        evento = task.evento
-                        evento.estado = 3  # finalized
-                        evento.save()
-                        logger.debug(notificar_fin_evento(
-                            evento, cron_exec=True))
-                        logger.info(
-                            'Actividad de tipo EVENTO_FINISH ejecutada')
-                    else:
-                        logger.error(
-                            "actividades/process_tasks: A not handled event was in ActividadesTasks")
-                logger.info(
-                    'Borradas %s actividades, durmiendo por 60 segundos' % len(tasks))
-                tasks.delete()
-                time.sleep(60)
-
-        t = threading.Thread(target=handle_worker)
-        t.daemon = True
-        t.start()
+        now = timezone.now()
+        tasks = ActividadesTasks.objects.all().filter(execute_date__lte=now)
+        if len(tasks) == 0:
+            logger.debug(
+                'No existen actividades a ejecutar, durmiendo por 60 segundos')
+        else:
+            logger.info('Existen %s actividades a ejecutar' % len(tasks))
+            for task in tasks:
+                logger.info('Ejecutando actividad: %s' % str(task))
+                task_type = task.tipo
+                if task_type == 'EVENTO_START':
+                    evento = task.evento
+                    evento.estado = 2  # in_progress
+                    finished_task = ActividadesTasks(
+                        evento=evento, execute_date=evento.fecha_hora_fin, tipo='EVENTO_FINISH')
+                    finished_task.save()
+                    evento.save()
+                    logger.debug(notificar_inicio_evento(
+                        evento, cron_exec=True))
+                    logger.info(
+                        'Actividad de tipo EVENTO_START ejecutada')
+                elif task_type == 'EVENTO_FINISH':
+                    evento = task.evento
+                    evento.estado = 3  # finalized
+                    evento.save()
+                    logger.debug(notificar_fin_evento(
+                        evento, cron_exec=True))
+                    logger.info(
+                        'Actividad de tipo EVENTO_FINISH ejecutada')
+                else:
+                    logger.error(
+                        "actividades/process_tasks: A not handled event was in ActividadesTasks")
+            logger.info(
+                'Borradas %s actividades, durmiendo por 60 segundos' % len(tasks))
+            tasks.delete()

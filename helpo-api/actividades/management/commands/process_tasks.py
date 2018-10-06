@@ -15,10 +15,10 @@ class Command(BaseCommand):
         logger = logging.getLogger(__name__)
         filename = str(os.path.abspath(os.path.dirname(
             sys.argv[0]))) + '/logs/process_tasks.log'
-        hdlr = logging.FileHandler(filename)
-        formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
-        hdlr.setFormatter(formatter)
-        logger.addHandler(hdlr)
+        file_hdlr = logging.FileHandler(filename)
+        formatter = logging.Formatter('%(levelname)s [%(asctime)s] %(name)s: %(message)s')
+        file_hdlr.setFormatter(formatter)
+        logger.addHandler(file_hdlr)
         logger.setLevel(logging.DEBUG)
 
         now = timezone.now()
@@ -38,16 +38,14 @@ class Command(BaseCommand):
                         evento=evento, execute_date=evento.fecha_hora_fin, tipo='EVENTO_FINISH')
                     finished_task.save()
                     evento.save()
-                    logger.debug(notificar_inicio_evento(
-                        evento, cron_exec=True))
+                    notificar_inicio_evento(evento, cron_exec=True)
                     logger.info(
                         'Actividad de tipo EVENTO_START ejecutada')
                 elif task_type == 'EVENTO_FINISH':
-                    evento = task.evento
-                    evento.estado = 3  # finalized
+                    evento=task.evento
+                    evento.estado=3  # finalized
                     evento.save()
-                    logger.debug(notificar_fin_evento(
-                        evento, cron_exec=True))
+                    notificar_fin_evento(evento, cron_exec = True)
                     logger.info(
                         'Actividad de tipo EVENTO_FINISH ejecutada')
                 else:

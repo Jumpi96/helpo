@@ -1,3 +1,5 @@
+import os
+import sys
 from .base import *  # noqa
 
 
@@ -68,7 +70,7 @@ LOGGING = {
     'disable_existing_loggers': False,
     'formatters': {
         'standard': {
-            'format': '%(levelname)-8s [%(asctime)s] %(name)s: %(message)s'
+            'format': '%(message)s'
         },
     },
     'handlers': {
@@ -77,17 +79,35 @@ LOGGING = {
             'class': 'logging.StreamHandler',
             'formatter': 'standard',
         },
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': str(os.path.abspath(os.path.dirname(sys.argv[0]))) + '/logs/debug.log',
+            'formatter': 'standard',
+        },
+        'file_warning': {
+            'level': 'WARNING',
+            'class': 'logging.FileHandler',
+            'filename': str(os.path.abspath(os.path.dirname(sys.argv[0]))) + '/logs/warning.log',
+            'formatter': 'standard',
+        },
+        'null': {
+            'level': 'DEBUG',
+            'class': 'logging.NullHandler',
+        },
     },
     'loggers': {
-        '': {
-            'handlers': ['console'],
-            'level': 'INFO'
+        'django.db.backends': {
+            'handlers': ['null'],  # Quiet by default!
+            'propagate': False,
+            'level': 'DEBUG',
         },
-        'celery': {
-            'handlers': ['console'],
-            'level': 'INFO'
-        }
-    }
+        'django': {
+            'handlers': ['console', 'file', 'file_warning'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
 }
 
 JS_REVERSE_JS_MINIFY = False

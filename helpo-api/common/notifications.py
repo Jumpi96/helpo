@@ -6,6 +6,7 @@ import time
 from random import randint
 from django.conf import settings
 import boto3
+import logging
 
 
 def _get_players_id(mails):
@@ -38,12 +39,13 @@ def send_mail_to_list(mails_to=["error@helpo.com.ar"], html_subject="Error", htm
 
 
 def send_mail_to_worker(url, headers, mail_to, mail_from, json_subject, json_content):
+    log = logging.getLogger('django')
     if not isinstance(mail_to, (list, tuple)):
         mail_to = [mail_to]
     for mail in mail_to:
         sleep_secs = randint(30, 90)
-        print("Enviando mail a %s desde %s, dentro de %s segundos" %
-              (mail, mail_from, sleep_secs))
+        log.info("Enviando mail a %s desde %s, dentro de %s segundos" %
+                 (mail, mail_from, sleep_secs))
         time.sleep(sleep_secs)
         payload = "{\n \"fromAddress\": \"%s\",\n \"toAddress\": \"%s\",\n \"subject\": %s,\n \"content\": %s\n}" \
             % (mail_from, mail, json_subject, json_content)
@@ -53,7 +55,7 @@ def send_mail_to_worker(url, headers, mail_to, mail_from, json_subject, json_con
         if response.status_code == 500:
             str_log += ", response text: %s" % (response.text)
             send_sms_message_to(number="+543515056312", message=str_log)
-        print(str_log)
+        log.info(str_log)
 
 
 def send_mail_to(mail_to="error@helpo.com.ar", html_subject="Error", html_content="Error", mail_from=settings.NOTIFICATION_EMAIL, thread_daemon=True):
@@ -80,12 +82,13 @@ def send_push_notification_to_id_list(ids_to, en_title, es_title, en_message, es
 
 
 def send_push_notification_to_list_worker(url, payload, headers, mails_to):
+    log = logging.getLogger('django')
     sleep_secs = randint(5, 55)
-    print("Enviando notificacion push a %s, dentro de %s segundos" % (
+    log.info("Enviando notificacion push a %s, dentro de %s segundos" % (
         mails_to, sleep_secs))
     time.sleep(sleep_secs)
     response = requests.request("POST", url, data=payload, headers=headers)
-    print("Notificacion push enviada a %s, response text: %s, response code: %s" % (
+    log.info("Notificacion push enviada a %s, response text: %s, response code: %s" % (
         mails_to, response.text, response.status_code))
 
 
@@ -112,6 +115,7 @@ def send_push_notification_to_list(mails_to, en_title, es_title, en_message, es_
 
 
 def send_push_notification_all(en_title, es_title, en_message, es_message, thread_daemon=True):
+    log = logging.getLogger('django')
     url = "https://onesignal.com/api/v1/notifications"
 
     payload = "{\n " \
@@ -128,11 +132,12 @@ def send_push_notification_all(en_title, es_title, en_message, es_message, threa
 
     response = requests.request("POST", url, data=payload, headers=headers)
 
-    print("Enviando notificacion push a todos, response text: %s, response code: %s" % (
+    log.info("Enviando notificacion push a todos, response text: %s, response code: %s" % (
         response.text, response.status_code))
 
 
 def send_sms_message_to_worker(number, message):
+    log = logging.getLogger('django')
     client = boto3.client(
         "sns",
         aws_access_key_id=config('AWS_ACCESS_KEY_ID'),
@@ -143,7 +148,7 @@ def send_sms_message_to_worker(number, message):
         PhoneNumber=number,
         Message=message
     )
-    print("Enviando mensaje SMS a %s con el texto: %s" % (number, message))
+    log.info("Enviando mensaje SMS a %s con el texto: %s" % (number, message))
 
 
 def send_sms_message_to(number="+543515056312", message="SMS from Helpo", thread_daemon=True):
@@ -155,7 +160,8 @@ def send_sms_message_to(number="+543515056312", message="SMS from Helpo", thread
         t.start()
 
     else:
-        print("Mensajes SMS solo permitidos para produccion")
+        log = logging.getLogger('django')
+        log.warning("Mensajes SMS solo permitidos para produccion")
 
 
 def __parse_number(number):

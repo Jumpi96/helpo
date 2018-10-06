@@ -199,10 +199,10 @@ class ModificarPerfilVoluntario extends Component {
               <Item floatingLabel>
                 <Label>Habilidades</Label>
                 <Input
+                  value={this.state.voluntario.habilidades}
                   multiline={true}
                   numberOfLines={5}
-                  onChange={text => this.handleChange('habilidades', text)}
-                  value={this.state.voluntario.habilidades}
+                  onChangeText={text => this.handleChange('habilidades', text)}
                 />
               </Item>
             </Form>

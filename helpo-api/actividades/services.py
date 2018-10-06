@@ -86,19 +86,18 @@ def send_mail_creacion_evento(evento):
     suscripciones = Suscripcion.objects.filter(organizacion=evento.organizacion)
     usuarios_id = [suscripcion.usuario.id for suscripcion in suscripciones]
 
-    subject_utf = u"Creacion de evento: " + evento.nombre
+    subject_utf = u"Creación de evento: " + evento.nombre
     content = render_creacion_evento_email(evento)
     send_mail_to_id_list(ids_to=usuarios_id,
                          html_subject=subject_utf, html_content=content)
 
-# Bore: Asumo que request_data es un objeto Evento
-# No es eso, es la data de la request que cambia al evento, negro sucio
+
 def notificar_cambio_evento(request_data):
-    obj_evento = namedtuple("Evento", request_data.keys())(*request_data.values())
-    usuarios_id = _get_usuarios(obj_evento)
     evento = _get_evento(request_data)
-    _send_mail(usuarios_id, evento)
-    _send_push(usuarios_id, evento)
+    if evento is not None:
+        usuarios_id = _get_usuarios(evento)
+        _send_mail(usuarios_id, evento)
+        _send_push(usuarios_id, evento)
 
 
 def _send_push(usuarios_id, evento):
@@ -117,7 +116,7 @@ def _send_mail(usuarios_id, evento):
 
 def _get_usuarios(evento):
     suscripciones = Suscripcion.objects.filter(organizacion=evento.organizacion).extra(
-        select={'colaborador': 'usuario'}).values('colaborador')
+        select={'colaborador': 'usuario_id'}).values('colaborador')
     colaboraciones = Colaboracion.objects.filter(
         necesidad_material__evento_id=evento.id, vigente=True).values('colaborador')
     participaciones = Participacion.objects.filter(
@@ -129,7 +128,11 @@ def _get_usuarios(evento):
 
 
 def _get_evento(evento):
-    return Evento.objects.get(id=evento['id'])
+    try:
+        evento_obj = Evento.objects.get(id=evento['id'])
+        return evento_obj
+    except ObjectDoesNotExist:
+        return None
 
 
 def send_participacion_create_email(participacion):

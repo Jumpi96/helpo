@@ -12,7 +12,6 @@ class DetalleColaboracion extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      entregado: this.props.colaboracion.entregado,
       retroalimentacion: this.props.colaboracion.retroalimentacion_ong
     }
     this.renderItem = this.renderItem.bind(this)
@@ -103,7 +102,8 @@ class DetalleColaboracion extends React.Component {
             {key: 'Cantidad', value: this.props.colaboracion.cantidad},
             {key: 'Comentario', value: this.props.colaboracion.comentario},
             {key: 'Dni', value: this.props.colaboracion.colaborador.dni},
-            {key: 'Entregado', value: this.state.entregado},
+            {key: 'Entregados', value: this.props.colaboracion.entregados},
+            {key: 'Entregado', value: this.props.colaboracion.entregados === this.props.colaboracion.cantidad},
             {key: 'Retroalimentación', value: this.state.retroalimentacion}
           ]}
           renderItem={({item}) => this.renderItem(item)}

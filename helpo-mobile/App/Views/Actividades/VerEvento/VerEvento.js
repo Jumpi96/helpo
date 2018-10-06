@@ -98,9 +98,7 @@ class VerEvento extends React.Component {
       { text: 'Eliminar', icon: 'trash', iconColor: '#fa213b' },
       { text: 'Cancelar', icon: 'close', iconColor: '#25de5b' },
     ];
-    const { params } = this.props.navigation.state;
-    const evento = params.evento;
-
+    const { evento } = this.state;
     if (evento.nombre) {
       const tipoEvento = evento.campaña ? "Campaña" : "Evento";
       let listaContactos;
@@ -165,7 +163,7 @@ class VerEvento extends React.Component {
             <ListItem
               button
               onPress={() => this.props.navigation.navigate('ConsultarColaboraciones', {
-                eventoId: this.props.navigation.state.params.evento.id
+                eventoId: evento.id
               })}
             >
               <Body>

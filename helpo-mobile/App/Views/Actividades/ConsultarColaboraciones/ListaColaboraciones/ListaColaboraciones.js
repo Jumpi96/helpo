@@ -18,7 +18,7 @@ const ListaColaboraciones = (props) => {
     const nombre = colaboracion.colaborador.nombre
     const apellido = colaboracion.colaborador.apellido
     const cantidad = colaboracion.cantidad
-    const entregado = colaboracion.entregado
+    const entregados = colaboracion.entregados
     const item = (
       <ListItem
         button
@@ -31,7 +31,7 @@ const ListaColaboraciones = (props) => {
           <Text>Cantidad: {cantidad}</Text>
         </Body>
         <Right>
-            {entregado
+            {entregados === cantidad
             ? <Icon type='Entypo' name='check'/>
             : <Icon type='Entypo' name='cross'/>}
         </Right>

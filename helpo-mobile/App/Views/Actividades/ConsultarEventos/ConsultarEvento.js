@@ -153,15 +153,18 @@ class ConsultaEvento extends React.Component {
     return a;
   }
 
-  puedeColaborar() {
+  puedeColaborar(evento) {
     const { user } = this.props.auth;
-    if (user) {
-      if (user.user_type == 2) {
-        return true;
-      } else if (user.user_type == 3) {
-        const propuestas_rechazadas = this.state.evento.propuestas.filter(p => p.empresa.id === user.id && p.aceptado === -1);
-        if (propuestas_rechazadas.length === 0) {
+    if (!((moment(evento.fecha_hora_inicio) <= moment() && !evento.campaña) ||
+      (evento.campaña && (moment(evento.fecha_hora_fin) <= moment() || moment(evento.fecha_hora_inicio) > moment())))) {
+      if (user) {
+        if (user.user_type == 2) {
           return true;
+        } else if (user.user_type == 3) {
+          const propuestas_rechazadas = this.state.evento.propuestas.filter(p => p.empresa.id === user.id && p.aceptado === -1);
+          if (propuestas_rechazadas.length === 0) {
+            return true;
+          }
         }
       }
     }
@@ -190,7 +193,7 @@ class ConsultaEvento extends React.Component {
           <Body>
             <Title>{evento.nombre}</Title>
           </Body>
-          {this.puedeColaborar() && moment(evento.fecha_hora_inicio) > moment() ?
+          {this.puedeColaborar(evento) ?
             <Right>
               <Button
                 transparent

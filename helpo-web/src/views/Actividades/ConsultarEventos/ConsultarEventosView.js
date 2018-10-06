@@ -248,7 +248,10 @@ class ConsultarEventosView extends React.Component {
               {this.puedeColaborar() ? (
                 <button
                   onClick={this.toggleColaborar}
-                  hidden={moment(evento.fecha_hora_inicio) <= moment()}
+                  hidden={
+                    (moment(evento.fecha_hora_inicio) <= moment() && !evento.campaña) || 
+                    (evento.campaña && (moment(evento.fecha_hora_fin) <= moment() || moment(evento.fecha_hora_inicio) > moment()))
+                  }
                   className="btn btn-warning offset-md-10"
                 >
                   {this.props.auth.user.user_type === 2 ? "Colaborar" : "Patrocinar"}

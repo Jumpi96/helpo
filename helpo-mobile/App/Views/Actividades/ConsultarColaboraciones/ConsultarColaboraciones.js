@@ -14,15 +14,17 @@ class ConsultarColaboracionConnected extends React.Component {
   
   constructor(props) {
     super(props);
+    const { params } = this.props.navigation.state;
+    const { eventoId } = params;
     this.state = {
-      modalOpen: false
+      modalOpen: false,
+      eventoId
     }
     this.submitChanges = this.submitChanges.bind(this);
   }
 
   componentDidMount() {
-    const eventoId = this.props.navigation.state.params.eventoId
-    this.props.fetchData(eventoId)
+    this.props.fetchData(this.state.eventoId)
   }   
 
   submitChanges() {

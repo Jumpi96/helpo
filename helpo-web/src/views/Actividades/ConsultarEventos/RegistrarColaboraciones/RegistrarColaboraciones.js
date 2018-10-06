@@ -30,6 +30,7 @@ class RegistrarColaboraciones extends Component {
     this.getEntregado = this.getEntregado.bind(this);
     this.handleModalChange = this.handleModalChange.bind(this);
     this.saveColaboracionModal = this.saveColaboracionModal.bind(this);
+    this.getParticipacionPorId = this.getParticipacionPorId.bind(this);
   }
 
   componentDidMount() {
@@ -136,7 +137,7 @@ class RegistrarColaboraciones extends Component {
   getEntregado(n) {
     if (n.funcion) {
       if (this.existeParticipacion(n)) {
-        if (n.participaciones.filter(p => p.colaborador.id === this.getUserId())[0].entregados > 0) {
+        if (n.participaciones.filter(p => p.colaborador.id === this.getUserId())[0].presencias > 0) {
           return "Sí";
         } else {
           return "No";
@@ -189,7 +190,7 @@ class RegistrarColaboraciones extends Component {
             <th>Función</th>
             <th>Descripción</th>
             <th>Participando</th>
-            <th>Participó</th>
+            <th>Presencias</th>
             <th></th>
           </tr>
         </thead>
@@ -268,6 +269,7 @@ class RegistrarColaboraciones extends Component {
       cantidad_anterior: 0,
       cantidad: undefined,
       cantidad_restante: this.getCantidadRestante(necesidad, 0),
+      entregados: 0,
       recurso: necesidad.recurso,
       descripcion: necesidad.descripcion,
       comentarios: undefined,
@@ -292,6 +294,7 @@ class RegistrarColaboraciones extends Component {
       id: idNecesidad,
       cantidad_anterior: colaboracionAnterior.cantidad,
       cantidad: colaboracionAnterior.cantidad,
+      entregados: colaboracionAnterior.entregados,
       cantidad_restante: this.getCantidadRestante(necesidad, colaboracionAnterior.cantidad),
       recurso: necesidad.recurso,
       descripcion: necesidad.descripcion,
@@ -313,6 +316,7 @@ class RegistrarColaboraciones extends Component {
             cantidad_anterior: participacionVoluntario,
             cantidad: participacionVoluntario,
             cantidad_restante: this.getCantidadRestante(voluntario, participacionVoluntario),
+            presencias: 0,
             funcion: voluntario.funcion,
             descripcion: voluntario.descripcion,
             comentarios: undefined,
@@ -334,6 +338,7 @@ class RegistrarColaboraciones extends Component {
         cantidad_restante: this.getCantidadRestante(voluntario, 0),
         funcion: voluntario.funcion,
         descripcion: voluntario.descripcion,
+        presencias: 0,
         comentarios: undefined,
       }
     }
@@ -368,9 +373,27 @@ class RegistrarColaboraciones extends Component {
     return undefined;
   }
 
+  getParticipacionPorId(id) {
+    const { voluntarios } = this.state;
+    let participaciones;
+    for (let i = 0; i < voluntarios.length; i++) {
+      participaciones = voluntarios[i].participaciones.filter(c => c.id === id);
+      if (participaciones.length > 0) {
+        return participaciones[0];
+      }
+    }
+  }
+
   deleteParticipacion(id = 0) {
-    const participacionAEliminar = id === 0 ? this.getIdParticipacionVoluntario() : id;
-    api.delete('/actividades/participaciones/' + participacionAEliminar + '/')
+    let idParticipacion;
+    if (id === 0) {
+      idParticipacion = this.getIdParticipacionVoluntario();
+    } else {
+      idParticipacion = id;
+    }
+    const participacion = this.getParticipacionPorId(idParticipacion);
+    if (participacion.presencias === 0) {
+      api.delete('/actividades/participaciones/' + idParticipacion + '/')
       .then(res => {
         console.log(res);
         console.log(res.data);
@@ -380,7 +403,10 @@ class RegistrarColaboraciones extends Component {
         else { console.log('Error: ', error.message) }
         this.setState({ error_necesidad: "Hubo un problema al cargar su información.", apiToken: false });
       });
-
+    } else {
+      alert("No se puede eliminar una participación que ya fue realizada.");
+    }
+   
   }
 
   saveColaboracion(colaboracion) {
@@ -429,17 +455,40 @@ class RegistrarColaboraciones extends Component {
 
   deleteColaboracion(idNecesidad) {
     this.setState({ apiToken: true });
-    const colaboracionAnterior = this.getColaboracionAnterior(idNecesidad);
-    api.delete('/actividades/colaboraciones/' + colaboracionAnterior + '/')
-      .then(res => {
-        console.log(res);
-        console.log(res.data);
-        this.loadNecesidadesYVoluntarios();
-      }).catch((error) => {
-        if (error.response) { console.log(error.response.status) }
-        else { console.log('Error: ', error.message) }
-        this.setState({ error_necesidad: "Hubo un problema al cargar su información.", apiToken: false });
-      });
+    const necesidad = this.state.necesidades.filter(n => n.id === idNecesidad)[0];
+    const colaboracion = necesidad.colaboraciones.filter(c => c.colaborador.id === this.getUserId())[0];
+    if (colaboracion.entregados === 0) {
+      api.delete('/actividades/colaboraciones/' + colaboracion.id + '/')
+        .then(res => {
+          console.log(res);
+          console.log(res.data);
+          this.loadNecesidadesYVoluntarios();
+        }).catch((error) => {
+          if (error.response) { console.log(error.response.status) }
+          else { console.log('Error: ', error.message) }
+          this.setState({ error_necesidad: "Hubo un problema al cargar su información.", apiToken: false });
+        });
+    } else if (colaboracion.entregados === colaboracion.cantidad) {
+      alert("No se puede eliminar una colaboración que ya ha sido entregada.");
+      this.setState({ apiToken: false });
+    } else if (colaboracion.entregados < colaboracion.cantidad) {
+      const nuevaColaboracion = {
+        id: colaboracion.id,
+        cantidad: colaboracion.entregados,
+        comentario: colaboracion.comentarios,
+        necesidad_material_id: colaboracion.id,
+      }
+      api.put('/actividades/colaboraciones/' + colaboracion.id + '/', nuevaColaboracion)
+        .then(res => {
+          console.log(res);
+          console.log(res.data);
+          this.loadNecesidadesYVoluntarios();
+        }).catch((error) => {
+          if (error.response) { console.log(error.response.status) }
+          else { console.log('Error: ', error.message) }
+          this.setState({ error_necesidad: "Hubo un problema al cargar su información.", apiToken: false });
+        });
+    }
   }
 
   getColaboracionAnterior(necesidadId) {
@@ -459,7 +508,6 @@ class RegistrarColaboraciones extends Component {
         this.deleteParticipacion();
       }
     }
-
     api.post('/actividades/participaciones/', nuevaParticipacion)
       .then(res => {
         console.log(res);
@@ -494,7 +542,7 @@ class RegistrarColaboraciones extends Component {
                     <th>Ítem</th>
                     <th>Descripción</th>
                     <th>Colaborando</th>
-                    <th>Entregado</th>
+                    <th>Entregados</th>
                     <th></th>
                   </tr>
                 </thead>

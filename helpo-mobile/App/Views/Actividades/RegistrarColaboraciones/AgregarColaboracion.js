@@ -27,7 +27,7 @@ class AgregarColaboracion extends React.Component {
     super(props);
     const { params } = this.props.navigation.state;
     const colaboracion = params.colaboracion;
-    this.state = { 
+    this.state = {
       colaboracion,
       apiToken: false,
       error: undefined
@@ -55,14 +55,17 @@ class AgregarColaboracion extends React.Component {
     let error = this.state.error;
     const cantidad = this.state.colaboracion.funcion ? 1 : this.state.colaboracion.cantidad;
 
-      if (cantidad <= 0) {
-        formIsValid = false;
-        error = 'La cantidad ingresada no es válida.';
-      } else if (this.state.colaboracion.cantidad_restante < cantidad) {
-        formIsValid = false;
-        error = 'La cantidad ingresada es mayor al cupo disponible';
-      }
-    
+    if (cantidad <= 0) {
+      formIsValid = false;
+      error = 'La cantidad ingresada no es válida.';
+    } else if (this.state.colaboracion.cantidad_restante < cantidad) {
+      formIsValid = false;
+      error = 'La cantidad ingresada es mayor al cupo disponible';
+    } else if (this.props.colaboracion.entregados > cantidad) {
+      formIsValid = false;
+      error = 'La cantidad ingresada es menor a la colaboración ya entregada';
+    }
+
     this.setState({ error });
     return formIsValid;
   }
@@ -93,8 +96,8 @@ class AgregarColaboracion extends React.Component {
       .then(() => {
         this.props.navigation.navigate('RegistrarColaboraciones', { evento: this.getIdEvento() });
       }).catch(function (error) {
-        if (error.response){ console.log(error.response.status) }
-        else { console.log('Error: ', error.message)}
+        if (error.response) { console.log(error.response.status) }
+        else { console.log('Error: ', error.message) }
         _this.setState({ error: "Hubo un problema al cargar su información." });
       });
   }
@@ -112,8 +115,8 @@ class AgregarColaboracion extends React.Component {
         .then(() => {
           this.props.navigation.navigate('RegistrarColaboraciones', { evento: this.getIdEvento() });
         }).catch(function (error) {
-          if (error.response){ console.log(error.response.status) }
-          else { console.log('Error: ', error.message)}
+          if (error.response) { console.log(error.response.status) }
+          else { console.log('Error: ', error.message) }
           _this.setState({ error: "Hubo un problema al cargar su información." });
         });
     } else {
@@ -126,8 +129,8 @@ class AgregarColaboracion extends React.Component {
         .then(() => {
           this.props.navigation.navigate('RegistrarColaboraciones', { evento: this.getIdEvento() });
         }).catch(function (error) {
-          if (error.response){ console.log(error.response.status) }
-          else { console.log('Error: ', error.message)}
+          if (error.response) { console.log(error.response.status) }
+          else { console.log('Error: ', error.message) }
           _this.setState({ error: "Hubo un problema al cargar su información." });
         });
     }
@@ -164,6 +167,28 @@ class AgregarColaboracion extends React.Component {
     }
   }
 
+  getEntregados() {
+    if (!this.props.colaboracion.funcion) {
+      if (this.props.colaboracion.entregados > 0) {
+        return (
+          <ListItem>
+            <Label style={styles.label}>Entregados</Label>
+            <Text style={styles.label}>{this.state.colaboracion.entregados}</Text>
+          </ListItem>
+        );
+      }
+    } else {
+      if (this.props.colaboracion.presencias > 0) {
+        return (
+          <ListItem>
+            <Label style={styles.label}>Presencias</Label>
+            <Text style={styles.label}>{this.state.colaboracion.presencias}</Text>
+          </ListItem>
+        )
+      }
+    }
+  }
+
   render() {
     return (
       <Container>
@@ -190,11 +215,12 @@ class AgregarColaboracion extends React.Component {
                 />
               </Item> : undefined
             }
+            {this.getEntregado()}
             <ListItem>
               <Label style={styles.label}>Descripción</Label>
               <Text>{this.state.colaboracion.descripcion}</Text>
             </ListItem>
-            
+
             <Item>
               <Label>Comentarios</Label>
               <Input

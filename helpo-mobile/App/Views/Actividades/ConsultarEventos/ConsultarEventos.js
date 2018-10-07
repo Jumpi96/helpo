@@ -71,7 +71,7 @@ class ConsultarEventos extends Component {
             <EventoCard
               key={evento.id}
               evento={evento}
-              openEvento={() => this.props.navigation.navigate('ConsultarEvento', { evento: evento })}
+              openEvento={() => this.props.navigation.navigate('ConsultarEvento', { evento })}
             />
             )}
         </Content>

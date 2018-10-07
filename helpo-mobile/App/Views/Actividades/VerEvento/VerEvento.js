@@ -82,7 +82,8 @@ class VerEvento extends React.Component {
   }
 
   handlePropuestas(evento) {
-    if (moment(evento.fecha_hora_inicio) > moment()) {
+    if ((moment(evento.fecha_hora_inicio) > moment() && !evento.campaña) ||
+      (moment(evento.fecha_hora_fin) > moment() && evento.campaña)) {
       this.props.navigation.navigate('VerPatrocinadores', { evento: evento.id });
     } else {
       Toast.show({

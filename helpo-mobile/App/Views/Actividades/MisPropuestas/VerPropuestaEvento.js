@@ -72,7 +72,7 @@ class VerPropuestaEvento extends React.Component {
     }
     return undefined;
   }
- 
+
   getCantidadNecesidades(n) {
     let contador = 0;
     let userId = this.getUserId();
@@ -164,9 +164,9 @@ class VerPropuestaEvento extends React.Component {
             <Text>Propuesta rechazada</Text>
           </Badge>
         );
-    }    
+    }
   }
-  
+
   getBotonRedireccion() {
     const propuesta = this.getPropuesta();
     const { evento } = this.state;
@@ -188,6 +188,32 @@ class VerPropuestaEvento extends React.Component {
       }
     }
     return undefined;
+  }
+
+  showEditarColaboraciones(evento, propuesta) {
+    if (evento.campaña) {
+      if (moment(evento.fecha_hora_fin) > moment() && propuesta.aceptado !== -1) {
+        return (
+          <Button block style={{'margin': 15}}
+            onPress={() => propuesta.aceptado === 1 ? 
+              this.props.navigation.navigate('ConfirmarEditarPropuesta', { evento, propuesta })
+              : this.props.navigation.navigate('RegistrarOfrecimiento', { evento: evento.id })}
+          >
+            <Text>Editar colaboraciones</Text>
+          </Button>
+        )
+      }
+    } else {
+      if (moment(evento.fecha_hora_inicio) > moment() || propuesta.aceptado !== 0) {
+        return (
+          <Button block style={{'margin': 15}}
+            onClick={() => this.props.navigation.navigate('RegistrarOfrecimiento', { evento: evento.id })}
+          >
+            <Text>Editar colaboraciones</Text>
+          </Button>
+        )
+      }
+    }
   }
 
   getComentario(propuesta) {
@@ -243,7 +269,7 @@ class VerPropuestaEvento extends React.Component {
           {this.getListaNecesidades(evento)}
           {this.getListaVoluntarios(evento)}
           {propuesta.aceptado === -1 ?
-            this.getComentario(propuesta) : undefined
+            this.getComentario(propuesta) : this.showEditarColaboraciones(evento, propuesta)
           }
         </Content>
       </Container>

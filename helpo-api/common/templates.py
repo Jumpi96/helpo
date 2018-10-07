@@ -38,9 +38,9 @@ def render_propuesta(propuesta):
 
 def render_respuesta_propuesta(propuesta):
     if propuesta.aceptado == 1:
-        respuesta = '<b style="color:#1fc654">Aceptada</b>'
+        respuesta = 'Aceptada'
     else:
-        respuesta = '<b style="color:#ff0000">Rechazada</b>'
+        respuesta = 'Rechazada'
     dict_context = dict(propuesta=propuesta, respuesta=respuesta)
     return render_mail('respuesta-propuesta.html', dict_context)
 

@@ -73,7 +73,7 @@ class ConsultarColaboracionConnected extends React.Component {
 
     return (
       <Container>
-        <ContainerHeader titulo='Consultar Colaboracion' goBack={this.props.navigation.goBack} />
+        <ContainerHeader titulo='Consultar Colaboración' goBack={this.props.navigation.goBack} />
         {hasLoaded()
           ? content()
           : <Text>Cargando...</Text>}

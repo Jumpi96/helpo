@@ -22,7 +22,7 @@ class ModalDesubscribir extends React.Component {
           style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           <p 
             style={{ marginTop: 30, fontWeight: 'bold', fontSize: 18 }}>
-            Realmente desea cancelar su suscripcion?
+            ¿Desea realmente cancelar la suscripci&oacute;n?
           </p>          
         </ModalBody>
         <ModalFooter>
@@ -30,7 +30,7 @@ class ModalDesubscribir extends React.Component {
               color='danger'
               style={{ marginRight: 20 }}
               onClick={() => {this.props.deleteSuscripcion(); this.props.toggle()}}>
-              Cancelar Suscripcion
+              Cancelar Suscripci&oacute;n
             </Button>
             <Button onClick={this.props.toggle}>Salir</Button>
           </ModalFooter>

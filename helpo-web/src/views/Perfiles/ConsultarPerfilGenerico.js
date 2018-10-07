@@ -123,7 +123,7 @@ class ConsultarPerfilGenerico extends Component {
         <i className="fa fa-align-justify"></i> Perfil
       </CardHeader>
       <CardBody>
-        <p style={{ fontSize: 14 }}>Espere unos segundos, se esta cargando la pagina...</p>
+        <p style={{ fontSize: 14 }}>Espere unos segundos, se est&acute; cargando la p&acute;gina...</p>
       </CardBody>
     </Card>
   )

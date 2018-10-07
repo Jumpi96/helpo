@@ -37,7 +37,7 @@ class ModalImagen extends React.Component {
       </Button>
       {this.state.borrando 
       ? <p style={{ color: 'white'}}>
-          Si realmente desea remover la imagen presione nuevamente el boton
+          Si realmente desea remover la imagen presione nuevamente el bot&oacute;n
         </p> 
       : null}
     </div>

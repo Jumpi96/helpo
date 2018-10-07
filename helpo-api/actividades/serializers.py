@@ -323,7 +323,7 @@ class ConsultaAllNecesidadesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Evento
-        fields = ('id', 'nombre', 'necesidades', 'campaña', 'voluntarios', 'fecha_hora_inicio', 'propuestas')
+        fields = ('id', 'nombre', 'necesidades', 'campaña', 'voluntarios', 'fecha_hora_inicio', 'fecha_hora_fin', 'propuestas')
 
 
 class ConsultaNecesidadesSerializer(serializers.ModelSerializer):
@@ -333,7 +333,7 @@ class ConsultaNecesidadesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Evento
-        fields = ('id', 'nombre', 'campaña', 'necesidades', 'voluntarios', 'fecha_hora_inicio', 'propuestas')
+        fields = ('id', 'nombre', 'campaña', 'necesidades', 'voluntarios', 'fecha_hora_inicio', 'fecha_hora_fin', 'propuestas')
 
 class ConsultaEventoSerializer(serializers.ModelSerializer):
     ubicacion = UbicacionSerializer()

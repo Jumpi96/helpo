@@ -92,7 +92,7 @@ class EventoCard extends Component {
           <div className="row">
             <img
               src={getImagen(propuesta_aleatoria.empresa.avatar)}
-              alt="ONG"
+              alt=""
               style={{ width: '50px', height: '50px' }}
             />
             <p>{cadena_patrocinadores}</p>

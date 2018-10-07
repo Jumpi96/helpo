@@ -137,11 +137,7 @@ class RegistrarColaboraciones extends Component {
   getEntregado(n) {
     if (n.funcion) {
       if (this.existeParticipacion(n)) {
-        if (n.participaciones.filter(p => p.colaborador.id === this.getUserId())[0].presencias > 0) {
-          return "Sí";
-        } else {
-          return "No";
-        }
+        return n.participaciones.filter(p => p.colaborador.id === this.getUserId())[0].presencias;
       }
     } else {
       if (this.existeColaboracion(n)) {

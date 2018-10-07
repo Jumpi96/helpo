@@ -1,21 +1,26 @@
-import React from 'react';  
+import React from 'react';
 import { PropTypes } from 'prop-types';
 import { Table } from 'reactstrap';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import moment from 'moment';
+import ModalConfirmarEdicion from './ModalConfirmarEdicion';
 import { auth } from '../../../actions';
 import * as eventoActions from '../../../actions/eventoActions';
+import api from '../../../api';
 import './Eventos.css';
 
-class EventoView extends React.Component {  
+class EventoView extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { 
+    this.state = {
       evento: this.props.evento,
+      openModal: false
     }
     this.toggleEdit = this.toggleEdit.bind(this);
     this.toggleView = this.toggleView.bind(this);
+    this.toggleConfirmEdit = this.toggleConfirmEdit.bind(this);
+    this.editarColaboracion = this.editarColaboracion.bind(this);
     this.confirmDeleteNecesidad = this.confirmDeleteNecesidad.bind(this);
   }
 
@@ -30,24 +35,24 @@ class EventoView extends React.Component {
   }
 
   toggleEdit() {
-    this.props.history.push({ 
-      pathname: '/actividades/registrar-colaboraciones', 
+    this.props.history.push({
+      pathname: '/actividades/registrar-colaboraciones',
       search: '?evento=' + this.state.evento.id,
     });
   }
 
   toggleView() {
-    this.props.history.push({ 
-      pathname: '/actividades/consultar-evento', 
+    this.props.history.push({
+      pathname: '/actividades/consultar-evento',
       search: '?id=' + this.state.evento.id,
     });
-  } 
+  }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
     if (this.props.evento.id !== nextProps.evento.id) {
-      this.setState({evento: nextProps.evento});
+      this.setState({ evento: nextProps.evento });
     }
-    this.setState({saving: false, isEditing: false});
+    this.setState({ saving: false, isEditing: false });
   }
 
   getTablaNecesidades(necesidades) {
@@ -68,7 +73,7 @@ class EventoView extends React.Component {
       }
     });
     if (listaNecesidades.length > 0) {
-      return(
+      return (
         <tbody>
           {listaNecesidades}
         </tbody>
@@ -94,7 +99,7 @@ class EventoView extends React.Component {
       }
     });
     if (listaVoluntarios.length > 0) {
-      return(
+      return (
         <tbody>
           {listaVoluntarios}
         </tbody>
@@ -145,7 +150,7 @@ class EventoView extends React.Component {
         );
       default:
         return undefined;
-    }    
+    }
   }
 
   getComentario(propuesta) {
@@ -166,6 +171,55 @@ class EventoView extends React.Component {
 
   getUserId() {
     return this.props.auth.user.id;
+  }
+
+  showEditarColaboraciones(evento, propuesta) {
+    if (evento.campaña) {
+      if (moment(evento.fecha_hora_fin) > moment() && propuesta.aceptado !== -1) {
+        return (
+          <button
+            onClick={propuesta.aceptado === 1 ? this.toggleConfirmEdit : this.toggleEdit}
+            className="btn btn-warning"
+          >
+            Editar colaboraciones
+          </button>
+        )
+      }
+    } else {
+      if (moment(evento.fecha_hora_inicio) > moment() || propuesta.aceptado !== 0) {
+        return (
+          <button
+            onClick={this.toggleEdit}
+            className="btn btn-warning"
+          >
+            Editar colaboraciones
+          </button>
+        )
+      }
+    }
+  }
+
+  editarColaboracion(respuesta){
+    if (respuesta) {
+      let propuesta = this.getPropuesta();
+      propuesta.aceptado = 0;
+      api.put('/actividades/propuestas/' + propuesta.id + '/', propuesta)
+        .then((res) => {
+          this.props.history.push({
+            pathname: '/actividades/registrar-colaboraciones',
+            search: '?evento=' + this.state.evento.id,
+          });
+        })
+        .catch((error) => {
+          if (error.response) { console.log(error.response.status) }
+          else { console.log('Error: ', error.message) }
+        })
+    }
+    this.setState({ openModal: false });
+  }
+
+  toggleConfirmEdit() {
+    this.setState({ openModal: true });
   }
 
   render() {
@@ -224,17 +278,11 @@ class EventoView extends React.Component {
               {listaVoluntarios}
             </Table> : undefined
           }
-          <button
-            onClick={this.toggleEdit}
-            hidden={moment(evento.fecha_hora_inicio)<moment() || propuesta.aceptado !== 0}
-            className="btn btn-warning"
-          >
-            Editar colaboraciones
-          </button>
+          {this.showEditarColaboraciones(evento, propuesta)}
           {propuesta.aceptado === -1 ?
             this.getComentario(propuesta) : undefined
           }
-          {moment(evento.fecha_hora_inicio)<moment() && propuesta.aceptado !== -1 ?
+          {moment(evento.fecha_hora_inicio) < moment() && propuesta.aceptado !== -1 ?
             <button
               onClick={this.toggleView}
               className="btn btn-warning"
@@ -243,7 +291,9 @@ class EventoView extends React.Component {
             </button>
             : undefined
           }
-          
+          <ModalConfirmarEdicion
+            open={this.state.openModal} closeModal={this.editarColaboracion}
+          />
         </div>
       );
     } else {
@@ -252,12 +302,12 @@ class EventoView extends React.Component {
   }
 };
 
-EventoView.propTypes = {  
+EventoView.propTypes = {
   evento: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired
 };
 
-function mapStateToProps(state, ownProps) {  
+function mapStateToProps(state, ownProps) {
   let evento = {
     nombre: '',
     necesidades: [],
@@ -267,10 +317,10 @@ function mapStateToProps(state, ownProps) {
   if (state.eventos.length > 0) {
     evento = Object.assign({}, state.eventos.find(evento => "" + evento.id === eventoId))
   }
-  return {evento: evento, auth: state.auth};
+  return { evento: evento, auth: state.auth };
 }
 
-function mapDispatchToProps(dispatch) {  
+function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(eventoActions, dispatch),
     loadUser: () => { return dispatch(auth.loadUser()); }

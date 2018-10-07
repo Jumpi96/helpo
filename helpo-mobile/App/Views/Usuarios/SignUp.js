@@ -271,6 +271,7 @@ class SignUp extends Component {
           onTypeChange={this.handleUserTypeSelect}
           onSubmit={this.onSubmitData}
         />
+        {/*
         <View>
           <FBLogin
             permissions={["email"]}
@@ -309,6 +310,7 @@ class SignUp extends Component {
             onPress={this.googleSignIn}
             disabled={this.state.isGoogleSigninInProgress} />
         </View>
+        */}
       </Container>
     );
   }

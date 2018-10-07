@@ -34,7 +34,7 @@ class BotonDesubscribir extends React.Component {
           color='danger'
           style={{ height: 35, width: 160 }}
           onClick={this.toggleModal}>
-          <p>Cancelar Subscripcion</p>
+          <p>Cancelar Suscripción</p>
         </Button>
         <ModalDesubscribir 
           open={this.state.modalOpen} 

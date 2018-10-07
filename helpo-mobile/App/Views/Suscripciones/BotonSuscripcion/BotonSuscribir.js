@@ -19,7 +19,7 @@ class BotonSubscribir extends React.Component {
       <Button
         primary        
         onPress={() => this.props.createSuscripcion(usuario, organizacion)}>
-        <Text>Subscribirse</Text>
+        <Text>Suscribirse</Text>
       </Button>
     )
   }

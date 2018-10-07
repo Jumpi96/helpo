@@ -10,8 +10,12 @@ def update_monthly_suscriptions(organizacion):
     today = date.today()
     query = OrganizacionSuscripcionesMensuales.objects.filter(
         organizacion=organizacion)
-    last_entry_suscriptions = query[0].suscripciones
-    last_entry_date = query[0].fecha
+    if query.count() == 0:
+        last_entry_suscriptions = 0
+        last_entry_date = date.min
+    else:
+        last_entry_suscriptions = query[0].suscripciones
+        last_entry_date = query[0].fecha
 
     if(_has_to_update(today, last_entry_date)):
         # If today month is the first of the year, the entry created will be in last year

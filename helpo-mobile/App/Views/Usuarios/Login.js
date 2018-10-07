@@ -192,6 +192,7 @@ class Login extends Component {
               <Text style={styles.validationMessage}>{this.props.errors[0].message}</Text>
             </Item>
           )}
+          {/*
           <GoogleSigninButton
             style={{ width: 312, height: 48 }}
             size={GoogleSigninButton.Size.Wide}
@@ -232,6 +233,7 @@ class Login extends Component {
               console.log(data);
             }}
           />
+          */}
         </Content>
       </Container>
     );

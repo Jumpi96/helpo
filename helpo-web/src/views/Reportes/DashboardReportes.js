@@ -2,7 +2,7 @@ import React from 'react'
 import { Card, CardHeader, CardBody } from 'reactstrap'
 import { Line, Doughnut, Bar } from 'react-chartjs-2'
 import { connect } from 'react-redux'
-import { Tooltip, Button } from 'reactstrap'
+import { Tooltip } from 'reactstrap'
 import api from '../../api'
 import { PDFDownloadLink } from '@react-pdf/renderer'
 import getReportePDF from './ReporteOngPDF'
@@ -389,9 +389,9 @@ class DashboardReportes extends React.Component {
               />
             </div>
 
-            {/* Demografica por genero */}
+            {/* Voluntarios por género */}
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', marginTop: 40 }}>
-              <p style={{ fontWeight: 'bold', fontSize: 14 }}>Demográfica de voluntarios participantes</p>
+              <p style={{ fontWeight: 'bold', fontSize: 14 }}>Voluntarios por género</p>
             </div>
             <div style={{ marginVertical: 10 }}>
               <Doughnut
@@ -455,7 +455,7 @@ class DashboardReportes extends React.Component {
 
             {/* Empresas mas colaboradoras */}
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', marginTop: 40 }}>
-              <p style={{ fontWeight: 'bold', fontSize: 14 }}>Empresas mas contribuidoras</p>
+              <p style={{ fontWeight: 'bold', fontSize: 14 }}>Empresas más contribuidoras</p>
             </div>
             <div style={{ marginVertical: 10 }}>
               <Bar

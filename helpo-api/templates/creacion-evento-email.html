@@ -4,7 +4,7 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <title>Helpo: participaci&oacute;n completa</title>
+  <title>Helpo: creacion de evento</title>
   <style type="text/css" rel="stylesheet" media="all">
     /* Base ------------------------------ */
     *:not(br):not(tr):not(html) {
@@ -216,9 +216,8 @@
                 <!-- Body content -->
                 <tr>
                   <td class="content-cell">
-                    <h1>Necesidad cubierta en su evento de Helpo</h1>
-                    <p>Se ha alcanzado la cantidad de voluntarios requeridos para la funci&oacute;n
-                      {{voluntario.funcion.nombre}} en su evento {{voluntario.evento.nombre}}.</p>
+                    <h1>Creaci&oacute;n de un evento en Helpo</h1>
+                    <p>"{{evento.organizacion.nombre}}" ha creado el evento <br/>"{{evento.nombre}}". ¡Ya puede registrarse para participar!</p>
                     <!-- Action -->
                     <table class="body-action" align="center" width="100%" cellpadding="0" cellspacing="0">
                       <tr>
@@ -226,34 +225,50 @@
                           <div>
                             <h2>Datos del evento</h2>
                             <ul style="list-style-type:disc">
-                              <li>Nombre: {{voluntario.evento.nombre}}</li>
-                              <li>Organizaci&oacute;n: {{voluntario.evento.organizacion.nombre}}</li>
-                              <li>Descripci&oacute;n: {{voluntario.evento.descripcion|default:"Sin descripci&oacute;n"}}</li>
+                              <li>Nombre: {{evento.nombre}}</li>
+                              <li>Organizaci&oacute;n: {{evento.organizacion.nombre}}</li>
+                              <li>Descripci&oacute;n: {{evento.descripcion|default:"Sin descripci&oacute;n"}}</li>
                               <li>Fecha:</li>
                               <ul style="list-style-type:circle">
-                                <li>Inicio: {{voluntario.evento.get_fecha_hora_inicio}}</li>
-                                <li>Fin: {{voluntario.evento.get_fecha_hora_fin}}</li>
+                                <li>Inicio: {{evento.get_fecha_hora_inicio}}</li>
+                                <li>Fin: {{evento.get_fecha_hora_fin}}</li>
                               </ul>
                               <li>Ubicaci&oacute;n:</li>
                               <ul style="list-style-type:circle">
-                                <li>Latitud: {{voluntario.evento.ubicacion.latitud|default:"No definida"}}</li>
-                                <li>Longitud: {{voluntario.evento.ubicacion.longitud|default:"No definida"}}</li>
-                                <li>Notas: {{voluntario.evento.ubicacion.notas|default:"Sin notas"}}</li>
+                                <li>Latitud: {{evento.ubicacion.latitud|default:"No definida"}}</li>
+                                <li>Longitud: {{evento.ubicacion.longitud|default:"No definida"}}</li>
+                                <li>Notas: {{evento.ubicacion.notas|default:"Sin notas"}}</li>
                               </ul>
-                            </ul>
-                            <h2>Datos de la necesidad cubierta</h2>
-                            <ul style="list-style-type:disc">
-                              <li>Funci&oacute;n: {{voluntario.funcion.nombre}}</li>
-                              <li>Cantidad: {{voluntario.cantidad}}</li>
-                              <li>Descripci&oacute;n: {{voluntario.descripcion|default:"Sin descripci&oacute;n"}}</li>
                             </ul>
                           </div>
                         </td>
                       </tr>
+                      <tr>
+                        <td align="center">
+                          <div>
+                            <a href="{{action_url}}"
+                              class="button button--orange">Ir al evento</a>
+                          </div>
+                        </td>
+                      </tr>
                     </table>
-                    <p>Saludos,<br>Equipo Helpo</p>
+                    <p>Gracias,<br>Equipo Helpo</p>
                     <!-- Sub copy -->
                     <table class="body-sub">
+                      <tr>
+                        <td>
+                          <p class="sub">Si tiene problemas para hacer click en el bot&oacute;n, copie y pegue la
+                            siguiente URL en su navegador.
+                          </p>
+                          <p class="sub"><a href="{{action_url}}">{{action_url}}</a></p>
+                        </td>                        
+                      </tr>
+                      <tr>
+                        <td>
+                          <p class="sub">Se le ha enviado esta notificaci&oacute;n porque esta suscripte a la organizaci&oacute;n {{evento.organizacion.nombre}}  
+                          </p>                          
+                        </td>
+                      </tr>
                       <tr>
                         <td>
                           <p class="sub">Si desea contactarnos, no dude en escribirnos a: <a style="color:#F39200" href="mailto:consultas@helpo.com.ar">consultas@helpo.com.ar</a></p>

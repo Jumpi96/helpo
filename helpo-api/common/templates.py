@@ -17,13 +17,24 @@ def render_participacion_email(participacion, titulo_email):
     return render_mail('participacion-email.html', dict_context)
 
 
+def render_creacion_evento_email(evento):
+    dict_context = dict(
+        evento=evento,
+        action_url="https://www.helpo.com.ar/#/redirect/evento?id=" +
+        str(evento.id)
+    )
+    return render_mail('creacion-evento-email.html', dict_context)
+
+
 def render_cambio_evento_email(evento):
     dict_context = dict(evento=evento)
     return render_mail('cambio-evento-email.html', dict_context)
 
+
 def render_propuesta(propuesta):
     dict_context = dict(propuesta=propuesta)
     return render_mail('propuesta.html', dict_context)
+
 
 def render_respuesta_propuesta(propuesta):
     if propuesta.aceptado == 1:
@@ -32,6 +43,7 @@ def render_respuesta_propuesta(propuesta):
         respuesta = '<b style="color:#ff0000">Rechazada</b>'
     dict_context = dict(propuesta=propuesta, respuesta=respuesta)
     return render_mail('respuesta-propuesta.html', dict_context)
+
 
 def render_mensaje_evento(evento, mensaje):
     dict_context = dict(
@@ -73,7 +85,8 @@ def render_was_full_colaboracion_email(necesidad_material):
 def render_inicio_evento_email(evento):
     dict_context = dict(
         evento=evento,
-        action_url="https://www.helpo.com.ar/#/redirect/evento?id=" + str(evento.id)
+        action_url="https://www.helpo.com.ar/#/redirect/evento?id=" +
+        str(evento.id)
     )
     return render_mail('inicio-evento-email.html', dict_context)
 
@@ -81,7 +94,8 @@ def render_inicio_evento_email(evento):
 def render_fin_evento_email(evento):
     dict_context = dict(
         evento=evento,
-        action_url="https://www.helpo.com.ar/#/redirect/evento?id=" + str(evento.id)
+        action_url="https://www.helpo.com.ar/#/redirect/evento?id=" +
+        str(evento.id)
     )
     return render_mail('fin-evento-email.html', dict_context)
 

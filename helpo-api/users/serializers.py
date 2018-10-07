@@ -215,8 +215,8 @@ class OrganizacionProfileSerializer(serializers.ModelSerializer):
         return instance
 
     def get_manos(self, obj):
-        participaciones = Participacion.objects.filter(retroalimentacion_voluntario=True).filter(necesidad_voluntario__evento__organizacion_id=obj.usuario_id)
-        colaboraciones = Colaboracion.objects.filter(retroalimentacion_voluntario=True).filter(necesidad_material__evento__organizacion_id=obj.usuario_id)
+        participaciones = Participacion.objects.filter(retroalimentacion_voluntario=True, necesidad_voluntario__evento__organizacion_id=obj.usuario_id)
+        colaboraciones = Colaboracion.objects.filter(retroalimentacion_voluntario=True, necesidad_material__evento__organizacion_id=obj.usuario_id)
         dict_conteo = {}
         manos = 0
         for participacion in participaciones:
@@ -296,8 +296,8 @@ class EmpresaProfileSerializer(serializers.ModelSerializer):
         return instance
 
     def get_manos(self, obj):
-        participaciones = Participacion.objects.filter(retroalimentacion_ong=True).filter(colaborador_id=obj.usuario_id).count()
-        colaboraciones = Colaboracion.objects.filter(retroalimentacion_ong=True).filter(colaborador_id=obj.usuario_id).distinct('necesidad_material__evento').count()
+        participaciones = Participacion.objects.filter(retroalimentacion_ong=True, colaborador_id=obj.usuario_id).count()
+        colaboraciones = Colaboracion.objects.filter(retroalimentacion_ong=True, colaborador_id=obj.usuario_id).distinct('necesidad_material__evento').count()
         manos = participaciones + colaboraciones
         return manos
 
@@ -354,8 +354,8 @@ class VoluntarioProfileSerializer(serializers.ModelSerializer):
         return instance
 
     def get_manos(self, obj):
-        participaciones = Participacion.objects.filter(retroalimentacion_ong=True).filter(colaborador_id=obj.usuario_id).count()
-        colaboraciones = Colaboracion.objects.filter(retroalimentacion_ong=True).filter(colaborador_id=obj.usuario_id).distinct('necesidad_material__evento').count()
+        participaciones = Participacion.objects.filter(retroalimentacion_ong=True, colaborador_id=obj.usuario_id).count()
+        colaboraciones = Colaboracion.objects.filter(retroalimentacion_ong=True, colaborador_id=obj.usuario_id).distinct('necesidad_material__evento').count()
         manos = participaciones + colaboraciones
         return manos
 

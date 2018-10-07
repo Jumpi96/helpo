@@ -20,7 +20,7 @@ class BotonSubscribir extends React.Component {
         color='primary'
         style={{ height: 35, width: 160 }}
         onClick={() => this.props.createSuscripcion(usuario, organizacion)}>
-        <p>Subscribirse a ONG</p>
+        <p>Suscribirse a ONG</p>
       </Button>
     )
   }

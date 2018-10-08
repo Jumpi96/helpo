@@ -120,12 +120,12 @@ class ModificarPerfilOrganizacion extends Component {
     const errors = this.state.errors;
     const { organizacion } = this.state;
 
-    if (Number.isNaN(organizacion.cuit)) {
+    if (isNaN(organizacion.cuit)) {
       formIsValid = false;
       errors.cuit = 'Debe ingresar un CUIT válido.';
     } else { errors.cuit = undefined; }
 
-    if (Number.isNaN(organizacion.telefono)) {
+    if (isNaN(organizacion.telefono)) {
       formIsValid = false;
       errors.telefono = 'Debe ingresar un teléfono válido.';
     } else { errors.telefono = undefined; }

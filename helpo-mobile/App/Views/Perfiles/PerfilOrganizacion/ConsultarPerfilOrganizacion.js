@@ -96,6 +96,11 @@ class ConsultarPerfilOrganizacion extends Component {
             </ListItem>
 
             <ListItem>
+              <Label style={styles.label}>Descripción</Label>
+              {this.renderDescripcion()}
+            </ListItem>
+
+            <ListItem>
               <Label style={styles.label}>Teléfono</Label>
               {this.renderTelefono()}
             </ListItem>
@@ -110,10 +115,6 @@ class ConsultarPerfilOrganizacion extends Component {
               {this.renderRubro()}
             </ListItem>
 
-            <ListItem>
-              <Label style={styles.label}>Descripción</Label>
-              {this.renderDescripcion()}
-            </ListItem>
             <Separator bordered noTopBorder></Separator>
             <BotonSuscripcion organizacion={this.props.data.usuario.id}/>
           </Content>

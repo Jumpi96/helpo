@@ -81,7 +81,7 @@ def send_was_full_colaboracion_mail(necesidad_material):
 
 
 def notificar_cambio_evento(request_data):
-    obj_evento = namedtuple("Evento", request_data.keys())(*request_data.values())
+    obj_evento = namedtuple("Actividad", request_data.keys())(*request_data.values())
     usuarios_id = _get_usuarios(obj_evento)
     evento = _get_evento(request_data)
     _send_mail(usuarios_id, evento)
@@ -89,14 +89,14 @@ def notificar_cambio_evento(request_data):
 
 
 def _send_push(usuarios_id, evento):
-    en_msg = "The event " + evento.nombre + " has changed"
-    es_msg = "El evento " + evento.nombre + " ha sido modificado"
+    en_msg = "The campaign " + evento.nombre + " has changed" if evento.campaña else "The event " + evento.nombre + " has changed"
+    es_msg = "La campaña " + evento.nombre + " ha sido modificada" if evento.campaña else "El evento " + evento.nombre + " ha sido modificado" 
     send_push_notification_to_id_list(
-        usuarios_id, "Event changed", "Cambio en Evento", en_msg, es_msg)
+        usuarios_id, "Activity changed", "Cambio en actividad social", en_msg, es_msg)
 
 
 def _send_mail(usuarios_id, evento):
-    subject_utf = u"Modificación en el evento: " + evento.nombre
+    subject_utf = u"Modificación en la actividad social: " + evento.nombre
     content = render_cambio_evento_email(evento)
     send_mail_to_id_list(ids_to=usuarios_id,
                          html_subject=subject_utf, html_content=content)
@@ -124,13 +124,13 @@ def _get_evento(evento):
 
 def send_participacion_create_email(participacion):
     titulo_email = u"Usted se ha registrado para participar como " \
-        + participacion.necesidad_voluntario.funcion.nombre + " en el siguiente evento:"
+        + participacion.necesidad_voluntario.funcion.nombre + " en la siguiente actividad social:"
     _send_participacion_email(participacion, titulo_email)
 
 
 def send_participacion_destroy_email(participacion):
     titulo_email = u"Usted ha cancelado su participación como " \
-        + participacion.necesidad_voluntario.funcion.nombre + " en el siguiente evento:"
+        + participacion.necesidad_voluntario.funcion.nombre + " en la siguiente actividad social:"
     _send_participacion_email(participacion, titulo_email)
 
 
@@ -157,8 +157,8 @@ def _send_mail_propuesta(usuarios_id, propuesta):
                          html_subject=subject_utf, html_content=content)
 
 def _send_push_propuesta(usuarios_id, propuesta):
-    en_msg = "The event " + propuesta.evento.nombre + " has a new proposal"
-    es_msg = "El evento " + propuesta.evento.nombre + " tiene una nueva propuesta"
+    en_msg = "The campaign " + propuesta.evento.nombre + " has a new proposal" if propuesta.evento.campaña else "The event " + propuesta.evento.nombre + " has a new proposal"
+    es_msg = "La campaña " + propuesta.evento.nombre + " tiene una nueva propuesta" if propuesta.evento.campaña else "El evento " + propuesta.evento.nombre + " tiene una nueva propuesta"
     from common.notifications import send_push_notification_to_id_list
     send_push_notification_to_id_list(
         usuarios_id, "New proposal", "Nueva propuesta", en_msg, es_msg)
@@ -196,7 +196,7 @@ def clean_propuesta(empresa_id, evento_id, es_voluntario, necesidad_id):
             propuesta.delete()
 
 def _send_mail_response_propuesta(usuarios_id, propuesta):
-    subject_utf = u"Respuesta a tu propuesta para evento: " + propuesta.evento.nombre
+    subject_utf = u"Respuesta a tu propuesta para actividad social: " + propuesta.evento.nombre
     from common.templates import render_respuesta_propuesta
     content = render_respuesta_propuesta(propuesta)
     from common.notifications import send_mail_to_id_list
@@ -248,10 +248,10 @@ def __send_inicio_mail(colaboradores_id, organizacion_id, evento, cron_exec):
 
 def __send_inicio_push(colaboradores_id, organizacion_id, evento, cron_exec):
     colaboradores_id.append(organizacion_id)
-    en_msg = "The event " + evento.nombre + " has started"
-    es_msg = "El evento " + evento.nombre + " ha comenzado"
+    en_msg = "The campaign " + evento.nombre + " has started" if evento.campaña else "The event " + evento.nombre + " has started"
+    es_msg = "La campaña " + evento.nombre + " ha comenzado" if evento.campaña else "El evento " + evento.nombre + " ha comenzado"
     send_push_notification_to_id_list(
-        colaboradores_id, "Event started", "Inicio de Evento", en_msg, es_msg, thread_daemon=not cron_exec)
+        colaboradores_id, "Activity started", "Inicio de actividad social", en_msg, es_msg, thread_daemon=not cron_exec)
 
 
 def notificar_fin_evento(evento, cron_exec=False):
@@ -263,17 +263,17 @@ def notificar_fin_evento(evento, cron_exec=False):
 
 def __send_fin_mail(colaboradores_id, organizacion_id, evento):
     colaboradores_id.append(organizacion_id)
-    subject_utf = u"Helpo: el evento " + evento.nombre + " ha finalizado"
+    subject_utf = u"Helpo: la actividad " + evento.nombre + " ha finalizado"
     send_mail_to_id_list(colaboradores_id, subject_utf,
                          render_fin_evento_email(evento), thread_daemon=not cron_exec)
 
 
 def __send_fin_push(colaboradores_id, organizacion_id, evento):
     colaboradores_id.append(organizacion_id)
-    en_msg = "The event " + evento.nombre + " has finished"
-    es_msg = "El evento " + evento.nombre + " ha finalizado"
+    en_msg = "The campaign " + evento.nombre + " has finished" if evento.campaña else "The event " + evento.nombre + " has finished"
+    es_msg = "La campaña " + evento.nombre + " ha finalizado" if evento.campaña else "El evento " + evento.nombre + " ha finalizado"
     send_push_notification_to_id_list(
-        colaboradores_id, "Event finished", "Evento finalizado", en_msg, es_msg, thread_daemon=not cron_exec)
+        colaboradores_id, "Activity finished", "Actividad social finalizada", en_msg, es_msg, thread_daemon=not cron_exec)
 
 def actualizar_participacion(participacion_id, participo):
     participacion = Participacion.objects.get(id=participacion_id)

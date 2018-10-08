@@ -156,7 +156,7 @@ class ConsultaEvento extends React.Component {
   puedeColaborar(evento) {
     const { user } = this.props.auth;
     if (!((moment(evento.fecha_hora_inicio) <= moment() && !evento.campaña) ||
-      (evento.campaña && (moment(evento.fecha_hora_fin) <= moment() || moment(evento.fecha_hora_inicio) > moment())))) {
+      (evento.campaña && (moment(evento.fecha_hora_fin) <= moment())))) {
       if (user) {
         if (user.user_type == 2) {
           return true;

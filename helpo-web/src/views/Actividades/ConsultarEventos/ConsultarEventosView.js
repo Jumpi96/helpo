@@ -250,7 +250,7 @@ class ConsultarEventosView extends React.Component {
                   onClick={this.toggleColaborar}
                   hidden={
                     (moment(evento.fecha_hora_inicio) <= moment() && !evento.campaña) || 
-                    (evento.campaña && (moment(evento.fecha_hora_fin) <= moment() || moment(evento.fecha_hora_inicio) > moment()))
+                    (evento.campaña && (moment(evento.fecha_hora_fin) <= moment()))
                   }
                   className="btn btn-warning offset-md-10"
                 >

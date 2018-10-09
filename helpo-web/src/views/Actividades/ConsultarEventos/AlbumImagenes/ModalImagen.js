@@ -1,6 +1,5 @@
 import React from 'react'
 import { Button, Modal } from 'reactstrap'
-import { getImageSize } from '../../../../utils/Imagen'
 
 class ModalImagen extends React.Component {
 

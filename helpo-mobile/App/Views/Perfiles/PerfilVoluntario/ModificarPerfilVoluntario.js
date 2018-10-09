@@ -135,9 +135,6 @@ class ModificarPerfilVoluntario extends Component {
                 <Thumbnail large center source={{ uri: this.state.new_avatar ? this.state.avatar_url : this.state.voluntario.avatar.url }} />
                 {this.state.uploadingImage ? <Spinner /> : undefined}
               </Item>
-              <Separator bordered noTopBorder>
-                <Text>Datos personales</Text>
-              </Separator>
 
               <ListItem>
                 <Label style={styles.label}>Nombre</Label>
@@ -180,10 +177,6 @@ class ModificarPerfilVoluntario extends Component {
                 </Picker>
               </ListItem>
               <Text style={styles.validationMessage}>{this.state.errors.sexo}</Text>
-
-              <Separator bordered noTopBorder>
-                <Text>Extras</Text>
-              </Separator>
 
               <Item floatingLabel>
                 <Label>Gustos</Label>

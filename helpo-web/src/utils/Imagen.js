@@ -78,5 +78,23 @@ function getImagen(url) {
   return url
 }
 
+function getImageSize(url, callback) {
+  /*
+  Gets the image height and width of the image (url), and then pass them
+  in an callback function inside an object
+  */
+  let img = new Image()
+  img.addEventListener("load", function(){
+    let sizes = {
+      height: 0,
+      width: 0
+    }
+    sizes.width = this.naturalWidth
+    sizes.height = this.naturalHeight
+    callback(sizes)
+  })
+  img.src = url
+}
 
-export { uploadImage, getImagen, handleImageUpload }
+
+export { uploadImage, getImagen, handleImageUpload, getImageSize }

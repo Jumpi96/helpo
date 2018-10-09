@@ -2,11 +2,9 @@ import React from 'react'
 import { Card, CardHeader, CardBody } from 'reactstrap'
 import { Line, Doughnut, Bar } from 'react-chartjs-2'
 import { connect } from 'react-redux'
-import { Tooltip } from 'reactstrap'
+import { Tooltip, Button } from 'reactstrap'
 import api from '../../api'
-import { PDFDownloadLink } from '@react-pdf/renderer'
-import getReportePDF from './ReporteOngPDF'
-import { parseBase64, convertDataURIToBinary } from '../../utils/Imagen'
+import getPDF from './ReporteOngPDF'
 
 /*
 Props:
@@ -16,7 +14,7 @@ Props:
 class DashboardReportes extends React.Component {
 
   constructor(props) {
-    super(props)
+    super(props)    
     // Creo refs para acceder a las instancias en el DOM de los graficos
     this.suscripciones_chart = React.createRef()
     this.generos_chart = React.createRef()
@@ -52,6 +50,7 @@ class DashboardReportes extends React.Component {
     }
     this.toggle = this.toggle.bind(this)
     this.getChartsImages = this.getChartsImages.bind(this) 
+    this.downloadPDF = this.downloadPDF.bind(this)
   }
 
   toggle() {
@@ -61,6 +60,11 @@ class DashboardReportes extends React.Component {
     this.setState({
       tooltipOpen: !this.state.tooltipOpen
     });
+  }
+
+  downloadPDF() {
+    // Llamo a la funcion que arma y descarga el PDF, pasandole las imagenes
+    getPDF(this.getChartsImages())
   }
 
   addLastMonthSuscripcion(grafico_data, total_suscripciones) {
@@ -96,14 +100,14 @@ class DashboardReportes extends React.Component {
     /*
     Returns an array with the images of the charts, in the same order as they appear
     in the website
-    */
-    const images = []
-    images.push(parseBase64(this.suscripciones_chart.current.chartInstance.toBase64Image()))
-    images.push(parseBase64(this.generos_chart.current.chartInstance.toBase64Image()))
-    images.push(parseBase64(this.manos_chart.current.chartInstance.toBase64Image()))
-    images.push(parseBase64(this.colaboraciones_chart.current.chartInstance.toBase64Image()))
-    images.push(parseBase64(this.participaciones_chart.current.chartInstance.toBase64Image()))
-    images.push(parseBase64(this.empresas_chart.current.chartInstance.toBase64Image()))
+    */    
+    const images = []    
+    images.push(this.suscripciones_chart.current.chartInstance.toBase64Image())
+    images.push(this.generos_chart.current.chartInstance.toBase64Image())
+    images.push(this.manos_chart.current.chartInstance.toBase64Image())
+    images.push(this.colaboraciones_chart.current.chartInstance.toBase64Image())
+    images.push(this.participaciones_chart.current.chartInstance.toBase64Image())
+    images.push(this.empresas_chart.current.chartInstance.toBase64Image())
     return images
   }
 
@@ -210,7 +214,6 @@ class DashboardReportes extends React.Component {
   }
 
   render() {
-
     const generos_data = {
       datasets: [{
         data: this.state.grafico_generos.data,
@@ -351,13 +354,7 @@ class DashboardReportes extends React.Component {
 
             <div className='row'>
               <div className='col'>
-                
-                  <PDFDownloadLink document={getReportePDF(images, totales)} fileName="somename.pdf">
-                    {({ blob, url, loading, error }) => (
-                      loading ? 'Cargando documento...' : 'Descargar versión PDF'
-                    )}
-                  </PDFDownloadLink>
-                
+                <Button color='primary'onClick={() => this.downloadPDF(images[1])}>Descargar version PDF</Button>
               </div>
               <div className='col'>
               </div>
@@ -468,7 +465,6 @@ class DashboardReportes extends React.Component {
                 }}
               />
             </div>
-
           </div>
         </CardBody>
       </Card>

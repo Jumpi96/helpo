@@ -1,54 +1,18 @@
-import React from 'react'
-import { Page, Text, Image, View, Document, StyleSheet } from '@react-pdf/renderer'
+import * as jsPDF from 'jspdf'
+import logo from './Logo64'
 
-const styles = StyleSheet.create({
-  page: {    
-    //backgroundColor: '#E4E4E4'
-  },
-  section: {
-    margin: 10,
-    padding: 10,
-  },
-  centerCtn: {
-    display: 'flex',
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%'
-  },
-  separator: {    
-    paddingHorizontal: 50,
-    width: 500,
-    height: 2,
-    borderBottom: "1px solid gray",
-  },
-  p: {
-    fontSize: 12,
-    marginVertical: 10
-  }
-  
-});
+function downloadPDF(imagenes) {
+  const doc = new jsPDF({format: 'a4'})
+  const width = doc.internal.pageSize.getWidth();    
+  const height = doc.internal.pageSize.getHeight();
+  console.log(width)
+  console.log(height)
+  doc.addImage(logo, 'PNG', (width/2-10), 0, 20, 20);
+  doc.line(5, 20, 205, 20)
+  doc.text('Hello world!', 100, 30)
+  doc.addImage(imagenes[0], 'PNG', 15, 40, 180, 70);
+  doc.addImage(imagenes[1], 'PNG', 15, 120, 180, 70);
+  doc.save('a4.pdf')
+}
 
-// Create Document Component
-const PDF = (images, totales) => (
-  <Document>
-    <Page size="A4" style={styles.page}>
-      <View style={styles.section}>
-        <Text>helpo</Text>
-      </View>
-      <View style={styles.centerCtn}>
-        <View style={styles.separator}/>
-      </View>
-      <View style={styles.section}>
-        <Text style={styles.p}>Total de suscripciones: </Text>
-        <Text style={styles.p}>Total de eventos realizados: </Text>
-        <Text style={styles.p}>Total de manos recibidas: </Text>
-        <Text style={styles.p}>Total de voluntarios participantes: </Text>
-        <Image src={{ data: images[0], format: 'png' }} />
-        {console.log(images[0])}
-      </View>
-    </Page>
-  </Document>
-)
-
-export default PDF
+export default downloadPDF

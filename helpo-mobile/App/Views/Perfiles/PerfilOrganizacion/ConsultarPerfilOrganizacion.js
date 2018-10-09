@@ -33,7 +33,7 @@ class ConsultarPerfilOrganizacion extends Component {
     if (this.props.data.rubro == null) {
       return <Text style={styles.textMuted}> No hay valor ingresado</Text>
     }
-    return <Text> {this.props.data.rubro}</Text>
+    return <Text> {this.props.data.rubro.nombre}</Text>
   }
 
   renderTelefono() {

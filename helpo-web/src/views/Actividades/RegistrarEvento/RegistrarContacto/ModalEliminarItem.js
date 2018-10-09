@@ -11,8 +11,8 @@ class ModalEliminarItem extends Component {
           className='modal-danger'>
           <ModalHeader>Eliminar contacto</ModalHeader>
           <ModalBody>
-            <strong>¿Est&aacute; seguro que desea eliminar este contacto? </strong>
-            Si lo confirma, esta persona no aparecer&aacute; en la lista de contactos
+            <strong>¿Está seguro que desea eliminar este contacto? </strong>
+            Si lo confirma, esta persona no aparecerá en la lista de contactos
             del evento.
           </ModalBody>
           <ModalFooter>

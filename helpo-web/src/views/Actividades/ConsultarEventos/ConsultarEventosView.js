@@ -61,8 +61,8 @@ class ConsultarEventosView extends React.Component {
     })
     return (
       <div className="row">
-        <div className="form-group col-md-3">
-          <b className="float-right">Empresas patrocinadoras</b>
+        <div className="form-group col-md-2 offset-md-1">
+          <b className="float-left">Empresas patrocinadoras</b>
         </div>
         <div className="form-group col-md-9">
           {listaPropuestas}
@@ -155,32 +155,32 @@ class ConsultarEventosView extends React.Component {
                 {' ' + evento.nombre}
               </h1>
               <div className="row">
-                <div className="form-group col-md-3">
-                  <b className="float-right">Descripción</b>
+                <div className="form-group col-md-2 offset-md-1">
+                  <b className="float-left">Descripción</b>
                 </div>
                 <div className="form-group col-md-9">
                   <p>{evento.descripcion}</p>
                 </div>
               </div>
               <div className="row">
-                <div className="form-group col-md-3">
-                  <b className="float-right">Rubro</b>
+                <div className="form-group col-md-2 offset-md-1">
+                  <b className="float-left">Rubro</b>
                 </div>
                 <div className="form-group col-md-9">
                   <p>{evento.rubro.nombre}</p>
                 </div>
               </div>
               <div className="row">
-                <div className="form-group col-md-3">
-                  <b className="float-right">Fecha de inicio</b>
+                <div className="form-group col-md-2 offset-md-1">
+                  <b className="float-left">Fecha de inicio</b>
                 </div>
                 <div className="form-group col-md-9">
                   <p>{moment(evento.fecha_hora_inicio).format('DD/MM/YYYY HH:mm')}</p>
                 </div>
               </div>
               <div className="row">
-                <div className="form-group col-md-3">
-                  <b className="float-right">Fecha de finalización</b>
+                <div className="form-group col-md-2 offset-md-1">
+                  <b className="float-left">Fecha de finalización</b>
                 </div>
                 <div className="form-group col-md-9">
                   <p>{moment(evento.fecha_hora_fin).format('DD/MM/YYYY HH:mm')}</p>
@@ -188,8 +188,8 @@ class ConsultarEventosView extends React.Component {
               </div>
               {listaContactos ? (
                 <div className="row">
-                  <div className="form-group col-md-3">
-                    <b name="contactos" className="float-right">Contactos</b>
+                  <div className="form-group col-md-2 offset-md-1">
+                    <b name="contactos" className="float-left">Contactos</b>
                   </div>
                   <div className="form-group col-md-9">
                     <ul className="list-group">{listaContactos}</ul>
@@ -200,8 +200,8 @@ class ConsultarEventosView extends React.Component {
               {evento.propuestas.length > 0 && this.getPropuestas(evento.propuestas)}
               {listaNecesidades ? (
                 <div className="row">
-                  <div className="form-group col-md-3">
-                    <b className="float-right">Necesidades materiales</b>
+                  <div className="form-group col-md-2 offset-md-1">
+                    <b className="float-left">Necesidades materiales</b>
                   </div>
                   <div className="form-group col-md-9">
                     <Table responsive striped>
@@ -224,8 +224,8 @@ class ConsultarEventosView extends React.Component {
               }
               {listaVoluntarios ? (
                 <div className="row">
-                  <div className="form-group col-md-3">
-                    <b className="float-right">Voluntarios</b>
+                  <div className="form-group col-md-2 offset-md-1">
+                    <b className="float-left">Voluntarios</b>
                   </div>
                   <div className="form-group col-md-9">
                     <Table responsive striped>
@@ -263,8 +263,8 @@ class ConsultarEventosView extends React.Component {
               {this.state.evento.estado > 1
                 ? (
                   <div className="row">
-                    <div className="form-group col-md-3">
-                      <b name="compartir" className="float-right">Album</b>
+                    <div className="form-group col-md-2 offset-md-1">
+                      <b name="compartir" className="float-left">Album</b>
                     </div>
                     <div className="form-group col-md-9">
                       <ButtonGoAlbum eventoId={this.state.evento.id} />
@@ -272,8 +272,8 @@ class ConsultarEventosView extends React.Component {
                   </div>)
                 : undefined}
               <div className="row">
-                <div className="form-group col-md-3">
-                  <b name="compartir" className="float-right">Compartir</b>
+                <div className="form-group col-md-2 offset-md-1">
+                  <b name="compartir" className="float-left">Compartir</b>
                 </div>
                 <div className="form-group col-md-9">
                   <ButtonsCompartirEvento evento={this.state.evento} />

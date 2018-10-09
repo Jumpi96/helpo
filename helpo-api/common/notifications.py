@@ -107,10 +107,10 @@ def send_push_notification_to_list(mails_to, en_title, es_title, en_message, es_
         % (en_title, es_title, en_message, es_message, players_id_json)
     headers = {
         'Authorization': "Basic " + config('ONESIGNAL_REST_API_KEY'),
-        'Content-Type': "application/json"
+        'Content-Type': "application/json; charset=UTF-8"
     }
     t = threading.Thread(target=send_push_notification_to_list_worker, args=(
-        url, payload, headers, mails_to))
+        url, payload.encode('utf-8'), headers, mails_to))
     t.daemon = thread_daemon
     t.start()
 

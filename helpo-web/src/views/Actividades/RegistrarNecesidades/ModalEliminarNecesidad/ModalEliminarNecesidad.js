@@ -18,9 +18,9 @@ class ModalEliminarNecesidad extends Component {
           className='modal-danger'>
           <ModalHeader>Eliminar necesidad</ModalHeader>
           <ModalBody>
-            <strong>¿Est&aacute; seguro que desea eliminar {nombre}? </strong>
-            Si lo confirma, cualquier voluntario participante ser&aacute; notificado
-            de la cancelaci&oacute;n de su participaci&oacute;n.
+            <strong>¿Está seguro que desea eliminar {nombre}? </strong>
+            Si lo confirma, cualquier voluntario participante será notificado
+            de la cancelación de su participación.
           </ModalBody>
           <ModalFooter>
             <Button color="danger" onClick={() => this.props.closeModal(this.props.necesidad.id)}>Eliminar</Button>{' '}

@@ -29,20 +29,23 @@ class ModalEditarItem extends Component {
     let formIsValid = true;
     var error = this.state.error;    
     if (this.props.contacto.nombre === "") {
-        error = 'No puede ingresar un contacto sin nombre';        
+        error = 'No puede ingresar un contacto sin nombre.';        
         formIsValid = false;
       }
     if (this.props.contacto.email === "" && this.props.contacto.telefono === "") {
-        error += ' Debe ingresar un mail o un telefono';        
+        error += ' Debe ingresar un mail o un teléfono.';        
         formIsValid = false;
       }
     if (this.props.contacto.email !== "" && !validateEmail(this.props.contacto.email)) {
-        error += ' Debe ingresar un mail valido';        
+        error += ' Debe ingresar un mail válido.';        
         formIsValid = false;
     }
     else if (this.props.contacto.telefono !== '' && isNaN(this.props.contacto.telefono)) {
-      error += ' Debe ingresar solo números en el teléfono';        
+      error += ' Debe ingresar sólo números en el teléfono.';        
       formIsValid = false;
+    }
+    if (formIsValid) {
+      error = '';
     }
     this.setState({error: error});
     return formIsValid;      

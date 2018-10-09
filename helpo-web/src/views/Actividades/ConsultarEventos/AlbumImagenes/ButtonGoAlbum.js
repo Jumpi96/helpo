@@ -16,7 +16,7 @@ class ButtonGoAlbum extends React.Component {
   render() {
     return (
       <Link to={`/actividades/album/${this.props.eventoId}`}>
-        <Button color='primary'>Ver Album</Button>
+        <Button color='primary'>Ver álbum</Button>
       </Link>
     )
   }

@@ -30,7 +30,7 @@ class ModalDesubscribir extends React.Component {
               color='danger'
               style={{ marginRight: 20 }}
               onClick={() => {this.props.deleteSuscripcion(); this.props.toggle()}}>
-              Cancelar Suscripción
+              Cancelar suscripción
             </Button>
             <Button onClick={this.props.toggle}>Salir</Button>
           </ModalFooter>

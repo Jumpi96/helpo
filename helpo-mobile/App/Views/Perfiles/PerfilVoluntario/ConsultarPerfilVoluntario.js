@@ -127,7 +127,7 @@ class ConsultarPerfilVoluntario extends Component {
             <Text>{this.props.email}</Text>
           </ListItem>
 
-          <ListItem itemDividr>
+          <ListItem itemDivider>
             <Label style={styles.label}>Teléfono</Label>
           </ListItem>
           <ListItem>

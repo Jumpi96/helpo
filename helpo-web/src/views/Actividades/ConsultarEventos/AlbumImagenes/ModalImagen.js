@@ -28,13 +28,6 @@ class ModalImagen extends React.Component {
     }    
   }   
 
-  setImageSizes(sizes) {
-    console.log(sizes)
-    this.setState({
-      sizes: sizes
-    })
-  }
-
   render() {
     
     const imageRemove = (

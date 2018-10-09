@@ -113,7 +113,7 @@ class AlbumImagenes extends React.Component {
       <div>
         <Card>
           <CardHeader>
-            <i className="fa fa-align-justify"></i> Album de {this.props.evento} - {this.props.ong}
+            <i className="fa fa-align-justify"></i> Álbum de {this.props.evento} - {this.props.ong}
           </CardHeader>
           <CardBody style={{ display: 'flex', flexWrap: 'wrap' }}>
             <p style={{ fontSize: 20, width: '100%' }} className='font-weight-bold' >{this.props.evento} - {this.props.ong}</p>

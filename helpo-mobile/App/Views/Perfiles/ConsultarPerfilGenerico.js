@@ -97,6 +97,7 @@ class ConsultarPerfilGenerico extends Component {
           email={this.state.email}
           data={this.state.data}
           switchToModificar={this.switchToModificar}
+          switchToEventosOrg={() => this.props.navigation.navigate('ConsultarEventos', { organizacion: this.state.data.usuario.id })}
           goBack={this.goBack}
         />)
     }
@@ -120,6 +121,7 @@ class ConsultarPerfilGenerico extends Component {
           email={this.state.email}
           data={this.state.data}
           switchToModificar={() => this.props.navigation.navigate('ModificarPerfilOrganizacion')}
+          switchToEventosOrg={() => this.props.navigation.navigate('ConsultarEventos', { organizacion: this.state.data.usuario.id })}
           goBack={this.goBack}
         />)
     }

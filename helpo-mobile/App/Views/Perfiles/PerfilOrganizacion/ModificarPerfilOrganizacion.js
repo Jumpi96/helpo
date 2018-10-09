@@ -197,10 +197,7 @@ class ModificarPerfilOrganizacion extends Component {
                 <Thumbnail large center source={{ uri: this.state.new_avatar ? this.state.avatar_url : this.state.organizacion.avatar.url }} />
                 {this.state.uploadingImage ? <Spinner /> : undefined}
               </Item>
-              <Separator bordered noTopBorder>
-                <Text>Datos personales</Text>
-              </Separator>
-
+              
               <ListItem>
                 <Label style={styles.label}>Nombre</Label>
                 <Text>{this.state.organizacion.nombre}</Text>

@@ -120,4 +120,4 @@ function getImageSize(url, callback) {
 }
 
 
-export { uploadImage, getImagen, handleImageUpload, parseBase64, convertDataURIToBinary }
+export { uploadImage, getImagen, handleImageUpload, parseBase64, convertDataURIToBinary, getImageSize }

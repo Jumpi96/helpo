@@ -2,8 +2,8 @@ from collections import namedtuple
 from django.db.models import Sum
 from actividades.models import Evento, Necesidad, Colaboracion, Voluntario, Participacion, LogMensaje, Mensaje, Propuesta, Presencia, Entrega
 from common.notifications import send_mail_to_list, send_mail_to, send_mail_to_id_list, send_mail_to_id, send_push_notification_to_id_list
-from common.templates import render_participacion_email, render_cambio_evento_email, render_mensaje_evento, render_full_participacion_email, render_full_colaboracion_email, render_was_full_colaboracion_email, render_was_full_participacion_email, render_inicio_evento_email, render_fin_evento_email
-from users.models import User
+from common.templates import render_participacion_email, render_cambio_evento_email, render_mensaje_evento, render_full_participacion_email, render_full_colaboracion_email, render_was_full_colaboracion_email, render_was_full_participacion_email, render_inicio_evento_email, render_fin_evento_email, render_creacion_evento_email
+from users.models import User, Suscripcion
 
 
 def send_mail_mensaje_evento(mensaje, evento_id):
@@ -12,13 +12,12 @@ def send_mail_mensaje_evento(mensaje, evento_id):
     evento = Evento.objects.filter(id=evento_id).first()
     email_participantes.append(evento.organizacion.email)
     send_mail_to_list(email_participantes,
-                      "helpo - " + mensaje.asunto + " (" + evento.nombre + ")",
+                      "Helpo: " + mensaje.asunto + " (" + evento.nombre + ")",
                       render_mensaje_evento(evento, mensaje.mensaje)
                       )
     for participante in participantes:
         LogMensaje.objects.create(
             usuario_id=participante.id, mensaje_id=mensaje.id)
-
 
 def get_participantes_evento(evento_id):
     participantes = []
@@ -48,7 +47,7 @@ def send_previous_mail_evento(evento_id, colaborador_id):
     for mensaje in mensajes:
         if len(LogMensaje.objects.filter(mensaje_id=mensaje.id, usuario_id=colaborador_id)) == 0:
             send_mail_to(colaborador_email,
-                         "helpo - " + mensaje.asunto +
+                         "Helpo: " + mensaje.asunto +
                          " (" + evento.nombre + ")",
                          render_mensaje_evento(evento, mensaje.mensaje)
                          )
@@ -80,12 +79,26 @@ def send_was_full_colaboracion_mail(necesidad_material):
                  render_was_full_colaboracion_email(necesidad_material))
 
 
+def send_mail_creacion_evento(evento):
+    """
+    Manda mail de creacion de evento a todos los suscritos a la ong    
+    """
+    from users.models import Suscripcion
+    suscripciones = Suscripcion.objects.filter(organizacion=evento.organizacion)
+    usuarios_id = [suscripcion.usuario.id for suscripcion in suscripciones]
+
+    subject_utf = u"Creación de evento: " + evento.nombre
+    content = render_creacion_evento_email(evento)
+    send_mail_to_id_list(ids_to=usuarios_id,
+                         html_subject=subject_utf, html_content=content)
+
+
 def notificar_cambio_evento(request_data):
-    obj_evento = namedtuple("Actividad", request_data.keys())(*request_data.values())
-    usuarios_id = _get_usuarios(obj_evento)
     evento = _get_evento(request_data)
-    _send_mail(usuarios_id, evento)
-    _send_push(usuarios_id, evento)
+    if evento is not None:
+        usuarios_id = _get_usuarios(evento)
+        _send_mail(usuarios_id, evento)
+        _send_push(usuarios_id, evento)
 
 
 def _send_push(usuarios_id, evento):
@@ -103,23 +116,24 @@ def _send_mail(usuarios_id, evento):
 
 
 def _get_usuarios(evento):
-    from actividades.models import Necesidad, Voluntario, Colaboracion, Participacion
-    necesidades = Necesidad.objects.filter(evento=evento.id).values('id')
-    voluntarios = Voluntario.objects.filter(evento=evento.id).values('id')
+    suscripciones = Suscripcion.objects.filter(organizacion=evento.organizacion).extra(
+        select={'colaborador': 'usuario_id'}).values('colaborador')
     colaboraciones = Colaboracion.objects.filter(
-        necesidad_material__in=necesidades, vigente=True).values('colaborador')
+        necesidad_material__evento_id=evento.id, vigente=True).values('colaborador')
     participaciones = Participacion.objects.filter(
-        necesidad_voluntario__in=voluntarios, vigente=True).values('colaborador')
-    usuarios_1 = [colaboracion['colaborador']
-                  for colaboracion in colaboraciones]
-    usuarios_2 = [participacion['colaborador']
-                  for participacion in participaciones]
-    return usuarios_1 + usuarios_2
+        necesidad_voluntario__evento_id=evento.id, vigente=True).values('colaborador')
+    usuarios = suscripciones.union(colaboraciones, participaciones)
+    usuarios_id = [usuario['colaborador']
+                  for usuario in usuarios]
+    return usuarios_id
 
 
 def _get_evento(evento):
-    from actividades.models import Evento
-    return Evento.objects.get(id=evento['id'])
+    try:
+        evento_obj = Evento.objects.get(id=evento['id'])
+        return evento_obj
+    except ObjectDoesNotExist:
+        return None
 
 
 def send_participacion_create_email(participacion):
@@ -261,14 +275,14 @@ def notificar_fin_evento(evento, cron_exec=False):
     __send_fin_push(colaboradores_id, organizacion_id, evento, cron_exec)
 
 
-def __send_fin_mail(colaboradores_id, organizacion_id, evento):
+def __send_fin_mail(colaboradores_id, organizacion_id, evento, cron_exec):
     colaboradores_id.append(organizacion_id)
     subject_utf = u"Helpo: la actividad " + evento.nombre + " ha finalizado"
     send_mail_to_id_list(colaboradores_id, subject_utf,
                          render_fin_evento_email(evento), thread_daemon=not cron_exec)
 
 
-def __send_fin_push(colaboradores_id, organizacion_id, evento):
+def __send_fin_push(colaboradores_id, organizacion_id, evento, cron_exec):
     colaboradores_id.append(organizacion_id)
     en_msg = "The campaign " + evento.nombre + " has finished" if evento.campaña else "The event " + evento.nombre + " has finished"
     es_msg = "La campaña " + evento.nombre + " ha finalizado" if evento.campaña else "El evento " + evento.nombre + " ha finalizado"

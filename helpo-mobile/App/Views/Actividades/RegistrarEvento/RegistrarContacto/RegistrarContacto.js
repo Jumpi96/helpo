@@ -47,7 +47,7 @@ function ContactoInput({
         />
       </Item>
       <Item>
-        <Label>Telefono</Label>
+        <Label>Teléfono</Label>
         <Input
           id={`telefono-contacto${id}`}
           value={contactos.telefono}

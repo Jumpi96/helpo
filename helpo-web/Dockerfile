@@ -8,9 +8,18 @@ WORKDIR /usr/src/app
 # where available (npm@5+)
 COPY package*.json ./
 
-RUN npm install
+# Install Python
+RUN apk add --no-cache --virtual .gyp \
+    python \
+    make \
+    g++
+
 # If you are building your code for production
 # RUN npm install --only=production
+RUN npm install
+
+# Delete Python
+RUN apk del .gyp
 
 # Bundle app source
 COPY . .

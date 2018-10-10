@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types'
 import { Card, CardHeader, Button, CardTitle, CardText, CardBody, CardColumns, Tooltip, Popover, PopoverBody, PopoverHeader } from 'reactstrap';
 import { Gmaps, Marker } from 'react-gmaps';
+import { connect } from "react-redux";
 import { getImagen } from '../../../utils/Imagen'
 import BotonSuscripcion from '../../Suscripcion/BotonSuscripcion/BotonSuscripcion'
 import ModalVerificarCuenta from '../ModalVerificarCuenta/ModalVerificarCuenta';
@@ -196,7 +197,10 @@ class ConsultarPerfilOrganizacion extends Component {
   }
 
   getLinkVerEventos() {
-    return '/actividades/consultar-eventos?organizacion=' + this.props.id;
+    if (this.props.auth.isAuthenticated) {
+      return '/actividades/consultar-eventos?organizacion=' + this.props.id;
+    }
+    return '/noAuth/actividades/consultar-eventos?organizacion=' + this.props.id;  
   }
 
   render() {
@@ -319,4 +323,9 @@ class ConsultarPerfilOrganizacion extends Component {
 }
 ConsultarPerfilOrganizacion.propTypes = perfilPropTypes;
 
-export default ConsultarPerfilOrganizacion;
+const mapStateToProps = state => {
+  return {
+    auth: state.auth,
+  }
+}
+export default connect(mapStateToProps, undefined)(ConsultarPerfilOrganizacion);

@@ -43,6 +43,11 @@ export default {
         url: '/organizaciones',
         icon: 'icon-calendar'
       },
+      {
+        name: 'Estadísticas',
+        url: '/reportes',
+        icon: 'icon-star'
+      },
     ],
   };
   

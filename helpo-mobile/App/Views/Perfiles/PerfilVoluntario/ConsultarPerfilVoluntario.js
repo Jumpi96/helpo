@@ -106,47 +106,59 @@ class ConsultarPerfilVoluntario extends Component {
           <Separator bordered noTopBorder>
             <Text>Datos personales</Text>
           </Separator>
-          <ListItem>
+          <ListItem itemDivider>
             <Label style={styles.label}>Nombre</Label>
+          </ListItem>
+          <ListItem>
             <Text>{this.props.nombre}</Text>
           </ListItem>
 
-          <ListItem>
+          <ListItem itemDivider>
             <Label style={styles.label}>Apellido</Label>
+          </ListItem>
+          <ListItem>
             {this.renderApellido()}
           </ListItem>
 
-          <ListItem>
+          <ListItem itemDivider>
             <Label style={styles.label}>Mail</Label>
+          </ListItem>
+          <ListItem>
             <Text>{this.props.email}</Text>
           </ListItem>
 
-          <ListItem>
+          <ListItem itemDivider>
             <Label style={styles.label}>Teléfono</Label>
+          </ListItem>
+          <ListItem>
             {this.renderTelefono()}
           </ListItem>
 
-          <ListItem>
+          <ListItem itemDivider>
             <Label style={styles.label}>DNI</Label>
+          </ListItem>
+          <ListItem>
             {this.renderDni()}
           </ListItem>
 
-          <ListItem>
+          <ListItem itemDivider>
             <Label style={styles.label}>Sexo</Label>
+          </ListItem>
+          <ListItem>
             {this.renderSexo()}
           </ListItem>
 
-          <Separator bordered noTopBorder>
-            <Text>Extras</Text>
-          </Separator>
-
-          <ListItem>
+          <ListItem itemDivider>
             <Label style={styles.label}>Gustos</Label>
+          </ListItem>
+          <ListItem>
             {this.renderGustos()}
           </ListItem>
 
-          <ListItem>
+          <ListItem itemDivider>
             <Label style={styles.label}>Habilidades</Label>
+          </ListItem>
+          <ListItem>
             {this.renderHabilidades()}
           </ListItem>
 

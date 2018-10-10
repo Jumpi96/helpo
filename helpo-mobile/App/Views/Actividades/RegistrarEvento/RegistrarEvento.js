@@ -86,7 +86,7 @@ class RegistrarEvento extends React.Component {
             'Registrar actividad',
             'Se registró la actividad con éxito.'
           );
-          this.props.navigation.navigate('RegistrarNecesidades', { id: evento.id });
+          this.props.navigation.navigate('RegistrarNecesidades', { id: res.data.id });
         }).catch((error) => {
           if (error.response) { console.log(error.response); } else { console.log('Error: ', error.message); }
         });
@@ -181,11 +181,11 @@ class RegistrarEvento extends React.Component {
         validacion.is_valid = false;
       }
       if (contactos[i].email === '' && contactos[i].telefono === '') {
-        errors.contactoContacto = 'Debe ingresar un mail o un telefono';
+        errors.contactoContacto = 'Debe ingresar un mail o un teléfono';
         validacion.is_valid = false;
       }
       if (contactos[i].email !== '' && !(validateEmail(contactos[i].email))) {
-        errors.email = 'Debe ingresar un mail valido';
+        errors.email = 'Debe ingresar un mail válido';
         validacion.is_valid = false;
       }
     }

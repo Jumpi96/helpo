@@ -204,50 +204,58 @@ class ConsultaEvento extends React.Component {
           }
         </Header>
         <Content>
-          <Separator bordered noTopBorder>
-            <Text>Información</Text>
-          </Separator>
-          <ListItem>
+          <ListItem itemDivider>
             <Label style={styles.label}>Nombre</Label>
+          </ListItem>
+          <ListItem>
             <Text>{evento.nombre}</Text>
           </ListItem>
-          <ListItem>
+
+          <ListItem itemDivider>
             <Label style={styles.label}>Organización</Label>
+          </ListItem>
+          <ListItem>
             <Text>{evento.organizacion.nombre}</Text>
           </ListItem>
-          <ListItem>
+
+          <ListItem itemDivider>
             <Label style={styles.label}>Descripción</Label>
+          </ListItem>
+          <ListItem>
             <Text>{evento.descripcion}</Text>
           </ListItem>
-          <ListItem>
+
+          <ListItem itemDivider>
             <Label style={styles.label}>Rubro</Label>
+          </ListItem>
+          <ListItem>
             <Text>{evento.rubro.nombre}</Text>
           </ListItem>
-          <Separator bordered noTopBorder>
-            <Text>Fecha</Text>
-          </Separator>
-          <ListItem>
-            <Label style={styles.label}>Inicio</Label>
-            <Text>{moment(evento.fecha_hora_inicio).format('DD/MM/YYYY HH:mm')}</Text>
+
+          <ListItem itemDivider>
+            <Label style={styles.label}>Fecha</Label>
           </ListItem>
           <ListItem>
-            <Label style={styles.label}>Fin</Label>
-            <Text>{moment(evento.fecha_hora_fin).format('DD/MM/YYYY HH:mm')}</Text>
+            <Text>{'Inicio: ' + moment(evento.fecha_hora_inicio).format('DD/MM/YYYY HH:mm')}</Text>
           </ListItem>
+          <ListItem>
+            <Text>{'Fin: ' + moment(evento.fecha_hora_fin).format('DD/MM/YYYY HH:mm')}</Text>
+          </ListItem>
+
           {listaContactos ? (
             <View>
-              <Separator bordered noTopBorder>
-                <Text>Contactos</Text>
-              </Separator>
+              <ListItem itemDivider>
+                <Label style={styles.label}>Contactos</Label>
+              </ListItem>
               {listaContactos}
             </View>
           ) : undefined
           }
           {evento.necesidades.length > 0 ? (
             <View>
-              <Separator bordered noTopBorder>
-                <Text>Necesidades materiales</Text>
-              </Separator>
+              <ListItem itemDivider>
+                <Label style={styles.label}>Necesidades materiales</Label>
+              </ListItem>
               {this.getListaNecesidades(evento)}
             </View>
           ) : undefined
@@ -255,18 +263,18 @@ class ConsultaEvento extends React.Component {
           {this.getPropuestas(evento.propuestas)}
           {evento.voluntarios.length > 0 ? (
             <View>
-              <Separator bordered noTopBorder>
-                <Text>Voluntarios</Text>
-              </Separator>
+              <ListItem itemDivider>
+                <Label style={styles.label}>Voluntarios</Label>
+              </ListItem>
               {this.getListaVoluntarios(evento)}
             </View>
           ) : undefined
           }
           {evento.comentarios.length > 0 ? (
             <View>
-              <Separator bordered noTopBorder>
-                <Text>Comentarios</Text>
-              </Separator>
+              <ListItem itemDivider>
+                <Label style={styles.label}>Comentarios</Label>
+              </ListItem>
               {this.getListaComentarios(evento)}
             </View>
           ) : undefined

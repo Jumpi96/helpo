@@ -95,7 +95,7 @@ class DetalleParticipacion extends React.Component {
   render() {
     return (
       <Container>
-        <ContainerHeader titulo='Detalle participacion' goBack={this.props.navigation.goBack}/>
+        <ContainerHeader titulo='Detalle participación' goBack={this.props.navigation.goBack}/>
         <FlatList
           data={[
             {key: 'Nombre', value: this.props.participacion.colaborador.nombre},

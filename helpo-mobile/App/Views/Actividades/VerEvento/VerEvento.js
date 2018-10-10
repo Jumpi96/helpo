@@ -168,7 +168,7 @@ class VerEvento extends React.Component {
               })}
             >
               <Body>
-                <Text>Ver Colaboraciones</Text>
+                <Text>Ver colaboraciones</Text>
               </Body>
             </ListItem>
             <GoAlbum

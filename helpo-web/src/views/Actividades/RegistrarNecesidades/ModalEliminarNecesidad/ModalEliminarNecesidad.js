@@ -18,8 +18,8 @@ class ModalEliminarNecesidad extends Component {
           className='modal-danger'>
           <ModalHeader>Eliminar necesidad</ModalHeader>
           <ModalBody>
-            <strong>¿Estás seguro que deseas eliminar {nombre}? </strong>
-            Si lo confirmas, cualquier voluntario participante será notificado
+            <strong>¿Está seguro que desea eliminar {nombre}? </strong>
+            Si lo confirma, cualquier voluntario participante será notificado
             de la cancelación de su participación.
           </ModalBody>
           <ModalFooter>

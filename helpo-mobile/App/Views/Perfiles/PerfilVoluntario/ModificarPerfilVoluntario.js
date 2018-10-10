@@ -135,9 +135,6 @@ class ModificarPerfilVoluntario extends Component {
                 <Thumbnail large center source={{ uri: this.state.new_avatar ? this.state.avatar_url : this.state.voluntario.avatar.url }} />
                 {this.state.uploadingImage ? <Spinner /> : undefined}
               </Item>
-              <Separator bordered noTopBorder>
-                <Text>Datos personales</Text>
-              </Separator>
 
               <ListItem>
                 <Label style={styles.label}>Nombre</Label>
@@ -181,10 +178,6 @@ class ModificarPerfilVoluntario extends Component {
               </ListItem>
               <Text style={styles.validationMessage}>{this.state.errors.sexo}</Text>
 
-              <Separator bordered noTopBorder>
-                <Text>Extras</Text>
-              </Separator>
-
               <Item floatingLabel>
                 <Label>Gustos</Label>
                 <Input
@@ -199,10 +192,10 @@ class ModificarPerfilVoluntario extends Component {
               <Item floatingLabel>
                 <Label>Habilidades</Label>
                 <Input
+                  value={this.state.voluntario.habilidades}
                   multiline={true}
                   numberOfLines={5}
-                  onChange={text => this.handleChange('habilidades', text)}
-                  value={this.state.voluntario.habilidades}
+                  onChangeText={text => this.handleChange('habilidades', text)}
                 />
               </Item>
             </Form>

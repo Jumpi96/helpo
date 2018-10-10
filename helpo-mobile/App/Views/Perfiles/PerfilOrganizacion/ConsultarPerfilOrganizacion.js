@@ -33,7 +33,7 @@ class ConsultarPerfilOrganizacion extends Component {
     if (this.props.data.rubro == null) {
       return <Text style={styles.textMuted}> No hay valor ingresado</Text>
     }
-    return <Text> {this.props.data.rubro}</Text>
+    return <Text> {this.props.data.rubro.nombre}</Text>
   }
 
   renderTelefono() {
@@ -58,6 +58,22 @@ class ConsultarPerfilOrganizacion extends Component {
     return <Text> {this.props.data.descripcion}</Text>
   }
 
+  getBotonOrganizacion() {
+    if (this.props.data.usuario.id === this.props.auth.user.id) {
+      return (
+        <Button transparent onPress={this.props.switchToModificar}>
+          <Text>Modificar</Text>
+        </Button>
+      );
+    } else if (this.props.data.usuario.user_type === 1) {
+      return (
+        <Button transparent onPress={this.props.switchToEventosOrg}>
+          <Text>Ver eventos</Text>
+        </Button>
+      );
+    }
+  }
+
   render() {
     if (this.props.data.avatar) {
       return (
@@ -72,45 +88,50 @@ class ConsultarPerfilOrganizacion extends Component {
               <Title>Perfil</Title>
             </Body>
             <Right>
-              {this.props.data.usuario.id === this.props.auth.user.id ?
-                <Button transparent onPress={this.props.switchToModificar}>
-                  <Text>Modificar</Text>
-                </Button>
-                : undefined}
+              {this.getBotonOrganizacion()}
             </Right>
           </Header>
           <Content>
             <Thumbnail large center source={{ uri: this.props.data.avatar.url }} />
-            <Separator bordered noTopBorder>
-              <Text>Datos personales</Text>
-            </Separator>
-            <ListItem>
+            <ListItem itemDivider>
               <Label style={styles.label}>Nombre</Label>
+            </ListItem>
+            <ListItem>
               <Text>{this.props.nombre}</Text>
             </ListItem>
 
-            <ListItem>
+            <ListItem itemDivider>
               <Label style={styles.label}>Mail</Label>
+            </ListItem>
+            <ListItem>
               <Text>{this.props.email}</Text>
             </ListItem>
 
-            <ListItem>
+            <ListItem itemDivider>
               <Label style={styles.label}>Teléfono</Label>
+            </ListItem>
+            <ListItem>
               {this.renderTelefono()}
             </ListItem>
 
-            <ListItem>
+            <ListItem itemDivider>
               <Label style={styles.label}>CUIT</Label>
+            </ListItem>
+            <ListItem>
               {this.renderCuit()}
             </ListItem>
 
-            <ListItem>
+            <ListItem itemDivider>
               <Label style={styles.label}>Rubro</Label>
+            </ListItem>
+            <ListItem>
               {this.renderRubro()}
             </ListItem>
 
-            <ListItem>
+            <ListItem itemDivider>
               <Label style={styles.label}>Descripción</Label>
+            </ListItem>
+            <ListItem>
               {this.renderDescripcion()}
             </ListItem>
 

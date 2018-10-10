@@ -66,13 +66,14 @@ class DashboardReportes extends React.Component {
   downloadPDF() {
     // Llamo a la funcion que arma y descarga el PDF, pasandole las imagenes y los datos necesarios
     if(this.state.total_voluntarios) {
-      const totales = {
+      const data = {
         suscripciones: this.state.total_suscripciones,
         manos: this.state.total_manos,
         eventos: this.state.total_eventos,
-        voluntarios: this.state.total_voluntarios
+        voluntarios: this.state.total_voluntarios,
+        nombre: this.props.ong_nombre
       }
-      getPDF(this.getChartsImages(), totales)
+      getPDF(this.getChartsImages(), data)
     }
     else {
       alert("Espere unos segundos que termine de cargar la página")
@@ -476,7 +477,8 @@ class DashboardReportes extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  ong: state.auth.user.id
+  ong: state.auth.user.id,
+  ong_nombre: state.auth.user.nombre
 })
 
 export default connect(mapStateToProps)(DashboardReportes)

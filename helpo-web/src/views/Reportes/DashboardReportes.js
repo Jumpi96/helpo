@@ -46,7 +46,8 @@ class DashboardReportes extends React.Component {
         data: [],
         labels: []
       },
-      tooltipOpen: false
+      tooltipOpen: false,
+      donwloadable: false
     }
     this.toggle = this.toggle.bind(this)
     this.getChartsImages = this.getChartsImages.bind(this) 
@@ -63,8 +64,20 @@ class DashboardReportes extends React.Component {
   }
 
   downloadPDF() {
-    // Llamo a la funcion que arma y descarga el PDF, pasandole las imagenes
-    getPDF(this.getChartsImages())
+    // Llamo a la funcion que arma y descarga el PDF, pasandole las imagenes y los datos necesarios
+    if(this.state.total_voluntarios) {
+      const totales = {
+        suscripciones: this.state.total_suscripciones,
+        manos: this.state.total_manos,
+        eventos: this.state.total_eventos,
+        voluntarios: this.state.total_voluntarios
+      }
+      getPDF(this.getChartsImages(), totales)
+    }
+    else {
+      alert("Espere unos segundos que termine de cargar la página")
+    }
+    
   }
 
   addLastMonthSuscripcion(grafico_data, total_suscripciones) {
@@ -310,16 +323,6 @@ class DashboardReportes extends React.Component {
       ]
     };
 
-    // Data for the PDF
-    const dummy_images = ["","","","","",""]
-    const images = this.state.grafico_empresas.data.length > 0 ? this.getChartsImages() : dummy_images
-    const totales = {
-      total_suscripciones: this.state.total_suscripciones,
-      total_manos: this.state.total_manos,
-      total_eventos: this.state.total_eventos,
-      total_voluntarios: this.state.total_voluntarios,
-    }
-
     return (
       <Card>
         <CardHeader>
@@ -354,7 +357,7 @@ class DashboardReportes extends React.Component {
 
             <div className='row'>
               <div className='col'>
-                <Button color='primary'onClick={() => this.downloadPDF(images[1])}>Descargar version PDF</Button>
+                <Button color='primary'onClick={() => this.downloadPDF()}>Descargar version PDF</Button>
               </div>
               <div className='col'>
               </div>

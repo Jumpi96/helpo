@@ -9,6 +9,7 @@ import getPDF from './ReporteOngPDF'
 /*
 Props:
   ong (id - viene de redux)
+  ong_nombre (viene de redux)
 */
 
 class DashboardReportes extends React.Component {
@@ -83,7 +84,7 @@ class DashboardReportes extends React.Component {
 
   addLastMonthSuscripcion(grafico_data, total_suscripciones) {
     /*
-    Agrega el mes actual a las suscripciones
+    Agrega al array con los datos de las suscripciones por mes el mes actual
     */
     const { data, labels } = grafico_data
 
@@ -228,6 +229,9 @@ class DashboardReportes extends React.Component {
   }
 
   render() {
+    /*
+    Defino la data de todos los graficos
+    */
     const generos_data = {
       datasets: [{
         data: this.state.grafico_generos.data,
@@ -330,9 +334,6 @@ class DashboardReportes extends React.Component {
           <i className="fa fa-align-justify"></i> Estadísticas
           </CardHeader>
         <CardBody style={{ display: 'flex', flexDirection: 'column' }}>
-
-
-
           <div style={{ boxSizing: 'border-box' }}>
 
             <div className='row'>
@@ -365,7 +366,7 @@ class DashboardReportes extends React.Component {
             </div>
 
           </div>
-          {/*Bootstrap muere a partir de aca */}
+          {/*Bootstrap muere a partir de aca, long live flexbox ╰། ◉ ◯ ◉ །╯*/}
           <div style={{ alignItems: 'center' }}>
             <div style={{
               height: 5,

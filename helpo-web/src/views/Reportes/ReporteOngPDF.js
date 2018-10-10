@@ -81,7 +81,7 @@ function downloadPDF(imagenes, data) {
   doc.line(5, 285, 205, 285)
   doc.text(`3`, 5, 292)
 
-  doc.save('reporteONG-' + getToday() + '.pdf')  
+  doc.save('reporte-' + nombre + '-' + getToday() + '.pdf')  
 }
 
 export default downloadPDF

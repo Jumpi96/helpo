@@ -25,7 +25,7 @@ class GoAlbum extends React.Component {
           onPress={() => this.props.navigation.navigate('AlbumEvento', {
             eventoId: this.props.eventoId})}>
           <Body>
-            <Text>Ver Album</Text>
+            <Text>Ver álbum</Text>
           </Body>
         </ListItem>
         : undefined}

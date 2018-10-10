@@ -47,7 +47,7 @@ export const success = (state, action) => {
 export const failure = state =>
   state.merge({ fetching: false, error: true, data: null })
 
-// Cargar datos de detlle colaboracion
+// Cargar datos de detalle colaboración
 
 export const detalle = (state, action) => {
   const { data } = action

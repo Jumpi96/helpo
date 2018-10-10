@@ -65,20 +65,23 @@ class RegistrarContacto extends Component {
     let formIsValid = true;
     var error = this.state.error;    
     if (this.state.nombre === "") {
-        error = 'No puede ingresar un contacto sin nombre';        
+        error = 'No puede ingresar un contacto sin nombre.';        
         formIsValid = false;
       }
-    else if (this.state.email === "" && this.state.telefono === "") {
-        error += ' Debe ingresar un mail o un telefono';        
+    if (this.state.email === "" && this.state.telefono === "") {
+        error += ' Debe ingresar un mail o un teléfono.';        
         formIsValid = false;
       }
-    else if (this.state.email !== "" && !validateEmail(this.state.email)) {
-        error += ' Debe ingresar un mail valido';        
+    if (this.state.email !== "" && !validateEmail(this.state.email)) {
+        error += ' Debe ingresar un mail válido.';        
         formIsValid = false;
     }
-    else if (this.state.telefono !== '' && isNaN(this.state.telefono)) {
-      error += ' Debe ingresar solo números en el teléfono';        
+    if (this.state.telefono !== '' && isNaN(this.state.telefono)) {
+      error += ' Debe ingresar sólo números en el teléfono.';        
       formIsValid = false;
+    }
+    if (formIsValid) {
+      error = '';
     }
     this.setState({error: error});
     return formIsValid;      

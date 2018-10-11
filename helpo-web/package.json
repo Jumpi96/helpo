@@ -21,6 +21,7 @@
     "flag-icon-css": "^3.0.0",
     "font-awesome": "^4.7.0",
     "jquery": "^1.9.1",
+    "jspdf": "^1.4.1",
     "moment": "2.22.1",
     "node-sass": "^4.9.3",
     "prop-types": "^15.6.2",

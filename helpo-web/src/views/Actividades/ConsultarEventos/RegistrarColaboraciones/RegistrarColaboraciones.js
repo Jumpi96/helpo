@@ -500,7 +500,8 @@ class RegistrarColaboraciones extends Component {
       cantidad: 1,
     };
     if (!this.state.evento.campaña) {
-      if (this.getNecesidadVoluntario(this.state.voluntarios) !== this.state.funcionVoluntario) {
+      const necesidadVoluntario = this.getNecesidadVoluntario(this.state.voluntarios);
+      if (necesidadVoluntario !== 0 && necesidadVoluntario !== this.state.funcionVoluntario) {
         this.deleteParticipacion();
       }
     }

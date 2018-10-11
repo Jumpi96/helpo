@@ -6,13 +6,13 @@ const tablaPropTypes = {
   necesidad: PropTypes.string.isRequired,
   descripcion: PropTypes.string.isRequired,
   colaboraciones: PropTypes.array.isRequired,//[ {}, {} ],
-} 
+}
 
-const TablaColaboracion = ( props ) => {
+const TablaColaboracion = (props) => {
 
-  function adaptData( colaboraciones ) {
+  function adaptData(colaboraciones) {
     let dataArray = []
-    for ( let colaboracion of colaboraciones ) {
+    for (let colaboracion of colaboraciones) {
       const colaboracionData = {
         //Si comentario o dni son undefined, toman valor "-"
         apellido: colaboracion.colaborador.apellido,
@@ -22,12 +22,12 @@ const TablaColaboracion = ( props ) => {
         comentario: colaboracion.comentario ? colaboracion.comentario : "-",
         idColaboracion: colaboracion.id,
         retroalimentacion_ong: colaboracion.retroalimentacion_ong,
-        checkedBox: () => {},
+        checkedBox: () => { },
         entregados: colaboracion.entregados,
         idVoluntario: colaboracion.colaborador.id
       }
-      dataArray.push(colaboracionData)      
-    }    
+      dataArray.push(colaboracionData)
+    }
     return dataArray
   }
 
@@ -37,8 +37,10 @@ const TablaColaboracion = ( props ) => {
 
   const { colaboraciones, necesidad, descripcion } = props
   let FilasColaboracion
-  if ( colaboraciones.length > 0) {
-    FilasColaboracion = adaptData(colaboraciones).map( (colaboracion) => <FilaColaboracion key={ colaboracion.idColaboracion } {...colaboracion}/> )
+  if (colaboraciones.length > 0) {
+    FilasColaboracion = adaptData(colaboraciones).map((colaboracion) =>
+      <FilaColaboracion key={colaboracion.idColaboracion} {...colaboracion} submitChanges={props.submitChanges} />
+    )
   }
 
   return (
@@ -55,13 +57,13 @@ const TablaColaboracion = ( props ) => {
             <th scope="col">Comentario</th>
             <th scope="col">¿Completó la entrega?</th>
             <th scope="col">Retroalimentación</th>
-          </tr>  
+          </tr>
         </thead>
         <tbody>
           {FilasColaboracion}
         </tbody>
       </table>
-        {colaboraciones.length === 0 ? noColaboraciones : ""}
+      {colaboraciones.length === 0 ? noColaboraciones : ""}
     </div>
   )
 }

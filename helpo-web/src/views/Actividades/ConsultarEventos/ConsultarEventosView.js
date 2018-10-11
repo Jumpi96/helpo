@@ -100,8 +100,9 @@ class ConsultarEventosView extends React.Component {
       if (user.user_type === 2) {
         return true;
       } else if (user.user_type === 3) {
-        const propuestas_rechazadas = this.state.evento.propuestas.filter(p => p.empresa.id === user.id && p.aceptado === 0);
-        if (propuestas_rechazadas.length > 0) {
+        const propuestas_rechazadas = this.state.evento.propuestas.filter(p => p.empresa.id === user.id && p.aceptado === -1);
+        alert(propuestas_rechazadas)
+        if (propuestas_rechazadas.length === 0) {
           return true;
         }
       }

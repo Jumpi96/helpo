@@ -3,10 +3,10 @@ import TablaColaboracion from './TablaColaboracion'
 
 const TablaColaboraciones = (props) => {
   let tablas = []
-  for (var key in props) {
-    const colaboraciones = props[key].colaboraciones
-    const necesidad = props[key].recurso.nombre
-    let descripcion = props[key].descripcion;
+  for (var key in props.keys) {
+    const colaboraciones = props.keys[key].colaboraciones;
+    const necesidad = props.keys[key].recurso.nombre;
+    let descripcion = props.keys[key].descripcion;
     descripcion = descripcion.length > 25 ? descripcion.slice(0, 25) + '...' : descripcion;
     tablas.push(
       <TablaColaboracion
@@ -14,6 +14,7 @@ const TablaColaboraciones = (props) => {
         necesidad={necesidad}
         colaboraciones={colaboraciones}
         descripcion={descripcion}
+        submitChanges={props.submitChanges}
       />)
   }
 

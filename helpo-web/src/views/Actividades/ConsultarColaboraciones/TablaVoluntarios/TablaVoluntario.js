@@ -38,7 +38,10 @@ const TablaVoluntario = ( props ) => {
   const { participaciones, funcion, descripcion } = props
   let Filasparticipacion
   if ( participaciones.length > 0) {
-    Filasparticipacion = adaptData(participaciones).map( (participacion) => <FilaParticipacion key={ participacion.idParticipacion } {...participacion}/> )
+    Filasparticipacion = adaptData(participaciones).map(
+      (participacion) => 
+        <FilaParticipacion key={ participacion.idParticipacion } {...participacion} submitChanges={props.submitChanges}/> 
+      )
   }
 
   return (

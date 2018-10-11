@@ -282,7 +282,10 @@ class RegistrarColaboraciones extends React.Component {
         evento: this.state.evento.id,
       };
       if (!this.state.evento.campaña) {
-        this.deleteParticipacion();
+        const necesidadVoluntario = this.getNecesidadVoluntario(this.state.voluntarios);
+        if (necesidadVoluntario !== 0 && necesidadVoluntario !== this.state.necesidadModificada) {
+          this.deleteParticipacion();
+        }
       }
       this.setState({ necesidadModificada: undefined });
       this.props.navigation.navigate('AgregarColaboracion', { colaboracion: participacion });

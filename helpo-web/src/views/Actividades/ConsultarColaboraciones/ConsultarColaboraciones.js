@@ -82,6 +82,7 @@ class ConsultarColaboracionConnected extends React.Component {
     }
     axios.all(promises)
       .then(() => {
+        this.props.fetchData(this.props.match.params.eventoId);
         this.props.sentDataSuccess(true)
       })
       .catch(() => {
@@ -99,8 +100,8 @@ class ConsultarColaboracionConnected extends React.Component {
             <i className="fa fa-align-justify"></i> Colaboraciones del evento {this.props.necesidades.nombre}
           </CardHeader>
           <CardBody>
-            <TablaColaboraciones {...this.props.necesidades.necesidades} />
-            <TablaVoluntarios {...this.props.necesidades.voluntarios} />
+            <TablaColaboraciones keys={this.props.necesidades.necesidades} submitChanges={this.submitChanges} />
+            <TablaVoluntarios keys={this.props.necesidades.voluntarios} submitChanges={this.submitChanges} />
             <div className='container'>
               <div className='row'>
                 <Button color='primary' className='col-' onClick={this.submitChanges}>

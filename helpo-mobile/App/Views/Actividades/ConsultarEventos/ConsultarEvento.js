@@ -161,8 +161,8 @@ class ConsultaEvento extends React.Component {
         if (user.user_type == 2) {
           return true;
         } else if (user.user_type == 3) {
-          const propuestas_rechazadas = evento.propuestas.filter(p => p.empresa.id === user.id && p.aceptado === 0);
-          if (propuestas_rechazadas.length > 0) {
+          const propuestas_rechazadas = evento.propuestas.filter(p => p.empresa.id === user.id && p.aceptado === -1);
+          if (propuestas_rechazadas.length === 0) {
             return true;
           }
         }

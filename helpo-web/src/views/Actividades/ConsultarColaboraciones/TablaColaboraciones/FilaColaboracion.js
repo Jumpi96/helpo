@@ -34,7 +34,7 @@ const FilaColaboracionConnected = ( props ) => {
     const mensaje = { evento: evento.id, voluntario: idVoluntario, es_colaboracion: true };
     api.post('feedbacks/retroalimentacion_ong/', mensaje)
       .then((res) => {
-        props.fetchData(evento.id);
+        props.submitChanges();
       })
       .catch((error) => {
         if (error.response){ console.log(error.response.status) }

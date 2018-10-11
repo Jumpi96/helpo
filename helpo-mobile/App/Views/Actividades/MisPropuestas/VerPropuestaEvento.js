@@ -204,7 +204,7 @@ class VerPropuestaEvento extends React.Component {
         )
       }
     } else {
-      if (moment(evento.fecha_hora_inicio) > moment() || propuesta.aceptado !== 0) {
+      if (moment(evento.fecha_hora_inicio) > moment() && propuesta.aceptado !== 1) {
         return (
           <Button block style={{'margin': 15}}
             onClick={() => this.props.navigation.navigate('RegistrarOfrecimiento', { evento: evento.id })}

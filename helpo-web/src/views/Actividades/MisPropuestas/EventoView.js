@@ -186,7 +186,7 @@ class EventoView extends React.Component {
         )
       }
     } else {
-      if (moment(evento.fecha_hora_inicio) > moment() || propuesta.aceptado !== 0) {
+      if (moment(evento.fecha_hora_inicio) > moment() && propuesta.aceptado !== -1) {
         return (
           <button
             onClick={this.toggleEdit}

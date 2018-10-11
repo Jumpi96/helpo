@@ -81,7 +81,7 @@ class DetalleParticipacion extends React.Component {
         </Body>
       </ListItem>
     )
-    if(item.key === 'Participo') {
+    if(item.key === 'Participó') {
       return participoItem
     } else if (item.key === 'Retroalimentación') {
       if (moment(this.props.evento.fecha_hora_inicio) > moment()) {
@@ -95,14 +95,14 @@ class DetalleParticipacion extends React.Component {
   render() {
     return (
       <Container>
-        <ContainerHeader titulo='Detalle participacion' goBack={this.props.navigation.goBack}/>
+        <ContainerHeader titulo='Detalle participación' goBack={this.props.navigation.goBack}/>
         <FlatList
           data={[
             {key: 'Nombre', value: this.props.participacion.colaborador.nombre},
             {key: 'Apellido', value: this.props.participacion.colaborador.apellido},
             {key: 'Comentario', value: this.props.participacion.comentario},
             {key: 'Dni', value: this.props.participacion.colaborador.dni},
-            {key: 'Participo', value: this.state.participo},
+            {key: 'Participó', value: this.state.participo},
             {key: 'Retroalimentación', value: this.state.retroalimentacion}
           ]}
           renderItem={({item}) => this.renderItem(item)}

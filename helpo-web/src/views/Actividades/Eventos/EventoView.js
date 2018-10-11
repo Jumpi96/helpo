@@ -197,7 +197,7 @@ class EventoView extends React.Component {
             {this.props.evento.estado > 1 
                   ? (
                     <Link to={`/actividades/album/${this.props.evento.id}`}>
-                      <button className="btn btn-warning">Ver Album</button>
+                      <button className="btn btn-warning">Ver álbum</button>
                     </Link>
                   ) 
                   : undefined}

@@ -103,11 +103,11 @@ class EventoForm extends React.Component {
         validacion.is_valid = false;
       }
       if (contactos[i].mail === "" && contactos[i].telefono === "") {
-        errors.contactoContacto = 'Debe ingresar un mail o un telefono';        
+        errors.contactoContacto = 'Debe ingresar un mail o un teléfono';        
         validacion.is_valid = false;
       }
       if (contactos[i].mail !== "" && !validateEmail(contactos[i].mail)) {
-        errors.email = 'Debe ingresar un mail valido';        
+        errors.email = 'Debe ingresar un mail válido';        
         validacion.is_valid = false;
       }
     }

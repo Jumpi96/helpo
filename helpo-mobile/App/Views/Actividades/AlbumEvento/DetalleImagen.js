@@ -75,7 +75,7 @@ class DetalleImagen extends React.Component {
           <View style={{marginTop: 22, backgroundColor: 'white', height: 100}}>
             <View style={{ flex: 1, alignItems: 'center' }}>
               <Text style={{ fontWeight: 'bold', marginTop: 10}}>
-                Desea realmente remover la imagen?
+                ¿Desea realmente remover la imagen?
               </Text>
               <TouchableHighlight 
                 style={{ backgroundColor: 'red', padding: 10, marginTop: 10, borderRadius: 10}}

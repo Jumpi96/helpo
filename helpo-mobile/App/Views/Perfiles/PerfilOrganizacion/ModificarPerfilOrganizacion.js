@@ -55,6 +55,7 @@ class ModificarPerfilOrganizacion extends Component {
 
   componentDidMount() {
     let organizacion = {};
+    let rubrosOrganizacion = undefined;
     api.get('/auth/user/')
       .then(res => {
         organizacion.nombre = res.data.nombre;
@@ -67,9 +68,14 @@ class ModificarPerfilOrganizacion extends Component {
         return api.get('/perfiles/rubros_organizacion/')
       })
       .then(res => {
+        rubrosOrganizacion = res.data;
+        return api.get('/perfiles/rubros_empresa/')
+      })
+      .then(res => {
         this.setState({
           organizacion,
-          rubros: res.data
+          rubros: rubrosOrganizacion,
+          rubrosEmpresa: res.data
         });
       });
   }
@@ -82,7 +88,14 @@ class ModificarPerfilOrganizacion extends Component {
 
   handleChangeRubro(value) {
     const { organizacion } = this.state;
-    organizacion.rubro = value;
+    if (organizacion.rubro !== null) {
+      organizacion.rubro.id = value;
+    }
+    else {
+      organizacion.usuario.user_type === 3 ?
+        organizacion.rubro = { id: value, nombre: this.state.rubrosEmpresa[value].nombre } :
+        organizacion.rubro = { id: value, nombre: this.state.rubros[value].nombre }
+    }
     this.setState({ organizacion });
   }
 
@@ -98,7 +111,7 @@ class ModificarPerfilOrganizacion extends Component {
         .then((res) => {
           this.props.navigation.navigate('ConsultarPerfilGenerico');
         })
-        .catch((e) => { console.warn(e) })
+        .catch((e) => { console.log(e.response) })
     }
   }
 
@@ -107,34 +120,53 @@ class ModificarPerfilOrganizacion extends Component {
     const errors = this.state.errors;
     const { organizacion } = this.state;
 
-    if (Number.isNaN(organizacion.cuit)) {
+    if (isNaN(organizacion.cuit)) {
       formIsValid = false;
       errors.cuit = 'Debe ingresar un CUIT válido.';
     } else { errors.cuit = undefined; }
+
+    if (isNaN(organizacion.telefono)) {
+      formIsValid = false;
+      errors.telefono = 'Debe ingresar un teléfono válido.';
+    } else { errors.telefono = undefined; }
 
     this.setState({ errors: errors });
     return formIsValid;
   }
 
   getRubros() {
-    return this.state.rubros.map((r) =>
-      <Picker.Item label={r.nombre} value={r.id}></Picker.Item>
-    );
+    if (this.state.organizacion.usuario.user_type === 3) {
+      return this.state.rubrosEmpresa.map((r) =>
+        <Picker.Item label={r.nombre} value={r.id}></Picker.Item>
+      );
+    } else {
+      return this.state.rubros.map((r) =>
+        <Picker.Item label={r.nombre} value={r.id}></Picker.Item>
+      );
+    };
   }
 
   prepareData(perfil) {
-    const nuevo_perfil = {};
+    const nuevo_perfil = { descripcion: perfil.descripcion };
     if (perfil.cuit !== null) {
       nuevo_perfil.cuit = perfil.cuit;
     }
     if (perfil.descripcion !== null) {
       nuevo_perfil.descripcion = perfil.descripcion;
     }
-    if (perfil.rubro !== null) {
-      nuevo_perfil.rubro = perfil.rubro;
+    if (perfil.rubro !== null && perfil.rubro !== 0) {
+      const rubroId = perfil.rubro.id - 1;
+      if (rubroId !== -1) {
+        perfil.usuario.user_type === 3 ?
+          nuevo_perfil.rubro = { id: rubroId, nombre: this.state.rubrosEmpresa[rubroId].nombre } :
+          nuevo_perfil.rubro = { id: rubroId, nombre: this.state.rubros[rubroId].nombre }
+      }
     }
     if (perfil.telefono !== null) {
       nuevo_perfil.telefono = perfil.telefono;
+    }
+    if (perfil.ubicacion !== null) {
+      nuevo_perfil.ubicacion = perfil.ubicacion;
     }
     return nuevo_perfil;
   }
@@ -165,10 +197,7 @@ class ModificarPerfilOrganizacion extends Component {
                 <Thumbnail large center source={{ uri: this.state.new_avatar ? this.state.avatar_url : this.state.organizacion.avatar.url }} />
                 {this.state.uploadingImage ? <Spinner /> : undefined}
               </Item>
-              <Separator bordered noTopBorder>
-                <Text>Datos personales</Text>
-              </Separator>
-
+              
               <ListItem>
                 <Label style={styles.label}>Nombre</Label>
                 <Text>{this.state.organizacion.nombre}</Text>
@@ -204,7 +233,7 @@ class ModificarPerfilOrganizacion extends Component {
               <ListItem>
                 <Label>Rubro</Label>
                 <Picker
-                  selectedValue={this.state.organizacion.rubro}
+                  selectedValue={this.state.organizacion.rubro !== null ? this.state.organizacion.rubro.id : ""}
                   onValueChange={(itemValue) => this.handleChangeRubro(itemValue)}>
                   <Picker.Item label="" value="" />
                   {this.getRubros()}

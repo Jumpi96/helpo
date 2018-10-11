@@ -30,7 +30,7 @@ class ComentarioAdmin(admin.ModelAdmin):
     list_display = ['id', 'evento', 'voluntario', 'comentario']
 
 class ColaboracionAdmin(admin.ModelAdmin):
-    list_display = ['id', 'cantidad', 'comentario', 'necesidad_material', 'colaborador', 'entregado', 'vigente', 'retroalimentacion_voluntario', 'retroalimentacion_ong']
+    list_display = ['id', 'cantidad', 'comentario', 'necesidad_material', 'colaborador', 'vigente', 'retroalimentacion_voluntario', 'retroalimentacion_ong']
 
 class ParticipacionAdmin(admin.ModelAdmin):
     list_display = ['id', 'comentario', 'necesidad_voluntario', 'colaborador', 'participo', 'vigente', 'retroalimentacion_voluntario', 'retroalimentacion_ong', 'cantidad']

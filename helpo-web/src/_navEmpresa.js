@@ -24,7 +24,7 @@ export default {
         class: ''             // optional class names space delimited list for title item ex: "text-center"
       },
       {
-        name: 'Eventos',
+        name: 'Actividades sociales',
         url: '/actividades/consultar-eventos',
         icon: 'icon-cursor'
       },

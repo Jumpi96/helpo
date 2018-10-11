@@ -4,18 +4,21 @@ import { View } from 'react-native'
 
 const SeccionRecurso = (props) => {
   const { necesidades } = props
-  let listas = []  
-  for(let necesidad of necesidades) {
+  let listas = []
+  for (let necesidad of necesidades) {
     console.tron.log(necesidad)
-    const colaboraciones = necesidad.colaboraciones 
+    const colaboraciones = necesidad.colaboraciones
     const recurso = necesidad.recurso.nombre
+    let descripcion = necesidad.descripcion;
+    descripcion = descripcion.length > 18 ? descripcion.slice(0, 18) + '...' : descripcion;
     listas.push(
-      <ListaColaboraciones 
+      <ListaColaboraciones
         navigation={props.navigation}
-        key={ 'lista-colab-'+necesidad.id }
-        necesidad={ recurso } 
-        colaboraciones={ colaboraciones } 
-      />) 
+        key={'lista-colab-' + necesidad.id}
+        necesidad={recurso}
+        descripcion={descripcion}
+        colaboraciones={colaboraciones}
+      />)
   }
   return (
     <View>

@@ -27,7 +27,8 @@ def render_creacion_evento_email(evento):
 
 
 def render_cambio_evento_email(evento):
-    dict_context = dict(evento=evento)
+    tipo_evento = 'eventocampaña' if evento.campaña else 'evento'
+    dict_context = dict(evento=evento, tipo_evento=tipo_evento)
     return render_mail('cambio-evento-email.html', dict_context)
 
 

@@ -39,8 +39,9 @@ class RegistrarOfrecimientos extends Component {
 
   empresaTienePropuesta(evento, propuestas) {
     const filtro = propuestas.filter(
-      n => n.evento.toString() === evento && n.aceptado !== 0 && n.empresa.id === this.getUserId()
-    )
+      n => n.evento.toString() === evento.id && n.empresa.id === this.getUserId()
+        && ((n.aceptado !== 0 || (n.aceptado === 1 && evento.campaña)))
+    );
     return filtro.length > 0;
   }
 
@@ -92,6 +93,7 @@ class RegistrarOfrecimientos extends Component {
         <td>{n.recurso.nombre}</td>
         <td>{n.descripcion}</td>
         <td>{this.getCantidadNecesidades(n)}</td>
+        <td>{this.getEntregado(n)}</td>
         {this.getBotonesNecesidad(n)}
       </tr>
     );
@@ -171,6 +173,7 @@ class RegistrarOfrecimientos extends Component {
           <td>{this.state.voluntarios[i].funcion.nombre}</td>
           <td>{this.state.voluntarios[i].descripcion}</td>
           <td>{this.getCantidadVoluntarios(this.state.voluntarios[i])}</td>
+          <td>{this.getEntregado(this.state.voluntarios[i])}</td>
           {this.getBotonesVoluntario(this.state.voluntarios[i])}
         </tr>
       )
@@ -183,6 +186,7 @@ class RegistrarOfrecimientos extends Component {
             <th>Función</th>
             <th>Descripción</th>
             <th>Participando</th>
+            <th>Presencias</th>
             <th></th>
           </tr>
         </thead>
@@ -193,6 +197,19 @@ class RegistrarOfrecimientos extends Component {
     );
   }
 
+  getEntregado(n) {
+    if (n.funcion) {
+      if (this.existeParticipacion(n)) {
+        return n.participaciones.filter(p => p.colaborador.id === this.getUserId())[0].presencias;
+      }
+    } else {
+      if (this.existeColaboracion(n)) {
+        return n.colaboraciones.filter(c => c.colaborador.id === this.getUserId())[0].entregados;
+      }
+    }
+    return '-';
+  }
+
   newColaboracion(idNecesidad) {
     const necesidad = this.state.necesidades.filter(v => v.id === idNecesidad)[0];
     const colaboracion = {
@@ -200,6 +217,7 @@ class RegistrarOfrecimientos extends Component {
       cantidad_anterior: 0,
       cantidad: undefined,
       cantidad_restante: this.getCantidadRestante(necesidad, 0),
+      entregados: 0,
       recurso: necesidad.recurso,
       descripcion: necesidad.descripcion,
       comentarios: undefined,
@@ -214,6 +232,7 @@ class RegistrarOfrecimientos extends Component {
       cantidad_anterior: 0,
       cantidad: undefined,
       cantidad_restante: this.getCantidadRestante(voluntario, 0),
+      presencias: 0,
       funcion: voluntario.funcion,
       descripcion: voluntario.descripcion,
       comentarios: undefined,
@@ -239,6 +258,7 @@ class RegistrarOfrecimientos extends Component {
       cantidad_anterior: colaboracionAnterior.cantidad,
       cantidad: colaboracionAnterior.cantidad,
       cantidad_restante: this.getCantidadRestante(necesidad, colaboracionAnterior.cantidad),
+      entregados: colaboracionAnterior.entregados,
       recurso: necesidad.recurso,
       descripcion: necesidad.descripcion,
       comentarios: colaboracionAnterior.comentario,
@@ -254,6 +274,7 @@ class RegistrarOfrecimientos extends Component {
       cantidad_anterior: participacionAnterior.cantidad,
       cantidad: participacionAnterior.cantidad,
       cantidad_restante: this.getCantidadRestante(voluntario, participacionAnterior.cantidad),
+      presencias: participacionAnterior.presencias,
       funcion: voluntario.funcion,
       descripcion: voluntario.descripcion,
       comentarios: participacionAnterior.comentario,
@@ -443,6 +464,7 @@ class RegistrarOfrecimientos extends Component {
                     <th>Ítem</th>
                     <th>Descripción</th>
                     <th>Colaborando</th>
+                    <th>Entregados</th>
                     <th></th>
                   </tr>
                 </thead>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Alert } from 'react-native';
 import { connect } from 'react-redux';
 import {
   Button,
@@ -26,11 +27,12 @@ class RegistrarColaboraciones extends React.Component {
     const { params } = this.props.navigation.state;
     const evento = params.evento;
     this.state = {
-      evento: {id: evento},
+      evento: { id: evento },
       necesidades: [],
       voluntarios: [],
       funcionVoluntario: undefined,
     };
+    this.getParticipacionPorId = this.getParticipacionPorId.bind(this);
   }
 
   componentDidMount() {
@@ -55,8 +57,8 @@ class RegistrarColaboraciones extends React.Component {
 
   getNecesidadVoluntario(necesidades) {
     const usuario = this.getUserId();
-    for (let i=0; i < necesidades.length; i++) {
-      if (necesidades[i].participaciones.filter(c => c.colaborador.id === usuario).length > 0){
+    for (let i = 0; i < necesidades.length; i++) {
+      if (necesidades[i].participaciones.filter(c => c.colaborador.id === usuario).length > 0) {
         return necesidades[i].id;
       }
     }
@@ -139,13 +141,13 @@ class RegistrarColaboraciones extends React.Component {
   getCantidadVoluntarios(v) {
     let contador = 0;
     v.participaciones.forEach((p) => { contador += p.cantidad });
-    return '' + contador + '/'+ v.cantidad;
+    return '' + contador + '/' + v.cantidad;
   }
 
   getCantidadNecesidades(n) {
     let contador = 0;
-    n.colaboraciones.forEach((c) => { contador += c.cantidad});
-    return '' + contador + '/'+ n.cantidad;
+    n.colaboraciones.forEach((c) => { contador += c.cantidad });
+    return '' + contador + '/' + n.cantidad;
   }
 
   getListaNecesidades() {
@@ -229,21 +231,46 @@ class RegistrarColaboraciones extends React.Component {
   }
 
   deleteColaboracion(idNecesidad) {
-    var _this = this;
-    const colaboracionAnterior = this.getColaboracionAnterior(idNecesidad);
-    api.delete('/actividades/colaboraciones/' + colaboracionAnterior + '/')
-      .then(() => {
-        this.loadNecesidadesYVoluntarios();
-      }).catch(function (error) {
-        if (error.response){ console.log(error.response.status) }
-        else { console.log('Error: ', error.message)}
-        _this.setState({ error_necesidad: "Hubo un problema al cargar su información." });
-      });
+    const necesidad = this.state.necesidades.filter(n => n.id === idNecesidad)[0];
+    const colaboracion = necesidad.colaboraciones.filter(c => c.colaborador.id === this.getUserId())[0];
+    if (colaboracion.entregados === 0) {
+      api.delete('/actividades/colaboraciones/' + colaboracion.id + '/')
+        .then(() => {
+          this.loadNecesidadesYVoluntarios();
+        }).catch((error) => {
+          if (error.response) { console.log(error.response.status) }
+          else { console.log('Error: ', error.message) }
+          this.setState({ error_necesidad: "Hubo un problema al cargar su información." });
+        });
+    } else if (colaboracion.entregados === colaboracion.cantidad) {
+      Alert.alert(
+        "Eliminar colaboración",
+        "No se puede eliminar una colaboración que ya ha sido entregada."
+      );
+      this.setState({ apiToken: false })
+    } else if (colaboracion.entregados < colaboracion.cantidad) {
+      const nuevaColaboracion = {
+        id: colaboracion.id,
+        cantidad: colaboracion.entregados,
+        comentario: colaboracion.comentarios,
+        necesidad_material_id: colaboracion.id,
+      }
+      api.put('/actividades/colaboraciones/' + colaboracion.id + '/', nuevaColaboracion)
+        .then(res => {
+          console.log(res);
+          console.log(res.data);
+          this.loadNecesidadesYVoluntarios();
+        }).catch((error) => {
+          if (error.response) { console.log(error.response.status) }
+          else { console.log('Error: ', error.message) }
+          this.setState({ error_necesidad: "Hubo un problema al cargar su información.", apiToken: false });
+        });
+    }
   }
 
   handleActionVoluntario(button) {
+    const voluntario = this.state.voluntarios.filter(v => v.id === this.state.necesidadModificada)[0];
     if (button.text === 'Participar') {
-      const voluntario = this.state.voluntarios.filter(v => v.id === this.state.necesidadModificada)[0];
       const participacion = {
         id: voluntario.id,
         cantidad_anterior: 0,
@@ -254,11 +281,16 @@ class RegistrarColaboraciones extends React.Component {
         comentarios: undefined,
         evento: this.state.evento.id,
       };
-      this.deleteParticipacion();
+      if (!this.state.evento.campaña) {
+        const necesidadVoluntario = this.getNecesidadVoluntario(this.state.voluntarios);
+        if (necesidadVoluntario !== 0 && necesidadVoluntario !== this.state.necesidadModificada) {
+          this.deleteParticipacion();
+        }
+      }
       this.setState({ necesidadModificada: undefined });
       this.props.navigation.navigate('AgregarColaboracion', { colaboracion: participacion });
     } else if (button.text === 'Eliminar') {
-      this.deleteParticipacion();
+      this.deleteParticipacion(voluntario.id);
       this.setState({ necesidadModificada: undefined });
     }
   }
@@ -273,28 +305,51 @@ class RegistrarColaboraciones extends React.Component {
     return necesidad.cantidad - contador + aportado;
   }
 
-  deleteParticipacion() {
-    var _this = this;
-    const participacionAEliminar = this.getIdParticipacionVoluntario();
-    api.delete('/actividades/participaciones/' + participacionAEliminar + '/')
-      .then(() => {
-        this.loadNecesidadesYVoluntarios();
-      }).catch(function (error) {
-        if (error.response){ console.log(error.response.status) }
-        else { console.log('Error: ', error.message)}
-        _this.setState({ error_necesidad: "Hubo un problema al cargar su información." });
-      });
+  getParticipacionPorId(id) {
+    const { voluntarios } = this.state;
+    let participaciones;
+    for (let i = 0; i < voluntarios.length; i++) {
+      participaciones = voluntarios[i].participaciones.filter(c => c.id === id);
+      if (participaciones.length > 0) {
+        return participaciones[0];
+      }
+    }
   }
 
-  getIdParticipacionVoluntario() {
+  deleteParticipacion(idVoluntario=0) {
+    const participacion = this.getParticipacionVoluntario(idVoluntario);
+    if (participacion.presencias === 0) {
+      api.delete('/actividades/participaciones/' + participacion.id + '/')
+        .then(() => {
+          this.loadNecesidadesYVoluntarios();
+        }).catch(function (error) {
+          if (error.response) { console.log(error.response.status) }
+          else { console.log('Error: ', error.message) }
+          _this.setState({ error_necesidad: "Hubo un problema al cargar su información." });
+        });
+    } else {
+      Alert.alert(
+        "Eliminar participación",
+        "No se puede eliminar una participación que ya ha sido realizada."
+      );
+    }
+  }
+
+  getParticipacionVoluntario(id=0) {
     const necesidades = this.state.voluntarios;
     const usuario = this.getUserId();
     let participaciones;
-    for (let i=0; i < necesidades.length; i += 1) {
-      participaciones = necesidades[i].participaciones.filter(c => c.colaborador.id === usuario);
-      if (participaciones.length > 0) {
-        return participaciones[0].id;
+    if (id === 0) {
+      for (let i = 0; i < necesidades.length; i += 1) {
+        participaciones = necesidades[i].participaciones.filter(c => c.colaborador.id === usuario);
+        if (participaciones.length > 0) {
+          return participaciones[0];
+        }
       }
+    }
+    else {
+      const necesidad = this.state.voluntarios.filter(v => v.id === id)[0];
+      return necesidad.participaciones.filter(c => c.colaborador.id === usuario)[0];
     }
     return undefined;
   }

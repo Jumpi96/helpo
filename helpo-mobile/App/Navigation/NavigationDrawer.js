@@ -35,6 +35,7 @@ import ResponderPropuesta from '../Views/Actividades/VerPatrocinadores/Responder
 import MisSuscripciones from '../Views/Suscripciones/MisSuscripciones/MisSuscripciones';
 import AgregarNecesidad from '../Views/Actividades/RegistrarNecesidades/AgregarNecesidad/AgregarNecesidad';
 import AgregarVoluntario from '../Views/Actividades/RegistrarNecesidades/AgregarVoluntario/AgregarVoluntario';
+import ConfirmarEditarPropuesta from '../Views/Actividades/MisPropuestas/ConfirmarEditarPropuesta';
 
  
 const NavigationDrawer = DrawerNavigator({
@@ -73,6 +74,7 @@ const NavigationDrawer = DrawerNavigator({
 	MisSuscripciones: { screen: MisSuscripciones },
 	AgregarNecesidad: { screen: AgregarNecesidad },
 	AgregarVoluntario: { screen: AgregarVoluntario },
+	ConfirmarEditarPropuesta: { screen: ConfirmarEditarPropuesta },
   },
   {
 	initialRouteName: "LaunchScreen",

@@ -89,7 +89,10 @@ class ModalRegistrarColaboracion extends Component {
       error = 'La cantidad ingresada no es válida.';
     } else if (this.props.colaboracion.cantidad_restante < cantidad) {
       formIsValid = false;
-      error = 'La cantidad ingresada es mayor al cupo disponible';
+      error = 'La cantidad ingresada es mayor al cupo disponible.';
+    } else if (this.props.colaboracion.entregados > cantidad) {
+      formIsValid = false;
+      error = 'La cantidad ingresada es menor a la colaboración ya entregada.';
     }
 
     this.setState({ error });
@@ -104,6 +107,40 @@ class ModalRegistrarColaboracion extends Component {
         return 'Modificando colaboración';
       } else {
         return 'Registrando colaboración';
+      }
+    }
+  }
+
+  getEntregados() {
+    if (!this.props.colaboracion.funcion) {
+      if (this.props.colaboracion.entregados > 0) {
+        return (
+          <div className="row">
+            <div className="col-md-6">
+              <div>
+                <strong>Entregados</strong>
+              </div>
+              <div>
+                <label>{this.props.colaboracion.entregados}</label>
+              </div>
+            </div>
+          </div>
+        );
+      }
+    } else {
+      if (this.props.colaboracion.presencias > 0) {
+        return (
+          <div className="row">
+            <div className="col-md-6">
+              <div>
+                <strong>Presencias</strong>
+              </div>
+              <div>
+                <label>{this.props.colaboracion.presencias}</label>
+              </div>
+            </div>
+          </div>
+        )
       }
     }
   }
@@ -142,6 +179,7 @@ class ModalRegistrarColaboracion extends Component {
                   </div>
                 </div> : undefined
               }
+              {this.getEntregados()}
               <div className="row">
                 <div className="col-md-12">
                   <div>

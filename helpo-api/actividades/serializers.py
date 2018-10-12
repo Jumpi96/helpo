@@ -37,13 +37,17 @@ class EventoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Evento
-        fields = ('id', 'nombre', 'descripcion', 'fecha_hora_inicio',
+        fields = ('id', 'nombre', 'descripcion', 'fecha_hora_inicio', 'horarios',
             'fecha_hora_fin', 'rubro', 'rubro_id', 'ubicacion', 'contacto', 'organizacion_id', 'estado', 'campaña')
         extra_kwargs = {
             'descripcion': {
                 'required': False,
                 'allow_blank': True,
-            }        
+            },
+            'horarios': {
+                'required': False,
+                'default': []
+            }
         }
         read_only_fields = ('estado',)
 
@@ -53,7 +57,7 @@ class EventoSerializer(serializers.ModelSerializer):
         contactos_data = validated_data.pop('contacto')        
         evento = Evento.objects.create(ubicacion=ubicacion, **validated_data)
         for contacto_data in contactos_data:
-            Contacto.objects.create(evento=evento, **contacto_data) 
+            Contacto.objects.create(evento=evento, **contacto_data)
         return evento
     
     def update(self, instance, validated_data):
@@ -73,6 +77,7 @@ class EventoSerializer(serializers.ModelSerializer):
         instance.fecha_hora_inicio = validated_data.get('fecha_hora_inicio')
         instance.fecha_hora_fin = validated_data.get('fecha_hora_fin')
         instance.ubicacion = ubicacion
+        instance.horarios = validated_data.get('horarios')
         instance.rubro = RubroEvento.objects.get(pk=validated_data.get('rubro').id)
         instance.save()
         return instance
@@ -350,7 +355,7 @@ class ConsultaEventoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Evento
-        fields = ('id', 'nombre', 'descripcion', 'fecha_hora_inicio', 'campaña',
+        fields = ('id', 'nombre', 'descripcion', 'fecha_hora_inicio', 'campaña', 'horarios',
             'fecha_hora_fin', 'rubro', 'rubro_id', 'ubicacion', 'contacto', 'organizacion_id',
             'necesidades', 'organizacion', 'voluntarios', 'comentarios', 'estado', 'propuestas')
 

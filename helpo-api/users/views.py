@@ -62,7 +62,7 @@ class LoginView(generics.GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user =  serializer.validated_data
-        if not user.is_confirmed and user.user_type != 2:
+        if not user.is_confirmed:
             return Response({
                 "user": UserSerializer(user, context=self.get_serializer_context()).data
             }, status=status.HTTP_406_NOT_ACCEPTABLE)

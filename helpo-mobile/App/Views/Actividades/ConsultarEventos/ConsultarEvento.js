@@ -171,6 +171,27 @@ class ConsultaEvento extends React.Component {
     return false;
   }
 
+  getHorarios(evento) {
+    if (evento.horarios.length > 0) {
+      const listaHorarios = [];
+      evento.horarios.forEach((h) => {
+        listaHorarios.push(
+          <ListItem>
+            <Text>{h[0] + ' ' + h[1] + '-' + h[2]}</Text>
+          </ListItem>
+        )
+      })
+      return (
+        <View>
+          <ListItem itemDivider>
+            <Label style={styles.label}>Horarios de atención</Label>
+          </ListItem>
+          {listaHorarios}
+        </View>
+      );
+    }
+  }
+
   render() {
     const { params } = this.props.navigation.state;
     const evento = params.evento;
@@ -241,7 +262,7 @@ class ConsultaEvento extends React.Component {
           <ListItem>
             <Text>{'Fin: ' + moment(evento.fecha_hora_fin).format('DD/MM/YYYY HH:mm')}</Text>
           </ListItem>
-
+          {this.getHorarios()}
           {listaContactos ? (
             <View>
               <ListItem itemDivider>

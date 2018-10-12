@@ -46,7 +46,8 @@ class Evento(IndexedTimeStampedModel):
     ubicacion = models.ForeignKey(Ubicacion, null=True, on_delete=models.SET_NULL)
     organizacion = models.ForeignKey(User, null=False)
     estado = models.PositiveSmallIntegerField(choices=EVENTO_STATUS, default=1, null=False, blank=False)
-    
+    campaña = models.BooleanField(null=False, blank=False, default=False)
+
 class Contacto(models.Model):
     nombre = models.CharField(max_length=100)
     email = models.EmailField(max_length=100,blank=True,null=True)
@@ -64,7 +65,6 @@ class CategoriaRecurso(models.Model):
         return self.nombre
 
 class Recurso(models.Model):
-
     nombre = models.CharField(max_length=50)
     categoria = models.ForeignKey(CategoriaRecurso, null=False, on_delete=models.PROTECT)
 
@@ -110,8 +110,7 @@ class Colaboracion(models.Model):
     cantidad = models.IntegerField()
     comentario = models.CharField(max_length=140, null=True)
     necesidad_material = models.ForeignKey(Necesidad, related_name='colaboraciones', null=False, on_delete=models.CASCADE)
-    colaborador = models.ForeignKey(User, related_name='colaboracion', null=False)
-    entregado = models.BooleanField(null=False, blank=False, default=False)
+    colaborador = models.ForeignKey(User, null=False)
     vigente = models.NullBooleanField(null=True, default=True)
     retroalimentacion_voluntario = models.BooleanField(default=False)
     retroalimentacion_ong = models.BooleanField(default=False)
@@ -175,3 +174,11 @@ class Propuesta(IndexedTimeStampedModel):
 
     def __str__(self):
         return self.empresa.__str__() + " - " + self.evento.__str__()
+
+class Entrega(IndexedTimeStampedModel):
+    colaboracion = models.ForeignKey(Colaboracion, related_name='entregas', null=False, on_delete=models.CASCADE)
+    cantidad = models.IntegerField(null=False)
+
+class Presencia(IndexedTimeStampedModel):
+    participacion = models.ForeignKey(Participacion, related_name='entregas', null=False, on_delete=models.CASCADE)
+    cantidad = models.IntegerField(null=False)

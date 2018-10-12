@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { ScrollView, Image, BackHandler } from "react-native";
+import { Image } from "react-native";
 import { List, ListItem, Text, View, Content } from "native-base";
 import { connect } from 'react-redux' 
 
@@ -33,7 +33,7 @@ const itemsOrg = [
 	{
 	  'key': 'ConsultarEventos',
 	  'routeName': 'ConsultarEventos',
-	  'name': 'Eventos',
+	  'name': 'Actividades sociales',
 	},
 	{
 		'key': 'OrganizacionesPage',
@@ -43,12 +43,12 @@ const itemsOrg = [
 	{
 	  'key': 'RegistrarEvento',
 	  'routeName': 'RegistrarEvento',
-	  'name': 'Nuevo evento',
+	  'name': 'Nueva actividad social',
 	},
 	{
 	  'key': 'MisEventos',
 	  'routeName': 'MisEventos',
-	  'name': 'Mis eventos',
+	  'name': 'Mis actividades sociales',
 	},	
 	{
 		'key': 'ConsultarPerfilGenerico',
@@ -71,7 +71,7 @@ const itemsVol = [
 	{
 		'key': 'ConsultarEventos',
 		'routeName': 'ConsultarEventos',
-		'name': 'Eventos'
+		'name': 'Actividades sociales',
 	},
 	{
 		'key': 'OrganizacionesPage',
@@ -110,7 +110,7 @@ const itemsEmp = [
 	{
 	  'key': 'ConsultarEventos',
 	  'routeName': 'ConsultarEventos',
-	  'name': 'Eventos',
+	  'name': 'Actividades sociales',
 	},
 	{
 		'key': 'OrganizacionesPage',

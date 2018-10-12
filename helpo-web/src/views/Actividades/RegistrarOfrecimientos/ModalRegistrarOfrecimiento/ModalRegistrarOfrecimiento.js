@@ -107,6 +107,40 @@ class ModalRegistrarOfrecimiento extends Component {
     }
   }
 
+  getEntregados() {
+    if (!this.props.colaboracion.funcion) {
+      if (this.props.colaboracion.entregados > 0) {
+        return (
+          <div className="row">
+            <div className="col-md-6">
+              <div>
+                <strong>Entregados</strong>
+              </div>
+              <div>
+                <label>{this.props.colaboracion.entregados}</label>
+              </div>
+            </div>
+          </div>
+        );
+      }
+    } else {
+      if (this.props.colaboracion.presencias > 0) {
+        return (
+          <div className="row">
+            <div className="col-md-6">
+              <div>
+                <strong>Presencias</strong>
+              </div>
+              <div>
+                <label>{this.props.colaboracion.presencias}</label>
+              </div>
+            </div>
+          </div>
+        )
+      }
+    }
+  }
+
   render() {
     if (this.props.colaboracion) {
       const descripcion = this.props.colaboracion.descripcion;
@@ -139,6 +173,7 @@ class ModalRegistrarOfrecimiento extends Component {
                   </div>
                 </div>
               </div>
+              {this.getEntregados()}
               <div className="row">
                 <div className="col-md-12">
                   <div>

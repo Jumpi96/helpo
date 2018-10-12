@@ -37,6 +37,16 @@ class EventoCard extends Component {
     return voluntarios;
   }
 
+  getFecha() {
+    const { evento } = this.props;
+    if (evento.campaña) {
+      return moment(evento.fecha_hora_inicio).format('DD/MM/YYYY') +
+        " - " + moment(evento.fecha_hora_fin).format('DD/MM/YYYY');
+    } else {
+      return moment(evento.fecha_hora_inicio).format('DD/MM/YYYY HH:mm');
+    }
+  }
+
   render() {
     const evento = this.props.evento;
     return (
@@ -45,15 +55,15 @@ class EventoCard extends Component {
           <Left>
             <Thumbnail source={{uri: evento.organizacion.avatar}} />
             <Body>
-              <Text>{evento.organizacion ? evento.nombre + ' - ' + evento.organizacion.nombre : undefined }</Text>
-              <Text note>{moment(evento.fecha_hora_inicio).format('DD/MM/YYYY HH:mm')}</Text>
+              <Text>{evento.organizacion ? evento.organizacion.nombre : undefined }</Text>
+              <Text note>{this.getFecha()}</Text>
             </Body>
           </Left>
         </CardItem>
         <CardItem>
           <Body>
             <Text style={{ fontWeight: '600' }}>
-              {evento.nombre}
+              {evento.campaña ? "Campaña" : "Evento"}{" - " + evento.nombre}
             </Text>
             {this.getNecesidades()}
           </Body>

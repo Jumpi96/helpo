@@ -32,7 +32,11 @@ class MisPropuestas extends React.Component {
             style={{ backgroundColor: '#ffe859' }}
             onPress={() => this.props.navigation.navigate('VerPropuestaEvento', { evento: n })}
           >
-            <Icon name="hand" />
+            {
+              n.campaña ?
+              <Icon name="calendar" family="Entypo" /> :
+              <Icon name="hand" />
+            }
           </Button>
         </Left>
         <Body>

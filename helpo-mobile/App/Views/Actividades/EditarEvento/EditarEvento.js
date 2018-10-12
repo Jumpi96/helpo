@@ -271,7 +271,7 @@ class EditarEvento extends React.Component {
             </Button>
           </Left>
           <Body>
-            <Title>Editar evento</Title>
+            <Title>Editar actividad</Title>
           </Body>
           <Right>
             <Button

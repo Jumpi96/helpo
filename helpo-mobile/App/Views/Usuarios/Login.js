@@ -20,8 +20,14 @@ class Login extends Component {
       isLoginFound: false,
     };
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  componentDidMount() {
     GoogleSignin.configure({
-      webClientId: '93328850687-681u9fksr6g52g2bebbj1qu8thldgaq6.apps.googleusercontent.com'
+      webClientId: '93328850687-681u9fksr6g52g2bebbj1qu8thldgaq6.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
+      offlineAccess: false, // if you want to access Google API on behalf of the user FROM YOUR SERVER
+      hostedDomain: 'helpo.com.ar', // specifies a hosted domain restriction
+      forceConsentPrompt: true, // [Android] if you want to show the authorization prompt at each login
     });
   }
 
@@ -195,7 +201,7 @@ class Login extends Component {
           <FBLogin
             permissions={["email"]}
             style={{ margin: 15, marginTop: 50 }}
-            loginBehavior={FBLoginManager.LoginBehaviors.Native}
+            loginBehavior={FBLoginManager.LoginBehaviors.WebView}
             onLogin={function (data) {
               console.log("Logged in!");
               console.log(data);

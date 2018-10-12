@@ -109,6 +109,34 @@ class ConsultarEventosView extends React.Component {
     return false;
   }
 
+  getHorarios(evento) {
+    if (evento.horarios.length > 0) {
+      const listaHorarios = [];
+      evento.horarios.forEach((h) => {
+        listaHorarios.push(
+          <div className="row">
+            <div className="col-md-1">
+              <p>{h[0]}</p>
+            </div>
+            <div className="col-md-2">
+              <p>{h[1] + " - " + h[2]}</p>
+            </div>
+          </div>
+        )
+      })
+      return (
+        <div className="row">
+          <div className="form-group col-md-2 offset-md-1">
+            <b className="float-left">Horarios de atención</b>
+          </div>
+          <div className="form-group col-md-9">
+            {listaHorarios}
+          </div>
+        </div>
+      );
+    }
+  }
+
   render() {
     if (this.state.evento.nombre) {
       const evento = this.state.evento;
@@ -186,6 +214,7 @@ class ConsultarEventosView extends React.Component {
                   <p>{moment(evento.fecha_hora_fin).format('DD/MM/YYYY HH:mm')}</p>
                 </div>
               </div>
+              {this.getHorarios(evento)}
               {listaContactos ? (
                 <div className="row">
                   <div className="form-group col-md-2 offset-md-1">
@@ -249,13 +278,13 @@ class ConsultarEventosView extends React.Component {
                 <button
                   onClick={this.toggleColaborar}
                   hidden={
-                    (moment(evento.fecha_hora_inicio) <= moment() && !evento.campaña) || 
+                    (moment(evento.fecha_hora_inicio) <= moment() && !evento.campaña) ||
                     (evento.campaña && (moment(evento.fecha_hora_fin) <= moment()))
                   }
                   className="btn btn-warning offset-md-10"
                 >
                   {this.props.auth.user.user_type === 2 ? "Colaborar" : "Patrocinar"}
-              </button>
+                </button>
               ) : undefined
               }
               {moment(evento.fecha_hora_inicio) <= moment() && this.props.auth.user ? (

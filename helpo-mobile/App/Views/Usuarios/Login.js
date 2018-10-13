@@ -19,12 +19,14 @@ class Login extends Component {
       password: '',
       isGoogleSigninInProgress: false,
       isLoginFound: false,
-      emailEnviado: false,
+      emailEnviado: undefined,
+      passwordReseteada: undefined,
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.onSubmitFacebook = this.onSubmitFacebook.bind(this);
     this.googleSignIn = this.googleSignIn.bind(this);
     this.sendVerificationEmail = this.sendVerificationEmail.bind(this);
+    this.sendResetPasswordEmail = this.sendResetPasswordEmail.bind(this);
   }
 
   componentDidMount() {
@@ -177,11 +179,35 @@ class Login extends Component {
       );
   }
 
+  sendResetPasswordEmail() {
+    const email = this.state.email;
+    let headers = { "Content-Type": "application/json" };
+    let body = JSON.stringify({ email });
+    api.post("/auth/reset_password/", body, { headers })
+      .then(res => {
+        if (res.status === 200) {
+          this.setState({
+            passwordReseteada: true,
+          })
+        }
+      }
+      )
+      .catch(
+        e => {
+          console.log(e.response);
+          this.setState({
+            passwordReseteada: false,
+          })
+        }
+      );
+  }
+
   handleSubmit(e) {
     e.preventDefault();
     const auth = this.props.auth;
+    this.setState({ passwordReseteada: undefined });
     if (auth.isVerificationError) {
-      this.setState({ emailEnviado: false });
+      this.setState({ emailEnviado: undefined });
     }
     const email = this.state.email.toLowerCase();
     this.props.login(email, this.state.password);
@@ -231,16 +257,34 @@ class Login extends Component {
               <Text style={styles.validationMessage}>{this.props.errors[0].message}</Text>
             </Item>
           )}
-          {(this.props.auth.isVerificationError && !this.state.emailEnviado) ?
+          {(this.props.auth.isVerificationError && this.state.emailEnviado === undefined) ?
             <Item>
-              <Text onPress={this.sendVerificationEmail} style={styles.validationMessage}>Para enviar el correo de verificación, haga click aquí</Text>
+              <Text onPress={this.sendVerificationEmail} style={styles.suggestionMessage}>Para enviar el correo de verificación, haga click aquí</Text>
             </Item>
             : undefined}
           {this.state.emailEnviado ?
             <Item>
-              <Text style={styles.validationMessage}>Correo de verificación enviado.</Text>
+              <Text style={styles.suggestionMessage}>Correo de verificación enviado.</Text>
             </Item>
-            : undefined}
+            : (this.state.emailEnviado === false) ?
+              <Item>
+                <Text style={styles.suggestionMessage}>El email ingresado no existe.</Text>
+              </Item>
+              : undefined}
+          {this.state.passwordReseteada ?
+            <Item>
+              <Text style={styles.suggestionMessage}>Se ha enviado un email a {this.state.email}</Text>
+            </Item>
+            : (this.props.errors.length > 0 && !this.props.auth.isVerificationError) ?
+              (this.state.passwordReseteada === false) ?
+                <Item>
+                  <Text style={styles.suggestionMessage}>El email ingresado no existe.</Text>
+                </Item>
+                :
+                <Item>
+                  <Text onPress={this.sendResetPasswordEmail} style={styles.suggestionMessage}>¿Olvidaste tu contraseña?</Text>
+                </Item>
+              : undefined}
           <FBLogin
             permissions={["email"]}
             style={{ margin: 15, marginTop: 50 }}

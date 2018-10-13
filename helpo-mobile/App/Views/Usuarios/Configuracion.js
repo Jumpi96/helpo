@@ -15,11 +15,14 @@ class Configuracion extends Component {
     this.logout = this.logout.bind(this);
     this.googleSignOut = this.googleSignOut.bind(this);
   }
-  
+
   googleSignOut = async () => {
     try {
-      await GoogleSignin.revokeAccess();
-      await GoogleSignin.signOut();
+      const isSignedIn = await GoogleSignin.isSignedIn();
+      if (isSignedIn) {
+        await GoogleSignin.revokeAccess();
+        await GoogleSignin.signOut();
+      }
     } catch (error) {
       console.error(error);
     }
@@ -61,7 +64,7 @@ class Configuracion extends Component {
 }
 
 function bindAction(dispatch) {
-  return {    
+  return {
     logout: () => dispatch(logout()),
   };
 }

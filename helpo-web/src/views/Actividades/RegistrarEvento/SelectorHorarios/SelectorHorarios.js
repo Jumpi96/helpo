@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Button } from 'reactstrap';
 
 
 class SelectorHorarios extends Component {
@@ -78,23 +79,24 @@ class SelectorHorarios extends Component {
     this.setState({ minutoFin: selectedId });
   }
 
-  addHorario(e) {
-    e.preventDefault();
+  addHorario(event) {
+    event.preventDefault();
     if (true) {
-      let { horarios } = this.props;
+      let horarios = this.props.horarios.splice(0);
       horarios.push([
         this.state.dia,
-        this.state.horaInicio + ':' + this.state.horaFin,
-        this.state.minutoInicio + ':' + this.state.minutoFin,
+        this.state.horaInicio + ':' + this.state.minutoInicio,
+        this.state.horaFin + ':' + this.state.minutoFin,
       ]);
       this.props.onHorariosChange(horarios);
     }
-
   }
 
-  handleDelete(indice) {
-    let horarios = this.props.horarios.slice(0);
-    this.props.onHorariosChange(horarios.splice(indice, 1));
+  handleDelete(e, horario) {
+    e.stopPropagation();
+    let horarios = this.props.horarios;
+    horarios = horarios.filter(h => JSON.stringify(h) !== JSON.stringify(horario))
+    this.props.onHorariosChange(horarios);
   }
 
   getHorarios() {
@@ -110,9 +112,9 @@ class SelectorHorarios extends Component {
             <div className="col-md-1" style={{ marginTop: '15px' }}>
               <p>{horarios[i][1] + " - " + horarios[i][2]}</p>
             </div>
-            <button type="button" class="close" aria-label="Close" onClick={() => this.handleDelete(i)}>
+            <Button key={i} type="button" class="close" aria-label="Close" onClick={(e) => this.handleDelete(e, horarios[i])}>
               <span aria-hidden="true">&times;</span>
-            </button>
+            </Button>
           </div>
         )
       }
@@ -183,7 +185,7 @@ class SelectorHorarios extends Component {
               {opcionesMinutos}
             </select>
           </div>
-          <button type="button" className="btn btn-success" onClick={this.addHorario}>Agregar</button>
+          <Button type="button" color="success" onClick={this.addHorario}>Agregar</Button>
         </div>
         {this.getHorarios()}
       </div>

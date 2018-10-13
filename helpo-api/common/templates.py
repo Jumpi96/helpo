@@ -101,6 +101,14 @@ def render_fin_evento_email(evento):
     return render_mail('fin-evento-email.html', dict_context)
 
 
+def render_warning_email(user, entidad):
+    dict_context = dict(
+        user=user,
+        entidad=entidad
+    )
+    return render_mail('warning-email.html', dict_context)
+
+
 def render_mail(html_template, dict_context):
     template = loader.get_template(html_template)
     html_content = template.render(dict_context)

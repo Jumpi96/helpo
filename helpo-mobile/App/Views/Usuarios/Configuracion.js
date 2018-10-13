@@ -14,18 +14,14 @@ class Configuracion extends Component {
     super(props);
     this.logout = this.logout.bind(this);
   }
-  
-  googleSignOut = async () => {
+
+  logout() {
     try {
       await GoogleSignin.revokeAccess();
       await GoogleSignin.signOut();
     } catch (error) {
       console.error(error);
     }
-  };
-
-  logout() {
-    this.googleSignOut;
     this.props.logout(this.props.auth.email);
     this.props.navigation.navigate("LaunchScreen");
   }
@@ -60,7 +56,7 @@ class Configuracion extends Component {
 }
 
 function bindAction(dispatch) {
-  return {    
+  return {
     logout: () => dispatch(logout()),
   };
 }

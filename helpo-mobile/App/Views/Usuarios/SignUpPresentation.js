@@ -1,4 +1,4 @@
-import { View, StyleSheet } from 'react-native';
+import { View, Dimensions } from 'react-native';
 import { Text, Content, Container, Form, Label, Item, Input, Button } from 'native-base';
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -118,6 +118,7 @@ class SignUpPresentation extends React.Component {
 
   render() {
     var _this = this;
+    var { width } = Dimensions.get('window');
     return (
       <Container>
         <Content>
@@ -168,7 +169,7 @@ class SignUpPresentation extends React.Component {
             <Text style={styErrorText}>{this.props.data.errors.contraseña}</Text>
           </Form>
           <Button
-            rounded style={{ margin: 20, flex: 1 }}
+            rounded style={{ margin: 15, flex: 1 }}
             onPress={() => this.props.onSubmit()}
           >
             <Text>Registrar</Text></Button>
@@ -204,7 +205,7 @@ class SignUpPresentation extends React.Component {
             }}
           />
           <GoogleSigninButton
-            style={{ width: 312, height: 48, marginLeft: 15}}
+            style={{ width: width - 30, height: 48, marginLeft: 15 }}
             size={GoogleSigninButton.Size.Wide}
             color={GoogleSigninButton.Color.Dark}
             onPress={this.props.googleSignIn}

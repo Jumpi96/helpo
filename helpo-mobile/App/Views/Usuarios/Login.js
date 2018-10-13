@@ -8,6 +8,7 @@ import { login, loginGoogleFacebook } from '../../Redux/actions/auth'
 import api from '../../api';
 import { GoogleSignin, GoogleSigninButton, statusCodes } from 'react-native-google-signin';
 import { FBLogin, FBLoginManager } from 'react-native-facebook-login';
+import { Dimensions } from 'react-native';
 
 class Login extends Component {
 
@@ -161,6 +162,7 @@ class Login extends Component {
 
   render() {
     var _this = this;
+    var { width } = Dimensions.get('window');
     return (
       <Container style={styles.container}>
         <Header>
@@ -233,7 +235,7 @@ class Login extends Component {
             }}
           />
           <GoogleSigninButton
-            style={{ width: 312, height: 48, marginLeft: 15 }}
+            style={{ width: width - 30, height: 48, marginLeft: 15 }}
             size={GoogleSigninButton.Size.Wide}
             color={GoogleSigninButton.Color.Dark}
             onPress={this.googleSignIn}

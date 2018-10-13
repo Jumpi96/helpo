@@ -8,6 +8,7 @@ import { login, loginGoogleFacebook } from '../../Redux/actions/auth'
 import api from '../../api';
 import { GoogleSignin, GoogleSigninButton, statusCodes } from 'react-native-google-signin';
 import { FBLogin, FBLoginManager } from 'react-native-facebook-login';
+import { Dimensions } from 'react-native';
 
 class Login extends Component {
 
@@ -20,8 +21,17 @@ class Login extends Component {
       isLoginFound: false,
     };
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.onSubmitFacebook = this.onSubmitFacebook.bind(this);
+    this.googleSignIn = this.googleSignIn.bind(this);
+  }
+
+  componentDidMount() {
     GoogleSignin.configure({
-      webClientId: '93328850687-681u9fksr6g52g2bebbj1qu8thldgaq6.apps.googleusercontent.com'
+      webClientId: '93328850687-681u9fksr6g52g2bebbj1qu8thldgaq6.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
+      offlineAccess: false, // if you want to access Google API on behalf of the user FROM YOUR SERVER
+      hostedDomain: 'gmail.com', // specifies a hosted domain restriction
+      forceConsentPrompt: true, // [Android] if you want to show the authorization prompt at each login
+      accountName: '', // [Android] specifies an account name on the device that should be used
     });
   }
 
@@ -156,6 +166,7 @@ class Login extends Component {
 
   render() {
     var _this = this;
+    var { width } = Dimensions.get('window');
     return (
       <Container style={styles.container}>
         <Header>
@@ -192,16 +203,10 @@ class Login extends Component {
               <Text style={styles.validationMessage}>{this.props.errors[0].message}</Text>
             </Item>
           )}
-          {/*
-          <GoogleSigninButton
-            style={{ width: 312, height: 48 }}
-            size={GoogleSigninButton.Size.Wide}
-            color={GoogleSigninButton.Color.Dark}
-            onPress={this.googleSignIn}
-            disabled={this.state.isGoogleSigninInProgress} />
           <FBLogin
             permissions={["email"]}
-            loginBehavior={FBLoginManager.LoginBehaviors.Native}
+            style={{ margin: 15, marginTop: 50 }}
+            loginBehavior={FBLoginManager.LoginBehaviors.WebView}
             onLogin={function (data) {
               console.log("Logged in!");
               console.log(data);
@@ -233,7 +238,12 @@ class Login extends Component {
               console.log(data);
             }}
           />
-          */}
+          <GoogleSigninButton
+            style={{ width: width - 30, height: 48, marginLeft: 15 }}
+            size={GoogleSigninButton.Size.Wide}
+            color={GoogleSigninButton.Color.Dark}
+            onPress={this.googleSignIn}
+            disabled={this.state.isGoogleSigninInProgress} />
         </Content>
       </Container>
     );

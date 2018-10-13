@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">helpo</string>
     <string name="fb_app_id">343119846258901</string>
+    <string name="facebook_app_id">343119846258901</string>
     <string name="fb_login_protocol_scheme">fb343119846258901</string>
+    <string name="facebook_login_protocol_scheme">fb343119846258901</string>
 </resources>

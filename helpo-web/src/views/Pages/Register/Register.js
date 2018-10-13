@@ -98,14 +98,16 @@ class Register extends Component {
       if (this.state.modalType === "success") {
         return (
           <ModalRegistroExitoso
-            body='¡Se ha registrado exitosamente en Helpo!'
+            title='¡Se ha registrado exitosamente en Helpo!'
+            body='Revise su correo para activar su cuenta'
             onCancel={() => this.props.history.push('dashboard')}
           />)  
       }
       else {
         return (
           <ModalRegistroExitoso
-            body='Error: ya existe un usuario con ese mail'
+            title='Error al registrarse en Helpo'
+            body='Ya existe un usuario con ese mail'
             onCancel={() => {this.setState({ showModalRegistro: false })}}
           />
         )

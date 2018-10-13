@@ -52,8 +52,8 @@ class SignUp extends Component {
     const auth = this.props.auth;
     if (auth.isAuthenticated) {
       Alert.alert(
-        'Registro usuario',
-        '¡Se ha registrado exitosamente en Helpo!',
+        '¡Registro exitoso en Helpo!',
+        'Revise su correo para activar su cuenta',
         [{ text: 'Volver', onPress: () => this.props.navigation.navigate('LaunchScreen') }]
       );
     }
@@ -72,8 +72,8 @@ class SignUp extends Component {
     if (auth.isAuthenticated) {
       // Issue #105: Necesita dos clicks para loguear
       Alert.alert(
-        'Registro usuario',
-        '¡Se ha registrado exitosamente en Helpo!',
+        '¡Registro exitoso en Helpo!',
+        'Revise su correo para activar su cuenta',
         [{ text: 'Volver', onPress: () => this.props.navigation.navigate('LaunchScreen') }]
       );
       this.setState({ isLoginFound: true });
@@ -93,8 +93,8 @@ class SignUp extends Component {
     if (auth.isAuthenticated) {
       // Issue #105: Necesita dos clicks para loguear
       Alert.alert(
-        'Registro usuario',
-        '¡Se ha registrado exitosamente en Helpo!',
+        '¡Registro exitoso en Helpo!',
+        'Revise su correo para activar su cuenta',
         [{ text: 'Volver', onPress: () => this.props.navigation.navigate('LaunchScreen') }]
       );
       this.setState({ isLoginFound: true });
@@ -138,8 +138,8 @@ class SignUp extends Component {
         .then(res => {
           if (res.status === 200) {
             Alert.alert(
-              'Registro usuario',
-              '¡Se ha registrado exitosamente en Helpo!',
+              '¡Registro exitoso en Helpo!',
+              'Revise su correo para activar su cuenta',
               [{ text: 'Volver', onPress: () => this.props.navigation.navigate('LaunchScreen') }]
             );
           }
@@ -148,8 +148,8 @@ class SignUp extends Component {
         .catch(res => {
           if (res.status !== 200) {
             Alert.alert(
-              'Registro usuario',
-              'Error: ya existe un usuario con ese mail',
+              'Error al registrarse en Helpo',
+              'Ya existe un usuario con ese mail',
               [{ text: 'Volver' }]
             );
           }

@@ -8,9 +8,8 @@ import SignUpPresentation from './SignUpPresentation';
 import validateEmail from '../../Lib/ValidateEmail';
 import { Alert } from 'react-native';
 import { Container, View } from 'native-base';
-import { GoogleSignin, GoogleSigninButton, statusCodes } from 'react-native-google-signin';
+import { GoogleSignin, statusCodes } from 'react-native-google-signin';
 import { loginGoogleFacebook } from '../../Redux/actions/auth'
-import { FBLogin, FBLoginManager } from 'react-native-facebook-login';
 
 
 class SignUp extends Component {
@@ -35,13 +34,14 @@ class SignUp extends Component {
     this.handleUserTypeSelect = this.handleUserTypeSelect.bind(this);
     this.handleValueChange = this.handleValueChange.bind(this);
     this.onSubmitData = this.onSubmitData.bind(this);
+    this.onSubmitFacebook = this.onSubmitFacebook.bind(this);
+    this.googleSignIn = this.googleSignIn.bind(this);
   }
 
   componentDidMount() {
     GoogleSignin.configure({
       webClientId: '93328850687-681u9fksr6g52g2bebbj1qu8thldgaq6.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
       offlineAccess: false, // if you want to access Google API on behalf of the user FROM YOUR SERVER
-      hostedDomain: 'helpo.com.ar', // specifies a hosted domain restriction
       forceConsentPrompt: true, // [Android] if you want to show the authorization prompt at each login
     });
   }
@@ -276,46 +276,10 @@ class SignUp extends Component {
           onInputChange={this.handleValueChange}
           onTypeChange={this.handleUserTypeSelect}
           onSubmit={this.onSubmitData}
+          onSubmitFacebook={this.onSubmitFacebook}
+          googleSignIn={this.googleSignIn}
+          isGoogleSigninInProgress={this.state.isGoogleSigninInProgress}
         />
-        <View>
-          <FBLogin
-            permissions={["email"]}
-            style={{ margin: 15 }}
-            loginBehavior={FBLoginManager.LoginBehaviors.WebView}
-            onLogin={function (data) {
-              console.log("Logged in!");
-              console.log(data);
-              _this.onSubmitFacebook(data);
-            }}
-            onLogout={function () {
-              console.log("Logged out.");
-            }}
-            onLoginFound={function (data) {
-              console.log("Existing login found.");
-              console.log(data);
-            }}
-            onLoginNotFound={function () {
-              console.log("No user logged in.");
-            }}
-            onError={function (data) {
-              console.log("ERROR");
-              console.log(data);
-            }}
-            onCancel={function () {
-              console.log("User cancelled.");
-            }}
-            onPermissionsMissing={function (data) {
-              console.log("Check permissions!");
-              console.log(data);
-            }}
-          />
-          <GoogleSigninButton
-            style={{ width: 312, height: 48, margin: 15 }}
-            size={GoogleSigninButton.Size.Wide}
-            color={GoogleSigninButton.Color.Dark}
-            onPress={this.googleSignIn}
-            disabled={this.state.isGoogleSigninInProgress} />
-        </View>
       </Container>
     );
   }

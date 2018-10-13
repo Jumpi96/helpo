@@ -3,6 +3,7 @@ import { Card, CardHeader, CardBody } from 'reactstrap';
 import ListaRubrosEvento from './ListaRubrosEvento/ListaRubrosEvento';
 import SelectorUbicacion from './SelectorUbicacion/SelectorUbicacion';
 import RegistrarContacto from './RegistrarContacto/RegistrarContacto';
+import SelectorHorarios from './SelectorHorarios/SelectorHorarios';
 import DateTimePicker from 'react-datetime-picker';
 import moment from 'moment';
 import api from '../../../api';
@@ -21,6 +22,7 @@ class RegistrarEvento extends Component {
       ubicacion: { latitud: -31.4201, longitud: -64.1888, notas: '' },
       errors: {},
       contactos: [],
+      horarios: [],
       esEvento: 1
     };
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -31,6 +33,7 @@ class RegistrarEvento extends Component {
     this.handleFechaHoraFinChange = this.handleFechaHoraFinChange.bind(this);
     this.handleActualizacionContactos = this.handleActualizacionContactos.bind(this);
     this.selectTipoEvento = this.selectTipoEvento.bind(this);
+    this.handleHorariosChange = this.handleHorariosChange.bind(this);
   }
 
 
@@ -196,6 +199,10 @@ class RegistrarEvento extends Component {
     this.setState({ esEvento: parseInt(e.target.value, 10) });
   }
 
+  handleHorariosChange(horarios) {
+    this.setState({ horarios });
+  }
+
   getMensaje() {
     if (this.state.esEvento === 1) {
       return (
@@ -315,6 +322,12 @@ class RegistrarEvento extends Component {
                   onChange={this.handleInputChange}
                 />
               </div>
+              {this.state.esEvento === 0 ?
+                <SelectorHorarios
+                  horarios={this.state.horarios}
+                  onHorariosChange={this.handleHorariosChange}
+                /> : undefined
+              }
               <SelectorUbicacion
                 name="selectorUbicacion"
                 ubicacion={this.state.ubicacion}

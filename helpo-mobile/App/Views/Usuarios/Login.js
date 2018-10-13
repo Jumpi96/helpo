@@ -21,6 +21,8 @@ class Login extends Component {
       isLoginFound: false,
     };
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.onSubmitFacebook = this.onSubmitFacebook.bind(this);
+    this.googleSignIn = this.googleSignIn.bind(this);
   }
 
   componentDidMount() {

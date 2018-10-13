@@ -7,7 +7,7 @@ import api from '../../api';
 import SignUpPresentation from './SignUpPresentation';
 import validateEmail from '../../Lib/ValidateEmail';
 import { Alert } from 'react-native';
-import { Container, View } from 'native-base';
+import { Container } from 'native-base';
 import { GoogleSignin, statusCodes } from 'react-native-google-signin';
 import { loginGoogleFacebook } from '../../Redux/actions/auth'
 

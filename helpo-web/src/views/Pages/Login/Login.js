@@ -18,9 +18,11 @@ class Login extends Component {
       showModalRegistro: false,
       modalType: 'success',
       emailEnviado: false,
+      passwordReseteada: undefined,
     }
     this.showModalRegistro = this.showModalRegistro.bind(this);
     this.sendVerificationEmail = this.sendVerificationEmail.bind(this);
+    this.sendResetPasswordEmail = this.sendResetPasswordEmail.bind(this);
   }
 
   exists(url, nombre, email, password, user_type, apellido, id_token) {
@@ -55,6 +57,7 @@ class Login extends Component {
   }
 
   onSubmit = (e) => {
+    this.setState({ passwordReseteada: undefined });
     if (this.props.isVerificationError) {
       this.setState({ emailEnviado: false });
     }
@@ -133,6 +136,29 @@ class Login extends Component {
       );
   }
 
+  sendResetPasswordEmail() {
+    const email = this.state.email;
+    let headers = { "Content-Type": "application/json" };
+    let body = JSON.stringify({ email });
+    api.post("/auth/reset_password/", body, { headers })
+      .then(res => {
+        if (res.status === 200) {
+          this.setState({
+            passwordReseteada: true,
+          })
+        }
+      }
+      )
+      .catch(
+        e => {
+          console.log(e.response);
+          this.setState({
+            passwordReseteada: false,
+          })
+        }
+      );
+  }
+
   render() {
     const responseGoogle = (response) => {
       if (response && response.profileObj) {
@@ -180,6 +206,22 @@ class Login extends Component {
                       <Input size="30" type="password" placeholder="Contraseña"
                         onChange={(e) => this.setState({ password: e.target.value })} />
                     </InputGroup>
+                    <div>
+                      {this.state.passwordReseteada ?
+                        <div>
+                          <p className="text-muted">Se ha enviado un email a {this.state.email}</p>
+                        </div>
+                        : (this.props.errors.length > 0 && !this.props.isVerificationError) ?
+                          (this.state.passwordReseteada === false) ?
+                            <div>
+                              <p className="text-muted">El email ingresado no existe.</p>
+                            </div>
+                            :
+                            <div>
+                              <p className="text-muted">¿Olvidaste tu contraseña? Click <a style={{ textDecoration: "underline" }} onClick={this.sendResetPasswordEmail}>aquí</a></p>
+                            </div>
+                          : undefined}
+                    </div>
                     <Button color="primary" type="submit" className="mb-4 px-4">¡Ingresá!</Button>
                     <FacebookLogin
                       appId="343119846258901"

@@ -16,9 +16,11 @@ class Login extends Component {
       email: "",
       password: "",
       showModalRegistro: false,
-      modalType: 'success'
+      modalType: 'success',
+      emailEnviado: false,
     }
     this.showModalRegistro = this.showModalRegistro.bind(this);
+    this.sendVerificationEmail = this.sendVerificationEmail.bind(this);
   }
 
   exists(url, nombre, email, password, user_type, apellido, id_token) {
@@ -53,6 +55,9 @@ class Login extends Component {
   }
 
   onSubmit = (e) => {
+    if (this.props.isVerificationError) {
+      this.setState({ emailEnviado: false });
+    }
     e.preventDefault();
     this.props.login(this.state.email, this.state.password);
   }
@@ -103,6 +108,29 @@ class Login extends Component {
     this.setState({
       showModalRegistro: true,
     })
+  }
+
+  sendVerificationEmail() {
+    const email = this.state.email;
+    let headers = { "Content-Type": "application/json" };
+    let body = JSON.stringify({ email });
+    api.post("/send_verification_email/", body, { headers })
+      .then(res => {
+        if (res.status === 200) {
+          this.setState({
+            emailEnviado: true,
+          })
+        }
+      }
+      )
+      .catch(
+        e => {
+          console.log(e.response);
+          this.setState({
+            emailEnviado: false,
+          })
+        }
+      );
   }
 
   render() {
@@ -190,6 +218,16 @@ class Login extends Component {
                         </div>
                       )}
                     </div>
+                    <div>
+                      {(this.props.isVerificationError && !this.state.emailEnviado) ?
+                        <p className="row text-center">Para enviar el correo de verificación, haga click&#160;<a style={{ color: "#FFFFFF" }} onClick={this.sendVerificationEmail}>aquí</a></p>
+                        : undefined}
+                    </div>
+                    <div>
+                      {this.state.emailEnviado ?
+                        <p className="row text-center">Correo de verificación enviado.</p>
+                        : undefined}
+                    </div>
                   </CardBody>
                 </Card>
               </CardGroup>
@@ -217,7 +255,8 @@ const mapStateToProps = state => {
   }
   return {
     errors,
-    isAuthenticated: state.auth.isAuthenticated
+    isAuthenticated: state.auth.isAuthenticated,
+    isVerificationError: state.auth.isVerificationError
   };
 }
 

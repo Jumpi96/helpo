@@ -1,5 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import authenticate
+from django.conf import settings
+from decouple import config
 from users.models import User, UserWrapper, RubroOrganizacion, RubroEmpresa, OrganizacionProfile, Ubicacion, Imagen, VoluntarioProfile, EmpresaProfile, SmsVerification, UserVerification, AppValues, DeviceID, Suscripcion
 from actividades.models import Participacion, Evento, Colaboracion
 from django.core.exceptions import ObjectDoesNotExist
@@ -401,6 +403,30 @@ class VerificationMailSerializer(serializers.Serializer):
                 return True
         except ObjectDoesNotExist:
             raise serializers.ValidationError("Verification token does not match any")
+
+class SendVerificationEmailSerializer(serializers.Serializer):
+    email = serializers.EmailField(max_length=255, allow_blank=False)
+
+    def validate(self, data):
+        try:
+            user = User.objects.filter(email=data["email"]).first()
+            if user is not None and not user.is_confirmed:
+                self.send_verification_email(user)
+                return True
+        except ObjectDoesNotExist:
+            raise serializers.ValidationError("Email does not match any")
+    
+    def send_verification_email(self, user):
+        user_verification = UserVerification.objects.get(usuario=user)
+        if user_verification is not None:
+            bash = user_verification.verificationToken
+            mail_from = settings.REGISTER_EMAIL
+            subject = "Verifique su registro en Helpo"
+            url_confirmation = '%s/#/confirmMail/%s' % (config('URL_CLIENT', default='localhost:3000'), bash)
+            from common.templates import render_verify_email
+            content = render_verify_email(url_confirmation)
+            from common.notifications import send_mail_to
+            send_mail_to(user.email, subject, content, mail_from)
 
 class AppValuesSerializer(serializers.ModelSerializer):
   class Meta:

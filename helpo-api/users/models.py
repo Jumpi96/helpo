@@ -108,7 +108,7 @@ class UserManager(BaseUserManager):
         else:
             profile = EmpresaProfile.objects.create(usuario=user, avatar=avatar)
         self.send_confirmation_email(user)
-        if not settings.DEBUG not user_type == 2:
+        if not settings.DEBUG and not user_type == 2:
             self.send_warning_email(user)
 
         return user

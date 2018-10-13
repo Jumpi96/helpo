@@ -24,6 +24,7 @@ export const INITIAL_STATE = Immutable({
   token: AsyncStorage.getItem('token'),
   isAuthenticated: null,
   isLoading: true,
+  isVerificationError: false,
   user: null,
   errors: {},
 })
@@ -35,29 +36,29 @@ export const GithubSelectors = {}
 /* ------------- Reducers ------------- */
 
 export const request = (state) =>
-  state.merge({ isLoading: true, errors: null })
+  state.merge({ isLoading: true, errors: null, isVerificationError: false })
 
 export const success = (state, action) => {
   const { user } = action
-  return state.merge({ isAuthenticated: true, isLoading: false, user, errors: null })
+  return state.merge({ isAuthenticated: true, isLoading: false, user, errors: null, isVerificationError: false })
 }
 
 export const logged = (state, action) => {
   AsyncStorage.setItem('token', action.data.token);
-  return state.merge({ user: action.data.user, isAuthenticated: true, isLoading: false, errors: null });
+  return state.merge({ user: action.data.user, isAuthenticated: true, isLoading: false, errors: null, isVerificationError: false });
 }
 
 export const failure = (state) => {
   AsyncStorage.removeItem('token');
-  return state.merge({ errors: null, user: null, isAuthenticated: false, isLoading: false });
+  return state.merge({ errors: null, user: null, isAuthenticated: false, isLoading: false, isVerificationError: false });
 }
 
 export const failedLogin = (state) => {
-  return state.merge ({ errors: { detail: 'Los datos ingresados no son correctos.' } })
+  return state.merge ({ isVerificationError: false, errors: { detail: 'Los datos ingresados no son correctos.' } })
 }
 
 export const unverifiedLogin = (state) => {
-  return state.merge ({ errors: { detail: 'Debe verificar su cuenta. Preguntas a: consultas@helpo.com.ar' } })
+  return state.merge ({ isVerificationError: true, errors: { detail: 'Debe verificar su cuenta.' } })
 }
 
 export const failedSignup = (state) => {
@@ -66,7 +67,7 @@ export const failedSignup = (state) => {
 
 export const loggedout = (state, action) => {
   AsyncStorage.removeItem('token');
-  return state.merge({ errors: action.data, token: null, user: null, isAuthenticated: false, isLoading: false })
+  return state.merge({ errors: action.data, token: null, user: null, isAuthenticated: false, isLoading: false, isVerificationError: false })
 }
 
 /* ------------- Hookup Reducers To Types ------------- */

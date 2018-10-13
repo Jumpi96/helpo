@@ -19,10 +19,12 @@ class Login extends Component {
       password: '',
       isGoogleSigninInProgress: false,
       isLoginFound: false,
+      emailEnviado: false,
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.onSubmitFacebook = this.onSubmitFacebook.bind(this);
     this.googleSignIn = this.googleSignIn.bind(this);
+    this.sendVerificationEmail = this.sendVerificationEmail.bind(this);
   }
 
   componentDidMount() {
@@ -152,9 +154,35 @@ class Login extends Component {
     }
   };
 
+  sendVerificationEmail() {
+    const email = this.state.email;
+    let headers = { "Content-Type": "application/json" };
+    let body = JSON.stringify({ email });
+    api.post("/send_verification_email/", body, { headers })
+      .then(res => {
+        if (res.status === 200) {
+          this.setState({
+            emailEnviado: true,
+          })
+        }
+      }
+      )
+      .catch(
+        e => {
+          console.log(e.response);
+          this.setState({
+            emailEnviado: false,
+          })
+        }
+      );
+  }
+
   handleSubmit(e) {
     e.preventDefault();
     const auth = this.props.auth;
+    if (auth.isVerificationError) {
+      this.setState({ emailEnviado: false });
+    }
     const email = this.state.email.toLowerCase();
     this.props.login(email, this.state.password);
     if (auth.isAuthenticated) {
@@ -203,6 +231,16 @@ class Login extends Component {
               <Text style={styles.validationMessage}>{this.props.errors[0].message}</Text>
             </Item>
           )}
+          {(this.props.auth.isVerificationError && !this.state.emailEnviado) ?
+            <Item>
+              <Text onPress={this.sendVerificationEmail} style={styles.validationMessage}>Para enviar el correo de verificación, haga click aquí</Text>
+            </Item>
+            : undefined}
+          {this.state.emailEnviado ?
+            <Item>
+              <Text style={styles.validationMessage}>Correo de verificación enviado.</Text>
+            </Item>
+            : undefined}
           <FBLogin
             permissions={["email"]}
             style={{ margin: 15, marginTop: 50 }}

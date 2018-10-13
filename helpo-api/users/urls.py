@@ -38,6 +38,12 @@ urlpatterns = [
         view=users_views.LoginView.as_view(),
         name="log_in_user"
     ),
+    # {% url "api:change_password" %}
+    url(
+        regex=r"^auth/change_password/$",
+        view=users_views.ChangePasswordView.as_view(),
+        name="post_change_password"
+    ),
     # {% url "api:reset_password" %}
     url(
         regex=r"^auth/reset_password/$",

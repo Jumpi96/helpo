@@ -434,6 +434,36 @@ class SendVerificationEmailSerializer(serializers.Serializer):
             from common.notifications import send_mail_to
             send_mail_to(user.email, subject, content, mail_from)
 
+class ChangePasswordSerializer(serializers.Serializer):
+    email = serializers.EmailField(max_length=255, allow_blank=False)
+    old_password = serializers.CharField()
+    new_password = serializers.CharField()
+
+    def validate(self, data):
+        try:
+            user = User.objects.filter(email=data["email"]).first()
+            old_password = data["old_password"]
+            if user is not None and user.check_password(old_password):
+                new_password = data["new_password"]
+                if type(new_password) == str and len(new_password) >= 8 and not new_password == old_password:
+                    user.set_password(new_password)
+                    user.save()
+                    self.send_change_password_email(user)
+                    return user
+                else:
+                    raise serializers.ValidationError("New password must be a string with 8 or more characters, different than old_password")
+            raise serializers.ValidationError("Email or password does not match")
+        except ObjectDoesNotExist:
+            raise serializers.ValidationError("Email or password does not match")
+
+    def send_change_password_email(self, user):
+        mail_from = settings.REGISTER_EMAIL
+        subject = u"Cambio de su contraseña en Helpo"
+        from common.templates import render_change_password_email
+        content = render_change_password_email(user)
+        from common.notifications import send_mail_to
+        send_mail_to(user.email, subject, content, mail_from)
+
 class ResetPasswordSerializer(serializers.Serializer):
     email = serializers.EmailField(max_length=255, allow_blank=False)
 

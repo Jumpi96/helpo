@@ -11,6 +11,11 @@ def render_reset_password_email(user, raw_password):
     return render_mail('reset-password-email.html', dict_context)
 
 
+def render_change_password_email(user):
+    dict_context = dict(user=user)
+    return render_mail('change-password-email.html', dict_context)
+
+
 def render_colaboracion_email(evento, colaboracion, titulo_email):
     dict_context = dict(
         evento=evento, colaboracion=colaboracion, titulo=titulo_email)

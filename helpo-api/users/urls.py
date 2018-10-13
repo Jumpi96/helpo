@@ -102,6 +102,12 @@ urlpatterns = [
         view=users_views.VerifyMailView.as_view(),
         name="user"
     ),
+    # {% url "api:send_verification_email" %}
+    url(
+        regex=r"^send_verification_email/$",
+        view=users_views.SendVerificationEmailView.as_view(),
+        name="post_send_verification_email"
+    ),
     # {% url "api:send_sms_organizacion" %}
     url(
         regex=r"^perfiles/send_sms_organizacion/(?P<usuario>[-\w]+)/$",

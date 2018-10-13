@@ -11,7 +11,7 @@ from rest_framework.generics import RetrieveUpdateDestroyAPIView, RetrieveUpdate
 from knox.models import AuthToken
 from django.contrib.auth import get_user_model
 from users.models import RubroOrganizacion, RubroEmpresa, OrganizacionProfile, VoluntarioProfile, EmpresaProfile, AppValues, User, DeviceID, Suscripcion
-from users.serializers import FacebookAuthSerializer, GoogleAuthSerializer, CreateUserSerializer, UserSerializer, LoginUserSerializer, RubroOrganizacionSerializer, RubroEmpresaSerializer, OrganizacionProfileSerializer, VoluntarioProfileSerializer, EmpresaProfileSerializer, VerificationMailSerializer, SendVerificationEmailSerializer, VerificationSmsSerializer, AppValuesSerializer, DeviceIDSerializer, SuscripcionSerializer, SuscripcionSerializerLista
+from users.serializers import FacebookAuthSerializer, GoogleAuthSerializer, CreateUserSerializer, UserSerializer, LoginUserSerializer, ResetPasswordSerializer, RubroOrganizacionSerializer, RubroEmpresaSerializer, OrganizacionProfileSerializer, VoluntarioProfileSerializer, EmpresaProfileSerializer, VerificationMailSerializer, SendVerificationEmailSerializer, VerificationSmsSerializer, AppValuesSerializer, DeviceIDSerializer, SuscripcionSerializer, SuscripcionSerializerLista
 import time
 import requests
 from users.services import send_confirmation_sms
@@ -212,6 +212,19 @@ class SendVerificationEmailView(generics.GenericAPIView):
              }, status=status.HTTP_200_OK)
         return Response({
             "email_sending": "Failed"
+        }, status=status.HTTP_404_NOT_FOUND)
+
+class ResetPasswordView(generics.GenericAPIView):
+    serializer_class = ResetPasswordSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            return Response({
+                "password_reset": "Success"
+             }, status=status.HTTP_200_OK)
+        return Response({
+            "password_reset": "Failed"
         }, status=status.HTTP_404_NOT_FOUND)
 
 def refreshToken():

@@ -4,7 +4,7 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <title>Helpo: cambio en evento</title>
+  <title>Helpo: ALERTA</title>
   <style type="text/css" rel="stylesheet" media="all">
     /* Base ------------------------------ */
     *:not(br):not(tr):not(html) {
@@ -215,30 +215,17 @@
                 <!-- Body content -->
                 <tr>
                   <td class="content-cell">
-                    <h1>Modificaci&oacute;n en un {{tipo_evento}} de Helpo</h1>
-                    <p>El {{tipo_evento}} "{{evento.nombre}}", al cual usted se ha inscripto, ha sido modificado.</p>
+                    <h1>Notificaci&oacute;n de registro de {{entidad}} en Helpo</h1>
+                    <p>Este es un correo interno informando que la {{entidad}} "{{user.nombre}}" ha creado una cuenta en Helpo.</p>
                     <!-- Action -->
                     <table class="body-action" align="center" width="100%" cellpadding="0" cellspacing="0">
                       <tr>
                         <td align="left">
                           <div>
-                            <h2>Nuevos datos del {{tipo_evento}}</h2>
+                            <h2>Datos de la {{entidad}}</h2>
                             <ul style="list-style-type:disc">
-                              <li>Nombre: {{evento.nombre}}</li>
-                              <li>Organizaci&oacute;n: {{evento.organizacion.nombre}}</li>
-                              <li>Descripci&oacute;n: {{evento.descripcion|default:"Sin descripci&oacute;n"}}</li>
-                              <li>Fecha:</li>
-                              <ul style="list-style-type:circle">
-                                <li>Inicio: {{evento.get_fecha_hora_inicio}}</li>
-                                <li>Fin: {{evento.get_fecha_hora_fin}}</li>
-                              </ul>
-                              <li>Ubicaci&oacute;n:</li>
-                              <ul style="list-style-type:circle">
-                                <li>Latitud: {{evento.ubicacion.latitud|default:"No definida"}}</li>
-                                <li>Longitud: {{evento.ubicacion.longitud|default:"No definida"}}</li>
-                                <li>Notas: {{evento.ubicacion.notas|default:"Sin notas"}}</li>
-                              </ul>
-                            </ul>
+                              <li>Nombre: {{user.nombre}}</li>
+                              <li>Email: {{user.email}}</li>
                           </div>
                         </td>
                       </tr>

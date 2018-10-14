@@ -152,7 +152,7 @@ class ConsultarEventosView extends React.Component {
                   alt={evento.organizacion.nombre}
                   style={{ width: '75px', height: '75px' }}
                 />
-                {' ' + evento.nombre}
+                {evento.campaña ? " Campaña" : " Evento"}{" - " + evento.nombre}
               </h1>
               <div className="row">
                 <div className="form-group col-md-2 offset-md-1">
@@ -248,7 +248,10 @@ class ConsultarEventosView extends React.Component {
               {this.puedeColaborar() ? (
                 <button
                   onClick={this.toggleColaborar}
-                  hidden={moment(evento.fecha_hora_inicio) <= moment()}
+                  hidden={
+                    (moment(evento.fecha_hora_inicio) <= moment() && !evento.campaña) || 
+                    (evento.campaña && (moment(evento.fecha_hora_fin) <= moment()))
+                  }
                   className="btn btn-warning offset-md-10"
                 >
                   {this.props.auth.user.user_type === 2 ? "Colaborar" : "Patrocinar"}

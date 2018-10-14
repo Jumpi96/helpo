@@ -47,7 +47,11 @@ class MisEventos extends React.Component {
             style={{ backgroundColor: '#ffe859' }}
             onPress={() => this.props.navigation.navigate('VerEvento', { evento: n.id })}
           >
-            <Icon name="hand" />
+            {
+              n.campaña ?
+              <Icon name="calendar" family="Entypo" /> :
+              <Icon name="hand" />
+            }
           </Button>
         </Left>
         <Body>
@@ -77,7 +81,7 @@ class MisEventos extends React.Component {
             </Button>
           </Left>
           <Body>
-            <Title>Mis eventos</Title>
+            <Title>Mis actividades</Title>
           </Body>
         </Header>
         <Content>

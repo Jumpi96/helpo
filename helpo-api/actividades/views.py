@@ -10,7 +10,7 @@ from rest_framework import status
 from datetime import datetime
 from actividades.models import Evento, RubroEvento, CategoriaRecurso, Recurso, Necesidad, \
     Contacto, Voluntario, Funcion, Participacion, Colaboracion, Comentario, Mensaje, EventoImagen, \
-    Propuesta
+    Propuesta, Entrega, Presencia
 from knox.models import AuthToken
 from users.models import User
 from actividades.serializers import EventoSerializer, RubroEventoSerializer, \
@@ -18,7 +18,7 @@ from actividades.serializers import EventoSerializer, RubroEventoSerializer, \
     ConsultaEventoSerializer, VoluntarioSerializer, FuncionSerializer, ConsultaNecesidadesSerializer, \
     ParticipacionSerializer, ColaboracionSerializer, ComentarioSerializer, MensajeSerializer, EventoImagenSerializer, \
     PropuestaSerializer, ConsultaAllNecesidadesSerializer
-from actividades.services import create_propuesta
+from actividades.services import create_propuesta, actualizar_colaboracion, actualizar_participacion
 from common.functions import get_token_user, calc_distance_locations
 import re
 
@@ -237,7 +237,8 @@ class ConsultaEventosOrganizacionCreateReadView(ListCreateAPIView):
         elif 'empresa' in self.request.query_params:
             queryset = queryset.filter(id__in=self.get_eventos_empresa(self.request.query_params.get('empresa')))
         else:
-            queryset = queryset.filter(fecha_hora_inicio__gte=datetime.today())
+            from django.db.models import Q
+            queryset = queryset.filter(Q(fecha_hora_inicio__gte=datetime.today(), campaña=False) | Q(fecha_hora_fin__gte=datetime.today(), campaña=True))
         if 'fecha_desde' in self.request.query_params:
             queryset = queryset.filter(fecha_hora_inicio__gte=self.request.query_params.get('fecha_desde'))
             queryset = queryset.filter(fecha_hora_inicio__lte=self.request.query_params.get('fecha_hasta'))
@@ -475,9 +476,7 @@ def RetroalimentacionONGEvento(request):
 @api_view(['POST'])
 def EntregadoNecesidadEvento(request):
     try:
-        colaboracion = Colaboracion.objects.get(id=request.data['colaboracion'])
-        colaboracion.entregado = request.data['entregado']
-        colaboracion.save()
+        actualizar_colaboracion(request.data['colaboracion'], request.data['entregado'])
         return Response(request.data, status=status.HTTP_201_CREATED)
     except:
        return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -485,12 +484,10 @@ def EntregadoNecesidadEvento(request):
 @api_view(['POST'])
 def ParticipadoNecesidadEvento(request):
     try:
-        participacion = Participacion.objects.get(id=request.data['participacion'])
-        participacion.participo = request.data['participo']
-        participacion.save()
+        actualizar_participacion(request.data['participacion'], request.data['participo'])
         return Response(request.data, status=status.HTTP_201_CREATED)
     except:
-       return Response(status=status.HTTP_400_BAD_REQUEST)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
 class EventoImagenRetrieveDestroyView(RetrieveDestroyAPIView):
 

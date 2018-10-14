@@ -32,7 +32,11 @@ class MisColaboraciones extends React.Component {
             style={{ backgroundColor: '#ffe859' }}
             onPress={() => this.props.navigation.navigate('VerColaboracionesEvento', { evento: n })}
           >
-            <Icon name="hand" />
+            {
+              n.campaña ?
+              <Icon name="calendar" family="Entypo" /> :
+              <Icon name="hand" />
+            }
           </Button>
         </Left>
         <Body>

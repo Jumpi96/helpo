@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Container, Header, Title, Content, Button, Item, Label, Input, Body, Left, Right, Icon, Form, Text } from 'native-base';
+import { Container, Header, Title, Content, Button, Body, Left, Right, Icon, Text } from 'native-base';
 
 import styles from './styles';
 import { logout } from '../../Redux/actions/auth';
@@ -13,19 +13,23 @@ class Configuracion extends Component {
   constructor(props) {
     super(props);
     this.logout = this.logout.bind(this);
+    this.googleSignOut = this.googleSignOut.bind(this);
   }
-  
+
   googleSignOut = async () => {
     try {
-      await GoogleSignin.revokeAccess();
-      await GoogleSignin.signOut();
+      const isSignedIn = await GoogleSignin.isSignedIn();
+      if (isSignedIn) {
+        await GoogleSignin.revokeAccess();
+        await GoogleSignin.signOut();
+      }
     } catch (error) {
       console.error(error);
     }
   };
 
   logout() {
-    this.googleSignOut;
+    this.googleSignOut();
     this.props.logout(this.props.auth.email);
     this.props.navigation.navigate("LaunchScreen");
   }
@@ -60,7 +64,7 @@ class Configuracion extends Component {
 }
 
 function bindAction(dispatch) {
-  return {    
+  return {
     logout: () => dispatch(logout()),
   };
 }

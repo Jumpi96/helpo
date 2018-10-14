@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, CardHeader, CardBody, Button, Modal, ModalBody} from 'reactstrap'
+import { Card, CardHeader, CardBody, Button, Modal, ModalBody } from 'reactstrap'
 import TablaColaboraciones from './TablaColaboraciones/TablaColaboraciones'
 import TablaVoluntarios from './TablaVoluntarios/TablaVoluntarios'
 import downloadPDF from './downloadPDF'
@@ -24,7 +24,7 @@ const propTypes = {
 }
 
 class ConsultarColaboracionConnected extends React.Component {
-  
+
   constructor(props) {
     super(props);
     this.state = {
@@ -52,24 +52,24 @@ class ConsultarColaboracionConnected extends React.Component {
     })
   }
 
-  renderModal() {   
+  renderModal() {
     const info = () => {
-      if( this.props.sentError ) {
+      if (this.props.sentError) {
         return <p>Hubo un problema al querer guardar los datos, intentelo mas tarde</p>
       }
-      else if( this.props.sentSuccess ) {
+      else if (this.props.sentSuccess) {
         return <p>Se guardaron los datos con exito</p>
       }
       else {
         return <p> Aguarde unos segundos... </p>
       }
-    } 
+    }
     return (
-      <Modal style={{ allignItems: 'center', justifyContent: 'center' }} isOpen={ this.state.modalOpen }>
-      <ModalBody>
-        {info()}
-        <Button onClick={() => this.toggleModal(false)} >Volver</Button>
-      </ModalBody>
+      <Modal style={{ allignItems: 'center', justifyContent: 'center' }} isOpen={this.state.modalOpen}>
+        <ModalBody>
+          {info()}
+          <Button onClick={() => this.toggleModal(false)} >Volver</Button>
+        </ModalBody>
       </Modal>
     )
   }
@@ -90,65 +90,67 @@ class ConsultarColaboracionConnected extends React.Component {
     this.props.sentDataSuccess(false)
     this.toggleModal(true)
     let promises = []
-    for ( let key in this.props.entregados ) {
+    for (let key in this.props.entregados) {
       const patchData = { entregado: this.props.entregados[key], colaboracion: key }
       const promise = api.post(`/feedbacks/entregados/`, patchData)
       promises.push(promise)
     }
-    for ( let key in this.props.participaciones ) {
+    for (let key in this.props.participaciones) {
       const patchData = { participo: this.props.participaciones[key], participacion: key };
       const promise = api.post(`/feedbacks/participados/`, patchData)
       promises.push(promise)
     }
     axios.all(promises)
-    .then( () => {
-      this.props.sentDataSuccess(true)
-    })
-    .catch( () => {
-      this.props.sentDataHadError()
-    } )
+      .then(() => {
+        this.props.fetchData(this.props.match.params.eventoId);
+        this.props.sentDataSuccess(true)
+      })
+      .catch(() => {
+        this.props.sentDataHadError()
+      })
     //Para que no se quede trabado el modal
-    if(promises.length === 0) { this.props.sentDataSuccess(true) }
+    if (promises.length === 0) { this.props.sentDataSuccess(true) }
   }
 
   render() {
     let descargar_pdf = null
     if (!this.dataIsEmpty()) {
       descargar_pdf = (
-        <Button style={{marginLeft: 10}} color='primary' className='col-' onClick={this.downloadPDF}>
+        <Button style={{ marginLeft: 10 }} color='primary' className='col-' onClick={this.downloadPDF}>
           Descargar como PDF
         </Button>
       )
     }
 
-    console.log(this.dataIsEmpty())
-    const content = () => { return (
-      <div>
-      <CardHeader>
+    const content = () => {
+      return (
+        <div>
+          <CardHeader>
             <i className="fa fa-align-justify"></i> Colaboraciones del evento {this.props.necesidades.nombre}
-      </CardHeader>
-      <CardBody>
-          <TablaColaboraciones {...this.props.necesidades.necesidades}/>
-          <TablaVoluntarios {...this.props.necesidades.voluntarios}/>
-          <div className='container'>
-            <div className='row'>
-            <Button color='primary' className='col-' onClick={this.submitChanges}>
-              Guardar cambios
-            </Button>
-            {/* Boton descargar PDF */}
-            {descargar_pdf}            
-            <div style={{ allignItems: 'center' }}>{this.renderModal()}</div>
+          </CardHeader>
+          <CardBody>
+            <TablaColaboraciones keys={this.props.necesidades.necesidades} submitChanges={this.submitChanges} />
+            <TablaVoluntarios keys={this.props.necesidades.voluntarios} submitChanges={this.submitChanges} />
+            <div className='container'>
+              <div className='row'>
+                <Button color='primary' className='col-' onClick={this.submitChanges}>
+                  Guardar cambios
+                </Button>
+                {/* Boton descargar PDF */}
+                {descargar_pdf}
+                <div style={{ allignItems: 'center' }}>{this.renderModal()}</div>
+              </div>
             </div>
-          </div>
-      </CardBody>
-      </div>
-    )}
+          </CardBody>
+        </div>
+      )
+    }
 
     return (
       <Card>
-        {this.props.hasLoaded 
-        ? content()
-        : <p>Cargando...</p>}        
+        {this.props.hasLoaded
+          ? content()
+          : <p>Cargando...</p>}
       </Card>
     );
   }
@@ -156,7 +158,7 @@ class ConsultarColaboracionConnected extends React.Component {
 ConsultarColaboracionConnected.propTypes = propTypes
 
 const mapStateToProps = state => {
-  return { 
+  return {
     necesidades: state.consultarColaboraciones.consultarColaboracionesData,
     hasLoaded: state.consultarColaboraciones.consultarColaboracionesLoaded,
     hasError: state.consultarColaboraciones.consultarColaboracionesHasError,
@@ -165,13 +167,13 @@ const mapStateToProps = state => {
     sentSuccess: state.consultarColaboraciones.sentDataSuccess,
     sentError: state.consultarColaboraciones.sentDataHadError,
     ong_nombre: state.auth.user.nombre
-   }
+  }
 }
 
 const mapDispatchToProps = dispatch => ({
-   fetchData: eventoId => { dispatch(actions.fetchDetalleColaboraciones(eventoId)) },  
-   sentDataSuccess: (bool) => { dispatch(actions.consultarColaboracionesSendDataSuccessful(bool)) },
-   sentDataHadError: () => { dispatch(actions.consultarColaboracionesSendDataHadError(true))}
+  fetchData: eventoId => { dispatch(actions.fetchDetalleColaboraciones(eventoId)) },
+  sentDataSuccess: (bool) => { dispatch(actions.consultarColaboracionesSendDataSuccessful(bool)) },
+  sentDataHadError: () => { dispatch(actions.consultarColaboracionesSendDataHadError(true)) }
 })
 
 const ConsultarColaboracion = connect(mapStateToProps, mapDispatchToProps)(ConsultarColaboracionConnected)

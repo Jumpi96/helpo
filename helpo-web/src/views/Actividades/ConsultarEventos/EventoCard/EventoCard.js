@@ -92,7 +92,7 @@ class EventoCard extends Component {
           <div className="row">
             <img
               src={getImagen(propuesta_aleatoria.empresa.avatar)}
-              alt="ONG"
+              alt=""
               style={{ width: '50px', height: '50px' }}
             />
             <p>{cadena_patrocinadores}</p>
@@ -115,6 +115,16 @@ class EventoCard extends Component {
       resultado = resultado + ', ' + resto_propuestas[resto_propuestas.length-1].empresa.nombre;
     }
     return resultado + '.';
+  }
+
+  getFecha() {
+    const { evento } = this.props;
+    if (evento.campaña) {
+      return moment(evento.fecha_hora_inicio).format('DD/MM/YYYY') +
+        " - " + moment(evento.fecha_hora_fin).format('DD/MM/YYYY');
+    } else {
+      return moment(evento.fecha_hora_inicio).format('DD/MM/YYYY HH:mm');
+    }
   }
 
   render() {
@@ -154,11 +164,10 @@ class EventoCard extends Component {
                   alt="ONG"
                   style={{ width: '75px', height: '75px' }}
                 />
-                <div className="h4 m-0">{moment(evento.fecha_hora_inicio).format('DD/MM/YYYY')}</div>
+                <div className="h4 m-0">{this.getFecha()}</div>
                 <div>
-                  {evento.organizacion ?
-                    evento.nombre + ' - ' + evento.organizacion.nombre : undefined
-                  }
+                  <h4>{evento.campaña ? "Campaña" : "Evento"} {"- " + evento.nombre}</h4>
+                  <h5>{evento.organizacion ? evento.organizacion.nombre : undefined}</h5>
                 </div>
               </div>
               <div className="col-md-6">

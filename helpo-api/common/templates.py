@@ -27,7 +27,8 @@ def render_creacion_evento_email(evento):
 
 
 def render_cambio_evento_email(evento):
-    dict_context = dict(evento=evento)
+    tipo_evento = 'eventocampaña' if evento.campaña else 'evento'
+    dict_context = dict(evento=evento, tipo_evento=tipo_evento)
     return render_mail('cambio-evento-email.html', dict_context)
 
 
@@ -98,6 +99,14 @@ def render_fin_evento_email(evento):
         str(evento.id)
     )
     return render_mail('fin-evento-email.html', dict_context)
+
+
+def render_warning_email(user, entidad):
+    dict_context = dict(
+        user=user,
+        entidad=entidad
+    )
+    return render_mail('warning-email.html', dict_context)
 
 
 def render_mail(html_template, dict_context):

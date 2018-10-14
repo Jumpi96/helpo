@@ -107,6 +107,7 @@ class RegistrarEvento extends Component {
         contacto: this.getContactosInfo(),
         campaña: this.state.esEvento === 0
       };
+      if (this.state.esEvento === 0) { evento.horarios = this.state.horarios; }
       api.post('/actividades/eventos/', evento)
         .then((res) => {
           console.log(res);

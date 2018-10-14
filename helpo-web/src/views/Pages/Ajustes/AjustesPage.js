@@ -184,8 +184,8 @@ class AjustesPage extends Component {
             </Form>
             <div className="row">
               <div className="offset-md-2 col-md-8">
-                <Button color="primary" onClick={this.handleSubmit}>Cambiar contraseña</Button>
-                <span style={{ color: 'green' }}>{this.state.exito}</span>
+                <Button className="col-md-4" color="primary" onClick={this.handleSubmit}>Cambiar contraseña</Button>
+                <span className="offset-md-1 col-md-3" style={{ color: 'green' }}>{this.state.exito}</span>
               </div>
             </div>
           </CardBody>

@@ -5,6 +5,7 @@ import DrawerContent from "../Containers/DrawerContent";
 import Login from '../Views/Usuarios/Login';
 import SignUp from '../Views/Usuarios/SignUp';
 import Configuracion from '../Views/Usuarios/Configuracion';
+import ChangePassword from '../Views/Usuarios/ChangePassword';
 import ConsultarEventos from '../Views/Actividades/ConsultarEventos/ConsultarEventos';
 import ConsultarEvento from '../Views/Actividades/ConsultarEventos/ConsultarEvento';
 import RegistrarEvento from '../Views/Actividades/RegistrarEvento/RegistrarEvento';
@@ -43,6 +44,7 @@ const NavigationDrawer = DrawerNavigator({
 	Login: { screen: Login },
 	SignUp: { screen: SignUp },
 	Configuracion: { screen: Configuracion },
+	ChangePassword: { screen: ChangePassword },
 	ConsultarEventos: { screen: ConsultarEventos },
 	ConsultarEvento: { screen: ConsultarEvento },
 	RegistrarColaboraciones: { screen: RegistrarColaboraciones },

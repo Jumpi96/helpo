@@ -58,7 +58,7 @@ class ConsultarEventos extends Component {
             </Button>
           </Left>
           <Body>
-            <Title>Consultar actividades</Title>
+            <Title>Actividades</Title>
           </Body>
           <Right>
             <Button transparent onPress={() => this.props.navigation.navigate("FiltroEventos")}>

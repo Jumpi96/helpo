@@ -42,6 +42,11 @@ const ConsultarPerfil = Loadable({
   loading: Loading,
 });
 
+const AjustesPage = Loadable({
+  loader: () => import('./views/Pages/Ajustes/AjustesPage.js'),
+  loading: Loading,
+});
+
 const ConsultarColaboraciones = Loadable({
   loader: () => import('./views/Actividades/ConsultarColaboraciones/ConsultarColaboraciones'),
   loading: Loading,
@@ -94,6 +99,7 @@ const routes = [
   { path: '/perfiles/perfil-organizacion', name: 'Perfil organizacion', component: ModificarPerfilOrganizacion },
   { path: '/perfil/:usuarioId', name: 'Perfil de usuario', component: ConsultarPerfil },
   { path: '/perfil/', name: 'Mi perfil', component: ConsultarPerfil },
+  { path: '/ajustes/', name: 'Ajustes', component: AjustesPage },
   { path: '/actividades/album/:eventoId', name: 'Album de Evento', component: AlbumImagenes },
   { path: '/reportes', name: 'Reportes', component: DashboardReportes },
   { path: '/organizaciones', name: 'Organizaciones', component: OrganizacionesPage },

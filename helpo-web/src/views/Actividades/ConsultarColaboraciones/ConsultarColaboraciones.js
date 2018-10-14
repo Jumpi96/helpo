@@ -75,15 +75,14 @@ class ConsultarColaboracionConnected extends React.Component {
   }
 
   dataIsEmpty() {
+    // Checks if there is data about necesidades and voluntarios (already fetched and not empty)
     let is_empty = true
-    console.log(this.props.necesidades)
     if (typeof this.props.necesidades === 'undefined' || typeof this.props.necesidades.necesidades === 'undefined' || typeof this.props.necesidades.voluntarios === 'undefined') {
       return is_empty
     }
     if (this.props.necesidades.necesidades.length > 0 && this.props.necesidades.voluntarios.length > 0) {
       is_empty = false
     }
-    console.log(this.props.necesidades.necesidades.length)
     return is_empty
   }
 

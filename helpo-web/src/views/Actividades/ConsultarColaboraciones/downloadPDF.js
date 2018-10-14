@@ -181,11 +181,13 @@ function drawItem(doc, item, y) {
   doc.setFontStyle('normal')
   doc.setFontSize(12)
   const text_y = y
-  const sq_y = y - 5
-  doc.rect(10, sq_y, 7, 7);
-  doc.text(`${item.nombre}          ${item.cantidad} ${item.tipo_recurso}` ,23, text_y)
+  const sq_y = y - 3
+  const sq_w = 4
+  doc.rect(10, sq_y, sq_w, sq_w);
+  doc.text(`${item.nombre}` ,23, text_y)
+  doc.text(`${item.cantidad} ${item.tipo_recurso}`, 120, text_y)
   if (item.entregado) {
-    tickSquare(doc, 10, sq_y, 7)
+    tickSquare(doc, 10, sq_y, sq_w)
   }
 }
 

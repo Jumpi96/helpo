@@ -181,7 +181,7 @@ function drawItem(doc, item, y) {
   doc.setFontStyle('normal')
   doc.setFontSize(12)
   const text_y = y
-  const sq_y = y - 3
+  const sq_y = y - 3.5
   const sq_w = 4
   doc.rect(10, sq_y, sq_w, sq_w);
   doc.text(`${item.nombre}` ,23, text_y)

@@ -219,12 +219,13 @@ class ChangePasswordView(generics.GenericAPIView):
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            user =  serializer.validated_data
-            return Response({
-                "user": UserSerializer(user, context=self.get_serializer_context()).data,
-                "token": AuthToken.objects.create(user)
-             }, status=status.HTTP_200_OK)
+        from common.functions import get_token_user
+        request_user = User.objects.filter(id=get_token_user(self.request)).first()
+        user = serializer.validate(request.data, request_user)
+        return Response({
+            "user": UserSerializer(user, context=self.get_serializer_context()).data,
+            "token": AuthToken.objects.create(user)
+        }, status=status.HTTP_200_OK)
 
 class ResetPasswordView(generics.GenericAPIView):
     serializer_class = ResetPasswordSerializer

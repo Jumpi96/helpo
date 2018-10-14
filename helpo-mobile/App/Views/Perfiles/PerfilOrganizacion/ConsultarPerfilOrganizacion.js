@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
+  ActionSheet,
   Container,
   Header,
   Title,
@@ -14,7 +15,6 @@ import {
   Icon,
   Thumbnail,
   Text,
-  Separator
 } from 'native-base';
 import styles from './styles';
 
@@ -27,6 +27,7 @@ class ConsultarPerfilOrganizacion extends Component {
     this.renderTelefono = this.renderTelefono.bind(this);
     this.renderDescripcion = this.renderDescripcion.bind(this);
     this.renderCuit = this.renderCuit.bind(this);
+    this.showToast = this.showToast.bind(this);
   }
 
   renderRubro() {
@@ -74,6 +75,18 @@ class ConsultarPerfilOrganizacion extends Component {
     }
   }
 
+  showToast() {
+    const nombre = this.props.nombre;
+    ActionSheet.show({
+      options: [
+        { text: "Cerrar", icon: "close", iconColor: "#25de5b" },
+      ],
+      title: nombre + " es una cuenta verificada"
+    }, buttonIndex => {
+      console.log(buttonIndex);
+    });
+  }
+
   render() {
     if (this.props.data.avatar) {
       return (
@@ -98,6 +111,11 @@ class ConsultarPerfilOrganizacion extends Component {
             </ListItem>
             <ListItem>
               <Text>{this.props.nombre}</Text>
+              {this.props.data.verificada ?
+                <Button transparent onPress={this.showToast} >
+                  <Icon type="Feather" name="check-circle" style={{ color: "#F39200", marginLeft: 10 }} />
+                </Button>
+                : undefined}
             </ListItem>
 
             <ListItem itemDivider>

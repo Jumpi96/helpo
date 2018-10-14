@@ -3,6 +3,7 @@ from rest_framework.decorators import api_view
 from rest_framework.generics import ListCreateAPIView
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
 from rest_framework.generics import RetrieveDestroyAPIView
+from rest_framework.generics import RetrieveAPIView
 from rest_framework.generics import CreateAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -17,7 +18,7 @@ from actividades.serializers import EventoSerializer, RubroEventoSerializer, \
     CategoriaRecursoSerializer, RecursoSerializer, NecesidadSerializer, ContactoSerializer, \
     ConsultaEventoSerializer, VoluntarioSerializer, FuncionSerializer, ConsultaNecesidadesSerializer, \
     ParticipacionSerializer, ColaboracionSerializer, ComentarioSerializer, MensajeSerializer, EventoImagenSerializer, \
-    PropuestaSerializer, ConsultaAllNecesidadesSerializer
+    PropuestaSerializer, ConsultaAllNecesidadesSerializer, ConsultarPropuestasEmpresaSerializer, PropuestasEmpresasSerializer
 from actividades.services import create_propuesta, actualizar_colaboracion, actualizar_participacion
 from common.functions import get_token_user, calc_distance_locations
 import re
@@ -311,6 +312,25 @@ class ConsultaEventosReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     queryset = Evento.objects.all()
     serializer_class = ConsultaEventoSerializer
     lookup_field = 'id'
+
+#
+#
+#
+class ConsultaPropuestasEmpresaView(RetrieveAPIView):
+    """
+    API endpoint para leer, actualizar o eliminar un evento
+    """
+    queryset = User.objects.all()
+    serializer_class = ConsultarPropuestasEmpresaSerializer
+    lookup_field = 'id'
+
+class ConsultaPropuestasEmpresaView(RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = PropuestasEmpresasSerializer
+    lookup_field = 'id'
+#
+#
+#
 
 class ColaboracionCreateReadView(ListCreateAPIView):
     """

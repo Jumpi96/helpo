@@ -354,6 +354,69 @@ class ConsultaEventoSerializer(serializers.ModelSerializer):
             'fecha_hora_fin', 'rubro', 'rubro_id', 'ubicacion', 'contacto', 'organizacion_id',
             'necesidades', 'organizacion', 'voluntarios', 'comentarios', 'estado', 'propuestas')
 
+#
+#
+#
+class PropuestaDetalleSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Propuesta
+        fields = ('id', 'evento', 'aceptado')
+
+
+class PropuestasEmpresasSerializer(serializers.ModelSerializer):
+
+    propuestas = PropuestaDetalleSerializer(many=True)
+
+    class Meta:
+        model = User
+        fields = ('id', 'propuestas')
+
+
+class VoluntarioPropuestaEmpresaSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Voluntario
+        fields = ('id', 'evento')
+
+
+class NecesidadPropuestaEmpresaSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Necesidad
+        fields = ('id', 'evento')
+
+
+class ColaboracionPropuestaSerializer(serializers.ModelSerializer):
+
+    necesidad_material = NecesidadPropuestaEmpresaSerializer()
+
+    class Meta:
+        model = Colaboracion
+        fields = '__all__'
+
+
+class ParticipacionPropuestaSerializer(serializers.ModelSerializer):
+
+    necesidad_voluntario = VoluntarioPropuestaEmpresaSerializer()
+
+    class Meta:
+        model = Participacion
+        fields = '__all__'
+
+
+class ConsultarPropuestasEmpresaSerializer(serializers.ModelSerializer):
+
+    participacion = ParticipacionPropuestaSerializer(many=True)
+    colaboracion = ColaboracionPropuestaSerializer(many=True)
+
+    class Meta:
+        model = User
+        fields = ('id', 'nombre', 'participacion', 'colaboracion')
+#
+#
+#
+
 class EventoImagenSerializer(serializers.ModelSerializer):
 
     class Meta:

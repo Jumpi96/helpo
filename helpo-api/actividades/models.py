@@ -110,7 +110,7 @@ class Colaboracion(models.Model):
     cantidad = models.IntegerField()
     comentario = models.CharField(max_length=140, null=True)
     necesidad_material = models.ForeignKey(Necesidad, related_name='colaboraciones', null=False, on_delete=models.CASCADE)
-    colaborador = models.ForeignKey(User, null=False)
+    colaborador = models.ForeignKey(User, null=False, related_name='colaboracion')
     vigente = models.NullBooleanField(null=True, default=True)
     retroalimentacion_voluntario = models.BooleanField(default=False)
     retroalimentacion_ong = models.BooleanField(default=False)

@@ -51,6 +51,7 @@ class RegistrarEvento extends React.Component {
     this.handleRubroChange = this.handleRubroChange.bind(this);
     this.handleFechaHoraInicioChange = this.handleFechaHoraInicioChange.bind(this);
     this.handleFechaHoraFinChange = this.handleFechaHoraFinChange.bind(this);
+    this.handleHorariosChange = this.handleHorariosChange.bind(this);
     /* Metodos de contacto */
     this.handleContactNombreChange = this.handleContactNombreChange.bind(this);
     this.handleContactMailChange = this.handleContactMailChange.bind(this);
@@ -77,7 +78,9 @@ class RegistrarEvento extends React.Component {
         rubro_id: this.state.rubro_id,
         ubicacion: this.state.ubicacion,
         contacto: this.getContactosInfo(),
+        campaña: !this.state.esEvento,
       };
+      if (evento.campaña) { evento.horarios = this.state.horarios; }
       api.post('/actividades/eventos/', evento)
         .then((res) => {
           console.log(res);
@@ -283,6 +286,10 @@ class RegistrarEvento extends React.Component {
     }
   }
 
+  handleHorariosChange(horarios) {
+    this.setState({ horarios });
+  }
+
   render() {
     return (
       <Container style={styles.container}>
@@ -343,9 +350,14 @@ class RegistrarEvento extends React.Component {
               handleChange={this.handleFechaHoraFinChange}
             />
             <Text style={styles.validationMessage}>{this.state.errors.fechas}</Text>
-            {/*<Separator bordered noTopBorder>
-              <Text>Ubicación</Text>
-            </Separator>*/}
+            {!this.state.esEvento ?
+              <Item>
+                <SelectorHorarios
+                  horarios={this.state.horarios}
+                  onHorariosChange={this.handleHorariosChange}  
+                />
+              </Item> : undefined
+            }
             <Item>
               <SelectorUbicacion
                 ubicacion={this.state.ubicacion}

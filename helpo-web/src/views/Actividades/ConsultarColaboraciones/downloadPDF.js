@@ -90,11 +90,12 @@ function extractNecesidadesData(obj_necesidades) {
     for(const colaboracion of necesidad.colaboraciones) {
       const nombre = colaboracion.colaborador.nombre
       const apellido = colaboracion.colaborador.apellido ? colaboracion.colaborador.apellido : "" 
+      const entregado = colaboracion.cantidad === colaboracion.entregados
       const colaboracion_obj = { 
         type: 1,
         nombre: nombre + " " + apellido,
         cantidad: colaboracion.cantidad,
-        entregado: colaboracion.entregado,
+        entregado: entregado,
         tipo_recurso: "unidad",
        }
 
@@ -119,11 +120,12 @@ function extractNecesidadesData(obj_necesidades) {
     for(const participacion of funcion.participaciones) {
       const nombre = participacion.colaborador.nombre
       const apellido = participacion.colaborador.apellido ? participacion.colaborador.apellido : "" 
+      const entregado = participacion.cantidad === participacion.presencias
       const participacion_obj = { 
         type: 1,
         nombre: nombre + " " + apellido,
         cantidad: participacion.cantidad,
-        entregado: participacion.participo,
+        entregado: entregado,
         tipo_recurso: "voluntario",
        }
 
@@ -190,6 +192,8 @@ function drawItem(doc, item, y) {
     tickSquare(doc, 10, sq_y, sq_w)
   }
 }
+//entregados
+//presencias
 
 function downloadPDF(necesidades, nombre) {
   /*

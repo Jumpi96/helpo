@@ -7,7 +7,15 @@ class SelectorHorarios extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      dias: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'],
+      dias: [
+        {key: 1, value: 'Lunes'}, 
+        {key: 2, value: 'Martes'}, 
+        {key: 3, value: 'Miércoles'}, 
+        {key: 4, value: 'Jueves'}, 
+        {key: 5, value: 'Viernes'}, 
+        {key: 6, value: 'Sábado'}, 
+        {key: 7, value: 'Domingo'}
+      ],
       horas: this.getHoras(),
       minutos: this.getMinutos(),
       dia: 'Lunes',
@@ -23,6 +31,8 @@ class SelectorHorarios extends Component {
     this.handleChangeHoraFin = this.handleChangeHoraFin.bind(this);
     this.handleChangeMinutoFin = this.handleChangeMinutoFin.bind(this);
     this.addHorario = this.addHorario.bind(this);
+    this.handleValidation = this.handleValidation.bind(this);
+    this.sortHorarios = this.sortHorarios.bind(this);
   }
 
   getHoras() {
@@ -81,7 +91,7 @@ class SelectorHorarios extends Component {
 
   addHorario(event) {
     event.preventDefault();
-    if (true) {
+    if (this.handleValidation()) {
       let horarios = this.props.horarios.splice(0);
       horarios.push([
         this.state.dia,
@@ -92,8 +102,42 @@ class SelectorHorarios extends Component {
     }
   }
 
+  handleValidation() {
+    let error = '';
+    let isValid = true;
+    const horaInicio = parseInt(this.state.horaInicio, 10);
+    const horaFin = parseInt(this.state.horaFin, 10);
+    const minutoInicio = parseInt(this.state.minutoInicio, 10);
+    const minutoFin = parseInt(this.state.minutoFin, 10);
+    if ((horaFin < horaInicio) || (horaFin === horaInicio && minutoFin <= minutoInicio)) {
+      error = 'El horario ingresado no es correcto.';
+      isValid = false;
+    }
+    this.setState({ error });
+    return isValid;
+  }
+
+  sortHorarios(horarios) {
+    const { dias } = this.state;
+    return horarios.sort(function(a, b) {
+      var diaA = dias.filter(d => d.value === a[0])[0].key,
+      diaB = dias.filter(d => d.value === b[0])[0].key,
+      horaA = parseInt(a[1].substring(0, 2), 10),
+      horaB = parseInt(b[1].substring(0, 2), 10),
+      minutoA = parseInt(a[1].substring(3, 5), 10),
+      minutoB = parseInt(b[1].substring(3, 5), 10);
+      if (diaA === diaB && horaA === horaB && minutoA === minutoB) {
+        return 0;
+      } else if (diaA > diaB || (diaA === diaB && horaA > horaB) || (diaA === diaB && horaA === horaB && minutoA > minutoB)) {
+        return 1;
+      } else {
+        return -1;
+      }
+    });
+  }
+
   handleDelete(e, horario) {
-    e.stopPropagation();
+    // e.stopPropagation();
     let horarios = this.props.horarios;
     horarios = horarios.filter(h => JSON.stringify(h) !== JSON.stringify(horario))
     this.props.onHorariosChange(horarios);
@@ -101,6 +145,7 @@ class SelectorHorarios extends Component {
 
   getHorarios() {
     let { horarios } = this.props;
+    horarios = this.sortHorarios(horarios);
     if (horarios.length > 0) {
       const listaHorarios = [];
       for (let i = 0; i < horarios.length; i++) {
@@ -112,9 +157,9 @@ class SelectorHorarios extends Component {
             <div className="col-md-1" style={{ marginTop: '15px' }}>
               <p>{horarios[i][1] + " - " + horarios[i][2]}</p>
             </div>
-            <Button key={i} type="button" class="close" aria-label="Close" onClick={(e) => this.handleDelete(e, horarios[i])}>
+            <button type="button" class="close" aria-label="Close" onClick={(e) => this.handleDelete(e, horarios[i])}>
               <span aria-hidden="true">&times;</span>
-            </Button>
+            </button>
           </div>
         )
       }
@@ -127,9 +172,13 @@ class SelectorHorarios extends Component {
   }
 
   render() {
-    const opcionesDias = this.state.dias.map((d) =>
-      <option key={d} data-key={d}>{d}</option>
-    );
+    let opcionesDias = [];
+    const { dias } = this.state;
+    for(var key in this.state.dias) {
+      opcionesDias.push(
+        <option key={dias[key].value} data-key={dias[key].value}>{dias[key].value}</option>
+      );
+    }
     const opcionesHoras = this.state.horas.map((h) =>
       <option key={h} data-key={h}>{h}</option>
     );
@@ -186,6 +235,7 @@ class SelectorHorarios extends Component {
             </select>
           </div>
           <Button type="button" color="success" onClick={this.addHorario}>Agregar</Button>
+          <span style={{ color: "red", marginTop: '5px', marginLeft: '15px' }}>{this.state.error}</span>
         </div>
         {this.getHorarios()}
       </div>

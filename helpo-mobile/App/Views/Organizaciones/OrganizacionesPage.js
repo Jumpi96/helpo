@@ -84,6 +84,7 @@ class OrganizacionesPage extends React.Component {
           <Body>
             <Title>Organizaciones</Title>
           </Body>
+          <Right />
         </Header>
 
         <Item>

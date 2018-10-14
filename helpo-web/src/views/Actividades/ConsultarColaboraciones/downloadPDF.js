@@ -68,7 +68,7 @@ function tickSquare(doc, sq_x, sq_y, sq_width) {
 
 function extractNecesidadesData(obj_necesidades) {
   // Processes and extracts all needed data for the PDF from the necesidades object
-  // and sets is in the draw_queue variable
+  // and sets it in the draw_queue variable
   draw_queue = []
   evento_nombre = obj_necesidades.nombre
   fecha_hora_inicio = moment(obj_necesidades.fecha_hora_inicio).format('DD/MM/YYYY HH:mm')
@@ -139,9 +139,9 @@ function extractNecesidadesData(obj_necesidades) {
 
 function drawItems(doc, draw_queue) {
   // Draws items in draw_queue array into the doc object  
-  const min_y = 30 
-  const max_y = 270
-  const step = 12
+  const min_y = 30 // where to start drawing
+  const max_y = 270 // when to finish and add page
+  const step = 12 // distance between items
   let current_y = 60
   let last_title = {}
 
@@ -149,7 +149,7 @@ function drawItems(doc, draw_queue) {
     if (item.type === 0) { 
       last_title = item      
       if (!((current_y + step) > max_y)) {
-        // If the title is going to be the last thing in the page, skip it
+        // If the title item is going to be the last thing in the page, skip it
         drawTitle(doc, item, current_y)
       }            
      }
@@ -160,7 +160,7 @@ function drawItems(doc, draw_queue) {
     current_y = current_y + step
 
     if (current_y > max_y) {
-      // If the page is ending, create new one with title at the top
+      // If the page is ending, create new one with title item at the top
       endPage(doc)
       current_y = min_y
       drawTitle(doc, last_title, current_y)

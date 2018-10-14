@@ -2,6 +2,15 @@ import * as jsPDF from 'jspdf'
 import logo from './Logo64'
 import { getToday } from '../../utils/Date'
 
+function setNombre(nombre) {
+  // If string is too long, insert endline and set text Y coord
+  if(nombre.length > 25) {
+    const new_nombre = [nombre.slice(0, 24), '\n', nombre.slice(24)].join('')
+    return { ong_nombre: new_nombre, y: 7}
+  }
+  return { ong_nombre: nombre, y: 10}
+}
+
 function downloadPDF(imagenes, data) {
   /*
   Generates and downloads the PDF version of the ong dashboard
@@ -11,13 +20,15 @@ function downloadPDF(imagenes, data) {
   const doc = new jsPDF({format: 'a4'})
   //const width = doc.internal.pageSize.getWidth()
   const { suscripciones, manos, eventos, voluntarios, nombre } = data
+  const { ong_nombre, y } = setNombre(nombre)
   //(width/2-10) Para centrar mas o menos algo
 
   // Header
-  doc.addImage(logo, 'PNG', 0, 0, 15, 15);
-  doc.setFontSize(14)
+  doc.addImage(logo, 'PNG', 190, 0, 15, 15);
+  doc.setFontSize(12)
   doc.setFontStyle("normal")
-  doc.text(`- ${nombre}`, 15, 10)
+  doc.text(ong_nombre, 5, y)
+  doc.text("Estadísticas de la organización", 70, 10)
   doc.line(5, 15, 205, 15)
 
   doc.setFontStyle('bold')  
@@ -38,15 +49,17 @@ function downloadPDF(imagenes, data) {
 
   // Footer
   doc.line(5, 285, 205, 285)
-  doc.text(`1`, 5, 292)
+  doc.text(getToday(), 5, 292)
+  doc.text('1', 200, 292)
 
   doc.addPage()
 
   // Header
-  doc.addImage(logo, 'PNG', 0, 0, 15, 15);
-  doc.setFontSize(14)
+  doc.addImage(logo, 'PNG', 190, 0, 15, 15);
+  doc.setFontSize(12)
   doc.setFontStyle("normal")
-  doc.text(`- ${nombre}`, 15, 10)
+  doc.text(ong_nombre, 5, y)
+  doc.text("Estadísticas de la organización", 70, 10)
   doc.line(5, 15, 205, 15)
 
   doc.setFontSize(11)
@@ -58,15 +71,17 @@ function downloadPDF(imagenes, data) {
 
   // Footer
   doc.line(5, 285, 205, 285)
-  doc.text(`2`, 5, 292)
+  doc.text(getToday(), 5, 292)
+  doc.text('2', 200, 292)
 
   doc.addPage()
 
   // Header
-  doc.addImage(logo, 'PNG', 0, 0, 15, 15);
-  doc.setFontSize(14)
+  doc.addImage(logo, 'PNG', 190, 0, 15, 15);
+  doc.setFontSize(12)
   doc.setFontStyle("normal")
-  doc.text(`- ${nombre}`, 15, 10)
+  doc.text(ong_nombre, 5, y)
+  doc.text("Estadísticas de la organización", 70, 10)
   doc.line(5, 15, 205, 15)
 
   doc.setFontSize(11)
@@ -79,7 +94,8 @@ function downloadPDF(imagenes, data) {
 
   // Footer
   doc.line(5, 285, 205, 285)
-  doc.text(`3`, 5, 292)
+  doc.text(getToday(), 5, 292)
+  doc.text('3', 200, 292)
 
   doc.save('reporte-' + nombre + '-' + getToday() + '.pdf')  
 }

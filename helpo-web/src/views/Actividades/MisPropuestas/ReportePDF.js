@@ -3,7 +3,7 @@ import logo from '../../Reportes/Logo64'
 import { getToday } from '../../../utils/Date'
 import moment from 'moment';
 
-/*
+/* LO DEJO COMO "DOCUMENTACION"
 propuestas: {
   {eventoId}: {
     evento_nombre: 'Fiesta'
@@ -23,6 +23,17 @@ voluntariados: {
   {'Funcion-chef'}: cantidad,
   ...
 }
+
+item_types:
+
+This items types exist to manage the different ways to draw them in the PDF 
+
+{type: 1, ong: "", aceptado: "", evento: "", fecha_hora: ""}
+{type: 2, nombre: "", cantidad: "", tipo: ""(recurso/funcion)} TYPE 2 == Recurso
+{type: 3, nombre: "", cantidad: "", tipo: ""(recurso/funcion)} TYPE 3 == Funcion
+{type: 4, titulo: ""}
+{type: 5, nombre: "", cantidad: 0} RECURSO
+{type: 6, nombre: "", cantidad: 0} VOLUNTARIO/FUNCION
 */
 
 // PDF Data values
@@ -41,8 +52,7 @@ const step = 8 // distance between items
 let current_y = 55
 let last_title = {}
 let draw_queue = []
-// min h 30
-// max h 270
+
 
 function setNombre(nombre) {
   // If string is too long, insert endline and set text Y coord
@@ -80,10 +90,6 @@ function extractPropuestasData(propuestas, detalle_propuestas) {
   // and sets it in the draw_queue variable
   draw_queue = []
   empresa_nombre = detalle_propuestas.nombre
-  /*
-  { type: 0, nombre: "Recurso|Funcion - Algo"}
-  { type: 1, nombre: "Juan Perez", cantidad: 5, entregado: true|false }
-  */
   // Extract base data of propuestas
   for (const propuesta of propuestas) {
     total_propuestas = total_propuestas + 1
@@ -92,6 +98,7 @@ function extractPropuestasData(propuestas, detalle_propuestas) {
       evento_nombre: propuesta.evento.nombre,
       ong_nombre: propuesta.evento.organizacion.nombre,
       aceptado: propuesta.aceptado,
+      fecha_hora: moment(propuesta.evento.fecha_hora_inicio).format('DD/MM/YYYY HH:mm'),
       detalle: []
     }
     data_propuestas[evento_id] = base_propuesta
@@ -162,7 +169,8 @@ function createDrawItems() {
       type: 1,
       ong: data_propuestas[id].ong_nombre,
       aceptado: traduceAceptado(data_propuestas[id].aceptado),
-      evento: data_propuestas[id].evento_nombre
+      evento: data_propuestas[id].evento_nombre,
+      fecha_hora: data_propuestas[id].fecha_hora
     }
     draw_queue.push(propuesta_stats)
 
@@ -285,7 +293,7 @@ function drawTotalVoluntarios(doc, item) {
 function drawDatosPropuestas(doc, item) {
   // 5 step
   // Draws draw_item type 1 in doc (datos de propuesta)
-  const to_use_y = current_y + (step * 5)
+  const to_use_y = current_y + (step * 6)
   if (to_use_y > max_y) {
     // If item exceeds available space, create new page
     endPage(doc)
@@ -294,10 +302,12 @@ function drawDatosPropuestas(doc, item) {
   // Extra step to have space between propuestas
   current_y = current_y + step
   doc.setFontStyle('bold')
-  doc.text(`Propuesta de evento ${item.evento}` ,5, current_y)
+  doc.text(`Propuesta de actividad:  ${item.evento}` ,5, current_y)
   current_y = current_y + step
   doc.setFontStyle('normal')
   doc.text(`Organización: ${item.ong}` ,5, current_y)
+  current_y = current_y + step
+  doc.text(`Fecha y hora de inicio de la actividad:  ${item.fecha_hora}` ,5, current_y)
   current_y = current_y + step 
   doc.text(`Estado: ${item.aceptado}` ,5, current_y)
   current_y = current_y + step 

@@ -26,6 +26,7 @@ import api from '../../../api';
 import SelectorFechaHora from './SelectorFechaHora/SelectorFechaHora';
 import RegistrarContacto from './RegistrarContacto/RegistrarContacto';
 import validateEmail from '../../../Lib/ValidateEmail';
+import SelectorHorarios from './SelectorHorarios/SelectorHorarios';
 import styles from './styles';
 
 class RegistrarEvento extends React.Component {
@@ -44,7 +45,8 @@ class RegistrarEvento extends React.Component {
       ],
       nextId: 1,
       errors: {},
-      esEvento: true
+      esEvento: true,
+      horarios: []
     };
     this.handleUbicacionChange = this.handleUbicacionChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -351,12 +353,11 @@ class RegistrarEvento extends React.Component {
             />
             <Text style={styles.validationMessage}>{this.state.errors.fechas}</Text>
             {!this.state.esEvento ?
-              <Item>
-                <SelectorHorarios
-                  horarios={this.state.horarios}
-                  onHorariosChange={this.handleHorariosChange}  
-                />
-              </Item> : undefined
+              <SelectorHorarios
+                horarios={this.state.horarios}
+                onHorariosChange={this.handleHorariosChange}
+              />
+              : undefined
             }
             <Item>
               <SelectorUbicacion

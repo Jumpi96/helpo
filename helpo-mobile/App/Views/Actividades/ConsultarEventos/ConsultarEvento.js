@@ -262,7 +262,7 @@ class ConsultaEvento extends React.Component {
           <ListItem>
             <Text>{'Fin: ' + moment(evento.fecha_hora_fin).format('DD/MM/YYYY HH:mm')}</Text>
           </ListItem>
-          {this.getHorarios()}
+          {this.getHorarios(evento)}
           {listaContactos ? (
             <View>
               <ListItem itemDivider>

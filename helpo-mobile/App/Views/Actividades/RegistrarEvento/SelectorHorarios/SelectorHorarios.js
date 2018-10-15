@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, ListItem, Left, Body, Text, Picker, Separator } from 'native-base';
+import { Button, ListItem, Left, Body, Text, Picker, Separator, Item, Form, View, Icon } from 'native-base';
 import styles from '../styles';
 
 
@@ -60,28 +60,20 @@ class SelectorHorarios extends Component {
     return minutos;
   }
 
-  handleChangeDia(e) {
-    const selectedIndex = e.target.options.selectedIndex;
-    const selectedId = e.target.options[selectedIndex].getAttribute('data-key');
-    this.setState({ dia: selectedId });
+  handleChangeDia(value, index) {
+    this.setState({ dia: value });
   }
 
-  handleChangeHoraInicio(e) {
-    const selectedIndex = e.target.options.selectedIndex;
-    const selectedId = e.target.options[selectedIndex].getAttribute('data-key');
-    this.setState({ horaInicio: selectedId });
+  handleChangeHoraInicio(value, index) {
+    this.setState({ horaInicio: value });
   }
 
-  handleChangeMinutoInicio(e) {
-    const selectedIndex = e.target.options.selectedIndex;
-    const selectedId = e.target.options[selectedIndex].getAttribute('data-key');
-    this.setState({ minutoInicio: selectedId });
+  handleChangeMinutoInicio(value, index) {
+    this.setState({ minutoInicio: value });
   }
 
-  handleChangeHoraFin(e) {
-    const selectedIndex = e.target.options.selectedIndex;
-    const selectedId = e.target.options[selectedIndex].getAttribute('data-key');
-    this.setState({ horaFin: selectedId });
+  handleChangeHoraFin(value, index) {
+    this.setState({ horaFin: value });
   }
 
   handleChangeMinutoFin(value, index) {
@@ -148,7 +140,7 @@ class SelectorHorarios extends Component {
       const listaHorarios = [];
       for (let i = 0; i < horarios.length; i++) {
         listaHorarios.push(
-          <ListItem icon key={n.id}>
+          <ListItem icon>
             <Left>
               <Button
                 style={{ backgroundColor: '#ff0000' }}
@@ -193,59 +185,65 @@ class SelectorHorarios extends Component {
       <Item value={m} key={m} label={m} />
     );
     return (
-      <View>
+      <View style={{ margin: 5 }}>
         <Separator bordered noTopBorder>
           <Text>Horarios de atención</Text>
         </Separator>
-        <Picker
-          note
-          mode='dropdown'
-          selectedValue={this.state.dia}>
-          onValueChange={this.handleChangeDia}
-          {opcionesDias}
-        </Picker>
+        <View style={{ flexDirection: 'row' }}>
+          <Picker
+            note
+            mode='dropdown' style={styles.horariosPicker}
+            selectedValue={this.state.dia}
+            onValueChange={this.handleChangeDia}>
+            {opcionesDias}
+          </Picker>
+          <Button
+            onPress={this.addHorario}
+            style={{ margin: 5 }}
+          >
+            <Text>Agregar</Text>
+          </Button>
+        </View>
+        <View style={{ flexDirection: 'row' }}>
+          <Text style={styles.labelPicker}>Desde:</Text>
+          <Picker
+            note
+            mode='dropdown' style={styles.horariosPicker}
+            selectedValue={this.state.horaInicio}
+            onValueChange={this.handleChangeHoraInicio}>
+            {opcionesHoras}
+          </Picker>
+          <Picker
+            note
+            mode='dropdown' style={styles.horariosPicker}
+            selectedValue={this.state.minutoInicio}
+            onValueChange={this.handleChangeMinutoInicio}>
+            {opcionesMinutos}
+          </Picker>
+        </View >
+        <View style={{ flexDirection: 'row' }}>
+          <Text style={styles.labelPicker}>Hasta:</Text>
+          <Picker
+            note
+            mode='dropdown' style={styles.horariosPicker}
+            selectedValue={this.state.horaFin}
+            onValueChange={this.handleChangeHoraFin}
+          >
+            {opcionesHoras}
+          </Picker>
 
-        <Text>Desde:</Text>
-        <Picker
-          note
-          mode='dropdown'
-          selectedValue={this.state.horaInicio}
-          onValueChange={this.handleChangeHoraInicio}>
-          {opcionesHoras}
-        </Picker>
-        <Picker
-          note
-          mode='dropdown'
-          selectedValue={this.state.minutoInicio}
-          onValueChange={this.handleChangeMinutoInicio}>
-          {opcionesMinutos}
-        </Picker>
-        <Text>Hasta:</Text>
-        <Picker
-          note
-          mode='dropdown'
-          selectedValue={this.state.horaFin}
-          onValueChange={this.handleChangeHoraFin}
-        >
-          {opcionesHoras}
-        </Picker>
-        <Picker
-          note
-          mode='dropdown'
-          selectedValue={this.state.minutoFin}
-          onValueChange={this.handleChangeMinutoFin}
-        >
-          {opcionesMinutos}
-        </Picker>
-        <Button
-          block style={{ margin: 10 }}
-          onPress={this.addHorario}
-        >
-          <Text>+</Text>
-        </Button>
+          <Picker
+            note
+            mode='dropdown' style={styles.horariosPicker}
+            selectedValue={this.state.minutoFin}
+            onValueChange={this.handleChangeMinutoFin}
+          >
+            {opcionesMinutos}
+          </Picker>
+        </View>
         <Text style={styles.validationMessage}>{this.state.error}</Text>
         {this.getHorarios()}
-      </View>
+      </View >
     );
   }
 }

@@ -13,17 +13,16 @@ jobs:
       ONESIGNAL_REST_API_KEY: xxxxxxxxxxxxxxxxxxx
       AWS_ACCESS_KEY_ID: xxxxxxxxxxxxxxxxxxx
       AWS_SECRET_ACCESS_KEY: xxxxxxxxxxxxxxxxxxx
-      TEST_DATABASE_URL: postgresql://root@localhost/circle_test
     docker:
     - image: circleci/python:3.6-jessie
-      environment:
-        TEST_DATABASE_URL: postgresql://root@localhost/circle_test
     - image: circleci/postgres:10.5-alpine-ram
+      environment:
+        POSTGRES_USER: root
+        POSTGRES_PASSWORD: root
+        POSTGRES_DB: circle_test 
     steps:
     - checkout
     - run: mkdir -p $CIRCLE_ARTIFACTS $CIRCLE_TEST_REPORTS
-    - run: sudo apt-get update
-    - run: sudo apt-get install postgresql-client-10.5
     - run:
         command: sudo pip install virtualenv && sudo pip install nose && sudo pip install pep8
     - restore_cache:

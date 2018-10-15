@@ -7,9 +7,10 @@ SECRET_KEY = 'test'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "circletest",
+        "NAME": "circle_test",
         "USER": "root",
-        "HOST": config('TEST_DATABASE_URL'),
+        "PASSWORD": "root",
+        "HOST": "localhost",
         "PORT": "5432",
     }
 }

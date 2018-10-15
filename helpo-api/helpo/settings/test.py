@@ -1,4 +1,5 @@
 from .base import *  # noqa
+from decouple import config
 
 
 SECRET_KEY = 'test'
@@ -6,10 +7,9 @@ SECRET_KEY = 'test'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "db-helpo",
-        "USER": "postgres",
-        "PASSWORD": "postgres",
-        "HOST": "localhost",
+        "NAME": "circletest",
+        "USER": "root",
+        "HOST": config('TEST_DATABASE_URL'),
         "PORT": "5432",
     }
 }

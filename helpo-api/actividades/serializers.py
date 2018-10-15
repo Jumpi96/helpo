@@ -357,7 +357,40 @@ class ConsultaEventoSerializer(serializers.ModelSerializer):
 #
 #
 #
+"""
+Total propuestas: 5
+
+Propuestas:
+    Evento:
+    ONG: 
+    Estado:
+    Detalle:
+        Recurso - Pan:  5 unidades
+        Funcion - Chef: 4 voluntarios
+
+Recursos:
+    Recurso-Pan: 200 unidades
+    Funcion - Chef: 40 voluntariados
+"""
+class PropuestaONGDetalleSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ('id', 'nombre')
+
+
+class PropuestaEventoSerializer(serializers.ModelSerializer):
+
+    organizacion = PropuestaONGDetalleSerializer()
+
+    class Meta:
+        model = Evento
+        fields = ('id', 'nombre', 'organizacion')
+
+
 class PropuestaDetalleSerializer(serializers.ModelSerializer):
+
+    evento = PropuestaEventoSerializer()
 
     class Meta:
         model = Propuesta

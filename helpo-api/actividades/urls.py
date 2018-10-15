@@ -126,7 +126,7 @@ urlpatterns = [
     ###########
     url(
         regex=r"^actividades/consulta_propuestas/(?P<id>[-\w]+)/$",
-        view=actividades_views.ConsultaPropuestasEmpresaView.as_view(),
+        view=actividades_views.ConsultaPropuestasDetalleEmpresaView.as_view(),
         name="get_consulta_propuesta"
     ),
     url(

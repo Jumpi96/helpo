@@ -316,7 +316,7 @@ class ConsultaEventosReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
 #
 #
 #
-class ConsultaPropuestasEmpresaView(RetrieveAPIView):
+class ConsultaPropuestasDetalleEmpresaView(RetrieveAPIView):
     """
     API endpoint para leer, actualizar o eliminar un evento
     """

@@ -6,10 +6,12 @@ from actividades.services import send_mail_mensaje_evento, send_previous_mail_ev
 from users.serializers import UserSerializer, ColaboradorInfoSerializer
 from users.models import User
 
+
 class RubroEventoSerializer(serializers.ModelSerializer):
     class Meta:
         model = RubroEvento
         fields = ('id', 'nombre')
+
 
 class UbicacionSerializer(serializers.ModelSerializer):
     class Meta:
@@ -22,10 +24,12 @@ class UbicacionSerializer(serializers.ModelSerializer):
             }
         }
 
+
 class ContactoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Contacto
         fields = ('nombre', 'email', 'telefono')
+
 
 class EventoSerializer(serializers.ModelSerializer):
     ubicacion = UbicacionSerializer()
@@ -38,28 +42,28 @@ class EventoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Evento
         fields = ('id', 'nombre', 'descripcion', 'fecha_hora_inicio',
-            'fecha_hora_fin', 'rubro', 'rubro_id', 'ubicacion', 'contacto', 'organizacion_id', 'estado', 'campaña')
+                  'fecha_hora_fin', 'rubro', 'rubro_id', 'ubicacion', 'contacto', 'organizacion_id', 'estado', 'campaña')
         extra_kwargs = {
             'descripcion': {
                 'required': False,
                 'allow_blank': True,
-            }        
+            }
         }
         read_only_fields = ('estado',)
 
     def create(self, validated_data):
         ubicacion_data = validated_data.pop('ubicacion')
         ubicacion = Ubicacion.objects.create(**ubicacion_data)
-        contactos_data = validated_data.pop('contacto')        
+        contactos_data = validated_data.pop('contacto')
         evento = Evento.objects.create(ubicacion=ubicacion, **validated_data)
         for contacto_data in contactos_data:
-            Contacto.objects.create(evento=evento, **contacto_data) 
+            Contacto.objects.create(evento=evento, **contacto_data)
         return evento
-    
+
     def update(self, instance, validated_data):
         ubicacion_data = validated_data.pop('ubicacion')
-        ubicacion = Ubicacion.objects.filter(latitud=ubicacion_data.get('latitud'), \
-            longitud=ubicacion_data.get('longitud'), notas=ubicacion_data.get('notas'))
+        ubicacion = Ubicacion.objects.filter(latitud=ubicacion_data.get('latitud'),
+                                             longitud=ubicacion_data.get('longitud'), notas=ubicacion_data.get('notas'))
         if len(ubicacion) == 0:
             ubicacion = Ubicacion.objects.create(**ubicacion_data)
         else:
@@ -73,14 +77,17 @@ class EventoSerializer(serializers.ModelSerializer):
         instance.fecha_hora_inicio = validated_data.get('fecha_hora_inicio')
         instance.fecha_hora_fin = validated_data.get('fecha_hora_fin')
         instance.ubicacion = ubicacion
-        instance.rubro = RubroEvento.objects.get(pk=validated_data.get('rubro').id)
+        instance.rubro = RubroEvento.objects.get(
+            pk=validated_data.get('rubro').id)
         instance.save()
         return instance
+
 
 class CategoriaRecursoSerializer(serializers.ModelSerializer):
     class Meta:
         model = CategoriaRecurso
         fields = ('id', 'nombre', 'icono')
+
 
 class RecursoSerializer(serializers.ModelSerializer):
     categoria = CategoriaRecursoSerializer(read_only=True)
@@ -92,6 +99,7 @@ class RecursoSerializer(serializers.ModelSerializer):
         model = Recurso
         fields = '__all__'
 
+
 class NecesidadSerializer(serializers.ModelSerializer):
     recurso = RecursoSerializer(read_only=True)
     recurso_id = serializers.PrimaryKeyRelatedField(
@@ -102,10 +110,12 @@ class NecesidadSerializer(serializers.ModelSerializer):
         model = Necesidad
         fields = '__all__'
 
+
 class FuncionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Funcion
         fields = ('id', 'nombre')
+
 
 class VoluntarioSerializer(serializers.ModelSerializer):
     funcion = FuncionSerializer(read_only=True)
@@ -116,6 +126,7 @@ class VoluntarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Voluntario
         fields = '__all__'
+
 
 class ComentarioSerializer(serializers.ModelSerializer):
     evento_id = serializers.PrimaryKeyRelatedField(
@@ -128,7 +139,9 @@ class ComentarioSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Comentario
-        fields = ('id', 'comentario', 'voluntario', 'voluntario_id', 'evento_id')
+        fields = ('id', 'comentario', 'voluntario',
+                  'voluntario_id', 'evento_id')
+
 
 class ColaboracionSerializer(serializers.ModelSerializer):
     necesidad_material_id = serializers.PrimaryKeyRelatedField(
@@ -139,7 +152,8 @@ class ColaboracionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Colaboracion
-        fields = ('id', 'comentario', 'cantidad', 'necesidad_material_id', 'colaborador', 'entregados', 'retroalimentacion_voluntario', 'retroalimentacion_ong')
+        fields = ('id', 'comentario', 'cantidad', 'necesidad_material_id', 'colaborador',
+                  'entregados', 'retroalimentacion_voluntario', 'retroalimentacion_ong')
 
     def get_entregados(self, instance):
         from django.db.models import Sum
@@ -147,32 +161,35 @@ class ColaboracionSerializer(serializers.ModelSerializer):
         if entregas:
             return entregas.aggregate(Sum('cantidad'))['cantidad__sum']
         return 0
-    
+
     def create(self, validated_data):
         necesidad_material = validated_data.get('necesidad_material')
-        colaboraciones = Colaboracion.objects.filter(necesidad_material_id=necesidad_material.id, vigente=True)
+        colaboraciones = Colaboracion.objects.filter(
+            necesidad_material_id=necesidad_material.id, vigente=True)
         cantidad = validated_data.get('cantidad')
         suma_colaboraciones = 0
         for c in colaboraciones:
             suma_colaboraciones += c.cantidad
         if (suma_colaboraciones + cantidad) <= necesidad_material.cantidad:
-            colaboracion = Colaboracion.objects.create(necesidad_material_id=necesidad_material.id, vigente=True, **validated_data)
+            colaboracion = Colaboracion.objects.create(
+                necesidad_material_id=necesidad_material.id, vigente=True, **validated_data)
             colaborador_id = validated_data['colaborador_id']
-            evento = validated_data['necesidad_material'].evento   
-            titulo_email = "Usted se ha registrado para colaborar con los siguientes datos:"         
-            self.send_colaboracion_email(colaborador_id, evento, colaboracion, titulo_email)
+            evento = validated_data['necesidad_material'].evento
+            titulo_email = "Usted se ha registrado para colaborar con los siguientes datos:"
+            self.send_colaboracion_email(
+                colaborador_id, evento, colaboracion, titulo_email)
             if (suma_colaboraciones + cantidad) == necesidad_material.cantidad:
                 send_full_colaboracion_mail(necesidad_material)
             return colaboracion
         else:
             raise serializers.ValidationError()
 
-
     def update(self, instance, validated_data):
         colaborador_id = instance.colaborador.id
         necesidad_material = validated_data.get('necesidad_material')
         evento = necesidad_material.evento
-        colaboraciones = Colaboracion.objects.filter(necesidad_material_id=necesidad_material.id)
+        colaboraciones = Colaboracion.objects.filter(
+            necesidad_material_id=necesidad_material.id)
         suma_colaboraciones_iniciales = 0
         for c in colaboraciones:
             suma_colaboraciones_iniciales += c.cantidad
@@ -180,15 +197,17 @@ class ColaboracionSerializer(serializers.ModelSerializer):
             send_was_full_colaboracion_mail(necesidad_material)
         new_instance = super().update(instance, validated_data)
         titulo_email = u"Usted ha modificado su colaboración en un Evento. Los nuevos datos son:"
-        self.send_colaboracion_email(colaborador_id, evento, new_instance, titulo_email)
-        colaboraciones = Colaboracion.objects.filter(necesidad_material_id=necesidad_material.id)
+        self.send_colaboracion_email(
+            colaborador_id, evento, new_instance, titulo_email)
+        colaboraciones = Colaboracion.objects.filter(
+            necesidad_material_id=necesidad_material.id)
         suma_colaboraciones = 0
         for c in colaboraciones:
             suma_colaboraciones += c.cantidad
         if suma_colaboraciones == necesidad_material.cantidad:
             send_full_colaboracion_mail(necesidad_material)
         return new_instance
-    
+
     # la continuacion de la negrada de Gon
     def destroy(self, colaboracion_id):
         colaboracion = Colaboracion.objects.get(id=colaboracion_id)
@@ -197,8 +216,10 @@ class ColaboracionSerializer(serializers.ModelSerializer):
             necesidad_material = colaboracion.necesidad_material
             evento = necesidad_material.evento
             titulo_email = u"Usted ha cancelado su colaboración en el siguiente Evento:"
-            self.send_colaboracion_email(colaborador_id, evento, colaboracion, titulo_email)
-            colaboraciones = Colaboracion.objects.filter(necesidad_material_id=necesidad_material.id)
+            self.send_colaboracion_email(
+                colaborador_id, evento, colaboracion, titulo_email)
+            colaboraciones = Colaboracion.objects.filter(
+                necesidad_material_id=necesidad_material.id)
             suma_colaboraciones = 0
             for c in colaboraciones:
                 suma_colaboraciones += c.cantidad
@@ -210,7 +231,8 @@ class ColaboracionSerializer(serializers.ModelSerializer):
         from common.templates import render_colaboracion_email
         content = render_colaboracion_email(evento, colaboracion, titulo_email)
         from common.notifications import send_mail_to_id
-        send_mail_to_id(id_to=colaborador_id, html_subject=subject_utf, html_content=content)
+        send_mail_to_id(id_to=colaborador_id,
+                        html_subject=subject_utf, html_content=content)
 
 
 class ConsultaNecesidadSerializer(serializers.ModelSerializer):
@@ -221,13 +243,16 @@ class ConsultaNecesidadSerializer(serializers.ModelSerializer):
     )
 
     def get_colaboraciones(self, necesidad):
-        queryset = Colaboracion.objects.filter(necesidad_material=necesidad, vigente=True)
+        queryset = Colaboracion.objects.filter(
+            necesidad_material=necesidad, vigente=True)
         serializer = ColaboracionSerializer(instance=queryset, many=True)
         return serializer.data
 
     class Meta:
         model = Necesidad
-        fields = ('id', 'descripcion', 'cantidad', 'recurso', 'recurso_id', 'colaboraciones')
+        fields = ('id', 'descripcion', 'cantidad',
+                  'recurso', 'recurso_id', 'colaboraciones')
+
 
 class ConsultaAllNecesidadSerializer(serializers.ModelSerializer):
     colaboraciones = ColaboracionSerializer(many=True)
@@ -238,7 +263,9 @@ class ConsultaAllNecesidadSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Necesidad
-        fields = ('id', 'descripcion', 'cantidad', 'recurso', 'recurso_id', 'colaboraciones')
+        fields = ('id', 'descripcion', 'cantidad',
+                  'recurso', 'recurso_id', 'colaboraciones')
+
 
 class ParticipacionSerializer(serializers.ModelSerializer):
     necesidad_voluntario_id = serializers.PrimaryKeyRelatedField(
@@ -246,10 +273,11 @@ class ParticipacionSerializer(serializers.ModelSerializer):
     )
     colaborador = ColaboradorInfoSerializer(read_only=True)
     presencias = serializers.SerializerMethodField()
-    
+
     class Meta:
         model = Participacion
-        fields = ('id', 'comentario', 'cantidad', 'necesidad_voluntario_id', 'colaborador', 'presencias', 'retroalimentacion_voluntario', 'retroalimentacion_ong')
+        fields = ('id', 'comentario', 'cantidad', 'necesidad_voluntario_id', 'colaborador',
+                  'presencias', 'retroalimentacion_voluntario', 'retroalimentacion_ong')
 
     def get_presencias(self, instance):
         from django.db.models import Sum
@@ -260,15 +288,18 @@ class ParticipacionSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         necesidad_voluntario = validated_data.get('necesidad_voluntario')
-        participaciones = Participacion.objects.filter(necesidad_voluntario_id=necesidad_voluntario.id, vigente=True)
+        participaciones = Participacion.objects.filter(
+            necesidad_voluntario_id=necesidad_voluntario.id, vigente=True)
         cantidad = validated_data.get('cantidad')
         suma_participantes = 0
         for p in participaciones:
             suma_participantes += p.cantidad
         if (suma_participantes + cantidad) <= necesidad_voluntario.cantidad:
             colaborador_id = validated_data['colaborador_id']
-            participacion = Participacion.objects.create(necesidad_voluntario_id=necesidad_voluntario.id, vigente=True, **validated_data)
-            send_previous_mail_evento(necesidad_voluntario.evento_id, colaborador_id)
+            participacion = Participacion.objects.create(
+                necesidad_voluntario_id=necesidad_voluntario.id, vigente=True, **validated_data)
+            send_previous_mail_evento(
+                necesidad_voluntario.evento_id, colaborador_id)
             if (suma_participantes + cantidad) == necesidad_voluntario.cantidad:
                 send_full_participacion_mail(necesidad_voluntario)
             return participacion
@@ -284,13 +315,16 @@ class ConsultaVoluntarioSerializer(serializers.ModelSerializer):
     )
 
     def get_participaciones(self, voluntario):
-        queryset = Participacion.objects.filter(necesidad_voluntario=voluntario, vigente=True)
+        queryset = Participacion.objects.filter(
+            necesidad_voluntario=voluntario, vigente=True)
         serializer = ParticipacionSerializer(instance=queryset, many=True)
         return serializer.data
 
     class Meta:
         model = Voluntario
-        fields = ('id', 'descripcion', 'cantidad', 'funcion', 'funcion_id', 'participaciones')
+        fields = ('id', 'descripcion', 'cantidad',
+                  'funcion', 'funcion_id', 'participaciones')
+
 
 class ConsultaAllVoluntarioSerializer(serializers.ModelSerializer):
     participaciones = ParticipacionSerializer(many=True)
@@ -301,10 +335,13 @@ class ConsultaAllVoluntarioSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Voluntario
-        fields = ('id', 'descripcion', 'cantidad', 'funcion', 'funcion_id', 'participaciones')
+        fields = ('id', 'descripcion', 'cantidad',
+                  'funcion', 'funcion_id', 'participaciones')
+
 
 class PropuestaSerializer(serializers.ModelSerializer):
     empresa = UserSerializer(read_only=True)
+
     class Meta:
         model = Propuesta
         fields = '__all__'
@@ -316,6 +353,7 @@ class PropuestaSerializer(serializers.ModelSerializer):
             deny_propuesta(new_instance)
         return new_instance
 
+
 class ConsultaAllNecesidadesSerializer(serializers.ModelSerializer):
     necesidades = ConsultaAllNecesidadSerializer(many=True)
     voluntarios = ConsultaAllVoluntarioSerializer(many=True)
@@ -323,7 +361,8 @@ class ConsultaAllNecesidadesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Evento
-        fields = ('id', 'nombre', 'necesidades', 'campaña', 'voluntarios', 'fecha_hora_inicio', 'fecha_hora_fin', 'propuestas')
+        fields = ('id', 'nombre', 'necesidades', 'campaña', 'voluntarios',
+                  'fecha_hora_inicio', 'fecha_hora_fin', 'propuestas')
 
 
 class ConsultaNecesidadesSerializer(serializers.ModelSerializer):
@@ -333,7 +372,9 @@ class ConsultaNecesidadesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Evento
-        fields = ('id', 'nombre', 'campaña', 'necesidades', 'voluntarios', 'fecha_hora_inicio', 'fecha_hora_fin', 'propuestas')
+        fields = ('id', 'nombre', 'campaña', 'necesidades', 'voluntarios',
+                  'fecha_hora_inicio', 'fecha_hora_fin', 'propuestas')
+
 
 class ConsultaEventoSerializer(serializers.ModelSerializer):
     ubicacion = UbicacionSerializer()
@@ -351,27 +392,10 @@ class ConsultaEventoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Evento
         fields = ('id', 'nombre', 'descripcion', 'fecha_hora_inicio', 'campaña',
-            'fecha_hora_fin', 'rubro', 'rubro_id', 'ubicacion', 'contacto', 'organizacion_id',
-            'necesidades', 'organizacion', 'voluntarios', 'comentarios', 'estado', 'propuestas')
+                  'fecha_hora_fin', 'rubro', 'rubro_id', 'ubicacion', 'contacto', 'organizacion_id',
+                  'necesidades', 'organizacion', 'voluntarios', 'comentarios', 'estado', 'propuestas')
 
-#
-#
-#
-"""
-Total propuestas: 5
 
-Propuestas:
-    Evento:
-    ONG: 
-    Estado:
-    Detalle:
-        Recurso - Pan:  5 unidades
-        Funcion - Chef: 4 voluntarios
-
-Recursos:
-    Recurso-Pan: 200 unidades
-    Funcion - Chef: 40 voluntariados
-"""
 class PropuestaONGDetalleSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -385,7 +409,7 @@ class PropuestaEventoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Evento
-        fields = ('id', 'nombre', 'organizacion')
+        fields = ('id', 'nombre', 'organizacion', 'fecha_hora_inicio')
 
 
 class PropuestaDetalleSerializer(serializers.ModelSerializer):
@@ -408,16 +432,20 @@ class PropuestasEmpresasSerializer(serializers.ModelSerializer):
 
 class VoluntarioPropuestaEmpresaSerializer(serializers.ModelSerializer):
 
+    funcion = FuncionSerializer()
+
     class Meta:
         model = Voluntario
-        fields = ('id', 'evento')
+        fields = ('id', 'evento', 'funcion')
 
 
 class NecesidadPropuestaEmpresaSerializer(serializers.ModelSerializer):
-    
+
+    recurso = RecursoSerializer()
+
     class Meta:
         model = Necesidad
-        fields = ('id', 'evento')
+        fields = ('id', 'evento', 'recurso')
 
 
 class ColaboracionPropuestaSerializer(serializers.ModelSerializer):
@@ -446,9 +474,7 @@ class ConsultarPropuestasEmpresaSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'nombre', 'participacion', 'colaboracion')
-#
-#
-#
+
 
 class EventoImagenSerializer(serializers.ModelSerializer):
 

@@ -37,8 +37,8 @@ let last_page = 1
 let y_header = 10
 const min_y = 30 // where to start drawing
 const max_y = 270 // when to finish and add page
-const step = 12 // distance between items
-let current_y = 60
+const step = 8 // distance between items
+let current_y = 55
 let last_title = {}
 let draw_queue = []
 // min h 30
@@ -209,16 +209,22 @@ function drawItems(doc, draw_queue) {
   // Draws items in draw_queue array into the doc object
   for (const item of draw_queue) {
     if (item.type === 1) {
-      
+      drawDatosPropuestas(doc, item)
     }    
     if (item.type === 2) {
-      
+      drawDetalleRecurso(doc, item)
     }
     if (item.type === 3) {
-
+      drawDetalleFuncion(doc, item)
     }
     if (item.type === 4) {
-
+      drawTitle(doc, item)
+    }
+    if (item.type === 5) {
+      drawTotalRecurso(doc, item)
+    }
+    if (item.type === 6) {
+      drawTotalVoluntarios(doc, item)
     }
     if (current_y > max_y) {
       // If the page is ending, create new one with title item at the top
@@ -230,15 +236,97 @@ function drawItems(doc, draw_queue) {
   }
 }
 
-function drawTitle(doc, item, y) {
-  // Draw title in doc (title as in Funcion-Recurso)
+function drawTitle(doc, item) {
+  // 3 step
+  // Draw title in doc (draw_item type 4)
+
+  const to_use_y = current_y + (step * 10)
+  if (to_use_y > max_y) {
+    // If there isnt some space before page ends, draw in new one
+    endPage(doc)
+    current_y = min_y
+  }
+  current_y = current_y + step
+  // Space before title
   doc.setFontStyle('bold')
   doc.setFontSize(14)
-  doc.text(`${item.nombre}  (${item.current_cantidad}/${item.max_cantidad})`, 5, y)
+  doc.text(item.titulo, 5, current_y)
+  current_y = current_y + step
+  // Space after title
+  current_y = current_y + step
 }
 
-function drawDatosPropuestas(doc, item, y) {
+function drawTotalRecurso(doc, item) {
+  // 1 step
+  // Draw total de recurso (draw_item type 5)
+  const descriptor = item.cantidad === 1 ? "unidad" : "unidades"
 
+  doc.setFontStyle('bold')
+  doc.setFontSize(12)
+  doc.text(item.nombre, 5, current_y)
+  doc.setFontStyle('normal')
+  doc.text(`${item.cantidad} ${descriptor}`, 90, current_y)
+  current_y = current_y + step
+}
+
+function drawTotalVoluntarios(doc, item) {
+  // 1 step
+  // Draw total de recurso (draw_item type 5)
+  const descriptor = item.cantidad === 1 ? "voluntariado" : "voluntariados"
+
+  doc.setFontStyle('bold')
+  doc.setFontSize(12)
+  doc.text(item.nombre, 5, current_y)
+  doc.setFontStyle('normal')
+  doc.text(`${item.cantidad} ${descriptor}`, 90, current_y)
+  current_y = current_y + step
+}
+
+function drawDatosPropuestas(doc, item) {
+  // 5 step
+  // Draws draw_item type 1 in doc (datos de propuesta)
+  const to_use_y = current_y + (step * 5)
+  if (to_use_y > max_y) {
+    // If item exceeds available space, create new page
+    endPage(doc)
+    current_y = min_y
+  }
+  // Extra step to have space between propuestas
+  current_y = current_y + step
+  doc.setFontStyle('bold')
+  doc.text(`Propuesta de evento ${item.evento}` ,5, current_y)
+  current_y = current_y + step
+  doc.setFontStyle('normal')
+  doc.text(`Organización: ${item.ong}` ,5, current_y)
+  current_y = current_y + step 
+  doc.text(`Estado: ${item.aceptado}` ,5, current_y)
+  current_y = current_y + step 
+  doc.text("Detalles:" ,5, current_y)
+  current_y = current_y + step 
+}
+
+function drawDetalleRecurso(doc, item) {
+  // 1 step
+  // Draws draw_item type 2 (detalle recurso)
+  const descriptor = item.cantidad === 1 ? "unidad" : "unidades"
+
+  doc.setFontStyle('bold')
+  doc.text(item.nombre, 15, current_y)
+  doc.setFontStyle('normal')
+  doc.text(`${item.cantidad} ${descriptor}`, 90, current_y)
+  current_y = current_y + step
+}
+
+function drawDetalleFuncion(doc, item) {
+  // 1 step
+  // Draws draw_item type 2 (detalle recurso)
+  const descriptor = item.cantidad === 1 ? "voluntario" : "voluntarios"
+
+  doc.setFontStyle('bold')
+  doc.text(item.nombre, 15, current_y)
+  doc.setFontStyle('normal')
+  doc.text(`${item.cantidad} ${descriptor}`, 90, current_y)
+  current_y = current_y + step
 }
 
 function drawItem(doc, item, y) {
@@ -275,14 +363,18 @@ function downloadPDF(propuestas, detalle_propuestas) {
 
   // Titulo
   doc.setFontStyle('bold')
+  doc.setFontSize(16)
   doc.text(center_x, 25, "Reporte de propuestas", null, null, 'center')
 
+  doc.setFontSize(12)
   doc.setFontStyle('normal')
   doc.text(`Total de propuestas: ${total_propuestas}`, 5, 35)
   doc.setFontStyle('bold')
+  doc.setFontSize(14)
   doc.text("Propuestas:", 5, 45)
+  doc.setFontSize(12)
 
-  //drawItems(doc, draw_queue)
+  drawItems(doc, draw_queue)
 
   // Footer
   doc.setFontStyle('normal')

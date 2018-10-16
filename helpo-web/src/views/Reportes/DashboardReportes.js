@@ -66,7 +66,7 @@ class DashboardReportes extends React.Component {
 
   downloadPDF() {
     // Llamo a la funcion que arma y descarga el PDF, pasandole las imagenes y los datos necesarios
-    if(this.state.total_voluntarios) {
+    if(this.state.total_voluntarios !== null && this.state.total_voluntarios !== undefined) {
       const data = {
         suscripciones: this.state.total_suscripciones,
         manos: this.state.total_manos,

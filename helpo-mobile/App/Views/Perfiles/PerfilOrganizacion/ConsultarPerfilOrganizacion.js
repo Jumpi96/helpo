@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
+  Row,
   ActionSheet,
   Container,
   Header,
@@ -14,7 +15,7 @@ import {
   Right,
   Icon,
   Thumbnail,
-  Text,
+  Text
 } from 'native-base';
 import styles from './styles';
 
@@ -28,6 +29,7 @@ class ConsultarPerfilOrganizacion extends Component {
     this.renderDescripcion = this.renderDescripcion.bind(this);
     this.renderCuit = this.renderCuit.bind(this);
     this.showToast = this.showToast.bind(this);
+    this.showToastRetroalimentacion = this.showToastRetroalimentacion.bind(this);
   }
 
   renderRubro() {
@@ -87,6 +89,17 @@ class ConsultarPerfilOrganizacion extends Component {
     });
   }
 
+  showToastRetroalimentacion() {
+    ActionSheet.show({
+      options: [
+        { text: "Cerrar", icon: "close", iconColor: "#25de5b" },
+      ],
+      title: "Cantidad de manos acumuladas y eventos"
+    }, buttonIndex => {
+      console.log(buttonIndex);
+    });
+  }
+
   render() {
     if (this.props.data.avatar) {
       return (
@@ -105,7 +118,17 @@ class ConsultarPerfilOrganizacion extends Component {
             </Right>
           </Header>
           <Content>
-            <Thumbnail large center source={{ uri: this.props.data.avatar.url }} />
+            <Row>
+              <Thumbnail large center source={{ uri: this.props.data.avatar.url }} />
+              <Right>
+              <Button transparent onPress={this.showToastRetroalimentacion}>
+                <Icon name="hand" style={{ color: "#F39200"}} ></Icon>
+                <Text style={styles.retroalimentacion}>{this.props.data.manos}</Text>
+                <Icon name="calendar" family="Entypo" style={{ color: "#F39200"}} ></Icon>
+                <Text style={styles.retroalimentacion}>{this.props.data.eventos}</Text>
+              </Button>
+              </Right>
+            </Row>
             <ListItem itemDivider>
               <Label style={styles.label}>Nombre</Label>
             </ListItem>

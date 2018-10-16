@@ -26,6 +26,7 @@ import api from '../../../api';
 import SelectorFechaHora from './SelectorFechaHora/SelectorFechaHora';
 import RegistrarContacto from './RegistrarContacto/RegistrarContacto';
 import validateEmail from '../../../Lib/ValidateEmail';
+import SelectorHorarios from './SelectorHorarios/SelectorHorarios';
 import styles from './styles';
 
 class RegistrarEvento extends React.Component {
@@ -44,13 +45,15 @@ class RegistrarEvento extends React.Component {
       ],
       nextId: 1,
       errors: {},
-      esEvento: true
+      esEvento: true,
+      horarios: []
     };
     this.handleUbicacionChange = this.handleUbicacionChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleRubroChange = this.handleRubroChange.bind(this);
     this.handleFechaHoraInicioChange = this.handleFechaHoraInicioChange.bind(this);
     this.handleFechaHoraFinChange = this.handleFechaHoraFinChange.bind(this);
+    this.handleHorariosChange = this.handleHorariosChange.bind(this);
     /* Metodos de contacto */
     this.handleContactNombreChange = this.handleContactNombreChange.bind(this);
     this.handleContactMailChange = this.handleContactMailChange.bind(this);
@@ -77,7 +80,9 @@ class RegistrarEvento extends React.Component {
         rubro_id: this.state.rubro_id,
         ubicacion: this.state.ubicacion,
         contacto: this.getContactosInfo(),
+        campaña: !this.state.esEvento,
       };
+      if (evento.campaña) { evento.horarios = this.state.horarios; }
       api.post('/actividades/eventos/', evento)
         .then((res) => {
           console.log(res);
@@ -283,6 +288,10 @@ class RegistrarEvento extends React.Component {
     }
   }
 
+  handleHorariosChange(horarios) {
+    this.setState({ horarios });
+  }
+
   render() {
     return (
       <Container style={styles.container}>
@@ -343,9 +352,13 @@ class RegistrarEvento extends React.Component {
               handleChange={this.handleFechaHoraFinChange}
             />
             <Text style={styles.validationMessage}>{this.state.errors.fechas}</Text>
-            {/*<Separator bordered noTopBorder>
-              <Text>Ubicación</Text>
-            </Separator>*/}
+            {!this.state.esEvento ?
+              <SelectorHorarios
+                horarios={this.state.horarios}
+                onHorariosChange={this.handleHorariosChange}
+              />
+              : undefined
+            }
             <Item>
               <SelectorUbicacion
                 ubicacion={this.state.ubicacion}

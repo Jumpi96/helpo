@@ -19,8 +19,9 @@ def calc_distance_locations(lat_a, long_a, lat_b, long_b):
 
 def get_token_user(request):
     token = request.META.get('HTTP_AUTHORIZATION', None)
-    objeto_token = AuthToken.objects.get(token_key=token[6:14])
-    return objeto_token.user_id
+    if token is not None:
+        objeto_token = AuthToken.objects.get(token_key=token[6:14])
+        return objeto_token.user_id
 
 
 def get_datos_token_google(token):

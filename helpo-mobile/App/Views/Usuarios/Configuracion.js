@@ -53,6 +53,13 @@ class Configuracion extends Component {
           <Button
             block
             style={{ margin: 15, marginTop: 50 }}
+            onPress={() => this.props.navigation.navigate('ChangePassword')}
+          >
+            <Text>Cambiar contraseña</Text>
+          </Button>
+          <Button
+            block
+            style={{ margin: 15 }}
             onPress={this.logout}
           >
             <Text>Cerrar sesión</Text>

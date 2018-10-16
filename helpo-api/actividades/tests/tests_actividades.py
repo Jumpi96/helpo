@@ -117,7 +117,7 @@ class CategoriaRecursoTests(TestCase):
             reverse('get_put_delete_categoria_recurso', kwargs={'id': 30})
         )
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
-
+"""
 class RecursoTests(TestCase):
 
     def setUp(self):
@@ -201,3 +201,4 @@ class NecesidadTests(TestCase):
             reverse('get_put_delete_necesidad', kwargs={'id': 30})
         )
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+"""

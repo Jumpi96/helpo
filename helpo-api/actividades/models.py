@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.postgres.fields import ArrayField
 from common.models import IndexedTimeStampedModel
 from users.models import User
 from datetime import timedelta
@@ -47,6 +48,7 @@ class Evento(IndexedTimeStampedModel):
     organizacion = models.ForeignKey(User, null=False)
     estado = models.PositiveSmallIntegerField(choices=EVENTO_STATUS, default=1, null=False, blank=False)
     campaña = models.BooleanField(null=False, blank=False, default=False)
+    horarios = ArrayField(ArrayField(models.CharField(max_length=10), default=[]), default=[])
 
 class Contacto(models.Model):
     nombre = models.CharField(max_length=100)

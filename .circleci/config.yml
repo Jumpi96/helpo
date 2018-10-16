@@ -15,6 +15,11 @@ jobs:
       AWS_SECRET_ACCESS_KEY: xxxxxxxxxxxxxxxxxxx
     docker:
     - image: circleci/python:3.6-jessie
+    - image: postgres:10.4-alpine
+      environment:
+        POSTGRES_USER: root
+        POSTGRES_PASSWORD: root
+        POSTGRES_DB: circle_test 
     steps:
     - checkout
     - run: mkdir -p $CIRCLE_ARTIFACTS $CIRCLE_TEST_REPORTS
@@ -36,7 +41,9 @@ jobs:
         # You can probably delete some of these entries
         - ~/virtualenvs
     # Test
-    - run: cd helpo-api DJANGO_SETTINGS_MODULE=helpo.settings.test pipenv run python manage.py has_missing_migrations --ignore authtools;
+    - run: cd helpo-api ./wait-for-it.sh localhost:5432 -- bash -c
+    - run: cd helpo-api DJANGO_SETTINGS_MODULE=helpo.settings.test pipenv run python manage.py migrate
+    - run: cd helpo-api DJANGO_SETTINGS_MODULE=helpo.settings.test SECRET_KEY=$(python -c 'import uuid; print(uuid.uuid4().hex + uuid.uuid4().hex)') pipenv run python manage.py populate_db
     - run: cd helpo-api DJANGO_SETTINGS_MODULE=helpo.settings.production SECRET_KEY=$(python -c 'import uuid; print(uuid.uuid4().hex + uuid.uuid4().hex)') DATABASE_URL='sqlite:///' ALLOWED_HOSTS='.example.org' SENDGRID_USERNAME='test' SENDGRID_PASSWORD='test' REDIS_URL='redis://' pipenv run python manage.py check --deploy
     - run: cd helpo-api && pipenv run coverage run manage.py test
     - run: cd helpo-api && pipenv run coverage html -d $CIRCLE_ARTIFACTS

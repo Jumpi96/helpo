@@ -1,20 +1,67 @@
-import React from 'react';  
+import React from 'react';
 import { PropTypes } from 'prop-types';
+import { Button } from 'reactstrap'
 import { Route } from 'react-router-dom';
 import { Card, CardHeader, CardBody } from 'reactstrap';
-import {connect} from 'react-redux';  
+import { connect } from 'react-redux';
 import * as eventoActions from '../../../actions/eventoActions';
 import EventoList from './EventoList';
 import EventoView from './EventoView';
+import api from '../../../api'
+import downloadPDF from './ReportePDF'
 
 class EventoPage extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      // ** Usados para PDF
+      propuestas: null,
+      detalle_propuestas: null
+      // **
+    }
     this.props.loadEventosConColaboraciones();
+  }
+
+  componentDidMount() {
+    const { empresa } = this.props
+
+    api.get(`actividades/consulta_propuestas/${empresa}/`)
+      .then(response => {
+        this.setState({
+          detalle_propuestas: response.data
+        })
+      })
+      .catch(error => { console.log(error) })
+
+    api.get(`actividades/empresa_propuestas/${empresa}/`)
+      .then(response => {
+        this.setState({
+          propuestas: response.data.propuestas
+        })
+      })
+      .catch(error => { console.log(error) })
   }
 
   render() {
     const eventos = this.props.eventos;
+    const { propuestas, detalle_propuestas } = this.state
+
+    // Button to download PDF report of colaboraciones
+    const BotonPDF = () => {
+      // If needed data didnt load yet, dont render button
+      if (!detalle_propuestas && !propuestas) { return null }
+      else {
+        return (
+          <Button
+            color='primary'
+            onClick={() => downloadPDF(propuestas, detalle_propuestas)}
+            >
+            Descarga reporte PDF
+          </Button>
+        )
+      }
+    }
+
     return (
       <div className="animated fadeIn">
         <Card>
@@ -27,7 +74,8 @@ class EventoPage extends React.Component {
                 <EventoList eventos={eventos} />
               </div>
               <div className="col-md-9">
-                <Route path={`${this.props.match.url}/:id`} component={EventoView}/>
+                <Route path={`${this.props.match.url}/:id`} component={EventoView} />
+                <Route path={`${this.props.match.url}`} component={BotonPDF} />
               </div>
             </div>
           </CardBody>
@@ -44,15 +92,16 @@ EventoPage.propTypes = {
 function mapStateToProps(state, ownProps) {
   return {
     eventos: state.eventos,
+    empresa: state.auth.user.id
   }
-} 
+}
 
 const mapDispatchToProps = dispatch => {
-    return {
-      loadEventosConColaboraciones: () => {
-        return dispatch(eventoActions.loadEventosConColaboraciones());
-      },
-    }
+  return {
+    loadEventosConColaboraciones: () => {
+      return dispatch(eventoActions.loadEventosConColaboraciones());
+    },
   }
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(EventoPage);  

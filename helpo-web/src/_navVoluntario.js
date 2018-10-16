@@ -24,7 +24,7 @@
       class: ''             // optional class names space delimited list for title item ex: "text-center"
     },
     {
-      name: 'Eventos',
+      name: 'Actividades sociales',
       url: '/actividades/consultar-eventos',
       icon: 'icon-cursor'
     },
@@ -46,11 +46,6 @@
         attributes: {}        // optional valid JS object with JS API naming ex: { className: "my-class", style: { fontFamily: "Verdana" }, id: "my-id"}
       },
       class: ''             // optional class names space delimited list for title item ex: "text-center"
-    },
-    {
-      name: 'Mi perfil',
-      url: '/perfil/',
-      icon: 'icon-pencil',
     },
     {
       name: 'Mis suscripciones',

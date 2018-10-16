@@ -216,23 +216,23 @@
                 <!-- Body content -->
                 <tr>
                   <td class="content-cell">
-                    <h1>Necesidad pendiente en su evento de Helpo</h1>
+                    <h1>Necesidad pendiente en su actividad de Helpo</h1>
                     <p>La cantidad de voluntarios requeridos para la funci&oacute;n {{voluntario.funcion.nombre}}
-                      dej&oacute; de estar cubierta en su evento {{voluntario.evento.nombre}}.</p>
+                      dej&oacute; de estar cubierta en su actividad social {{voluntario.evento.nombre}}.</p>
                     <!-- Action -->
                     <table class="body-action" align="center" width="100%" cellpadding="0" cellspacing="0">
                       <tr>
                         <td align="left">
                           <div>
-                            <h2>Datos del evento</h2>
+                            <h2>Datos de actividad social</h2>
                             <ul style="list-style-type:disc">
                               <li>Nombre: {{voluntario.evento.nombre}}</li>
                               <li>Organizaci&oacute;n: {{voluntario.evento.organizacion.nombre}}</li>
                               <li>Descripci&oacute;n: {{voluntario.evento.descripcion|default:"Sin descripci&oacute;n"}}</li>
                               <li>Fecha:</li>
                               <ul style="list-style-type:circle">
-                                <li>Inicio: {{voluntario.evento.fecha_hora_inicio}}</li>
-                                <li>Fin: {{voluntario.evento.fecha_hora_fin}}</li>
+                                <li>Inicio: {{voluntario.evento.get_fecha_hora_inicio}}</li>
+                                <li>Fin: {{voluntario.evento.get_fecha_hora_fin}}</li>
                               </ul>
                               <li>Ubicaci&oacute;n:</li>
                               <ul style="list-style-type:circle">

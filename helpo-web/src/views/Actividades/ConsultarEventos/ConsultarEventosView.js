@@ -22,6 +22,7 @@ class ConsultarEventosView extends React.Component {
     }
     this.toggleColaborar = this.toggleColaborar.bind(this);
     this.loadEvento = this.loadEvento.bind(this);
+    this.puedeColaborar = this.puedeColaborar.bind(this);
   }
 
   loadEvento() {
@@ -60,8 +61,8 @@ class ConsultarEventosView extends React.Component {
     })
     return (
       <div className="row">
-        <div className="form-group col-md-3">
-          <b className="float-right">Empresas patrocinadoras</b>
+        <div className="form-group col-md-2 offset-md-1">
+          <b className="float-left">Empresas patrocinadoras</b>
         </div>
         <div className="form-group col-md-9">
           {listaPropuestas}
@@ -90,6 +91,49 @@ class ConsultarEventosView extends React.Component {
       return this.props.auth.user.user_type === 1;
     } else {
       return false;
+    }
+  }
+
+  puedeColaborar() {
+    const { user } = this.props.auth;
+    if (user) {
+      if (user.user_type === 2) {
+        return true;
+      } else if (user.user_type === 3) {
+        const propuestas_rechazadas = this.state.evento.propuestas.filter(p => p.empresa.id === user.id && p.aceptado === -1);
+        if (propuestas_rechazadas.length === 0) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  getHorarios(evento) {
+    if (evento.horarios.length > 0) {
+      const listaHorarios = [];
+      evento.horarios.forEach((h) => {
+        listaHorarios.push(
+          <div className="row">
+            <div className="col-md-2">
+              <p>{h[0]}</p>
+            </div>
+            <div className="col-md-2">
+              <p>{h[1] + " - " + h[2]}</p>
+            </div>
+          </div>
+        )
+      })
+      return (
+        <div className="row">
+          <div className="form-group col-md-2 offset-md-1">
+            <b className="float-left">Horarios de atención</b>
+          </div>
+          <div className="form-group col-md-9">
+            {listaHorarios}
+          </div>
+        </div>
+      );
     }
   }
 
@@ -136,44 +180,45 @@ class ConsultarEventosView extends React.Component {
                   alt={evento.organizacion.nombre}
                   style={{ width: '75px', height: '75px' }}
                 />
-                {' ' + evento.nombre}
+                {evento.campaña ? " Campaña" : " Evento"}{" - " + evento.nombre}
               </h1>
               <div className="row">
-                <div className="form-group col-md-3">
-                  <b className="float-right">Descripción</b>
+                <div className="form-group col-md-2 offset-md-1">
+                  <b className="float-left">Descripción</b>
                 </div>
                 <div className="form-group col-md-9">
                   <p>{evento.descripcion}</p>
                 </div>
               </div>
               <div className="row">
-                <div className="form-group col-md-3">
-                  <b className="float-right">Rubro</b>
+                <div className="form-group col-md-2 offset-md-1">
+                  <b className="float-left">Rubro</b>
                 </div>
                 <div className="form-group col-md-9">
                   <p>{evento.rubro.nombre}</p>
                 </div>
               </div>
               <div className="row">
-                <div className="form-group col-md-3">
-                  <b className="float-right">Fecha de inicio</b>
+                <div className="form-group col-md-2 offset-md-1">
+                  <b className="float-left">Fecha de inicio</b>
                 </div>
                 <div className="form-group col-md-9">
                   <p>{moment(evento.fecha_hora_inicio).format('DD/MM/YYYY HH:mm')}</p>
                 </div>
               </div>
               <div className="row">
-                <div className="form-group col-md-3">
-                  <b className="float-right">Fecha de finalización</b>
+                <div className="form-group col-md-2 offset-md-1">
+                  <b className="float-left">Fecha de finalización</b>
                 </div>
                 <div className="form-group col-md-9">
                   <p>{moment(evento.fecha_hora_fin).format('DD/MM/YYYY HH:mm')}</p>
                 </div>
               </div>
+              {this.getHorarios(evento)}
               {listaContactos ? (
                 <div className="row">
-                  <div className="form-group col-md-3">
-                    <b name="contactos" className="float-right">Contactos</b>
+                  <div className="form-group col-md-2 offset-md-1">
+                    <b name="contactos" className="float-left">Contactos</b>
                   </div>
                   <div className="form-group col-md-9">
                     <ul className="list-group">{listaContactos}</ul>
@@ -184,8 +229,8 @@ class ConsultarEventosView extends React.Component {
               {evento.propuestas.length > 0 && this.getPropuestas(evento.propuestas)}
               {listaNecesidades ? (
                 <div className="row">
-                  <div className="form-group col-md-3">
-                    <b className="float-right">Necesidades materiales</b>
+                  <div className="form-group col-md-2 offset-md-1">
+                    <b className="float-left">Necesidades materiales</b>
                   </div>
                   <div className="form-group col-md-9">
                     <Table responsive striped>
@@ -208,8 +253,8 @@ class ConsultarEventosView extends React.Component {
               }
               {listaVoluntarios ? (
                 <div className="row">
-                  <div className="form-group col-md-3">
-                    <b className="float-right">Voluntarios</b>
+                  <div className="form-group col-md-2 offset-md-1">
+                    <b className="float-left">Voluntarios</b>
                   </div>
                   <div className="form-group col-md-9">
                     <Table responsive striped>
@@ -229,14 +274,17 @@ class ConsultarEventosView extends React.Component {
                 </div>
               ) : undefined
               }
-              {listaNecesidades || listaVoluntarios ? (
+              {this.puedeColaborar() ? (
                 <button
                   onClick={this.toggleColaborar}
-                  hidden={moment(evento.fecha_hora_inicio) <= moment() || this.esONG()}
+                  hidden={
+                    (moment(evento.fecha_hora_inicio) <= moment() && !evento.campaña) ||
+                    (evento.campaña && (moment(evento.fecha_hora_fin) <= moment()))
+                  }
                   className="btn btn-warning offset-md-10"
                 >
-                  Colaborar
-              </button>
+                  {this.props.auth.user.user_type === 2 ? "Colaborar" : "Patrocinar"}
+                </button>
               ) : undefined
               }
               {moment(evento.fecha_hora_inicio) <= moment() && this.props.auth.user ? (
@@ -247,8 +295,8 @@ class ConsultarEventosView extends React.Component {
               {this.state.evento.estado > 1
                 ? (
                   <div className="row">
-                    <div className="form-group col-md-3">
-                      <b name="compartir" className="float-right">Album</b>
+                    <div className="form-group col-md-2 offset-md-1">
+                      <b name="compartir" className="float-left">Album</b>
                     </div>
                     <div className="form-group col-md-9">
                       <ButtonGoAlbum eventoId={this.state.evento.id} />
@@ -256,8 +304,8 @@ class ConsultarEventosView extends React.Component {
                   </div>)
                 : undefined}
               <div className="row">
-                <div className="form-group col-md-3">
-                  <b name="compartir" className="float-right">Compartir</b>
+                <div className="form-group col-md-2 offset-md-1">
+                  <b name="compartir" className="float-left">Compartir</b>
                 </div>
                 <div className="form-group col-md-9">
                   <ButtonsCompartirEvento evento={this.state.evento} />

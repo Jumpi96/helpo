@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'common',
     'users',
     'actividades',
+    'reportes',
 ]
 
 MIDDLEWARE = [

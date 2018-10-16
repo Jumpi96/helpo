@@ -27,7 +27,7 @@ class MisSuscripciones extends React.Component {
       return <p> No tienes ninguna suscripcion </p>
     }
     /*
-    Locked es para que si se desubscribe la organizacion siga en la lista
+    Locked es para que si se desuscribe la organizacion siga en la lista
     hasta que se refresque la pagina
     */
     if (!this.state.locked) {

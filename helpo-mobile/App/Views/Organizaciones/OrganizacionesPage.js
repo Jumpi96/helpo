@@ -68,9 +68,7 @@ class OrganizacionesPage extends React.Component {
   }
 
   toggleOpen(organizacion) {
-    // TODO: consultar perfil
-    // this.props.navigation.navigate('ConsultarPerfilGenerico', { user_id: organizacion.id });
-    this.props.navigation.navigate('LaunchScreen');
+    this.props.navigation.navigate('ConsultarOtroPerfilGenerico', { user: organizacion.usuario.id });
   }
 
   render() {
@@ -86,6 +84,7 @@ class OrganizacionesPage extends React.Component {
           <Body>
             <Title>Organizaciones</Title>
           </Body>
+          <Right />
         </Header>
 
         <Item>

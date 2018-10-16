@@ -29,6 +29,7 @@ class ConsultaEvento extends React.Component {
     super(props);
     this.navigateColaborar = this.navigateColaborar.bind(this);
     this.togglePerfil = this.togglePerfil.bind(this);
+    this.puedeColaborar = this.puedeColaborar.bind(this);
   }
 
   getListaNecesidades(evento) {
@@ -110,9 +111,7 @@ class ConsultaEvento extends React.Component {
   }
 
   togglePerfil(empresa) {
-    // TODO: Consultar perfil
-    // this.props.navigation.navigate('ConsultarPerfilGenerico', { user_id: empresa });
-    this.props.navigation.navigate('LaunchScreen');
+    this.props.navigation.navigate('ConsultarOtroPerfilGenerico', { user: empresa });
   }
 
   getPropuestas(propuestas) {
@@ -154,6 +153,45 @@ class ConsultaEvento extends React.Component {
     return a;
   }
 
+  puedeColaborar(evento) {
+    const { user } = this.props.auth;
+    if (!((moment(evento.fecha_hora_inicio) <= moment() && !evento.campaña) ||
+      (evento.campaña && (moment(evento.fecha_hora_fin) <= moment())))) {
+      if (user) {
+        if (user.user_type == 2) {
+          return true;
+        } else if (user.user_type == 3) {
+          const propuestas_rechazadas = evento.propuestas.filter(p => p.empresa.id === user.id && p.aceptado === -1);
+          if (propuestas_rechazadas.length === 0) {
+            return true;
+          }
+        }
+      }
+    }
+    return false;
+  }
+
+  getHorarios(evento) {
+    if (evento.horarios.length > 0) {
+      const listaHorarios = [];
+      evento.horarios.forEach((h) => {
+        listaHorarios.push(
+          <ListItem>
+            <Text>{h[0] + ' ' + h[1] + '-' + h[2]}</Text>
+          </ListItem>
+        )
+      })
+      return (
+        <View>
+          <ListItem itemDivider>
+            <Label style={styles.label}>Horarios de atención</Label>
+          </ListItem>
+          {listaHorarios}
+        </View>
+      );
+    }
+  }
+
   render() {
     const { params } = this.props.navigation.state;
     const evento = params.evento;
@@ -161,7 +199,7 @@ class ConsultaEvento extends React.Component {
     if (evento.contacto.length > 0) {
       listaContactos = evento.contacto.map(contacto =>
         <ListItem key={contacto.nombre}>
-          <Text>{contacto.nombre} - {contacto.telefono}</Text>
+          <Text>{contacto.nombre} - {contacto.email} - {contacto.telefono}</Text>
         </ListItem>
       );
     }
@@ -176,61 +214,69 @@ class ConsultaEvento extends React.Component {
           <Body>
             <Title>{evento.nombre}</Title>
           </Body>
-          {this.props.auth.user.user_type > 1 ?
+          {this.puedeColaborar(evento) ?
             <Right>
               <Button
                 transparent
                 onPress={() => this.navigateColaborar(evento)}>
-                <Text>Colaborar</Text>
+                <Text>{this.props.auth.user.user_type === 2 ? "Colaborar" : "Patrocinar"}</Text>
               </Button>
             </Right> : undefined
           }
         </Header>
         <Content>
-          <Separator bordered noTopBorder>
-            <Text>Información</Text>
-          </Separator>
-          <ListItem>
+          <ListItem itemDivider>
             <Label style={styles.label}>Nombre</Label>
+          </ListItem>
+          <ListItem>
             <Text>{evento.nombre}</Text>
           </ListItem>
-          <ListItem>
+
+          <ListItem itemDivider>
             <Label style={styles.label}>Organización</Label>
+          </ListItem>
+          <ListItem>
             <Text>{evento.organizacion.nombre}</Text>
           </ListItem>
-          <ListItem>
+
+          <ListItem itemDivider>
             <Label style={styles.label}>Descripción</Label>
+          </ListItem>
+          <ListItem>
             <Text>{evento.descripcion}</Text>
           </ListItem>
-          <ListItem>
+
+          <ListItem itemDivider>
             <Label style={styles.label}>Rubro</Label>
+          </ListItem>
+          <ListItem>
             <Text>{evento.rubro.nombre}</Text>
           </ListItem>
-          <Separator bordered noTopBorder>
-            <Text>Fecha</Text>
-          </Separator>
-          <ListItem>
-            <Label style={styles.label}>Inicio</Label>
-            <Text>{moment(evento.fecha_hora_inicio).format('DD/MM/YYYY HH:mm')}</Text>
+
+          <ListItem itemDivider>
+            <Label style={styles.label}>Fecha</Label>
           </ListItem>
           <ListItem>
-            <Label style={styles.label}>Fin</Label>
-            <Text>{moment(evento.fecha_hora_fin).format('DD/MM/YYYY HH:mm')}</Text>
+            <Text>{'Inicio: ' + moment(evento.fecha_hora_inicio).format('DD/MM/YYYY HH:mm')}</Text>
           </ListItem>
+          <ListItem>
+            <Text>{'Fin: ' + moment(evento.fecha_hora_fin).format('DD/MM/YYYY HH:mm')}</Text>
+          </ListItem>
+          {this.getHorarios(evento)}
           {listaContactos ? (
             <View>
-              <Separator bordered noTopBorder>
-                <Text>Contactos</Text>
-              </Separator>
+              <ListItem itemDivider>
+                <Label style={styles.label}>Contactos</Label>
+              </ListItem>
               {listaContactos}
             </View>
           ) : undefined
           }
           {evento.necesidades.length > 0 ? (
             <View>
-              <Separator bordered noTopBorder>
-                <Text>Necesidades materiales</Text>
-              </Separator>
+              <ListItem itemDivider>
+                <Label style={styles.label}>Necesidades materiales</Label>
+              </ListItem>
               {this.getListaNecesidades(evento)}
             </View>
           ) : undefined
@@ -238,18 +284,18 @@ class ConsultaEvento extends React.Component {
           {this.getPropuestas(evento.propuestas)}
           {evento.voluntarios.length > 0 ? (
             <View>
-              <Separator bordered noTopBorder>
-                <Text>Voluntarios</Text>
-              </Separator>
+              <ListItem itemDivider>
+                <Label style={styles.label}>Voluntarios</Label>
+              </ListItem>
               {this.getListaVoluntarios(evento)}
             </View>
           ) : undefined
           }
           {evento.comentarios.length > 0 ? (
             <View>
-              <Separator bordered noTopBorder>
-                <Text>Comentarios</Text>
-              </Separator>
+              <ListItem itemDivider>
+                <Label style={styles.label}>Comentarios</Label>
+              </ListItem>
               {this.getListaComentarios(evento)}
             </View>
           ) : undefined

@@ -1,7 +1,9 @@
-import { View, StyleSheet } from 'react-native';
+import { View, Dimensions } from 'react-native';
 import { Text, Content, Container, Form, Label, Item, Input, Button } from 'native-base';
 import React from 'react';
 import PropTypes from 'prop-types';
+import { GoogleSigninButton } from 'react-native-google-signin';
+import { FBLogin, FBLoginManager } from 'react-native-facebook-login';
 
 // Styles
 // Native base doesnt let you create Stylesheet
@@ -115,6 +117,8 @@ class SignUpPresentation extends React.Component {
 
 
   render() {
+    var _this = this;
+    var { width } = Dimensions.get('window');
     return (
       <Container>
         <Content>
@@ -165,10 +169,47 @@ class SignUpPresentation extends React.Component {
             <Text style={styErrorText}>{this.props.data.errors.contraseña}</Text>
           </Form>
           <Button
-            rounded style={{ margin: 20, flex: 1 }}
+            rounded style={{ margin: 15, flex: 1 }}
             onPress={() => this.props.onSubmit()}
           >
             <Text>Registrar</Text></Button>
+          <FBLogin
+            permissions={["email"]}
+            style={{ margin: 15, marginTop: 30 }}
+            loginBehavior={FBLoginManager.LoginBehaviors.WebView}
+            onLogin={function (data) {
+              console.log("Logged in!");
+              console.log(data);
+              _this.props.onSubmitFacebook(data);
+            }}
+            onLogout={function () {
+              console.log("Logged out.");
+            }}
+            onLoginFound={function (data) {
+              console.log("Existing login found.");
+              console.log(data);
+            }}
+            onLoginNotFound={function () {
+              console.log("No user logged in.");
+            }}
+            onError={function (data) {
+              console.log("ERROR");
+              console.log(data);
+            }}
+            onCancel={function () {
+              console.log("User cancelled.");
+            }}
+            onPermissionsMissing={function (data) {
+              console.log("Check permissions!");
+              console.log(data);
+            }}
+          />
+          <GoogleSigninButton
+            style={{ width: width - 30, height: 48, marginLeft: 15 }}
+            size={GoogleSigninButton.Size.Wide}
+            color={GoogleSigninButton.Color.Dark}
+            onPress={this.props.googleSignIn}
+            disabled={this.props.isGoogleSigninInProgress} />
         </Content>
       </Container>
     );

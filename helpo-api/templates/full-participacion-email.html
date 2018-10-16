@@ -216,9 +216,9 @@
                 <!-- Body content -->
                 <tr>
                   <td class="content-cell">
-                    <h1>Necesidad cubierta en su evento de Helpo</h1>
+                    <h1>Necesidad cubierta en su actividad social de Helpo</h1>
                     <p>Se ha alcanzado la cantidad de voluntarios requeridos para la funci&oacute;n
-                      {{voluntario.funcion.nombre}} en su evento {{voluntario.evento.nombre}}.</p>
+                      {{voluntario.funcion.nombre}} en su actividad {{voluntario.evento.nombre}}.</p>
                     <!-- Action -->
                     <table class="body-action" align="center" width="100%" cellpadding="0" cellspacing="0">
                       <tr>
@@ -231,8 +231,8 @@
                               <li>Descripci&oacute;n: {{voluntario.evento.descripcion|default:"Sin descripci&oacute;n"}}</li>
                               <li>Fecha:</li>
                               <ul style="list-style-type:circle">
-                                <li>Inicio: {{voluntario.evento.fecha_hora_inicio}}</li>
-                                <li>Fin: {{voluntario.evento.fecha_hora_fin}}</li>
+                                <li>Inicio: {{voluntario.evento.get_fecha_hora_inicio}}</li>
+                                <li>Fin: {{voluntario.evento.get_fecha_hora_fin}}</li>
                               </ul>
                               <li>Ubicaci&oacute;n:</li>
                               <ul style="list-style-type:circle">

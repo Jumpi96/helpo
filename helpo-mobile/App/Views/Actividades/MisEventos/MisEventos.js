@@ -45,20 +45,24 @@ class MisEventos extends React.Component {
         <Left>
           <Button
             style={{ backgroundColor: '#ffe859' }}
-            onPress={() => this.props.navigation.navigate('VerEvento', { evento: n, rubros: this.getRubrosEvento() })}
+            onPress={() => this.props.navigation.navigate('VerEvento', { evento: n.id })}
           >
-            <Icon name="hand" />
+            {
+              n.campaña ?
+              <Icon name="calendar" family="Entypo" /> :
+              <Icon name="hand" />
+            }
           </Button>
         </Left>
         <Body>
           <Text
-            onPress={() => this.props.navigation.navigate('VerEvento', { evento: n, rubros: this.getRubrosEvento() })}
+            onPress={() => this.props.navigation.navigate('VerEvento', { evento: n.id })}
           >
             {n.nombre}
           </Text>
           <Text
             numberOfLines={1} note
-            onPress={() => this.props.navigation.navigate('VerEvento', { evento: n, rubros: this.getRubrosEvento() })}
+            onPress={() => this.props.navigation.navigate('VerEvento', { evento: n.id })}
           >
             {moment(n.fecha_hora_inicio).format('DD/MM/YYYY')}
           </Text>
@@ -77,7 +81,7 @@ class MisEventos extends React.Component {
             </Button>
           </Left>
           <Body>
-            <Title>Mis eventos</Title>
+            <Title>Mis actividades</Title>
           </Body>
         </Header>
         <Content>

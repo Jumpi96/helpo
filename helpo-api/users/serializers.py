@@ -1,9 +1,91 @@
 from rest_framework import serializers
 from django.contrib.auth import authenticate
-from users.models import User, RubroOrganizacion, RubroEmpresa, OrganizacionProfile, Ubicacion, Imagen, VoluntarioProfile, EmpresaProfile, UserVerification, AppValues, DeviceID, Suscripcion
+from django.conf import settings
+from decouple import config
+from users.models import User, UserWrapper, RubroOrganizacion, RubroEmpresa, OrganizacionProfile, Ubicacion, Imagen, VoluntarioProfile, EmpresaProfile, SmsVerification, UserVerification, AppValues, DeviceID, Suscripcion
 from actividades.models import Participacion, Evento, Colaboracion
 from django.core.exceptions import ObjectDoesNotExist
+from common.functions import get_datos_token_google, get_datos_token_facebook
+import random
+import string
 
+
+class GoogleAuthSerializer(serializers.ModelSerializer):
+    apellido = serializers.CharField(max_length=50, allow_null=True)
+
+    class Meta:
+        model = UserWrapper
+        fields = ('nombre','email','password','user_type','apellido','id_token')
+        write_only_fields = ('apellido')
+
+    def validate(self, data):
+        if data:
+            token = data.get('id_token')
+            datos_google = get_datos_token_google(token)
+            if datos_google:
+                user_email = datos_google.get('email')
+                if user_email:
+                    user_qs = User.objects.filter(email=user_email)
+                    if len(user_qs) == 0:
+                        user_password = ''.join(random.SystemRandom().choice(
+                            string.ascii_uppercase + string.digits) for _ in range(64))
+                        kwargs = {'avatar': datos_google.get(
+                            'foto'), 'apellido': datos_google.get('apellido')}
+                        user = User.objects.create_user(user_email, datos_google.get('nombre'), user_password, data.get(
+                            'user_type'), **kwargs)
+                        return user
+                    else:
+                        user = user_qs.first()
+                        return user
+        raise serializers.ValidationError("Unable to log in with provided Google Token")
+    
+    def exists(self, data):
+        if data:
+            token = data.get('id_token')
+            datos_google = get_datos_token_google(token)
+            if datos_google:
+                user_email = datos_google.get('email')
+                if user_email:
+                    user = User.objects.filter(email=user_email).first()
+                    if user:
+                        return user
+        raise serializers.ValidationError("Unable to find user with provided Google Token")
+
+class FacebookAuthSerializer(GoogleAuthSerializer):
+    def validate(self, data):
+        if data:
+            token = data.get('id_token')
+            user_name = get_datos_token_facebook(token)
+            if user_name:
+                user_email = data.get('email')
+                if user_email:
+                    user_qs = User.objects.filter(email=user_email)
+                    if len(user_qs) == 0:
+                        word_list = user_name.split()
+                        nombre = word_list[0]
+                        apellido = word_list[-1]
+                        password = ''.join(random.SystemRandom().choice(
+                            string.ascii_uppercase + string.digits) for _ in range(64))
+                        kwargs = {'apellido': apellido}
+                        user = User.objects.create_user(user_email, nombre, password, data.get(
+                            'user_type'), **kwargs)
+                        return user
+                    else:
+                        user = user_qs.first()
+                        return user
+        raise serializers.ValidationError("Unable to log in with provided Facebook Token")
+
+    def exists(self, data):
+        if data:
+            token = data.get('id_token')
+            user_name = get_datos_token_facebook(token)
+            if user_name:
+                user_email = data.get('email')
+                if user_email:
+                    user = User.objects.filter(email=user_email).first()
+                    if user:
+                        return user
+        raise serializers.ValidationError("Unable to find user with provided Facebook Token")
 
 class CreateUserSerializer(serializers.ModelSerializer):
     apellido = serializers.CharField(max_length=50, allow_null=True)
@@ -135,9 +217,20 @@ class OrganizacionProfileSerializer(serializers.ModelSerializer):
         return instance
 
     def get_manos(self, obj):
-        participaciones = Participacion.objects.filter(retroalimentacion_ong=True).filter(necesidad_voluntario__evento__organizacion_id=obj.usuario_id).count()
-        colaboraciones = Colaboracion.objects.filter(retroalimentacion_ong=True).filter(necesidad_material__evento__organizacion_id=obj.usuario_id).count()
-        manos = participaciones + colaboraciones
+        participaciones = Participacion.objects.filter(retroalimentacion_voluntario=True, necesidad_voluntario__evento__organizacion_id=obj.usuario_id)
+        colaboraciones = Colaboracion.objects.filter(retroalimentacion_voluntario=True, necesidad_material__evento__organizacion_id=obj.usuario_id)
+        dict_conteo = {}
+        manos = 0
+        for participacion in participaciones:
+            evento = participacion.necesidad_voluntario.evento
+            if not evento.id in dict_conteo:
+                dict_conteo[evento.id] = []
+            dict_conteo[evento.id].append(participacion.colaborador)
+            manos = manos + 1
+        for colaboracion in colaboraciones:
+            evento = colaboracion.necesidad_material.evento
+            if not evento.id in dict_conteo or not colaboracion.colaborador in dict_conteo[evento.id]:
+                manos = manos + 1
         return manos
 
     def get_eventos(self, obj):
@@ -149,11 +242,13 @@ class EmpresaProfileSerializer(serializers.ModelSerializer):
     ubicacion = UbicacionSerializer(required=False)
     avatar = ImagenSerializer(required=False)    
     usuario = UserSerializer(read_only=True)
+    manos = serializers.SerializerMethodField()
+    eventos = serializers.SerializerMethodField()
 
     class Meta:
         model = EmpresaProfile
-        fields = ( 'telefono', 'cuit', 'descripcion', 'rubro', 'avatar', 'ubicacion', 'usuario')
-        read_only_fields = ('usuario',)
+        fields = ( 'verificada', 'telefono', 'cuit', 'descripcion', 'rubro', 'avatar', 'ubicacion', 'usuario','manos','eventos')
+        read_only_fields = ('usuario', 'verificada','manos','eventos')
 
     def update(self, instance, validated_data):
         rubro_data = None
@@ -202,6 +297,25 @@ class EmpresaProfileSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
+    def get_manos(self, obj):
+        participaciones = Participacion.objects.filter(retroalimentacion_ong=True, colaborador_id=obj.usuario_id).count()
+        colaboraciones = Colaboracion.objects.filter(retroalimentacion_ong=True, colaborador_id=obj.usuario_id).distinct('necesidad_material__evento').count()
+        manos = participaciones + colaboraciones
+        return manos
+
+    def get_eventos(self, obj):
+        cantidad = []
+        participaciones = Participacion.objects.filter(colaborador_id=obj.usuario_id)
+        colaboraciones = Colaboracion.objects.filter(colaborador_id=obj.usuario_id).distinct('necesidad_material__evento')
+        for c in colaboraciones:
+            if c.necesidad_material.evento_id not in cantidad:
+                cantidad.append(c.necesidad_material.evento_id)
+        for p in participaciones:
+            if p.necesidad_voluntario.evento_id not in cantidad:
+                cantidad.append(p.necesidad_voluntario.evento_id)
+        eventos = Evento.objects.filter(id__in = cantidad).count()
+        return eventos    
+
 class VoluntarioProfileSerializer(serializers.ModelSerializer):
     avatar = ImagenSerializer(required=False)   
     usuario = UserSerializer(read_only=True) 
@@ -242,8 +356,8 @@ class VoluntarioProfileSerializer(serializers.ModelSerializer):
         return instance
 
     def get_manos(self, obj):
-        participaciones = Participacion.objects.filter(retroalimentacion_voluntario=True).filter(colaborador_id=obj.usuario_id).count()
-        colaboraciones = Colaboracion.objects.filter(retroalimentacion_voluntario=True).filter(colaborador_id=obj.usuario_id).distinct('necesidad_material__evento').count()
+        participaciones = Participacion.objects.filter(retroalimentacion_ong=True, colaborador_id=obj.usuario_id).count()
+        colaboraciones = Colaboracion.objects.filter(retroalimentacion_ong=True, colaborador_id=obj.usuario_id).distinct('necesidad_material__evento').count()
         manos = participaciones + colaboraciones
         return manos
 
@@ -259,19 +373,125 @@ class VoluntarioProfileSerializer(serializers.ModelSerializer):
                 cantidad.append(p.necesidad_voluntario.evento_id)
         eventos = Evento.objects.filter(id__in = cantidad).count()
         return eventos    
-        
+
+class VerificationSmsSerializer(serializers.Serializer):    
+    token = serializers.CharField()
+
+    def validate(self, data):
+        try:
+            sms_verification = SmsVerification.objects.get(verificationToken=data["token"])
+            user = sms_verification.usuario
+            if user.user_type == 1:
+                profile = OrganizacionProfile.objects.filter(usuario=user).first()
+                if profile.validate_sms(sms_verification.verificationToken):
+                    return True
+            elif user.user_type == 3:
+                profile = EmpresaProfile.objects.filter(usuario=user).first()
+                if profile.validate_sms(sms_verification.verificationToken):
+                    return True
+            else:
+                raise serializers.ValidationError("Verification token does not match any")
+        except ObjectDoesNotExist:
+            raise serializers.ValidationError("Verification token does not match any")
+
 class VerificationMailSerializer(serializers.Serializer):    
     token = serializers.CharField()
 
     def validate(self, data):
-        print(data)
         try:
             user_verification = UserVerification.objects.get(verificationToken=data["token"])
             user = user_verification.usuario
             if user.validate_mail(user_verification.verificationToken):
                 return True
+            else:
+                raise serializers.ValidationError("Verification token does not match any")
         except ObjectDoesNotExist:
             raise serializers.ValidationError("Verification token does not match any")
+
+class SendVerificationEmailSerializer(serializers.Serializer):
+    email = serializers.EmailField(max_length=255, allow_blank=False)
+
+    def validate(self, data):
+        try:
+            user = User.objects.filter(email=data["email"]).first()
+            if user is not None and not user.is_confirmed:
+                self.send_verification_email(user)
+                return True
+            else:
+                raise serializers.ValidationError("Email does not match any")
+        except ObjectDoesNotExist:
+            raise serializers.ValidationError("Email does not match any")
+    
+    def send_verification_email(self, user):
+        user_verification = UserVerification.objects.get(usuario=user)
+        if user_verification is not None:
+            bash = user_verification.verificationToken
+            mail_from = settings.REGISTER_EMAIL
+            subject = "Verifique su registro en Helpo"
+            url_confirmation = '%s/#/confirmMail/%s' % (config('URL_CLIENT', default='localhost:3000'), bash)
+            from common.templates import render_verify_email
+            content = render_verify_email(url_confirmation)
+            from common.notifications import send_mail_to
+            send_mail_to(user.email, subject, content, mail_from)
+
+class ChangePasswordSerializer(serializers.Serializer):
+    old_password = serializers.CharField()
+    new_password = serializers.CharField()
+
+    def validate(self, data, request_user):
+        try:
+            if request_user is not None:
+                user = User.objects.filter(email=request_user.email).first()
+                old_password = data["old_password"]
+                if user is not None and user.check_password(old_password):
+                    new_password = data["new_password"]
+                    if type(new_password) == str and len(new_password) >= 8 and not new_password == old_password:
+                        user.set_password(new_password)
+                        user.save()
+                        self.send_change_password_email(user)
+                        return user
+                    else:
+                        raise serializers.ValidationError("New password must be a string with 8 or more characters, different than old_password")
+            raise serializers.ValidationError("Email or password does not match")
+        except ObjectDoesNotExist:
+            raise serializers.ValidationError("Email or password does not match")
+
+    def send_change_password_email(self, user):
+        mail_from = settings.REGISTER_EMAIL
+        subject = u"Cambio de su contraseña en Helpo"
+        from common.templates import render_change_password_email
+        content = render_change_password_email(user)
+        from common.notifications import send_mail_to
+        send_mail_to(user.email, subject, content, mail_from)
+
+class ResetPasswordSerializer(serializers.Serializer):
+    email = serializers.EmailField(max_length=255, allow_blank=False)
+
+    def validate(self, data):
+        try:
+            user = User.objects.filter(email=data["email"]).first()
+            if user is not None:
+                self.reset_password(user)
+                return True
+            else:
+                raise serializers.ValidationError("Email does not match any")
+        except ObjectDoesNotExist:
+            raise serializers.ValidationError("Email does not match any")
+
+    def reset_password(self, user):
+        raw_password = ''.join(random.SystemRandom().choice(
+            string.ascii_uppercase + string.digits) for _ in range(16))
+        user.set_password(raw_password)
+        user.save()
+        self.send_reset_password_email(user, raw_password)
+
+    def send_reset_password_email(self, user, raw_password):
+        mail_from = settings.REGISTER_EMAIL
+        subject = u"Recuperación de su contraseña en Helpo"
+        from common.templates import render_reset_password_email
+        content = render_reset_password_email(user, raw_password)
+        from common.notifications import send_mail_to
+        send_mail_to(user.email, subject, content, mail_from)
 
 class AppValuesSerializer(serializers.ModelSerializer):
   class Meta:

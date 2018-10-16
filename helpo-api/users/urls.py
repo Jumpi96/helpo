@@ -1,7 +1,31 @@
 from django.conf.urls import url
 from users import views as users_views
 
-urlpatterns = [ 
+urlpatterns = [
+    # {% url "api:exists_facebook" %}
+    url(
+        regex=r"^auth/exists_facebook/$",
+        view=users_views.FacebookExistsView.as_view(),
+        name="facebook_exists"
+    ),
+    # {% url "api:exists_google" %}
+    url(
+        regex=r"^auth/exists_google/$",
+        view=users_views.GoogleExistsView.as_view(),
+        name="google_exists"
+    ),
+    # {% url "api:facebook" %}
+    url(
+        regex=r"^auth/facebook/$",
+        view=users_views.FacebookAuthView.as_view(),
+        name="facebook_auth"
+    ),
+    # {% url "api:google" %}
+    url(
+        regex=r"^auth/google/$",
+        view=users_views.GoogleAuthView.as_view(),
+        name="google_auth"
+    ),
     # {% url "api:sign_up" %}
     url(
         regex=r"^auth/sign_up/$",
@@ -13,6 +37,18 @@ urlpatterns = [
         regex=r"^auth/log_in/$",
         view=users_views.LoginView.as_view(),
         name="log_in_user"
+    ),
+    # {% url "api:change_password" %}
+    url(
+        regex=r"^auth/change_password/$",
+        view=users_views.ChangePasswordView.as_view(),
+        name="post_change_password"
+    ),
+    # {% url "api:reset_password" %}
+    url(
+        regex=r"^auth/reset_password/$",
+        view=users_views.ResetPasswordView.as_view(),
+        name="post_reset_password"
     ),
     # {% url "api:log_in" %}
     url(
@@ -78,10 +114,34 @@ urlpatterns = [
         view=users_views.VerifyMailView.as_view(),
         name="user"
     ),
+    # {% url "api:send_verification_email" %}
     url(
-      regex=r"^imgurToken/$",
-      view=users_views.ImgurTokenView.as_view(),
-      name="get_imgur_access_token"
+        regex=r"^send_verification_email/$",
+        view=users_views.SendVerificationEmailView.as_view(),
+        name="post_send_verification_email"
+    ),
+    # {% url "api:send_sms_organizacion" %}
+    url(
+        regex=r"^perfiles/send_sms_organizacion/(?P<usuario>[-\w]+)/$",
+        view=users_views.SendSmsOrganizacionView.as_view(),
+        name="get_send_sms_organizacion"
+    ),
+    # {% url "api:send_sms_empresa" %}
+    url(
+        regex=r"^perfiles/send_sms_empresa/(?P<usuario>[-\w]+)/$",
+        view=users_views.SendSmsEmpresaView.as_view(),
+        name="get_send_sms_empresa"
+    ),
+    # {% url "api:verify_sms" %}
+    url(
+        regex=r"^verify_sms/$",
+        view=users_views.VerifySmsView.as_view(),
+        name="post_verify_sms"
+    ),
+    url(
+        regex=r"^imgurToken/$",
+        view=users_views.ImgurTokenView.as_view(),
+        name="get_imgur_access_token"
     ),
     # {% url "api:device_id" %}
     url(

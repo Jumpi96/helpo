@@ -215,22 +215,22 @@
                 <!-- Body content -->
                 <tr>
                   <td class="content-cell">
-                    <h1>Modificaci&oacute;n en un evento de Helpo</h1>
-                    <p>El evento "{{evento.nombre}}", al cual usted se ha inscripto, ha sido modificado.</p>
+                    <h1>Modificaci&oacute;n en un {{tipo_evento}} de Helpo</h1>
+                    <p>El {{tipo_evento}} "{{evento.nombre}}", al cual usted se ha inscripto, ha sido modificado.</p>
                     <!-- Action -->
                     <table class="body-action" align="center" width="100%" cellpadding="0" cellspacing="0">
                       <tr>
                         <td align="left">
                           <div>
-                            <h2>Nuevos datos del evento</h2>
+                            <h2>Nuevos datos del {{tipo_evento}}</h2>
                             <ul style="list-style-type:disc">
                               <li>Nombre: {{evento.nombre}}</li>
                               <li>Organizaci&oacute;n: {{evento.organizacion.nombre}}</li>
                               <li>Descripci&oacute;n: {{evento.descripcion|default:"Sin descripci&oacute;n"}}</li>
                               <li>Fecha:</li>
                               <ul style="list-style-type:circle">
-                                <li>Inicio: {{evento.fecha_hora_inicio}}</li>
-                                <li>Fin: {{evento.fecha_hora_fin}}</li>
+                                <li>Inicio: {{evento.get_fecha_hora_inicio}}</li>
+                                <li>Fin: {{evento.get_fecha_hora_fin}}</li>
                               </ul>
                               <li>Ubicaci&oacute;n:</li>
                               <ul style="list-style-type:circle">

@@ -33,8 +33,8 @@ export function * getConsultarColabs (action) {
 
 export function * updateColaboracion(action) {
   const { id, value, eventoId } = action
-  const patchData = { entregado: value }
-  const response = api.patch(`/actividades/colaboraciones/${id}/`, patchData)
+  const patchData = { entregado: value, colaboracion: id }
+  const response = api.post(`/feedbacks/entregados/`, patchData)
 
   if(response) {
     yield put(ConsultarColabsActions.consultarColabsRequest(eventoId))
@@ -45,8 +45,8 @@ export function * updateColaboracion(action) {
 
 export function * updateParticipacion(action) {
   const { id, value, eventoId } = action
-  const patchData = { participo: value }
-  const response = api.patch(`/actividades/participaciones/${id}/`, patchData)
+  const patchData = { participo: value, participacion: id }
+  const response = api.post(`/feedbacks/participados/`, patchData)
 
   if(response) {
     yield put(ConsultarColabsActions.consultarColabsRequest(eventoId))

@@ -26,7 +26,7 @@ class RegistrarOfrecimiento extends React.Component {
     const { params } = this.props.navigation.state;
     const evento = params.evento;
     this.state = {
-      evento: {id: evento},
+      evento: { id: evento },
       necesidades: [],
       voluntarios: [],
       funcionVoluntario: undefined,
@@ -58,15 +58,16 @@ class RegistrarOfrecimiento extends React.Component {
 
   empresaTienePropuesta(evento, propuestas) {
     const filtro = propuestas.filter(
-      n => n.evento.toString() === evento && n.aceptado !== 0 && n.empresa.id === this.getUserId()
+      n => n.evento.toString() === evento.id && n.empresa.id === this.getUserId()
+        && ((n.aceptado !== 0 || (n.aceptado === 1 && evento.campaña)))
     )
     return filtro.length > 0;
   }
 
   getNecesidadVoluntario(necesidades) {
     const usuario = this.getUserId();
-    for (let i=0; i < necesidades.length; i++) {
-      if (necesidades[i].participaciones.filter(c => c.colaborador.id === usuario).length > 0){
+    for (let i = 0; i < necesidades.length; i++) {
+      if (necesidades[i].participaciones.filter(c => c.colaborador.id === usuario).length > 0) {
         return necesidades[i].id;
       }
     }
@@ -150,13 +151,13 @@ class RegistrarOfrecimiento extends React.Component {
   getCantidadVoluntarios(v) {
     let contador = 0;
     v.participaciones.forEach((p) => { contador += p.cantidad });
-    return '' + contador + '/'+ v.cantidad;
+    return '' + contador + '/' + v.cantidad;
   }
 
   getCantidadNecesidades(n) {
     let contador = 0;
-    n.colaboraciones.forEach((c) => { contador += c.cantidad});
-    return '' + contador + '/'+ n.cantidad;
+    n.colaboraciones.forEach((c) => { contador += c.cantidad });
+    return '' + contador + '/' + n.cantidad;
   }
 
   getListaNecesidades() {
@@ -245,14 +246,15 @@ class RegistrarOfrecimiento extends React.Component {
   }
 
   deleteColaboracion(idNecesidad) {
+    var _this = this;
     const colaboracionAnterior = this.getColaboracionAnterior(idNecesidad);
     api.delete('/actividades/colaboraciones/' + colaboracionAnterior + '/')
       .then(() => {
         this.loadNecesidadesYVoluntarios();
       }).catch(function (error) {
-        if (error.response){ console.log(error.response.status) }
-        else { console.log('Error: ', error.message)}
-        this.setState({ error_necesidad: "Hubo un problema al cargar su información." });
+        if (error.response) { console.log(error.response.status) }
+        else { console.log('Error: ', error.message) }
+        _this.setState({ error_necesidad: "Hubo un problema al cargar su información." });
       });
   }
 
@@ -304,14 +306,15 @@ class RegistrarOfrecimiento extends React.Component {
   }
 
   deleteParticipacion(voluntario_id) {
+    var _this = this;
     const participacionAnterior = this.getParticipacionAnterior(voluntario_id);
     api.delete('/actividades/participaciones/' + participacionAnterior + '/')
       .then(() => {
         this.loadNecesidadesYVoluntarios();
       }).catch(function (error) {
-        if (error.response){ console.log(error.response.status) }
-        else { console.log('Error: ', error.message)}
-        this.setState({ error_necesidad: "Hubo un problema al cargar su información." });
+        if (error.response) { console.log(error.response.status) }
+        else { console.log('Error: ', error.message) }
+        _this.setState({ error_necesidad: "Hubo un problema al cargar su información." });
       });
   }
 
@@ -319,7 +322,7 @@ class RegistrarOfrecimiento extends React.Component {
     const necesidades = this.state.voluntarios;
     const usuario = this.getUserId();
     let participaciones;
-    for (let i=0; i < necesidades.length; i += 1) {
+    for (let i = 0; i < necesidades.length; i += 1) {
       participaciones = necesidades[i].participaciones.filter(c => c.colaborador.id === usuario);
       if (participaciones.length > 0) {
         return participaciones[0].id;

@@ -40,6 +40,7 @@ class RegistrarNecesidades extends React.Component {
   }
 
   handleConfirmDeleteNecesidad(b) {
+    var _this = this;
     if (b.text === "Eliminar") {
       api.delete("/actividades/necesidades/" + this.state.necesidadModificada + "/")
         .then(res => {
@@ -49,7 +50,7 @@ class RegistrarNecesidades extends React.Component {
         }).catch(function (error) {
           if (error.response) { console.log(error.response.status); }
           else { console.log("Error: ", error.message); }
-          this.setState({ error: "Hubo un problema al cargar su información." });
+          _this.setState({ error: "Hubo un problema al cargar su información." });
         });
     }
     this.setState({
@@ -58,12 +59,13 @@ class RegistrarNecesidades extends React.Component {
   }
 
   handleConfirmDeleteVoluntario(b) {
+    var _this = this;
     if (b.text === "Eliminar") {
       api.delete("/actividades/voluntarios/" + this.state.necesidadModificada + "/")
         .then(res => {
           this.loadNecesidades();
         }).catch(function (error) {
-          this.setState({ error: "Hubo un problema al cargar su información." });
+          _this.setState({ error: "Hubo un problema al cargar su información." });
         });
     }
     this.setState({
@@ -72,18 +74,21 @@ class RegistrarNecesidades extends React.Component {
   }
 
   loadNecesidades() {
-    api.get("/actividades/necesidades/?evento=" + this.state.evento)
-      .then(res => {
-        const necesidadesData = res.data;
-        api.get("/actividades/voluntarios/?evento=" + this.state.evento)
-          .then(res => {
-            const voluntariosData = res.data;
-            this.setState({ necesidades: necesidadesData, voluntarios: voluntariosData });
-          });
-      })
-      .catch((error) => {
-        this.setState({ error: "Hubo un problema al cargar su información." });
-      });
+    const evento = this.state.evento;
+    if (typeof evento != 'undefined') {
+      api.get("/actividades/necesidades/?evento=" + this.state.evento)
+        .then(res => {
+          const necesidadesData = res.data;
+          api.get("/actividades/voluntarios/?evento=" + this.state.evento)
+            .then(res => {
+              const voluntariosData = res.data;
+              this.setState({ necesidades: necesidadesData, voluntarios: voluntariosData });
+            });
+        })
+        .catch((error) => {
+          this.setState({ error: "Hubo un problema al cargar su información." });
+        });
+    }
   }
 
   getListaVoluntarios() {
@@ -205,12 +210,12 @@ class RegistrarNecesidades extends React.Component {
           >
             <IconNB name="md-add" />
             <Button style={{ backgroundColor: '#F4BF42' }}
-              onPress={() => { this.props.navigation.navigate('AgregarVoluntario', { evento: this.state.evento })}}
+              onPress={() => { this.props.navigation.navigate('AgregarVoluntario', { evento: this.state.evento }) }}
             >
               <Icon name="person" />
             </Button>
             <Button style={{ backgroundColor: '#34A34F' }}
-              onPress={() => { this.props.navigation.navigate('AgregarNecesidad', { evento: this.state.evento })}}
+              onPress={() => { this.props.navigation.navigate('AgregarNecesidad', { evento: this.state.evento }) }}
             >
               <Icon name="medkit" />
             </Button>

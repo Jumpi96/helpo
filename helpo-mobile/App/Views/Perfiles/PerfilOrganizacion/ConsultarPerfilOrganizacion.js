@@ -1,148 +1,193 @@
 import React, { Component } from 'react';
-import ListaRubrosOrganizacion from './ListaRubrosOrganizacion/ListaRubrosOrganizaciones';
-import SelectorUbicacion from '../Actividades/RegistrarEvento/SelectorUbicacion/SelectorUbicacion';
-import api from '../../api';
-import CargadorImagenPerfil from './CargadorImagenPerfil/CargadorImagenPerfil';
+import { connect } from 'react-redux';
+import {
+  Row,
+  ActionSheet,
+  Container,
+  Header,
+  Title,
+  Content,
+  Button,
+  Label,
+  ListItem,
+  Body,
+  Left,
+  Right,
+  Icon,
+  Thumbnail,
+  Text
+} from 'native-base';
+import styles from './styles';
+
 
 class ConsultarPerfilOrganizacion extends Component {
   constructor(props) {
-    super(props); //Llama a las props del padre
-    this.state = {nombre: 'organizacion',
-    cuit: '',
-    ubicacion: { latitud: 0, longitud: 0, notas:'#!None#!'},
-    mail: '',
-    telefono: '',
-    rubro: { id: 0, nombre: "none"},
-    avatar_url: 'assets/user.png',
-    descripcion: '',
-    errors: {},
-    };
+    super(props);
+    this.renderDescripcion = this.renderDescripcion.bind(this);
+    this.renderRubro = this.renderRubro.bind(this);
+    this.renderTelefono = this.renderTelefono.bind(this);
+    this.renderDescripcion = this.renderDescripcion.bind(this);
+    this.renderCuit = this.renderCuit.bind(this);
+    this.showToast = this.showToast.bind(this);
+    this.showToastRetroalimentacion = this.showToastRetroalimentacion.bind(this);
   }
 
-
-  componentDidMount() {
-    api.get(`/perfiles/perfil_organizacion/${this.props.usuarioId}`)
-    .then( (res) => {
-      let rubro = res.rubro
-      let ubicacion = res.ubicacion
-      if ( rubro == null ) {
-        rubro = { id: 0, nombre: 'none'}
-      }
-      if ( ubicacion == null ) {
-        ubicacion = { latitud: 0, longitud: 0, notas:'#!None#!'}
-      }
-      this.setState({
-        cuit: res.cuit,
-        telefono: res.telefono,
-        descripcion: res.descripcion,
-        rubro_id: rubro.id,
-        rubro_nombre: rubro.nombre,
-        avatar_url: res.avatar.url,        
-      })
-    })
-  }  
-
-  mostrarUbicacion(){
-    if(this.state.ubicacion.latitud === 0 && this.state.ubicacion.longitud === 0){
+  renderRubro() {
+    if (this.props.data.rubro == null) {
+      return <Text style={styles.textMuted}> No hay valor ingresado</Text>
     }
-    else{
-      return      
-        <SelectorUbicacion
-        name="selectorUbicacion"
-        ubicacion={this.state.ubicacion}
-      />             
+    return <Text> {this.props.data.rubro.nombre}</Text>
+  }
+
+  renderTelefono() {
+    //Si uso == va a dar True para null y undefined
+    if (this.props.data.telefono == null) {
+      return <Text style={styles.textMuted}> No hay valor ingresado</Text>
     }
+    return <Text> {this.props.data.telefono}</Text>
+  }
+
+  renderCuit() {
+    if (this.props.data.cuit == null) {
+      return <Text style={styles.textMuted}> No hay valor ingresado</Text>
+    }
+    return <Text> {this.props.data.cuit}</Text>
+  }
+
+  renderDescripcion() {
+    if (this.props.data.descripcion == null) {
+      return <Text style={styles.textMuted}> No hay valor ingresado</Text>
+    }
+    return <Text> {this.props.data.descripcion}</Text>
+  }
+
+  getBotonOrganizacion() {
+    if (this.props.data.usuario.id === this.props.auth.user.id) {
+      return (
+        <Button transparent onPress={this.props.switchToModificar}>
+          <Text>Modificar</Text>
+        </Button>
+      );
+    } else if (this.props.data.usuario.user_type === 1) {
+      return (
+        <Button transparent onPress={this.props.switchToEventosOrg}>
+          <Text>Ver eventos</Text>
+        </Button>
+      );
+    }
+  }
+
+  showToast() {
+    const nombre = this.props.nombre;
+    ActionSheet.show({
+      options: [
+        { text: "Cerrar", icon: "close", iconColor: "#25de5b" },
+      ],
+      title: nombre + " es una cuenta verificada"
+    }, buttonIndex => {
+      console.log(buttonIndex);
+    });
+  }
+
+  showToastRetroalimentacion() {
+    ActionSheet.show({
+      options: [
+        { text: "Cerrar", icon: "close", iconColor: "#25de5b" },
+      ],
+      title: "Cantidad de manos acumuladas y eventos"
+    }, buttonIndex => {
+      console.log(buttonIndex);
+    });
   }
 
   render() {
-    return (
-      <Container style={styles.container}>
-        <Header>
+    if (this.props.data.avatar) {
+      return (
+        <Container style={styles.container}>
+          <Header>
+            <Left>
+              <Button transparent onPress={this.props.goBack}>
+                <Icon name="arrow-back" />
+              </Button>
+            </Left>
+            <Body>
+              <Title>Perfil</Title>
+            </Body>
+            <Right>
+              {this.getBotonOrganizacion()}
+            </Right>
+          </Header>
+          <Content>
+            <Row>
+              <Thumbnail large center source={{ uri: this.props.data.avatar.url }} />
+              <Right>
+              <Button transparent onPress={this.showToastRetroalimentacion}>
+                <Icon name="hand" style={{ color: "#F39200"}} ></Icon>
+                <Text style={styles.retroalimentacion}>{this.props.data.manos}</Text>
+                <Icon name="calendar" family="Entypo" style={{ color: "#F39200"}} ></Icon>
+                <Text style={styles.retroalimentacion}>{this.props.data.eventos}</Text>
+              </Button>
+              </Right>
+            </Row>
+            <ListItem itemDivider>
+              <Label style={styles.label}>Nombre</Label>
+            </ListItem>
+            <ListItem>
+              <Text>{this.props.nombre}</Text>
+              {this.props.data.verificada ?
+                <Button transparent onPress={this.showToast} >
+                  <Icon type="Feather" name="check-circle" style={{ color: "#F39200", marginLeft: 10 }} />
+                </Button>
+                : undefined}
+            </ListItem>
 
-          <Left>
-            <Button transparent onPress={() => Actions.pop()}>
-              <Icon name="arrow-back" />
-            </Button>
-          </Left>
+            <ListItem itemDivider>
+              <Label style={styles.label}>Mail</Label>
+            </ListItem>
+            <ListItem>
+              <Text>{this.props.email}</Text>
+            </ListItem>
 
-          <Body>
-            <Title>Perfil</Title>
-          </Body>
-          <Right />
+            <ListItem itemDivider>
+              <Label style={styles.label}>Teléfono</Label>
+            </ListItem>
+            <ListItem>
+              {this.renderTelefono()}
+            </ListItem>
 
-        </Header>
+            <ListItem itemDivider>
+              <Label style={styles.label}>CUIT</Label>
+            </ListItem>
+            <ListItem>
+              {this.renderCuit()}
+            </ListItem>
 
-        <Content>
+            <ListItem itemDivider>
+              <Label style={styles.label}>Rubro</Label>
+            </ListItem>
+            <ListItem>
+              {this.renderRubro()}
+            </ListItem>
 
-          <Form>
+            <ListItem itemDivider>
+              <Label style={styles.label}>Descripción</Label>
+            </ListItem>
+            <ListItem>
+              {this.renderDescripcion()}
+            </ListItem>
 
-            <Item floatingLabel>
-              <Label>Nombre</Label>
-              <Text
-                value={this.state.nombre}
-              />
-            </Item>
+          </Content>
+        </Container>
+      );
+    } else {
+      return <Text></Text>
+    }
 
-            <Item>
-              <Image
-               style={{width: 50, height: 50}}
-               source={this.avatar_url}
-              />
-            </Item>            
-
-            <Item floatingLabel>
-              <Label>Mail</Label>
-              <Text
-                value={this.state.mail}
-              />
-            </Item>
-
-            <Item floatingLabel>
-              <Label>Teléfono</Label>
-              <Text
-                value={this.state.telefono}
-              />
-            </Item>
-            
-            <Item floatingLabel>
-              <Label>CUIT</Label>
-              <Text
-                value={this.state.cuit}
-              />
-            </Item>
-
-            <Item floatingLabel>
-              <Label>Rubro</Label>
-              <Text
-                value={this.state.rubor.nombre}
-              />         
-            </Item>
-
-            <Item>
-            {this.mostrarUbicacion()} 
-            </Item>              
-
-            <Item floatingLabel>
-              <Label>Descripción</Label>
-              <Input
-                value={this.state.descripcion}
-              />
-            </Item>     
-            
-            <Button
-              block style={{ margin: 15, marginTop: 50 }}
-              onPress={<ModificarPerfilOrganizacion />}            
-              title="Modificar Perfil"
-              >
-            </Button>
-
-          </Form>
-
-        </Content>
-
-      </Container>
-    );
   }
-
 }
-export default ConsultarPerfilOrganizacion;
+
+const mapStateToProps = state => ({
+  auth: state.auth,
+});
+
+export default connect(mapStateToProps, undefined)(ConsultarPerfilOrganizacion);

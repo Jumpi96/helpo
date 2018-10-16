@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { ScrollView, Image, BackHandler } from "react-native";
+import { Image } from "react-native";
 import { List, ListItem, Text, View, Content } from "native-base";
 import { connect } from 'react-redux' 
 
@@ -33,7 +33,7 @@ const itemsOrg = [
 	{
 	  'key': 'ConsultarEventos',
 	  'routeName': 'ConsultarEventos',
-	  'name': 'Consultar eventos',
+	  'name': 'Actividades sociales',
 	},
 	{
 		'key': 'OrganizacionesPage',
@@ -43,13 +43,18 @@ const itemsOrg = [
 	{
 	  'key': 'RegistrarEvento',
 	  'routeName': 'RegistrarEvento',
-	  'name': 'Nuevo evento',
+	  'name': 'Nueva actividad social',
 	},
 	{
 	  'key': 'MisEventos',
 	  'routeName': 'MisEventos',
-	  'name': 'Mis eventos',
+	  'name': 'Mis actividades sociales',
 	},	
+	{
+		'key': 'ConsultarPerfilGenerico',
+		'routeName': 'ConsultarPerfilGenerico',
+		'name': 'Mi perfil'
+	},
 	{
 	  'key': 'Configuracion',
 	  'routeName': 'Configuracion',
@@ -66,7 +71,7 @@ const itemsVol = [
 	{
 		'key': 'ConsultarEventos',
 		'routeName': 'ConsultarEventos',
-		'name': 'Consultar eventos'
+		'name': 'Actividades sociales',
 	},
 	{
 		'key': 'OrganizacionesPage',
@@ -79,6 +84,11 @@ const itemsVol = [
 		'name': 'Mis colaboraciones'
 	},
 	{
+		'key': 'ConsultarPerfilGenerico',
+		'routeName': 'ConsultarPerfilGenerico',
+		'name': 'Mi perfil'
+	},
+	{
 		'key': 'MisSuscripciones',
 		'routeName': 'MisSuscripciones',
 		'name': 'Mis suscripciones'
@@ -88,6 +98,7 @@ const itemsVol = [
 		'routeName': 'Configuracion',
 		'name': 'Configuración'
 	}
+	
 ]
 
 const itemsEmp = [
@@ -99,7 +110,7 @@ const itemsEmp = [
 	{
 	  'key': 'ConsultarEventos',
 	  'routeName': 'ConsultarEventos',
-	  'name': 'Consultar eventos',
+	  'name': 'Actividades sociales',
 	},
 	{
 		'key': 'OrganizacionesPage',
@@ -110,6 +121,11 @@ const itemsEmp = [
 		'key': 'MisPropuestas',
 		'routeName': 'MisPropuestas',
 		'name': 'Mis propuestas'
+	},
+	{
+		'key': 'ConsultarPerfilGenerico',
+		'routeName': 'ConsultarPerfilGenerico',
+		'name': 'Mi perfil'
 	},
 	{
 	  'key': 'Configuracion',

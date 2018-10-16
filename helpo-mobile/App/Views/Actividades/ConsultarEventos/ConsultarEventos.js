@@ -58,7 +58,7 @@ class ConsultarEventos extends Component {
             </Button>
           </Left>
           <Body>
-            <Title>Consultar eventos</Title>
+            <Title>Actividades</Title>
           </Body>
           <Right>
             <Button transparent onPress={() => this.props.navigation.navigate("FiltroEventos")}>
@@ -71,7 +71,7 @@ class ConsultarEventos extends Component {
             <EventoCard
               key={evento.id}
               evento={evento}
-              openEvento={() => this.props.navigation.navigate('ConsultarEvento', { evento: evento })}
+              openEvento={() => this.props.navigation.navigate('ConsultarEvento', { evento })}
             />
             )}
         </Content>

@@ -42,6 +42,11 @@ const ConsultarPerfil = Loadable({
   loading: Loading,
 });
 
+const AjustesPage = Loadable({
+  loader: () => import('./views/Pages/Ajustes/AjustesPage.js'),
+  loading: Loading,
+});
+
 const ConsultarColaboraciones = Loadable({
   loader: () => import('./views/Actividades/ConsultarColaboraciones/ConsultarColaboraciones'),
   loading: Loading,
@@ -72,14 +77,19 @@ const Dashboard = Loadable({
   loading: Loading,
 });
 
+const DashboardReportes = Loadable({
+  loader: () => import('./views/Reportes/DashboardReportes'),
+  loading: Loading,
+});
+
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
   { path: '/', exact: true, name: 'Home', component: DefaultLayout },
   { path: '/dashboard', name: 'helpo', component: Dashboard },
 
-  { path: '/actividades/evento', name: 'Mis eventos', component: EventoPage },
-  { path: '/actividades/consultar-eventos', name: 'Consultar eventos', component: ConsultarEventosPage },
+  { path: '/actividades/evento', name: 'Mis actividades sociales', component: EventoPage },
+  { path: '/actividades/consultar-eventos', name: 'Consultar actividades sociales', component: ConsultarEventosPage },
   { path: '/actividades/consultar-evento/', name: 'Consultar evento', component: ConsultarEventosView },
   { path: '/actividades/registrar-evento', name: 'Registrar evento', component: RegistrarEvento },
   { path: '/actividades/registrar-necesidades', name: 'Registrar necesidades', component: RegistrarNecesidades },
@@ -87,8 +97,11 @@ const routes = [
   { path: '/actividades/mensajes', name: 'Mensajes de evento', component: ListadoMensajes },
   { path: '/actividades/patrocinadores', name: 'Administración de patrocinadores', component: ConsultarPatrocinadores },
   { path: '/perfiles/perfil-organizacion', name: 'Perfil organizacion', component: ModificarPerfilOrganizacion },
-  { path: '/perfil/:usuarioId?', name: 'Perfil de usuario', component: ConsultarPerfil },
+  { path: '/perfil/:usuarioId', name: 'Perfil de usuario', component: ConsultarPerfil },
+  { path: '/perfil/', name: 'Mi perfil', component: ConsultarPerfil },
+  { path: '/ajustes/', name: 'Ajustes', component: AjustesPage },
   { path: '/actividades/album/:eventoId', name: 'Album de Evento', component: AlbumImagenes },
+  { path: '/reportes', name: 'Reportes', component: DashboardReportes },
   { path: '/organizaciones', name: 'Organizaciones', component: OrganizacionesPage },
 ];
 

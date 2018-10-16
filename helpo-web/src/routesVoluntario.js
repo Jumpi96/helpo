@@ -27,6 +27,11 @@ const ConsultarPerfil = Loadable({
   loading: Loading,
 });
 
+const AjustesPage = Loadable({
+  loader: () => import('./views/Pages/Ajustes/AjustesPage.js'),
+  loading: Loading,
+});
+
 const MisColaboraciones = Loadable({
   loader: () => import('./views/Actividades/MisColaboraciones/EventoPage.js'),
   loading: Loading,
@@ -57,12 +62,14 @@ const AlbumImagenes = Loadable({
 const routes = [
   { path: '/', exact: true, name: 'Home', component: DefaultLayout },
   { path: '/dashboard', name: 'helpo', component: Dashboard },
-  { path: '/actividades/consultar-eventos', name: 'Consultar eventos', component: ConsultarEventosPage },
+  { path: '/actividades/consultar-eventos', name: 'Consultar actividades sociales', component: ConsultarEventosPage },
   { path: '/actividades/consultar-evento/', name: 'Consultar evento', component: ConsultarEventosView },
   { path: '/actividades/registrar-colaboraciones', name: 'Registrar colaboraciones', component: RegistrarColaboraciones },
   { path: '/actividades/mis-colaboraciones', name: 'Mis colaboraciones', component: MisColaboraciones },
   { path: '/actividades/album/:eventoId', name: 'Album de Evento', component: AlbumImagenes },
-  { path: '/perfil/:usuarioId?', name: 'Perfil de usuario', component: ConsultarPerfil },
+  { path: '/perfil/:usuarioId', name: 'Perfil de usuario', component: ConsultarPerfil },
+  { path: '/perfil/', name: 'Mi perfil', component: ConsultarPerfil },
+  { path: '/ajustes/', name: 'Ajustes', component: AjustesPage },
   { path: '/organizaciones', name: 'Organizaciones', component: OrganizacionesPage },
   { path: '/suscripciones', name: 'Mis suscripciones', component: MisSuscripciones }
 ];

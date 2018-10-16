@@ -22,7 +22,9 @@ const TablaVoluntario = ( props ) => {
         participo: participacion.participo,
         retroalimentacion_ong: participacion.retroalimentacion_ong,
         checkedBox: () => {},
-        idVoluntario: participacion.colaborador.id
+        idVoluntario: participacion.colaborador.id,
+        cantidad: participacion.cantidad,
+        presencias: participacion.presencias
       }
       dataArray.push(participacionData)      
     }    
@@ -30,26 +32,31 @@ const TablaVoluntario = ( props ) => {
   }
 
   const noParticipaciones = (
-    <p style={{ fontSize: '16px' }} className="text-muted text-center"> No hay participaciones para esta funcion</p>
+    <p style={{ fontSize: '16px' }} className="text-muted text-center"> No hay participaciones para esta función</p>
   )
 
-  const { participaciones, funcion } = props
+  const { participaciones, funcion, descripcion } = props
   let Filasparticipacion
   if ( participaciones.length > 0) {
-    Filasparticipacion = adaptData(participaciones).map( (participacion) => <FilaParticipacion key={ participacion.idParticipacion } {...participacion}/> )
+    Filasparticipacion = adaptData(participaciones).map(
+      (participacion) => 
+        <FilaParticipacion key={ participacion.idParticipacion } {...participacion} submitChanges={props.submitChanges}/> 
+      )
   }
 
   return (
     <div>
-      <p className="h4" style={{ marginTop: '20px', marginBottom: '20px' }}>Funcion - {funcion}</p>
+      <p className="h4" style={{ marginTop: '20px', marginBottom: '20px' }}>Función - {funcion + ' - ' + descripcion}</p>
       <table className="table">
         <thead>
           <tr>
             <th scope="col">Apellido</th>
             <th scope="col">Nombre</th>
             <th scope="col"></th>
+            <th scope="col">Cantidad</th>
+            <th scope="col">Presencias</th>
             <th scope="col">Comentario</th>
-            <th scope="col">Participó</th>
+            <th scope="col">¿Completó su participación?</th>
             <th scope="col">Retroalimentación</th>
           </tr>  
         </thead>

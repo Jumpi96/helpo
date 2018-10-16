@@ -120,7 +120,7 @@ class ConsultarEventosPage extends React.Component {
       <div className="animated fadeIn">
         <Card>
           <CardHeader>
-            <i className="fa fa-align-justify"></i> Eventos
+            <i className="fa fa-align-justify"></i> Actividades sociales
           </CardHeader>
           {this.renderEventos()}
           {this.renderCompartir()}

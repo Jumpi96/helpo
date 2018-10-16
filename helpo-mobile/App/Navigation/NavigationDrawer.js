@@ -5,6 +5,7 @@ import DrawerContent from "../Containers/DrawerContent";
 import Login from '../Views/Usuarios/Login';
 import SignUp from '../Views/Usuarios/SignUp';
 import Configuracion from '../Views/Usuarios/Configuracion';
+import ChangePassword from '../Views/Usuarios/ChangePassword';
 import ConsultarEventos from '../Views/Actividades/ConsultarEventos/ConsultarEventos';
 import ConsultarEvento from '../Views/Actividades/ConsultarEventos/ConsultarEvento';
 import RegistrarEvento from '../Views/Actividades/RegistrarEvento/RegistrarEvento';
@@ -25,6 +26,9 @@ import AgregarOfrecimiento from "../Views/Actividades/RegistrarOfrecimiento/Agre
 import RegistrarOfrecimiento from "../Views/Actividades/RegistrarOfrecimiento/RegistrarOfrecimiento";
 import MisPropuestas from '../Views/Actividades/MisPropuestas/MisPropuestas';
 import VerPropuestaEvento from '../Views/Actividades/MisPropuestas/VerPropuestaEvento';
+import ConsultarPerfilGenerico from '../Views/Perfiles/ConsultarPerfilGenerico';
+import ModificarPerfilVoluntario from '../Views/Perfiles/PerfilVoluntario/ModificarPerfilVoluntario';
+import ModificarPerfilOrganizacion from '../Views/Perfiles/PerfilOrganizacion/ModificarPerfilOrganizacion';
 import AlbumEvento from '../Views/Actividades/AlbumEvento/AlbumEvento';
 import VerPatrocinadores from '../Views/Actividades/VerPatrocinadores/VerPatrocinadores';
 import VerPropuestaPatrocinador from '../Views/Actividades/VerPatrocinadores/VerPropuestaPatrocinador'
@@ -32,6 +36,7 @@ import ResponderPropuesta from '../Views/Actividades/VerPatrocinadores/Responder
 import MisSuscripciones from '../Views/Suscripciones/MisSuscripciones/MisSuscripciones';
 import AgregarNecesidad from '../Views/Actividades/RegistrarNecesidades/AgregarNecesidad/AgregarNecesidad';
 import AgregarVoluntario from '../Views/Actividades/RegistrarNecesidades/AgregarVoluntario/AgregarVoluntario';
+import ConfirmarEditarPropuesta from '../Views/Actividades/MisPropuestas/ConfirmarEditarPropuesta';
 
  
 const NavigationDrawer = DrawerNavigator({
@@ -39,6 +44,7 @@ const NavigationDrawer = DrawerNavigator({
 	Login: { screen: Login },
 	SignUp: { screen: SignUp },
 	Configuracion: { screen: Configuracion },
+	ChangePassword: { screen: ChangePassword },
 	ConsultarEventos: { screen: ConsultarEventos },
 	ConsultarEvento: { screen: ConsultarEvento },
 	RegistrarColaboraciones: { screen: RegistrarColaboraciones },
@@ -59,13 +65,18 @@ const NavigationDrawer = DrawerNavigator({
 	RegistrarOfrecimiento: { screen: RegistrarOfrecimiento },
 	MisPropuestas: { screen: MisPropuestas },
 	VerPropuestaEvento: { screen: VerPropuestaEvento },
+	ConsultarPerfilGenerico: { screen: ConsultarPerfilGenerico },
+	ConsultarOtroPerfilGenerico: { screen: ConsultarPerfilGenerico },
 	AlbumEvento: { screen: AlbumEvento },
 	VerPatrocinadores: { screen: VerPatrocinadores },
 	VerPropuestaPatrocinador: { screen: VerPropuestaPatrocinador },
 	ResponderPropuesta: { screen: ResponderPropuesta },
+	ModificarPerfilVoluntario: { screen: ModificarPerfilVoluntario },
+	ModificarPerfilOrganizacion: { screen: ModificarPerfilOrganizacion },
 	MisSuscripciones: { screen: MisSuscripciones },
 	AgregarNecesidad: { screen: AgregarNecesidad },
 	AgregarVoluntario: { screen: AgregarVoluntario },
+	ConfirmarEditarPropuesta: { screen: ConfirmarEditarPropuesta },
   },
   {
 	initialRouteName: "LaunchScreen",

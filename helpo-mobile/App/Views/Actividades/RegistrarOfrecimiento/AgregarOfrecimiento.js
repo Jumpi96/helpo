@@ -28,6 +28,7 @@ class AgregarOfrecimiento extends React.Component {
     const colaboracion = params.colaboracion;
     this.state = {
       colaboracion,
+      apiToken: false,
       error: undefined
     };
 
@@ -64,17 +65,43 @@ class AgregarOfrecimiento extends React.Component {
     return formIsValid;
   }
 
+  getEntregados() {
+    if (!this.state.colaboracion.funcion) {
+      if (this.state.colaboracion.entregados > 0) {
+        return (
+          <Item>
+            <Label>Entregados</Label>
+            <Text style={styles.label}>{this.state.colaboracion.entregados}</Text>
+          </Item>
+        );
+      }
+    } else {
+      if (this.state.colaboracion.presencias > 0) {
+        return (
+          <Item>
+            <Label>Presenecias</Label>
+            <Text style={styles.label}>{this.state.colaboracion.presencias}</Text>
+          </Item>
+        )
+      }
+    }
+  }
+
   handleSubmit() {
+    this.setState({ apiToken: true });
     if (this.handleValidation()) {
       if (this.state.colaboracion.cantidad_anterior === 0) {
         this.newColaboracion();
       } else {
         this.editColaboracion();
       }
+    } else {
+      this.setState({ apiToken: false });
     }
   }
 
   editColaboracion() {
+    var _this = this;
     const { colaboracion } = this.state;
     if (this.state.colaboracion.funcion) {
       const nuevaParticipacion = {
@@ -89,7 +116,7 @@ class AgregarOfrecimiento extends React.Component {
         }).catch(function (error) {
           if (error.response) { console.log(error.response.status) }
           else { console.log('Error: ', error.message) }
-          this.setState({ error: "Hubo un problema al cargar su información." });
+          _this.setState({ error: "Hubo un problema al cargar su información." });
         });
     } else {
       const nuevaColaboracion = {
@@ -104,13 +131,14 @@ class AgregarOfrecimiento extends React.Component {
         }).catch(function (error) {
           if (error.response) { console.log(error.response.status) }
           else { console.log('Error: ', error.message) }
-          this.setState({ error: "Hubo un problema al cargar su información." });
+          _this.setState({ error: "Hubo un problema al cargar su información." });
         });
 
     }
   }
 
   newColaboracion() {
+    var _this = this;
     const colaboracion = this.state.colaboracion;
     if (this.state.colaboracion.funcion) {
       const nuevaParticipacion = {
@@ -124,7 +152,7 @@ class AgregarOfrecimiento extends React.Component {
         }).catch(function (error) {
           if (error.response) { console.log(error.response.status) }
           else { console.log('Error: ', error.message) }
-          this.setState({ error: "Hubo un problema al cargar su información." });
+          _this.setState({ error: "Hubo un problema al cargar su información." });
         });
     } else {
       const nuevaColaboracion = {
@@ -138,7 +166,7 @@ class AgregarOfrecimiento extends React.Component {
         }).catch(function (error) {
           if (error.response) { console.log(error.response.status) }
           else { console.log('Error: ', error.message) }
-          this.setState({ error: "Hubo un problema al cargar su información." });
+          _this.setState({ error: "Hubo un problema al cargar su información." });
         });
     }
   }
@@ -202,6 +230,7 @@ class AgregarOfrecimiento extends React.Component {
                 onChangeText={(text) => this.handleCantidadChange(text)}
               />
             </Item>
+            {this.getEntregados()}
             <Item>
               <Label>Comentarios</Label>
               <Input

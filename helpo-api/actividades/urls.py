@@ -123,6 +123,18 @@ urlpatterns = [
         view=actividades_views.ConsultaEventosReadUpdateDeleteView.as_view(),
         name="get_put_delete_consulta_evento"
     ),
+    ###########
+    url(
+        regex=r"^actividades/consulta_propuestas/(?P<id>[-\w]+)/$",
+        view=actividades_views.ConsultaPropuestasDetalleEmpresaView.as_view(),
+        name="get_consulta_propuesta"
+    ),
+    url(
+        regex=r"^actividades/empresa_propuestas/(?P<id>[-\w]+)/$",
+        view=actividades_views.ConsultaPropuestasEmpresaView.as_view(),
+        name="get_empresa_propuesta"
+    ),
+    ###########
     # {% url "api:colaboraciones" %}
     url(
         regex=r"^actividades/colaboraciones/$",
@@ -164,6 +176,18 @@ urlpatterns = [
         regex=r"^feedbacks/comentarios/(?P<id>[-\w]+)/$",
         view=actividades_views.ComentarioReadUpdateDeleteView.as_view(),
         name="get_put_delete_comentario"
+    ),
+    # {% url "api:entregado" evento.id %}
+    url(
+        regex=r"^feedbacks/entregados/$",
+        view=actividades_views.EntregadoNecesidadEvento,
+        name="post_entregado_necesidad"
+    ),
+    # {% url "api:participado" evento.id %}
+    url(
+        regex=r"^feedbacks/participados/$",
+        view=actividades_views.ParticipadoNecesidadEvento,
+        name="post_participado_voluntario"
     ),
     # {% url "api:retroalimentacion_voluntario" %}
     url(

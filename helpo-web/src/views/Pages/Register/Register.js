@@ -6,7 +6,12 @@ import validateEmail from "../../../utils/ValidateEmail";
 import api from "../../../api"
 import ModalRegistroExitoso from './ModalRegistroExitoso';
 import './Register.css';
-import logo from '../../../assets/img/brand/logo_principal.svg' 
+import logo from '../../../assets/img/brand/logo_principal.svg';
+import GoogleLogin from 'react-google-login';
+import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
+import { auth } from "../../../actions";
+import { Redirect } from 'react-router-dom';
+
 
 class Register extends Component {
   constructor(props) {
@@ -68,19 +73,41 @@ class Register extends Component {
     } 
   }
 
+  onSubmitGoogle(response) {        
+    const nombre = response.profileObj.givenName;
+    const email = response.profileObj.email;
+    const password = response.profileObj.email;
+    const user_type = this.state.user_type;
+    const apellido = response.profileObj.familyName;
+    const id_token = response.tokenId;
+    this.props.loginGoogle(nombre, email, password, user_type, apellido, id_token);
+  }
+
+  onSubmitFacebook(response) {        
+    const nombre = response.name;
+    const email = response.email;
+    const password = response.email;
+    const user_type = this.state.user_type;
+    const apellido = response.name;
+    const id_token = response.accessToken;
+    this.props.loginFacebook(nombre, email, password, user_type, apellido, id_token);
+  }
+
   renderModal() {
     if (this.state.showModalRegistro) {
       if (this.state.modalType === "success") {
         return (
           <ModalRegistroExitoso
-            body='¡Se ha registrado exitosamente en Helpo!'
+            title='¡Se ha registrado exitosamente en Helpo!'
+            body='Revise su correo para activar su cuenta'
             onCancel={() => this.props.history.push('dashboard')}
           />)  
       }
       else {
         return (
           <ModalRegistroExitoso
-            body='Error: ya existe un usuario con ese mail'
+            title='Error al registrarse en Helpo'
+            body='Ya existe un usuario con ese mail'
             onCancel={() => {this.setState({ showModalRegistro: false })}}
           />
         )
@@ -231,12 +258,12 @@ class Register extends Component {
       isValid = false;
     }
     if (errors.email === "" && !validateEmail(this.state.email)) {
-      errors.email = "Ingrese un email valido";
+      errors.email = "Ingrese un email válido";
       isValid = false;
     }
     //Contraseña
     if (this.state.password.length < 8){
-      errors.contraseña = "La contraseña debe tener al menos 8 dígitos"
+      errors.contraseña = "La contraseña debe tener al menos 8 caracteres"
       isValid = false; 
     }
     if (this.state.password === "" || this.state.repeat === "") {
@@ -257,6 +284,19 @@ class Register extends Component {
 
   render() {
     const user_type = this.state.user_type;
+    const responseGoogle = (response) => {
+      if(response && response.profileObj) {
+        this.onSubmitGoogle(response);
+      }
+    }
+    const responseFacebook = (response) => {
+      if(response && response.email) {
+        this.onSubmitFacebook(response);
+      }
+    }
+    if (this.props.isAuthenticated) {
+      return <Redirect to="/" />
+    } else {
     return (
       <body>
 		    <div className="container">
@@ -266,11 +306,11 @@ class Register extends Component {
 	          </div>
 	        </div>
 	      </div> 
-        <div className="app flex-row align-items-center">
+        <div>
           <Container>
             <Row className="justify-content-center">
               <Col md="6">
-                <Card className="mx-4">
+                <Card className="mx-4" style={{width: '100%'}}>
                   <CardHeader>
                    <Row>
                       <Col xs="12" sm="4">
@@ -320,7 +360,7 @@ class Register extends Component {
                         </InputGroupText>
                       </InputGroupAddon>
                       <Input type="password" 
-                             placeholder="Password" 
+                             placeholder="Contraseña" 
                              onChange={(e) => this.handleValueChange(e, "password")}/>
                     </InputGroup>
                     <InputGroup className="mb-4">
@@ -330,21 +370,29 @@ class Register extends Component {
                         </InputGroupText>
                       </InputGroupAddon>
                       <Input type="password" 
-                            placeholder="Repeat password" 
+                            placeholder="Repetir contraseña" 
                             onChange={(e) => this.handleValueChange(e, "repeat")}/>                    
                     </InputGroup>
                     <Button color="primary" onClick={() => this.onSubmitData()} block>Crear Cuenta</Button>                  
                     <ul>{this.renderErrorList()}</ul>
                   </CardBody>
-                  <CardFooter className="p-4">
-                    <Row>
-                      <Col xs="12" sm="6">
-                        <Button className="btn-facebook" block><span>Facebook</span></Button>
-                      </Col>
-                      <Col xs="12" sm="6">
-                        <Button className="btn-twitter" block><span>Twitter</span></Button>
-                      </Col>
-                    </Row>
+                  <CardFooter style={{padding: '1.5rem', textAlign: 'center', display: 'block'}}>
+                        <FacebookLogin
+                          appId="343119846258901"
+                          autoLoad={false}
+                          fields="name,email,picture"
+                          callback={responseFacebook}
+                          render={renderProps => (
+                            <Button onClick={renderProps.onClick} className="btn-facebook" block><span>Facebook</span></Button>
+                          )} />
+                        {/* <Button className="btn-facebook" block><span>Facebook</span></Button> */}
+                        <GoogleLogin 
+                          className="btn-google"
+                          clientId="93328850687-681u9fksr6g52g2bebbj1qu8thldgaq6.apps.googleusercontent.com"
+                          buttonText="Google"
+                          onSuccess={responseGoogle}
+                          onFailure={responseGoogle} />
+                        {/* <Button className="btn-google" block><span>Google</span></Button> */}
                   </CardFooter>
                 </Card>
               </Col>
@@ -356,6 +404,7 @@ class Register extends Component {
 	  </body>
     );
   }
+}
 }
 
 
@@ -378,5 +427,15 @@ const mapStateToProps = state => {
     register: (username, password) => dispatch(auth.register(username, password)),
   };
 }*/
+const mapDispatchToProps = dispatch => {
+  return {
+    loginGoogle: (nombre, email, password, user_type, apellido, id_token) => {
+      return dispatch(auth.loginGoogle(nombre, email, password, user_type, apellido, id_token));
+    },
+    loginFacebook: (nombre, email, password, user_type, apellido, id_token) => {
+      return dispatch(auth.loginFacebook(nombre, email, password, user_type, apellido, id_token));
+    }
+  };
+}
 
-export default connect(mapStateToProps/*, mapDispatchToProps*/)(Register);
+export default connect(mapStateToProps, mapDispatchToProps)(Register);

@@ -50,9 +50,9 @@ class OrganizationStats(APIView):
         in all the ONG events
         """
         vol_participaciones = User.objects.filter(
-            participacion__necesidad_voluntario__evento__organizacion_id=id, participacion__participo=True)
+            participacion__entregas__participacion__necesidad_voluntario__evento__organizacion_id=id)
         vol_colaboraciones = User.objects.filter(
-            colaboracion__necesidad_material__evento__organizacion_id=id, colaboracion__entregado=True)
+            colaboracion__entregas__colaboracion__necesidad_material__evento__organizacion_id=id)
         return vol_participaciones.union(vol_colaboraciones).count()
 
     def get(self, request, id, format=None):
@@ -202,10 +202,10 @@ class ONGEventoStats(APIView):
             eventos_nombre.append(evento.nombre)
 
             vol_participaciones = User.objects.filter(
-                participacion__necesidad_voluntario__evento=evento, participacion__participo=True).count()
+                participacion__entregas__participacion__necesidad_voluntario__evento=evento).count()
             participaciones.append(vol_participaciones)
 
-            vol_colaboraciones = User.objects.filter(colaboracion__necesidad_material__evento=evento, colaboracion__entregado=True).count() 
+            vol_colaboraciones = User.objects.filter(colaboracion__entregas__colaboracion__necesidad_material__evento=evento).count() 
             colaboraciones.append(vol_colaboraciones)
 
             manos_participaciones = Participacion.objects.filter(retroalimentacion_voluntario=True, necesidad_voluntario__evento=evento).values_list('colaborador')

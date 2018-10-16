@@ -109,7 +109,7 @@ class ConsultarEventosView extends React.Component {
     return false;
   }
 
-getHorarios(evento) {
+  getHorarios(evento) {
     if (evento.horarios.length > 0) {
       const listaHorarios = [];
       evento.horarios.forEach((h) => {

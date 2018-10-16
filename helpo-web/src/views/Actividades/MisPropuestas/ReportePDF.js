@@ -339,17 +339,17 @@ function drawDetalleFuncion(doc, item) {
   current_y = current_y + step
 }
 
-function drawItem(doc, item, y) {
-  // Draw item in doc (colaboracion|participacion)
-  doc.setFontStyle('normal')
-  doc.setFontSize(12)
-  const text_y = y
-  const sq_y = y - 3.5
-  const sq_w = 4
-  doc.rect(10, sq_y, sq_w, sq_w);
-  doc.text(`${item.nombre}`, 23, text_y)
-  doc.text(`${item.cantidad} ${item.tipo_recurso}`, 120, text_y)
-}
+// function drawItem(doc, item, y) {
+//   // Draw item in doc (colaboracion|participacion)
+//   doc.setFontStyle('normal')
+//   doc.setFontSize(12)
+//   const text_y = y
+//   const sq_y = y - 3.5
+//   const sq_w = 4
+//   doc.rect(10, sq_y, sq_w, sq_w);
+//   doc.text(`${item.nombre}`, 23, text_y)
+//   doc.text(`${item.cantidad} ${item.tipo_recurso}`, 120, text_y)
+// }
 
 function downloadPDF(propuestas, detalle_propuestas) {
   /*

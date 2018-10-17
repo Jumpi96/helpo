@@ -5,6 +5,8 @@ import imagen from "../../assets/img/home-noauth-background.jpg";
 import imagen1 from "../../assets/img/Empresas.png";
 import imagen2 from "../../assets/img/ONG.png";
 import imagen3 from "../../assets/img/Voluntarios.png";
+import TwitterTimeline from 'react-twitter-embedded-timeline';
+import { FacebookProvider, Page } from 'react-facebook';
 
 const items = [
   {
@@ -133,6 +135,12 @@ class Home extends Component {
                 </Card>
               </Collapse>
             </Col>
+          </Row>
+          <Row>
+            <TwitterTimeline loading={"HelpoApp"} user={"HelpoApp"} chrome="noborders noheader" height={500} width={500} />
+            <FacebookProvider appId="343119846258901">
+              <Page href="https://www.facebook.com/HelpoConsultas" tabs="timeline" height={500} width={500} />
+            </FacebookProvider>  
           </Row>
       </React.Fragment>
     );

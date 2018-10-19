@@ -1,11 +1,16 @@
 from flask import Flask, request, json
+from os import getenv
 import boto3
 import pickle
 
 BUCKET_NAME = 'helpo-ml'
 MODEL_FILE_NAME = 'model.pkl'
 app = Flask(__name__)
-S3 = boto3.client('s3', region_name='us-west-2')
+S3 = boto3.client('s3', 
+    region_name='us-west-2', 
+    aws_access_key_id=getenv('aws_access_key_id'),
+    aws_secret_access_key=getenv('aws_secret_access_key')
+)
 
 @app.route('/', methods=['POST'])
 def index():    
@@ -37,4 +42,4 @@ def load_model(key):
 
 if __name__ == '__main__':    
     # listen on all IPs 
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=getenv('debug', False), host='0.0.0.0')

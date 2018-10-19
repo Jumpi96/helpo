@@ -43,6 +43,8 @@ services:
       - db
   ml:
     build: helpo-ml/serverless-ml/.
+    env_file:
+      - helpo-ml/serverless-ml/.env
     ports:
       - "5000:5000"
     volumes:

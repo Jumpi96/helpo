@@ -41,5 +41,11 @@ services:
       - "5050:5050"
     depends_on:
       - db
+  ml:
+    build: helpo-ml/serverless-ml/.
+    ports:
+      - "5000:5000"
+    depends_on:
+      - api
 
 # Default docker-compose, made for development

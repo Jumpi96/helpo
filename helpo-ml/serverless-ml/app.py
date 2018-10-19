@@ -1,10 +1,12 @@
 from flask import Flask, request, json
 import boto3
 import pickle
-BUCKET_NAME = 'serverless-machine-learning'
+
+BUCKET_NAME = 'helpo-ml'
 MODEL_FILE_NAME = 'model.pkl'
 app = Flask(__name__)
-S3 = boto3.client('s3', region_name='eu-central-1')
+S3 = boto3.client('s3', region_name='us-west-2')
+
 @app.route('/', methods=['POST'])
 def index():    
     # Parse request body for model input 
@@ -13,12 +15,16 @@ def index():
     
     # Load model
     model = load_model(MODEL_FILE_NAME)
-# Make prediction 
+    # Make prediction 
     prediction = model.predict(data).tolist()
-# Respond with prediction result
+    # Respond with prediction result
     result = {'prediction': prediction}    
    
     return json.dumps(result)
+
+@app.route('/hello-world')
+def hello_world():
+    return json.dumps('Hello world!')
 
 def load_model(key):    
     # Load model from S3 bucket

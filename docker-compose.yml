@@ -45,6 +45,8 @@ services:
     build: helpo-ml/serverless-ml/.
     ports:
       - "5000:5000"
+    volumes:
+      - ./helpo-ml/serverless-ml:/code
     depends_on:
       - api
 

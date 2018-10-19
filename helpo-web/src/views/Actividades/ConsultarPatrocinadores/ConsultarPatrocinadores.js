@@ -152,7 +152,7 @@ class ConsultarPatrocinadores extends Component {
             </CardHeader>
             <CardBody>
               <form>
-                <p>Desde aquí puede <b>aceptar o rechazar</b> las propuestas de patrocinación de las empresas para el evento.</p>
+                <p>Desde aquí puede <b>aceptar o rechazar</b> las propuestas de patrocinación de las empresas para la actividad social.</p>
                 {this.getTablaPropuestas(evento.propuestas)}
               </form>
             </CardBody>

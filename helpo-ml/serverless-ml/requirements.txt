@@ -2,4 +2,3 @@ scikit-learn==0.20
 Flask==1.0.2
 request==1.0.2
 boto3==1.9.25
-zappa==0.47.0

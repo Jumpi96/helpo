@@ -8,12 +8,14 @@ from rest_framework.generics import CreateAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from django.shortcuts import get_object_or_404
 from datetime import datetime
 from actividades.models import Evento, RubroEvento, CategoriaRecurso, Recurso, Necesidad, \
     Contacto, Voluntario, Funcion, Participacion, Colaboracion, Comentario, Mensaje, EventoImagen, \
     Propuesta, Entrega, Presencia
 from knox.models import AuthToken
 from users.models import User
+from recommendations.models import LogConsultaEvento
 from actividades.serializers import EventoSerializer, RubroEventoSerializer, \
     CategoriaRecursoSerializer, RecursoSerializer, NecesidadSerializer, ContactoSerializer, \
     ConsultaEventoSerializer, VoluntarioSerializer, FuncionSerializer, ConsultaNecesidadesSerializer, \
@@ -339,6 +341,14 @@ class ConsultaEventosReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     queryset = Evento.objects.all()
     serializer_class = ConsultaEventoSerializer
     lookup_field = 'id'
+
+    def retrieve(self, request, id=None):
+        user = get_token_user(self.request)
+        evento = get_object_or_404(Evento.objects.all(), evento_id=id)
+        if user is not None:
+            LogConsultaEvento.objects.create(usuario_id=user, evento=evento)
+        return super().retrieve(request, *args, **kwargs)
+
 
 
 class ConsultaPropuestasDetalleEmpresaView(RetrieveAPIView):

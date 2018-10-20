@@ -22,6 +22,7 @@ services:
       - ./helpo-api:/code
     depends_on:
       - db
+      - ml
   web:
     build: helpo-web/.
     env_file:
@@ -49,7 +50,5 @@ services:
       - "5000:5000"
     volumes:
       - ./helpo-ml/serverless-ml:/code
-    depends_on:
-      - api
 
 # Default docker-compose, made for development

@@ -36,6 +36,8 @@ opbeat = "*"
 whitenoise = "*"
 ipython = "*"
 requests = "*"
+sklearn = "*"
+boto3 = "*"
 
 [requires]
 python_version = "3.6"

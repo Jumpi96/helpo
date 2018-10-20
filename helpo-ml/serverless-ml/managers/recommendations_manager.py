@@ -1,8 +1,9 @@
 import boto3
 from os import getenv
+import pickle
 
 BUCKET_NAME = 'helpo-ml'
-MODEL_FILE_NAME = 'model.pkl'
+MODEL_FILE_NAME = 'model_evento.pkl'
 
 
 class RecommendationsManager(object):
@@ -14,11 +15,9 @@ class RecommendationsManager(object):
             aws_secret_access_key=getenv('aws_secret_access_key')
         )
 
-    def load_model(key):    
+    def load_model(key):
         # Load model from S3 bucket
         response = S3.get_object(Bucket=BUCKET_NAME, Key=key)
         # Load pickle model
         model_str = response['Body'].read()     
-        model = pickle.loads(model_str)     
-        
-        return model
+        return pickle.loads(model_str)

@@ -344,10 +344,10 @@ class ConsultaEventosReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
 
     def retrieve(self, request, id=None):
         user = get_token_user(self.request)
-        evento = get_object_or_404(Evento.objects.all(), evento_id=id)
+        evento = get_object_or_404(Evento.objects.all(), id=id)
         if user is not None:
             LogConsultaEvento.objects.create(usuario_id=user, evento=evento)
-        return super().retrieve(request, *args, **kwargs)
+        return super().retrieve(request, id)
 
 
 

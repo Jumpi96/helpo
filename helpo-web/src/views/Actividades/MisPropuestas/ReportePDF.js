@@ -34,6 +34,7 @@ This items types exist to manage the different ways to draw them in the PDF
 {type: 4, titulo: ""}
 {type: 5, nombre: "", cantidad: 0} RECURSO
 {type: 6, nombre: "", cantidad: 0} VOLUNTARIO/FUNCION
+{type: 7, titulo: "", x: } SUBTITULO
 */
 
 // PDF Data values
@@ -50,7 +51,6 @@ const min_y = 30 // where to start drawing
 const max_y = 270 // when to finish and add page
 const step = 8 // distance between items
 let current_y = 55
-let last_title = {}
 let draw_queue = []
 
 
@@ -174,8 +174,23 @@ function createDrawItems() {
     }
     draw_queue.push(propuesta_stats)
 
+    let last_item = null
     for (const item of data_propuestas[id].detalle) {
       // Recurso type 2 - Funcion type 3 
+
+      if (last_item !== item.tipo) {
+        const titulo = item.tipo === 'recurso' ?
+        "Recursos ofrecidos:" :
+        "Voluntarios ofrecidos:"
+        const title_obj = {
+          type: 7,
+          titulo: titulo,
+          x: 15
+        }
+        draw_queue.push(title_obj)
+        last_item = item.tipo
+      }
+
       const type_item = item.tipo === 'recurso' ? 2 : 3 
       const obj_item = {
         type: type_item,
@@ -186,15 +201,27 @@ function createDrawItems() {
       draw_queue.push(obj_item)
     }    
   }
-  // Un titulo - type 3
+  // Un titulo - type 4
   const recurso_title = {
     type: 4,
     titulo: 'Totales ofrecidos a organizaciones:'
   }
   draw_queue.push(recurso_title)
 
-  // Totales de recursos/voluntariados ofrecidos - type 4
+  // Totales de recursos/voluntariados ofrecidos - type 5/6
+  let recurso_total_title = false
   for (const recurso in data_recursos) {
+
+    if(!recurso_total_title) {
+      const title_obj = {
+        type: 7,
+        titulo: 'Total de recursos:',
+        x: 5
+      }
+      recurso_total_title = true
+      draw_queue.push(title_obj)    
+    }
+
     const draw_recurso = {
       type: 5,
       nombre: recurso,
@@ -202,15 +229,27 @@ function createDrawItems() {
     }
     draw_queue.push(draw_recurso)
   }
+
+  let funcion_total_title = false
   for (const voluntariado in data_voluntariados) {
+
+    if(!funcion_total_title) {
+      const title_obj = {
+        type: 7,
+        titulo: 'Total de voluntarios:',
+        x: 5
+      }
+      funcion_total_title = true
+      draw_queue.push(title_obj)    
+    }
+
     const draw_voluntariado = {
       type: 6,
       nombre: voluntariado,
       cantidad: data_voluntariados[voluntariado]
     }
     draw_queue.push(draw_voluntariado)
-  }  
-  console.log(draw_queue)
+  }
 }
 
 function drawItems(doc, draw_queue) {
@@ -234,12 +273,13 @@ function drawItems(doc, draw_queue) {
     if (item.type === 6) {
       drawTotalVoluntarios(doc, item)
     }
+    if (item.type === 7) {
+      drawSubtitle(doc, item)
+    }
     if (current_y > max_y) {
       // If the page is ending, create new one with title item at the top
       endPage(doc)
       current_y = min_y
-      drawTitle(doc, last_title, current_y)
-      current_y = current_y + step
     }
   }
 }
@@ -247,14 +287,18 @@ function drawItems(doc, draw_queue) {
 function drawTitle(doc, item) {
   // 3 step
   // Draw title in doc (draw_item type 4)
+  let draw_first_space = true
 
   const to_use_y = current_y + (step * 10)
   if (to_use_y > max_y) {
     // If there isnt some space before page ends, draw in new one
     endPage(doc)
     current_y = min_y
+    draw_first_space = false
   }
-  current_y = current_y + step
+  if (draw_first_space) {
+    current_y = current_y + step
+  }  
   // Space before title
   doc.setFontStyle('bold')
   doc.setFontSize(14)
@@ -264,6 +308,24 @@ function drawTitle(doc, item) {
   current_y = current_y + step
 }
 
+function drawSubtitle(doc, item) {
+  // variable step
+  // Draw subtitle in doc (draw_item type 4)
+
+  const to_use_y = current_y + (step * 5)
+  if (to_use_y > max_y) {
+    // If there isnt some space before page ends, draw in new one
+    endPage(doc)
+    current_y = min_y
+  }
+  // Space before title
+  doc.setFontStyle('bold')
+  doc.setFontSize(12)
+  doc.text(item.titulo, item.x, current_y)
+  current_y = current_y + step
+  // Space after title
+}
+
 function drawTotalRecurso(doc, item) {
   // 1 step
   // Draw total de recurso (draw_item type 5)
@@ -271,22 +333,22 @@ function drawTotalRecurso(doc, item) {
 
   doc.setFontStyle('bold')
   doc.setFontSize(12)
-  doc.text(item.nombre, 5, current_y)
+  doc.text(item.nombre, 15, current_y)
   doc.setFontStyle('normal')
-  doc.text(`${item.cantidad} ${descriptor}`, 90, current_y)
+  doc.text(`${item.cantidad} ${descriptor}`, 100, current_y)
   current_y = current_y + step
 }
 
 function drawTotalVoluntarios(doc, item) {
   // 1 step
   // Draw total de recurso (draw_item type 5)
-  const descriptor = item.cantidad === 1 ? "voluntariado" : "voluntariados"
+  const descriptor = item.cantidad === 1 ? "voluntario" : "voluntarios"
 
   doc.setFontStyle('bold')
   doc.setFontSize(12)
-  doc.text(item.nombre, 5, current_y)
+  doc.text(item.nombre, 15, current_y)
   doc.setFontStyle('normal')
-  doc.text(`${item.cantidad} ${descriptor}`, 90, current_y)
+  doc.text(`${item.cantidad} ${descriptor}`, 100, current_y)
   current_y = current_y + step
 }
 
@@ -302,6 +364,7 @@ function drawDatosPropuestas(doc, item) {
   // Extra step to have space between propuestas
   current_y = current_y + step
   doc.setFontStyle('bold')
+  doc.setFontSize(12)
   doc.text(`Propuesta de actividad:  ${item.evento}` ,5, current_y)
   current_y = current_y + step
   doc.setFontStyle('normal')
@@ -311,7 +374,7 @@ function drawDatosPropuestas(doc, item) {
   current_y = current_y + step 
   doc.text(`Estado: ${item.aceptado}` ,5, current_y)
   current_y = current_y + step 
-  doc.text("Detalles:" ,5, current_y)
+  doc.text("Detalles:" , 5, current_y)
   current_y = current_y + step 
 }
 
@@ -321,9 +384,10 @@ function drawDetalleRecurso(doc, item) {
   const descriptor = item.cantidad === 1 ? "unidad" : "unidades"
 
   doc.setFontStyle('bold')
-  doc.text(item.nombre, 15, current_y)
+  doc.setFontSize(12)
+  doc.text(item.nombre, 30, current_y)
   doc.setFontStyle('normal')
-  doc.text(`${item.cantidad} ${descriptor}`, 90, current_y)
+  doc.text(`${item.cantidad} ${descriptor}`, 105, current_y)
   current_y = current_y + step
 }
 
@@ -333,23 +397,12 @@ function drawDetalleFuncion(doc, item) {
   const descriptor = item.cantidad === 1 ? "voluntario" : "voluntarios"
 
   doc.setFontStyle('bold')
-  doc.text(item.nombre, 15, current_y)
+  doc.setFontSize(12)
+  doc.text(item.nombre, 30, current_y)
   doc.setFontStyle('normal')
-  doc.text(`${item.cantidad} ${descriptor}`, 90, current_y)
+  doc.text(`${item.cantidad} ${descriptor}`, 105, current_y)
   current_y = current_y + step
 }
-
-// function drawItem(doc, item, y) {
-//   // Draw item in doc (colaboracion|participacion)
-//   doc.setFontStyle('normal')
-//   doc.setFontSize(12)
-//   const text_y = y
-//   const sq_y = y - 3.5
-//   const sq_w = 4
-//   doc.rect(10, sq_y, sq_w, sq_w);
-//   doc.text(`${item.nombre}`, 23, text_y)
-//   doc.text(`${item.cantidad} ${item.tipo_recurso}`, 120, text_y)
-// }
 
 function downloadPDF(propuestas, detalle_propuestas) {
   /*

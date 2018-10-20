@@ -115,7 +115,7 @@ class ConsultarEventosView extends React.Component {
       evento.horarios.forEach((h) => {
         listaHorarios.push(
           <div className="row">
-            <div className="col-md-1">
+            <div className="col-md-2">
               <p>{h[0]}</p>
             </div>
             <div className="col-md-2">

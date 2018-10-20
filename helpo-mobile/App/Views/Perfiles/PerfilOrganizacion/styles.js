@@ -24,5 +24,8 @@ export default {
   },
   textMuted: {
     color: '#A9A9A9'
+  },
+  retroalimentacion: {
+    color:'#F39200'
   }
 };

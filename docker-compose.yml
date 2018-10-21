@@ -22,7 +22,6 @@ services:
       - ./helpo-api:/code
     depends_on:
       - db
-      - ml
   web:
     build: helpo-web/.
     env_file:

@@ -6,7 +6,7 @@ import pickle
 from sklearn.metrics import pairwise_distances
 from sklearn.metrics import mean_squared_error
 from sklearn.neighbors import NearestNeighbors
-from sklearn.svm import SVR
+from sklearn.linear_model import Ridge
 from decouple import config
 from django.db.models import Sum
 from sklearn.preprocessing import StandardScaler
@@ -76,8 +76,10 @@ def train_fecha_regressor():
     y = pd.DataFrame()
     y["pred"] = M["%Comp"]
     training_data = M.drop(["%Comp"], axis=1)
-    model = SVR(kernel='linear', C=1e3)
+    model = Ridge(fit_intercept=True, alpha=0.5)
+
     model.fit(training_data, y)
+    print(model.predict(training_data))
     save_model_fecha_regressor(model, features)
 
 

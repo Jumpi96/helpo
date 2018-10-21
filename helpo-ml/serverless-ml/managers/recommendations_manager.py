@@ -70,5 +70,6 @@ class RecommendationsManager(object):
         predictions = {}
         for i in range(12):
             df.loc[0]['M'] = i+1
-            predictions[i+1] = model.predict(df)[0]
+            pre = model.predict(df)
+            predictions[i+1] = pre[0][0]
         return predictions

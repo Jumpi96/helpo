@@ -20,7 +20,7 @@
     "enzyme-adapter-react-16": "^1.1.1",
     "flag-icon-css": "^3.0.0",
     "font-awesome": "^4.7.0",
-    "jquery": "^1.9.1",
+    "jquery": "^3.0.0",
     "jspdf": "^1.4.1",
     "moment": "2.22.1",
     "node-sass": "^4.9.3",

@@ -37,4 +37,4 @@ def predict_fechas():
     df.loc[0] = pd.Series(prediction_data)
     # Make prediction 
     prediction = RecommendationsManager.predict_fecha(df)
-    return json.dumps(prediction[0])
+    return json.dumps(prediction)

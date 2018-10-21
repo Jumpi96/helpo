@@ -61,7 +61,9 @@ class RecommendationsManager(object):
         return similarities, indices
 
     def predict_fecha(self, data):
-        scaler = StandardScaler()
-        scaler.fit(data)
-        training_data = scaler.transform(data)
-        return self.load_model(self.model_fecha).predict(training_data)
+        model = self.load_model(self.model_fecha)
+        predictions = {}
+        for i in range(12):
+            data.loc[0]['M'] = i+1
+            predictions[i+1] = model.predict(data)[0]
+        return predictions

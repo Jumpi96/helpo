@@ -1,5 +1,6 @@
 from managers.recommendations_manager import RecommendationsManager
 from flask import Blueprint, request, Response
+import numpy as np
 import json
 import pickle
 
@@ -18,10 +19,9 @@ def predict_eventos():
     # Parse request body for model input 
     body_dict = request.get_json(silent=True)
     user = body_dict['user_id']
-    scores = body_dict['scores']
     eventos = body_dict['eventos']
     # Make prediction 
-    predictions = RecommendationsManager.predict_eventos_userbased(user, scores, eventos)
+    predictions = RecommendationsManager.predict_eventos_userbased(user, eventos)
    
     return json.dumps(predictions)
 

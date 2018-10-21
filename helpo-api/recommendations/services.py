@@ -18,7 +18,7 @@ def train_evento_recommendations():
     M = get_data_evento_recommendations()
     model_knn = NearestNeighbors(metric = 'cosine', algorithm = 'brute') 
     model_knn.fit(M)
-    save_model_evento_recommendations(model_knn)
+    save_model_evento_recommendations(model_knn, M)
     
 
 def get_data_evento_recommendations():
@@ -50,13 +50,16 @@ def get_row_evento_recommendations(usuario):
         print(usuario.nombre + ' - ' + evento.nombre + ' - Score: ' + str(score))
     return dict_usuario
     
-def save_model_evento_recommendations(model):
-    file_name = 'model_evento.pkl'
-    obj=pickle.dumps(model)
+def save_model_evento_recommendations(model, scores):
+    model_file = 'model_evento.pkl'
+    scores_file = 'scores_evento.pkl'
+    model_obj = pickle.dumps(model)
+    scores_obj = pickle.dumps(scores)
     S3 = boto3.client(
         's3', region_name='us-west-2', 
         aws_access_key_id=config('AWS_ACCESS_KEY_ID'),
         aws_secret_access_key=config('AWS_SECRET_ACCESS_KEY')
     )
     bucket = 'helpo-ml'
-    S3.put_object(Bucket=bucket, Key=file_name, Body=obj)
+    S3.put_object(Bucket=bucket, Key=model_file, Body=model_obj)
+    S3.put_object(Bucket=bucket, Key=scores_file, Body=scores_obj)

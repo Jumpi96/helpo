@@ -2,6 +2,7 @@ import boto3
 from os import getenv
 import pickle
 import numpy as np
+from sklearn.preprocessing import StandardScaler
 
 BUCKET_NAME = 'helpo-ml'
 
@@ -14,8 +15,9 @@ class RecommendationsManager(object):
             aws_access_key_id=getenv('aws_access_key_id'),
             aws_secret_access_key=getenv('aws_secret_access_key')
         )
-        self.model_evento = self.load_model('model_evento.pkl')
-        self.scores_evento = self.load_model('scores_evento.pkl')
+        self.model_evento = 'model_evento.pkl'
+        self.scores_evento = 'scores_evento.pkl'
+        self.model_fecha = 'model_fecha.pkl'
 
     def load_model(self, key):
         # Load model from S3 bucket
@@ -26,7 +28,7 @@ class RecommendationsManager(object):
 
     def predict_eventos_userbased(self, user_id, eventos):
         predictions = {}
-        scores = self.scores_evento
+        scores = self.load_model(self.scores_evento)
         wtd_sum = 0
         similarities, indices = self.find_k_similar_users(user_id, 4) # similar users based on cosine similarity
         mean_rating = scores.loc[user_id-1,:].mean() #to adjust for zero based indexing
@@ -45,7 +47,9 @@ class RecommendationsManager(object):
         return predictions
 
     def find_k_similar_users(self, user_id, k):
-        distances, indices = self.model_evento.kneighbors(self.scores_evento.iloc[user_id-1, :].values.reshape(1, -1), n_neighbors = k+1)
+        model_evento = self.load_model(self.model_evento)
+        scores_evento = self.load_model(self.scores_evento)
+        distances, indices = model_evento.kneighbors(scores_evento.iloc[user_id-1, :].values.reshape(1, -1), n_neighbors = k+1)
         similarities = 1-distances.flatten()
         print ('{0} most similar users for User {1}:\n'.format(k, user_id))
         for i in range(0, len(indices.flatten())):
@@ -56,4 +60,8 @@ class RecommendationsManager(object):
                 
         return similarities, indices
 
-        
+    def predict_fecha(self, data):
+        scaler = StandardScaler()
+        scaler.fit(data)
+        training_data = scaler.transform(data)
+        return self.load_model(self.model_fecha).predict(training_data)

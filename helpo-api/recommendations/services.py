@@ -72,13 +72,13 @@ def save_model_evento_recommendations(model, scores):
 
 
 def train_fecha_regressor():
-    M = get_data_fecha_regressor()
+    M, features = get_data_fecha_regressor()
     y = pd.DataFrame()
     y["pred"] = M["%Comp"]
     training_data = M.drop(["%Comp"], axis=1)
     model = SVR(kernel='linear', C=1e3)
     model.fit(training_data, y)
-    save_model_fecha_regressor(model)
+    save_model_fecha_regressor(model, features)
 
 
 def scale_training_data(training_data):
@@ -107,7 +107,7 @@ def get_data_fecha_regressor():
             '%Comp': calc_porc_total_evento(evento)
         }
         df.loc[str(evento.id)] = pd.Series(dict_evento)
-    return df
+    return df, features[:-1]
 
 
 def get_row_fecha_regressor(evento_id):
@@ -128,9 +128,11 @@ def get_row_fecha_regressor(evento_id):
 
 
 
-def save_model_fecha_regressor(model):
+def save_model_fecha_regressor(model, features):
     model_file = 'model_fecha.pkl'
     model_obj = pickle.dumps(model)
+    features_file = 'features_fecha.pkl'
+    features_obj = pickle.dumps(features)
     S3 = boto3.client(
         's3', region_name='us-west-2', 
         aws_access_key_id=config('AWS_ACCESS_KEY_ID'),
@@ -138,6 +140,7 @@ def save_model_fecha_regressor(model):
     )
     bucket = 'helpo-ml'
     S3.put_object(Bucket=bucket, Key=model_file, Body=model_obj)
+    S3.put_object(Bucket=bucket, Key=features_file, Body=features_obj)
 
 
 def calc_porc_necesidades(ong=0, rubro=0):

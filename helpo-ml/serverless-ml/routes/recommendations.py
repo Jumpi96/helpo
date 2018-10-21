@@ -1,7 +1,6 @@
 from managers.recommendations_manager import RecommendationsManager
 from flask import Blueprint, request, Response
 import numpy as np
-import pandas as pd
 import json
 import pickle
 
@@ -32,9 +31,7 @@ def predict_fechas():
     # Parse request body for model input
     body_dict = request.get_json(silent=True)
     prediction_data = body_dict['prediction_data']
-    features = ['M', '%NecONG', '%NecR', '%VolONG', '%VolR', 'SuONG', 'SuR', 'VisONG', 'VisR', 'Dis', 'Dias']
-    df = pd.DataFrame(columns=features, index=[0])
-    df.loc[0] = pd.Series(prediction_data)
     # Make prediction 
-    prediction = RecommendationsManager.predict_fecha(df)
+    prediction = RecommendationsManager.predict_fecha(prediction_data)
+    
     return json.dumps(prediction)

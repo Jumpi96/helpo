@@ -2,6 +2,7 @@ import boto3
 from os import getenv
 import pickle
 import numpy as np
+import pandas as pd
 from sklearn.preprocessing import StandardScaler
 
 BUCKET_NAME = 'helpo-ml'
@@ -18,6 +19,7 @@ class RecommendationsManager(object):
         self.model_evento = 'model_evento.pkl'
         self.scores_evento = 'scores_evento.pkl'
         self.model_fecha = 'model_fecha.pkl'
+        self.features_fecha = 'features_fecha.pkl'
 
     def load_model(self, key):
         # Load model from S3 bucket
@@ -62,8 +64,11 @@ class RecommendationsManager(object):
 
     def predict_fecha(self, data):
         model = self.load_model(self.model_fecha)
+        features = self.load_model(self.features_fecha)
+        df = pd.DataFrame(columns=features, index=[0])
+        df.loc[0] = pd.Series(data)
         predictions = {}
         for i in range(12):
-            data.loc[0]['M'] = i+1
-            predictions[i+1] = model.predict(data)[0]
+            df.loc[0]['M'] = i+1
+            predictions[i+1] = model.predict(df)[0]
         return predictions

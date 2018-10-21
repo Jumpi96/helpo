@@ -16,15 +16,12 @@ def hello_world():
 @RECOMMENDATIONS_API.route('/recommendations/predict_eventos', methods=['POST'])
 def predict_eventos():    
     # Parse request body for model input 
-    body_dict = request.get_json(silent=True)    
-    data = body_dict['data']     
-    
-    # Load model
-    model = RecommendationsManager.load_model(MODEL_FILE_NAME)
+    body_dict = request.get_json(silent=True)
+    user = body_dict['user_id']
+    scores = body_dict['scores']
+    eventos = body_dict['eventos']
     # Make prediction 
-    prediction = model.predict(data).tolist()
-    # Respond with prediction result
-    result = {'prediction': prediction}    
+    predictions = RecommendationsManager.predict_eventos_userbased(user, scores, eventos)
    
-    return json.dumps(result)
+    return json.dumps(predictions)
 

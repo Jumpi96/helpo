@@ -2,10 +2,10 @@ import os
 import pandas as pd
 import numpy as np
 import boto3
+import pickle
 from sklearn.metrics import pairwise_distances
 from sklearn.metrics import mean_squared_error
 from sklearn.neighbors import NearestNeighbors
-from sklearn.externals import joblib
 from decouple import config
 
 from recommendations.models import LogConsultaEvento
@@ -34,19 +34,29 @@ def get_data_evento_recommendations():
             visitas = len(LogConsultaEvento.objects.filter(evento=evento, usuario=usuario))
             score = colaboro * COLABORACION_MULTIPLIER + participo * COLABORACION_MULTIPLIER + visitas
             dict_usuario[str(evento.id)] = score
-            #print(usuario.nombre + ' - ' + evento.nombre + ' - Score: ' + str(score))
+            print(usuario.nombre + ' - ' + evento.nombre + ' - Score: ' + str(score))
         df.loc[str(usuario.id)] = pd.Series(dict_usuario)
     return df
+
+def get_row_evento_recommendations(usuario):
+    eventos = Evento.objects.all()
+    dict_usuario = {}
+    for evento in eventos:
+        colaboro = len(Colaboracion.objects.filter(necesidad_material__evento=evento, colaborador_id=usuario)) > 0
+        participo = len(Participacion.objects.filter(necesidad_voluntario__evento=evento, colaborador_id=usuario)) > 0
+        visitas = len(LogConsultaEvento.objects.filter(evento=evento, usuario_id=usuario))
+        score = colaboro * COLABORACION_MULTIPLIER + participo * COLABORACION_MULTIPLIER + visitas
+        dict_usuario[str(evento.id)] = score
+        print(usuario.nombre + ' - ' + evento.nombre + ' - Score: ' + str(score))
+    return dict_usuario
     
 def save_model_evento_recommendations(model):
     file_name = 'model_evento.pkl'
-    local_file = 'model_evento_{}.pkl'.format(str(np.datetime64('now')))
-    joblib.dump(model, local_file)
+    obj=pickle.dumps(model)
     S3 = boto3.client(
         's3', region_name='us-west-2', 
         aws_access_key_id=config('AWS_ACCESS_KEY_ID'),
         aws_secret_access_key=config('AWS_SECRET_ACCESS_KEY')
     )
     bucket = 'helpo-ml'
-    S3.upload_file(local_file, bucket, file_name)
-    os.remove(local_file)
+    S3.put_object(Bucket=bucket, Key=file_name, Body=obj)

@@ -13,7 +13,7 @@ from sklearn import preprocessing
 from sklearn.model_selection import GridSearchCV
 
 from recommendations.models import LogConsultaEvento
-from actividades.models import Colaboracion, Participacion, Evento, Necesidad, Voluntario
+from actividades.models import Colaboracion, Participacion, Evento, Necesidad, Voluntario, CategoriaRecurso, Funcion
 from users.models import User, Suscripcion
 from common.functions import calc_distance_locations
 
@@ -95,7 +95,10 @@ def train_fecha_regressor():
 
 def get_data_fecha_regressor():
     eventos = Evento.objects.all()
-    features = ['M', '%NecONG', '%NecRO', '%NecRA', '%VolONG', '%VolRO', '%VolRA', 'SuONG', 'SuRO', 'VisONG', 'VisRO', 'VisRA', 'Dis', 'Dias', 'Camp', '%Comp']
+    features = ['M', '%NecONG', '%NecRO', '%NecRA', '%VolONG', '%VolRO', '%VolRA', 
+        'SuONG', 'SuRO', 'VisONG', 'VisRO', 'VisRA', 'Dis', 'Dias', 'Camp']
+    features += get_necesidades_features()
+    features.append('%Comp')
     df = pd.DataFrame(columns=features, index=[str(evento.id) for evento in eventos])
     for evento in eventos:
         dict_evento = {
@@ -113,12 +116,43 @@ def get_data_fecha_regressor():
             'VisRA': calc_avg_visitas(rubro_act=evento.rubro),
             'Dis': calc_distance_to_cordoba(evento.organizacion),
             'Dias': (evento.fecha_hora_inicio - evento.created).days,
-            'Camp': 1 if evento.campaña else 0,
-            '%Comp': calc_porc_total_evento(evento)
+            'Camp': 1 if evento.campaña else 0
         }
+        dict_evento = add_categorias(evento, dict_evento)
+        dict_evento = add_funciones(evento, dict_evento)
+        dict_evento['%Comp'] = calc_porc_total_evento(evento)
         df.loc[str(evento.id)] = pd.Series(dict_evento)
-        print(df.loc[str(evento.id)])
     return df, features[:-1]
+
+
+def get_necesidades_features():
+    necesidades_features = []
+    categorias = CategoriaRecurso.objects.all()
+    for categoria in categorias:
+        necesidades_features.append('C'+str(categoria.id))
+    funciones = Funcion.objects.all()
+    for funcion in funciones:
+        necesidades_features.append('F'+str(funcion.id))
+    return necesidades_features
+
+
+def add_categorias(evento, dict_evento):
+    categorias = CategoriaRecurso.objects.all()
+    for categoria in categorias:
+        if len(Necesidad.objects.filter(recurso__categoria=categoria, evento=evento)) > 0:
+            dict_evento['C'+str(categoria.id)] = 1
+        else:
+            dict_evento['C'+str(categoria.id)] = 0
+    return dict_evento
+
+def add_funciones(evento, dict_evento):
+    funciones = Funcion.objects.all()
+    for funcion in funciones:
+        if len(Voluntario.objects.filter(funcion=funcion, evento=evento)) > 0:
+            dict_evento['F'+str(funcion.id)] = 1
+        else:
+            dict_evento['F'+str(funcion.id)] = 0
+    return dict_evento
 
 
 def get_row_fecha_regressor(evento_id):

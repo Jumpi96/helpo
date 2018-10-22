@@ -53,7 +53,7 @@ class EventoPage extends React.Component {
         return null
        }
       else {
-        if (propuestas.length > 0) {
+        if (propuestas && propuestas.length > 0) {
           // Asumo que si hay propuestas van a tener colaboraciones/voluntarios (e.g. dettale_propuestas no vacio)
           return (
             <Button

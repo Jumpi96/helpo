@@ -49,16 +49,24 @@ class EventoPage extends React.Component {
     // Button to download PDF report of colaboraciones
     const BotonPDF = () => {
       // If needed data didnt load yet, dont render button
-      if (!detalle_propuestas && !propuestas) { return null }
+      if (detalle_propuestas === null && propuestas === null ) { 
+        return null
+       }
       else {
-        return (
-          <Button
-            color='primary'
-            onClick={() => downloadPDF(propuestas, detalle_propuestas)}
-            >
-            Descarga reporte PDF
-          </Button>
-        )
+        if (propuestas.length > 0) {
+          // Asumo que si hay propuestas van a tener colaboraciones/voluntarios (e.g. dettale_propuestas no vacio)
+          return (
+            <Button
+              color='primary'
+              onClick={() => downloadPDF(propuestas, detalle_propuestas)}
+              >
+              Descarga reporte PDF
+            </Button>
+          )
+        }
+        else {
+          return null
+        }        
       }
     }
 

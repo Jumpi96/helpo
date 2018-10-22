@@ -16,7 +16,7 @@ class Ubicacion(models.Model):
     notas = models.CharField(max_length=140, null=True)
 
     def __str__(self):
-        return self.notas + " [" + str(self.latitud) + ", " + str(self.longitud) + "]"
+        return str(self.notas) + " [" + str(self.latitud) + ", " + str(self.longitud) + "]"
 
 class Evento(IndexedTimeStampedModel):
 

@@ -6,10 +6,11 @@ import pickle
 from sklearn.metrics import pairwise_distances
 from sklearn.metrics import mean_squared_error
 from sklearn.neighbors import NearestNeighbors
-from sklearn.linear_model import Ridge
+from sklearn.svm import SVR
 from decouple import config
 from django.db.models import Sum
-from sklearn.preprocessing import StandardScaler
+from sklearn import preprocessing
+from sklearn.model_selection import GridSearchCV
 
 from recommendations.models import LogConsultaEvento
 from actividades.models import Colaboracion, Participacion, Evento, Necesidad, Voluntario
@@ -76,39 +77,47 @@ def train_fecha_regressor():
     y = pd.DataFrame()
     y["pred"] = M["%Comp"]
     training_data = M.drop(["%Comp"], axis=1)
-    model = Ridge(fit_intercept=True, alpha=0.5)
+    training_data = preprocessing.scale(training_data)
 
-    model.fit(training_data, y)
-    print(model.predict(training_data))
-    save_model_fecha_regressor(model, features)
+    parameters = {
+        'kernel': ('linear', 'rbf','poly'), 
+        'C': np.linspace(0.1, 1, num=5),
+        'gamma': np.linspace(1e-11,1e-9, num=5),
+        'epsilon': np.linspace(1e-11, 1e-9, num=5)
+    }
+    svr = GridSearchCV(SVR(), cv=2, param_grid=parameters)
+    svr.fit(training_data, y)
 
-
-def scale_training_data(training_data):
-    scaler = StandardScaler()
-    scaler.fit(training_data)
-    return scaler.transform(training_data)
+    #print(svr.best_estimator_)
+    print(svr.predict(training_data))
+    #save_model_fecha_regressor(svr, features)
 
 
 def get_data_fecha_regressor():
     eventos = Evento.objects.all()
-    features = ['M', '%NecONG', '%NecR', '%VolONG', '%VolR', 'SuONG', 'SuR', 'VisONG', 'VisR', 'Dis', 'Dias', '%Comp']
+    features = ['M', '%NecONG', '%NecRO', '%NecRA', '%VolONG', '%VolRO', '%VolRA', 'SuONG', 'SuRO', 'VisONG', 'VisRO', 'VisRA', 'Dis', 'Dias', 'Camp', '%Comp']
     df = pd.DataFrame(columns=features, index=[str(evento.id) for evento in eventos])
     for evento in eventos:
         dict_evento = {
             'M': evento.fecha_hora_inicio.month,
             '%NecONG': calc_porc_necesidades(ong=evento.organizacion),
-            '%NecR': calc_porc_necesidades(rubro=evento.organizacion.organizacionprofile.rubro),
+            '%NecRO': calc_porc_necesidades(rubro_ong=evento.organizacion.organizacionprofile.rubro),
+            '%NecRA': calc_porc_necesidades(rubro_act=evento.rubro),
             '%VolONG': calc_porc_voluntarios(ong=evento.organizacion),
-            '%VolR': calc_porc_voluntarios(rubro=evento.organizacion.organizacionprofile.rubro),
+            '%VolRO': calc_porc_voluntarios(rubro_ong=evento.organizacion.organizacionprofile.rubro),
+            '%VolRA': calc_porc_voluntarios(rubro_act=evento.rubro),
             'SuONG': len(Suscripcion.objects.filter(organizacion=evento.organizacion)),
-            'SuR': len(Suscripcion.objects.filter(organizacion__organizacionprofile__rubro=evento.organizacion.organizacionprofile.rubro)),
+            'SuRO': len(Suscripcion.objects.filter(organizacion__organizacionprofile__rubro=evento.organizacion.organizacionprofile.rubro)),
             'VisONG': calc_avg_visitas(ong=evento.organizacion),
-            'VisR': calc_avg_visitas(rubro=evento.organizacion.organizacionprofile.rubro),
+            'VisRO': calc_avg_visitas(rubro_ong=evento.organizacion.organizacionprofile.rubro),
+            'VisRA': calc_avg_visitas(rubro_act=evento.rubro),
             'Dis': calc_distance_to_cordoba(evento.organizacion),
             'Dias': (evento.fecha_hora_inicio - evento.created).days,
+            'Camp': 1 if evento.campaña else 0,
             '%Comp': calc_porc_total_evento(evento)
         }
         df.loc[str(evento.id)] = pd.Series(dict_evento)
+        print(df.loc[str(evento.id)])
     return df, features[:-1]
 
 
@@ -117,17 +126,20 @@ def get_row_fecha_regressor(evento_id):
     return {
         'M': evento.fecha_hora_inicio.month,
         '%NecONG': calc_porc_necesidades(ong=evento.organizacion),
-        '%NecR': calc_porc_necesidades(rubro=evento.organizacion.organizacionprofile.rubro),
+        '%NecRO': calc_porc_necesidades(rubro_ong=evento.organizacion.organizacionprofile.rubro),
+        '%NecRA': calc_porc_necesidades(rubro_act=evento.rubro),
         '%VolONG': calc_porc_voluntarios(ong=evento.organizacion),
-        '%VolR': calc_porc_voluntarios(rubro=evento.organizacion.organizacionprofile.rubro),
+        '%VolRO': calc_porc_voluntarios(rubro_ong=evento.organizacion.organizacionprofile.rubro),
+        '%VolRA': calc_porc_voluntarios(rubro_act=evento.rubro),
         'SuONG': len(Suscripcion.objects.filter(organizacion=evento.organizacion)),
-        'SuR': len(Suscripcion.objects.filter(organizacion__organizacionprofile__rubro=evento.organizacion.organizacionprofile.rubro)),
+        'SuRO': len(Suscripcion.objects.filter(organizacion__organizacionprofile__rubro=evento.organizacion.organizacionprofile.rubro)),
         'VisONG': calc_avg_visitas(ong=evento.organizacion),
-        'VisR': calc_avg_visitas(rubro=evento.organizacion.organizacionprofile.rubro),
+        'VisRO': calc_avg_visitas(rubro_ong=evento.organizacion.organizacionprofile.rubro),
+        'VisRA': calc_avg_visitas(rubro_act=evento.rubro),
         'Dis': calc_distance_to_cordoba(evento.organizacion),
-        'Dias': (evento.fecha_hora_inicio - evento.created).days
+        'Dias': (evento.fecha_hora_inicio - evento.created).days,
+        'Camp': 1 if evento.campaña else 0
     }
-
 
 
 def save_model_fecha_regressor(model, features):
@@ -145,11 +157,13 @@ def save_model_fecha_regressor(model, features):
     S3.put_object(Bucket=bucket, Key=features_file, Body=features_obj)
 
 
-def calc_porc_necesidades(ong=0, rubro=0):
-    if rubro == 0:
+def calc_porc_necesidades(ong=0, rubro_ong=0, rubro_act=0):
+    if ong != 0:
         necesidades = Necesidad.objects.filter(evento__organizacion=ong)
+    elif rubro_ong != 0:
+        necesidades = Necesidad.objects.filter(evento__organizacion__organizacionprofile__rubro=rubro_ong)
     else:
-        necesidades = Necesidad.objects.filter(evento__organizacion__organizacionprofile__rubro=rubro)
+        necesidades = Necesidad.objects.filter(evento__rubro=rubro_act)
     cantidad, cubiertas = 0, 0
     if necesidades:
         for necesidad in necesidades:
@@ -161,11 +175,13 @@ def calc_porc_necesidades(ong=0, rubro=0):
         return 0
 
 
-def calc_porc_voluntarios(ong=0, rubro=0):
-    if rubro == 0:
+def calc_porc_voluntarios(ong=0, rubro_ong=0, rubro_act=0):
+    if ong != 0:
         voluntarios = Voluntario.objects.filter(evento__organizacion=ong)
+    elif rubro_ong != 0:
+        voluntarios = Voluntario.objects.filter(evento__organizacion__organizacionprofile__rubro=rubro_ong)
     else:
-        voluntarios = Voluntario.objects.filter(evento__organizacion__organizacionprofile__rubro=rubro)
+        voluntarios = Voluntario.objects.filter(evento__rubro=rubro_act)
     cantidad, cubiertos = 0, 0
     if voluntarios:
         for voluntario in voluntarios:
@@ -177,11 +193,13 @@ def calc_porc_voluntarios(ong=0, rubro=0):
         return 0
 
 
-def calc_avg_visitas(ong=0, rubro=0):
-    if rubro == 0:
+def calc_avg_visitas(ong=0, rubro_act=0, rubro_ong=0):
+    if ong != 0:
         eventos = Evento.objects.filter(organizacion=ong)
+    elif rubro_ong != 0:
+        eventos = Evento.objects.filter(organizacion__organizacionprofile__rubro=rubro_ong)
     else:
-        eventos = Evento.objects.filter(organizacion__organizacionprofile__rubro=rubro)
+        eventos = Evento.objects.filter(rubro=rubro_act)
     if eventos:
         contador = 0
         for evento in eventos:

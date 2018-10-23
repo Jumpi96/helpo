@@ -59,22 +59,33 @@ class ConsultarPatrocinadores extends Component {
         </td>
       </tr>
     );
-    return (
-      <Table responsive striped>
-        <thead>
-          <tr>
-            <th>Empresa</th>
-            <th></th>
-            <th>Fecha</th>
-            <th>Estado</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {listaPropuestas}
-        </tbody>
-      </Table>
+    if(propuestas.length > 0){
+      return (
+        <Table responsive striped>
+          <thead>
+            <tr>
+              <th>Empresa</th>
+              <th></th>
+              <th>Fecha</th>
+              <th>Estado</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {listaPropuestas}
+          </tbody>
+        </Table>
+      );
+    }
+  else{
+    return(
+      <CardBody>
+        <br />
+        <label>No se recibieron propuestas para esta actividad</label>
+      </CardBody>
     );
+  }
+    
   }
 
   getBotonEstado(propuesta) {

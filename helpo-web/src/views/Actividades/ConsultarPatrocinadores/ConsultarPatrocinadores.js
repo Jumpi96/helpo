@@ -59,7 +59,7 @@ class ConsultarPatrocinadores extends Component {
         </td>
       </tr>
     );
-    if(propuestas.length > 0){
+    if(propuestas && propuestas.length > 0){
       return (
         <Table responsive striped>
           <thead>

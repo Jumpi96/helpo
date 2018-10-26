@@ -6,6 +6,7 @@ from rest_framework import routers
 from actividades import urls as actividades_urls
 from users import urls as users_urls
 from reportes import urls as reportes_urls
+from recommendations import urls as recommendations_urls
 from rest_framework_swagger.views import get_swagger_view
 
 schema_view = get_swagger_view(title='Helpo API')
@@ -18,6 +19,7 @@ urlpatterns = [
 urlpatterns += actividades_urls.urlpatterns
 urlpatterns += users_urls.urlpatterns
 urlpatterns += reportes_urls.urlpatterns
+urlpatterns += recommendations_urls.urlpatterns
 
 if settings.DEBUG:
     import debug_toolbar

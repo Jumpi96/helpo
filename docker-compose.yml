@@ -41,5 +41,13 @@ services:
       - "5050:5050"
     depends_on:
       - db
+  ml:
+    build: helpo-ml/serverless-ml/.
+    env_file:
+      - helpo-ml/serverless-ml/.env
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./helpo-ml/serverless-ml:/code
 
 # Default docker-compose, made for development

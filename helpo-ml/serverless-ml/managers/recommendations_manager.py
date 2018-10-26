@@ -13,8 +13,8 @@ class RecommendationsManager(object):
     def __init__(self):
         self.S3 = boto3.client(
             's3', region_name='us-west-2', 
-            aws_access_key_id=getenv('aws_access_key_id'),
-            aws_secret_access_key=getenv('aws_secret_access_key')
+            aws_access_key_id=getenv('AWS_ACCESS_KEY_ID'),
+            aws_secret_access_key=getenv('AWS_SECRET_ACCESS_KEY')
         )
         self.model_evento = 'model_evento.pkl'
         self.scores_evento = 'scores_evento.pkl'

@@ -1,6 +1,7 @@
 import React from 'react'
 import { Card, CardHeader, CardBody, Form, Label, Input, FormGroup, Col, Row, Container } from 'reactstrap'
 import CargarEventoForm from './CargarEventoForm'
+import PanelRecomendacion from './PanelRecomendacion'
 
 class PlanificadorEvento extends React.Component {
 
@@ -19,7 +20,7 @@ class PlanificadorEvento extends React.Component {
               </Col>
 
               <Col>
-                <p>Sopoooooooooo</p>
+                <PanelRecomendacion/>
               </Col>
 
             </Row>

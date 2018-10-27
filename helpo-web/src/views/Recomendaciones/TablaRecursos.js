@@ -7,14 +7,15 @@ class TablaRecursos extends React.Component {
 
   props:
     categorias_recursos: [{id, nombre}]
-    is_recursos: boolean
+    selected_recursos: {id: nombre}
+    onRecursoChange: fn(selected_recursos)
+    isRecursos: boolean
   */
 
   constructor(props) {
     super(props)
     this.state = {
-      selected_recursos: {}, // {id: nombre}
-      selected_recurso: 1,
+      selected_recurso: "1",
     }
   }
 
@@ -30,9 +31,9 @@ class TablaRecursos extends React.Component {
     // (It should always exist, otherwise it would be impossible to be selected)
     for (const recurso of this.props.categorias_recursos) {
       if (String(recurso.id) === recurso_selected_id) {
-        const selected_recursos = this.state.selected_recursos
+        const selected_recursos = this.props.selected_recursos
         selected_recursos[recurso.id] = recurso.nombre
-        this.setState({selected_recursos: selected_recursos})
+        this.props.onRecursoChange(selected_recursos)
         return
       }
     }
@@ -40,9 +41,9 @@ class TablaRecursos extends React.Component {
 
   handleRemoveRecurso = recurso_id => {
     // Removes from selected_recursos, recurso with recurso_id
-    const selected_recursos = this.state.selected_recursos
+    const selected_recursos = this.props.selected_recursos
     delete selected_recursos[recurso_id]
-    this.setState({ selected_recursos: selected_recursos })
+    this.props.onRecursoChange(selected_recursos)
   }
 
   selectorRecurso = () => {
@@ -71,12 +72,12 @@ class TablaRecursos extends React.Component {
 
   renderSelectedRecursos = () => {
     let rows = []
-    for (const recurso_id in this.state.selected_recursos) {
+    for (const recurso_id in this.props.selected_recursos) {
       const row = (
         <tr>
           <td>
             <p style={{ display: 'block', marginTop: 6, marginBottom: 0 }}>
-              {this.state.selected_recursos[recurso_id]}
+              {this.props.selected_recursos[recurso_id]}
             </p>
           </td>
           <td></td>
@@ -89,11 +90,13 @@ class TablaRecursos extends React.Component {
   }
 
   render() {
+    const titulo_tabla = this.props.isRecursos ? "Recurso" : "Función"
+
     return (
       <Table striped>
         <thead className='thead-light'>
           <tr>
-            <th><p style={{ display: 'block', marginBottom: 8 }}>Recurso</p></th>
+            <th><p style={{ display: 'block', marginBottom: 8 }}>{titulo_tabla}</p></th>
             <th>{this.selectorRecurso()}</th>
             <th><Button color='primary' onClick={this.handleAgregarRecurso}>Agregar</Button></th>
           </tr>

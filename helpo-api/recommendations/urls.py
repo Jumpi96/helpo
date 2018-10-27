@@ -8,4 +8,10 @@ urlpatterns = [
         view=recommendations_views.Train,
         name="train_recommendations"
     ),
+    # {% url "api:predict_fechas" %}
+    url(
+        regex=r"^recommendations/predict_fechas/$",
+        view=recommendations_views.view_predict_fechas,
+        name="predict_fechas_recommendations"
+    ),
 ]

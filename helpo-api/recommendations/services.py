@@ -3,6 +3,9 @@ import pandas as pd
 import numpy as np
 import boto3
 import pickle
+import json
+import requests
+import datetime
 from sklearn.metrics import pairwise_distances
 from sklearn.metrics import mean_squared_error
 from sklearn.neighbors import NearestNeighbors
@@ -13,11 +16,89 @@ from sklearn import preprocessing
 from sklearn.model_selection import GridSearchCV
 
 from recommendations.models import LogConsultaEvento
-from actividades.models import Colaboracion, Participacion, Evento, Necesidad, Voluntario, CategoriaRecurso, Funcion
+from actividades.models import Colaboracion, Participacion, Evento, Necesidad, Voluntario, \
+    CategoriaRecurso, Funcion, RubroEvento
 from users.models import User, Suscripcion
 from common.functions import calc_distance_locations
 
+url_base = os.getenv('ML_API')
+
+def predict_fechas(data, ong):
+    base = get_row_fecha_regressor(data, ong)
+    return {
+      'Enero': predict_fecha(base, 1),
+      'Febrero': predict_fecha(base, 2),
+      'Marzo': predict_fecha(base, 3),
+      'Abril': predict_fecha(base, 4),
+      'Mayo': predict_fecha(base, 5),
+      'Junio': predict_fecha(base, 6),
+      'Julio': predict_fecha(base, 7),
+      'Agosto': predict_fecha(base, 8),
+      'Septiembre': predict_fecha(base, 9),
+      'Octubre': predict_fecha(base, 10),
+      'Noviembre': predict_fecha(base, 11),
+      'Diciembre': predict_fecha(base, 12)
+    }
+
+
+def predict_fecha(data, mes):
+    now = datetime.datetime.now()
+    data['M'] = mes
+    data['Dias'] = (datetime.datetime(
+        now.year if mes >= now.mes else now.year + 1,
+        mes, 15) - now
+    ).days
+    url = base_url + 'recommendations/predict_fechas'
+    print(json.dumps(data))
+    response = requests.request('POST', base_url, data=json.dumps(data))
+    return response.text
+
+
+def get_row_fecha_regressor(data, ong):
+    organizacion = User.objects.get(id=ong)
+    rubro_actividad = RubroEvento.objects.get(id=data['rubro_actividad'])
+    base = {
+        '%NecONG': calc_porc_necesidades(ong=organizacion),
+        '%NecRO': calc_porc_necesidades(rubro_ong=organizacion.organizacionprofile.rubro),
+        '%NecRA': calc_porc_necesidades(rubro_act=rubro_actividad),
+        '%VolONG': calc_porc_voluntarios(ong=organizacion),
+        '%VolRO': calc_porc_voluntarios(rubro_ong=organizacion.organizacionprofile.rubro),
+        '%VolRA': calc_porc_voluntarios(rubro_act=rubro_actividad),
+        'SuONG': len(Suscripcion.objects.filter(organizacion=organizacion)),
+        'SuRO': len(Suscripcion.objects.filter(organizacion__organizacionprofile__rubro=organizacion.organizacionprofile.rubro)),
+        'VisONG': calc_avg_visitas(ong=organizacion),
+        'VisRO': calc_avg_visitas(rubro_ong=organizacion.organizacionprofile.rubro),
+        'VisRA': calc_avg_visitas(rubro_act=rubro_actividad),
+        'Dis': calc_distance_to_cordoba(data['ubicacion']),
+        'Camp': 1 if data['campaña'] else 0
+    }
+    base = add_categorias_post(data['categorias_recurso'], base)
+    base = add_funciones_post(data['categorias_recurso'], base)
+    return base
+
+
+def add_categorias_post(input_categorias, base):
+    categorias = CategoriaRecurso.objects.all()
+    for categoria in categorias:
+        if categoria.id in input_categorias:
+            dict_evento['C'+str(categoria.id)] = 1
+        else:
+            dict_evento['C'+str(categoria.id)] = 0
+    return dict_evento
+
+
+def add_funciones_post(input_funcione, base):
+    funciones = Funcion.objects.all()
+    for funcion in funciones:
+        if funcion.id in input_funciones:
+            dict_evento['F'+str(funcion.id)] = 1
+        else:
+            dict_evento['F'+str(funcion.id)] = 0
+    return dict_evento
+
+
 COLABORACION_MULTIPLIER = 5
+
 
 def train_evento_recommendations():
     M = get_data_evento_recommendations()
@@ -75,8 +156,8 @@ def save_model_evento_recommendations(model, scores):
 def train_fecha_regressor():
     M, features = get_data_fecha_regressor()
     y = pd.DataFrame()
-    y["pred"] = M["%Comp"]
-    training_data = M.drop(["%Comp"], axis=1)
+    y['pred'] = M['%Comp']
+    training_data = M.drop(['%Comp'], axis=1)
     training_data = preprocessing.scale(training_data)
 
     parameters = {
@@ -155,26 +236,6 @@ def add_funciones(evento, dict_evento):
     return dict_evento
 
 
-def get_row_fecha_regressor(evento_id):
-    evento = Evento.objects.get(id=evento_id)
-    return {
-        'M': evento.fecha_hora_inicio.month,
-        '%NecONG': calc_porc_necesidades(ong=evento.organizacion),
-        '%NecRO': calc_porc_necesidades(rubro_ong=evento.organizacion.organizacionprofile.rubro),
-        '%NecRA': calc_porc_necesidades(rubro_act=evento.rubro),
-        '%VolONG': calc_porc_voluntarios(ong=evento.organizacion),
-        '%VolRO': calc_porc_voluntarios(rubro_ong=evento.organizacion.organizacionprofile.rubro),
-        '%VolRA': calc_porc_voluntarios(rubro_act=evento.rubro),
-        'SuONG': len(Suscripcion.objects.filter(organizacion=evento.organizacion)),
-        'SuRO': len(Suscripcion.objects.filter(organizacion__organizacionprofile__rubro=evento.organizacion.organizacionprofile.rubro)),
-        'VisONG': calc_avg_visitas(ong=evento.organizacion),
-        'VisRO': calc_avg_visitas(rubro_ong=evento.organizacion.organizacionprofile.rubro),
-        'VisRA': calc_avg_visitas(rubro_act=evento.rubro),
-        'Dis': calc_distance_to_cordoba(evento.organizacion),
-        'Dias': (evento.fecha_hora_inicio - evento.created).days,
-        'Camp': 1 if evento.campaña else 0
-    }
-
 
 def save_model_fecha_regressor(model, features):
     model_file = 'model_fecha.pkl'
@@ -199,13 +260,14 @@ def calc_porc_necesidades(ong=0, rubro_ong=0, rubro_act=0):
     else:
         necesidades = Necesidad.objects.filter(evento__rubro=rubro_act)
     cantidad, cubiertas = 0, 0
-    try:    
+    if necesidades:
         for necesidad in necesidades:
             cantidad += necesidad.cantidad
             colaboraciones = Colaboracion.objects.filter(necesidad_material=necesidad, vigente=True)
-            cubiertas += colaboraciones.aggregate(Sum('cantidad'))['cantidad__sum']
+            if colaboraciones:
+                cubiertas += colaboraciones.aggregate(Sum('cantidad'))['cantidad__sum']
         return cubiertas/cantidad
-    except Exception:
+    else:
         return 0
 
 
@@ -217,13 +279,14 @@ def calc_porc_voluntarios(ong=0, rubro_ong=0, rubro_act=0):
     else:
         voluntarios = Voluntario.objects.filter(evento__rubro=rubro_act)
     cantidad, cubiertos = 0, 0
-    try:
+    if voluntarios:
         for voluntario in voluntarios:
             cantidad += voluntario.cantidad
             participaciones = Participacion.objects.filter(necesidad_voluntario=voluntario, vigente=True)
-            cubiertos += participaciones.aggregate(Sum('cantidad'))['cantidad__sum']
+            if participaciones:
+                cubiertos += participaciones.aggregate(Sum('cantidad'))['cantidad__sum']
         return cubiertos/cantidad
-    except Exception:
+    else:
         return 0
 
 
@@ -262,12 +325,14 @@ def calc_porc_total_evento(evento):
     for necesidad in necesidades:
         cantidad += necesidad.cantidad
         colaboraciones = Colaboracion.objects.filter(necesidad_material=necesidad, vigente=True)
-        cubiertas += colaboraciones.aggregate(Sum('cantidad'))['cantidad__sum']
+        if colaboraciones:
+            cubiertas += colaboraciones.aggregate(Sum('cantidad'))['cantidad__sum']
     voluntarios = Voluntario.objects.filter(evento=evento)
     for voluntario in voluntarios:
         cantidad += voluntario.cantidad
         participaciones = Participacion.objects.filter(necesidad_voluntario=voluntario, vigente=True)
-        cubiertas += participaciones.aggregate(Sum('cantidad'))['cantidad__sum']
+        if participaciones:
+            cubiertas += participaciones.aggregate(Sum('cantidad'))['cantidad__sum']
     if cantidad > 0:
         return cubiertas/cantidad
     else:

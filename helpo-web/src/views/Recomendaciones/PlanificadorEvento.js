@@ -1,5 +1,6 @@
 import React from 'react'
-import { Card, CardHeader, CardBody } from 'reactstrap'
+import { Card, CardHeader, CardBody, Form, Label, Input, FormGroup, Col, Row, Container } from 'reactstrap'
+import CargarEventoForm from './CargarEventoForm'
 
 class PlanificadorEvento extends React.Component {
 
@@ -10,7 +11,19 @@ class PlanificadorEvento extends React.Component {
           <i className="fa fa-align-justify"></i> Planificación de eventos
         </CardHeader>
         <CardBody>
-          <h2>Planificador de eventos</h2>
+          <Container>
+            <Row>
+
+              <Col>
+                <CargarEventoForm/>
+              </Col>
+
+              <Col>
+                <p>Sopoooooooooo</p>
+              </Col>
+
+            </Row>
+          </Container>
         </CardBody>
       </Card>
     )

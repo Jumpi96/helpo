@@ -1,18 +1,12 @@
 import React from 'react'
+import { Row, Col } from 'reactstrap'
 
-const testData = {
-  enero: 0.1234,
-  febrero: 0.5354,
-  marzo: 0.3353,
-  abril: 0.4365,
-  mayo: 0.3354,
-  junio: 0.3425,
-  julio: 0.1245,
-  agosto: 0.9845,
-  septiembre: 0.3562,
-  octubre: 0.5643,
-  noviembre: 0.5356,
-  diciembre: 0.5463
+const boxStyle = {
+  border: '3px solid',
+  borderColor: '#F39200',
+  borderRadius: '5px',
+  backgroundColor: '#ffd9a0',
+  marginBottom: 0,
 }
 
 class PanelRecomendacion extends React.Component {
@@ -69,40 +63,44 @@ class PanelRecomendacion extends React.Component {
 
   renderRecomendaciones = () => {
     // Checks for undefined props
-    /*if(!this.props.recomendaciones) {
+    // Assignment to shorten name
+    const obj_recom = this.props.recomendaciones
+    if(!obj_recom || (Object.keys(obj_recom).length === 0 && obj_recom.constructor === Object)) {
       return <p className="text-muted text-center">No se calculo ninguna recomendación aun</p>
-    }*/
+    }
     // Process and sort recomendaciones
     //let recomendaciones = this.sortData(this.props.recomendaciones)
-    let recomendaciones = this.sortData(testData)
+    let recomendaciones = this.sortData(this.props.recomendaciones)
 
     // Removes the first (best) recomendacion
     const best = recomendaciones.shift()
     const render_best = (
-      <div>
-        <p style={{ marginBottom: 4, fontSize: 14 }}>Mes recomendado: </p>
+      <div style={boxStyle}>        
         <p style={{
-          fontSize: 16,
+          fontSize: 14,
           display: 'inline-block',
-          fontWeight: 'bold',
-          backgroundColor: 'lightgreen',
           padding: 10,
         }}>
-          {best.mes}:  {this.changeToPorcentaje(best.valor)}
+          En base a las especifiaciones de su evento, Helpo le recomienda realizarlo en <span style={{fontWeight: 'bold'}}>{best.mes}</span>, habiendo obtenido dicho mes un puntaje del <span style={{fontWeight: 'bold'}}>{this.changeToPorcentaje(best.valor)}</span>
         </p>
       </div>
-    )
+    )    
 
     const otras_recomendaciones = recomendaciones.map(recomendacion => (
-      <p style={{ marginBottom: 3 }}>
-        {recomendacion.mes}:  {this.changeToPorcentaje(recomendacion.valor)}
-      </p>
+      <Row>
+        <Col>
+          <p style={{ marginBottom: 3 }}>{recomendacion.mes}:</p>
+        </Col>
+        <Col>
+          <p style={{ marginBottom: 3 }}>{this.changeToPorcentaje(recomendacion.valor)}</p>
+        </Col>
+      </Row>
     ))
 
     return (
-      <div style={{ marginLeft: 10 }}>
+      <div className='text-center' style={{ marginLeft: 10, marginRight: 10 }}>
         {render_best}
-        <p>Resto de los meses:</p>
+        <p style={{ marginTop: 8 }}>Resto de los meses:</p>
         {otras_recomendaciones}
       </div>
     )

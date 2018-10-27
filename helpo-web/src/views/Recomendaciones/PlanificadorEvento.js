@@ -1,9 +1,18 @@
 import React from 'react'
-import { Card, CardHeader, CardBody, Form, Label, Input, FormGroup, Col, Row, Container } from 'reactstrap'
+import { Card, CardHeader, CardBody, Col, Row, Container } from 'reactstrap'
 import CargarEventoForm from './CargarEventoForm'
 import PanelRecomendacion from './PanelRecomendacion'
 
 class PlanificadorEvento extends React.Component {
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      recomendaciones: {}
+    }
+  }
+
+  onRecomendacionesChange = recomendaciones => this.setState({recomendaciones: recomendaciones})
 
   render() {
     return (
@@ -16,11 +25,11 @@ class PlanificadorEvento extends React.Component {
             <Row>
 
               <Col>
-                <CargarEventoForm/>
+                <CargarEventoForm onRecomendacionesChange={this.onRecomendacionesChange}/>
               </Col>
 
               <Col>
-                <PanelRecomendacion/>
+                <PanelRecomendacion recomendaciones={this.state.recomendaciones}/>
               </Col>
 
             </Row>

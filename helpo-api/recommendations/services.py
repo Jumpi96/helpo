@@ -199,13 +199,13 @@ def calc_porc_necesidades(ong=0, rubro_ong=0, rubro_act=0):
     else:
         necesidades = Necesidad.objects.filter(evento__rubro=rubro_act)
     cantidad, cubiertas = 0, 0
-    if necesidades:
+    try:    
         for necesidad in necesidades:
             cantidad += necesidad.cantidad
             colaboraciones = Colaboracion.objects.filter(necesidad_material=necesidad, vigente=True)
             cubiertas += colaboraciones.aggregate(Sum('cantidad'))['cantidad__sum']
         return cubiertas/cantidad
-    else:
+    except Exception:
         return 0
 
 
@@ -217,13 +217,13 @@ def calc_porc_voluntarios(ong=0, rubro_ong=0, rubro_act=0):
     else:
         voluntarios = Voluntario.objects.filter(evento__rubro=rubro_act)
     cantidad, cubiertos = 0, 0
-    if voluntarios:
+    try:
         for voluntario in voluntarios:
             cantidad += voluntario.cantidad
             participaciones = Participacion.objects.filter(necesidad_voluntario=voluntario, vigente=True)
             cubiertos += participaciones.aggregate(Sum('cantidad'))['cantidad__sum']
         return cubiertos/cantidad
-    else:
+    except Exception:
         return 0
 
 

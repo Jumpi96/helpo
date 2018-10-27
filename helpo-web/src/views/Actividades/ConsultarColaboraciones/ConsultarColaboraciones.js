@@ -34,7 +34,6 @@ class ConsultarColaboracionConnected extends React.Component {
     this.renderModal = this.renderModal.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
     this.downloadPDF = this.downloadPDF.bind(this);
-    this.dataIsEmpty = this.dataIsEmpty.bind(this);
   }
 
   componentDidMount() {
@@ -74,16 +73,46 @@ class ConsultarColaboracionConnected extends React.Component {
     )
   }
 
-  dataIsEmpty() {
+  validatePdfRequirments() {
     // Checks if there is data about necesidades and voluntarios (already fetched and not empty)
-    let is_empty = true
+    let is_valid = false
     if (typeof this.props.necesidades === 'undefined' || typeof this.props.necesidades.necesidades === 'undefined' || typeof this.props.necesidades.voluntarios === 'undefined') {
-      return is_empty
+      return is_valid
     }
-    if (this.props.necesidades.necesidades.length > 0 && this.props.necesidades.voluntarios.length > 0) {
-      is_empty = false
+    if (this.colaboracionExists()) {
+      is_valid = true
     }
-    return is_empty
+    return is_valid
+  }
+
+  colaboracionExists() {
+    // Checks that at least one colaboracion or participacion exists
+    console.log(this.props.necesidades)
+    if (!this.props.necesidades) {
+      // Pre-check that the necesidades props exists 
+      return false
+    }
+
+    // Existen necesidades
+    if (this.props.necesidades.necesidades) {
+      for (const necesidad of this.props.necesidades.necesidades) {
+        const { colaboraciones } = necesidad
+
+        if (colaboraciones.length > 0) {
+          return true
+        } 
+      }
+    }
+    // Existen necesidades de voluntarios
+    if (this.props.necesidades.voluntarios) {
+      for (const voluntario of this.props.necesidades.voluntarios) {
+        const { participaciones } = voluntario
+
+        if (participaciones.length > 0) {
+          return true
+        } 
+      }
+    }
   }
 
   submitChanges() {
@@ -114,7 +143,7 @@ class ConsultarColaboracionConnected extends React.Component {
 
   render() {
     let descargar_pdf = null
-    if (!this.dataIsEmpty()) {
+    if (this.validatePdfRequirments()) {
       descargar_pdf = (
         <Button style={{ marginLeft: 10 }} color='primary' className='col-' onClick={this.downloadPDF}>
           Descargar como PDF

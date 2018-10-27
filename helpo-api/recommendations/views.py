@@ -17,7 +17,7 @@ def Train(request):
 @api_view(['POST'])
 def view_predict_fechas(request):
     #try:
-    ong = get_token_user(request)
+    ong = 2# get_token_user(request)
     return Response(predict_fechas(request.data, ong), status=status.HTTP_200_OK)
     #except:
     #return Response(status=status.HTTP_400_BAD_REQUEST)

@@ -45,12 +45,12 @@ def predict_fecha(data, mes):
     now = datetime.datetime.now()
     data['M'] = mes
     data['Dias'] = (datetime.datetime(
-        now.year if mes >= now.mes else now.year + 1,
+        now.year if mes >= now.month else now.year + 1,
         mes, 15) - now
     ).days
-    url = base_url + 'recommendations/predict_fechas'
+    url = url_base + 'recommendations/predict_fechas'
     print(json.dumps(data))
-    response = requests.request('POST', base_url, data=json.dumps(data))
+    response = requests.request('POST', url_base, data=json.dumps(data))
     return response.text
 
 
@@ -81,20 +81,20 @@ def add_categorias_post(input_categorias, base):
     categorias = CategoriaRecurso.objects.all()
     for categoria in categorias:
         if categoria.id in input_categorias:
-            dict_evento['C'+str(categoria.id)] = 1
+            base['C'+str(categoria.id)] = 1
         else:
-            dict_evento['C'+str(categoria.id)] = 0
-    return dict_evento
+            base['C'+str(categoria.id)] = 0
+    return base
 
 
-def add_funciones_post(input_funcione, base):
+def add_funciones_post(input_funciones, base):
     funciones = Funcion.objects.all()
     for funcion in funciones:
         if funcion.id in input_funciones:
-            dict_evento['F'+str(funcion.id)] = 1
+            base['F'+str(funcion.id)] = 1
         else:
-            dict_evento['F'+str(funcion.id)] = 0
-    return dict_evento
+            base['F'+str(funcion.id)] = 0
+    return base
 
 
 COLABORACION_MULTIPLIER = 5

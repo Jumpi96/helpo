@@ -157,7 +157,7 @@ def train_fecha_regressor():
         'epsilon': [0.04, 0.05, 0.06],
         'gamma': [0.001, 0.003, 0.005, 0.008]
     }
-    svr = GridSearchCV(SVR(), cv=2, param_grid=parameters, scoring=rmse_error)
+    svr = GridSearchCV(SVR(), cv=3, param_grid=parameters, scoring=rmse_error)
 
     svr.fit(training_data, y)
     save_model_fecha_regressor(svr, features)

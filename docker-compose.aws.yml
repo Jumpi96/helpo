@@ -32,6 +32,13 @@ services:
       - ./pgadmin.env
     expose:
       - "5050"
+  ml:
+    build: helpo-ml/serverless-ml/.
+    restart: always
+    env_file:
+      - helpo-ml/serverless-ml/.env
+    expose:
+      - "5000"
 
 # Meant to be used alone, made for pulling from aws
 # docker-compose -f docker-compose.aws.yml COMMAND

@@ -10,7 +10,7 @@ from sklearn.svm import SVR
 from decouple import config
 from django.db.models import Sum
 from sklearn.model_selection import GridSearchCV
-
+from sklearn.metrics import mean_squared_error, make_scorer
 from recommendations.models import LogConsultaEvento
 from actividades.models import Colaboracion, Participacion, Evento, Necesidad, Voluntario, \
     CategoriaRecurso, Funcion, RubroEvento
@@ -150,7 +150,15 @@ def train_fecha_regressor():
     y = pd.DataFrame()
     y['pred'] = M['%Comp']
     training_data = M.drop(['%Comp'], axis=1)
-    svr = SVR()
+
+    rmse_error = make_scorer(mean_squared_error, greater_is_better=False)
+    parameters = { 
+        'C': [0.8, 0.9, 1, 1.1],
+        'epsilon': [0.01, 0.011, 0.009],
+        'gamma': [0.8, 1, 1.2]
+    }
+    svr = GridSearchCV(SVR(), cv=2, param_grid=parameters, scoring=rmse_error)
+
     svr.fit(training_data, y)
     save_model_fecha_regressor(svr, features)
 

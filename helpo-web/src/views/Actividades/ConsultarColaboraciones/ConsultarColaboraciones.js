@@ -87,7 +87,6 @@ class ConsultarColaboracionConnected extends React.Component {
 
   colaboracionExists() {
     // Checks that at least one colaboracion or participacion exists
-    console.log(this.props.necesidades)
     if (!this.props.necesidades) {
       // Pre-check that the necesidades props exists 
       return false

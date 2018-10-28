@@ -48,6 +48,11 @@ export default {
         url: '/reportes',
         icon: 'icon-star'
       },
+      {
+        name: 'Planificación de evento',
+        url: '/planificador',
+        icon: 'icon-star'
+      },
     ],
   };
   

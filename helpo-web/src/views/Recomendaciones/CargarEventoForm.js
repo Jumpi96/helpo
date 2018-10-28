@@ -131,7 +131,6 @@ class CargarEventoForm extends React.Component {
       categorias_recurso: this.recursosObjectToArray(),
       funciones: this.voluntariosObjectToArray()
     }
-    console.log(evento_data)
     api.post('/recommendations/predict_fechas/', evento_data)
     .then(response => {
       this.props.onRecomendacionesChange(response.data)

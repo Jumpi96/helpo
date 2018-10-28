@@ -37,8 +37,8 @@ function downloadPDF(imagenes, data) {
   doc.setFontStyle('normal')
   doc.setFontSize(11)
   doc.text(`Total de suscripciones: ${suscripciones}`, 6, 40)
-  doc.text(`Total de eventos realizados: ${manos}`, 140, 40)
-  doc.text(`Total de manos recibidas: ${eventos}`, 6, 50)
+  doc.text(`Total de eventos realizados: ${eventos}`, 140, 40)
+  doc.text(`Total de manos recibidas: ${manos}`, 6, 50)
   doc.text(`Total de voluntarios participantes: ${voluntarios}`, 140, 50)
 
   doc.setFontStyle('bold')

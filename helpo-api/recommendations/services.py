@@ -5,16 +5,12 @@ import boto3
 import pickle
 import json
 import requests
-import datetime
-from sklearn.metrics import pairwise_distances
-from sklearn.metrics import mean_squared_error
 from sklearn.neighbors import NearestNeighbors
 from sklearn.svm import SVR
 from decouple import config
 from django.db.models import Sum
-from sklearn import preprocessing
 from sklearn.model_selection import GridSearchCV
-
+from sklearn.metrics import mean_squared_error, make_scorer
 from recommendations.models import LogConsultaEvento
 from actividades.models import Colaboracion, Participacion, Evento, Necesidad, Voluntario, \
     CategoriaRecurso, Funcion, RubroEvento
@@ -25,39 +21,34 @@ url_base = os.getenv('ML_API')
 
 def predict_fechas(data, ong):
     base = get_row_fecha_regressor(data, ong)
+    predictions = post_ml_api(base)
     return {
-      'Enero': predict_fecha(base, 1),
-      'Febrero': predict_fecha(base, 2),
-      'Marzo': predict_fecha(base, 3),
-      'Abril': predict_fecha(base, 4),
-      'Mayo': predict_fecha(base, 5),
-      'Junio': predict_fecha(base, 6),
-      'Julio': predict_fecha(base, 7),
-      'Agosto': predict_fecha(base, 8),
-      'Septiembre': predict_fecha(base, 9),
-      'Octubre': predict_fecha(base, 10),
-      'Noviembre': predict_fecha(base, 11),
-      'Diciembre': predict_fecha(base, 12)
+      'Enero': predictions['1'],
+      'Febrero': predictions['2'],
+      'Marzo': predictions['3'],
+      'Abril': predictions['4'],
+      'Mayo': predictions['5'],
+      'Junio': predictions['6'],
+      'Julio': predictions['7'],
+      'Agosto': predictions['8'],
+      'Septiembre': predictions['9'],
+      'Octubre': predictions['10'],
+      'Noviembre': predictions['11'],
+      'Diciembre': predictions['12']
     }
 
 
-def predict_fecha(data, mes):
-    now = datetime.datetime.now()
-    data['M'] = mes
-    data['Dias'] = (datetime.datetime(
-        now.year if mes >= now.mes else now.year + 1,
-        mes, 15) - now
-    ).days
-    url = base_url + 'recommendations/predict_fechas'
-    print(json.dumps(data))
-    response = requests.request('POST', base_url, data=json.dumps(data))
-    return response.text
+def post_ml_api(data):
+    url = url_base + 'recommendations/predict_fechas'
+    response = requests.request('POST', url, data=json.dumps(data))
+    return json.loads(response.text)
 
 
 def get_row_fecha_regressor(data, ong):
     organizacion = User.objects.get(id=ong)
     rubro_actividad = RubroEvento.objects.get(id=data['rubro_actividad'])
     base = {
+        'M': 0,
         '%NecONG': calc_porc_necesidades(ong=organizacion),
         '%NecRO': calc_porc_necesidades(rubro_ong=organizacion.organizacionprofile.rubro),
         '%NecRA': calc_porc_necesidades(rubro_act=rubro_actividad),
@@ -70,7 +61,8 @@ def get_row_fecha_regressor(data, ong):
         'VisRO': calc_avg_visitas(rubro_ong=organizacion.organizacionprofile.rubro),
         'VisRA': calc_avg_visitas(rubro_act=rubro_actividad),
         'Dis': calc_distance_to_cordoba(data['ubicacion']),
-        'Camp': 1 if data['campaña'] else 0
+        'Camp': 1 if data['campaña'] else 0,
+        'Dias': 0
     }
     base = add_categorias_post(data['categorias_recurso'], base)
     base = add_funciones_post(data['categorias_recurso'], base)
@@ -81,20 +73,20 @@ def add_categorias_post(input_categorias, base):
     categorias = CategoriaRecurso.objects.all()
     for categoria in categorias:
         if categoria.id in input_categorias:
-            dict_evento['C'+str(categoria.id)] = 1
+            base['C'+str(categoria.id)] = 1
         else:
-            dict_evento['C'+str(categoria.id)] = 0
-    return dict_evento
+            base['C'+str(categoria.id)] = 0
+    return base
 
 
-def add_funciones_post(input_funcione, base):
+def add_funciones_post(input_funciones, base):
     funciones = Funcion.objects.all()
     for funcion in funciones:
         if funcion.id in input_funciones:
-            dict_evento['F'+str(funcion.id)] = 1
+            base['F'+str(funcion.id)] = 1
         else:
-            dict_evento['F'+str(funcion.id)] = 0
-    return dict_evento
+            base['F'+str(funcion.id)] = 0
+    return base
 
 
 COLABORACION_MULTIPLIER = 5
@@ -158,20 +150,17 @@ def train_fecha_regressor():
     y = pd.DataFrame()
     y['pred'] = M['%Comp']
     training_data = M.drop(['%Comp'], axis=1)
-    training_data = preprocessing.scale(training_data)
 
-    parameters = {
-        'kernel': ('linear', 'rbf','poly'), 
-        'C': np.linspace(0.1, 1, num=5),
-        'gamma': np.linspace(1e-11,1e-9, num=5),
-        'epsilon': np.linspace(1e-11, 1e-9, num=5)
+    rmse_error = make_scorer(mean_squared_error, greater_is_better=False)
+    parameters = { 
+        'C': [0.8, 0.9, 1],
+        'epsilon': [0.04, 0.05, 0.06],
+        'gamma': [0.001, 0.003, 0.005, 0.008]
     }
-    svr = GridSearchCV(SVR(), cv=2, param_grid=parameters)
-    svr.fit(training_data, y)
+    svr = GridSearchCV(SVR(), cv=3, param_grid=parameters, scoring=rmse_error)
 
-    #print(svr.best_estimator_)
-    print(svr.predict(training_data))
-    #save_model_fecha_regressor(svr, features)
+    svr.fit(training_data, y)
+    save_model_fecha_regressor(svr, features)
 
 
 def get_data_fecha_regressor():

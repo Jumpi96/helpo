@@ -38,6 +38,13 @@ services:
     depends_on:
       - db
       - api
+  ml:
+    build: helpo-ml/serverless-ml/. 
+    restart: always
+    env_file:
+      - helpo-ml/serverless-ml/.env
+    expose:
+      - "5000"
 
 # Should be used alone, make for building the production app
 # docker-compose -f docker-compose.prod.yml COMMAND

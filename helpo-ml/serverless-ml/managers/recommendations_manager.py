@@ -3,7 +3,7 @@ from os import getenv
 import pickle
 import numpy as np
 import pandas as pd
-from sklearn.preprocessing import StandardScaler
+import datetime
 
 BUCKET_NAME = 'helpo-ml'
 
@@ -66,10 +66,14 @@ class RecommendationsManager(object):
         model = self.load_model(self.model_fecha)
         features = self.load_model(self.features_fecha)
         df = pd.DataFrame(columns=features, index=[0])
-        df.loc[0] = pd.Series(data)
+        df.loc[0] = pd.Series(data) 
         predictions = {}
+        now = datetime.datetime.now()
         for i in range(12):
             df.loc[0]['M'] = i+1
+            df.loc[0]['Dias'] = (datetime.datetime(
+                now.year if i+1 >= now.month else now.year + 1,
+                i+1, 15) - now).days
             pre = model.predict(df)
-            predictions[i+1] = pre[0]
+            predictions[i+1] = round(pre[0], 4)
         return predictions

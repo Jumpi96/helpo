@@ -29,9 +29,9 @@ def predict_eventos():
 @RECOMMENDATIONS_API.route('/recommendations/predict_fechas', methods=['POST'])
 def predict_fechas():
     # Parse request body for model input
-    body_dict = request.get_json(silent=True)
-    prediction_data = body_dict['prediction_data']
+    body_dict = request.get_json(force=True)
+
     # Make prediction 
-    prediction = RecommendationsManager.predict_fecha(prediction_data)
-    
+    prediction = RecommendationsManager.predict_fecha(body_dict)
+
     return json.dumps(prediction)

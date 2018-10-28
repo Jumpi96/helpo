@@ -8,4 +8,4 @@ app = Flask(__name__)
 app.register_blueprint(RECOMMENDATIONS_API)
 
 if __name__ == '__main__':    
-    app.run(debug=getenv('env', False) == 'DEV', host='0.0.0.0')
+    app.run(debug=getenv('ENV', False) == 'DEV', host='0.0.0.0')

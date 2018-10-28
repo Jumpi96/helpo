@@ -153,9 +153,9 @@ def train_fecha_regressor():
 
     rmse_error = make_scorer(mean_squared_error, greater_is_better=False)
     parameters = { 
-        'C': [0.8, 0.9, 1, 1.1],
-        'epsilon': [0.01, 0.011, 0.009],
-        'gamma': [0.8, 1, 1.2]
+        'C': [0.8, 0.9, 1],
+        'epsilon': [0.04, 0.05, 0.06],
+        'gamma': [0.001, 0.003, 0.005, 0.008]
     }
     svr = GridSearchCV(SVR(), cv=2, param_grid=parameters, scoring=rmse_error)
 

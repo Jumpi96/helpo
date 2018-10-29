@@ -79,7 +79,7 @@ class CargarEventoForm extends React.Component {
 
     return (
       <Label for="selectRubro" style={{ width: '100%' }}>
-        Rubro:
+        Rubro
         <Input
           type="select"
           name="selectRubro"
@@ -96,7 +96,7 @@ class CargarEventoForm extends React.Component {
   esCampañaCheckbox = () => {
     return (
       <Label style={{ marginTop: 15, marginBottom: 15 }} check>
-        Es campaña?
+        ¿Es una campaña?
         <Input onChange={this.handleCampañaChange} style={{ marginLeft: 8 }} type="checkbox" />
       </Label>
     )

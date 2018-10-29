@@ -19,7 +19,7 @@ def calc_distance_locations(lat_a, long_a, lat_b, long_b):
 
 def get_token_user(request):
     token = request.META.get('HTTP_AUTHORIZATION', None)
-    if token is not None:
+    if token is not None and len(token) > 0:
         objeto_token = AuthToken.objects.get(token_key=token[6:14])
         return objeto_token.user_id
 

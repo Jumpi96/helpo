@@ -128,7 +128,7 @@ class CargarEventoForm extends React.Component {
         latitud: this.state.ubicacion.latitud,
         longitud: this.state.ubicacion.longitud
       },
-      categorias_recursos: this.recursosObjectToArray(),
+      categorias_recurso: this.recursosObjectToArray(),
       funciones: this.voluntariosObjectToArray()
     }
     console.log(evento_data)

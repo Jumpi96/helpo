@@ -18,7 +18,7 @@ class PlanificadorEvento extends React.Component {
     return (
       <Card>
         <CardHeader>
-          <i className="fa fa-align-justify"></i> Planificación de eventos
+          <i className="fa fa-align-justify"></i> Complete los datos de la actividad a planificar
         </CardHeader>
         <CardBody>
           <Container>

@@ -49,7 +49,7 @@ export default {
         icon: 'icon-star'
       },
       {
-        name: 'Planificación de evento',
+        name: 'Planificar actividad',
         url: '/planificador',
         icon: 'icon-star'
       },

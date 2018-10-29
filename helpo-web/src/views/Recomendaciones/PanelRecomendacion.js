@@ -66,7 +66,7 @@ class PanelRecomendacion extends React.Component {
     // Assignment to shorten name
     const obj_recom = this.props.recomendaciones
     if(!obj_recom || (Object.keys(obj_recom).length === 0 && obj_recom.constructor === Object)) {
-      return <p className="text-muted text-center">No se calculo ninguna recomendación aun</p>
+      return <p className="text-muted text-center">Aún no ha planificado una actividad</p>
     }
     // Process and sort recomendaciones
     //let recomendaciones = this.sortData(this.props.recomendaciones)

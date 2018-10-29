@@ -102,19 +102,20 @@ def train_evento_recommendations():
 def get_data_evento_recommendations():
     usuarios = User.objects.exclude(user_type=1)
     eventos = Evento.objects.all()
-    df = pd.DataFrame(columns=[str(evento.id) for evento in eventos],
-        index=[str(usuario.id) for usuario in usuarios])
+    data = pd.DataFrame(columns=['userId', 'eventoId', 'rating'])
     for usuario in usuarios:
-        dict_usuario = {}
         for evento in eventos:
             colaboro = len(Colaboracion.objects.filter(necesidad_material__evento=evento, colaborador=usuario)) > 0
             participo = len(Participacion.objects.filter(necesidad_voluntario__evento=evento, colaborador=usuario)) > 0
             visitas = len(LogConsultaEvento.objects.filter(evento=evento, usuario=usuario))
             score = colaboro * COLABORACION_MULTIPLIER + participo * COLABORACION_MULTIPLIER + visitas
-            dict_usuario[str(evento.id)] = score
-            print(usuario.nombre + ' - ' + evento.nombre + ' - Score: ' + str(score))
-        df.loc[str(usuario.id)] = pd.Series(dict_usuario)
-    return df
+            if score > 0:
+                data = data.append({
+                    'userId': usuario.id,
+                    'eventoId': evento.id,
+                    'rating': score
+                }, ignore_index=True)
+    return data
 
 
 def get_row_evento_recommendations(usuario):

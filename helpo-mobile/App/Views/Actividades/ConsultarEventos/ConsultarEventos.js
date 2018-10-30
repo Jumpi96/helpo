@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Container, Header, Title, Content, Button, Icon, Left, Right, Body, Toast } from 'native-base';
+import { Container, ListItem, Label, Header, Title, View, Content, Button, Icon, Left, Right, Body, Toast } from 'native-base';
 import api from '../../../api';
 import EventoCard from './EventoCard/EventoCard';
 import styles from './styles';
@@ -42,9 +42,61 @@ class ConsultarEventos extends Component {
         }
       })
       .catch((error) => {
-        if (error.response){ console.log(error.response.status) }
-        else { console.log('Error: ', error.message)}
+        if (error.response) { console.log(error.response.status) }
+        else { console.log('Error: ', error.message) }
       })
+  }
+
+  getEventos(eventos) {
+    if (eventos.length > 0) {
+      if (eventos.length <= 3) {
+        return (
+          <View>
+            <ListItem itemDivider>
+              <Label style={styles.label}>Recomendaciones para vos</Label>
+            </ListItem>
+            {eventos.map(evento =>
+              <EventoCard
+                key={evento.id}
+                evento={evento}
+                openEvento={() => this.props.navigation.navigate('ConsultarEvento', { evento })}
+              />
+            )}
+          </View>
+        )
+      } else {
+        return (
+          <View>
+            <ListItem itemDivider>
+              <Label style={styles.label}>Recomendaciones para vos</Label>
+            </ListItem>
+            {eventos.slice(0, 3).map(evento =>
+              <EventoCard
+                key={evento.id}
+                evento={evento}
+                openEvento={() => this.props.navigation.navigate('ConsultarEvento', { evento })}
+              />
+            )}
+            <ListItem itemDivider>
+              <Label style={styles.label}>Otras actividades sociales</Label>
+            </ListItem>
+            {eventos.slice(3).map(evento =>
+              <EventoCard
+                key={evento.id}
+                evento={evento}
+                openEvento={() => this.props.navigation.navigate('ConsultarEvento', { evento })}
+              />
+            )}
+          </View>
+        )
+      }
+    } else {
+      return (
+        <ListItem itemDivider>
+          <Label style={styles.label}>Cargando...</Label>
+        </ListItem>
+      )
+    }
   }
 
   render() {
@@ -67,13 +119,7 @@ class ConsultarEventos extends Component {
           </Right>
         </Header>
         <Content padder>
-          {eventos && eventos.map(evento =>
-            <EventoCard
-              key={evento.id}
-              evento={evento}
-              openEvento={() => this.props.navigation.navigate('ConsultarEvento', { evento })}
-            />
-            )}
+          {this.getEventos(eventos)}
         </Content>
       </Container>
     );

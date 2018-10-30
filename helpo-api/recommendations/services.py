@@ -11,17 +11,28 @@ from decouple import config
 from django.db.models import Sum
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import mean_squared_error, make_scorer
+from surprise import Reader, Dataset, SVD
+from surprise.model_selection import GridSearchCV
 from recommendations.models import LogConsultaEvento
 from actividades.models import Colaboracion, Participacion, Evento, Necesidad, Voluntario, \
     CategoriaRecurso, Funcion, RubroEvento
 from users.models import User, Suscripcion
 from common.functions import calc_distance_locations
 
-url_base = os.getenv('ML_API')
 
-def predict_fechas(data, ong):
+bucket_name = 'helpo-ml'
+model_evento = 'model_evento.pkl'
+model_fecha = 'model_fecha.pkl'
+features_fecha = 'features_fecha.pkl'
+S3 = boto3.client(
+        's3', region_name='us-west-2', 
+        aws_access_key_id=config('AWS_ACCESS_KEY_ID'),
+        aws_secret_access_key=config('AWS_SECRET_ACCESS_KEY')
+    )
+
+def handle_predict_fechas(data, ong):
     base = get_row_fecha_regressor(data, ong)
-    predictions = post_ml_api(base)
+    predictions = predict_fechas(base)
     return {
       'Enero': predictions['1'],
       'Febrero': predictions['2'],
@@ -38,10 +49,30 @@ def predict_fechas(data, ong):
     }
 
 
-def post_ml_api(data):
-    url = url_base + 'recommendations/predict_fechas'
-    response = requests.request('POST', url, data=json.dumps(data))
-    return json.loads(response.text)
+def predict_fechas(data):
+    model = load_model(model_fecha)
+    features = load_model(features_fecha)
+    df = pd.DataFrame(columns=features, index=[0])
+    df.loc[0] = pd.Series(data) 
+    predictions = {}
+    now = datetime.datetime.now()
+    for i in range(12):
+        df.loc[0]['M'] = i+1
+        df.loc[0]['Dias'] = (datetime.datetime(
+            now.year if i+1 >= now.month else now.year + 1,
+            i+1, 15) - now).days
+        pre = model.predict(df)
+        predictions[i+1] = round(pre[0], 4)
+    return predictions
+
+
+def predict_eventos_userbased(usuario, eventos):
+    model = load_model(model_evento)
+    ordered_dict = {}
+    for evento in eventos:
+        a = model.predict(usuario, evento)
+        ordered_dict[evento] = round(a[3], 2)
+    return sorted(ordered_dict.items(), key=lambda kv: kv[1], reverse=True)[:3]
 
 
 def get_row_fecha_regressor(data, ong):
@@ -93,28 +124,39 @@ COLABORACION_MULTIPLIER = 5
 
 
 def train_evento_recommendations():
-    M = get_data_evento_recommendations()
-    model_knn = NearestNeighbors(metric = 'cosine', algorithm = 'brute') 
-    model_knn.fit(M)
-    save_model_evento_recommendations(model_knn, M)
+    data = get_data_evento_recommendations()
+    reader = Reader(rating_scale={0, max(data.rating)})
+    trainset = Dataset.load_from_df(data[['userID', 'itemID', 'rating']], reader)
+    
+    param_grid = {'n_epochs': [1, 10, 50], 
+              'lr_all': [0.85, 0.10, 0.11, 0.12],
+              'reg_all': [0.01, 0.005, 0.003, 0.0001]}
+    gs = GridSearchCV(SVD, param_grid, measures=['rmse', 'mae'], cv=6, refit=True)
+    gs.fit(trainset)
+
+    save_model_evento_recommendations(gs)
     
 
 def get_data_evento_recommendations():
-    usuarios = User.objects.exclude(user_type=1)
+    usuarios = User.objects.all()
     eventos = Evento.objects.all()
-    df = pd.DataFrame(columns=[str(evento.id) for evento in eventos],
-        index=[str(usuario.id) for usuario in usuarios])
+    data = pd.DataFrame(columns=['userID', 'itemID', 'rating'])
     for usuario in usuarios:
-        dict_usuario = {}
         for evento in eventos:
             colaboro = len(Colaboracion.objects.filter(necesidad_material__evento=evento, colaborador=usuario)) > 0
             participo = len(Participacion.objects.filter(necesidad_voluntario__evento=evento, colaborador=usuario)) > 0
+            organizador = evento.organizacion.id == usuario.id
             visitas = len(LogConsultaEvento.objects.filter(evento=evento, usuario=usuario))
-            score = colaboro * COLABORACION_MULTIPLIER + participo * COLABORACION_MULTIPLIER + visitas
-            dict_usuario[str(evento.id)] = score
-            print(usuario.nombre + ' - ' + evento.nombre + ' - Score: ' + str(score))
-        df.loc[str(usuario.id)] = pd.Series(dict_usuario)
-    return df
+            score = colaboro * COLABORACION_MULTIPLIER + \
+                participo * COLABORACION_MULTIPLIER + visitas + \
+                organizador * 2 * COLABORACION_MULTIPLIER
+            if score > 0:
+                data = data.append({
+                    'userID': usuario.id,
+                    'itemID': evento.id,
+                    'rating': score
+                }, ignore_index=True)
+    return data
 
 
 def get_row_evento_recommendations(usuario):
@@ -130,19 +172,17 @@ def get_row_evento_recommendations(usuario):
     return dict_usuario
 
 
-def save_model_evento_recommendations(model, scores):
-    model_file = 'model_evento.pkl'
-    scores_file = 'scores_evento.pkl'
+def load_model(key):
+    # Load model from S3 bucket
+    response = S3.get_object(Bucket=bucket_name, Key=key)
+    # Load pickle model
+    model_str = response['Body'].read()     
+    return pickle.loads(model_str)
+
+
+def save_model_evento_recommendations(model):
     model_obj = pickle.dumps(model)
-    scores_obj = pickle.dumps(scores)
-    S3 = boto3.client(
-        's3', region_name='us-west-2', 
-        aws_access_key_id=config('AWS_ACCESS_KEY_ID'),
-        aws_secret_access_key=config('AWS_SECRET_ACCESS_KEY')
-    )
-    bucket = 'helpo-ml'
-    S3.put_object(Bucket=bucket, Key=model_file, Body=model_obj)
-    S3.put_object(Bucket=bucket, Key=scores_file, Body=scores_obj)
+    S3.put_object(Bucket=bucket_name, Key=model_evento, Body=model_obj)
 
 
 def train_fecha_regressor():
@@ -227,18 +267,11 @@ def add_funciones(evento, dict_evento):
 
 
 def save_model_fecha_regressor(model, features):
-    model_file = 'model_fecha.pkl'
     model_obj = pickle.dumps(model)
-    features_file = 'features_fecha.pkl'
     features_obj = pickle.dumps(features)
-    S3 = boto3.client(
-        's3', region_name='us-west-2', 
-        aws_access_key_id=config('AWS_ACCESS_KEY_ID'),
-        aws_secret_access_key=config('AWS_SECRET_ACCESS_KEY')
-    )
-    bucket = 'helpo-ml'
-    S3.put_object(Bucket=bucket, Key=model_file, Body=model_obj)
-    S3.put_object(Bucket=bucket, Key=features_file, Body=features_obj)
+    
+    S3.put_object(Bucket=bucket_name, Key=model_fecha, Body=model_obj)
+    S3.put_object(Bucket=bucket_name, Key=features_fecha, Body=features_obj)
 
 
 def calc_porc_necesidades(ong=0, rubro_ong=0, rubro_act=0):

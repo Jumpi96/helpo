@@ -19,9 +19,9 @@ gunicorn==19.9.0
 opbeat==3.6.1
 whitenoise==3.3.1
 ipython==6.4.0
-requests==2.19.1
-numpy==1.15.2
+requests==2.20.0
 pandas==0.23.4
 sklearn==0.0
 boto3==1.9.28
 coverage==4.5.1
+surprise==0.1

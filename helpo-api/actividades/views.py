@@ -22,6 +22,7 @@ from actividades.serializers import EventoSerializer, RubroEventoSerializer, \
     ParticipacionSerializer, ColaboracionSerializer, ComentarioSerializer, MensajeSerializer, EventoImagenSerializer, \
     PropuestaSerializer, ConsultaAllNecesidadesSerializer, ConsultarPropuestasEmpresaSerializer, PropuestasEmpresasSerializer
 from actividades.services import create_propuesta, actualizar_colaboracion, actualizar_participacion
+from recommendations.services import predict_eventos_userbased
 from common.functions import get_token_user, calc_distance_locations
 import re
 
@@ -281,6 +282,17 @@ class ConsultaEventosOrganizacionCreateReadView(ListCreateAPIView):
             lista_eventos = self.get_eventos(self.request.query_params)
             queryset = queryset.filter(id__in=lista_eventos)
         queryset = queryset.order_by('fecha_hora_inicio')
+        user = get_token_user(self.request)
+        if user is not None:
+            queryset = self.recomendar_eventos(queryset, user)
+        return queryset
+
+    def recomendar_eventos(self, queryset, user):
+        lista_eventos = [e.id for e in queryset]
+        recomendados = predict_eventos_userbased(user, lista_eventos)
+        lista_recomendados = [r[1] for r in recomendados]
+        queryset = queryset.filter(id__in=lista_recomendados) | \
+            queryset.exclude(id__in=lista_recomendados)
         return queryset
 
     def tiene_filtros(self, params):

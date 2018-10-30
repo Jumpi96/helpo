@@ -44,6 +44,7 @@ Go to our [Git wiki](https://github.com/Jumpi96/helpo/wiki/Git-hints)
   - Create file with name `.env` and text from: [API Local ENV Wiki](https://github.com/Jumpi96/helpo/wiki/ENV-Files#local)
   - Run on `helpo-api/` with virtualenv activated: 
 ```
+pip install numpy
 pip install -r requirements.txt
 python manage.py migrate
 python manage.py runserver

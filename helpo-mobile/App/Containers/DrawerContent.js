@@ -31,6 +31,16 @@ const itemsOrg = [
 	  'name': 'Home'
 	},
 	{
+	  'key': 'MisEventos',
+	  'routeName': 'MisEventos',
+	  'name': 'Mis actividades sociales',
+	},
+	{
+	  'key': 'RegistrarEvento',
+	  'routeName': 'RegistrarEvento',
+	  'name': 'Nueva actividad social',
+	},
+	{
 	  'key': 'ConsultarEventos',
 	  'routeName': 'ConsultarEventos',
 	  'name': 'Actividades sociales',
@@ -41,15 +51,10 @@ const itemsOrg = [
 		'name': 'Organizaciones'
 	},
 	{
-	  'key': 'RegistrarEvento',
-	  'routeName': 'RegistrarEvento',
-	  'name': 'Nueva actividad social',
+		'key': 'EmpresasPage',
+		'routeName': 'EmpresasPage',
+		'name': 'Empresas'
 	},
-	{
-	  'key': 'MisEventos',
-	  'routeName': 'MisEventos',
-	  'name': 'Mis actividades sociales',
-	},	
 	{
 		'key': 'ConsultarPerfilGenerico',
 		'routeName': 'ConsultarPerfilGenerico',
@@ -69,6 +74,11 @@ const itemsVol = [
 		'name': 'Home'
 	},
 	{
+		'key': 'MisColaboraciones',
+		'routeName': 'MisColaboraciones',
+		'name': 'Mis colaboraciones'
+	},
+	{
 		'key': 'ConsultarEventos',
 		'routeName': 'ConsultarEventos',
 		'name': 'Actividades sociales',
@@ -79,9 +89,9 @@ const itemsVol = [
 		'name': 'Organizaciones'
 	},
 	{
-		'key': 'MisColaboraciones',
-		'routeName': 'MisColaboraciones',
-		'name': 'Mis colaboraciones'
+		'key': 'EmpresasPage',
+		'routeName': 'EmpresasPage',
+		'name': 'Empresas'
 	},
 	{
 		'key': 'ConsultarPerfilGenerico',
@@ -108,6 +118,11 @@ const itemsEmp = [
 	  'name': 'Home'
 	},
 	{
+		'key': 'MisPropuestas',
+		'routeName': 'MisPropuestas',
+		'name': 'Mis propuestas'
+	},
+	{
 	  'key': 'ConsultarEventos',
 	  'routeName': 'ConsultarEventos',
 	  'name': 'Actividades sociales',
@@ -118,9 +133,9 @@ const itemsEmp = [
 		'name': 'Organizaciones'
 	},
 	{
-		'key': 'MisPropuestas',
-		'routeName': 'MisPropuestas',
-		'name': 'Mis propuestas'
+		'key': 'EmpresasPage',
+		'routeName': 'EmpresasPage',
+		'name': 'Empresas'
 	},
 	{
 		'key': 'ConsultarPerfilGenerico',

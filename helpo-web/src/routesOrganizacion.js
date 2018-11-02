@@ -67,6 +67,11 @@ const OrganizacionesPage = Loadable({
   loading: Loading,
 })
 
+const EmpresasPage = Loadable({
+  loader: () => import('./views/Empresas/EmpresasPage.js'),
+  loading: Loading,
+})
+
 const ConsultarPatrocinadores = Loadable({
   loader: () => import('./views/Actividades/ConsultarPatrocinadores/ConsultarPatrocinadores'),
   loading: Loading,
@@ -108,6 +113,7 @@ const routes = [
   { path: '/actividades/album/:eventoId', name: 'Album de Evento', component: AlbumImagenes },
   { path: '/reportes', name: 'Reportes', component: DashboardReportes },
   { path: '/organizaciones', name: 'Organizaciones', component: OrganizacionesPage },
+  { path: '/empresas', name: 'Empresas', component: EmpresasPage },
   { path: '/planificador', name: 'Planificador', component: PlanificadorEvento },
 ];
 

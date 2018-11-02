@@ -39,6 +39,11 @@
       icon: 'icon-calendar'
     },
     {
+      name: 'Empresas',
+      url: '/empresas',
+      icon: 'icon-calendar'
+    },
+    {
       title: true,
       name: 'Perfil',
       wrapper: {            // optional wrapper object

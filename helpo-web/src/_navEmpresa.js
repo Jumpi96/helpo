@@ -38,6 +38,11 @@ export default {
         url: '/organizaciones',
         icon: 'icon-calendar'
       },
+      {
+        name: 'Empresas',
+        url: '/empresas',
+        icon: 'icon-calendar'
+      },
     ],
   };
   

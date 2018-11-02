@@ -44,6 +44,11 @@ export default {
         icon: 'icon-calendar'
       },
       {
+        name: 'Empresas',
+        url: '/empresas',
+        icon: 'icon-calendar'
+      },
+      {
         name: 'Estadísticas',
         url: '/reportes',
         icon: 'icon-star'

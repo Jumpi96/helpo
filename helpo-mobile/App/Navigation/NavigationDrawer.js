@@ -22,6 +22,7 @@ import FiltroEventos from '../Views/Actividades/ConsultarEventos/FiltroEventos/F
 import MensajesEvento from '../Views/Actividades/MensajesEvento/MensajesEvento';
 import NuevoMensaje from '../Views/Actividades/MensajesEvento/NuevoMensaje';
 import OrganizacionesPage from '../Views/Organizaciones/OrganizacionesPage';
+import EmpresasPage from '../Views/Empresas/EmpresasPage';
 import AgregarOfrecimiento from "../Views/Actividades/RegistrarOfrecimiento/AgregarOfrecimiento";
 import RegistrarOfrecimiento from "../Views/Actividades/RegistrarOfrecimiento/RegistrarOfrecimiento";
 import MisPropuestas from '../Views/Actividades/MisPropuestas/MisPropuestas';
@@ -61,6 +62,7 @@ const NavigationDrawer = DrawerNavigator({
 	MensajesEvento: { screen: MensajesEvento },
 	NuevoMensaje: { screen: NuevoMensaje },
 	OrganizacionesPage: { screen: OrganizacionesPage },
+	EmpresasPage: { screen: EmpresasPage },
 	AgregarOfrecimiento: { screen: AgregarOfrecimiento },
 	RegistrarOfrecimiento: { screen: RegistrarOfrecimiento },
 	MisPropuestas: { screen: MisPropuestas },

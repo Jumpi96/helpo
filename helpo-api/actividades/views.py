@@ -651,3 +651,13 @@ class PropuestaReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     queryset = Propuesta.objects.all()
     serializer_class = PropuestaSerializer
     lookup_field = 'id'
+
+    def update(self, request, *args, **kwargs):
+        if request is not None and request.data is not None and request.data['id'] is not None:
+            propuesta = Propuesta.objects.get(id=request.data['id'])
+            if propuesta is not None and propuesta.aceptado == 1:
+                from actividades.services import notify_cambio_propuesta
+                notify_cambio_propuesta(propuesta)
+            nueva_propuesta = super().update(request, *args, **kwargs)
+            return nueva_propuesta
+        return None

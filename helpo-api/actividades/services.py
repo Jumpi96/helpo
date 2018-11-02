@@ -163,7 +163,8 @@ def create_propuesta_voluntario(user, necesidad_voluntario):
             evento_id=evento_id, empresa_id=user.id, aceptado=0)
 
 def _send_mail_propuesta(usuarios_id, propuesta):
-    subject_utf = u"Propuesta para evento: " + propuesta.evento.nombre
+    tipo_actividad = "campaña" if propuesta.evento.campaña else "evento"
+    subject_utf = u"Propuesta para " + tipo_actividad + ": " + propuesta.evento.nombre
     from common.templates import render_propuesta
     content = render_propuesta(propuesta)
     from common.notifications import send_mail_to_id_list
@@ -246,6 +247,20 @@ def deny_propuesta(propuesta):
         p.vigente = False
         p.save()
 
+
+def notify_cambio_propuesta(propuesta):
+    subject_utf = u"Cambio de una propuesta en Helpo"
+    from common.templates import render_cambio_propuesta
+    content = render_cambio_propuesta(propuesta)
+    from common.notifications import send_mail_to_id, send_push_notification_to_id_list
+    send_mail_to_id(id_to=propuesta.evento.organizacion.id,
+                    html_subject=subject_utf, html_content=content)
+    en_msg = "Proposal to " + propuesta.evento.nombre + " has been changed"
+    es_msg = "La propuesta a " + propuesta.evento.nombre + " ha sido modificada"
+    send_push_notification_to_id_list(
+        [propuesta.evento.organizacion.id], "Proposal changed", "Cambio en una propuesta", en_msg, es_msg)
+
+
 def notificar_inicio_evento(evento, cron_exec=False):
     colaboradores_id = _get_usuarios(evento)
     organizacion_id = evento.organizacion.id
@@ -255,7 +270,8 @@ def notificar_inicio_evento(evento, cron_exec=False):
 
 def __send_inicio_mail(colaboradores_id, organizacion_id, evento, cron_exec):
     colaboradores_id.append(organizacion_id)
-    subject_utf = u"Helpo: el evento " + evento.nombre + " ha comenzado"
+    tipo_actividad = "la campaña " if evento.campaña else "el evento "
+    subject_utf = u"Helpo: " + tipo_actividad + evento.nombre + " ha comenzado"
     send_mail_to_id_list(colaboradores_id, subject_utf,
                          render_inicio_evento_email(evento), thread_daemon=not cron_exec)
 

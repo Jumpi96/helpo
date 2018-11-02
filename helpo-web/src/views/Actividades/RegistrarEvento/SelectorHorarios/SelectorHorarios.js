@@ -8,13 +8,13 @@ class SelectorHorarios extends Component {
     super(props);
     this.state = {
       dias: [
-        {key: 1, value: 'Lunes'}, 
-        {key: 2, value: 'Martes'}, 
-        {key: 3, value: 'Miércoles'}, 
-        {key: 4, value: 'Jueves'}, 
-        {key: 5, value: 'Viernes'}, 
-        {key: 6, value: 'Sábado'}, 
-        {key: 7, value: 'Domingo'}
+        { key: 1, value: 'Lunes' },
+        { key: 2, value: 'Martes' },
+        { key: 3, value: 'Miércoles' },
+        { key: 4, value: 'Jueves' },
+        { key: 5, value: 'Viernes' },
+        { key: 6, value: 'Sábado' },
+        { key: 7, value: 'Domingo' }
       ],
       horas: this.getHoras(),
       minutos: this.getMinutos(),
@@ -119,13 +119,13 @@ class SelectorHorarios extends Component {
 
   sortHorarios(horarios) {
     const { dias } = this.state;
-    return horarios.sort(function(a, b) {
+    return horarios.sort(function (a, b) {
       var diaA = dias.filter(d => d.value === a[0])[0].key,
-      diaB = dias.filter(d => d.value === b[0])[0].key,
-      horaA = parseInt(a[1].substring(0, 2), 10),
-      horaB = parseInt(b[1].substring(0, 2), 10),
-      minutoA = parseInt(a[1].substring(3, 5), 10),
-      minutoB = parseInt(b[1].substring(3, 5), 10);
+        diaB = dias.filter(d => d.value === b[0])[0].key,
+        horaA = parseInt(a[1].substring(0, 2), 10),
+        horaB = parseInt(b[1].substring(0, 2), 10),
+        minutoA = parseInt(a[1].substring(3, 5), 10),
+        minutoB = parseInt(b[1].substring(3, 5), 10);
       if (diaA === diaB && horaA === horaB && minutoA === minutoB) {
         return 0;
       } else if (diaA > diaB || (diaA === diaB && horaA > horaB) || (diaA === diaB && horaA === horaB && minutoA > minutoB)) {
@@ -174,7 +174,7 @@ class SelectorHorarios extends Component {
   render() {
     let opcionesDias = [];
     const { dias } = this.state;
-    for(var key in this.state.dias) {
+    for (var key in this.state.dias) {
       opcionesDias.push(
         <option key={dias[key].value} data-key={dias[key].value}>{dias[key].value}</option>
       );
@@ -199,8 +199,8 @@ class SelectorHorarios extends Component {
               {opcionesDias}
             </select>
           </div>
-          <label for="horaInicio" style={{ marginTop: '5px', marginRight: '10px' }}>Desde:</label>
-          <div className="row col-md-1">
+          <label for="horaInicio" style={{ marginLeft: '12px', marginTop: '5px', marginRight: '10px' }}>Desde:</label>
+          <div className="col-md-1">
             <select
               name="horaInicio"
               value={this.state.horaInicio}
@@ -217,7 +217,7 @@ class SelectorHorarios extends Component {
               {opcionesMinutos}
             </select>
           </div>
-          <label for="horaFin" style={{ marginTop: '5px', marginRight: '10px' }}>Hasta:</label>
+          <label for="horaFin" style={{ marginLeft: '12px', marginTop: '5px', marginRight: '10px' }}>Hasta:</label>
           <div className="col-md-1">
             <select
               value={this.state.horaFin}
@@ -226,7 +226,7 @@ class SelectorHorarios extends Component {
               {opcionesHoras}
             </select>
           </div>
-          <div className="col-md-1">
+          <div className="col-md-1" style={{ marginBottom: '5px' }}>
             <select
               value={this.state.minutoFin}
               className="form-control"
@@ -234,7 +234,9 @@ class SelectorHorarios extends Component {
               {opcionesMinutos}
             </select>
           </div>
-          <Button type="button" color="success" onClick={this.addHorario}>Agregar</Button>
+          <div className="col-md-2">
+            <Button type="button" color="success" onClick={this.addHorario}>Agregar</Button>
+          </div>
           <span style={{ color: "red", marginTop: '5px', marginLeft: '15px' }}>{this.state.error}</span>
         </div>
         {this.getHorarios()}

@@ -60,7 +60,7 @@ class EventoPage extends React.Component {
               color='primary'
               onClick={() => downloadPDF(propuestas, detalle_propuestas)}
               >
-              Descarga reporte PDF
+              Descargar reporte en PDF
             </Button>
           )
         }

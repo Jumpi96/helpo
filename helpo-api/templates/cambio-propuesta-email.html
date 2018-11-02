@@ -4,7 +4,7 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <title>Helpo: cambio en {{tipo_evento}}</title>
+  <title>Helpo: cambio en propuesta</title>
   <style type="text/css" rel="stylesheet" media="all">
     /* Base ------------------------------ */
     *:not(br):not(tr):not(html) {
@@ -182,6 +182,7 @@
 
     /*Media Queries ------------------------------ */
     @media only screen and (max-width: 600px) {
+
       .email-body_inner,
       .email-footer {
         width: 100% !important;
@@ -204,8 +205,8 @@
           <!-- Logo -->
           <tr>
             <td align="center" class="email-masthead">
-              <img class="email-masthead_logo" src="https://s3-us-west-2.amazonaws.com/helpo-aws/logo_principal.png" alt="Helpo" width="120"
-                height="140">
+              <img class="email-masthead_logo" src="https://s3-us-west-2.amazonaws.com/helpo-aws/logo_principal.png"
+                alt="Helpo" width="120" height="140">
             </td>
           </tr>
           <!-- Email Body -->
@@ -215,34 +216,25 @@
                 <!-- Body content -->
                 <tr>
                   <td class="content-cell">
-                    <h1>Modificaci&oacute;n de un {{tipo_evento}} en Helpo</h1>
-                    <p>El {{tipo_evento}} "{{evento.nombre}}", al cual usted se ha inscripto, ha sido modificado.</p>
+                    <h1>Modificaci&oacute;n de una propuesta en Helpo</h1>
+                    <p>Una propuesta de patrocinio a su actividad "{{propuesta.evento.nombre}}" ha sido modificada.</p>
                     <!-- Action -->
                     <table class="body-action" align="center" width="100%" cellpadding="0" cellspacing="0">
                       <tr>
                         <td align="left">
                           <div>
-                            <h2>Nuevos datos del {{tipo_evento}}</h2>
+                            <h2>Datos de la propuesta</h2>
                             <ul style="list-style-type:disc">
-                              <li>Nombre: {{evento.nombre}}</li>
-                              <li>Organizaci&oacute;n: {{evento.organizacion.nombre}}</li>
-                              <li>Descripci&oacute;n: {{evento.descripcion|default:"Sin descripci&oacute;n"}}</li>
-                              <li>Fecha:</li>
-                              <ul style="list-style-type:circle">
-                                <li>Inicio: {{evento.get_fecha_hora_inicio}}</li>
-                                <li>Fin: {{evento.get_fecha_hora_fin}}</li>
-                              </ul>
-                              <li>Ubicaci&oacute;n:</li>
-                              <ul style="list-style-type:circle">
-                                <li>Latitud: {{evento.ubicacion.latitud|default:"No definida"}}</li>
-                                <li>Longitud: {{evento.ubicacion.longitud|default:"No definida"}}</li>
-                                <li>Notas: {{evento.ubicacion.notas|default:"Sin notas"}}</li>
-                              </ul>
+                              <li>Nombre de la actividad social: {{propuesta.evento.nombre}}</li>
+                              <li>Empresa: {{propuesta.empresa.nombre}}</li>
+                              <li>Organizaci&oacute;n: {{propuesta.evento.organizacion.nombre}}</li>
                             </ul>
                           </div>
                         </td>
                       </tr>
                     </table>
+                    <a style="color:#F39200" href="www.helpo.com.ar">Vea la propuesta desde www.helpo.com.ar</a>
+                    <h3>Esta propuesta, previamente aceptada, se encuentra ahora pendiente.</h3>
                     <p>Gracias,<br>Equipo Helpo</p>
                     <!-- Sub copy -->
                     <table class="body-sub">

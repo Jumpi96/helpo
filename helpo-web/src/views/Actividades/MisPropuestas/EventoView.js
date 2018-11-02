@@ -9,6 +9,8 @@ import { auth } from '../../../actions';
 import * as eventoActions from '../../../actions/eventoActions';
 import api from '../../../api';
 import './Eventos.css';
+import { Link } from 'react-router-dom';
+import ButtonsCompartirEvento from '../../common/ButtonsCompartir/ButtonsCompartirEvento';
 
 class EventoView extends React.Component {
   constructor(props) {
@@ -199,7 +201,7 @@ class EventoView extends React.Component {
     }
   }
 
-  editarColaboracion(respuesta){
+  editarColaboracion(respuesta) {
     if (respuesta) {
       let propuesta = this.getPropuesta();
       propuesta.aceptado = 0;
@@ -232,12 +234,14 @@ class EventoView extends React.Component {
         <div className="col-md-8 col-md-offset-2">
           <div className="row">
             <div className="form-group">
-              <h1>{evento.nombre}</h1>
+              <Link to={'/actividades/consultar-evento?id=' + evento.id}>
+                <h1>{evento.nombre}</h1>
+              </Link>
             </div>
           </div>
           <div className="row">
             <div className="form-group col-md-5">
-              <b className="float-right">Fecha de propuesta</b>
+              <b className="float-left">Fecha de propuesta</b>
             </div>
             <div className="form-group col-md-7">
               <p>{moment(propuesta.created).format('DD/MM/YYYY HH:mm')}</p>
@@ -245,10 +249,18 @@ class EventoView extends React.Component {
           </div>
           <div className="row">
             <div className="form-group col-md-5">
-              <b className="float-right" name="estado">Estado</b>
+              <b className="float-left" name="estado">Estado</b>
             </div>
             <div className="form-group col-md-7">
               {this.getBotonEstado()}
+            </div>
+          </div>
+          <div className="row">
+            <div className="form-group col-md-5">
+              <b name="compartir" className="float-left">Compartir</b>
+            </div>
+            <div className="form-group col-md-7">
+              <ButtonsCompartirEvento evento={this.state.evento} />
             </div>
           </div>
           {listaNecesidades ?
@@ -283,12 +295,14 @@ class EventoView extends React.Component {
             this.getComentario(propuesta) : undefined
           }
           {moment(evento.fecha_hora_inicio) < moment() && propuesta.aceptado !== -1 ?
-            <button
-              onClick={this.toggleView}
-              className="btn btn-warning"
-            >
-              Comentar evento
-            </button>
+            <div className="btn-group form-group" role="group">
+              <button
+                onClick={this.toggleView}
+                className="btn btn-warning"
+              >
+                Comentar evento
+              </button>
+            </div>
             : undefined
           }
           <ModalConfirmarEdicion

@@ -85,6 +85,12 @@ urlpatterns = [
         view=users_views.RubroEmpresaReadUpdateDeleteView.as_view(),
         name="get_put_delete_rubro_empresa"
     ),
+    # {% url "api:perfil_empresa" %}
+    url(
+        regex=r"^perfiles/perfil_empresa/$",
+        view=users_views.EmpresaProfileReadView.as_view(),
+        name="get_perfil_empresa"
+    ),
     # {% url "api:perfil_organizacion" usuario.id %}
     url(
         regex=r"^perfiles/perfil_organizacion/$",

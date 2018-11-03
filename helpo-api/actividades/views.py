@@ -263,7 +263,8 @@ class ConsultaEventosOrganizacionCreateReadView(ListCreateAPIView):
         elif 'empresa' in self.request.query_params:
             queryset = queryset.filter(id__in=self.get_eventos_empresa(
                 self.request.query_params.get('empresa')))
-        else:
+        # Si quiero ver antiguos no filtro a partir de hoy
+        elif 'antiguos' not in self.request.query_params:            
             from django.db.models import Q
             queryset = queryset.filter(Q(fecha_hora_inicio__gte=datetime.today(
             ), campaña=False) | Q(fecha_hora_fin__gte=datetime.today(), campaña=True))
@@ -277,14 +278,14 @@ class ConsultaEventosOrganizacionCreateReadView(ListCreateAPIView):
             latitud = float(self.request.query_params.get('latitud'))
             longitud = float(self.request.query_params.get('longitud'))
             lista_eventos = self.filtrar_ubicacion(kms, latitud, longitud)
-            queryset = queryset.filter(id__in=lista_eventos)
+            queryset = queryset.filter(id__in=lista_eventos)        
         if self.tiene_filtros(self.request.query_params):
             lista_eventos = self.get_eventos(self.request.query_params)
             queryset = queryset.filter(id__in=lista_eventos)
         queryset = queryset.order_by('fecha_hora_inicio')
-        user = get_token_user(self.request)
-        if user is not None:
-            queryset = self.recomendar_eventos(queryset, user)
+        #user = get_token_user(self.request)
+        #if user is not None:
+        #    queryset = self.recomendar_eventos(queryset, user)
         return queryset
 
     def recomendar_eventos(self, queryset, user):

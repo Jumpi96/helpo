@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { Row, Col, Collapse, CarouselCaption, CarouselControl, CarouselIndicators, CarouselItem, Carousel, Card, Button, CardBody } from 'reactstrap';
 import './HomeNoAuth.css';
 import imagen from "../../assets/img/home-noauth-background.jpg";
-import imagen2 from "../../assets/img/fondo3.jpg";
-import imagen3 from "../../assets/img/foto_celular.jpeg";
+import imagen2 from "../../assets/img/foto_celular.jpeg";
+import imagen3 from "../../assets/img/organizaciones.jpg";
+import imagen4 from "../../assets/img/empresas.png";
 import TwitterTimeline from 'react-twitter-embedded-timeline';
 import { FacebookProvider, Page } from 'react-facebook';
 
@@ -16,6 +17,9 @@ const items = [
   },
   {
     src: imagen3,
+  },
+  {
+    src: imagen4
   }
 
 ];
@@ -98,11 +102,11 @@ class Home extends Component {
               <CarouselControl direction="prev" directionText="Previous" onClickHandler={this.previous} />
               <CarouselControl direction="next" directionText="Next" onClickHandler={this.next} />
             </Carousel>
-            <Row style={{ marginRight: '-70px' }}>
+            <Row >
               <Col>
-                <Button color="primary" onClick={() => this.setState({ open1: !this.state.open1 })} style={{ fontSize: '20px', marginTop: '10px', marginBottom: '1rem', height: '150px', width: '400px' }}>¿Quiénes somos?</Button>
+                <Button color="primary" onClick={() => this.setState({ open1: !this.state.open1 })} style={{ fontSize: '20px', marginTop: '10px', marginBottom: '1rem', height: '150px', width: '100%' }}>¿Quiénes somos?</Button>
                 <Collapse isOpen={this.state.open1}>
-                  <Card style={{ width: '400px' }}>
+                  <Card style={{ width: '100%' }}>
                     <CardBody>
                       Anim pariatur cliche reprehenderit,
                       enim eiusmod high life accusamus terry richardson ad squid. Nihil
@@ -113,9 +117,9 @@ class Home extends Component {
                 </Collapse>
               </Col>
               <Col>
-                <Button color="primary" onClick={() => this.setState({ open2: !this.state.open2 })} style={{ fontSize: '20px', marginTop: '10px', marginBottom: '1rem', height: '150px', width: '400px' }}>¿Qué hacemos?</Button>
+                <Button color="primary" onClick={() => this.setState({ open2: !this.state.open2 })} style={{ fontSize: '20px', marginTop: '10px', marginBottom: '1rem', height: '150px', width: '100%' }}>¿Qué hacemos?</Button>
                 <Collapse isOpen={this.state.open2}>
-                  <Card style={{ width: '400px' }}>
+                  <Card style={{ width: '100%' }}>
                     <CardBody>
                       Anim pariatur cliche reprehenderit,
                       enim eiusmod high life accusamus terry richardson ad squid. Nihil
@@ -126,9 +130,9 @@ class Home extends Component {
                 </Collapse>
               </Col>
               <Col>
-                <Button color="primary" onClick={() => this.setState({ open3: !this.state.open3 })} style={{ fontSize: '20px', marginTop: '10px', marginBottom: '1rem', height: '150px', width: '400px' }}>¿Cómo participar?</Button>
+                <Button color="primary" onClick={() => this.setState({ open3: !this.state.open3 })} style={{ fontSize: '20px', marginTop: '10px', marginBottom: '1rem', height: '150px', width: '100%' }}>¿Cómo participar?</Button>
                 <Collapse isOpen={this.state.open3}>
-                  <Card style={{ width: '400px' }}>
+                  <Card style={{ width: '100%' }}>
                     <CardBody>
                       Anim pariatur cliche reprehenderit,
                       enim eiusmod high life accusamus terry richardson ad squid. Nihil

@@ -264,10 +264,12 @@ class ConsultaEventosOrganizacionCreateReadView(ListCreateAPIView):
             queryset = queryset.filter(id__in=self.get_eventos_empresa(
                 self.request.query_params.get('empresa')))
         # Si quiero ver antiguos no filtro a partir de hoy
-        elif 'antiguos' not in self.request.query_params:            
+        elif 'antiguos' not in self.request.query_params:  
             from django.db.models import Q
             queryset = queryset.filter(Q(fecha_hora_inicio__gte=datetime.today(
             ), campaña=False) | Q(fecha_hora_fin__gte=datetime.today(), campaña=True))
+        else:
+            queryset = queryset.order_by('fecha_hora_inicio').reverse()
         if 'fecha_desde' in self.request.query_params:
             queryset = queryset.filter(
                 fecha_hora_inicio__gte=self.request.query_params.get('fecha_desde'))

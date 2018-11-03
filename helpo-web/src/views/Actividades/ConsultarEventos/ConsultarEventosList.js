@@ -28,7 +28,8 @@ class ConsultarEventosList extends React.Component {
       if (eventos.length <= 3) {
         return (
           <div>
-            {this.props.auth ? 
+            {/* Si veo actividades pasadas, no recomiendo */}
+            {this.props.auth && !this.props.verAntiguos ? 
               <h3>Recomendaciones para vos</h3> : undefined
             }
             {eventos.map(evento =>
@@ -48,7 +49,7 @@ class ConsultarEventosList extends React.Component {
       } else {
         return (
           <div>
-            {this.props.auth ? 
+            {this.props.auth && !this.props.verAntiguos ? 
               <h3>Recomendaciones para vos</h3> : undefined
             }
             {eventos.slice(0, 3).map(evento =>
@@ -63,7 +64,7 @@ class ConsultarEventosList extends React.Component {
                 </Col>
               </Row>
             )}
-            {this.props.auth ? 
+            {this.props.auth && !this.props.verAntiguos ? 
               <h3>Otras actividades sociales</h3> : undefined
             }
             {eventos.slice(3).map(evento =>

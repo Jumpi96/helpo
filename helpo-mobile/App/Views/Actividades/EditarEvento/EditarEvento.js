@@ -145,13 +145,23 @@ class EditarEvento extends React.Component {
     } else {
       const inicio = moment(this.state.fecha_hora_inicio);
       const fin = moment(this.state.fecha_hora_fin);
-      const ahora = moment(new Date());
-      if (moment.duration(fin.diff(inicio)).asHours() > 24 ||
-        inicio < ahora ||
-        moment.duration(fin.diff(inicio)).asHours() < 0) {
+      const actual = moment(new Date());
+      if (inicio < actual) {
         formIsValid = false;
-        errors.fechas = 'Las fecha de fin debe ser mayor a la de inicio y ' +
-          'la actividad no durar más de 24 horas.';
+        errors.fechas = 'La fecha de inicio debe ser posterior a la fecha actual';
+      } else {
+        if (fin <= inicio) {
+          formIsValid = false;
+          errors.fechas = 'La fecha de inicio debe ser anterior a la fecha de fin de la actividad'
+        } else {
+          if (moment.duration(fin.diff(inicio)).asHours() > 24 && inicio < fin && !this.state.campaña) {
+            formIsValid = false;
+            errors.fechas = 'El evento no puede durar más de 24 horas'
+          }
+          else {
+            errors.fechas = undefined;
+          }
+        }
       }
     }
     if (this.state.rubro_id === 0) {

@@ -21,7 +21,7 @@ import {
 import openMap from 'react-native-open-maps';
 import styles from './styles';
 import CompartirEvento from '../CompartirEvento/CompartirEvento';
-import GoAlbum from '../AlbumEvento/GoAlbum'
+import GoAlbum from '../AlbumEvento/GoAlbum' 
 
 
 class ConsultaEvento extends React.Component {

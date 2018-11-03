@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { Row, Col, Collapse, CarouselCaption, CarouselControl, CarouselIndicators, CarouselItem, Carousel, Card, Button, CardBody } from 'reactstrap';
 import './HomeNoAuth.css';
 import imagen from "../../assets/img/home-noauth-background.jpg";
-import imagen2 from "../../assets/img/foto_celular.jpeg";
+import imagen2 from "../../assets/img/foto_celular.jpg";
 import imagen3 from "../../assets/img/organizaciones.jpg";
-import imagen4 from "../../assets/img/empresas.png";
+import imagen4 from "../../assets/img/empresas.jpg";
 import TwitterTimeline from 'react-twitter-embedded-timeline';
 import { FacebookProvider, Page } from 'react-facebook';
 
@@ -152,7 +152,7 @@ class Home extends Component {
               <div className="col-md-4 offset-md-4">
                 <Card><CardBody>
                   <FacebookProvider appId="343119846258901">
-                    <Page href="https://www.facebook.com/HelpoConsultas" tabs="timeline" height={500} width={500} />
+                    <Page href="https://www.facebook.com/HelpoConsultas" tabs="timeline" height={500} />
                   </FacebookProvider>
                 </CardBody></Card>
               </div>

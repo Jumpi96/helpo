@@ -18,6 +18,7 @@ import {
   View,
   Thumbnail,
 } from 'native-base';
+import openMap from 'react-native-open-maps';
 import styles from './styles';
 import CompartirEvento from '../CompartirEvento/CompartirEvento';
 import GoAlbum from '../AlbumEvento/GoAlbum'
@@ -53,6 +54,12 @@ class ConsultaEvento extends React.Component {
         </Right>
       </ListItem>
     );
+  }
+
+  goToUbicacion(ubicacion) {
+    openMap({
+      query: ubicacion.latitud + ',' + ubicacion.longitud
+    });
   }
 
   navigateColaborar(evento) {
@@ -263,6 +270,17 @@ class ConsultaEvento extends React.Component {
             <Text>{'Fin: ' + moment(evento.fecha_hora_fin).format('DD/MM/YYYY HH:mm')}</Text>
           </ListItem>
           {this.getHorarios(evento)}
+          <ListItem itemDivider>
+            <Label style={styles.label}>Ubicación</Label>
+          </ListItem>
+          <Button block style={{ margin: 15, marginTop: 20 }}
+            onPress={() => this.goToUbicacion(evento.ubicacion)}
+          >
+            <Text>Abrir ubicación</Text>
+          </Button>
+          <ListItem>
+            <Text>{evento.ubicacion.notas}</Text>
+          </ListItem>
           {listaContactos ? (
             <View>
               <ListItem itemDivider>

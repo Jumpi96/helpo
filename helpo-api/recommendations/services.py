@@ -5,6 +5,7 @@ import boto3
 import pickle
 import json
 import requests
+import datetime
 from sklearn.neighbors import NearestNeighbors
 from sklearn.svm import SVR
 from decouple import config
@@ -62,7 +63,7 @@ def predict_fechas(data):
             now.year if i+1 >= now.month else now.year + 1,
             i+1, 15) - now).days
         pre = model.predict(df)
-        predictions[i+1] = round(pre[0], 4)
+        predictions[str(i+1)] = round(pre[0], 4)
     return predictions
 
 
@@ -190,7 +191,7 @@ def train_fecha_regressor():
     y = pd.DataFrame()
     y['pred'] = M['%Comp']
     training_data = M.drop(['%Comp'], axis=1)
-
+    """
     rmse_error = make_scorer(mean_squared_error, greater_is_better=False)
     parameters = { 
         'C': [0.8, 0.9, 1],
@@ -198,7 +199,8 @@ def train_fecha_regressor():
         'gamma': [0.001, 0.003, 0.005, 0.008]
     }
     svr = GridSearchCV(SVR(), cv=3, param_grid=parameters, scoring=rmse_error)
-
+    """
+    svr = SVR(gamma=0.008, epsilon=0.06, C=1)
     svr.fit(training_data, y)
     save_model_fecha_regressor(svr, features)
 

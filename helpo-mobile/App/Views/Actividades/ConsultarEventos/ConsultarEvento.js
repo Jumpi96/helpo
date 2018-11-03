@@ -199,6 +199,15 @@ class ConsultaEvento extends React.Component {
     }
   }
 
+  goBackToConsultarEventos() {
+    const { params } = this.props.navigation.state;
+    this.props.navigation.navigate('ConsultarEventos', {
+      evento: '',
+      link: params.link,
+      organizacion: params.organizacion
+    });
+  }
+
   render() {
     const { params } = this.props.navigation.state;
     const evento = params.evento;
@@ -214,7 +223,7 @@ class ConsultaEvento extends React.Component {
       <Container style={styles.container}>
         <Header>
           <Left>
-            <Button transparent onPress={() => this.props.navigation.navigate('ConsultarEventos')}>
+            <Button transparent onPress={() => this.goBackToConsultarEventos()}>
               <Icon name="arrow-back" />
             </Button>
           </Left>

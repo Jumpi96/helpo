@@ -41,8 +41,8 @@ const itemsOrg = [
 	  'name': 'Nueva actividad social',
 	},
 	{
-	  'key': 'ConsultarEventos',
-	  'routeName': 'ConsultarEventos',
+	  'key': 'ConsultarEventosInicial',
+	  'routeName': 'ConsultarEventosInicial',
 	  'name': 'Actividades sociales',
 	},
 	{
@@ -79,8 +79,8 @@ const itemsVol = [
 		'name': 'Mis colaboraciones'
 	},
 	{
-		'key': 'ConsultarEventos',
-		'routeName': 'ConsultarEventos',
+		'key': 'ConsultarEventosInicial',
+		'routeName': 'ConsultarEventosInicial',
 		'name': 'Actividades sociales',
 	},
 	{
@@ -123,8 +123,8 @@ const itemsEmp = [
 		'name': 'Mis propuestas'
 	},
 	{
-	  'key': 'ConsultarEventos',
-	  'routeName': 'ConsultarEventos',
+	  'key': 'ConsultarEventosInicial',
+	  'routeName': 'ConsultarEventosInicial',
 	  'name': 'Actividades sociales',
 	},
 	{

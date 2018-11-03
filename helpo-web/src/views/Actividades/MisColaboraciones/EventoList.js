@@ -53,7 +53,9 @@ class EventoList extends React.Component {
 
     return (
       <ul className="list-group">
+
         {this.verEventosPasados()}
+        
         {eventos.map(evento =>
           <Widget02
             header={moment(evento.fecha_hora_inicio).format('DD/MM/YYYY')}

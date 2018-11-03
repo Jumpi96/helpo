@@ -22,6 +22,11 @@ const OrganizacionesPage = Loadable({
   loading: Loading,
 })
 
+const EmpresasPage = Loadable({
+  loader: () => import('./views/Empresas/EmpresasPage.js'),
+  loading: Loading,
+})
+
 const ConsultarPerfil = Loadable({
   loader: () => import('./views/Perfiles/ConsultarPerfilGenerico'),
   loading: Loading,
@@ -40,6 +45,7 @@ const routes = [
   { path: '/noAuth/actividades/consultar-eventos', name: 'Consultar actividades sociales', component: ConsultarEventosPage },
   { path: '/noAuth/actividades/consultar-evento/', name: 'Consultar evento', component: ConsultarEventosView },
   { path: '/noAuth/organizaciones', name: 'Organizaciones', component: OrganizacionesPage },
+  { path: '/noAuth/empresas', name: 'Empresas', component: EmpresasPage },
   { path: '/noAuth/perfil/:usuarioId?', name: 'Perfil de usuario', component: ConsultarPerfil }
 ];
 

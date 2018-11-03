@@ -8,18 +8,21 @@ from rest_framework.generics import CreateAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from django.shortcuts import get_object_or_404
 from datetime import datetime
 from actividades.models import Evento, RubroEvento, CategoriaRecurso, Recurso, Necesidad, \
     Contacto, Voluntario, Funcion, Participacion, Colaboracion, Comentario, Mensaje, EventoImagen, \
     Propuesta, Entrega, Presencia
 from knox.models import AuthToken
 from users.models import User
+from recommendations.models import LogConsultaEvento
 from actividades.serializers import EventoSerializer, RubroEventoSerializer, \
     CategoriaRecursoSerializer, RecursoSerializer, NecesidadSerializer, ContactoSerializer, \
     ConsultaEventoSerializer, VoluntarioSerializer, FuncionSerializer, ConsultaNecesidadesSerializer, \
     ParticipacionSerializer, ColaboracionSerializer, ComentarioSerializer, MensajeSerializer, EventoImagenSerializer, \
     PropuestaSerializer, ConsultaAllNecesidadesSerializer, ConsultarPropuestasEmpresaSerializer, PropuestasEmpresasSerializer
 from actividades.services import create_propuesta, actualizar_colaboracion, actualizar_participacion
+from recommendations.services import predict_eventos_userbased
 from common.functions import get_token_user, calc_distance_locations
 import re
 
@@ -279,6 +282,17 @@ class ConsultaEventosOrganizacionCreateReadView(ListCreateAPIView):
             lista_eventos = self.get_eventos(self.request.query_params)
             queryset = queryset.filter(id__in=lista_eventos)
         queryset = queryset.order_by('fecha_hora_inicio')
+        user = get_token_user(self.request)
+        if user is not None:
+            queryset = self.recomendar_eventos(queryset, user)
+        return queryset
+
+    def recomendar_eventos(self, queryset, user):
+        lista_eventos = [e.id for e in queryset]
+        recomendados = predict_eventos_userbased(user, lista_eventos)
+        lista_recomendados = [r[1] for r in recomendados]
+        queryset = queryset.filter(id__in=lista_recomendados) | \
+            queryset.exclude(id__in=lista_recomendados)
         return queryset
 
     def tiene_filtros(self, params):
@@ -339,6 +353,14 @@ class ConsultaEventosReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     queryset = Evento.objects.all()
     serializer_class = ConsultaEventoSerializer
     lookup_field = 'id'
+
+    def retrieve(self, request, id=None):
+        user = get_token_user(self.request)
+        evento = get_object_or_404(Evento.objects.all(), id=id)
+        if user is not None:
+            LogConsultaEvento.objects.create(usuario_id=user, evento=evento)
+        return super().retrieve(request, id)
+
 
 
 class ConsultaPropuestasDetalleEmpresaView(RetrieveAPIView):
@@ -629,3 +651,13 @@ class PropuestaReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     queryset = Propuesta.objects.all()
     serializer_class = PropuestaSerializer
     lookup_field = 'id'
+
+    def update(self, request, *args, **kwargs):
+        if request is not None and request.data is not None and request.data['id'] is not None:
+            propuesta = Propuesta.objects.get(id=request.data['id'])
+            if propuesta is not None and propuesta.aceptado == 1:
+                from actividades.services import notify_cambio_propuesta
+                notify_cambio_propuesta(propuesta)
+            nueva_propuesta = super().update(request, *args, **kwargs)
+            return nueva_propuesta
+        return None

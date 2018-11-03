@@ -12,7 +12,7 @@ class ModalConfirmarEdicion extends Component {
           <ModalBody>
             <strong>¿Estás seguro que deseas editar tu propuesta? </strong>
             Si lo confirmas, la propuesta volverá a un estado pendiente. Si la ONG no acepta
-            la nueva propuesta, se eliminirá el patrocinio.
+            la nueva propuesta, se eliminará el patrocinio.
           </ModalBody>
           <ModalFooter>
             <Button color="warning" onClick={() => this.props.closeModal(true)}>Editar</Button>{' '}

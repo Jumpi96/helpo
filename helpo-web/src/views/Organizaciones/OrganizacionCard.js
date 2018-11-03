@@ -47,7 +47,9 @@ class OrganizacionCard extends Component {
                 + Ver perfil
                 </button>
             </Link>
-            <BotonSuscripcion organizacion={organizacion.usuario.id}/>
+            {!this.props.isAboutEmpresas ?
+              <BotonSuscripcion organizacion={organizacion.usuario.id}/> : undefined
+            }
           </div>
         </CardBody>
       </Card>

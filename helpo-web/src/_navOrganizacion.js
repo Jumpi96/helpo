@@ -24,9 +24,9 @@ export default {
         class: ''             // optional class names space delimited list for title item ex: "text-center"
       },
       {
-        name: 'Actividades sociales',
-        url: '/actividades/consultar-eventos',
-        icon: 'icon-cursor'
+        name: 'Mis actividades',
+        url: '/actividades/evento',
+        icon: 'icon-star'
       },
       {
         name: 'Nueva actividad',
@@ -34,9 +34,9 @@ export default {
         icon: 'icon-pencil',
       },
       {
-        name: 'Mis actividades',
-        url: '/actividades/evento',
-        icon: 'icon-star'
+        name: 'Actividades sociales',
+        url: '/actividades/consultar-eventos',
+        icon: 'icon-cursor'
       },
       {
         name: 'Organizaciones',
@@ -44,8 +44,18 @@ export default {
         icon: 'icon-calendar'
       },
       {
+        name: 'Empresas',
+        url: '/empresas',
+        icon: 'icon-calendar'
+      },
+      {
         name: 'Estadísticas',
         url: '/reportes',
+        icon: 'icon-star'
+      },
+      {
+        name: 'Planificar actividad',
+        url: '/planificador',
         icon: 'icon-star'
       },
     ],

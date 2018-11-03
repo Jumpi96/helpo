@@ -47,6 +47,11 @@ def render_propuesta(propuesta):
     return render_mail('propuesta.html', dict_context)
 
 
+def render_cambio_propuesta(propuesta):
+    dict_context = dict(propuesta=propuesta)
+    return render_mail('cambio-propuesta-email.html', dict_context)
+
+
 def render_respuesta_propuesta(propuesta):
     if propuesta.aceptado == 1:
         respuesta = 'Aceptada'

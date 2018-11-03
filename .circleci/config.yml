@@ -7,7 +7,6 @@ jobs:
     environment:
       CIRCLE_ARTIFACTS: /tmp/circleci-artifacts
       CIRCLE_TEST_REPORTS: /tmp/circleci-test-results
-      PIPENV_IGNORE_VIRTUALENVS: true
       ZOHO_ACCOUNT_ID: xxxxxxxxxxxxxxxxxxx
       ZOHO_AUTH_TOKEN: xxxxxxxxxxxxxxxxxxx
       ONESIGNAL_REST_API_KEY: xxxxxxxxxxxxxxxxxxx
@@ -32,8 +31,8 @@ jobs:
         - v1-dep-
     - run: curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash
     - run: sudo apt-get install git-lfs --upgrade
-    - run: sudo pip install requests pipenv --upgrade
-    - run: cd helpo-api && pipenv install --dev
+    - run: sudo pip install requests --upgrade
+    - run: cd helpo-api && pip install numpy --user && pip install --user -r requirements.txt
     - save_cache:
         key: v1-dep-{{ .Branch }}-{{ epoch }}
         paths:
@@ -42,11 +41,11 @@ jobs:
         - ~/virtualenvs
     # Test
     - run: cd helpo-api ./wait-for-it.sh localhost:5432 -- bash -c
-    - run: cd helpo-api DJANGO_SETTINGS_MODULE=helpo.settings.test pipenv run python manage.py migrate
-    - run: cd helpo-api DJANGO_SETTINGS_MODULE=helpo.settings.test SECRET_KEY=$(python -c 'import uuid; print(uuid.uuid4().hex + uuid.uuid4().hex)') pipenv run python manage.py populate_db
-    - run: cd helpo-api DJANGO_SETTINGS_MODULE=helpo.settings.production SECRET_KEY=$(python -c 'import uuid; print(uuid.uuid4().hex + uuid.uuid4().hex)') DATABASE_URL='sqlite:///' ALLOWED_HOSTS='.example.org' SENDGRID_USERNAME='test' SENDGRID_PASSWORD='test' REDIS_URL='redis://' pipenv run python manage.py check --deploy
-    - run: cd helpo-api && pipenv run coverage run manage.py test
-    - run: cd helpo-api && pipenv run coverage html -d $CIRCLE_ARTIFACTS
+    - run: cd helpo-api DJANGO_SETTINGS_MODULE=helpo.settings.test python manage.py migrate
+    - run: cd helpo-api DJANGO_SETTINGS_MODULE=helpo.settings.test SECRET_KEY=$(python -c 'import uuid; print(uuid.uuid4().hex + uuid.uuid4().hex)') python manage.py populate_db
+    - run: cd helpo-api DJANGO_SETTINGS_MODULE=helpo.settings.production SECRET_KEY=$(python -c 'import uuid; print(uuid.uuid4().hex + uuid.uuid4().hex)') DATABASE_URL='sqlite:///' ALLOWED_HOSTS='.example.org' SENDGRID_USERNAME='test' SENDGRID_PASSWORD='test' REDIS_URL='redis://' python manage.py check --deploy
+    - run: cd helpo-api && python -m coverage run manage.py test
+    - run: cd helpo-api && python -m coverage html -d $CIRCLE_ARTIFACTS
     - run: bash <(curl -s https://codecov.io/bash)
     # Teardown
     - store_test_results:
@@ -62,7 +61,6 @@ jobs:
     environment:
       CIRCLE_ARTIFACTS: /tmp/circleci-artifacts
       CIRCLE_TEST_REPORTS: /tmp/circleci-test-results
-      PIPENV_IGNORE_VIRTUALENVS: true
     docker:
     - image: circleci/node:6
     steps:
@@ -99,7 +97,6 @@ jobs:
     environment:
       CIRCLE_ARTIFACTS: /tmp/circleci-artifacts
       CIRCLE_TEST_REPORTS: /tmp/circleci-test-results
-      PIPENV_IGNORE_VIRTUALENVS: true
     docker:
     - image: circleci/node:6
     steps:

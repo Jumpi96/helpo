@@ -17,6 +17,7 @@ import {
   Fab,
   IconNB,
   View,
+  CheckBox
 } from 'native-base';
 import * as eventoActions from '../../../Redux/actions/eventoActions';
 import * as rubrosEventoActions from '../../../Redux/actions/rubroEventoActions';
@@ -26,6 +27,9 @@ import CompartirOrganizacion from '../CompartirEvento/CompartirOrganizacion';
 class MisEventos extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      verAntiguos: false
+    }
     this.props.loadRubrosEvento();
     this.props.loadEventosOrganizacion();
   }
@@ -37,9 +41,30 @@ class MisEventos extends React.Component {
   getONG() {
     return this.props.auth.user;
   }
+
+  handleChangeVerAntiguos = () => {
+    const verAntiguos = !this.state.verAntiguos
+    this.setState({verAntiguos: verAntiguos})
+  }
+
+  verEventosAntiguos = () => (
+    <ListItem>
+      <CheckBox 
+        checked={this.state.verAntiguos} 
+        onPress={this.handleChangeVerAntiguos}
+        color='orange'
+      />
+      <Body>
+        <Text>¿Ver actividades finalizadas?</Text>
+      </Body>
+    </ListItem>
+  )
   
   render() {
-    const eventos = this.props.evento.eventos;
+    const unfilteredEventos = this.props.evento.eventos;
+    const eventos = this.state.verAntiguos 
+                    ? unfilteredEventos
+                    : unfilteredEventos.filter(evento => evento.estado < 3)
     const listaEventos = eventos.map((n) =>
       <ListItem icon key={n.id}>
         <Left>
@@ -86,6 +111,7 @@ class MisEventos extends React.Component {
         </Header>
         <Content>
           <Form>
+            {this.verEventosAntiguos()}
             {listaEventos}
           </Form>
           <CompartirOrganizacion ong={this.getONG()} />

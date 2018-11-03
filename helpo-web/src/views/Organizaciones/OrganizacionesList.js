@@ -47,12 +47,12 @@ class OrganizacionesList extends React.Component {
     return (
       <div className="row">
         <div className="form-group col-md-4">
-          <label for="nombre">Buscar una organización</label>
+          <label for="nombre">Buscar una {this.props.isAboutEmpresas ? "empresa" : "organización"}</label>
           <input
             type="text"
             name="nombre"
             className="form-control"
-            placeholder="Ingrese el nombre de una ONG"
+            placeholder={"Ingrese el nombre de una " + (this.props.isAboutEmpresas ? "empresa" : "organización")}
             value={this.state.nombre}
             onChange={this.handleInputChange}
           />
@@ -65,6 +65,7 @@ class OrganizacionesList extends React.Component {
                 <OrganizacionCard
                   organizacion={organizacion}
                   key={organizacion.id} footer
+                  isAboutEmpresas={this.props.isAboutEmpresas}
                   color="primary" auth={this.props.auth}
                   link={this.getLink(organizacion)} // Ver que link va
                 />

@@ -18,9 +18,10 @@ import {
   View,
   Thumbnail,
 } from 'native-base';
+import openMap from 'react-native-open-maps';
 import styles from './styles';
 import CompartirEvento from '../CompartirEvento/CompartirEvento';
-import GoAlbum from '../AlbumEvento/GoAlbum'
+import GoAlbum from '../AlbumEvento/GoAlbum' 
 
 
 class ConsultaEvento extends React.Component {
@@ -53,6 +54,12 @@ class ConsultaEvento extends React.Component {
         </Right>
       </ListItem>
     );
+  }
+
+  goToUbicacion(ubicacion) {
+    openMap({
+      query: ubicacion.latitud + ',' + ubicacion.longitud
+    });
   }
 
   navigateColaborar(evento) {
@@ -192,6 +199,15 @@ class ConsultaEvento extends React.Component {
     }
   }
 
+  goBackToConsultarEventos() {
+    const { params } = this.props.navigation.state;
+    this.props.navigation.navigate('ConsultarEventos', {
+      evento: '',
+      link: params.link,
+      organizacion: params.organizacion
+    });
+  }
+
   render() {
     const { params } = this.props.navigation.state;
     const evento = params.evento;
@@ -207,7 +223,7 @@ class ConsultaEvento extends React.Component {
       <Container style={styles.container}>
         <Header>
           <Left>
-            <Button transparent onPress={() => this.props.navigation.navigate('ConsultarEventos')}>
+            <Button transparent onPress={() => this.goBackToConsultarEventos()}>
               <Icon name="arrow-back" />
             </Button>
           </Left>
@@ -263,6 +279,17 @@ class ConsultaEvento extends React.Component {
             <Text>{'Fin: ' + moment(evento.fecha_hora_fin).format('DD/MM/YYYY HH:mm')}</Text>
           </ListItem>
           {this.getHorarios(evento)}
+          <ListItem itemDivider>
+            <Label style={styles.label}>Ubicación</Label>
+          </ListItem>
+          <Button block style={{ margin: 15, marginTop: 20 }}
+            onPress={() => this.goToUbicacion(evento.ubicacion)}
+          >
+            <Text>Abrir ubicación</Text>
+          </Button>
+          <ListItem>
+            <Text>{evento.ubicacion.notas}</Text>
+          </ListItem>
           {listaContactos ? (
             <View>
               <ListItem itemDivider>

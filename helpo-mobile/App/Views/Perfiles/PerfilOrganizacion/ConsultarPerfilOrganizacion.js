@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import openMap from 'react-native-open-maps';
 import {
   Row,
   ActionSheet,
@@ -10,6 +11,7 @@ import {
   Button,
   Label,
   ListItem,
+  View,
   Body,
   Left,
   Right,
@@ -100,6 +102,27 @@ class ConsultarPerfilOrganizacion extends Component {
     });
   }
 
+  goToUbicacion(ubicacion) {
+    openMap({
+      query: ubicacion.latitud + ',' + ubicacion.longitud
+    });
+  }
+
+  renderUbicacion() {
+    return (
+      <View>
+        <Button block style={{ margin: 15, marginTop: 20 }}
+          onPress={() => this.goToUbicacion(this.props.data.ubicacion)}
+        >
+          <Text>Abrir ubicación</Text>
+        </Button>
+        <ListItem>
+          <Text>{this.props.data.ubicacion.notas}</Text>
+        </ListItem>
+      </View>
+    );
+  }
+
   render() {
     if (this.props.data.avatar) {
       return (
@@ -121,12 +144,12 @@ class ConsultarPerfilOrganizacion extends Component {
             <Row>
               <Thumbnail large center source={{ uri: this.props.data.avatar.url }} />
               <Right>
-              <Button transparent onPress={this.showToastRetroalimentacion}>
-                <Icon name="hand" style={{ color: "#F39200"}} ></Icon>
-                <Text style={styles.retroalimentacion}>{this.props.data.manos}</Text>
-                <Icon name="calendar" family="Entypo" style={{ color: "#F39200"}} ></Icon>
-                <Text style={styles.retroalimentacion}>{this.props.data.eventos}</Text>
-              </Button>
+                <Button transparent onPress={this.showToastRetroalimentacion}>
+                  <Icon name="hand" style={{ color: "#F39200" }} ></Icon>
+                  <Text style={styles.retroalimentacion}>{this.props.data.manos}</Text>
+                  <Icon name="calendar" family="Entypo" style={{ color: "#F39200" }} ></Icon>
+                  <Text style={styles.retroalimentacion}>{this.props.data.eventos}</Text>
+                </Button>
               </Right>
             </Row>
             <ListItem itemDivider>
@@ -168,6 +191,15 @@ class ConsultarPerfilOrganizacion extends Component {
             <ListItem>
               {this.renderRubro()}
             </ListItem>
+
+            {this.props.data.ubicacion !== null ?
+              <View>
+                <ListItem itemDivider>
+                  <Label style={styles.label}>Ubicación</Label>
+                </ListItem>
+                {this.renderUbicacion()}
+              </View> : undefined
+            }
 
             <ListItem itemDivider>
               <Label style={styles.label}>Descripción</Label>

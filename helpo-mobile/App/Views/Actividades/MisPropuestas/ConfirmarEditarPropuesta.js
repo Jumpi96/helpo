@@ -58,7 +58,7 @@ class ConfirmarEditarPropuesta extends React.Component {
             <ListItem>
               <Text>
                 Si lo confirmas, la propuesta volverá a un estado pendiente. Si la ONG no acepta
-                  la nueva propuesta, se eliminirá el patrocinio.
+                  la nueva propuesta, se eliminará el patrocinio.
               </Text>
             </ListItem>
             <Button block style={{ margin: 15 }} onPress={() => this.actualizarPropuesta(evento, propuesta)}><Text>Aceptar</Text></Button>

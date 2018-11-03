@@ -31,8 +31,18 @@ const itemsOrg = [
 	  'name': 'Home'
 	},
 	{
-	  'key': 'ConsultarEventos',
-	  'routeName': 'ConsultarEventos',
+	  'key': 'MisEventos',
+	  'routeName': 'MisEventos',
+	  'name': 'Mis actividades sociales',
+	},
+	{
+	  'key': 'RegistrarEvento',
+	  'routeName': 'RegistrarEvento',
+	  'name': 'Nueva actividad social',
+	},
+	{
+	  'key': 'ConsultarEventosInicial',
+	  'routeName': 'ConsultarEventosInicial',
 	  'name': 'Actividades sociales',
 	},
 	{
@@ -41,15 +51,10 @@ const itemsOrg = [
 		'name': 'Organizaciones'
 	},
 	{
-	  'key': 'RegistrarEvento',
-	  'routeName': 'RegistrarEvento',
-	  'name': 'Nueva actividad social',
+		'key': 'EmpresasPage',
+		'routeName': 'EmpresasPage',
+		'name': 'Empresas'
 	},
-	{
-	  'key': 'MisEventos',
-	  'routeName': 'MisEventos',
-	  'name': 'Mis actividades sociales',
-	},	
 	{
 		'key': 'ConsultarPerfilGenerico',
 		'routeName': 'ConsultarPerfilGenerico',
@@ -69,8 +74,13 @@ const itemsVol = [
 		'name': 'Home'
 	},
 	{
-		'key': 'ConsultarEventos',
-		'routeName': 'ConsultarEventos',
+		'key': 'MisColaboraciones',
+		'routeName': 'MisColaboraciones',
+		'name': 'Mis colaboraciones'
+	},
+	{
+		'key': 'ConsultarEventosInicial',
+		'routeName': 'ConsultarEventosInicial',
 		'name': 'Actividades sociales',
 	},
 	{
@@ -79,9 +89,9 @@ const itemsVol = [
 		'name': 'Organizaciones'
 	},
 	{
-		'key': 'MisColaboraciones',
-		'routeName': 'MisColaboraciones',
-		'name': 'Mis colaboraciones'
+		'key': 'EmpresasPage',
+		'routeName': 'EmpresasPage',
+		'name': 'Empresas'
 	},
 	{
 		'key': 'ConsultarPerfilGenerico',
@@ -108,8 +118,13 @@ const itemsEmp = [
 	  'name': 'Home'
 	},
 	{
-	  'key': 'ConsultarEventos',
-	  'routeName': 'ConsultarEventos',
+		'key': 'MisPropuestas',
+		'routeName': 'MisPropuestas',
+		'name': 'Mis propuestas'
+	},
+	{
+	  'key': 'ConsultarEventosInicial',
+	  'routeName': 'ConsultarEventosInicial',
 	  'name': 'Actividades sociales',
 	},
 	{
@@ -118,9 +133,9 @@ const itemsEmp = [
 		'name': 'Organizaciones'
 	},
 	{
-		'key': 'MisPropuestas',
-		'routeName': 'MisPropuestas',
-		'name': 'Mis propuestas'
+		'key': 'EmpresasPage',
+		'routeName': 'EmpresasPage',
+		'name': 'Empresas'
 	},
 	{
 		'key': 'ConsultarPerfilGenerico',

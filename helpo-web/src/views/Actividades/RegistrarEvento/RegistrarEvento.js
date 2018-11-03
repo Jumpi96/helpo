@@ -152,7 +152,7 @@ class RegistrarEvento extends Component {
     return validacion;
   }
 
-  handleValidation(event) {
+  handleValidation() {
     let formIsValid = true;
     const errors = this.state.errors;
     const inicio = moment(this.state.fecha_hora_inicio);
@@ -173,7 +173,7 @@ class RegistrarEvento extends Component {
         formIsValid = false;
         errors.fechas = 'La fecha de inicio debe ser posterior a la fecha actual';
       } else {
-        if (fin < inicio) {
+        if (fin <= inicio) {
           formIsValid = false;
           errors.fechas = 'La fecha de inicio debe ser anterior a la fecha de fin de la actividad'
         } else {
@@ -289,7 +289,7 @@ class RegistrarEvento extends Component {
                 <div className="form-group col-md-1">
                   <label>Inicio:  </label>
                 </div>
-                <div className="form-group col-md-3">
+                <div className="form-group col-md-2">
                   <DateTimePicker
                     name="inicio"
                     onChange={this.handleFechaHoraInicioChange}
@@ -300,7 +300,7 @@ class RegistrarEvento extends Component {
                 <div className="form-group col-md-1">
                   <label>Fin:  </label>
                 </div>
-                <div className="form-group col-md-3">
+                <div className="form-group col-md-2">
                   <DateTimePicker
                     name="fin"
                     onChange={this.handleFechaHoraFinChange}

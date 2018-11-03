@@ -173,13 +173,13 @@ class VerEvento extends React.Component {
             </ListItem>
             <GoAlbum
               visible={evento.estado >= 2 ? true : false} // Solo visible si evento comenzo o finalizo
-              eventoId={this.props.navigation.state.params.evento.id}
+              eventoId={this.state.evento.id}
               navigation={this.props.navigation}
             />
             <ListItem
               button
               onPress={() => this.props.navigation.navigate('MensajesEvento', {
-                evento: this.props.navigation.state.params.evento.id
+                evento: this.state.evento.id
               })}
             >
               <Body>

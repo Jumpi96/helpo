@@ -11,19 +11,18 @@ class ConsultarEventos extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      eventos: []
+      eventos: [],
+      isLoading: true
     }
   }
 
   componentDidMount() {
     const { params } = this.props.navigation.state;
-    if (params) {
-      if (params.organizacion) {
+    if (params && (params.organizacion !== '' || params.link !== '')) {
+      if (params.organizacion != '') {
         this.loadEventos('?organizacion=' + params.organizacion);
-        params.organizacion = '';
       } else {
         this.loadEventos(params.link);
-        params.link = '';
       }
     } else {
       this.loadEventos('');
@@ -33,7 +32,7 @@ class ConsultarEventos extends Component {
   loadEventos(ruta) {
     api.get('/actividades/consulta_eventos/' + ruta)
       .then((res) => {
-        this.setState({ eventos: res.data });
+        this.setState({ eventos: res.data, isLoading: false });
         if (res.data.length === 0) {
           Toast.show({
             text: 'No existen eventos registrados.',
@@ -45,6 +44,17 @@ class ConsultarEventos extends Component {
         if (error.response) { console.log(error.response.status) }
         else { console.log('Error: ', error.message) }
       })
+  }
+
+  goToEvento(evento) {
+    const { params } = this.props.navigation.state;
+    const eventoParams = (params && (params.organizacion !== '' || params.link !== '')) ? 
+      {
+        evento,
+        link: params.link,
+        organizacion: params.organizacion,  
+      } : { evento };
+    this.props.navigation.navigate('ConsultarEvento', eventoParams);
   }
 
   getEventos(eventos) {
@@ -60,7 +70,7 @@ class ConsultarEventos extends Component {
               <EventoCard
                 key={evento.id}
                 evento={evento}
-                openEvento={() => this.props.navigation.navigate('ConsultarEvento', { evento })}
+                openEvento={() => this.goToEvento(evento)}
               />
             )}
           </View>
@@ -76,7 +86,7 @@ class ConsultarEventos extends Component {
               <EventoCard
                 key={evento.id}
                 evento={evento}
-                openEvento={() => this.props.navigation.navigate('ConsultarEvento', { evento })}
+                openEvento={() => this.goToEvento(evento)}
               />
             )}
             {this.props.verAntiguas ? null : (
@@ -87,13 +97,13 @@ class ConsultarEventos extends Component {
               <EventoCard
                 key={evento.id}
                 evento={evento}
-                openEvento={() => this.props.navigation.navigate('ConsultarEvento', { evento })}
+                openEvento={() => this.goToEvento(evento)}
               />
             )}
           </View>
         )
       }
-    } else {
+    } else if(this.state.isLoading) {
       return (
         <ListItem itemDivider>
           <Label style={styles.label}>Cargando...</Label>

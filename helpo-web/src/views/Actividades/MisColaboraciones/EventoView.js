@@ -9,6 +9,7 @@ import ModalEliminarItem from '../../common/ModalEliminarItem/ModalEliminarItem'
 import * as eventoActions from '../../../actions/eventoActions';
 import './Eventos.css';
 import { Link } from 'react-router-dom'
+import ButtonsCompartirEvento from '../../common/ButtonsCompartir/ButtonsCompartirEvento';
 
 class EventoView extends React.Component {
   constructor(props) {
@@ -150,7 +151,33 @@ class EventoView extends React.Component {
         <div className="col-md-8 col-md-offset-2">
           <div className="row">
             <div className="form-group">
-              <h1>{evento.nombre}</h1>
+              <Link to={'/actividades/consultar-evento?id=' + evento.id}>
+                <h1>{evento.nombre}</h1>
+              </Link>
+            </div>
+          </div>
+          <div className="row">
+            <div className="form-group col-md-5">
+              <b className="float-left">Fecha de inicio</b>
+            </div>
+            <div className="form-group col-md-7">
+              <p>{moment(evento.fecha_hora_inicio).format('DD/MM/YYYY HH:mm')}</p>
+            </div>
+          </div>
+          <div className="row">
+            <div className="form-group col-md-5">
+              <b className="float-left">Fecha de finalización</b>
+            </div>
+            <div className="form-group col-md-7">
+              <p>{moment(evento.fecha_hora_fin).format('DD/MM/YYYY HH:mm')}</p>
+            </div>
+          </div>
+          <div className="row">
+            <div className="form-group col-md-5">
+              <b name="compartir" className="float-left">Compartir</b>
+            </div>
+            <div className="form-group col-md-7">
+              <ButtonsCompartirEvento evento={this.state.evento} />
             </div>
           </div>
           {listaNecesidades ?

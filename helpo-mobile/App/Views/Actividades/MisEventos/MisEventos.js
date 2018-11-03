@@ -116,17 +116,6 @@ class MisEventos extends React.Component {
           </Form>
           <CompartirOrganizacion ong={this.getONG()} />
         </Content>
-        <View style={{ flex: 0.1 }}>
-          <Fab
-            direction="up"
-            containerStyle={{}}
-            style={{ backgroundColor: "#E94E1B" }}
-            position="bottomRight"
-            onPress={() => this.props.navigation.navigate('RegistrarEvento')}
-          >
-            <IconNB name="md-add" />
-          </Fab>
-        </View>
       </Container>
     );
   }

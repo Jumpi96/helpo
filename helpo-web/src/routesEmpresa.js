@@ -48,6 +48,11 @@ const OrganizacionesPage = Loadable({
   loading: Loading,
 })
 
+const EmpresasPage = Loadable({
+  loader: () => import('./views/Empresas/EmpresasPage.js'),
+  loading: Loading,
+})
+
 const Dashboard = Loadable({
   loader: () => import('./views/Home/Home'),
   loading: Loading,
@@ -73,6 +78,7 @@ const routes = [
   { path: '/perfil/', name: 'Mi perfil', component: ConsultarPerfil },
   { path: '/ajustes/', name: 'Ajustes', component: AjustesPage },
   { path: '/organizaciones', name: 'Organizaciones', component: OrganizacionesPage },
+  { path: '/empresas', name: 'Empresas', component: EmpresasPage },
 ];
 
 export default routes;

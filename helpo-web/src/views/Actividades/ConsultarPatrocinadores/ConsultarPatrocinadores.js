@@ -51,11 +51,11 @@ class ConsultarPatrocinadores extends Component {
         <td><label>{moment(p.created).format('DD/MM/YYYY HH:mm')}</label></td>
         <td>{this.getBotonEstado(p)}</td>
         <td>
-          <button 
-            className="btn btn-primary"
+          <Button 
+            color="primary"
             onClick={() => this.setState({ propuestaModal: p })}>
             Ver propuesta
-          </button>
+          </Button>
         </td>
       </tr>
     );

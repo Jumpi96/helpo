@@ -118,55 +118,61 @@ class EventoView extends React.Component {
       }
       return (
         <div className="col-md-8 col-md-offset-2">
-          <h1>{evento.nombre}</h1>
           <div className="row">
-            <div className="form-group col-md-6">
+            <div className="form-group">
+              <Link to={'/actividades/consultar-evento?id=' + evento.id}>
+                <h1>{evento.nombre}</h1>
+              </Link>
+            </div>
+          </div>
+          <div className="row">
+            <div className="form-group col-md-5">
               <b className="float-left">Descripción</b>
             </div>
-            <div className="form-group col-md-6">
+            <div className="form-group col-md-7">
               <p>{evento.descripcion}</p>
             </div>
           </div>
           <div className="row">
-            <div className="form-group col-md-6">
+            <div className="form-group col-md-5">
               <b className="float-left">Rubro</b>
             </div>
-            <div className="form-group col-md-6">
+            <div className="form-group col-md-7">
               <p>{evento.rubro.nombre}</p>
             </div>
           </div>
           <div className="row">
-            <div className="form-group col-md-6">
+            <div className="form-group col-md-5">
               <b className="float-left">Fecha de inicio</b>
             </div>
-            <div className="form-group col-md-6">
+            <div className="form-group col-md-7">
               <p>{moment(evento.fecha_hora_inicio).format('DD/MM/YYYY HH:mm')}</p>
             </div>
           </div>
           <div className="row">
-            <div className="form-group col-md-6">
+            <div className="form-group col-md-5">
               <b className="float-left">Fecha de finalización</b>
             </div>
-            <div className="form-group col-md-6">
+            <div className="form-group col-md-7">
               <p>{moment(evento.fecha_hora_fin).format('DD/MM/YYYY HH:mm')}</p>
             </div>
           </div>
           {listaContactos ? (
             <div className="row">
-              <div className="form-group col-md-6">
+              <div className="form-group col-md-5">
                 <b name="contactos" className="float-left">Contactos</b>
               </div>
-              <div className="form-group col-md-6">
+              <div className="form-group col-md-7">
                 <ul className="list-group">{listaContactos}</ul>
               </div>
             </div>
           ) : undefined
           }
           <div className="row">
-            <div className="form-group col-md-6">
+            <div className="form-group col-md-5">
               <b name="compartir" className="float-left">Compartir</b>
             </div>
-            <div className="form-group col-md-6">
+            <div className="form-group col-md-7">
               <ButtonsCompartirEvento evento={this.state.evento} />
             </div>
           </div>
@@ -194,13 +200,13 @@ class EventoView extends React.Component {
             </button>
             </Link>
             {/* Renderiza boton Ver album si empezo evento */}
-            {this.props.evento.estado > 1 
-                  ? (
-                    <Link to={`/actividades/album/${this.props.evento.id}`}>
-                      <button className="btn btn-warning">Ver álbum</button>
-                    </Link>
-                  ) 
-                  : undefined}
+            {this.props.evento.estado > 1
+              ? (
+                <Link to={`/actividades/album/${this.props.evento.id}`}>
+                  <button className="btn btn-warning">Ver álbum</button>
+                </Link>
+              )
+              : undefined}
             <button
               onClick={this.toggleMensajes}
               className="btn btn-warning"

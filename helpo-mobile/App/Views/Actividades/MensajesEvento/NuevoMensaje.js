@@ -41,7 +41,7 @@ class NuevoMensaje extends React.Component {
     }
     api.post('/actividades/mensajes/', mensaje)
       .then((res) => {
-        this.props.navigation.navigate('MisEventos');
+        this.props.navigation.navigate('VerEvento', { evento: this.state.evento })
       })
       .catch((e) => {
         this.setState({ error: "El mensaje ingresado no es válido." })

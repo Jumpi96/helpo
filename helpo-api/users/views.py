@@ -116,6 +116,13 @@ class RubroEmpresaReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     serializer_class = RubroEmpresaSerializer
     lookup_field = 'id'
 
+class EmpresaProfileReadView(ListAPIView):
+    """
+    API endpoint para ver todos los perfiles de empresa
+    """
+    queryset = EmpresaProfile.objects.all()
+    serializer_class = EmpresaProfileSerializer
+
 class OrgProfileCreateReadView(ListCreateAPIView):
     """
     API endpoint para crear o ver todos los perfiles de organización

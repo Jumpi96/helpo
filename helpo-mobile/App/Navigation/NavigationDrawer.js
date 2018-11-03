@@ -7,6 +7,7 @@ import SignUp from '../Views/Usuarios/SignUp';
 import Configuracion from '../Views/Usuarios/Configuracion';
 import ChangePassword from '../Views/Usuarios/ChangePassword';
 import ConsultarEventos from '../Views/Actividades/ConsultarEventos/ConsultarEventos';
+import ConsultarEventosInicial from '../Views/Actividades/ConsultarEventos/ConsultarEventosInicial';
 import ConsultarEvento from '../Views/Actividades/ConsultarEventos/ConsultarEvento';
 import RegistrarEvento from '../Views/Actividades/RegistrarEvento/RegistrarEvento';
 import RegistrarNecesidades from '../Views/Actividades/RegistrarNecesidades/RegistrarNecesidades';
@@ -22,6 +23,7 @@ import FiltroEventos from '../Views/Actividades/ConsultarEventos/FiltroEventos/F
 import MensajesEvento from '../Views/Actividades/MensajesEvento/MensajesEvento';
 import NuevoMensaje from '../Views/Actividades/MensajesEvento/NuevoMensaje';
 import OrganizacionesPage from '../Views/Organizaciones/OrganizacionesPage';
+import EmpresasPage from '../Views/Empresas/EmpresasPage';
 import AgregarOfrecimiento from "../Views/Actividades/RegistrarOfrecimiento/AgregarOfrecimiento";
 import RegistrarOfrecimiento from "../Views/Actividades/RegistrarOfrecimiento/RegistrarOfrecimiento";
 import MisPropuestas from '../Views/Actividades/MisPropuestas/MisPropuestas';
@@ -46,6 +48,7 @@ const NavigationDrawer = DrawerNavigator({
 	Configuracion: { screen: Configuracion },
 	ChangePassword: { screen: ChangePassword },
 	ConsultarEventos: { screen: ConsultarEventos },
+	ConsultarEventosInicial: { screen: ConsultarEventosInicial },
 	ConsultarEvento: { screen: ConsultarEvento },
 	RegistrarColaboraciones: { screen: RegistrarColaboraciones },
 	AgregarColaboracion: { screen: AgregarColaboracion },
@@ -61,6 +64,7 @@ const NavigationDrawer = DrawerNavigator({
 	MensajesEvento: { screen: MensajesEvento },
 	NuevoMensaje: { screen: NuevoMensaje },
 	OrganizacionesPage: { screen: OrganizacionesPage },
+	EmpresasPage: { screen: EmpresasPage },
 	AgregarOfrecimiento: { screen: AgregarOfrecimiento },
 	RegistrarOfrecimiento: { screen: RegistrarOfrecimiento },
 	MisPropuestas: { screen: MisPropuestas },

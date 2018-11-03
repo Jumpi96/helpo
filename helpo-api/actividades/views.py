@@ -285,9 +285,9 @@ class ConsultaEventosOrganizacionCreateReadView(ListCreateAPIView):
             lista_eventos = self.get_eventos(self.request.query_params)
             queryset = queryset.filter(id__in=lista_eventos)
         queryset = queryset.order_by('fecha_hora_inicio')
-        #user = get_token_user(self.request)
-        #if user is not None:
-        #    queryset = self.recomendar_eventos(queryset, user)
+        user = get_token_user(self.request)
+        if user is not None:
+            queryset = self.recomendar_eventos(queryset, user)
         return queryset
 
     def recomendar_eventos(self, queryset, user):

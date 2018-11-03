@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { CardFooter, Container, Row, Col } from 'reactstrap';
+import { Container, Row, Col } from 'reactstrap';
 import PropTypes from 'prop-types';
-import sygnet from '../../assets/img/brand/sygnet.svg'
 
 const propTypes = {
   children: PropTypes.node,

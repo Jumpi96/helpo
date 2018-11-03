@@ -207,8 +207,7 @@ label {
   margin-bottom: 0.5rem; }
 
 button {
-  border-radius: 0;
-  position: relative; }
+  border-radius: 0; }
 
 button:focus {
   outline: 1px dotted;
@@ -8388,7 +8387,7 @@ canvas {
   align-items: center;
   padding: 0 1rem;
   color: #23282c;
-  background: #F39200;
+  background-color: #F39200;
   border-top: 1px solid #E94E1B; }
 
 .row.row-equal {

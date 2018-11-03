@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import {Row, Col, Collapse, CarouselCaption, CarouselControl, CarouselIndicators, CarouselItem, Carousel, Card , CardGroup, CardTitle, CardText, Button, CardBody, CardImg, CardSubtitle} from 'reactstrap';
+import {Row, Col, Collapse, CarouselCaption, CarouselControl, CarouselIndicators, CarouselItem, Carousel, Card, Button, CardBody} from 'reactstrap';
 import './HomeNoAuth.css';
 import imagen from "../../assets/img/home-noauth-background.jpg";
 import imagen1 from "../../assets/img/Empresas.png";
-import imagen2 from "../../assets/img/ONG.png";
+import imagen2 from "../../assets/img/organizacion.png";
 import imagen3 from "../../assets/img/Voluntarios.png";
 import TwitterTimeline from 'react-twitter-embedded-timeline';
 import { FacebookProvider, Page } from 'react-facebook';

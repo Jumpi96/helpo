@@ -65,6 +65,7 @@ class OrganizacionesList extends React.Component {
                 <OrganizacionCard
                   organizacion={organizacion}
                   key={organizacion.id} footer
+                  isAboutEmpresas={this.props.isAboutEmpresas}
                   color="primary" auth={this.props.auth}
                   link={this.getLink(organizacion)} // Ver que link va
                 />

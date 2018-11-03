@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, CardHeader, CardBody, Table } from 'reactstrap';
 import { connect } from "react-redux";
 import { Link } from 'react-router-dom';
+import { Gmaps, Marker } from 'react-gmaps';
 import moment from 'moment';
 import api from '../../../api';
 import './Eventos.css';
@@ -140,6 +141,7 @@ class ConsultarEventosView extends React.Component {
   render() {
     if (this.state.evento.nombre) {
       const evento = this.state.evento;
+      const params = { v: '3.exp', key: process.env.GOOGLE_API_KEY };
       let listaContactos, listaNecesidades, listaVoluntarios;
       if (evento.necesidades.length > 0) {
         listaNecesidades = evento.necesidades.map((n) =>
@@ -226,6 +228,26 @@ class ConsultarEventosView extends React.Component {
                 </div>
               ) : undefined
               }
+              <div className="row">
+                <div className="form-group col-md-2 offset-md-1">
+                  <b className="float-left">Ubicación</b>
+                </div>
+                <div className='col-md-9'>
+                  <Gmaps
+                    width={'75%'}
+                    height={'300px'}
+                    lat={evento.ubicacion.latitud}
+                    lng={evento.ubicacion.longitud}
+                    zoom={12}
+                    params={params}>
+                    <Marker
+                      lat={evento.ubicacion.latitud}
+                      lng={evento.ubicacion.longitud}
+                    />
+                  </Gmaps>
+                  <p style={{ marginTop: '10px' }}>{evento.ubicacion.notas}</p>
+                </div>
+              </div>
               {evento.propuestas.length > 0 && this.getPropuestas(evento.propuestas)}
               {listaNecesidades ? (
                 <div className="row">

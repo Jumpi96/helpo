@@ -54,7 +54,8 @@
     "redux-saga": "^0.16.0",
     "redux-thunk": "2.3.0",
     "reduxsauce": "0.7.0",
-    "seamless-immutable": "^7.1.2"
+    "seamless-immutable": "^7.1.2",
+    "react-native-open-maps": "0.3.2"
   },
   "devDependencies": {
     "@storybook/addon-storyshots": "^3.4.0",

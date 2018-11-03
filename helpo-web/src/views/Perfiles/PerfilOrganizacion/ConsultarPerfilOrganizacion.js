@@ -146,14 +146,13 @@ class ConsultarPerfilOrganizacion extends Component {
     else {
       const params = { v: '3.exp', key: process.env.GOOGLE_API_KEY }
       return (
-        <div className='row' style={{ marginBottom: '20px' }} >
-          <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }} className='col-2'>
-            <p style={{ textAlign: 'right' }} className='font-weight-bold' htmlFor="descripcion">Ubicación</p>
+        <div className="row">
+          <div className="form-group col-md-2">
+            <b className="float-left">Ubicación</b>
           </div>
-
-          <div className='col-6'>
+          <div className='col-md-9 offset-md-1'>
             <Gmaps
-              width={'300px'}
+              width={'75%'}
               height={'300px'}
               lat={this.props.data.ubicacion.latitud}
               lng={this.props.data.ubicacion.longitud}
@@ -164,7 +163,6 @@ class ConsultarPerfilOrganizacion extends Component {
                 lng={this.props.data.ubicacion.longitud}
               />
             </Gmaps>
-
             <p style={{ marginTop: '10px' }}>{this.props.data.ubicacion.notas}</p>
           </div>
         </div>
@@ -200,7 +198,7 @@ class ConsultarPerfilOrganizacion extends Component {
     if (this.props.auth.isAuthenticated) {
       return '/actividades/consultar-eventos?organizacion=' + this.props.id;
     }
-    return '/noAuth/actividades/consultar-eventos?organizacion=' + this.props.id;  
+    return '/noAuth/actividades/consultar-eventos?organizacion=' + this.props.id;
   }
 
   render() {

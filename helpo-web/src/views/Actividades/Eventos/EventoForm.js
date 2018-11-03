@@ -75,14 +75,24 @@ class EventoForm extends React.Component {
     } else {
       const inicio = moment(this.props.evento.fecha_hora_inicio);
       const fin = moment(this.props.evento.fecha_hora_fin);
-      const ahora = moment(new Date());
-      if (moment.duration(fin.diff(inicio)).asHours() > 24 ||
-        inicio < ahora ||
-        moment.duration(fin.diff(inicio)).asHours() < 0) {
+      const actual = moment(new Date());
+      if (inicio < actual) {
         formIsValid = false;
-        errors.fechas = 'Las fecha de fin debe ser mayor a la de inicio y ' +
-          'la actividad no durar más de 24 horas.';
-      } else { errors.fechas = undefined; }
+        errors.fechas = 'La fecha de inicio debe ser posterior a la fecha actual';
+      } else {
+        if (fin < inicio) {
+          formIsValid = false;
+          errors.fechas = 'La fecha de inicio debe ser anterior a la fecha de fin de la actividad'
+        } else {
+          if (moment.duration(fin.diff(inicio)).asHours() > 24 && inicio < fin && !this.props.evento.campaña) {
+            formIsValid = false;
+            errors.fechas = 'El evento no puede durar más de 24 horas'
+          }
+          else {
+            errors.fechas = undefined;
+          }
+        }
+      }
     }
     if (this.props.evento.rubro_id === 0) {
       formIsValid = false;

@@ -73,7 +73,7 @@ class ConsultarPerfilOrganizacion extends Component {
     } else if (this.props.data.usuario.user_type === 1) {
       return (
         <Button transparent onPress={this.props.switchToEventosOrg}>
-          <Text>Ver eventos</Text>
+          <Text>Ver actividades</Text>
         </Button>
       );
     }
@@ -96,7 +96,7 @@ class ConsultarPerfilOrganizacion extends Component {
       options: [
         { text: "Cerrar", icon: "close", iconColor: "#25de5b" },
       ],
-      title: "Cantidad de manos acumuladas y eventos"
+      title: "Cantidad de manos y actividades sociales acumuladas"
     }, buttonIndex => {
       console.log(buttonIndex);
     });

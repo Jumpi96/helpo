@@ -197,7 +197,10 @@ class ComentariosEvento extends Component {
     const opiniones = this.getOpiniones();
     return (
       <div className="offset-md-1">
-        <h2>Opiniones del evento</h2>
+        <h2>{ "Opiniones sobre " +
+          (this.props.evento.campaña ?
+            'la campaña' : 'el evento')
+          }</h2>
         {this.state.participante ?
           this.getOpcionRetroalimentacion()
           : undefined}

@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import {Row, Col, Collapse, CarouselCaption, CarouselControl, CarouselIndicators, CarouselItem, Carousel, Card, Button, CardBody} from 'reactstrap';
+import { Row, Col, Collapse, CarouselCaption, CarouselControl, CarouselIndicators, CarouselItem, Carousel, Card, Button, CardBody } from 'reactstrap';
 import './HomeNoAuth.css';
 import imagen from "../../assets/img/home-noauth-background.jpg";
-import imagen1 from "../../assets/img/Empresas.png";
-import imagen2 from "../../assets/img/organizacion.png";
-import imagen3 from "../../assets/img/Voluntarios.png";
+import imagen2 from "../../assets/img/fondo3.jpg";
+import imagen3 from "../../assets/img/foto_celular.jpeg";
 import TwitterTimeline from 'react-twitter-embedded-timeline';
 import { FacebookProvider, Page } from 'react-facebook';
 
@@ -24,10 +23,12 @@ const items = [
 class Home extends Component {
   constructor(props, context) {
     super(props, context);
-    this.state = { activeIndex: 0, 
+    this.state = {
+      activeIndex: 0,
       open1: false,
       open2: false,
-      open3: false};
+      open3: false
+    };
     this.next = this.next.bind(this);
     this.previous = this.previous.bind(this);
     this.goToIndex = this.goToIndex.bind(this);
@@ -38,7 +39,7 @@ class Home extends Component {
 
   toggle(num) {
     if (num === 1) {
-    this.setState({ collapse1: !this.state.collapse1 });
+      this.setState({ collapse1: !this.state.collapse1 });
     }
   }
 
@@ -85,63 +86,75 @@ class Home extends Component {
 
     return (
       <React.Fragment>
-          <Carousel
-          activeIndex={activeIndex}
-          next={this.next}
-          previous={this.previous}
-          >
-            <CarouselIndicators items={items} activeIndex={activeIndex} onClickHandler={this.goToIndex} />
-            {slides}
-            <CarouselControl direction="prev" directionText="Previous" onClickHandler={this.previous} />
-            <CarouselControl direction="next" directionText="Next" onClickHandler={this.next} />
-          </Carousel> 
-          <Row style={{ marginRight:'-70px'}}>
-            <Col>
-              <Button color="primary" onClick={() => this.setState({ open1: !this.state.open1 })} style={{fontSize:'20px', marginTop: '10px', marginBottom: '1rem', height: '150px', width: '400px'}}>¿Quiénes somos?</Button>
-              <Collapse isOpen={this.state.open1}>
-                <Card style={{width: '400px'}}>
-                  <CardBody>
-                  Anim pariatur cliche reprehenderit,
-                  enim eiusmod high life accusamus terry richardson ad squid. Nihil
-                  anim keffiyeh helvetica, craft beer labore wes anderson cred
-                  nesciunt sapiente ea proident.
+        <Card>
+          <CardBody>
+            <Carousel
+              activeIndex={activeIndex}
+              next={this.next}
+              previous={this.previous}
+            >
+              <CarouselIndicators items={items} activeIndex={activeIndex} onClickHandler={this.goToIndex} />
+              {slides}
+              <CarouselControl direction="prev" directionText="Previous" onClickHandler={this.previous} />
+              <CarouselControl direction="next" directionText="Next" onClickHandler={this.next} />
+            </Carousel>
+            <Row style={{ marginRight: '-70px' }}>
+              <Col>
+                <Button color="primary" onClick={() => this.setState({ open1: !this.state.open1 })} style={{ fontSize: '20px', marginTop: '10px', marginBottom: '1rem', height: '150px', width: '400px' }}>¿Quiénes somos?</Button>
+                <Collapse isOpen={this.state.open1}>
+                  <Card style={{ width: '400px' }}>
+                    <CardBody>
+                      Anim pariatur cliche reprehenderit,
+                      enim eiusmod high life accusamus terry richardson ad squid. Nihil
+                      anim keffiyeh helvetica, craft beer labore wes anderson cred
+                      nesciunt sapiente ea proident.
                   </CardBody>
-                </Card>
-              </Collapse>
-            </Col>
-            <Col>
-              <Button color="primary" onClick={() => this.setState({ open2: !this.state.open2 })} style={{fontSize:'20px', marginTop: '10px', marginBottom: '1rem', height: '150px', width: '400px' }}>¿Qué hacemos?</Button>
-              <Collapse isOpen={this.state.open2}>
-                <Card style={{width: '400px'}}>
-                  <CardBody>
-                  Anim pariatur cliche reprehenderit,
-                  enim eiusmod high life accusamus terry richardson ad squid. Nihil
-                  anim keffiyeh helvetica, craft beer labore wes anderson cred
-                  nesciunt sapiente ea proident.
+                  </Card>
+                </Collapse>
+              </Col>
+              <Col>
+                <Button color="primary" onClick={() => this.setState({ open2: !this.state.open2 })} style={{ fontSize: '20px', marginTop: '10px', marginBottom: '1rem', height: '150px', width: '400px' }}>¿Qué hacemos?</Button>
+                <Collapse isOpen={this.state.open2}>
+                  <Card style={{ width: '400px' }}>
+                    <CardBody>
+                      Anim pariatur cliche reprehenderit,
+                      enim eiusmod high life accusamus terry richardson ad squid. Nihil
+                      anim keffiyeh helvetica, craft beer labore wes anderson cred
+                      nesciunt sapiente ea proident.
                   </CardBody>
-                </Card>
-              </Collapse>
-            </Col>
-            <Col>
-              <Button color="primary" onClick={() => this.setState({ open3: !this.state.open3 })} style={{fontSize:'20px', marginTop: '10px', marginBottom: '1rem', height: '150px', width: '400px'}}>¿Cómo participar?</Button>
-              <Collapse isOpen={this.state.open3}>
-                <Card style={{width: '400px'}}>
-                  <CardBody>
-                  Anim pariatur cliche reprehenderit,
-                  enim eiusmod high life accusamus terry richardson ad squid. Nihil
-                  anim keffiyeh helvetica, craft beer labore wes anderson cred
-                  nesciunt sapiente ea proident.
+                  </Card>
+                </Collapse>
+              </Col>
+              <Col>
+                <Button color="primary" onClick={() => this.setState({ open3: !this.state.open3 })} style={{ fontSize: '20px', marginTop: '10px', marginBottom: '1rem', height: '150px', width: '400px' }}>¿Cómo participar?</Button>
+                <Collapse isOpen={this.state.open3}>
+                  <Card style={{ width: '400px' }}>
+                    <CardBody>
+                      Anim pariatur cliche reprehenderit,
+                      enim eiusmod high life accusamus terry richardson ad squid. Nihil
+                      anim keffiyeh helvetica, craft beer labore wes anderson cred
+                      nesciunt sapiente ea proident.
                   </CardBody>
-                </Card>
-              </Collapse>
-            </Col>
-          </Row>
-          <Row>
-            <TwitterTimeline loading={"HelpoApp"} user={"HelpoApp"} chrome="noborders noheader" height={500} width={500} />
-            <FacebookProvider appId="343119846258901">
-              <Page href="https://www.facebook.com/HelpoConsultas" tabs="timeline" height={500} width={500} />
-            </FacebookProvider>  
-          </Row>
+                  </Card>
+                </Collapse>
+              </Col>
+            </Row>
+            <Row>
+              <div className="col-md-4">
+              <Card><CardBody>
+                <TwitterTimeline loading={"HelpoApp"} user={"HelpoApp"} height={'500px'} width={'100%'} chrome="noborders noheader" />
+                </CardBody></Card>
+              </div>
+              <div className="col-md-4 offset-md-4">
+                <Card><CardBody>
+                  <FacebookProvider appId="343119846258901">
+                    <Page href="https://www.facebook.com/HelpoConsultas" tabs="timeline" height={500} width={500} />
+                  </FacebookProvider>
+                </CardBody></Card>
+              </div>
+            </Row>
+          </CardBody>
+        </Card>
       </React.Fragment>
     );
   }

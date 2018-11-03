@@ -18,6 +18,8 @@ import {
 } from 'native-base';
 import api from '../../../../api';
 import styles from '../styles';
+import { connect } from 'react-redux'
+import FiltroActividadesActions from '../../../../Redux/FiltroActividadesRedux'
 
 class FiltroEventos extends React.Component {
 
@@ -34,7 +36,8 @@ class FiltroEventos extends React.Component {
       optionsRubros: [],
       optionsFechas: this.loadOptionsFecha(),
       optionsUbicaciones: this.loadOptionsUbicaciones(),
-      latitud: undefined, longitud: undefined
+      latitud: undefined, longitud: undefined,
+      verAntiguas: false      
     };
     this.handleChangeFuncion = this.handleChangeFuncion.bind(this);
     this.handleChangeMaterial = this.handleChangeMaterial.bind(this);
@@ -53,7 +56,8 @@ class FiltroEventos extends React.Component {
       selectedUbicacion,
       optionsFunciones,
       optionsMateriales,
-      optionsRubros
+      optionsRubros,
+      verAntiguas
     } = this.state;
     if (selectedMateriales.filter(n => n !== false).length > 0) {
       ruta += 'necesidades=';
@@ -90,6 +94,9 @@ class FiltroEventos extends React.Component {
     }
     if (selectedUbicacion !== 0) {
       ruta += this.getValorUbicacion(selectedUbicacion) + '&';
+    }
+    if (verAntiguas) {
+      ruta += 'antiguos=true&'
     }
     ruta = ruta[ruta.length-1] === '&' ? ruta.substring(0, ruta.length-1) : ruta;
     return ruta;
@@ -165,6 +172,12 @@ class FiltroEventos extends React.Component {
     if (this.state.longitud) {
       this.setState({ selectedUbicacion });
     }
+  }
+
+  handleChangeVerAntiguas = () => {
+    const verAntiguas = !this.state.verAntiguas
+    this.setState({verAntiguas: verAntiguas})
+    this.props.changeVerAntiguas(verAntiguas)
   }
 
   getListaMateriales() {
@@ -281,6 +294,21 @@ class FiltroEventos extends React.Component {
       </View>
     )
   }
+
+  checkboxVerActividadesPasadas = () => {
+    return (
+    <ListItem>
+      <CheckBox 
+        onPress={this.handleChangeVerAntiguas}
+        checked={this.state.verAntiguas}
+        color="green"
+      />
+      <Body>
+        <Text>¿Ver actividades pasadas?</Text>
+      </Body>
+    </ListItem>
+    )
+  }
   
   getValorFecha(selectedFecha) {
     let desde, hasta;
@@ -359,12 +387,20 @@ class FiltroEventos extends React.Component {
           {this.getListaFechas()}
           <Separator bordered noTopBorder>
             <Text>Ubicación</Text>
-          </Separator>
+          </Separator>          
           {this.getListaUbicaciones()}
+          <Separator bordered noTopBorder>
+            <Text>Ver actividades finalizadas</Text>
+          </Separator>
+          {this.checkboxVerActividadesPasadas()}
         </Content>
       </Container>
     );
   }
 }
 
-export default FiltroEventos;
+const mapDispatchToProps = dispatch => ({
+  changeVerAntiguas: (value) => dispatch(FiltroActividadesActions.verAntiguasChange(value))
+})
+
+export default connect(null, mapDispatchToProps)(FiltroEventos);

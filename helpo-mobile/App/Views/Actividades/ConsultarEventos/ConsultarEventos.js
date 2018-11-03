@@ -52,9 +52,10 @@ class ConsultarEventos extends Component {
       if (eventos.length <= 3) {
         return (
           <View>
+            {this.props.verAntiguas ? null : (
             <ListItem itemDivider>
               <Label style={styles.label}>Recomendaciones para vos</Label>
-            </ListItem>
+            </ListItem>)}
             {eventos.map(evento =>
               <EventoCard
                 key={evento.id}
@@ -67,9 +68,10 @@ class ConsultarEventos extends Component {
       } else {
         return (
           <View>
+            {this.props.verAntiguas ? null : (
             <ListItem itemDivider>
               <Label style={styles.label}>Recomendaciones para vos</Label>
-            </ListItem>
+            </ListItem>)}
             {eventos.slice(0, 3).map(evento =>
               <EventoCard
                 key={evento.id}
@@ -77,9 +79,10 @@ class ConsultarEventos extends Component {
                 openEvento={() => this.props.navigation.navigate('ConsultarEvento', { evento })}
               />
             )}
+            {this.props.verAntiguas ? null : (
             <ListItem itemDivider>
               <Label style={styles.label}>Otras actividades sociales</Label>
-            </ListItem>
+            </ListItem>)}
             {eventos.slice(3).map(evento =>
               <EventoCard
                 key={evento.id}
@@ -126,4 +129,8 @@ class ConsultarEventos extends Component {
   }
 }
 
-export default ConsultarEventos;
+const mapDispatchToProps = state => ({
+  verAntiguas: state.filtroActividades.verAntiguas
+})
+
+export default connect(mapDispatchToProps)(ConsultarEventos);

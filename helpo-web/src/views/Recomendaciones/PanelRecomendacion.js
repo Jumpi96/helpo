@@ -106,7 +106,9 @@ class PanelRecomendacion extends React.Component {
         </div>
       )
     } else {
-      <div className="loader"></div>
+      return (
+        <div className="loader"></div>
+      )
     }
   }
 

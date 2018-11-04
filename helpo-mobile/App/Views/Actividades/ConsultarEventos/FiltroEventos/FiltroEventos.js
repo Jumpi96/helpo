@@ -389,10 +389,12 @@ class FiltroEventos extends React.Component {
             <Text>Ubicación</Text>
           </Separator>          
           {this.getListaUbicaciones()}
+          {/*
           <Separator bordered noTopBorder>
             <Text>Ver actividades finalizadas</Text>
           </Separator>
           {this.checkboxVerActividadesPasadas()}
+          */}
         </Content>
       </Container>
     );

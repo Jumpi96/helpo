@@ -65,45 +65,49 @@ class PanelRecomendacion extends React.Component {
     // Checks for undefined props
     // Assignment to shorten name
     const obj_recom = this.props.recomendaciones
-    if(!obj_recom || (Object.keys(obj_recom).length === 0 && obj_recom.constructor === Object)) {
-      return <p className="text-muted text-center">Aún no ha planificado una actividad</p>
+    if (obj_recom !== "Loading...") {
+      if (!obj_recom || (Object.keys(obj_recom).length === 0 && obj_recom.constructor === Object)) {
+        return <p className="text-muted text-center">Aún no ha planificado una actividad</p>
+      }
+      // Process and sort recomendaciones
+      //let recomendaciones = this.sortData(this.props.recomendaciones)
+      let recomendaciones = this.sortData(this.props.recomendaciones)
+
+      // Removes the first (best) recomendacion
+      const best = recomendaciones.shift()
+      const render_best = (
+        <div style={boxStyle}>
+          <p style={{
+            fontSize: 14,
+            display: 'inline-block',
+            padding: 10,
+          }}>
+            En base a las especifiaciones de su evento, Helpo le recomienda realizarlo en <span style={{ fontWeight: 'bold' }}>{best.mes}</span>, habiendo obtenido dicho mes un puntaje del <span style={{ fontWeight: 'bold' }}>{this.changeToPorcentaje(best.valor)}</span>
+          </p>
+        </div>
+      )
+
+      const otras_recomendaciones = recomendaciones.map(recomendacion => (
+        <Row>
+          <Col>
+            <p style={{ marginBottom: 3 }}>{recomendacion.mes}:</p>
+          </Col>
+          <Col>
+            <p style={{ marginBottom: 3 }}>{this.changeToPorcentaje(recomendacion.valor)}</p>
+          </Col>
+        </Row>
+      ))
+
+      return (
+        <div className='text-center' style={{ marginLeft: 10, marginRight: 10 }}>
+          {render_best}
+          <p style={{ marginTop: 8 }}>Resto de los meses:</p>
+          {otras_recomendaciones}
+        </div>
+      )
+    } else {
+      <div className="loader"></div>
     }
-    // Process and sort recomendaciones
-    //let recomendaciones = this.sortData(this.props.recomendaciones)
-    let recomendaciones = this.sortData(this.props.recomendaciones)
-
-    // Removes the first (best) recomendacion
-    const best = recomendaciones.shift()
-    const render_best = (
-      <div style={boxStyle}>        
-        <p style={{
-          fontSize: 14,
-          display: 'inline-block',
-          padding: 10,
-        }}>
-          En base a las especifiaciones de su evento, Helpo le recomienda realizarlo en <span style={{fontWeight: 'bold'}}>{best.mes}</span>, habiendo obtenido dicho mes un puntaje del <span style={{fontWeight: 'bold'}}>{this.changeToPorcentaje(best.valor)}</span>
-        </p>
-      </div>
-    )    
-
-    const otras_recomendaciones = recomendaciones.map(recomendacion => (
-      <Row>
-        <Col>
-          <p style={{ marginBottom: 3 }}>{recomendacion.mes}:</p>
-        </Col>
-        <Col>
-          <p style={{ marginBottom: 3 }}>{this.changeToPorcentaje(recomendacion.valor)}</p>
-        </Col>
-      </Row>
-    ))
-
-    return (
-      <div className='text-center' style={{ marginLeft: 10, marginRight: 10 }}>
-        {render_best}
-        <p style={{ marginTop: 8 }}>Resto de los meses:</p>
-        {otras_recomendaciones}
-      </div>
-    )
   }
 
 

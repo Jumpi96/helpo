@@ -37,7 +37,7 @@ class EventoView extends React.Component {
   toggleConsultarColaboraciones() {
     this.props.history.push({
       pathname: '/actividades/consultar-colaboraciones',
-      search: '/' + this.state.evento.id,
+      search: '?evento=' + this.state.evento.id,
     });
   }
 
@@ -179,7 +179,10 @@ class EventoView extends React.Component {
           <div className="btn-group form-group" role="group">
             <button
               onClick={this.toggleEdit}
-              hidden={moment(evento.fecha_hora_inicio) <= moment()}
+              hidden={
+                !((moment(evento.fecha_hora_inicio) > moment() && !evento.campaña) ||
+                (moment(evento.fecha_hora_fin) > moment() && evento.campaña))
+              }
               className="btn btn-warning"
             >
               Editar {evento.campaña ? "campaña" : "evento"}
@@ -191,14 +194,13 @@ class EventoView extends React.Component {
             >
               Editar necesidades
             </button>
-            <Link to={`/actividades/consultar-colaboraciones/${this.state.evento.id}`}>
               <button
                 onClick={this.toggleConsultarColaboraciones}
                 className="btn btn-warning"
               >
                 Consultar colaboraciones
             </button>
-            </Link>
+            
             {/* Renderiza boton Ver album si empezo evento */}
             {this.props.evento.estado > 1
               ? (
@@ -234,7 +236,7 @@ class EventoView extends React.Component {
         </div>
       );
     } else {
-      return <p>Cargando...</p>
+      return <div className="loader"/>
     }
   }
 };

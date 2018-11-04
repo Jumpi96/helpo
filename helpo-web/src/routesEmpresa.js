@@ -4,7 +4,7 @@ import Loadable from 'react-loadable'
 import DefaultLayout from './containers/DefaultLayout/DefaultLayout';
 
 function Loading() {
-  return <div>Cargando...</div>;
+  return <div className="loader"/>;
 }
 
 const ConsultarEventosPage = Loadable({

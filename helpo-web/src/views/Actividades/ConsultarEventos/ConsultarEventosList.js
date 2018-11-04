@@ -94,7 +94,7 @@ class ConsultarEventosList extends React.Component {
         </div>
       );
     } else {
-      return <p>Cargando...</p>
+      return <div className="loader"/>
     }
   }
 };

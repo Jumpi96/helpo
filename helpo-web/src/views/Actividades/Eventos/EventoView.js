@@ -179,7 +179,10 @@ class EventoView extends React.Component {
           <div className="btn-group form-group" role="group">
             <button
               onClick={this.toggleEdit}
-              hidden={moment(evento.fecha_hora_inicio) <= moment()}
+              hidden={
+                !((moment(evento.fecha_hora_inicio) > moment() && !evento.campaña) ||
+                (moment(evento.fecha_hora_fin) > moment() && evento.campaña))
+              }
               className="btn btn-warning"
             >
               Editar {evento.campaña ? "campaña" : "evento"}

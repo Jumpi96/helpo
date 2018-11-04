@@ -110,6 +110,7 @@ class ComentariosEvento extends Component {
             <div>
               <h3>Opiniones de voluntarios</h3>
               {opiniones_voluntarios}
+              <hr />
             </div> : undefined
           }
         </div>

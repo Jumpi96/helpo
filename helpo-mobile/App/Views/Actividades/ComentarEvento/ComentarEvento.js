@@ -21,7 +21,7 @@ import api from '../../../api';
 
 class ComentarEvento extends React.Component {
 
-  constructor(props){
+  constructor(props) {
     super(props);
     const { params } = this.props.navigation.state;
     const { evento } = params;
@@ -43,8 +43,8 @@ class ComentarEvento extends React.Component {
         this.setState({ evento: res.data });
       })
       .catch((error) => {
-        if (error.response){ console.log(error.response.status) }
-        else { console.log('Error: ', error.message)}
+        if (error.response) { console.log(error.response.status) }
+        else { console.log('Error: ', error.message) }
       })
   }
 
@@ -52,14 +52,14 @@ class ComentarEvento extends React.Component {
     const necesidades = evento.necesidades;
     const voluntarios = evento.voluntarios;
     let filtroNecesidades;
-    for (let i=0; i < necesidades.length; i++) {
+    for (let i = 0; i < necesidades.length; i++) {
       filtroNecesidades = necesidades[i].colaboraciones.filter(c => c.colaborador.id === usuario);
       if (filtroNecesidades.length > 0 && filtroNecesidades[0].retroalimentacion_voluntario) {
         return true;
       }
     }
     let filtroVoluntarios;
-    for (let i=0; i < voluntarios.length; i++) {
+    for (let i = 0; i < voluntarios.length; i++) {
       filtroVoluntarios = voluntarios[i].participaciones.filter(c => c.colaborador.id === usuario);
       if (filtroVoluntarios.length > 0 && filtroVoluntarios[0].retroalimentacion_voluntario) {
         return true;
@@ -96,8 +96,8 @@ class ComentarEvento extends React.Component {
         this.props.navigation.navigate('ConsultarEvento', { evento: this.state.evento });
       })
       .catch((error) => {
-        if (error.response){ console.log(error.response.status) }
-        else { console.log('Error: ', error.message)}
+        if (error.response) { console.log(error.response.status) }
+        else { console.log('Error: ', error.message) }
       });
   }
 
@@ -107,8 +107,8 @@ class ComentarEvento extends React.Component {
         this.loadEvento();
       })
       .catch((error) => {
-        if (error.response){ console.log(error.response.status) }
-        else { console.log('Error: ', error.message)}
+        if (error.response) { console.log(error.response.status) }
+        else { console.log('Error: ', error.message) }
       })
   }
 
@@ -121,12 +121,12 @@ class ComentarEvento extends React.Component {
         <Item floatingLabel>
           <Label>Comentario</Label>
           <Input value={this.state.comentario}
-            onChangeText={(text) => this.setState({comentario: text})}/>
+            onChangeText={(text) => this.setState({ comentario: text })} />
         </Item>
         <Text style={styles.validationMessage}>{this.state.error}</Text>
         <Button block style={{ margin: 15, marginTop: 20 }}
           onPress={this.handleComentar}>
-            <Text>Guardar comentario</Text>
+          <Text>Guardar comentario</Text>
         </Button>
       </View>
     )
@@ -140,35 +140,35 @@ class ComentarEvento extends React.Component {
     return this.props.auth.user.id;
   }
 
-  render(){
+  render() {
     if (this.state.evento.nombre) {
-        return (
-            <Container>
-              <Header>
-                <Left>
-                  <Button transparent onPress={() => this.props.navigation.navigate('MisColaboraciones')}>
-                    <Icon name="arrow-back" />
-                  </Button>
-                </Left>
-                <Body>
-                  <Title>{this.state.evento.nombre}</Title>
-                </Body>
-              </Header>
-              <Content>
-                <Form>
-                  {this.getOpcionRetroalimentacion()}
-                  {this.getOpcionComentar()}
-                </Form>
-              </Content>
-            </Container>
-          );
+      return (
+        <Container>
+          <Header>
+            <Left>
+              <Button transparent onPress={() => this.props.navigation.navigate('MisColaboraciones')}>
+                <Icon name="arrow-back" />
+              </Button>
+            </Left>
+            <Body>
+              <Title>{this.state.evento.nombre}</Title>
+            </Body>
+          </Header>
+          <Content>
+            <Form>
+              {this.getOpcionRetroalimentacion()}
+              {this.getOpcionComentar()}
+            </Form>
+          </Content>
+        </Container>
+      );
     }
     return (
-        <Container>
-            <Content>
-                <Text>Cargando...</Text>
-            </Content>
-        </Container>
+      <Container>
+        <Content>
+          <Text>Cargando...</Text>
+        </Content>
+      </Container>
     )
   }
 }
@@ -176,6 +176,5 @@ class ComentarEvento extends React.Component {
 const mapStateToProps = state => ({
   auth: state.auth,
 });
-  
+
 export default connect(mapStateToProps, undefined)(ComentarEvento);
-  

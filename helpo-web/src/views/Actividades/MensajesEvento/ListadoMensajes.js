@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { Table, Card, CardHeader, CardBody } from 'reactstrap';
+import { Table, Card, CardHeader, CardBody, Modal, ModalFooter, ModalHeader, Button, ModalBody } from 'reactstrap';
 import moment from 'moment';
 import ModalNuevoMensaje from './ModalNuevoMensaje';
 import api from '../../../api';
 
 
 class ListadoMensajes extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     const urlParams = new URLSearchParams(this.props.location.search)
     const parametro = urlParams.get('evento');
@@ -21,7 +21,8 @@ class ListadoMensajes extends Component {
       mensajes: [],
       mensaje: '',
       asunto: '',
-      openModal: false
+      openModal: false,
+      openModalExitoso: false
     };
     this.confirmNuevoMensaje = this.confirmNuevoMensaje.bind(this);
     this.handleInput = this.handleInput.bind(this);
@@ -71,11 +72,11 @@ class ListadoMensajes extends Component {
     if (enviar) {
       api.post('/actividades/mensajes/', mensaje)
         .then((res) => {
-          alert('El mensaje fue enviado correctamente.');
+          this.setState({ openModalExitoso: true });
           this.loadMensajes();
         })
         .catch((e) => {
-          this.setState({ error: "El mensaje ingresado no es válido."})
+          this.setState({ error: "El mensaje ingresado no es válido." })
         })
     }
     this.setState({ openModal: false, mensaje: '', asunto: '' })
@@ -97,7 +98,7 @@ class ListadoMensajes extends Component {
               <p>Los mensajes son enviados a <b>todos los voluntarios</b> registrados en el evento. Si un voluntario se anota posteriormente al envío del mensaje, <b>también recibirá</b> una copia del mismo.</p>
               <p>Una <b>copia del mensaje</b> será enviada a su correo electrónico.</p>
               <button className="btn btn-primary" type="button"
-                onClick={() => this.setState({ openModal: true })} 
+                onClick={() => this.setState({ openModal: true })}
               >
                 <span className="cui-envelope-letter"></span> Nuevo mensaje
               </button>
@@ -121,10 +122,19 @@ class ListadoMensajes extends Component {
           </CardBody>
         </Card>
         <ModalNuevoMensaje open={this.state.openModal} mensaje={this.state.mensaje} asunto={this.state.asunto}
-            closeModal={this.confirmNuevoMensaje} updateMensaje={this.handleInput} />
+          closeModal={this.confirmNuevoMensaje} updateMensaje={this.handleInput} />
+        <Modal isOpen={this.state.openModalExitoso}>
+          <ModalHeader>Mensaje enviado</ModalHeader>
+          <ModalBody>
+            Su mensaje ha sido enviado con éxito.
+          </ModalBody>
+          <ModalFooter>
+            <Button color="secondary" onClick={() => this.setState({ openModalExitoso: false })}>Aceptar</Button>
+          </ModalFooter>
+        </Modal>
       </div>
     )
   }
 }
-  
-  export default ListadoMensajes;
+
+export default ListadoMensajes;

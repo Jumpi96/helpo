@@ -27,8 +27,11 @@ class ConsultarColaboracionConnected extends React.Component {
 
   constructor(props) {
     super(props);
+    const urlParams = new URLSearchParams(this.props.location.search)
+    const evento = urlParams.get('evento');
     this.state = {
-      modalOpen: false
+      modalOpen: false,
+      evento
     }
     this.submitChanges = this.submitChanges.bind(this);
     this.renderModal = this.renderModal.bind(this);
@@ -37,7 +40,7 @@ class ConsultarColaboracionConnected extends React.Component {
   }
 
   componentDidMount() {
-    this.props.fetchData(this.props.match.params.eventoId)
+    this.props.fetchData(this.state.evento)
   }
 
   downloadPDF() {
@@ -67,7 +70,7 @@ class ConsultarColaboracionConnected extends React.Component {
       <Modal style={{ allignItems: 'center', justifyContent: 'center' }} isOpen={this.state.modalOpen}>
         <ModalBody>
           {info()}
-          <Button onClick={() => this.toggleModal(false)} >Volver</Button>
+          <Button onClick={() => this.toggleModal(false)} >Aceptar</Button>
         </ModalBody>
       </Modal>
     )
@@ -130,7 +133,7 @@ class ConsultarColaboracionConnected extends React.Component {
     }
     axios.all(promises)
       .then(() => {
-        this.props.fetchData(this.props.match.params.eventoId);
+        this.props.fetchData(this.state.evento);
         this.props.sentDataSuccess(true)
       })
       .catch(() => {
@@ -178,7 +181,7 @@ class ConsultarColaboracionConnected extends React.Component {
       <Card>
         {this.props.hasLoaded
           ? content()
-          : <p>Cargando...</p>}
+          : <div className="loader"/>}
       </Card>
     );
   }

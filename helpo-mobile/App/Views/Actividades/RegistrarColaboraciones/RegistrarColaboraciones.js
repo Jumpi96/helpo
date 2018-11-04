@@ -253,9 +253,9 @@ class RegistrarColaboraciones extends React.Component {
         id: colaboracion.id,
         cantidad: colaboracion.entregados,
         comentario: colaboracion.comentarios,
-        necesidad_material_id: colaboracion.id,
+        necesidad_material_id: colaboracion.necesidad_material_id,
       }
-      api.put('/actividades/colaboraciones/' + colaboracion.id + '/', nuevaColaboracion)
+      api.patch('/actividades/colaboraciones/' + colaboracion.id + '/', nuevaColaboracion)
         .then(res => {
           console.log(res);
           console.log(res.data);

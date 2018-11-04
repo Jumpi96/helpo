@@ -61,7 +61,7 @@ class VerEvento extends React.Component {
           });
       } else {
         Toast.show({
-          text: 'No se pueden eliminar eventos ya finalizados.',
+          text: 'No se pueden eliminar actividades ya finalizados.',
           position: 'bottom',
           buttonText: 'OK',
         });

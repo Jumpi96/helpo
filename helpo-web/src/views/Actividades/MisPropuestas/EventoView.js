@@ -300,7 +300,7 @@ class EventoView extends React.Component {
                 onClick={this.toggleView}
                 className="btn btn-warning"
               >
-                Comentar evento
+                Comentar actividad social
               </button>
             </div>
             : undefined

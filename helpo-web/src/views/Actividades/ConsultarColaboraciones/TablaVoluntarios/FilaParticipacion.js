@@ -34,7 +34,7 @@ const FilaParticipacionConnected = ( props ) => {
       return (
         <BotonHelpo
           disabled={true}
-          mensaje={'Evento no iniciado.'}
+          mensaje={'Actividad social no iniciada.'}
           titulo={'Dar una mano'}
           onClick={undefined}
         />

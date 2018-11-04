@@ -57,7 +57,7 @@ class PanelRecomendacion extends React.Component {
   changeToPorcentaje(valor) {
     //Transforms decimal proportion number to porcentaje string
     const multiplied = valor * 100
-    const numero_entero = multiplied.toFixed(0)
+    const numero_entero = multiplied.toFixed(2)
     return `${numero_entero}%`
   }
 

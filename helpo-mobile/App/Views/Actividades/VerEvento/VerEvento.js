@@ -70,7 +70,8 @@ class VerEvento extends React.Component {
   }
 
   handleEdit(evento) {
-    if (moment(evento.fecha_hora_inicio) > moment()) {
+    if ((moment(evento.fecha_hora_inicio) > moment() && !evento.campaña) ||
+      (moment(evento.fecha_hora_fin) > moment() && evento.campaña)) {
       this.props.navigation.navigate('EditarEvento', { evento });
     } else {
       Toast.show({

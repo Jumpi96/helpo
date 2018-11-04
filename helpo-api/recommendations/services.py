@@ -83,12 +83,12 @@ def get_row_fecha_regressor(data, ong):
     rubro_actividad = RubroEvento.objects.get(id=data['rubro_actividad'])
     base = {
         'M': 0,
-        #'%NecONG': calc_porc_necesidades(ong=organizacion),
-        #'%NecRO': calc_porc_necesidades(rubro_ong=organizacion.organizacionprofile.rubro),
-        #'%NecRA': calc_porc_necesidades(rubro_act=rubro_actividad),
-        #'%VolONG': calc_porc_voluntarios(ong=organizacion),
-        #'%VolRO': calc_porc_voluntarios(rubro_ong=organizacion.organizacionprofile.rubro),
-        #'%VolRA': calc_porc_voluntarios(rubro_act=rubro_actividad),
+        '%NecONG': calc_porc_necesidades(ong=organizacion),
+        '%NecRO': calc_porc_necesidades(rubro_ong=organizacion.organizacionprofile.rubro),
+        '%NecRA': calc_porc_necesidades(rubro_act=rubro_actividad),
+        '%VolONG': calc_porc_voluntarios(ong=organizacion),
+        '%VolRO': calc_porc_voluntarios(rubro_ong=organizacion.organizacionprofile.rubro),
+        '%VolRA': calc_porc_voluntarios(rubro_act=rubro_actividad),
         'SuONG': len(Suscripcion.objects.filter(organizacion=organizacion)),
         'SuRO': len(Suscripcion.objects.filter(organizacion__organizacionprofile__rubro=organizacion.organizacionprofile.rubro)),
         'VisONG': calc_avg_visitas(ong=organizacion),
@@ -202,7 +202,7 @@ def train_fecha_regressor():
     }
     svr = GridSearchCV(SVR(), cv=3, param_grid=parameters, scoring=rmse_error)
     """
-    svr = SVR(gamma=0.001, epsilon=0.06, C=1)
+    svr = SVR(gamma=0.001, C=2)
     svr.fit(training_data, y)
     save_model_fecha_regressor(svr, features)
 
@@ -218,12 +218,12 @@ def get_data_fecha_regressor():
     for evento in eventos:
         dict_evento = {
             'M': evento.fecha_hora_inicio.month,
-            #'%NecONG': calc_porc_necesidades(ong=evento.organizacion),
-            #'%NecRO': calc_porc_necesidades(rubro_ong=evento.organizacion.organizacionprofile.rubro),
-            #'%NecRA': calc_porc_necesidades(rubro_act=evento.rubro),
-            #'%VolONG': calc_porc_voluntarios(ong=evento.organizacion),
-            #'%VolRO': calc_porc_voluntarios(rubro_ong=evento.organizacion.organizacionprofile.rubro),
-            #'%VolRA': calc_porc_voluntarios(rubro_act=evento.rubro),
+            '%NecONG': calc_porc_necesidades(ong=evento.organizacion),
+            '%NecRO': calc_porc_necesidades(rubro_ong=evento.organizacion.organizacionprofile.rubro),
+            '%NecRA': calc_porc_necesidades(rubro_act=evento.rubro),
+            '%VolONG': calc_porc_voluntarios(ong=evento.organizacion),
+            '%VolRO': calc_porc_voluntarios(rubro_ong=evento.organizacion.organizacionprofile.rubro),
+            '%VolRA': calc_porc_voluntarios(rubro_act=evento.rubro),
             'SuONG': len(Suscripcion.objects.filter(organizacion=evento.organizacion)),
             'SuRO': len(Suscripcion.objects.filter(organizacion__organizacionprofile__rubro=evento.organizacion.organizacionprofile.rubro)),
             'VisONG': calc_avg_visitas(ong=evento.organizacion),

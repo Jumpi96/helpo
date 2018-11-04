@@ -23,7 +23,8 @@ class RegistrarEvento extends Component {
       errors: {},
       contactos: [],
       horarios: [],
-      esEvento: 1
+      esEvento: 1,
+      submitted: false
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -96,6 +97,7 @@ class RegistrarEvento extends Component {
 
   handleSubmit(event) { //Atencion a como se postean los contactos como contacto sin "S"
     event.preventDefault();
+    this.setState({ submitted: true });
     if (this.handleValidation()) {
       const evento = {
         nombre: this.state.nombre,
@@ -119,8 +121,10 @@ class RegistrarEvento extends Component {
         }).catch(function (error) {
           if (error.response) { console.log(error.response.status) }
           else { console.log('Error: ', error.message) }
+          this.setState({ submitted: false });
         });
     }
+    this.setState({ submitted: false });
   }
 
   validateContactos() {
@@ -342,7 +346,8 @@ class RegistrarEvento extends Component {
               <span style={{ color: 'red' }}>{this.state.errors.contactoContacto}</span><p>{"\n"}</p>
               <span style={{ color: 'red' }}>{this.state.errors.email}</span>
               <div className="form-group">
-                <input type="submit" className="btn btn-primary" value="Guardar actividad social" />
+                <input type="submit" disabled={this.state.submitted}
+                  className="btn btn-primary" value="Guardar actividad social" />
               </div>
             </form>
           </CardBody>

@@ -67,7 +67,7 @@ class ConsultarColaboracionConnected extends React.Component {
       <Modal style={{ allignItems: 'center', justifyContent: 'center' }} isOpen={this.state.modalOpen}>
         <ModalBody>
           {info()}
-          <Button onClick={() => this.toggleModal(false)} >Volver</Button>
+          <Button onClick={() => this.toggleModal(false)} >Aceptar</Button>
         </ModalBody>
       </Modal>
     )

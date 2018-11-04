@@ -223,7 +223,7 @@ class EventoView extends React.Component {
             hidden={moment(evento.fecha_hora_inicio) > moment()}
             className="btn btn-warning"
           >
-            Comentar evento
+            Comentar actividad social
           </button>
           <ModalEliminarItem open={this.state.showModalEliminar} nombre={this.state.evento.nombre}
             closeModal={this.confirmDeleteNecesidad} />

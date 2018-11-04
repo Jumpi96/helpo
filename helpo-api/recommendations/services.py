@@ -59,9 +59,11 @@ def predict_fechas(data):
     now = datetime.datetime.now()
     for i in range(12):
         df.loc[0]['M'] = i+1
+        """
         df.loc[0]['Dias'] = (datetime.datetime(
             now.year if i+1 >= now.month else now.year + 1,
             i+1, 15) - now).days
+        """
         pre = model.predict(df)
         predictions[str(i+1)] = round(pre[0], 4)
     return predictions
@@ -94,7 +96,7 @@ def get_row_fecha_regressor(data, ong):
         'VisRA': calc_avg_visitas(rubro_act=rubro_actividad),
         'Dis': calc_distance_to_cordoba(data['ubicacion']),
         'Camp': 1 if data['campaña'] else 0,
-        'Dias': 0
+        #'Dias': 0
     }
     base = add_categorias_post(data['categorias_recurso'], base)
     base = add_funciones_post(data['categorias_recurso'], base)
@@ -200,7 +202,7 @@ def train_fecha_regressor():
     }
     svr = GridSearchCV(SVR(), cv=3, param_grid=parameters, scoring=rmse_error)
     """
-    svr = SVR(gamma=0.008, epsilon=0.06, C=1)
+    svr = SVR(gamma=0.001, epsilon=0.06, C=1)
     svr.fit(training_data, y)
     save_model_fecha_regressor(svr, features)
 
@@ -209,7 +211,7 @@ def get_data_fecha_regressor():
     eventos = Evento.objects.all()
     #features = ['M', '%NecONG', '%NecRO', '%NecRA', '%VolONG', '%VolRO', '%VolRA', 
     #    'SuONG', 'SuRO', 'VisONG', 'VisRO', 'VisRA', 'Dis', 'Dias', 'Camp']
-    features = ['M', 'SuONG', 'SuRO', 'VisONG', 'VisRO', 'VisRA', 'Dis', 'Dias', 'Camp']
+    features = ['M', 'SuONG', 'SuRO', 'VisONG', 'VisRO', 'VisRA', 'Dis', 'Camp']
     features += get_necesidades_features()
     features.append('%Comp')
     df = pd.DataFrame(columns=features, index=[str(evento.id) for evento in eventos])
@@ -228,7 +230,7 @@ def get_data_fecha_regressor():
             'VisRO': calc_avg_visitas(rubro_ong=evento.organizacion.organizacionprofile.rubro),
             'VisRA': calc_avg_visitas(rubro_act=evento.rubro),
             'Dis': calc_distance_to_cordoba(evento.organizacion),
-            'Dias': (evento.fecha_hora_inicio - evento.created).days,
+            #'Dias': (evento.fecha_hora_inicio - evento.created).days,
             'Camp': 1 if evento.campaña else 0
         }
         dict_evento = add_categorias(evento, dict_evento)

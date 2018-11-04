@@ -103,7 +103,7 @@ const routes = [
   { path: '/actividades/consultar-evento/', name: 'Consultar evento', component: ConsultarEventosView },
   { path: '/actividades/registrar-evento', name: 'Registrar evento', component: RegistrarEvento },
   { path: '/actividades/registrar-necesidades', name: 'Registrar necesidades', component: RegistrarNecesidades },
-  { path: '/actividades/consultar-colaboraciones/:eventoId', name: 'Consultar Colaboraciones', component: ConsultarColaboraciones },
+  { path: '/actividades/consultar-colaboraciones', name: 'Consultar Colaboraciones', component: ConsultarColaboraciones },
   { path: '/actividades/mensajes', name: 'Mensajes de evento', component: ListadoMensajes },
   { path: '/actividades/patrocinadores', name: 'Administración de patrocinadores', component: ConsultarPatrocinadores },
   { path: '/perfiles/perfil-organizacion', name: 'Perfil organizacion', component: ModificarPerfilOrganizacion },

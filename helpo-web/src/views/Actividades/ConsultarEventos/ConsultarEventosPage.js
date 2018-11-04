@@ -17,7 +17,8 @@ class ConsultarEventosPage extends React.Component {
       eventos: [],
       organizacion,
       empresa,
-      ong: []
+      ong: [],
+      isLoading: false
     }
     this.loadEventos = this.loadEventos.bind(this);
     this.loadONG = this.loadONG.bind(this);
@@ -41,13 +42,15 @@ class ConsultarEventosPage extends React.Component {
   }
 
   loadEventos(ruta) {
+    this.setState({ isLoading: true });
     api.get('/actividades/consulta_eventos/' + ruta)
       .then((res) => {
-        this.setState({ eventos: res.data });
+        this.setState({ eventos: res.data, isLoading: false });
       })
       .catch((error) => {
         if (error.response) { console.log(error.response.status) }
         else { console.log('Error: ', error.message) }
+        this.setState({ isLoading: false });
       })
   }
 
@@ -74,11 +77,13 @@ class ConsultarEventosPage extends React.Component {
             empresa={this.state.empresa}
           />
           <br />
-          <label>&emsp;Todav&iacute;a no hay eventos registrados</label>
+          {this.state.isLoading ?
+             <div class="loader"></div>  :
+            <label>&emsp;Todav&iacute;a no hay actividades sociales registrados</label>
+          }
         </CardBody>
       )
-    }
-    else {
+    } else {
       return (
         <CardBody>
           <ConsultarEventosFilter updatePath={this.loadEventos} />

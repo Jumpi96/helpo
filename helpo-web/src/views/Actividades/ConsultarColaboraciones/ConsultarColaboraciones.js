@@ -178,7 +178,7 @@ class ConsultarColaboracionConnected extends React.Component {
       <Card>
         {this.props.hasLoaded
           ? content()
-          : <p>Cargando...</p>}
+          : <div className="loader"/>}
       </Card>
     );
   }

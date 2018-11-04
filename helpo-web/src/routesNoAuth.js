@@ -4,7 +4,7 @@ import Loadable from 'react-loadable'
 import NoAuthLayout from './containers/NoAuthLayout';
 
 function Loading() {
-  return <div>Cargando...</div>;
+  return <div className="loader"/>;
 }
 
 const ConsultarEventosPage = Loadable({

@@ -34,7 +34,7 @@ class RedireccionarONG extends Component {
             <i className="fa fa-align-justify"></i> Consultar actividades de ONG
           </CardHeader>
           <CardBody>
-            <p>Cargando...</p>
+          <div className="loader"/>
           </CardBody>
         </Card>
       </div>

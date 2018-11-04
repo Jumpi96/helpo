@@ -43,7 +43,7 @@ class RootContainerComponent extends Component {
   PrivateRoute = ({component: ChildComponent, ...rest}) => {
     return <Route {...rest} render={props => {
       if (this.props.auth.isLoading) {
-        return <em>Cargando...</em>;
+        return <div className="loader"/>;
       } else if (!this.props.auth.isAuthenticated) {
         return <Redirect from="/" to="/noAuth" />;
       } else {

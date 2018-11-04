@@ -213,11 +213,13 @@ class EventoView extends React.Component {
           >
             Editar colaboraciones
           </button>
-          <Link style={{ marginLeft: 10 }} to={`/actividades/consultar-evento?id=${evento.id}`}>
-            <Button color="warning">
-              {evento.campaña ? "Ver campaña" : "Ver evento"}
-            </Button>
-          </Link>
+          {!evento.campaña || (evento.campaña && moment(evento.fecha_hora_inicio) > moment()) ?
+            <Link style={{ marginLeft: 10 }} to={`/actividades/consultar-evento?id=${evento.id}`}>
+              <Button color="warning">
+                {evento.campaña ? "Ver campaña" : "Ver evento"}
+              </Button>
+            </Link> : undefined
+          }
           <button
             onClick={this.toggleView}
             hidden={moment(evento.fecha_hora_inicio) > moment()}
@@ -230,7 +232,7 @@ class EventoView extends React.Component {
         </div>
       );
     } else {
-      return <p>Cargando...</p>
+      return <div className="loader"/>
     }
   }
 };

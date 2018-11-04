@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Row, Modal, ModalBody, ModalHeader, ModalFooter, Label, Input } from 'reactstrap';
+import { Col, Row, Modal, ModalBody, ModalHeader, ModalFooter } from 'reactstrap';
 import LocationPicker from 'react-location-picker';
 import Select from 'react-select';
 import moment from 'moment';
@@ -258,12 +258,14 @@ class ConsultarEventosFilter extends React.Component {
                 value={this.state.selectedUbicacion}
               />
             </Col>
+            {/*
             <Col md="3">
               <Label style={{ marginTop: 15, marginBottom: 15 }} check>
                 ¿Ver actividades pasadas?
                 <Input onChange={this.handleChangeVerAntiguos} style={{ marginLeft: 8 }} type="checkbox" />
               </Label>
             </Col>
+            */}
         </Row>
         <Modal isOpen={this.state.openModal} className='modal-warning'>
           <ModalHeader>Seleccionar ubicación</ModalHeader>

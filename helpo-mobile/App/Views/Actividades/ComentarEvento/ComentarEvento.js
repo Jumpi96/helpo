@@ -6,15 +6,16 @@ import {
   Title,
   Content,
   Button,
-  Item,
-  Label,
   Input,
   Body,
   Left,
   Icon,
   Form,
   Text,
-  View
+  View,
+  ListItem,
+  Item,
+  Label
 } from "native-base";
 import styles from './styles';
 import api from '../../../api';
@@ -78,7 +79,7 @@ class ComentarEvento extends React.Component {
       )
     } else {
       return (
-        <Button block warning style={{ margin: 15, marginTop: 20 }}>
+        <Button block danger style={{ margin: 15, marginTop: 20 }} >
           <Text>Indicaste que te gustó el evento.</Text>
         </Button>
       );
@@ -114,22 +115,30 @@ class ComentarEvento extends React.Component {
 
   getOpcionComentar() {
     if (this.existeComentario(this.getUserId())) {
-      this.props.navigation.navigate('ConsultarEvento', { evento: this.state.evento });
+      const comentario = this.state.evento.comentarios.filter(c => c.voluntario.id === this.getUserId())[0];
+      console.warn(comentario)
+      return (
+        <View>
+          <ListItem>
+            <Text style={{ fontStyle: 'italic' }}>{comentario.comentario}</Text>
+          </ListItem>
+        </View>
+      );
+    } else {
+      return (
+        <View>
+          <Item>
+            <Input value={this.state.comentario}
+              onChangeText={(text) => this.setState({ comentario: text })} />
+          </Item>
+          <Text style={styles.validationMessage}>{this.state.error}</Text>
+          <Button block style={{ margin: 15, marginTop: 20 }}
+            onPress={this.handleComentar}>
+            <Text>Guardar comentario</Text>
+          </Button>
+        </View >
+      )
     }
-    return (
-      <View>
-        <Item floatingLabel>
-          <Label>Comentario</Label>
-          <Input value={this.state.comentario}
-            onChangeText={(text) => this.setState({ comentario: text })} />
-        </Item>
-        <Text style={styles.validationMessage}>{this.state.error}</Text>
-        <Button block style={{ margin: 15, marginTop: 20 }}
-          onPress={this.handleComentar}>
-          <Text>Guardar comentario</Text>
-        </Button>
-      </View>
-    )
   }
 
   existeComentario(usuario) {
@@ -146,7 +155,7 @@ class ComentarEvento extends React.Component {
         <Container>
           <Header>
             <Left>
-              <Button transparent onPress={() => this.props.navigation.navigate('MisColaboraciones')}>
+              <Button transparent onPress={() => this.props.navigation.navigate('VerColaboracionesEvento', { evento: this.state.evento })}>
                 <Icon name="arrow-back" />
               </Button>
             </Left>
@@ -157,6 +166,9 @@ class ComentarEvento extends React.Component {
           <Content>
             <Form>
               {this.getOpcionRetroalimentacion()}
+              <ListItem itemDivider>
+                <Label>Comentario</Label>
+              </ListItem>
               {this.getOpcionComentar()}
             </Form>
           </Content>

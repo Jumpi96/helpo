@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button } from 'reactstrap';
+import { Button, Table, Card, CardBody, CardHeader } from 'reactstrap';
 import moment from 'moment';
 
 
@@ -169,22 +169,32 @@ class SelectorHorarios extends Component {
       const listaHorarios = [];
       for (let i = 0; i < horarios.length; i++) {
         listaHorarios.push(
-          <div className="row offset-md-1">
-            <div className="col-md-1" style={{ marginTop: '15px' }}>
-              <p>{horarios[i][0]}</p>
-            </div>
-            <div className="col-md-1" style={{ marginTop: '15px' }}>
-              <p>{horarios[i][1] + " - " + horarios[i][2]}</p>
-            </div>
-            <button type="button" class="close" aria-label="Close" onClick={(e) => this.handleDelete(e, horarios[i])}>
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
+          <tr>
+            <td>{horarios[i][0]}</td>
+            <td>{horarios[i][1] + " - " + horarios[i][2]}</td>
+            <td>
+              <Button onClick={(e) => this.handleDelete(e, horarios[i])} outline
+                color="danger">Eliminar</Button>
+            </td>
+          </tr>
         )
       }
       return (
-        <div style={{ marginTop: '15px' }}>
-          {listaHorarios}
+        <div className="row">
+          <div className="offset-md-1 col-md-4">
+            <Table responsive striped>
+              <thead>
+                <tr>
+                  <th>Día</th>
+                  <th>Hora</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {listaHorarios}
+              </tbody>
+            </Table>
+          </div>
         </div>
       );
     }
@@ -205,63 +215,65 @@ class SelectorHorarios extends Component {
       <option key={m} data-key={m}>{m}</option>
     );
     return (
-      <div className="form-group">
-        <div className="row">
-          <label style={{ marginLeft: '12px' }}>Horarios de atención</label>
-        </div>
-        <div className="row">
-          <div className="col-md-2">
-            <select
-              value={this.state.dia}
-              className="form-control"
-              onChange={this.handleChangeDia}>
-              {opcionesDias}
-            </select>
+      <Card>
+        <CardHeader>
+          <i className="fa fa-align-justify"></i> Agregue sus horarios de atención
+          </CardHeader>
+        <CardBody>
+          <div className="row">
+            <div className="col-md-2">
+              <select
+                value={this.state.dia}
+                className="form-control"
+                onChange={this.handleChangeDia}>
+                {opcionesDias}
+              </select>
+            </div>
+            <label for="horaInicio" style={{ marginLeft: '12px', marginTop: '5px', marginRight: '10px' }}>Desde:</label>
+            <div className="col-md-1">
+              <select
+                name="horaInicio"
+                value={this.state.horaInicio}
+                className="form-control"
+                onChange={this.handleChangeHoraInicio}>
+                {opcionesHoras}
+              </select>
+            </div>
+            <div className="col-md-1">
+              <select
+                value={this.state.minutoInicio}
+                className="form-control"
+                onChange={this.handleChangeMinutoInicio}>
+                {opcionesMinutos}
+              </select>
+            </div>
+            <label for="horaFin" style={{ marginLeft: '12px', marginTop: '5px', marginRight: '10px' }}>Hasta:</label>
+            <div className="col-md-1">
+              <select
+                value={this.state.horaFin}
+                className="form-control"
+                onChange={this.handleChangeHoraFin}>
+                {opcionesHoras}
+              </select>
+            </div>
+            <div className="col-md-1" style={{ marginBottom: '5px' }}>
+              <select
+                value={this.state.minutoFin}
+                className="form-control"
+                onChange={this.handleChangeMinutoFin}>
+                {opcionesMinutos}
+              </select>
+            </div>
+            <div className="col-md-2">
+              <Button type="button" color="success" onClick={this.addHorario}>Agregar</Button>
+            </div>
           </div>
-          <label for="horaInicio" style={{ marginLeft: '12px', marginTop: '5px', marginRight: '10px' }}>Desde:</label>
-          <div className="col-md-1">
-            <select
-              name="horaInicio"
-              value={this.state.horaInicio}
-              className="form-control"
-              onChange={this.handleChangeHoraInicio}>
-              {opcionesHoras}
-            </select>
+          <div className="form-group">
+            <span style={{ color: "red", marginTop: '5px', marginLeft: '15px' }}>{this.state.error}</span>
           </div>
-          <div className="col-md-1">
-            <select
-              value={this.state.minutoInicio}
-              className="form-control"
-              onChange={this.handleChangeMinutoInicio}>
-              {opcionesMinutos}
-            </select>
-          </div>
-          <label for="horaFin" style={{ marginLeft: '12px', marginTop: '5px', marginRight: '10px' }}>Hasta:</label>
-          <div className="col-md-1">
-            <select
-              value={this.state.horaFin}
-              className="form-control"
-              onChange={this.handleChangeHoraFin}>
-              {opcionesHoras}
-            </select>
-          </div>
-          <div className="col-md-1" style={{ marginBottom: '5px' }}>
-            <select
-              value={this.state.minutoFin}
-              className="form-control"
-              onChange={this.handleChangeMinutoFin}>
-              {opcionesMinutos}
-            </select>
-          </div>
-          <div className="col-md-2">
-            <Button type="button" color="success" onClick={this.addHorario}>Agregar</Button>
-          </div>
-        </div>
-        <div className="form-group">
-          <span style={{ color: "red", marginTop: '5px', marginLeft: '15px' }}>{this.state.error}</span>
-        </div>
-        {this.getHorarios()}
-      </div>
+          {this.getHorarios()}
+        </CardBody>
+      </Card>
     );
   }
 }

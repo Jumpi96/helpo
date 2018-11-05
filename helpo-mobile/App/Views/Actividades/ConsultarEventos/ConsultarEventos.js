@@ -18,7 +18,8 @@ class ConsultarEventos extends Component {
 
   componentDidMount() {
     const { params } = this.props.navigation.state;
-    if (params && (params.organizacion !== '' || params.link !== '')) {
+    if (params && 
+      (this.isParamNotEmpty(params.organizacion) || this.isParamNotEmpty(params.link))) {
       if (params.organizacion != '') {
         this.loadEventos('?organizacion=' + params.organizacion);
       } else {
@@ -27,6 +28,10 @@ class ConsultarEventos extends Component {
     } else {
       this.loadEventos('');
     }
+  }
+
+  isParamNotEmpty(param) {
+    return param && param !== '';
   }
 
   loadEventos(ruta) {

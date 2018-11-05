@@ -443,7 +443,7 @@ class RegistrarNecesidades extends Component {
                   {this.getTablaVoluntarios()}
                 </tbody>
               </Table>
-              <Button onClick={() => this.props.history.push('dashboard')} 
+              <Button onClick={() => this.props.history.push('/actividades/consultar-evento?id=' + this.state.evento)} 
                 color="primary">Guardar necesidades</Button>
             </form>
           </CardBody>

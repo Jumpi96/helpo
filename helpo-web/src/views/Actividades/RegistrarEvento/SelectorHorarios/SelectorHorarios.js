@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Button } from 'reactstrap';
+import moment from 'moment';
 
 
 class SelectorHorarios extends Component {
@@ -112,6 +113,24 @@ class SelectorHorarios extends Component {
     if ((horaFin < horaInicio) || (horaFin === horaInicio && minutoFin <= minutoInicio)) {
       error = 'El horario ingresado no es correcto.';
       isValid = false;
+    }
+    const { horarios } = this.props;
+    const nuevoInicio = moment(horaInicio + ':' + minutoInicio, "HH:ss");
+    const nuevoFin = moment(horaFin + ':' + minutoFin, "HH:ss");
+    let inicio, fin;
+    if (horarios) {
+      for (let i = 0; i < horarios.length; i++) {
+        let h = horarios[i];
+        if (this.state.dia === h[0]) {
+          inicio = moment(h[1], "HH:ss");
+          fin = moment(h[2], "HH:ss");
+          if (nuevoInicio <= fin && nuevoFin >= inicio) {
+            error = 'El horario agregado coincide con un horario ya ingresado.';
+            isValid = false;
+            break;
+          }
+        }
+      }
     }
     this.setState({ error });
     return isValid;
@@ -237,6 +256,8 @@ class SelectorHorarios extends Component {
           <div className="col-md-2">
             <Button type="button" color="success" onClick={this.addHorario}>Agregar</Button>
           </div>
+        </div>
+        <div className="form-group">
           <span style={{ color: "red", marginTop: '5px', marginLeft: '15px' }}>{this.state.error}</span>
         </div>
         {this.getHorarios()}

@@ -22,6 +22,11 @@ class EventoForm extends React.Component {
     this.handleActualizacionHorarios = this.handleActualizacionHorarios.bind(this);
   }
 
+  componentDidMount() {
+    this.setState({
+      isCampañaStarted: this.props.evento.campaña && moment(this.props.evento.fecha_hora_inicio) < moment()
+    });
+  }
 
   handleChange(e) {
     this.props.onChange(e.target.name, e.target.value);
@@ -73,7 +78,12 @@ class EventoForm extends React.Component {
       formIsValid = false;
       errors.fechas = 'Las fechas ingresadas no son válidas.';
     } else {
-      const inicio = moment(this.props.evento.fecha_hora_inicio);
+      let inicio;
+      if (this.state.isCampañaStarted) {
+        inicio = moment();
+      } else {
+        inicio = moment(this.props.evento.fecha_hora_inicio);
+      }
       const fin = moment(this.props.evento.fecha_hora_fin);
       const actual = moment(new Date());
       if (inicio < actual) {
@@ -141,12 +151,26 @@ class EventoForm extends React.Component {
   }
 
 
+  getFechaHoraInicio() {
+    const fechaInicio = this.parseISOString(this.props.evento.fecha_hora_inicio);
+    if (this.state.isCampañaStarted) {
+      return (<p>{moment(this.props.evento.fecha_hora_inicio).format('DD/MM/YYYY HH:mm')}</p>);
+    }
+    return (
+      <DateTimePicker
+        name="inicio"
+        onChange={this.handleFechaHoraInicioChange}
+        isClockOpen={false}
+        value={fechaInicio}
+      />
+    );
+  }
+
 
   render() {
     const listaRubroEventos = this.props.rubros.map((r) =>
       <option value={r.id}>{r.nombre}</option>
     );
-    const fechaInicio = this.parseISOString(this.props.evento.fecha_hora_inicio);
     const fechaFin = this.parseISOString(this.props.evento.fecha_hora_fin);
     return (
       <div>
@@ -175,15 +199,17 @@ class EventoForm extends React.Component {
               <span style={{ color: 'red' }}>{this.state.errors.rubro}</span>
             </div>
           </div>
-          <div className="form-group">
-            <label>Fecha</label>
-            <div className="form-group">
-              <DateTimePicker
-                name="inicio"
-                onChange={this.handleFechaHoraInicioChange}
-                isClockOpen={false}
-                value={fechaInicio}
-              />
+          <div className="row">
+            <div className="form-group col-md-1">
+              <label>Inicio:  </label>
+            </div>
+            <div className="form-group col-md-4">
+              {this.getFechaHoraInicio()}
+            </div>
+            <div className="form-group col-md-1">
+              <label>Fin:  </label>
+            </div>
+            <div className="form-group col-md-4">
               <DateTimePicker
                 name="fin"
                 onChange={this.handleFechaHoraFinChange}
@@ -191,8 +217,8 @@ class EventoForm extends React.Component {
                 value={fechaFin}
               />
             </div>
-            <span style={{ color: 'red' }}>{this.state.errors.fechas}</span>
           </div>
+          <span style={{ color: 'red' }}>{this.state.errors.fechas}</span>
           <div className="form-group">
             <label htmlFor="descripcion">Descripción</label>
             <textarea

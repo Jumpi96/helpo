@@ -7,9 +7,13 @@ class SelectorItem extends Component {
     super(props);
     this.state = {
         categorias: [{ id: 0, nombre: 'Sin categorías' }],
-        items: [{ id: 0, nombre: 'Sin ítems', categoria: {
-          id: 0, nombre: 'Sin categorías' 
-         } }],
+        items: [{ id: 0, 
+                  nombre: 'Sin ítems', 
+                  categoria: {
+                    id: 0,
+                    nombre: 'Sin categorías' 
+                  } 
+                }],
         categoria_id: 0
       };
     this.handleChangeItem = this.handleChangeItem.bind(this); 
@@ -32,6 +36,18 @@ class SelectorItem extends Component {
     this.props.onItemChange(listaItems[0].id);
   }
 
+  firstRecursoOfCategoria(recursos, categoria_id) {
+    /*
+    Looks for first appeareance of a recurso of categoria_id, and
+    returns its id
+    */
+    for(const recurso of recursos) {
+      if (recurso.categoria.id === categoria_id) {
+        return recurso.id
+      }
+    }
+  }
+
   componentDidMount() {
     let listaCategorias, selectedCategoria;
     api.get('/actividades/categorias_recurso/')
@@ -47,7 +63,8 @@ class SelectorItem extends Component {
               categoria_id: selectedCategoria, 
               items: recursosData
             });
-            this.props.onItemChange(recursosData[0].id);
+            const selected_recurso = this.firstRecursoOfCategoria(recursosData, selectedCategoria)
+            this.props.onItemChange(selected_recurso);
           })
           .catch(function (error) {
             if (error.response){ console.log(error.response.status) }

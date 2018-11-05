@@ -64,7 +64,7 @@ class MisEventos extends React.Component {
     const unfilteredEventos = this.props.evento.eventos;
     const eventos = this.state.verAntiguos 
                     ? unfilteredEventos
-                    : unfilteredEventos.filter(evento => evento.estado < 3)
+                    : unfilteredEventos.filter(evento => moment(evento.fecha_hora_fin).format() > moment().format())
     const listaEventos = eventos.map((n) =>
       <ListItem icon key={n.id}>
         <Left>

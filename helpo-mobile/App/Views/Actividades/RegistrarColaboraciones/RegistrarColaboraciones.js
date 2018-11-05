@@ -203,6 +203,7 @@ class RegistrarColaboraciones extends React.Component {
         descripcion: necesidad.descripcion,
         comentarios: colaboracionAnterior.comentario,
         evento: this.state.evento.id,
+        entregados: colaboracionAnterior.entregados
       };
       this.setState({ necesidadModificada: undefined });
       this.props.navigation.navigate('AgregarColaboracion', { colaboracion });

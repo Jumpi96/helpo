@@ -314,11 +314,11 @@ class ConsultarEventosView extends React.Component {
               ) : undefined
               }
               {/* Renderiza boton Ver album si empezo evento */}
-              {this.state.evento.estado > 1
+              {moment().format() > moment(this.state.evento.fecha_hora_inicio).format()
                 ? (
                   <div className="row">
                     <div className="form-group col-md-2 offset-md-1">
-                      <b name="compartir" className="float-left">Album</b>
+                      <b name="compartir" className="float-left">Álbum</b>
                     </div>
                     <div className="form-group col-md-9">
                       <ButtonGoAlbum eventoId={this.state.evento.id} />

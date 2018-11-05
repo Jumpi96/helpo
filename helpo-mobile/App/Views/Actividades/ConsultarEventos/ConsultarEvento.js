@@ -21,7 +21,7 @@ import {
 import openMap from 'react-native-open-maps';
 import styles from './styles';
 import CompartirEvento from '../CompartirEvento/CompartirEvento';
-import GoAlbum from '../AlbumEvento/GoAlbum' 
+import GoAlbum from '../AlbumEvento/GoAlbum'
 
 
 class ConsultaEvento extends React.Component {
@@ -328,7 +328,7 @@ class ConsultaEvento extends React.Component {
           ) : undefined
           }
           <GoAlbum
-            visible={evento.estado >= 2 ? true : false} // Solo visible si evento comenzo o finalizo
+            visible={moment().format() > moment(evento.fecha_hora_inicio).format() ? true : false} // Solo visible si evento comenzo o finalizo
             eventoId={evento.id}
             navigation={this.props.navigation}
           />

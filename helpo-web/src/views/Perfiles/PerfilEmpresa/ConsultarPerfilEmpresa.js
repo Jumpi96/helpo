@@ -262,17 +262,17 @@ class ConsultarPerfilEmpresa extends Component {
               </div>
               {this.mostrarUbicacion()}
               <div style={{ display: 'flex', marginBottom: '10px' }} className='row offster-md-4'>
-                <div className="col-md-4">
+                <div className="col-md-5 offset-md-3">
                   {this.props.sinModificar
                     ? ""
                     : <Button onClick={this.props.switchToModificar} color='primary'>Modificar datos</Button>}
                 </div>
-                <div style={{ width: '500px', justifyContent: 'center', display: 'flex', marginBottom: '10px' }} className='row offster-md-4'>
-                  <div className="col-md-4">
-                    <Link to={link}>
-                      <button className='btn btn-primary'>Ver actividades patrocinadas</button>
-                    </Link>
-                  </div>
+              </div>          
+              <div style={{ display: 'flex', marginBottom: '10px' }} className='row offster-md-4'>
+                <div className="col-md-5 offset-md-3">
+                  <Link to={link}>
+                    <button className='btn btn-primary'>Ver actividades patrocinadas</button>
+                  </Link>
                 </div>
               </div>
             </div>

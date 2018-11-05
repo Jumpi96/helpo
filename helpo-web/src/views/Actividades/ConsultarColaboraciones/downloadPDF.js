@@ -220,7 +220,7 @@ function downloadPDF(necesidades, nombre) {
   doc.setFontStyle('bold')  
   doc.text(center_x, 25, 'Reporte de colaboraciones',  null, null, 'center')
 
-  doc.text(`Evento: `, 5, 37)
+  doc.text(`Actividad: `, 5, 37)
   doc.text("Fecha/hora de inicio: ", 5, 45)  
   doc.setFontStyle('normal')
   doc.setFontSize(12)

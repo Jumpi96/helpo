@@ -206,6 +206,13 @@ class EventoView extends React.Component {
               {listaVoluntarios}
             </Table> : undefined
           }
+          {(moment(evento.fecha_hora_inicio) > moment()) ?
+            <Link style={{ marginLeft: 10 }} to={`/actividades/consultar-evento?id=${evento.id}`}>
+              <Button color="warning">
+                {evento.campaña ? "Ver campaña" : "Ver evento"}
+              </Button>
+            </Link> : undefined
+          }
           <button
             onClick={this.toggleEdit}
             hidden={moment(evento.fecha_hora_inicio) <= moment()}
@@ -213,24 +220,19 @@ class EventoView extends React.Component {
           >
             Editar colaboraciones
           </button>
-          <Link style={{ marginLeft: 10 }} to={`/actividades/consultar-evento?id=${evento.id}`}>
-            <Button color="warning">
-              {evento.campaña ? "Ver campaña" : "Ver evento"}
-            </Button>
-          </Link>
           <button
             onClick={this.toggleView}
             hidden={moment(evento.fecha_hora_inicio) > moment()}
             className="btn btn-warning"
           >
-            Comentar evento
+            Comentar actividad social
           </button>
           <ModalEliminarItem open={this.state.showModalEliminar} nombre={this.state.evento.nombre}
             closeModal={this.confirmDeleteNecesidad} />
         </div>
       );
     } else {
-      return <p>Cargando...</p>
+      return <div className="loader" />
     }
   }
 };

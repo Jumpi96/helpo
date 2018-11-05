@@ -2,8 +2,39 @@ import React from 'react';
 import moment from 'moment';
 import { PropTypes } from 'prop-types';
 import Widget02 from '../../Widgets/Widget02';
+import { Label, Input } from 'reactstrap'
 
 class EventoList extends React.Component {
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      verPasados: false
+    }
+  }
+
+  handleChangeVerPasados = () => {
+    const verPasados = this.state.verPasados
+    this.setState({ verPasados: !verPasados })
+  }
+
+  filterActPasadas(eventos) {
+    // Saca eventos en estado Finalizado
+    return eventos.filter(evento => evento.estado < 3)
+  }
+
+  verEventosPasados = () => {
+    return (
+      <Label style={{ 
+        fontSize: 14 ,
+        marginTop: 15,
+        marginLeft: 5,
+        marginBottom: 15 }} check>
+        ¿Ver actividades finalizadas?
+        <Input onChange={this.handleChangeVerPasados} style={{ marginLeft: 8 }} type="checkbox" />
+      </Label>
+    )
+  }
   
   sortEventos(eventos) {
     return eventos.sort(function(a, b) {
@@ -16,9 +47,15 @@ class EventoList extends React.Component {
   }
 
   render() {
-    const eventos = this.sortEventos(this.props.eventos);
+    let eventos = this.sortEventos(this.props.eventos);
+
+    if(!this.state.verPasados) { eventos = this.filterActPasadas(eventos) }
+
     return (
       <ul className="list-group">
+
+      {this.verEventosPasados()}
+
         {eventos.map(evento => 
           <Widget02 
             header={moment(evento.fecha_hora_inicio).format('DD/MM/YYYY')} 

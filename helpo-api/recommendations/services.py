@@ -5,6 +5,7 @@ import boto3
 import pickle
 import json
 import requests
+import datetime
 from sklearn.neighbors import NearestNeighbors
 from sklearn.svm import SVR
 from decouple import config
@@ -57,13 +58,22 @@ def predict_fechas(data):
     predictions = {}
     now = datetime.datetime.now()
     for i in range(12):
-        df.loc[0]['M'] = i+1
+        clean_and_put_mes(df, i+1)
         df.loc[0]['Dias'] = (datetime.datetime(
             now.year if i+1 >= now.month else now.year + 1,
             i+1, 15) - now).days
         pre = model.predict(df)
-        predictions[i+1] = round(pre[0], 4)
+        predictions[str(i+1)] = round(pre[0], 4)
     return predictions
+
+
+def clean_and_put_mes(df, mes):
+    for i in range(12):
+        if i+1 == mes:
+            df.loc[0]['M'+str(i+1)] = 1
+        else:
+            df.loc[0]['M'+str(i+1)] = 0
+    return df
 
 
 def predict_eventos_userbased(usuario, eventos):
@@ -79,7 +89,6 @@ def get_row_fecha_regressor(data, ong):
     organizacion = User.objects.get(id=ong)
     rubro_actividad = RubroEvento.objects.get(id=data['rubro_actividad'])
     base = {
-        'M': 0,
         '%NecONG': calc_porc_necesidades(ong=organizacion),
         '%NecRO': calc_porc_necesidades(rubro_ong=organizacion.organizacionprofile.rubro),
         '%NecRA': calc_porc_necesidades(rubro_act=rubro_actividad),
@@ -95,8 +104,15 @@ def get_row_fecha_regressor(data, ong):
         'Camp': 1 if data['campaña'] else 0,
         'Dias': 0
     }
+    base = add_meses_post(base)
     base = add_categorias_post(data['categorias_recurso'], base)
     base = add_funciones_post(data['categorias_recurso'], base)
+    return base
+
+
+def add_meses_post(base):
+    for i in range(12):
+        base['M'+str(i+1)]=0
     return base
 
 
@@ -190,7 +206,7 @@ def train_fecha_regressor():
     y = pd.DataFrame()
     y['pred'] = M['%Comp']
     training_data = M.drop(['%Comp'], axis=1)
-
+    """
     rmse_error = make_scorer(mean_squared_error, greater_is_better=False)
     parameters = { 
         'C': [0.8, 0.9, 1],
@@ -198,21 +214,22 @@ def train_fecha_regressor():
         'gamma': [0.001, 0.003, 0.005, 0.008]
     }
     svr = GridSearchCV(SVR(), cv=3, param_grid=parameters, scoring=rmse_error)
-
+    """
+    svr = SVR(C=1, epsilon=0.001, gamma=0.008)
     svr.fit(training_data, y)
     save_model_fecha_regressor(svr, features)
 
 
 def get_data_fecha_regressor():
     eventos = Evento.objects.all()
-    features = ['M', '%NecONG', '%NecRO', '%NecRA', '%VolONG', '%VolRO', '%VolRA', 
+    features = ['%NecONG', '%NecRO', '%NecRA', '%VolONG', '%VolRO', '%VolRA', 
         'SuONG', 'SuRO', 'VisONG', 'VisRO', 'VisRA', 'Dis', 'Dias', 'Camp']
     features += get_necesidades_features()
+    features += get_meses_features()
     features.append('%Comp')
     df = pd.DataFrame(columns=features, index=[str(evento.id) for evento in eventos])
     for evento in eventos:
         dict_evento = {
-            'M': evento.fecha_hora_inicio.month,
             '%NecONG': calc_porc_necesidades(ong=evento.organizacion),
             '%NecRO': calc_porc_necesidades(rubro_ong=evento.organizacion.organizacionprofile.rubro),
             '%NecRA': calc_porc_necesidades(rubro_act=evento.rubro),
@@ -230,6 +247,7 @@ def get_data_fecha_regressor():
         }
         dict_evento = add_categorias(evento, dict_evento)
         dict_evento = add_funciones(evento, dict_evento)
+        dict_evento = add_meses(evento, dict_evento)
         dict_evento['%Comp'] = calc_porc_total_evento(evento)
         df.loc[str(evento.id)] = pd.Series(dict_evento)
     return df, features[:-1]
@@ -244,6 +262,12 @@ def get_necesidades_features():
     for funcion in funciones:
         necesidades_features.append('F'+str(funcion.id))
     return necesidades_features
+
+def get_meses_features():
+    meses_features = []
+    for i in range(12):
+        meses_features.append('M'+str(i+1))
+    return meses_features
 
 
 def add_categorias(evento, dict_evento):
@@ -264,6 +288,13 @@ def add_funciones(evento, dict_evento):
             dict_evento['F'+str(funcion.id)] = 0
     return dict_evento
 
+def add_meses(evento, dict_evento):
+    for i in range(12):
+        if evento.fecha_hora_inicio.month == i+1:
+            dict_evento['M'+str(i+1)] = 1
+        else:
+            dict_evento['M'+str(i+1)] = 0
+    return dict_evento
 
 
 def save_model_fecha_regressor(model, features):

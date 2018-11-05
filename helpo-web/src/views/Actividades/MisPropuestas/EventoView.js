@@ -300,7 +300,7 @@ class EventoView extends React.Component {
                 onClick={this.toggleView}
                 className="btn btn-warning"
               >
-                Comentar evento
+                Comentar actividad social
               </button>
             </div>
             : undefined
@@ -311,7 +311,7 @@ class EventoView extends React.Component {
         </div>
       );
     } else {
-      return <p>Cargando...</p>
+      return <div className="loader"/>
     }
   }
 };

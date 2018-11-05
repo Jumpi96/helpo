@@ -91,35 +91,47 @@ class ConsultarEventosFilter extends React.Component {
   handleChangeFunciones(selectedFunciones) {
     this.setState({ selectedFunciones });
     const { selectedRubros, selectedMateriales, selectedFecha, selectedUbicacion } = this.state;
-    this.updatePath(selectedMateriales, selectedFunciones, selectedRubros, selectedFecha, selectedUbicacion);
+    const verAntiguos = this.props.verAntiguos
+    this.updatePath(selectedMateriales, selectedFunciones, selectedRubros, selectedFecha, selectedUbicacion, verAntiguos);
   }
 
   handleChangeMateriales(selectedMateriales) {
     this.setState({ selectedMateriales });
     const { selectedFunciones, selectedRubros, selectedFecha, selectedUbicacion } = this.state;
-    this.updatePath(selectedMateriales, selectedFunciones, selectedRubros, selectedFecha, selectedUbicacion);
+    const verAntiguos = this.props.verAntiguos
+    this.updatePath(selectedMateriales, selectedFunciones, selectedRubros, selectedFecha, selectedUbicacion, verAntiguos);
   }
 
   handleChangeRubros(selectedRubros) {
     this.setState({ selectedRubros });
     const { selectedFunciones, selectedMateriales, selectedFecha, selectedUbicacion } = this.state;
-    this.updatePath(selectedMateriales, selectedFunciones, selectedRubros, selectedFecha, selectedUbicacion);
+    const verAntiguos = this.props.verAntiguos
+    this.updatePath(selectedMateriales, selectedFunciones, selectedRubros, selectedFecha, selectedUbicacion, verAntiguos);
   }
 
   handleChangeFecha(selectedFecha) {
     this.setState({ selectedFecha });
     const { selectedFunciones, selectedMateriales, selectedRubros, selectedUbicacion } = this.state;
-    this.updatePath(selectedMateriales, selectedFunciones, selectedRubros, selectedFecha, selectedUbicacion);
+    const verAntiguos = this.props.verAntiguos
+    this.updatePath(selectedMateriales, selectedFunciones, selectedRubros, selectedFecha, selectedUbicacion, verAntiguos);
   }
 
   handleChangeUbicacion(selectedUbicacion) {
     if (this.state.longitud) {
       this.setState({ selectedUbicacion });
-      const { selectedFunciones, selectedMateriales, selectedRubros, selectedFecha } = this.state;
-      this.updatePath(selectedMateriales, selectedFunciones, selectedRubros, selectedFecha, selectedUbicacion);
+      const { selectedFunciones, selectedMateriales, selectedRubros, selectedFecha} = this.state;
+      const verAntiguos = this.props.verAntiguos
+      this.updatePath(selectedMateriales, selectedFunciones, selectedRubros, selectedFecha, selectedUbicacion, verAntiguos);
     } else {
       this.setState({openModal: true});
     }
+  }
+
+  handleChangeVerAntiguos = () => {
+    const verAntiguos = !this.props.verAntiguos
+    this.props.onChangeVerAntiguos()
+    const { selectedFunciones, selectedMateriales, selectedRubros, selectedFecha, selectedUbicacion } = this.state;
+    this.updatePath(selectedMateriales, selectedFunciones, selectedRubros, selectedFecha, selectedUbicacion, verAntiguos);
   }
 
   getValorFecha(fecha) {
@@ -138,7 +150,9 @@ class ConsultarEventosFilter extends React.Component {
     return 'fecha_desde=' + desde.toISOString() + '&fecha_hasta=' + hasta.toISOString();
   }
 
-  updatePath(materiales, funciones, rubros, fecha, ubicacion) {
+  updatePath(materiales, funciones, rubros, fecha, ubicacion, verAntiguos) {
+    // Ver actividades ya terminadas/empezadas
+
     let ruta = '?';
     if (this.props.organizacion) {
       ruta += 'organizacion=' + this.props.organizacion + '&';
@@ -173,6 +187,9 @@ class ConsultarEventosFilter extends React.Component {
     }
     if (ubicacion.value !== 0) {
       ruta += this.getValorUbicacion(ubicacion) + '&';
+    }
+    if (verAntiguos) {
+      ruta += 'antiguos=true&'
     }
     ruta = ruta[ruta.length-1] === '&' ? ruta.substring(0, ruta.length-1) : ruta;
     this.props.updatePath(ruta);
@@ -241,6 +258,14 @@ class ConsultarEventosFilter extends React.Component {
                 value={this.state.selectedUbicacion}
               />
             </Col>
+            {/*
+            <Col md="3">
+              <Label style={{ marginTop: 15, marginBottom: 15 }} check>
+                ¿Ver actividades pasadas?
+                <Input onChange={this.handleChangeVerAntiguos} style={{ marginLeft: 8 }} type="checkbox" />
+              </Label>
+            </Col>
+            */}
         </Row>
         <Modal isOpen={this.state.openModal} className='modal-warning'>
           <ModalHeader>Seleccionar ubicación</ModalHeader>

@@ -14,6 +14,7 @@ import {
   Icon,
   Text,
   ListItem,
+  CheckBox
 } from 'native-base';
 import * as eventoActions from '../../../Redux/actions/eventoActions';
 import styles from './styles';
@@ -21,11 +22,36 @@ import styles from './styles';
 class MisPropuestas extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      verAntiguos: false
+    }
     this.props.loadEventosConColaboraciones();
   }
 
+  handleChangeVerAntiguos = () => {
+    const verAntiguos = !this.state.verAntiguos
+    this.setState({verAntiguos: verAntiguos})
+  }
+
+  verEventosAntiguos = () => (
+    <ListItem>
+      <CheckBox 
+        checked={this.state.verAntiguos} 
+        onPress={this.handleChangeVerAntiguos}
+        color='orange'
+      />
+      <Body>
+        <Text>¿Ver actividades finalizadas?</Text>
+      </Body>
+    </ListItem>
+  )
+
   render() {
-    const listaEventos = this.props.evento.eventos.map((n) =>
+    const unfilteredEventos = this.props.evento.eventos;
+    const eventos = this.state.verAntiguos 
+                    ? unfilteredEventos
+                    : unfilteredEventos.filter(evento => evento.estado < 3)
+    const listaEventos = eventos.map((n) =>
       <ListItem icon key={n.id}>
         <Left>
           <Button
@@ -65,7 +91,10 @@ class MisPropuestas extends React.Component {
           </Body>
         </Header>
         <Content>
-          <Form>{listaEventos}</Form>
+          <Form>
+            {this.verEventosAntiguos()}
+            {listaEventos}
+          </Form>
         </Content>
       </Container>
     );

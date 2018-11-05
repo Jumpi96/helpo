@@ -179,7 +179,7 @@ class ConsultarPatrocinadores extends Component {
         </div>
       )
     } else {
-      return (<p>Cargando...</p>)
+      return (<div className="loader"/>)
     }
   }
 }

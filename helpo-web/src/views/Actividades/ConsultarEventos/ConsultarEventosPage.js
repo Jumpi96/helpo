@@ -17,7 +17,10 @@ class ConsultarEventosPage extends React.Component {
       eventos: [],
       organizacion,
       empresa,
-      ong: []
+      ong: [],
+      // Eventos pasados
+      verAntiguos: false,
+      isLoading: false
     }
     this.loadEventos = this.loadEventos.bind(this);
     this.loadONG = this.loadONG.bind(this);
@@ -25,6 +28,11 @@ class ConsultarEventosPage extends React.Component {
 
   getAuth() {
     return this.props.auth.isAuthenticated;
+  }
+
+  handleChangeVerAntiguos = () => { 
+    const verAntiguos = !this.state.verAntiguos
+    this.setState({verAntiguos: verAntiguos})
   }
 
   componentDidMount() {
@@ -41,13 +49,15 @@ class ConsultarEventosPage extends React.Component {
   }
 
   loadEventos(ruta) {
+    this.setState({ isLoading: true });
     api.get('/actividades/consulta_eventos/' + ruta)
       .then((res) => {
-        this.setState({ eventos: res.data });
+        this.setState({ eventos: res.data, isLoading: false });
       })
       .catch((error) => {
         if (error.response) { console.log(error.response.status) }
         else { console.log('Error: ', error.message) }
+        this.setState({ isLoading: false });
       })
   }
 
@@ -72,18 +82,29 @@ class ConsultarEventosPage extends React.Component {
             updatePath={this.loadEventos}
             organizacion={this.state.organizacion}
             empresa={this.state.empresa}
+            verAntiguos={this.state.verAntiguos}
+            onChangeVerAntiguos={this.handleChangeVerAntiguos}
           />
           <br />
-          <label>&emsp;Todav&iacute;a no hay eventos registrados</label>
+          {this.state.isLoading ?
+             <div class="loader"></div>  :
+            <label>&emsp;Todav&iacute;a no hay actividades sociales registrados</label>
+          }
         </CardBody>
       )
-    }
-    else {
+    } else {
       return (
         <CardBody>
-          <ConsultarEventosFilter updatePath={this.loadEventos} />
+          <ConsultarEventosFilter 
+            updatePath={this.loadEventos} 
+            verAntiguos={this.state.verAntiguos}
+            onChangeVerAntiguos={this.handleChangeVerAntiguos}
+            />
           <br />
-          <ConsultarEventosList eventos={eventos} auth={this.getAuth()} />
+          <ConsultarEventosList 
+            eventos={eventos} 
+            auth={this.getAuth()} 
+            verAntiguos={this.state.verAntiguos}/>
         </CardBody>
       )
     }

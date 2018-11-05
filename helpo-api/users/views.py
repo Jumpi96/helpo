@@ -127,7 +127,7 @@ class OrgProfileCreateReadView(ListCreateAPIView):
     """
     API endpoint para crear o ver todos los perfiles de organización
     """
-    queryset = OrganizacionProfile.objects.all()
+    queryset = OrganizacionProfile.objects.all().exclude(usuario__email__regex=r'@machine\.com')
     serializer_class = OrganizacionProfileSerializer
 
 class OrgProfileReadUpdateDeleteView(RetrieveUpdateAPIView):

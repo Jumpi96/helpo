@@ -46,7 +46,8 @@ class RegistrarEvento extends React.Component {
       nextId: 1,
       errors: {},
       esEvento: true,
-      horarios: []
+      horarios: [],
+      submitting: false
     };
     this.handleUbicacionChange = this.handleUbicacionChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -70,7 +71,7 @@ class RegistrarEvento extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-
+    this.setState({submitting: true});
     if (this.handleValidation()) {
       const evento = {
         nombre: this.state.nombre,
@@ -94,8 +95,10 @@ class RegistrarEvento extends React.Component {
           this.props.navigation.navigate('RegistrarNecesidades', { id: res.data.id });
         }).catch((error) => {
           if (error.response) { console.log(error.response); } else { console.log('Error: ', error.message); }
+          this.setState({submitting: false});
         });
     }
+    this.setState({submitting: false});
   }
 
   getContactosInfo() {
@@ -380,6 +383,7 @@ class RegistrarEvento extends React.Component {
             <Text style={styles.validationMessage}>{this.state.errors.email}</Text>
             <Button
               block style={{ margin: 10 }}
+              disabled={this.state.submitting}
               onPress={this.handleSubmit}
             >
               <Text>Guardar Evento</Text>

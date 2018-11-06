@@ -206,6 +206,9 @@ class ConsultarPerfilEmpresa extends Component {
         <CardBody>
           <div className="row">
             <div className="col-md-8">
+              <div className="row">
+                <div className="col-md-2"><i style={{ color: "#A9A9A9" }}>Empresa</i></div>
+              </div>
               <div className="row" style={{ marginBottom: '5%' }}>
                 <div className="col-md-3">
                   <p style={{ textAlign: 'left' }} className='h4'>{this.props.nombre}</p>
@@ -267,7 +270,7 @@ class ConsultarPerfilEmpresa extends Component {
                     ? ""
                     : <Button onClick={this.props.switchToModificar} color='primary'>Modificar datos</Button>}
                 </div>
-              </div>          
+              </div>
               <div style={{ display: 'flex', marginBottom: '10px' }} className='row offster-md-4'>
                 <div className="col-md-5 offset-md-3">
                   <Link to={link}>

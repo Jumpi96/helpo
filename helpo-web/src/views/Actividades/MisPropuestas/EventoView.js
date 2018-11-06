@@ -303,6 +303,7 @@ class EventoView extends React.Component {
               </button>
             : undefined
           }
+          <hr />
           <ModalConfirmarEdicion
             open={this.state.openModal} closeModal={this.editarColaboracion}
           />

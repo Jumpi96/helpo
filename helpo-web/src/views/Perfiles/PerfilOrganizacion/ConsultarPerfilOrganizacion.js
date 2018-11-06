@@ -211,6 +211,9 @@ class ConsultarPerfilOrganizacion extends Component {
         <CardBody>
           <div className="row">
             <div className="col-md-8">
+              <div className="row">
+                <div className="col-md-2"><i style={{color:"#A9A9A9"}}>ONG</i></div>
+              </div>
               <div className="row" style={{ marginBottom: '5%' }}>
                 <div className="col-md-3">
                   <p style={{ textAlign: 'left' }} className='h4'>{this.props.nombre}</p>

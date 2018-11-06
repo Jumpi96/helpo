@@ -19,8 +19,8 @@ class EventoList extends React.Component {
   }
 
   filterActPasadas(eventos) {
-    // Saca eventos en estado Finalizado
-    return eventos.filter(evento => evento.estado < 3)
+    // Saca eventos en estado Finalizado    
+    return eventos.filter(evento => moment(evento.fecha_hora_fin).format() > moment().format())
   }
  
   sortEventos(eventos) {
@@ -46,7 +46,7 @@ class EventoList extends React.Component {
     )
   }
 
-  render() {
+  render() {    
     let eventos = this.sortEventos(this.props.eventos);
 
     if(!this.state.verPasados) { eventos = this.filterActPasadas(eventos) }

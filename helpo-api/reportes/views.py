@@ -197,7 +197,7 @@ class ONGEventoStats(APIView):
         eventos_nombre = []
 
         eventos = Evento.objects.filter(
-            organizacion=id, estado=3).order_by("-fecha_hora_inicio")[:10]
+            organizacion=id).order_by("-fecha_hora_inicio")[:10]
         for evento in eventos:
             eventos_nombre.append(evento.nombre)
 

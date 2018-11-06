@@ -360,7 +360,7 @@ class DashboardReportes extends React.Component {
 
             <div className='row'>
               <div className='col'>
-                <Button color='primary'onClick={() => this.downloadPDF()}>Descargar version PDF</Button>
+                <Button color='primary'onClick={() => this.downloadPDF()}>Descargar como PDF</Button>
               </div>
               <div className='col'>
               </div>

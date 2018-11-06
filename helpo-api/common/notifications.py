@@ -43,7 +43,7 @@ def send_mail_to_worker(url, headers, mail_to, mail_from, json_subject, json_con
     if not isinstance(mail_to, (list, tuple)):
         mail_to = [mail_to]
     for mail in mail_to:
-        sleep_secs = randint(25, 45)
+        sleep_secs = randint(30, 40)
         log.info("Enviando mail a %s desde %s, dentro de %s segundos" %
                  (mail, mail_from, sleep_secs))
         time.sleep(sleep_secs)

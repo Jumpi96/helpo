@@ -6,7 +6,6 @@ import GridRow from './GridRow'
 import ImagePicker from 'react-native-image-picker'
 import { handleImageUpload } from '../../../Services/Imagen'
 import { connect } from 'react-redux'
-import api from '../../../api';
 import AlbumEventoActions from '../../../Redux/AlbumEventoRedux'
 
 
@@ -51,11 +50,11 @@ class Album extends React.Component {
     Divide un array de imagenes en arrays de length 3
     y los devuelve dentro de otro array
     (array de arrays(3)) 
-    */
+    */ 
     const imgArray = []
     let tmpArray = []
     for (imagen of imagenes) {
-      tmpArray.push(imagen)
+      tmpArray.push(imagen)      
       if (tmpArray.length === 3) {
         imgArray.push(tmpArray)
         tmpArray = []
@@ -66,46 +65,35 @@ class Album extends React.Component {
     return imgArray
   }
 
-  renderItem = ({ item }) => {
+  renderItem = ({item}) => {
     //item debe ser un array de 1-3 imagenes
-    return <GridRow titulo={this.props.titulo} imagenes={item} navigation={this.props.navigation} />
-  }
-
-  navigate() {
-    api.get('/actividades/consulta_eventos/' + this.props.eventoId + '/')
-      .then(res => {
-        this.props.navigation.navigate('ConsultarEvento', { evento: res.data });
-      })
-      .catch((error) => {
-        if (error.response) { console.log(error.response.status) }
-        else { console.log('Error: ', error.message) }
-      })
+    return <GridRow titulo={this.props.titulo} imagenes={item} navigation={this.props.navigation}/>
   }
 
   //Esto es para que la flatList no me joda que faltan keys
   keyExtractor = (item, index) => index
-
+  
   render() {
     const imagenes = this.props.imagenes
     const mensaje = this.props.fetching ? 'Cargando imágenes...' : 'No hay imágenes en el álbum'
     return (
       <Container>
-        <ContainerHeader titulo={this.props.titulo} goBack={() => this.navigate()} />
+        <ContainerHeader titulo={this.props.titulo} goBack={() => this.props.navigation.goBack()}/>
 
         {/* Si no hay imagenes, muestro un mensaje */}
         {this.props.imagenes.length !== 0
-          ? <FlatList
-            data={this.transformImagenesArray(imagenes)}
+        ? <FlatList 
+            data={this.transformImagenesArray(imagenes)} 
             keyExtractor={this.keyExtractor}
             renderItem={this.renderItem} />
-          : <Text>{mensaje}</Text>}
+        : <Text>{mensaje}</Text>}
 
         {/* Si usuario isOwner, dejo agregar foto */}
-        {this.props.isOwner ?
-          (<Fab style={{ backgroundColor: 'green' }} onPress={this.addImagen}>
-            <Icon color='white' type='Entypo' name='plus' />
-          </Fab>)
-          : undefined}
+        {this.props.isOwner ? 
+        (<Fab style={{ backgroundColor: 'green' }} onPress={this.addImagen}>
+          <Icon color='white' type='Entypo' name='plus'/>
+        </Fab>)
+        : undefined }
 
       </Container>
     )

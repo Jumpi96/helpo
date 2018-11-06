@@ -553,6 +553,8 @@ class RegistrarColaboraciones extends Component {
                   this.getTablaVoluntariosCampana() :
                   this.getTablaVoluntariosEvento()
               }
+              <Button onClick={() => this.props.history.push('/actividades/consultar-evento?id=' + this.state.evento.id)}
+                color="primary">Guardar colaboraciones</Button>
             </form>
           </CardBody>
         </Card>

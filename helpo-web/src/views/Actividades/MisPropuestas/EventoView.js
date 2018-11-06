@@ -295,14 +295,12 @@ class EventoView extends React.Component {
             this.getComentario(propuesta) : undefined
           }
           {moment(evento.fecha_hora_inicio) < moment() && propuesta.aceptado !== -1 ?
-            <div className="btn-group form-group" role="group">
-              <button
-                onClick={this.toggleView}
-                className="btn btn-warning"
-              >
-                Comentar actividad social
+            <button
+              onClick={this.toggleView}
+              className="btn btn-warning"
+            >
+              Comentar actividad social
               </button>
-            </div>
             : undefined
           }
           <ModalConfirmarEdicion
@@ -311,7 +309,7 @@ class EventoView extends React.Component {
         </div>
       );
     } else {
-      return <div className="loader"/>
+      return <div className="loader" />
     }
   }
 };

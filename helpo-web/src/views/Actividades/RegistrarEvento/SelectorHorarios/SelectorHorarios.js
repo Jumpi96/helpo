@@ -181,7 +181,7 @@ class SelectorHorarios extends Component {
       }
       return (
         <div className="row">
-          <div className="offset-md-1 col-md-4">
+          <div className="offset-md-1 col-md-5">
             <Table responsive striped>
               <thead>
                 <tr>

@@ -173,7 +173,7 @@ class VerEvento extends React.Component {
               </Body>
             </ListItem>
             <GoAlbum
-              visible={evento.estado >= 2 ? true : false} // Solo visible si evento comenzo o finalizo
+              visible={moment().format() > moment(evento.fecha_hora_inicio).format() ? true : false} // Solo visible si evento comenzo o finalizo
               eventoId={this.state.evento.id}
               navigation={this.props.navigation}
             />

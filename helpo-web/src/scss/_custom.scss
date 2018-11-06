@@ -10709,3 +10709,21 @@ html body .app.flex-row.align-items-center {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+
+select.btn {
+    -webkit-appearance: button;
+       -moz-appearance: button;
+            appearance: button;
+    width: auto;
+}
+
+select.btn-mini {
+    height: auto;
+    line-height: 14px;
+    padding-right: 16px;
+}
+
+select.btn-mini + .caret {
+    margin-left: -20px;
+    margin-top: 9px;
+}

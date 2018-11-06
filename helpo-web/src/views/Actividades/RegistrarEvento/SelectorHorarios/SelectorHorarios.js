@@ -181,7 +181,7 @@ class SelectorHorarios extends Component {
       }
       return (
         <div className="row">
-          <div className="offset-md-1 col-md-4">
+          <div className="offset-md-1 col-md-5">
             <Table responsive striped>
               <thead>
                 <tr>
@@ -224,7 +224,7 @@ class SelectorHorarios extends Component {
             <div className="col-md-2">
               <select
                 value={this.state.dia}
-                className="form-control"
+                className="btn btn-mini"
                 onChange={this.handleChangeDia}>
                 {opcionesDias}
               </select>
@@ -234,7 +234,7 @@ class SelectorHorarios extends Component {
               <select
                 name="horaInicio"
                 value={this.state.horaInicio}
-                className="form-control"
+                className="btn btn-mini"
                 onChange={this.handleChangeHoraInicio}>
                 {opcionesHoras}
               </select>
@@ -242,7 +242,7 @@ class SelectorHorarios extends Component {
             <div className="col-md-1">
               <select
                 value={this.state.minutoInicio}
-                className="form-control"
+                className="btn btn-mini"
                 onChange={this.handleChangeMinutoInicio}>
                 {opcionesMinutos}
               </select>
@@ -251,7 +251,7 @@ class SelectorHorarios extends Component {
             <div className="col-md-1">
               <select
                 value={this.state.horaFin}
-                className="form-control"
+                className="btn btn-mini"
                 onChange={this.handleChangeHoraFin}>
                 {opcionesHoras}
               </select>
@@ -259,7 +259,7 @@ class SelectorHorarios extends Component {
             <div className="col-md-1" style={{ marginBottom: '5px' }}>
               <select
                 value={this.state.minutoFin}
-                className="form-control"
+                className="btn btn-mini"
                 onChange={this.handleChangeMinutoFin}>
                 {opcionesMinutos}
               </select>

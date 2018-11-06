@@ -1,6 +1,7 @@
 import React from 'react';
 import DateTimePicker from 'react-datetime-picker';
 import { PropTypes } from 'prop-types';
+import { Button } from 'reactstrap';
 import moment from 'moment';
 import SelectorUbicacion from '../RegistrarEvento/SelectorUbicacion/SelectorUbicacion';
 import RegistrarContacto from '../RegistrarEvento/RegistrarContacto/RegistrarContacto';
@@ -11,7 +12,7 @@ import validateEmail from '../../../utils/ValidateEmail';
 class EventoForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { errors: [] };
+    this.state = { errors: {} };
     this.handleChange = this.handleChange.bind(this);
     this.handleUbicacionChange = this.handleUbicacionChange.bind(this);
     this.handleRubroChange = this.handleRubroChange.bind(this);
@@ -80,16 +81,18 @@ class EventoForm extends React.Component {
     } else {
       let inicio;
       if (this.state.isCampañaStarted) {
-        inicio = moment();
+        inicio = moment(new Date());
       } else {
         inicio = moment(this.props.evento.fecha_hora_inicio);
       }
       const fin = moment(this.props.evento.fecha_hora_fin);
       const actual = moment(new Date());
-      if (inicio < actual) {
+      if (inicio < actual && !this.state.isCampañaStarted) {
         formIsValid = false;
         errors.fechas = 'La fecha de inicio debe ser posterior a la fecha actual';
       } else {
+        console.log(inicio)
+        console.log(fin)
         if (fin < inicio) {
           formIsValid = false;
           errors.fechas = 'La fecha de inicio debe ser anterior a la fecha de fin de la actividad'
@@ -99,7 +102,7 @@ class EventoForm extends React.Component {
             errors.fechas = 'El evento no puede durar más de 24 horas'
           }
           else {
-            errors.fechas = undefined;
+            errors.fechas = '';
           }
         }
       }
@@ -248,12 +251,10 @@ class EventoForm extends React.Component {
           <span style={{ color: 'red' }}>{this.state.errors.contactoNombre}</span><p>{"\n"}</p>
           <span style={{ color: 'red' }}>{this.state.errors.contactoContacto}</span><p>{"\n"}</p>
           <span style={{ color: 'red' }}>{this.state.errors.email}</span>
-          <input
-            type="submit"
+          <Button
             disabled={this.props.saving}
-            className="btn btn-primary"
-            value="Guardar evento"
-            onClick={this.handleSave} />
+            color="primary"
+            onClick={this.handleSave}>Guardar actividad social</Button>
         </form>
       </div>
     );

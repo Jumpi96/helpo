@@ -42,8 +42,8 @@ def render_cambio_evento_email(evento):
     return render_mail('cambio-evento-email.html', dict_context)
 
 
-def render_propuesta(propuesta):
-    dict_context = dict(propuesta=propuesta)
+def render_propuesta(accion, propuesta):
+    dict_context = dict(accion=accion, propuesta=propuesta)
     return render_mail('propuesta.html', dict_context)
 
 

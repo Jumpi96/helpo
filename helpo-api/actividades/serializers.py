@@ -178,10 +178,11 @@ class ColaboracionSerializer(serializers.ModelSerializer):
             colaboracion = Colaboracion.objects.create(
                 necesidad_material_id=necesidad_material.id, vigente=True, **validated_data)
             colaborador_id = validated_data['colaborador_id']
-            evento = validated_data['necesidad_material'].evento
-            titulo_email = "Usted se ha registrado para colaborar con los siguientes datos:"
-            self.send_colaboracion_email(
-                colaborador_id, evento, colaboracion, titulo_email)
+            if (User.objects.get(id=colaborador_id).user_type == 2):
+                evento = validated_data['necesidad_material'].evento
+                titulo_email = "Usted se ha registrado para colaborar con los siguientes datos:"
+                self.send_colaboracion_email(
+                    colaborador_id, evento, colaboracion, titulo_email)
             if (suma_colaboraciones + cantidad) == necesidad_material.cantidad:
                 send_full_colaboracion_mail(necesidad_material)
             return colaboracion

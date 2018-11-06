@@ -2,7 +2,7 @@ from collections import namedtuple
 from django.db.models import Sum
 from actividades.models import Evento, Necesidad, Colaboracion, Voluntario, Participacion, LogMensaje, Mensaje, Propuesta, Presencia, Entrega
 from common.notifications import send_mail_to_list, send_mail_to, send_mail_to_id_list, send_mail_to_id, send_push_notification_to_id_list
-from common.templates import render_participacion_email, render_cambio_evento_email, render_mensaje_evento, render_full_participacion_email, render_full_colaboracion_email, render_was_full_colaboracion_email, render_was_full_participacion_email, render_inicio_evento_email, render_fin_evento_email, render_creacion_evento_email
+from common.templates import render_participacion_email, render_cambio_evento_email, render_mensaje_evento, render_full_participacion_email, render_full_colaboracion_email, render_was_full_colaboracion_email, render_was_full_participacion_email, render_inicio_evento_email, render_fin_evento_email, render_creacion_evento_email, render_propuesta
 from users.models import User, Suscripcion
 
 
@@ -162,14 +162,15 @@ def create_propuesta_voluntario(user, necesidad_voluntario):
         Propuesta.objects.create(
             evento_id=evento_id, empresa_id=user.id, aceptado=0)
 
-def _send_mail_propuesta(usuarios_id, propuesta):
+def _send_mail_propuesta(organizacion_id, empresa_id, propuesta):
     tipo_actividad = "campaña" if propuesta.evento.campaña else "evento"
     subject_utf = u"Propuesta para " + tipo_actividad + ": " + propuesta.evento.nombre
-    from common.templates import render_propuesta
-    content = render_propuesta(propuesta)
-    from common.notifications import send_mail_to_id_list
-    send_mail_to_id_list(ids_to=usuarios_id,
-                         html_subject=subject_utf, html_content=content)
+    content_organizacion = render_propuesta("recibido", propuesta)
+    content_empresa = render_propuesta("efectuado", propuesta)
+    send_mail_to_id(id_to=organizacion_id,
+                    html_subject=subject_utf, html_content=content_organizacion)
+    send_mail_to_id(id_to=empresa_id,
+                    html_subject=subject_utf, html_content=content_empresa)
 
 def _send_push_propuesta(usuarios_id, propuesta):
     en_msg = "The campaign " + propuesta.evento.nombre + " has a new proposal" if propuesta.evento.campaña else "The event " + propuesta.evento.nombre + " has a new proposal"
@@ -180,7 +181,7 @@ def _send_push_propuesta(usuarios_id, propuesta):
 
 def _send_nueva_propuesta(propuesta):
     try:
-        _send_mail_propuesta([propuesta.evento.organizacion.id, propuesta.empresa.id], propuesta)
+        _send_mail_propuesta(propuesta.evento.organizacion.id, propuesta.empresa.id, propuesta)
         _send_push_propuesta([propuesta.evento.organizacion.id], propuesta)
     except:
         pass

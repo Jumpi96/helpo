@@ -180,8 +180,8 @@ class EventoView extends React.Component {
             <button
               onClick={this.toggleEdit}
               hidden={
-                !((moment(evento.fecha_hora_inicio) > moment() && !evento.campaña) ||
-                (moment(evento.fecha_hora_fin) > moment() && evento.campaña))
+                (!evento.campaña && moment(evento.fecha_hora_inicio) < moment()) ||
+                (evento.campaña && moment() > moment(evento.fecha_hora_fin))
               }
               className="btn btn-warning"
             >

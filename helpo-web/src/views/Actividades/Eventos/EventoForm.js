@@ -91,11 +91,11 @@ class EventoForm extends React.Component {
         formIsValid = false;
         errors.fechas = 'La fecha de inicio debe ser posterior a la fecha actual';
       } else {
-        console.log(inicio)
-        console.log(fin)
         if (fin < inicio) {
           formIsValid = false;
-          errors.fechas = 'La fecha de inicio debe ser anterior a la fecha de fin de la actividad'
+          errors.fechas = !this.state.isCampañaStarted ? 
+            'La fecha de inicio debe ser anterior a la fecha de fin de la actividad'
+             : 'La fecha de fin ingresada no es válida.';
         } else {
           if (moment.duration(fin.diff(inicio)).asHours() > 24 && inicio < fin && !this.props.evento.campaña) {
             formIsValid = false;

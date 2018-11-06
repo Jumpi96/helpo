@@ -31,7 +31,6 @@ import VerPropuestaEvento from '../Views/Actividades/MisPropuestas/VerPropuestaE
 import ConsultarPerfilGenerico from '../Views/Perfiles/ConsultarPerfilGenerico';
 import ModificarPerfilVoluntario from '../Views/Perfiles/PerfilVoluntario/ModificarPerfilVoluntario';
 import ModificarPerfilOrganizacion from '../Views/Perfiles/PerfilOrganizacion/ModificarPerfilOrganizacion';
-import AlbumEvento from '../Views/Actividades/AlbumEvento/AlbumEvento';
 import VerPatrocinadores from '../Views/Actividades/VerPatrocinadores/VerPatrocinadores';
 import VerPropuestaPatrocinador from '../Views/Actividades/VerPatrocinadores/VerPropuestaPatrocinador'
 import ResponderPropuesta from '../Views/Actividades/VerPatrocinadores/ResponderPropuesta';
@@ -71,7 +70,6 @@ const NavigationDrawer = DrawerNavigator({
 	VerPropuestaEvento: { screen: VerPropuestaEvento },
 	ConsultarPerfilGenerico: { screen: ConsultarPerfilGenerico },
 	ConsultarOtroPerfilGenerico: { screen: ConsultarPerfilGenerico },
-	AlbumEvento: { screen: AlbumEvento },
 	VerPatrocinadores: { screen: VerPatrocinadores },
 	VerPropuestaPatrocinador: { screen: VerPropuestaPatrocinador },
 	ResponderPropuesta: { screen: ResponderPropuesta },

@@ -224,7 +224,7 @@ function downloadPDF(necesidades, nombre) {
   doc.text("Fecha/hora de inicio: ", 5, 45)  
   doc.setFontStyle('normal')
   doc.setFontSize(12)
-  doc.text(evento_nombre, 22, 37)
+  doc.text(28, 37, evento_nombre, null, null, 'left')
   doc.text(fecha_hora_inicio, 50, 45)
 
   drawItems(doc, draw_queue)

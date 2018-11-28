@@ -25,7 +25,7 @@ class NoAuthLayout extends Component {
             <NoAuthHeader />
           </AppHeader>
           <div className="app-body">
-            <main className="main">
+            <main className="main" style={{marginLeft: 0}}>
               <AppBreadcrumb appRoutes={routes}/>
               <Container fluid>
                 <Switch>

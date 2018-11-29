@@ -297,7 +297,7 @@ class RegistrarEvento extends Component {
                 <div className="form-group col-md-1">
                   <label>Inicio:  </label>
                 </div>
-                <div className="form-group col-md-2">
+                <div className="form-group col-md-3">
                   <DateTimePicker
                     name="inicio"
                     onChange={this.handleFechaHoraInicioChange}
@@ -308,7 +308,7 @@ class RegistrarEvento extends Component {
                 <div className="form-group col-md-1">
                   <label>Fin:  </label>
                 </div>
-                <div className="form-group col-md-2">
+                <div className="form-group col-md-3">
                   <DateTimePicker
                     name="fin"
                     onChange={this.handleFechaHoraFinChange}

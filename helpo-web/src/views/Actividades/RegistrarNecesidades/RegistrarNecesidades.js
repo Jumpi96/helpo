@@ -71,13 +71,33 @@ class RegistrarNecesidades extends Component {
     }
   }
 
+  necesidadIsInserted(new_necesidad) {
+    /* Returns true if new_necesidad is in necesidades table */ 
+    for(const necesidad of this.state.necesidades) {
+      if(parseInt(new_necesidad.recurso_id, 10) === parseInt(necesidad.recurso.id, 10)) {
+          return true 
+         }
+    }
+    return false
+  }
+
+  voluntarioIsInserted(new_voluntario) {
+    /* Returns true if new_voluntario is in voluntarios table */
+    for(const voluntario of this.state.voluntarios) {
+      if(parseInt(voluntario.funcion.id, 10) === parseInt(new_voluntario.funcion_id, 10)) {
+          return true 
+         }
+    }
+    return false
+  }
+
   addNecesidad(necesidad) {
+    // Validate that necesidad isnt in table
+    if(this.necesidadIsInserted(necesidad)) { return }
     var _this = this;
     this.setState({ submitting: true });
     api.post('/actividades/necesidades/', necesidad)
       .then(res => {
-        console.log(res);
-        console.log(res.data);
         this.cleanNecesidad();
         this.loadNecesidadesYVoluntarios();
         this.setState({ submitting: false });
@@ -90,12 +110,12 @@ class RegistrarNecesidades extends Component {
   }
 
   addVoluntario(voluntario) {
+    // Validate that necesidad isnt in table
+    if(this.voluntarioIsInserted(voluntario)) { return }
     var _this = this;
     this.setState({ submitting: true });
     api.post('/actividades/voluntarios/', voluntario)
       .then(res => {
-        console.log(res);
-        console.log(res.data);
         this.cleanVoluntario();
         this.loadNecesidadesYVoluntarios();
         this.setState({ submitting: false });

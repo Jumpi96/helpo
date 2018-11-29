@@ -51,18 +51,32 @@ class AgregarNecesidad extends React.Component {
     }
   }
 
+  necesidadIsInserted(new_necesidad) {
+    /* Returns true if new_necesidad is in necesidades table */
+    const { necesidades } = this.props.navigation.state.params
+    for (const necesidad of necesidades) {
+      if (parseInt(new_necesidad.recurso_id, 10) === parseInt(necesidad.recurso.id, 10)) {
+        return true
+      }
+    }
+    return false
+  }
+
   addNecesidad(necesidad) {
-    var _this = this;
-    api.post("/actividades/necesidades/", necesidad)
-      .then(res => {
-        console.log(res);
-        console.log(res.data);
-        this.props.navigation.navigate('RegistrarNecesidades', { id: this.state.evento });
-      }).catch(function (error) {
-        if (error.response) { console.log(error.response.status); }
-        else { console.log("Error: ", error.message); }
-        _this.setState({ error: "Hubo un problema al cargar su información." });
-      });
+    const navigate = () => this.props.navigation.navigate('RegistrarNecesidades', { id: this.state.evento });
+    // Validate that necesidad isnt in table
+    if (this.necesidadIsInserted(necesidad)) { navigate() }
+    else {
+      var _this = this;
+      api.post("/actividades/necesidades/", necesidad)
+        .then(res => {
+          navigate()
+        }).catch(function (error) {
+          if (error.response) { console.log(error.response.status); }
+          else { console.log("Error: ", error.message); }
+          _this.setState({ error: "Hubo un problema al cargar su información." });
+        });
+    }
   }
 
   handleValidation() {

@@ -59,13 +59,29 @@ class AgregarVoluntario extends React.Component {
     }
   }
 
+  voluntarioIsInserted(new_voluntario) {
+    /* Returns true if new_voluntario is in voluntarios table */
+    const { voluntarios } = this.props.navigation.state.params
+    for (const voluntario of voluntarios) {
+      if (parseInt(voluntario.funcion.id, 10) === parseInt(new_voluntario.funcion_id, 10)) {
+        return true
+      }
+    }
+    return false
+  }
+
   addVoluntario(voluntario) {
-    api.post("/actividades/voluntarios/", voluntario)
-      .then(() => {
-        this.props.navigation.navigate('RegistrarNecesidades', { id: this.state.evento });
-      }).catch(() => {
-        this.setState({ error: "Hubo un problema al cargar su información." });
-      });
+    const navigate = () => this.props.navigation.navigate('RegistrarNecesidades', { id: this.state.evento });
+    // Validate that necesidad isnt in table
+    if (this.voluntarioIsInserted(voluntario)) { navigate() }
+    else {
+      api.post("/actividades/voluntarios/", voluntario)
+        .then(() => {
+          navigate()
+        }).catch(() => {
+          this.setState({ error: "Hubo un problema al cargar su información." });
+        });
+    }
   }
 
   handleValidation() {

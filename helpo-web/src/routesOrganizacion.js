@@ -100,8 +100,8 @@ const routes = [
 
   { path: '/actividades/evento', name: 'Mis actividades sociales', component: EventoPage },
   { path: '/actividades/consultar-eventos', name: 'Consultar actividades sociales', component: ConsultarEventosPage },
-  { path: '/actividades/consultar-evento/', name: 'Consultar evento', component: ConsultarEventosView },
-  { path: '/actividades/registrar-evento', name: 'Registrar evento', component: RegistrarEvento },
+  { path: '/actividades/consultar-evento/', name: 'Consultar actividad social', component: ConsultarEventosView },
+  { path: '/actividades/registrar-evento', name: 'Registrar actividad social', component: RegistrarEvento },
   { path: '/actividades/registrar-necesidades', name: 'Registrar necesidades', component: RegistrarNecesidades },
   { path: '/actividades/consultar-colaboraciones', name: 'Consultar Colaboraciones', component: ConsultarColaboraciones },
   { path: '/actividades/mensajes', name: 'Mensajes de evento', component: ListadoMensajes },

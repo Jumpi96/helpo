@@ -48,7 +48,7 @@ const routes = [
   { path: '/noAuth', exact: true, name: 'Home', component: NoAuthLayout },
   { path: '/noAuth/dashboard', name: 'helpo', component: Dashboard },
   { path: '/noAuth/actividades/consultar-eventos', name: 'Consultar actividades sociales', component: ConsultarEventosPage },
-  { path: '/noAuth/actividades/consultar-evento/', name: 'Consultar evento', component: ConsultarEventosView },
+  { path: '/noAuth/actividades/consultar-evento/', name: 'Consultar actividad social', component: ConsultarEventosView },
   { path: '/noAuth/actividades/album/:eventoId', name: 'Album de Evento', component: AlbumImagenes },
   { path: '/noAuth/organizaciones', name: 'Organizaciones', component: OrganizacionesPage },
   { path: '/noAuth/empresas', name: 'Empresas', component: EmpresasPage },

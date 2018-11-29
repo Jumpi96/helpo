@@ -31,7 +31,7 @@ class RedireccionarEvento extends Component {
       <div className="animated fadeIn">
         <Card>
           <CardHeader>
-            <i className="fa fa-align-justify"></i> Consultar evento
+            <i className="fa fa-align-justify"></i> Consultar actividad social
           </CardHeader>
           <CardBody>
             <div className="loader" />

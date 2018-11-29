@@ -39,7 +39,6 @@ class RegistrarContacto extends Component {
 
   handleAgregar(event) {
     event.preventDefault();
-    this.setState({ error: '' });
     var contacto = undefined;
     if (this.handleValidation()) {
       contacto = {
@@ -61,9 +60,8 @@ class RegistrarContacto extends Component {
   }
 
   handleValidation() {
-    this.setState({ error: '' });
     let formIsValid = true;
-    var error = this.state.error;
+    var error = '';
     if (this.state.nombre === "") {
       error = 'No puede ingresar un contacto sin nombre';
       formIsValid = false;

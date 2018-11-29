@@ -303,7 +303,7 @@ class ConsultarEventosView extends React.Component {
                     (moment(evento.fecha_hora_inicio) <= moment() && !evento.campaña) ||
                     (evento.campaña && (moment(evento.fecha_hora_fin) <= moment()))
                   }
-                  className="btn btn-warning offset-md-10"
+                  className="btn btn-primary offset-md-10"
                 >
                   {this.props.auth.user.user_type === 2 ? "Colaborar" : "Patrocinar"}
                 </button>

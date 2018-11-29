@@ -5,6 +5,7 @@ import { auth } from '../../../../actions';
 import './RegistrarColaboraciones.css';
 import api from '../../../../api';
 import ModalRegistrarColaboracion from './ModalRegistrarColaboracion/ModalRegistrarColaboracion';
+import ModalGenerico from '../../../Perfiles/ModalGenerico';
 
 
 class RegistrarColaboraciones extends Component {
@@ -22,7 +23,8 @@ class RegistrarColaboraciones extends Component {
       evento: { id: evento },
       necesidades: [],
       voluntarios: [],
-      funcionVoluntario: undefined
+      funcionVoluntario: undefined,
+      modalGuardar: false
     };
     this.selectFuncion = this.selectFuncion.bind(this);
     this.getTablaVoluntariosEvento = this.getTablaVoluntariosEvento.bind(this);
@@ -557,7 +559,7 @@ class RegistrarColaboraciones extends Component {
                   this.getTablaVoluntariosCampana() :
                   this.getTablaVoluntariosEvento()
               }
-              <Button onClick={() => this.props.history.push('/actividades/consultar-evento?id=' + this.state.evento.id)}
+              <Button onClick={() => this.setState({ modalGuardar: true })}
                 color="primary">Guardar colaboraciones</Button>
             </form>
           </CardBody>
@@ -566,6 +568,12 @@ class RegistrarColaboraciones extends Component {
           open={this.state.colaboracionModificada} handleChange={this.handleModalChange}
           colaboracion={this.state.colaboracionModificada} closeModal={this.saveColaboracionModal}
         />
+        {this.state.modalGuardar ?
+          <ModalGenerico
+            body='Se guardaron los cambios exitosamente'
+            onCancel={() => this.props.history.push('/actividades/consultar-evento?id=' + this.state.evento.id)}
+          /> : undefined
+        }
       </div>
     )
   }

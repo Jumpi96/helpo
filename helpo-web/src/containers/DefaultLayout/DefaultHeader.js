@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { DropdownItem, DropdownMenu, DropdownToggle, Nav, NavItem } from 'reactstrap';
+import { DropdownItem, DropdownMenu, DropdownToggle, Nav } from 'reactstrap';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { AppAsideToggler, AppHeaderDropdown, AppNavbarBrand, AppSidebarToggler } from '@coreui/react';
@@ -32,9 +32,6 @@ class DefaultHeader extends Component {
         <AppSidebarToggler className="d-md-down-none" display="lg" />
 
         <Nav className="ml-auto" navbar>
-          <NavItem className="d-md-down-none">
-            {/* <NavLink href="#"><i className="icon-bell"></i><Badge pill color="danger" hidden>0</Badge></NavLink> */}
-          </NavItem>
           <AppHeaderDropdown direction="down">
             <DropdownToggle nav>
             {/*Issue #225: ACA DEBERIA ACTUALIZARSE AUTOMATICAMENTE LA FOTO DE PERFIL DEL USUARIO*/}
@@ -43,7 +40,6 @@ class DefaultHeader extends Component {
             <DropdownMenu right style={{ right: 'auto' }}>
               <DropdownItem header tag="div" className="text-center"><strong>Perfil</strong></DropdownItem>
               <Link to="/perfil/"><DropdownItem onClick={this.consultarPerfil}><i className="fa fa-user"></i>Mi perfil</DropdownItem></Link>{/*Deberia rutear a la consulta de perfil generico*/}
-              {/* <DropdownItem><i className="fa fa-bell-o"></i> Notificaciones<Badge color="info" hidden>0</Badge></DropdownItem> */}
               <Link to="/ajustes/"><DropdownItem><i className="fa fa-wrench"></i> Ajustes</DropdownItem></Link>
               <DropdownItem onClick={() => this.props.logout()}><i className="fa fa-lock"></i> Cerrar sesión</DropdownItem>
             </DropdownMenu>

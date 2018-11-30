@@ -1,15 +1,13 @@
 import React from 'react'
-import { Button, Text } from 'native-base'
+import { Spinner } from 'native-base'
 
 class BotonCargando extends React.Component {
   
   render() {
     return  (
-      <Button>
-        <Text>Cargando...</Text>
-      </Button>
+      <Spinner color='red' />
     )
   }
 }
 
-export default BotonCargando
+export default BotonCargando;

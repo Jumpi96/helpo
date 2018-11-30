@@ -168,7 +168,7 @@ class VerPropuestaPatrocinador extends React.Component {
         </Container>
       );
     }
-    return (<Text>Loading..</Text>)
+    return (<Spinner color='red' />)
   }
 }
 

@@ -15,7 +15,8 @@ import {
   View,
   ListItem,
   Item,
-  Label
+  Label,
+  Spinner
 } from "native-base";
 import styles from './styles';
 import api from '../../../api';
@@ -178,7 +179,7 @@ class ComentarEvento extends React.Component {
     return (
       <Container>
         <Content>
-          <Text>Cargando...</Text>
+          <Spinner color='red' />
         </Content>
       </Container>
     )

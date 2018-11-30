@@ -162,7 +162,7 @@ class SignUpPresentation extends React.Component {
         <Content>
           <ListItem>
             <Left>
-              <Text>Usuario</Text>
+              <Text>Tipo de usuario</Text>
             </Left>
             <Body>
               <Picker
@@ -179,9 +179,14 @@ class SignUpPresentation extends React.Component {
           </ListItem>
           {!this.state.registroConDatos ?
             <View>
+              <Button block style={{ margin: 15, marginTop: 50, flex: 1 }}
+                onPress={() => this.setState({ registroConDatos: true })}
+              >
+                <Text>Crear cuenta con sus datos</Text>
+              </Button>              
               <FBLogin
                 permissions={["email"]}
-                style={{ margin: 15, marginTop: 30 }}
+                style={{ margin: 15, marginTop: 50 }}
                 loginBehavior={FBLoginManager.LoginBehaviors.WebView}
                 onLogin={function (data) {
                   console.log("Logged in!");
@@ -216,11 +221,6 @@ class SignUpPresentation extends React.Component {
                 color={GoogleSigninButton.Color.Dark}
                 onPress={this.props.googleSignIn}
                 disabled={this.props.isGoogleSigninInProgress} />
-              <Button block style={{ margin: 15, flex: 1 }}
-                onPress={() => this.setState({ registroConDatos: true })}
-              >
-                <Text>Crear cuenta con sus datos</Text>
-              </Button>
             </View> : undefined}
           {this.state.registroConDatos ?
             <Form>
@@ -240,7 +240,7 @@ class SignUpPresentation extends React.Component {
                 <Input secureTextEntry onChangeText={text => this.props.onInputChange(text, 'password')} />
               </Item>
               <Item floatingLabel>
-                <Label>Repetir Contraseña</Label>
+                <Label>Repetir contraseña</Label>
                 <Input secureTextEntry onChangeText={text => this.props.onInputChange(text, 'repeat')} />
               </Item>
               <Text style={styErrorText}>{this.props.data.errors.contraseña}</Text>

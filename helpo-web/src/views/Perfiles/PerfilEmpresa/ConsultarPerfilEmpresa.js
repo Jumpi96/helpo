@@ -288,13 +288,15 @@ class ConsultarPerfilEmpresa extends Component {
                     Manos acumuladas
                   </Tooltip>
                 </Card >
-                <Card id="cardEventos" className="text-center" body inverse color="primary" style={{ height: 100, width: 100, borderColor: 'white' }}>
-                  <CardTitle><i className="fa fa-calendar-check-o fa-2x"></i></CardTitle>
-                  <CardText style={{ fontSize: 20 }}>{this.renderEventos()}</CardText>
-                  <Tooltip placement="top" isOpen={this.state.tooltipEventos} target="cardEventos" toggle={this.toggleEventos}>
-                    Eventos patrocinados
+                <Link to={link}>
+                  <Card id="cardEventos" className="text-center" body inverse color="primary" style={{ height: 100, width: 100, borderColor: 'white' }}>
+                    <CardTitle><i className="fa fa-calendar-check-o fa-2x"></i></CardTitle>
+                    <CardText style={{ fontSize: 20 }}>{this.renderEventos()}</CardText>
+                    <Tooltip placement="top" isOpen={this.state.tooltipEventos} target="cardEventos" toggle={this.toggleEventos}>
+                      Eventos patrocinados
                   </Tooltip>
-                </Card>
+                  </Card>
+                </Link>
                 {this.props.data.verificada ?
                   <Card id="cardVerificada" className="text-center" body inverse color="primary" style={{ height: 100, width: 100, borderColor: 'white' }}>
                     <CardTitle><i className="fa fa-shield fa-3x"></i></CardTitle>

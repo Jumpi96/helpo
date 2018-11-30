@@ -317,7 +317,7 @@ class RegistrarColaboraciones extends React.Component {
     }
   }
 
-  deleteParticipacion(idVoluntario=0) {
+  deleteParticipacion(idVoluntario = 0) {
     const participacion = this.getParticipacionVoluntario(idVoluntario);
     if (participacion.presencias === 0) {
       api.delete('/actividades/participaciones/' + participacion.id + '/')
@@ -336,7 +336,7 @@ class RegistrarColaboraciones extends React.Component {
     }
   }
 
-  getParticipacionVoluntario(id=0) {
+  getParticipacionVoluntario(id = 0) {
     const necesidades = this.state.voluntarios;
     const usuario = this.getUserId();
     let participaciones;
@@ -360,7 +360,8 @@ class RegistrarColaboraciones extends React.Component {
       <Container style={styles.container}>
         <Header>
           <Left>
-            <Button transparent onPress={() => this.props.navigation.navigate('MisColaboraciones')}>
+            <Button transparent
+              onPress={() => this.props.navigation.navigate('ConsultarEvento', { evento: this.state.evento.id })}>
               <Icon name="arrow-back" />
             </Button>
           </Left>

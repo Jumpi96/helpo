@@ -55,10 +55,10 @@ class ConsultarEventos extends Component {
     const { params } = this.props.navigation.state;
     const eventoParams = (params && (params.organizacion !== '' || params.link !== '')) ? 
       {
-        evento,
+        evento: evento.id,
         link: params.link,
         organizacion: params.organizacion,  
-      } : { evento };
+      } : { evento: evento.id };
     this.props.navigation.navigate('ConsultarEvento', eventoParams);
   }
 

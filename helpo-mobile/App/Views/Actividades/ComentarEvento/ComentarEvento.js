@@ -95,7 +95,7 @@ class ComentarEvento extends React.Component {
     }
     api.post('feedbacks/comentarios/', comentario)
       .then((res) => {
-        this.props.navigation.navigate('ConsultarEvento', { evento: this.state.evento });
+        this.props.navigation.navigate('ConsultarEvento', { evento: this.state.evento.id });
       })
       .catch((error) => {
         if (error.response) { console.log(error.response.status) }

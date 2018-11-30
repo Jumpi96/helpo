@@ -60,6 +60,7 @@ const signUpPropTypes = {
       email: PropTypes.string,
       contraseña: PropTypes.string,
     }),
+    registroConDatos: false
   }),
   onInputChange: PropTypes.func,
   onTypeChange: PropTypes.func,
@@ -176,69 +177,79 @@ class SignUpPresentation extends React.Component {
               </Picker>
             </Body>
           </ListItem>
-          <Form>
-            <FBLogin
-              permissions={["email"]}
-              style={{ margin: 15, marginTop: 30 }}
-              loginBehavior={FBLoginManager.LoginBehaviors.WebView}
-              onLogin={function (data) {
-                console.log("Logged in!");
-                console.log(data);
-                _this.props.onSubmitFacebook(data);
-              }}
-              onLogout={function () {
-                console.log("Logged out.");
-              }}
-              onLoginFound={function (data) {
-                console.log("Existing login found.");
-                console.log(data);
-              }}
-              onLoginNotFound={function () {
-                console.log("No user logged in.");
-              }}
-              onError={function (data) {
-                console.log("ERROR");
-                console.log(data);
-              }}
-              onCancel={function () {
-                console.log("User cancelled.");
-              }}
-              onPermissionsMissing={function (data) {
-                console.log("Check permissions!");
-                console.log(data);
-              }}
-            />
-            <GoogleSigninButton
-              style={{ width: width - 30, height: 48, marginLeft: 15 }}
-              size={GoogleSigninButton.Size.Wide}
-              color={GoogleSigninButton.Color.Dark}
-              onPress={this.props.googleSignIn}
-              disabled={this.props.isGoogleSigninInProgress} />
-            <Item floatingLabel>
-              <Label>Nombre</Label>
-              <Input onChangeText={text => this.props.onInputChange(text, 'nombre')} />
-            </Item>
-            <Text style={styErrorText}>{this.props.data.errors.nombre}</Text>
-            {this.renderApellido()}
-            <Item floatingLabel>
-              <Label>Email</Label>
-              <Input onChangeText={text => this.props.onInputChange(text, 'email')} />
-            </Item>
-            <Text style={styErrorText}>{this.props.data.errors.email}</Text>
-            <Item floatingLabel>
-              <Label>Contraseña</Label>
-              <Input secureTextEntry onChangeText={text => this.props.onInputChange(text, 'password')} />
-            </Item>
-            <Item floatingLabel>
-              <Label>Repetir Contraseña</Label>
-              <Input secureTextEntry onChangeText={text => this.props.onInputChange(text, 'repeat')} />
-            </Item>
-            <Text style={styErrorText}>{this.props.data.errors.contraseña}</Text>
-          </Form>
-          <Button block style={{ margin: 15, flex: 1 }}
-            onPress={() => this.props.onSubmit()}
-          >
-            <Text>Registrar</Text></Button>
+          {!this.state.registroConDatos ?
+            <View>
+              <FBLogin
+                permissions={["email"]}
+                style={{ margin: 15, marginTop: 30 }}
+                loginBehavior={FBLoginManager.LoginBehaviors.WebView}
+                onLogin={function (data) {
+                  console.log("Logged in!");
+                  console.log(data);
+                  _this.props.onSubmitFacebook(data);
+                }}
+                onLogout={function () {
+                  console.log("Logged out.");
+                }}
+                onLoginFound={function (data) {
+                  console.log("Existing login found.");
+                  console.log(data);
+                }}
+                onLoginNotFound={function () {
+                  console.log("No user logged in.");
+                }}
+                onError={function (data) {
+                  console.log("ERROR");
+                  console.log(data);
+                }}
+                onCancel={function () {
+                  console.log("User cancelled.");
+                }}
+                onPermissionsMissing={function (data) {
+                  console.log("Check permissions!");
+                  console.log(data);
+                }}
+              />
+              <GoogleSigninButton
+                style={{ width: width - 30, height: 48, marginLeft: 15 }}
+                size={GoogleSigninButton.Size.Wide}
+                color={GoogleSigninButton.Color.Dark}
+                onPress={this.props.googleSignIn}
+                disabled={this.props.isGoogleSigninInProgress} />
+              <Button block style={{ margin: 15, flex: 1 }}
+                onPress={() => this.setState({ registroConDatos: true })}
+              >
+                <Text>Crear cuenta con sus datos</Text>
+              </Button>
+            </View> : undefined}
+          {this.state.registroConDatos ?
+            <Form>
+              <Item floatingLabel>
+                <Label>Nombre</Label>
+                <Input onChangeText={text => this.props.onInputChange(text, 'nombre')} />
+              </Item>
+              <Text style={styErrorText}>{this.props.data.errors.nombre}</Text>
+              {this.renderApellido()}
+              <Item floatingLabel>
+                <Label>Email</Label>
+                <Input onChangeText={text => this.props.onInputChange(text, 'email')} />
+              </Item>
+              <Text style={styErrorText}>{this.props.data.errors.email}</Text>
+              <Item floatingLabel>
+                <Label>Contraseña</Label>
+                <Input secureTextEntry onChangeText={text => this.props.onInputChange(text, 'password')} />
+              </Item>
+              <Item floatingLabel>
+                <Label>Repetir Contraseña</Label>
+                <Input secureTextEntry onChangeText={text => this.props.onInputChange(text, 'repeat')} />
+              </Item>
+              <Text style={styErrorText}>{this.props.data.errors.contraseña}</Text>
+              <Button block style={{ margin: 15, flex: 1 }}
+                onPress={() => this.props.onSubmit()}
+              >
+                <Text>Registrar</Text></Button>
+            </Form>
+            : undefined}
         </Content>
       </Container>
     );

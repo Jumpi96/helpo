@@ -2,8 +2,7 @@ import React from 'react'
 import SeccionRecurso from './ListaColaboraciones/SeccionRecurso'
 import SeccionFuncion from './ListaVoluntarios/SeccionFuncion'
 import { connect } from 'react-redux'
-import { Text } from 'react-native'
-import { Container, Content, Form } from 'native-base'
+import { Container, Content, Form, Spinner } from 'native-base'
 import ContainerHeader from '../../../Components/ContainerHeader'
 import ConsultarColabsActions from '../../../Redux/ConsultarColabsRedux'
 import api from '../../../api'
@@ -78,7 +77,7 @@ class ConsultarColaboracionConnected extends React.Component {
         <ContainerHeader titulo='Consultar colaboraciones' goBack={this.props.navigation.goBack} />
         {hasLoaded()
           ? content()
-          : <Text>Cargando...</Text>}
+          : <Spinner color='red' />}
       </Container>
     );
   }

@@ -179,7 +179,8 @@ class RegistrarNecesidades extends React.Component {
       <Container style={styles.container}>
         <Header>
           <Left>
-            <Button transparent onPress={() => this.props.navigation.navigate('MisEventos')}>
+            <Button transparent
+              onPress={() => this.props.navigation.navigate('ConsultarEvento', { evento: this.state.evento.id })}>
               <Icon name="arrow-back" />
             </Button>
           </Left>

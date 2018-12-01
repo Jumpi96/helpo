@@ -17,20 +17,42 @@ import {
   Label,
   View,
   Thumbnail,
+  Spinner
 } from 'native-base';
 import openMap from 'react-native-open-maps';
 import styles from './styles';
 import CompartirEvento from '../CompartirEvento/CompartirEvento';
 import GoAlbum from '../AlbumEvento/GoAlbum'
+import api from '../../../api';
 
 
 class ConsultaEvento extends React.Component {
 
   constructor(props) {
     super(props);
+    const { params } = this.props.navigation.state;
+    const evento = params.evento;
+    this.state = {
+      evento: { id: evento }
+    }
     this.navigateColaborar = this.navigateColaborar.bind(this);
     this.togglePerfil = this.togglePerfil.bind(this);
     this.puedeColaborar = this.puedeColaborar.bind(this);
+  }
+
+  componentDidMount() {
+    this.loadEvento();
+  }
+
+  loadEvento() {
+    api.get('/actividades/consulta_eventos/' + this.state.evento.id + '/')
+      .then(res => {
+        this.setState({ evento: res.data });
+      })
+      .catch((error) => {
+        if (error.response) { console.log(error.response.status) }
+        else { console.log('Error: ', error.message) }
+      })
   }
 
   getListaNecesidades(evento) {
@@ -210,132 +232,154 @@ class ConsultaEvento extends React.Component {
 
   render() {
     const { params } = this.props.navigation.state;
-    const evento = params.evento;
-    let listaContactos;
-    if (evento.contacto.length > 0) {
-      listaContactos = evento.contacto.map(contacto =>
-        <ListItem key={contacto.nombre}>
-          <Text>{contacto.nombre} - {contacto.email} - {contacto.telefono}</Text>
-        </ListItem>
+    const { evento } = this.state;
+    if (evento.nombre) {
+      let listaContactos;
+      if (evento.contacto.length > 0) {
+        listaContactos = evento.contacto.map(contacto =>
+          <ListItem key={contacto.nombre}>
+            <Text>{contacto.nombre} - {contacto.email} - {contacto.telefono}</Text>
+          </ListItem>
+        );
+      }
+      return (
+        <Container style={styles.container}>
+          <Header>
+            <Left>
+              <Button transparent onPress={() => this.goBackToConsultarEventos()}>
+                <Icon name="arrow-back" />
+              </Button>
+            </Left>
+            <Body>
+              <Title>{evento.nombre}</Title>
+            </Body>
+            {this.puedeColaborar(evento) ?
+              <Right>
+                <Button
+                  transparent
+                  onPress={() => this.navigateColaborar(evento)}>
+                  <Text>{this.props.auth.user.user_type === 2 ? "Colaborar" : "Patrocinar"}</Text>
+                </Button>
+              </Right> : undefined
+            }
+          </Header>
+          <Content>
+            <ListItem itemDivider>
+              <Label style={styles.label}>Nombre</Label>
+            </ListItem>
+            <ListItem>
+              <Text>{evento.nombre}</Text>
+            </ListItem>
+
+            <ListItem itemDivider>
+              <Label style={styles.label}>Organización</Label>
+            </ListItem>
+            <ListItem>
+              <Text>{evento.organizacion.nombre}</Text>
+            </ListItem>
+
+            <ListItem itemDivider>
+              <Label style={styles.label}>Descripción</Label>
+            </ListItem>
+            <ListItem>
+              <Text>{evento.descripcion}</Text>
+            </ListItem>
+
+            <ListItem itemDivider>
+              <Label style={styles.label}>Rubro</Label>
+            </ListItem>
+            <ListItem>
+              <Text>{evento.rubro.nombre}</Text>
+            </ListItem>
+
+            <ListItem itemDivider>
+              <Label style={styles.label}>Fecha</Label>
+            </ListItem>
+            <ListItem>
+              <Text>{'Inicio: ' + moment(evento.fecha_hora_inicio).format('DD/MM/YYYY HH:mm')}</Text>
+            </ListItem>
+            <ListItem>
+              <Text>{'Fin: ' + moment(evento.fecha_hora_fin).format('DD/MM/YYYY HH:mm')}</Text>
+            </ListItem>
+            {this.getHorarios(evento)}
+            <ListItem itemDivider>
+              <Label style={styles.label}>Ubicación</Label>
+            </ListItem>
+            <Button block style={{ margin: 15, marginTop: 20 }}
+              onPress={() => this.goToUbicacion(evento.ubicacion)}
+            >
+              <Text>Abrir ubicación</Text>
+            </Button>
+            <ListItem>
+              <Text>{evento.ubicacion.notas}</Text>
+            </ListItem>
+            {listaContactos ? (
+              <View>
+                <ListItem itemDivider>
+                  <Label style={styles.label}>Contactos</Label>
+                </ListItem>
+                {listaContactos}
+              </View>
+            ) : undefined
+            }
+            {evento.necesidades.length > 0 ? (
+              <View>
+                <ListItem itemDivider>
+                  <Label style={styles.label}>Necesidades materiales</Label>
+                </ListItem>
+                {this.getListaNecesidades(evento)}
+              </View>
+            ) : undefined
+            }
+            {this.getPropuestas(evento.propuestas)}
+            {evento.voluntarios.length > 0 ? (
+              <View>
+                <ListItem itemDivider>
+                  <Label style={styles.label}>Voluntarios</Label>
+                </ListItem>
+                {this.getListaVoluntarios(evento)}
+              </View>
+            ) : undefined
+            }
+            {evento.comentarios.length > 0 ? (
+              <View>
+                <ListItem itemDivider>
+                  <Label style={styles.label}>Comentarios</Label>
+                </ListItem>
+                {this.getListaComentarios(evento)}
+              </View>
+            ) : undefined
+            }
+            <GoAlbum
+              visible={moment().format() > moment(evento.fecha_hora_inicio).format() ? true : false} // Solo visible si evento comenzo o finalizo
+              eventoId={evento.id}
+              navigation={this.props.navigation}
+            />
+            <CompartirEvento evento={params.evento} />
+          </Content>
+        </Container>
+      );
+    } else {
+      return (
+        <Container style={styles.container}>
+          <Header>
+            <Left>
+              <Button transparent>
+                <Icon name="arrow-back" />
+              </Button>
+            </Left>
+            <Body>
+              <Title>Actividades</Title>
+            </Body>
+            <Right>
+            </Right>
+          </Header>
+          <Content padder>
+            <Spinner color="red" />
+          </Content>
+        </Container>
       );
     }
-    return (
-      <Container style={styles.container}>
-        <Header>
-          <Left>
-            <Button transparent onPress={() => this.goBackToConsultarEventos()}>
-              <Icon name="arrow-back" />
-            </Button>
-          </Left>
-          <Body>
-            <Title>{evento.nombre}</Title>
-          </Body>
-          {this.puedeColaborar(evento) ?
-            <Right>
-              <Button
-                transparent
-                onPress={() => this.navigateColaborar(evento)}>
-                <Text>{this.props.auth.user.user_type === 2 ? "Colaborar" : "Patrocinar"}</Text>
-              </Button>
-            </Right> : undefined
-          }
-        </Header>
-        <Content>
-          <ListItem itemDivider>
-            <Label style={styles.label}>Nombre</Label>
-          </ListItem>
-          <ListItem>
-            <Text>{evento.nombre}</Text>
-          </ListItem>
-
-          <ListItem itemDivider>
-            <Label style={styles.label}>Organización</Label>
-          </ListItem>
-          <ListItem>
-            <Text>{evento.organizacion.nombre}</Text>
-          </ListItem>
-
-          <ListItem itemDivider>
-            <Label style={styles.label}>Descripción</Label>
-          </ListItem>
-          <ListItem>
-            <Text>{evento.descripcion}</Text>
-          </ListItem>
-
-          <ListItem itemDivider>
-            <Label style={styles.label}>Rubro</Label>
-          </ListItem>
-          <ListItem>
-            <Text>{evento.rubro.nombre}</Text>
-          </ListItem>
-
-          <ListItem itemDivider>
-            <Label style={styles.label}>Fecha</Label>
-          </ListItem>
-          <ListItem>
-            <Text>{'Inicio: ' + moment(evento.fecha_hora_inicio).format('DD/MM/YYYY HH:mm')}</Text>
-          </ListItem>
-          <ListItem>
-            <Text>{'Fin: ' + moment(evento.fecha_hora_fin).format('DD/MM/YYYY HH:mm')}</Text>
-          </ListItem>
-          {this.getHorarios(evento)}
-          <ListItem itemDivider>
-            <Label style={styles.label}>Ubicación</Label>
-          </ListItem>
-          <Button block style={{ margin: 15, marginTop: 20 }}
-            onPress={() => this.goToUbicacion(evento.ubicacion)}
-          >
-            <Text>Abrir ubicación</Text>
-          </Button>
-          <ListItem>
-            <Text>{evento.ubicacion.notas}</Text>
-          </ListItem>
-          {listaContactos ? (
-            <View>
-              <ListItem itemDivider>
-                <Label style={styles.label}>Contactos</Label>
-              </ListItem>
-              {listaContactos}
-            </View>
-          ) : undefined
-          }
-          {evento.necesidades.length > 0 ? (
-            <View>
-              <ListItem itemDivider>
-                <Label style={styles.label}>Necesidades materiales</Label>
-              </ListItem>
-              {this.getListaNecesidades(evento)}
-            </View>
-          ) : undefined
-          }
-          {this.getPropuestas(evento.propuestas)}
-          {evento.voluntarios.length > 0 ? (
-            <View>
-              <ListItem itemDivider>
-                <Label style={styles.label}>Voluntarios</Label>
-              </ListItem>
-              {this.getListaVoluntarios(evento)}
-            </View>
-          ) : undefined
-          }
-          {evento.comentarios.length > 0 ? (
-            <View>
-              <ListItem itemDivider>
-                <Label style={styles.label}>Comentarios</Label>
-              </ListItem>
-              {this.getListaComentarios(evento)}
-            </View>
-          ) : undefined
-          }
-          <GoAlbum
-            visible={moment().format() > moment(evento.fecha_hora_inicio).format() ? true : false} // Solo visible si evento comenzo o finalizo
-            eventoId={evento.id}
-            navigation={this.props.navigation}
-          />
-          <CompartirEvento evento={params.evento} />
-        </Content>
-      </Container>
-    );
   }
 }
 

@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Container, ListItem, Label, Header, Title, View, Content, Button, Icon, Left, Right, Body, Toast } from 'native-base';
+import { Container, ListItem, Label, Header, Title, View, Content, Button, Icon, Left, Right, Body, Toast, Spinner } from 'native-base';
 import api from '../../../api';
 import EventoCard from './EventoCard/EventoCard';
 import styles from './styles';
@@ -55,10 +55,10 @@ class ConsultarEventos extends Component {
     const { params } = this.props.navigation.state;
     const eventoParams = (params && (params.organizacion !== '' || params.link !== '')) ? 
       {
-        evento,
+        evento: evento.id,
         link: params.link,
         organizacion: params.organizacion,  
-      } : { evento };
+      } : { evento: evento.id };
     this.props.navigation.navigate('ConsultarEvento', eventoParams);
   }
 
@@ -110,9 +110,7 @@ class ConsultarEventos extends Component {
       }
     } else if(this.state.isLoading) {
       return (
-        <ListItem itemDivider>
-          <Label style={styles.label}>Cargando...</Label>
-        </ListItem>
+        <Spinner color='red' />
       )
     }
   }

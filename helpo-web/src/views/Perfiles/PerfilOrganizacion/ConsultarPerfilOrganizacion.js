@@ -212,7 +212,7 @@ class ConsultarPerfilOrganizacion extends Component {
           <div className="row">
             <div className="col-md-8">
               <div className="row">
-                <div className="col-md-2"><i style={{color:"#A9A9A9"}}>ONG</i></div>
+                <div className="col-md-2"><i style={{ color: "#A9A9A9" }}>ONG</i></div>
               </div>
               <div className="row" style={{ marginBottom: '5%' }}>
                 <div className="col-md-3">
@@ -297,14 +297,16 @@ class ConsultarPerfilOrganizacion extends Component {
                   <Tooltip placement="top" isOpen={this.state.tooltipManos} target="cardManos" toggle={this.toggleManos}>
                     Manos acumuladas
                   </Tooltip>
-                </Card >
-                <Card id="cardEventos" className="text-center" body inverse color="primary" style={{ height: 100, width: 100, borderColor: 'white' }}>
-                  <CardTitle><i className="fa fa-calendar-check-o fa-2x"></i></CardTitle>
-                  <CardText style={{ fontSize: 20 }}>{this.renderEventos()}</CardText>
-                  <Tooltip placement="top" isOpen={this.state.tooltipEventos} target="cardEventos" toggle={this.toggleEventos}>
-                    Eventos organizados
-                  </Tooltip>
                 </Card>
+                <Link to={link}>
+                  <Card id="cardEventos" className="text-center" body inverse color="primary" style={{ height: 100, width: 100, borderColor: 'white' }}>
+                    <CardTitle><i className="fa fa-calendar-check-o fa-2x"></i></CardTitle>
+                    <CardText style={{ fontSize: 20 }}>{this.renderEventos()}</CardText>
+                    <Tooltip placement="top" isOpen={this.state.tooltipEventos} target="cardEventos" toggle={this.toggleEventos}>
+                      Eventos organizados
+                    </Tooltip>
+                  </Card>
+                </Link>
                 {this.props.data.verificada ?
                   <Card id="cardVerificada" className="text-center" body inverse color="primary" style={{ height: 100, width: 100, borderColor: 'white' }}>
                     <CardTitle><i className="fa fa-shield fa-3x"></i></CardTitle>

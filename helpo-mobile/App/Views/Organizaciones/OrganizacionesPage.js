@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Header, Title, Content, Button, Icon, Left, Right, Body, Item, Label, Input, Text } from 'native-base';
+import { Container, Header, Title, Content, Button, Icon, Left, Right, Body, Item, Label, Input, Text, Spinner } from 'native-base';
 import api from '../../api';
 import styles from './styles';
 
@@ -13,6 +13,7 @@ class OrganizacionesPage extends React.Component {
       nombre: '',
       error: '',
       organizaciones: [],
+      isLoading: true
     };
     this.componentDidMount = this.componentDidMount.bind(this);
     this.buscarOrganizaciones = this.buscarOrganizaciones.bind(this);
@@ -28,12 +29,15 @@ class OrganizacionesPage extends React.Component {
       .then((res) => {
         this.setState({
           organizaciones: res.data,
+          isLoading: false
         })
       })
   }
 
   renderListadoOrganizaciones(organizaciones) {
-    if (organizaciones.length === 0) {
+    if (this.state.isLoading) {
+      return(<Spinner color='red' />);
+    } else if (organizaciones.length === 0) {
       return (
         <Text>Todavía no hay {this.props.isAboutEmpresas ? "empresas" : "organizaciones"} registradas.</Text>
       )

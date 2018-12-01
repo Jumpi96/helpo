@@ -275,6 +275,7 @@ class SignUp extends Component {
       <Container>
         <SignUpPresentation
           data={data}
+          handleBack={() => this.props.navigation.navigate("LaunchScreen")}
           onInputChange={this.handleValueChange}
           onTypeChange={this.handleUserTypeSelect}
           onSubmit={this.onSubmitData}

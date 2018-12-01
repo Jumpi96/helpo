@@ -15,7 +15,8 @@ import {
   View,
   ListItem,
   Item,
-  Label
+  Label,
+  Spinner
 } from "native-base";
 import styles from './styles';
 import api from '../../../api';
@@ -94,7 +95,7 @@ class ComentarEvento extends React.Component {
     }
     api.post('feedbacks/comentarios/', comentario)
       .then((res) => {
-        this.props.navigation.navigate('ConsultarEvento', { evento: this.state.evento });
+        this.props.navigation.navigate('ConsultarEvento', { evento: this.state.evento.id });
       })
       .catch((error) => {
         if (error.response) { console.log(error.response.status) }
@@ -178,7 +179,7 @@ class ComentarEvento extends React.Component {
     return (
       <Container>
         <Content>
-          <Text>Cargando...</Text>
+          <Spinner color='red' />
         </Content>
       </Container>
     )

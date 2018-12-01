@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { Button, Text } from 'native-base';
+import { Button, Spinner } from 'native-base';
 
 
 class ConsultarEventosInicial extends Component {
@@ -13,7 +13,7 @@ class ConsultarEventosInicial extends Component {
           link: '',
           organizacion: ''
         })
-      }><Text>Cargando...</Text></Button>
+      }><Spinner color='red' /></Button>
     );
   }
 }

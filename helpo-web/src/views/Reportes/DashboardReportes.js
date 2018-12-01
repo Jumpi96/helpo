@@ -78,7 +78,7 @@ class DashboardReportes extends React.Component {
       getPDF(this.getChartsImages(), data)
     }
     else {
-      alert("Espere unos segundos que termine de cargar la página")
+      alert("Espere unos segundos mientras se termina de cargar el reporte.")
     }
     
   }

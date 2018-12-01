@@ -144,7 +144,7 @@ class ConsultarPerfilOrganizacion extends Component {
             <Row>
               <Thumbnail large center source={{ uri: this.props.data.avatar.url }} />
               <Right>
-                <Button transparent onPress={this.showToastRetroalimentacion}>
+                <Button transparent onPress={this.props.switchToEventosOrg}>
                   <Icon name="hand" style={{ color: "#F39200" }} ></Icon>
                   <Text style={styles.retroalimentacion}>{this.props.data.manos}</Text>
                   <Icon name="calendar" family="Entypo" style={{ color: "#F39200" }} ></Icon>

@@ -144,7 +144,7 @@ class ComentarEvento extends React.Component {
         <View>
           <ListItem>
             <Text>
-              También podés dejar un comentario del evento.
+              También podés dejar un comentario sobre tu experiencia en la actividad.
             </Text>
           </ListItem>
           <Item>

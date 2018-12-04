@@ -76,7 +76,7 @@ class ComentarEvento extends React.Component {
         <View>
           <ListItem>
             <Text>
-              Si te gustó el evento, podés ayudar a la ONG dándole una mano.
+              Si te gustó la actividad, podés ayudar a la ONG dándole una mano.
             </Text>
           </ListItem>
           <Button block style={{ margin: 15, marginTop: 20 }}
@@ -90,7 +90,7 @@ class ComentarEvento extends React.Component {
         <View>
           <ListItem>
             <Text>
-              Si te gustó el evento, podés ayudar a la ONG dándole una mano.
+              Si te gustó la actividad, podés ayudar a la ONG dándole una mano.
             </Text>
           </ListItem>
           <Button block danger style={{ margin: 15, marginTop: 20 }} >

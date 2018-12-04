@@ -73,16 +73,30 @@ class ComentarEvento extends React.Component {
   getOpcionRetroalimentacion() {
     if (!this.dioRetroalimentacion(this.state.evento, this.getUserId())) {
       return (
-        <Button warning block style={{ margin: 15, marginTop: 20 }}
-          onPress={this.handleRetroalimentacion}>
-          <Text>¿Te gustó este evento?</Text>
-        </Button>
+        <View>
+          <ListItem>
+            <Text>
+              Si te gustó la actividad, podés ayudar a la ONG dándole una mano.
+            </Text>
+          </ListItem>
+          <Button block style={{ margin: 15, marginTop: 20 }}
+            onPress={this.handleRetroalimentacion}>
+            <Text>Dar una mano</Text>
+          </Button>
+        </View>
       )
     } else {
       return (
-        <Button block danger style={{ margin: 15, marginTop: 20 }} >
-          <Text>Indicaste que te gustó el evento.</Text>
-        </Button>
+        <View>
+          <ListItem>
+            <Text>
+              Si te gustó la actividad, podés ayudar a la ONG dándole una mano.
+            </Text>
+          </ListItem>
+          <Button block danger style={{ margin: 15, marginTop: 20 }} >
+            <Text>Ya diste una mano</Text>
+          </Button>
+        </View>
       );
     }
   }
@@ -128,6 +142,11 @@ class ComentarEvento extends React.Component {
     } else {
       return (
         <View>
+          <ListItem>
+            <Text>
+              También podés dejar un comentario sobre tu experiencia en la actividad.
+            </Text>
+          </ListItem>
           <Item>
             <Input value={this.state.comentario}
               onChangeText={(text) => this.setState({ comentario: text })} />

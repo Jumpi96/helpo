@@ -12,12 +12,11 @@ const noItems = (
 )
 
 const ListaVoluntarios = (props) => {
-  const { funcion, participaciones } = props
+  const { funcion, participaciones, descripcion } = props
   let items = []
   for (let participacion of participaciones ) {
     const nombre = participacion.colaborador.nombre
     const apellido = participacion.colaborador.apellido
-    const participo = participacion.participo
     const item = (
       <ListItem
         button
@@ -29,7 +28,7 @@ const ListaVoluntarios = (props) => {
         <Body>
         </Body>
         <Right>
-            {participo
+            {participacion.presencias === participacion.cantidad
             ? <Icon color='red' type='Entypo' name='check'/>
             : <Icon color='black' type='Entypo' name='cross'/>}
         </Right>
@@ -45,7 +44,7 @@ const ListaVoluntarios = (props) => {
   return (
     <View>
       <ListItem itemDivider>
-        <Text>{'Función - ' + funcion}</Text>
+        <Text>{'Función - ' + funcion + ' - ' + descripcion}</Text>
       </ListItem>
       {items}
     </View>

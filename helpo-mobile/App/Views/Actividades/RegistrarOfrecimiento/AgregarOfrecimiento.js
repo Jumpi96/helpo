@@ -65,6 +65,28 @@ class AgregarOfrecimiento extends React.Component {
     return formIsValid;
   }
 
+  getEntregados() {
+    if (!this.state.colaboracion.funcion) {
+      if (this.state.colaboracion.entregados > 0) {
+        return (
+          <Item>
+            <Label>Entregados</Label>
+            <Text style={styles.label}>{this.state.colaboracion.entregados}</Text>
+          </Item>
+        );
+      }
+    } else {
+      if (this.state.colaboracion.presencias > 0) {
+        return (
+          <Item>
+            <Label>Presenecias</Label>
+            <Text style={styles.label}>{this.state.colaboracion.presencias}</Text>
+          </Item>
+        )
+      }
+    }
+  }
+
   handleSubmit() {
     this.setState({ apiToken: true });
     if (this.handleValidation()) {
@@ -208,6 +230,7 @@ class AgregarOfrecimiento extends React.Component {
                 onChangeText={(text) => this.handleCantidadChange(text)}
               />
             </Item>
+            {this.getEntregados()}
             <Item>
               <Label>Comentarios</Label>
               <Input

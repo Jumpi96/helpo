@@ -1,5 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import authenticate
+from django.conf import settings
+from decouple import config
 from users.models import User, UserWrapper, RubroOrganizacion, RubroEmpresa, OrganizacionProfile, Ubicacion, Imagen, VoluntarioProfile, EmpresaProfile, SmsVerification, UserVerification, AppValues, DeviceID, Suscripcion
 from actividades.models import Participacion, Evento, Colaboracion
 from django.core.exceptions import ObjectDoesNotExist
@@ -387,6 +389,8 @@ class VerificationSmsSerializer(serializers.Serializer):
                 profile = EmpresaProfile.objects.filter(usuario=user).first()
                 if profile.validate_sms(sms_verification.verificationToken):
                     return True
+            else:
+                raise serializers.ValidationError("Verification token does not match any")
         except ObjectDoesNotExist:
             raise serializers.ValidationError("Verification token does not match any")
 
@@ -399,8 +403,95 @@ class VerificationMailSerializer(serializers.Serializer):
             user = user_verification.usuario
             if user.validate_mail(user_verification.verificationToken):
                 return True
+            else:
+                raise serializers.ValidationError("Verification token does not match any")
         except ObjectDoesNotExist:
             raise serializers.ValidationError("Verification token does not match any")
+
+class SendVerificationEmailSerializer(serializers.Serializer):
+    email = serializers.EmailField(max_length=255, allow_blank=False)
+
+    def validate(self, data):
+        try:
+            user = User.objects.filter(email=data["email"]).first()
+            if user is not None and not user.is_confirmed:
+                self.send_verification_email(user)
+                return True
+            else:
+                raise serializers.ValidationError("Email does not match any")
+        except ObjectDoesNotExist:
+            raise serializers.ValidationError("Email does not match any")
+    
+    def send_verification_email(self, user):
+        user_verification = UserVerification.objects.get(usuario=user)
+        if user_verification is not None:
+            bash = user_verification.verificationToken
+            mail_from = settings.REGISTER_EMAIL
+            subject = "Verifique su registro en Helpo"
+            url_confirmation = '%s/#/confirmMail/%s' % (config('URL_CLIENT', default='localhost:3000'), bash)
+            from common.templates import render_verify_email
+            content = render_verify_email(url_confirmation)
+            from common.notifications import send_mail_to
+            send_mail_to(user.email, subject, content, mail_from)
+
+class ChangePasswordSerializer(serializers.Serializer):
+    old_password = serializers.CharField()
+    new_password = serializers.CharField()
+
+    def validate(self, data, request_user):
+        try:
+            if request_user is not None:
+                user = User.objects.filter(email=request_user.email).first()
+                old_password = data["old_password"]
+                if user is not None and user.check_password(old_password):
+                    new_password = data["new_password"]
+                    if type(new_password) == str and len(new_password) >= 8 and not new_password == old_password:
+                        user.set_password(new_password)
+                        user.save()
+                        self.send_change_password_email(user)
+                        return user
+                    else:
+                        raise serializers.ValidationError("New password must be a string with 8 or more characters, different than old_password")
+            raise serializers.ValidationError("Email or password does not match")
+        except ObjectDoesNotExist:
+            raise serializers.ValidationError("Email or password does not match")
+
+    def send_change_password_email(self, user):
+        mail_from = settings.REGISTER_EMAIL
+        subject = u"Cambio de su contraseña en Helpo"
+        from common.templates import render_change_password_email
+        content = render_change_password_email(user)
+        from common.notifications import send_mail_to
+        send_mail_to(user.email, subject, content, mail_from)
+
+class ResetPasswordSerializer(serializers.Serializer):
+    email = serializers.EmailField(max_length=255, allow_blank=False)
+
+    def validate(self, data):
+        try:
+            user = User.objects.filter(email=data["email"]).first()
+            if user is not None:
+                self.reset_password(user)
+                return True
+            else:
+                raise serializers.ValidationError("Email does not match any")
+        except ObjectDoesNotExist:
+            raise serializers.ValidationError("Email does not match any")
+
+    def reset_password(self, user):
+        raw_password = ''.join(random.SystemRandom().choice(
+            string.ascii_uppercase + string.digits) for _ in range(16))
+        user.set_password(raw_password)
+        user.save()
+        self.send_reset_password_email(user, raw_password)
+
+    def send_reset_password_email(self, user, raw_password):
+        mail_from = settings.REGISTER_EMAIL
+        subject = u"Recuperación de su contraseña en Helpo"
+        from common.templates import render_reset_password_email
+        content = render_reset_password_email(user, raw_password)
+        from common.notifications import send_mail_to
+        send_mail_to(user.email, subject, content, mail_from)
 
 class AppValuesSerializer(serializers.ModelSerializer):
   class Meta:

@@ -6,6 +6,16 @@ def render_verify_email(url_confirmation):
     return render_mail('verify-email.html', dict_context)
 
 
+def render_reset_password_email(user, raw_password):
+    dict_context = dict(user=user, raw_password=raw_password)
+    return render_mail('reset-password-email.html', dict_context)
+
+
+def render_change_password_email(user):
+    dict_context = dict(user=user)
+    return render_mail('change-password-email.html', dict_context)
+
+
 def render_colaboracion_email(evento, colaboracion, titulo_email):
     dict_context = dict(
         evento=evento, colaboracion=colaboracion, titulo=titulo_email)
@@ -27,13 +37,19 @@ def render_creacion_evento_email(evento):
 
 
 def render_cambio_evento_email(evento):
-    dict_context = dict(evento=evento)
+    tipo_evento = 'campaña' if evento.campaña else 'evento'
+    dict_context = dict(evento=evento, tipo_evento=tipo_evento)
     return render_mail('cambio-evento-email.html', dict_context)
 
 
-def render_propuesta(propuesta):
-    dict_context = dict(propuesta=propuesta)
+def render_propuesta(accion, propuesta):
+    dict_context = dict(accion=accion, propuesta=propuesta)
     return render_mail('propuesta.html', dict_context)
+
+
+def render_cambio_propuesta(propuesta):
+    dict_context = dict(propuesta=propuesta)
+    return render_mail('cambio-propuesta-email.html', dict_context)
 
 
 def render_respuesta_propuesta(propuesta):
@@ -98,6 +114,14 @@ def render_fin_evento_email(evento):
         str(evento.id)
     )
     return render_mail('fin-evento-email.html', dict_context)
+
+
+def render_warning_email(user, entidad):
+    dict_context = dict(
+        user=user,
+        entidad=entidad
+    )
+    return render_mail('warning-email.html', dict_context)
 
 
 def render_mail(html_template, dict_context):

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { ScrollView, Image, BackHandler } from "react-native";
+import { Image } from "react-native";
 import { List, ListItem, Text, View, Content } from "native-base";
 import { connect } from 'react-redux' 
 
@@ -31,9 +31,19 @@ const itemsOrg = [
 	  'name': 'Home'
 	},
 	{
-	  'key': 'ConsultarEventos',
-	  'routeName': 'ConsultarEventos',
-	  'name': 'Eventos',
+	  'key': 'MisEventos',
+	  'routeName': 'MisEventos',
+	  'name': 'Mis actividades sociales',
+	},
+	{
+	  'key': 'RegistrarEvento',
+	  'routeName': 'RegistrarEvento',
+	  'name': 'Nueva actividad social',
+	},
+	{
+	  'key': 'ConsultarEventosInicial',
+	  'routeName': 'ConsultarEventosInicial',
+	  'name': 'Actividades sociales',
 	},
 	{
 		'key': 'OrganizacionesPage',
@@ -41,15 +51,10 @@ const itemsOrg = [
 		'name': 'Organizaciones'
 	},
 	{
-	  'key': 'RegistrarEvento',
-	  'routeName': 'RegistrarEvento',
-	  'name': 'Nuevo evento',
+		'key': 'EmpresasPage',
+		'routeName': 'EmpresasPage',
+		'name': 'Empresas'
 	},
-	{
-	  'key': 'MisEventos',
-	  'routeName': 'MisEventos',
-	  'name': 'Mis eventos',
-	},	
 	{
 		'key': 'ConsultarPerfilGenerico',
 		'routeName': 'ConsultarPerfilGenerico',
@@ -69,9 +74,14 @@ const itemsVol = [
 		'name': 'Home'
 	},
 	{
-		'key': 'ConsultarEventos',
-		'routeName': 'ConsultarEventos',
-		'name': 'Eventos'
+		'key': 'MisColaboraciones',
+		'routeName': 'MisColaboraciones',
+		'name': 'Mis colaboraciones'
+	},
+	{
+		'key': 'ConsultarEventosInicial',
+		'routeName': 'ConsultarEventosInicial',
+		'name': 'Actividades sociales',
 	},
 	{
 		'key': 'OrganizacionesPage',
@@ -79,9 +89,9 @@ const itemsVol = [
 		'name': 'Organizaciones'
 	},
 	{
-		'key': 'MisColaboraciones',
-		'routeName': 'MisColaboraciones',
-		'name': 'Mis colaboraciones'
+		'key': 'EmpresasPage',
+		'routeName': 'EmpresasPage',
+		'name': 'Empresas'
 	},
 	{
 		'key': 'ConsultarPerfilGenerico',
@@ -108,9 +118,14 @@ const itemsEmp = [
 	  'name': 'Home'
 	},
 	{
-	  'key': 'ConsultarEventos',
-	  'routeName': 'ConsultarEventos',
-	  'name': 'Eventos',
+		'key': 'MisPropuestas',
+		'routeName': 'MisPropuestas',
+		'name': 'Mis propuestas'
+	},
+	{
+	  'key': 'ConsultarEventosInicial',
+	  'routeName': 'ConsultarEventosInicial',
+	  'name': 'Actividades sociales',
 	},
 	{
 		'key': 'OrganizacionesPage',
@@ -118,9 +133,9 @@ const itemsEmp = [
 		'name': 'Organizaciones'
 	},
 	{
-		'key': 'MisPropuestas',
-		'routeName': 'MisPropuestas',
-		'name': 'Mis propuestas'
+		'key': 'EmpresasPage',
+		'routeName': 'EmpresasPage',
+		'name': 'Empresas'
 	},
 	{
 		'key': 'ConsultarPerfilGenerico',

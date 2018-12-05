@@ -14,12 +14,12 @@ class RedireccionarONG extends Component {
 
   componentDidMount() {
     if (localStorage.getItem("token") !== null) {
-      this.props.history.push({ 
+      this.props.history.push({
         pathname: '/actividades/consultar-eventos',
         search: '?organizacion=' + this.state.ong,
       });
     } else {
-      this.props.history.push({ 
+      this.props.history.push({
         pathname: '/noAuth/actividades/consultar-eventos',
         search: '?organizacion=' + this.state.ong,
       });
@@ -31,15 +31,15 @@ class RedireccionarONG extends Component {
       <div className="animated fadeIn">
         <Card>
           <CardHeader>
-            <i className="fa fa-align-justify"></i> Consultar eventos de ONG
+            <i className="fa fa-align-justify"></i> Consultar actividades de ONG
           </CardHeader>
           <CardBody>
-              <p>Cargando...</p>
+          <div className="loader"/>
           </CardBody>
         </Card>
       </div>
     )
   }
 }
-  
-  export default RedireccionarONG;
+
+export default RedireccionarONG;

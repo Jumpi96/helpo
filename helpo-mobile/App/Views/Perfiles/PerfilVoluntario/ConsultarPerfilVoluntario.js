@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
+  Row,
+  ActionSheet,
   Container,
   Header,
   Title,
@@ -30,7 +32,9 @@ class ConsultarPerfilVoluntario extends Component {
     this.renderApellido = this.renderApellido.bind(this);
     this.renderGustos = this.renderGustos.bind(this);
     this.renderHabilidades = this.renderHabilidades.bind(this);
+    this.showToastRetroalimentacion = this.showToastRetroalimentacion.bind(this);
   }
+
   renderSexo() {
     if (this.props.data.sexo == null) {
       return <Text style={styles.textMuted}> No hay valor ingresado.</Text>
@@ -81,6 +85,17 @@ class ConsultarPerfilVoluntario extends Component {
     return <Text> {this.props.data.descripcion}</Text>
   }
 
+  showToastRetroalimentacion() {
+    ActionSheet.show({
+      options: [
+        { text: "Cerrar", icon: "close", iconColor: "#25de5b" },
+      ],
+      title: "Cantidad de manos acumuladas y eventos asistidos"
+    }, buttonIndex => {
+      console.log(buttonIndex);
+    });
+  }
+
   render() {
     return (
       <Container style={styles.container}>
@@ -102,7 +117,17 @@ class ConsultarPerfilVoluntario extends Component {
           </Right>
         </Header>
         <Content>
-          <Thumbnail large center source={{ uri: this.props.data.avatar.url }} />
+            <Row>
+              <Thumbnail large center source={{ uri: this.props.data.avatar.url }} />
+              <Right>
+              <Button transparent onPress={this.showToastRetroalimentacion}>
+                <Icon name="hand" style={{ color: "#F39200"}} ></Icon>
+                <Text style={styles.retroalimentacion}>{this.props.data.manos}</Text>
+                <Icon name="calendar" family="Entypo" style={{ color: "#F39200"}} ></Icon>
+                <Text style={styles.retroalimentacion}>{this.props.data.eventos}</Text>
+              </Button>
+              </Right>
+            </Row>
           <Separator bordered noTopBorder>
             <Text>Datos personales</Text>
           </Separator>
@@ -127,7 +152,7 @@ class ConsultarPerfilVoluntario extends Component {
             <Text>{this.props.email}</Text>
           </ListItem>
 
-          <ListItem itemDividr>
+          <ListItem itemDivider>
             <Label style={styles.label}>Teléfono</Label>
           </ListItem>
           <ListItem>

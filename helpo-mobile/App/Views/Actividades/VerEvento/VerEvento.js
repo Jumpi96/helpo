@@ -61,7 +61,7 @@ class VerEvento extends React.Component {
           });
       } else {
         Toast.show({
-          text: 'No se pueden eliminar eventos ya finalizados.',
+          text: 'No se pueden eliminar actividades ya finalizados.',
           position: 'bottom',
           buttonText: 'OK',
         });
@@ -70,7 +70,8 @@ class VerEvento extends React.Component {
   }
 
   handleEdit(evento) {
-    if (moment(evento.fecha_hora_inicio) > moment()) {
+    if (!(!evento.campaña && moment(evento.fecha_hora_inicio) < moment()) ||
+    (evento.campaña && moment() > moment(evento.fecha_hora_fin))) {
       this.props.navigation.navigate('EditarEvento', { evento });
     } else {
       Toast.show({
@@ -82,7 +83,8 @@ class VerEvento extends React.Component {
   }
 
   handlePropuestas(evento) {
-    if (moment(evento.fecha_hora_inicio) > moment()) {
+    if ((moment(evento.fecha_hora_inicio) > moment() && !evento.campaña) ||
+      (moment(evento.fecha_hora_fin) > moment() && evento.campaña)) {
       this.props.navigation.navigate('VerPatrocinadores', { evento: evento.id });
     } else {
       Toast.show({
@@ -94,17 +96,18 @@ class VerEvento extends React.Component {
   }
 
   render() {
+    const deleteButtons = [
+      { text: 'Eliminar', icon: 'trash', iconColor: '#fa213b' },
+      { text: 'Cancelar', icon: 'close', iconColor: '#25de5b' },
+    ];
     const { evento } = this.state;
     if (evento.nombre) {
-      const deleteButtons = [
-        { text: 'Eliminar', icon: 'trash', iconColor: '#fa213b' },
-        { text: 'Cancelar', icon: 'close', iconColor: '#25de5b' },
-      ];
+      const tipoEvento = evento.campaña ? "Campaña" : "Evento";
       let listaContactos;
       if (evento.contacto.length > 0) {
         listaContactos = evento.contacto.map(contacto =>
           <ListItem key={contacto.nombre}>
-            <Text>{contacto.nombre} - {contacto.email} - {contacto.telefono}</Text>
+            <Text>{contacto.nombre} - {contacto.telefono}</Text>
           </ListItem>
         );
       }
@@ -117,7 +120,7 @@ class VerEvento extends React.Component {
               </Button>
             </Left>
             <Body>
-              <Title>Evento - {evento.nombre}</Title>
+              <Title>{tipoEvento + ' - ' + evento.nombre}</Title>
             </Body>
           </Header>
           <Content>
@@ -170,14 +173,14 @@ class VerEvento extends React.Component {
               </Body>
             </ListItem>
             <GoAlbum
-              visible={evento.estado >= 2 ? true : false} // Solo visible si evento comenzo o finalizo
-              eventoId={evento.id}
+              visible={moment().format() > moment(evento.fecha_hora_inicio).format() ? true : false} // Solo visible si evento comenzo o finalizo
+              eventoId={this.state.evento.id}
               navigation={this.props.navigation}
             />
             <ListItem
               button
               onPress={() => this.props.navigation.navigate('MensajesEvento', {
-                evento: evento.id
+                evento: this.state.evento.id
               })}
             >
               <Body>
@@ -227,7 +230,7 @@ class VerEvento extends React.Component {
           </View>
         </Container>
       );
-    } else { 
+    } else {
       return (<Text></Text>);
     }
   }

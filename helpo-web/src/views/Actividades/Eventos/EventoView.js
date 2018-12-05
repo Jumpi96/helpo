@@ -37,7 +37,7 @@ class EventoView extends React.Component {
   toggleConsultarColaboraciones() {
     this.props.history.push({
       pathname: '/actividades/consultar-colaboraciones',
-      search: '/' + this.state.evento.id,
+      search: '?evento=' + this.state.evento.id,
     });
   }
 
@@ -98,7 +98,7 @@ class EventoView extends React.Component {
     if (this.state.isEditing) {
       return (
         <div>
-          <h1>Editar evento</h1>
+          <h1>Editar {this.state.evento.campaña ? "campaña" : "evento"}</h1>
           <EventoForm
             evento={this.state.evento}
             rubros={this.props.rubrosEvento}
@@ -118,65 +118,74 @@ class EventoView extends React.Component {
       }
       return (
         <div className="col-md-8 col-md-offset-2">
-          <h1>{evento.nombre}</h1>
           <div className="row">
-            <div className="form-group col-md-6">
+            <div className="form-group">
+              <Link to={'/actividades/consultar-evento?id=' + evento.id}>
+                <h1>{evento.nombre}</h1>
+              </Link>
+            </div>
+          </div>
+          <div className="row">
+            <div className="form-group col-md-5">
               <b className="float-left">Descripción</b>
             </div>
-            <div className="form-group col-md-6">
+            <div className="form-group col-md-7">
               <p>{evento.descripcion}</p>
             </div>
           </div>
           <div className="row">
-            <div className="form-group col-md-6">
+            <div className="form-group col-md-5">
               <b className="float-left">Rubro</b>
             </div>
-            <div className="form-group col-md-6">
+            <div className="form-group col-md-7">
               <p>{evento.rubro.nombre}</p>
             </div>
           </div>
           <div className="row">
-            <div className="form-group col-md-6">
+            <div className="form-group col-md-5">
               <b className="float-left">Fecha de inicio</b>
             </div>
-            <div className="form-group col-md-6">
+            <div className="form-group col-md-7">
               <p>{moment(evento.fecha_hora_inicio).format('DD/MM/YYYY HH:mm')}</p>
             </div>
           </div>
           <div className="row">
-            <div className="form-group col-md-6">
+            <div className="form-group col-md-5">
               <b className="float-left">Fecha de finalización</b>
             </div>
-            <div className="form-group col-md-6">
+            <div className="form-group col-md-7">
               <p>{moment(evento.fecha_hora_fin).format('DD/MM/YYYY HH:mm')}</p>
             </div>
           </div>
           {listaContactos ? (
             <div className="row">
-              <div className="form-group col-md-6">
+              <div className="form-group col-md-5">
                 <b name="contactos" className="float-left">Contactos</b>
               </div>
-              <div className="form-group col-md-6">
+              <div className="form-group col-md-7">
                 <ul className="list-group">{listaContactos}</ul>
               </div>
             </div>
           ) : undefined
           }
           <div className="row">
-            <div className="form-group col-md-6">
+            <div className="form-group col-md-5">
               <b name="compartir" className="float-left">Compartir</b>
             </div>
-            <div className="form-group col-md-6">
+            <div className="form-group col-md-7">
               <ButtonsCompartirEvento evento={this.state.evento} />
             </div>
           </div>
           <div className="btn-group form-group" role="group">
             <button
               onClick={this.toggleEdit}
-              hidden={moment(evento.fecha_hora_inicio) <= moment()}
+              hidden={
+                (!evento.campaña && moment(evento.fecha_hora_inicio) < moment()) ||
+                (evento.campaña && moment() > moment(evento.fecha_hora_fin))
+              }
               className="btn btn-warning"
             >
-              Editar evento
+              Editar {evento.campaña ? "campaña" : "evento"}
             </button>
             <button
               onClick={this.toggleEditNecesidades}
@@ -185,22 +194,21 @@ class EventoView extends React.Component {
             >
               Editar necesidades
             </button>
-            <Link to={`/actividades/consultar-colaboraciones/${this.state.evento.id}`}>
               <button
                 onClick={this.toggleConsultarColaboraciones}
                 className="btn btn-warning"
               >
                 Consultar colaboraciones
             </button>
-            </Link>
+            
             {/* Renderiza boton Ver album si empezo evento */}
-            {this.props.evento.estado > 1 
-                  ? (
-                    <Link to={`/actividades/album/${this.props.evento.id}`}>
-                      <button className="btn btn-warning">Ver álbum</button>
-                    </Link>
-                  ) 
-                  : undefined}
+            {this.props.evento.estado > 1
+              ? (
+                <Link to={`/actividades/album/${this.props.evento.id}`}>
+                  <button className="btn btn-warning">Ver álbum</button>
+                </Link>
+              )
+              : undefined}
             <button
               onClick={this.toggleMensajes}
               className="btn btn-warning"
@@ -220,7 +228,7 @@ class EventoView extends React.Component {
               hidden={moment(evento.fecha_hora_inicio) <= moment()}
               className="btn btn-danger"
             >
-              Eliminar evento
+              Eliminar {evento.campaña ? "campaña" : "evento"}
             </button>
           </div>
           <ModalEliminarItem open={this.state.showModalEliminar} nombre={this.state.evento.nombre}
@@ -228,7 +236,7 @@ class EventoView extends React.Component {
         </div>
       );
     } else {
-      return <p>Cargando...</p>
+      return <div className="loader"/>
     }
   }
 };

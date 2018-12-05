@@ -25,6 +25,7 @@ import RegistrarContacto from '../RegistrarEvento/RegistrarContacto/RegistrarCon
 import validateEmail from '../../../Lib/ValidateEmail';
 import api from '../../../api';
 import styles from './styles';
+import SelectorHorarios from '../RegistrarEvento/SelectorHorarios/SelectorHorarios';
 
 class EditarEvento extends React.Component {
 
@@ -47,6 +48,8 @@ class EditarEvento extends React.Component {
       nextId: contacto.length + 1,
       errors: {},
       rubros: [],
+      horarios: evento.horarios,
+      campaña: evento.campaña,
       contacto,
     };
     this.handleUbicacionChange = this.handleUbicacionChange.bind(this);
@@ -54,6 +57,7 @@ class EditarEvento extends React.Component {
     this.handleRubroChange = this.handleRubroChange.bind(this);
     this.handleFechaHoraInicioChange = this.handleFechaHoraInicioChange.bind(this);
     this.handleFechaHoraFinChange = this.handleFechaHoraFinChange.bind(this);
+    this.handleHorariosChange = this.handleHorariosChange.bind(this);
     /* Metodos de contacto */
     this.handleContactNombreChange = this.handleContactNombreChange.bind(this);
     this.handleContactMailChange = this.handleContactMailChange.bind(this);
@@ -66,7 +70,11 @@ class EditarEvento extends React.Component {
   componentDidMount() {
     api.get('/actividades/rubros_evento/')
       .then((res) => {
-        this.setState({ rubros: res.data });
+        this.setState({
+          rubros: res.data,
+          isCampañaStarted:
+            this.state.campaña && moment(this.state.fecha_hora_inicio) < moment()
+        });
       })
       .catch((error) => {
         console.warn(error.message);
@@ -86,6 +94,7 @@ class EditarEvento extends React.Component {
         ubicacion: this.state.ubicacion,
         contacto: this.getContactosInfo(),
       }
+      if (evento.campaña) { evento.horarios = this.state.horarios; }
       this.updateEvento(evento);
     }
   }
@@ -138,15 +147,32 @@ class EditarEvento extends React.Component {
       formIsValid = false;
       errors.fechas = 'Las fechas ingresadas no son válidas.';
     } else {
-      const inicio = moment(this.state.fecha_hora_inicio);
+      let inicio;
+      if (this.state.isCampañaStarted) {
+        inicio = moment(new Date());
+      } else {
+        inicio = moment(this.state.fecha_hora_inicio);
+      }
       const fin = moment(this.state.fecha_hora_fin);
-      const ahora = moment(new Date());
-      if (moment.duration(fin.diff(inicio)).asHours() > 24 ||
-        inicio < ahora ||
-        moment.duration(fin.diff(inicio)).asHours() < 0) {
+      const actual = moment(new Date());
+      if (inicio < actual && !this.state.isCampañaStarted) {
         formIsValid = false;
-        errors.fechas = 'Las fecha de fin debe ser mayor a la de inicio y ' +
-          'la actividad no durar más de 24 horas.';
+        errors.fechas = 'La fecha de inicio debe ser posterior a la fecha actual';
+      } else {
+        if (fin <= inicio) {
+          formIsValid = false;
+          errors.fechas = !this.state.isCampañaStarted ? 
+            'La fecha de inicio debe ser anterior a la fecha de fin de la actividad'
+             : 'La fecha de fin ingresada no es válida.';
+        } else {
+          if (moment.duration(fin.diff(inicio)).asHours() > 24 && inicio < fin && !this.state.campaña) {
+            formIsValid = false;
+            errors.fechas = 'El evento no puede durar más de 24 horas'
+          }
+          else {
+            errors.fechas = undefined;
+          }
+        }
       }
     }
     if (this.state.rubro_id === 0) {
@@ -163,6 +189,27 @@ class EditarEvento extends React.Component {
     this.setState({ errors: allErrors });
     return formIsValid;
   }
+
+  getFechaHoraInicio() {
+    if (this.state.isCampañaStarted) {
+      return (
+          <ListItem>
+            <Text>
+              Inicio: {moment(this.state.fecha_hora_inicio).format('DD/MM/YYYY HH:mm')}
+            </Text>
+          </ListItem>
+      );
+    }
+    return (
+      <SelectorFechaHora
+        detalle="Inicio"
+        soloFecha={false}
+        value={this.state.fecha_hora_inicio}
+        handleChange={this.handleFechaHoraInicioChange}
+      />
+    );
+  }
+
   // Devuelve True si no hay errores
   validateContactos() {
     const errors = { contactoNombre: '', contactoContacto: '', email: '' };
@@ -258,6 +305,10 @@ class EditarEvento extends React.Component {
     this.setState({ contacto: newContactos });
   }
 
+  handleHorariosChange(horarios) {
+    this.setState({ horarios });
+  }
+
   render() {
     let listaRubroEventos = this.state.rubros.map((r) =>
       <Item value={r.id} key={r.id} label={r.nombre} />
@@ -271,7 +322,7 @@ class EditarEvento extends React.Component {
             </Button>
           </Left>
           <Body>
-            <Title>Editar evento</Title>
+            <Title>Editar actividad</Title>
           </Body>
           <Right>
             <Button
@@ -317,12 +368,7 @@ class EditarEvento extends React.Component {
               </Body>
             </ListItem>
             <Text style={styles.validationMessage}>{this.state.errors.rubro}</Text>
-            <SelectorFechaHora
-              detalle="Inicio"
-              soloFecha={false}
-              value={this.state.fecha_hora_inicio}
-              handleChange={this.handleFechaHoraInicioChange}
-            />
+            {this.getFechaHoraInicio()}
             <SelectorFechaHora
               detalle="Fin"
               soloFecha={false}
@@ -330,6 +376,12 @@ class EditarEvento extends React.Component {
               handleChange={this.handleFechaHoraFinChange}
             />
             <Text style={styles.validationMessage}>{this.state.errors.fechas}</Text>
+            {this.state.campaña ?
+              <SelectorHorarios
+                horarios={this.state.horarios}
+                onHorariosChange={this.handleHorariosChange}
+              /> : undefined
+            }
             <Separator bordered noTopBorder>
               <Text>Ubicación</Text>
             </Separator>

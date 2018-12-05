@@ -24,18 +24,23 @@
       class: ''             // optional class names space delimited list for title item ex: "text-center"
     },
     {
-      name: 'Eventos',
-      url: '/actividades/consultar-eventos',
-      icon: 'icon-cursor'
-    },
-    {
       name: 'Mis colaboraciones',
       url: '/actividades/mis-colaboraciones',
       icon: 'icon-star'
     },
     {
+      name: 'Actividades sociales',
+      url: '/actividades/consultar-eventos',
+      icon: 'icon-cursor'
+    },
+    {
       name: 'Organizaciones',
       url: '/organizaciones',
+      icon: 'icon-calendar'
+    },
+    {
+      name: 'Empresas',
+      url: '/empresas',
       icon: 'icon-calendar'
     },
     {

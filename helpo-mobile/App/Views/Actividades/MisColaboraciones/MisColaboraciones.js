@@ -14,25 +14,69 @@ import {
   Icon,
   Text,
   ListItem,
+  CheckBox
 } from 'native-base';
 import * as eventoActions from '../../../Redux/actions/eventoActions';
 import styles from './styles';
+import Immutable from 'seamless-immutable'
 
 class MisColaboraciones extends React.Component {
   constructor(props) {
     super(props);
     this.props.loadEventosConColaboraciones();
+    this.state = {
+      verAntiguos: false
+    }
   }
 
-  render() {
-    const listaEventos = this.props.evento.eventos.map((n) =>
+  sortEventos(eventos_unsorted) {
+    let eventos = Immutable.asMutable(eventos_unsorted)
+    return eventos.sort(function (a, b) {
+      var keyA = new Date(a.fecha_hora_inicio),
+        keyB = new Date(b.fecha_hora_inicio);
+      if (keyA < keyB) return 1;
+      if (keyA > keyB) return -1;
+      return 0;
+    });
+  }
+
+  handleChangeVerAntiguos = () => {
+    const verAntiguos = !this.state.verAntiguos
+    this.setState({verAntiguos: verAntiguos})
+  }
+
+  verEventosAntiguos = () => (
+    <ListItem>
+      <CheckBox 
+        checked={this.state.verAntiguos} 
+        onPress={this.handleChangeVerAntiguos}
+        color='orange'
+      />
+      <Body>
+        <Text>¿Ver actividades finalizadas?</Text>
+      </Body>
+    </ListItem>
+  )
+
+  render() {    
+    let unsortedEventos = this.props.evento.eventos;
+    let unfilteredEventos = this.sortEventos(unsortedEventos)
+    //let unfilteredEventos = unsortedEventos
+    const eventos = this.state.verAntiguos 
+                    ? unfilteredEventos
+                    : unfilteredEventos.filter(evento => moment(evento.fecha_hora_fin).format() > moment().format())
+    const listaEventos = eventos.map((n) =>
       <ListItem icon key={n.id}>
         <Left>
           <Button
             style={{ backgroundColor: '#ffe859' }}
             onPress={() => this.props.navigation.navigate('VerColaboracionesEvento', { evento: n })}
           >
-            <Icon name="hand" />
+            {
+              n.campaña ?
+              <Icon name="calendar" family="Entypo" /> :
+              <Icon name="hand" />
+            }
           </Button>
         </Left>
         <Body>
@@ -61,7 +105,10 @@ class MisColaboraciones extends React.Component {
           </Body>
         </Header>
         <Content>
-          <Form>{listaEventos}</Form>
+          <Form>
+            {this.verEventosAntiguos()}
+            {listaEventos}
+          </Form>
         </Content>
       </Container>
     );

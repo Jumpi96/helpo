@@ -12,7 +12,8 @@ import {
   Icon,
   Text,
   ListItem,
-  View
+  View,
+  Spinner
 } from 'native-base';
 import api from '../../../api';
 import styles from './styles';
@@ -100,7 +101,7 @@ class VerPatrocinadores extends React.Component {
         </Container>
       );
     }
-    return (<Text>Loading..</Text>)
+    return (<Spinner color='red' />)
   }
 }
 

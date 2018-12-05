@@ -17,19 +17,42 @@ import {
   Label,
   View,
   Thumbnail,
+  Spinner
 } from 'native-base';
+import openMap from 'react-native-open-maps';
 import styles from './styles';
 import CompartirEvento from '../CompartirEvento/CompartirEvento';
 import GoAlbum from '../AlbumEvento/GoAlbum'
+import api from '../../../api';
 
 
 class ConsultaEvento extends React.Component {
 
   constructor(props) {
     super(props);
+    const { params } = this.props.navigation.state;
+    const evento = params.evento;
+    this.state = {
+      evento: { id: evento }
+    }
     this.navigateColaborar = this.navigateColaborar.bind(this);
     this.togglePerfil = this.togglePerfil.bind(this);
     this.puedeColaborar = this.puedeColaborar.bind(this);
+  }
+
+  componentDidMount() {
+    this.loadEvento();
+  }
+
+  loadEvento() {
+    api.get('/actividades/consulta_eventos/' + this.state.evento.id + '/')
+      .then(res => {
+        this.setState({ evento: res.data });
+      })
+      .catch((error) => {
+        if (error.response) { console.log(error.response.status) }
+        else { console.log('Error: ', error.message) }
+      })
   }
 
   getListaNecesidades(evento) {
@@ -53,6 +76,12 @@ class ConsultaEvento extends React.Component {
         </Right>
       </ListItem>
     );
+  }
+
+  goToUbicacion(ubicacion) {
+    openMap({
+      query: ubicacion.latitud + ',' + ubicacion.longitud
+    });
   }
 
   navigateColaborar(evento) {
@@ -153,130 +182,204 @@ class ConsultaEvento extends React.Component {
     return a;
   }
 
-  puedeColaborar() {
+  puedeColaborar(evento) {
     const { user } = this.props.auth;
-    if (user) {
-      if (user.user_type == 2) {
-        return true;
-      } else if (user.user_type == 3) {
-        const propuestas_rechazadas = this.state.evento.propuestas.filter(p => p.empresa.id === user.id && p.aceptado === -1);
-        if (propuestas_rechazadas.length === 0) {
+    if (!((moment(evento.fecha_hora_inicio) <= moment() && !evento.campaña) ||
+      (evento.campaña && (moment(evento.fecha_hora_fin) <= moment())))) {
+      if (user) {
+        if (user.user_type == 2) {
           return true;
+        } else if (user.user_type == 3) {
+          const propuestas_rechazadas = evento.propuestas.filter(p => p.empresa.id === user.id && p.aceptado === -1);
+          if (propuestas_rechazadas.length === 0) {
+            return true;
+          }
         }
       }
     }
     return false;
   }
 
-  render() {
-    const { params } = this.props.navigation.state;
-    const evento = params.evento;
-    let listaContactos;
-    if (evento.contacto.length > 0) {
-      listaContactos = evento.contacto.map(contacto =>
-        <ListItem key={contacto.nombre}>
-          <Text>{contacto.nombre} - {contacto.email} - {contacto.telefono}</Text>
-        </ListItem>
+  getHorarios(evento) {
+    if (evento.campaña && evento.horarios.length > 0) {
+      const listaHorarios = [];
+      evento.horarios.forEach((h) => {
+        listaHorarios.push(
+          <ListItem>
+            <Text>{h[0] + ' ' + h[1] + '-' + h[2]}</Text>
+          </ListItem>
+        )
+      })
+      return (
+        <View>
+          <ListItem itemDivider>
+            <Label style={styles.label}>Horarios de atención</Label>
+          </ListItem>
+          {listaHorarios}
+        </View>
       );
     }
-    return (
-      <Container style={styles.container}>
-        <Header>
-          <Left>
-            <Button transparent onPress={() => this.props.navigation.navigate('ConsultarEventos')}>
-              <Icon name="arrow-back" />
-            </Button>
-          </Left>
-          <Body>
-            <Title>{evento.nombre}</Title>
-          </Body>
-          {this.puedeColaborar() && moment(evento.fecha_hora_inicio) > moment() ?
-            <Right>
-              <Button
-                transparent
-                onPress={() => this.navigateColaborar(evento)}>
-                <Text>{this.props.auth.user.user_type === 2 ? "Colaborar" : "Patrocinar"}</Text>
+  }
+
+  goBackToConsultarEventos() {
+    const { params } = this.props.navigation.state;
+    this.props.navigation.navigate('ConsultarEventos', {
+      evento: '',
+      link: params.link,
+      organizacion: params.organizacion
+    });
+  }
+
+  render() {
+    const { params } = this.props.navigation.state;
+    const { evento } = this.state;
+    if (evento.nombre) {
+      let listaContactos;
+      if (evento.contacto.length > 0) {
+        listaContactos = evento.contacto.map(contacto =>
+          <ListItem key={contacto.nombre}>
+            <Text>{contacto.nombre} - {contacto.email} - {contacto.telefono}</Text>
+          </ListItem>
+        );
+      }
+      return (
+        <Container style={styles.container}>
+          <Header>
+            <Left>
+              <Button transparent onPress={() => this.goBackToConsultarEventos()}>
+                <Icon name="arrow-back" />
               </Button>
-            </Right> : undefined
-          }
-        </Header>
-        <Content>
-          <Separator bordered noTopBorder>
-            <Text>Información</Text>
-          </Separator>
-          <ListItem>
-            <Label style={styles.label}>Nombre</Label>
-            <Text>{evento.nombre}</Text>
-          </ListItem>
-          <ListItem>
-            <Label style={styles.label}>Organización</Label>
-            <Text>{evento.organizacion.nombre}</Text>
-          </ListItem>
-          <ListItem>
-            <Label style={styles.label}>Descripción</Label>
-            <Text>{evento.descripcion}</Text>
-          </ListItem>
-          <ListItem>
-            <Label style={styles.label}>Rubro</Label>
-            <Text>{evento.rubro.nombre}</Text>
-          </ListItem>
-          <Separator bordered noTopBorder>
-            <Text>Fecha</Text>
-          </Separator>
-          <ListItem>
-            <Label style={styles.label}>Inicio</Label>
-            <Text>{moment(evento.fecha_hora_inicio).format('DD/MM/YYYY HH:mm')}</Text>
-          </ListItem>
-          <ListItem>
-            <Label style={styles.label}>Fin</Label>
-            <Text>{moment(evento.fecha_hora_fin).format('DD/MM/YYYY HH:mm')}</Text>
-          </ListItem>
-          {listaContactos ? (
-            <View>
-              <Separator bordered noTopBorder>
-                <Text>Contactos</Text>
-              </Separator>
-              {listaContactos}
-            </View>
-          ) : undefined
-          }
-          {evento.necesidades.length > 0 ? (
-            <View>
-              <Separator bordered noTopBorder>
-                <Text>Necesidades materiales</Text>
-              </Separator>
-              {this.getListaNecesidades(evento)}
-            </View>
-          ) : undefined
-          }
-          {this.getPropuestas(evento.propuestas)}
-          {evento.voluntarios.length > 0 ? (
-            <View>
-              <Separator bordered noTopBorder>
-                <Text>Voluntarios</Text>
-              </Separator>
-              {this.getListaVoluntarios(evento)}
-            </View>
-          ) : undefined
-          }
-          {evento.comentarios.length > 0 ? (
-            <View>
-              <Separator bordered noTopBorder>
-                <Text>Comentarios</Text>
-              </Separator>
-              {this.getListaComentarios(evento)}
-            </View>
-          ) : undefined
-          }
-          <GoAlbum
-            visible={evento.estado >= 2 ? true : false} // Solo visible si evento comenzo o finalizo
-            eventoId={evento.id}
-            navigation={this.props.navigation}
-          />
-          <CompartirEvento evento={params.evento} />
-        </Content>
-      </Container>
-    );
+            </Left>
+            <Body>
+              <Title>{evento.nombre}</Title>
+            </Body>
+            {this.puedeColaborar(evento) ?
+              <Right>
+                <Button
+                  transparent
+                  onPress={() => this.navigateColaborar(evento)}>
+                  <Text>{this.props.auth.user.user_type === 2 ? "Colaborar" : "Patrocinar"}</Text>
+                </Button>
+              </Right> : undefined
+            }
+          </Header>
+          <Content>
+            <ListItem itemDivider>
+              <Label style={styles.label}>Nombre</Label>
+            </ListItem>
+            <ListItem>
+              <Text>{evento.nombre}</Text>
+            </ListItem>
+
+            <ListItem itemDivider>
+              <Label style={styles.label}>Organización</Label>
+            </ListItem>
+            <ListItem>
+              <Text>{evento.organizacion.nombre}</Text>
+            </ListItem>
+
+            <ListItem itemDivider>
+              <Label style={styles.label}>Descripción</Label>
+            </ListItem>
+            <ListItem>
+              <Text>{evento.descripcion}</Text>
+            </ListItem>
+
+            <ListItem itemDivider>
+              <Label style={styles.label}>Rubro</Label>
+            </ListItem>
+            <ListItem>
+              <Text>{evento.rubro.nombre}</Text>
+            </ListItem>
+
+            <ListItem itemDivider>
+              <Label style={styles.label}>Fecha</Label>
+            </ListItem>
+            <ListItem>
+              <Text>{'Inicio: ' + moment(evento.fecha_hora_inicio).format('DD/MM/YYYY HH:mm')}</Text>
+            </ListItem>
+            <ListItem>
+              <Text>{'Fin: ' + moment(evento.fecha_hora_fin).format('DD/MM/YYYY HH:mm')}</Text>
+            </ListItem>
+            {this.getHorarios(evento)}
+            <ListItem itemDivider>
+              <Label style={styles.label}>Ubicación</Label>
+            </ListItem>
+            <Button block style={{ margin: 15, marginTop: 20 }}
+              onPress={() => this.goToUbicacion(evento.ubicacion)}
+            >
+              <Text>Abrir ubicación</Text>
+            </Button>
+            <ListItem>
+              <Text>{evento.ubicacion.notas}</Text>
+            </ListItem>
+            {listaContactos ? (
+              <View>
+                <ListItem itemDivider>
+                  <Label style={styles.label}>Contactos</Label>
+                </ListItem>
+                {listaContactos}
+              </View>
+            ) : undefined
+            }
+            {evento.necesidades.length > 0 ? (
+              <View>
+                <ListItem itemDivider>
+                  <Label style={styles.label}>Necesidades materiales</Label>
+                </ListItem>
+                {this.getListaNecesidades(evento)}
+              </View>
+            ) : undefined
+            }
+            {this.getPropuestas(evento.propuestas)}
+            {evento.voluntarios.length > 0 ? (
+              <View>
+                <ListItem itemDivider>
+                  <Label style={styles.label}>Voluntarios</Label>
+                </ListItem>
+                {this.getListaVoluntarios(evento)}
+              </View>
+            ) : undefined
+            }
+            {evento.comentarios.length > 0 ? (
+              <View>
+                <ListItem itemDivider>
+                  <Label style={styles.label}>Comentarios</Label>
+                </ListItem>
+                {this.getListaComentarios(evento)}
+              </View>
+            ) : undefined
+            }
+            <GoAlbum
+              visible={moment().format() > moment(evento.fecha_hora_inicio).format() ? true : false} // Solo visible si evento comenzo o finalizo
+              eventoId={evento.id}
+              navigation={this.props.navigation}
+            />
+            <CompartirEvento evento={params.evento} />
+          </Content>
+        </Container>
+      );
+    } else {
+      return (
+        <Container style={styles.container}>
+          <Header>
+            <Left>
+              <Button transparent>
+                <Icon name="arrow-back" />
+              </Button>
+            </Left>
+            <Body>
+              <Title>Actividades</Title>
+            </Body>
+            <Right>
+            </Right>
+          </Header>
+          <Content padder>
+            <Spinner color="red" />
+          </Content>
+        </Container>
+      );
+    }
   }
 }
 

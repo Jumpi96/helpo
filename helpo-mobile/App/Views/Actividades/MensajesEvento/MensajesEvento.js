@@ -13,7 +13,6 @@ import {
   Form,
   Text,
 } from 'native-base';
-import moment from 'moment';
 import './styles';
 import api from '../../../api';
 

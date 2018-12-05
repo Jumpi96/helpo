@@ -27,7 +27,7 @@ class ModalEditarItem extends Component {
   handleValidation() { 
     this.setState({error:''});
     let formIsValid = true;
-    var error = this.state.error;    
+    var error = "";    
     if (this.props.contacto.nombre === "") {
         error = 'No puede ingresar un contacto sin nombre.';        
         formIsValid = false;
@@ -79,6 +79,12 @@ class ModalEditarItem extends Component {
   }
 
   render() {
+
+    const input_style = {
+      marginBottom: 10,
+      width: '100%'
+    }
+
     return (
       <div className="animated fadeIn">
         <Modal isOpen={this.props.open}
@@ -87,31 +93,37 @@ class ModalEditarItem extends Component {
           <ModalHeader>Editar contacto</ModalHeader>
 
           <ModalBody>
-            <div className="row">            
-                  <div className="col-md-3">
+            <div>          
+                  <label style={input_style}>Nombre
                   <input type="text" 
                       name="nombre" className="form-control"
                       placeholder="Nombre"
                       value={this.props.contacto.nombre} 
                       onChange={this.handleNombreChange}
+                      style={input_style}
                     />
-                  </div>
-                  <div className="col-md-3">
+                    </label>
+                  
+                  <label style={input_style}>Email
                   <input type="text" 
                       name="email" className="form-control"
                       placeholder="Email"
                       value={this.props.contacto.email} 
                       onChange={this.handleEmailChange}
+                      style={input_style}
                     />
-                  </div>
-                  <div className="col-md-3">
-                    <input type="text" 
-                      name="telefono" className="form-control"
-                      placeholder="Teléfono"
-                      value={this.props.contacto.telefono} 
-                      onChange={this.handleTelefonoChange}
-                    />
-                  </div>
+                  </label>
+                  
+                  <label style={input_style}>Teléfono
+                  <input type="text" 
+                    name="telefono" className="form-control"
+                    placeholder="Teléfono"
+                    value={this.props.contacto.telefono} 
+                    onChange={this.handleTelefonoChange}
+                    style={input_style}
+                  />
+                  </label>
+                  
                 <div>
                   <span style={{color: "red"}}>{this.state.error}</span>
                 </div>              

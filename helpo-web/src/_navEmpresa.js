@@ -24,18 +24,23 @@ export default {
         class: ''             // optional class names space delimited list for title item ex: "text-center"
       },
       {
-        name: 'Eventos',
-        url: '/actividades/consultar-eventos',
-        icon: 'icon-cursor'
-      },
-      {
         name: 'Mis propuestas',
         url: '/actividades/mis-propuestas',
         icon: 'icon-star'
       },
       {
+        name: 'Actividades sociales',
+        url: '/actividades/consultar-eventos',
+        icon: 'icon-cursor'
+      },
+      {
         name: 'Organizaciones',
         url: '/organizaciones',
+        icon: 'icon-calendar'
+      },
+      {
+        name: 'Empresas',
+        url: '/empresas',
         icon: 'icon-calendar'
       },
     ],

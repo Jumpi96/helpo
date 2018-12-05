@@ -110,6 +110,7 @@ class ComentariosEvento extends Component {
             <div>
               <h3>Opiniones de voluntarios</h3>
               {opiniones_voluntarios}
+              <hr />
             </div> : undefined
           }
         </div>
@@ -151,20 +152,24 @@ class ComentariosEvento extends Component {
   getOpcionRetroalimentacion() {
     if (!this.dioRetroalimentacion(this.props.evento, this.getUserId())) {
       return (
-        <BotonHelpo
-          titulo={'Dar una mano'}
-          disabled={false}
-          mensaje={'Ayuda a la ONG en helpo si te gustó ser parte de esta actividad.'}
-          onClick={this.handleRetroalimentacion}
-        />
+        <div style={{ margin: '10px' }}>
+          <BotonHelpo
+            titulo={'Dar una mano'}
+            disabled={false}
+            mensaje={'Ayuda a la ONG en helpo si te gustó ser parte de esta actividad.'}
+            onClick={this.handleRetroalimentacion}
+          />
+        </div>
       )
     } else {
       return (
-        <BotonHelpo
-          titulo={'Dar una mano'}
-          disabled={true}
-          mensaje={'Ya diste una mano a la ONG por este evento.'}
-        />
+        <div style={{ margin: '10px' }}>
+          <BotonHelpo
+            titulo={'Dar una mano'}
+            disabled={true}
+            mensaje={'Ya diste una mano a la ONG por este evento.'}
+          />
+        </div>
       )
     }
   }
@@ -193,7 +198,10 @@ class ComentariosEvento extends Component {
     const opiniones = this.getOpiniones();
     return (
       <div className="offset-md-1">
-        <h2>Opiniones del evento</h2>
+        <h2>{ "Opiniones sobre " +
+          (this.props.evento.campaña ?
+            'la campaña' : 'el evento')
+          }</h2>
         {this.state.participante ?
           this.getOpcionRetroalimentacion()
           : undefined}

@@ -179,7 +179,8 @@ class RegistrarNecesidades extends React.Component {
       <Container style={styles.container}>
         <Header>
           <Left>
-            <Button transparent onPress={() => this.props.navigation.navigate('MisEventos')}>
+            <Button transparent
+              onPress={() => this.props.navigation.navigate('ConsultarEvento', { evento: this.state.evento.id })}>
               <Icon name="arrow-back" />
             </Button>
           </Left>
@@ -210,12 +211,12 @@ class RegistrarNecesidades extends React.Component {
           >
             <IconNB name="md-add" />
             <Button style={{ backgroundColor: '#F4BF42' }}
-              onPress={() => { this.props.navigation.navigate('AgregarVoluntario', { evento: this.state.evento }) }}
+              onPress={() => { this.props.navigation.navigate('AgregarVoluntario', { evento: this.state.evento, voluntarios: this.state.voluntarios }) }}
             >
               <Icon name="person" />
             </Button>
             <Button style={{ backgroundColor: '#34A34F' }}
-              onPress={() => { this.props.navigation.navigate('AgregarNecesidad', { evento: this.state.evento }) }}
+              onPress={() => { this.props.navigation.navigate('AgregarNecesidad', { evento: this.state.evento, necesidades: this.state.necesidades }) }}
             >
               <Icon name="medkit" />
             </Button>

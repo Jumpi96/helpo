@@ -21,7 +21,7 @@ const FilaPropTypes = {
 }
 
 const FilaParticipacionConnected = ( props ) => {
-  const { apellido, nombre, comentario, idParticipacion, handleCheckboxChange, participo, idVoluntario, retroalimentacion_ong, evento } = props
+  const { apellido, nombre, comentario, idParticipacion, handleCheckboxChange, cantidad, presencias, idVoluntario, retroalimentacion_ong, evento } = props
 
   const perfilButton = (
     <Link to={`/perfil/${idVoluntario}`}>
@@ -34,7 +34,7 @@ const FilaParticipacionConnected = ( props ) => {
       return (
         <BotonHelpo
           disabled={true}
-          mensaje={'Evento no iniciado.'}
+          mensaje={'Actividad social no iniciada.'}
           titulo={'Dar una mano'}
           onClick={undefined}
         />
@@ -64,7 +64,7 @@ const FilaParticipacionConnected = ( props ) => {
     const mensaje = { evento: evento.id, voluntario: idVoluntario, es_colaboracion: false };
     api.post('feedbacks/retroalimentacion_ong/', mensaje)
       .then((res) => {
-        props.fetchData(evento.id);
+        props.submitChanges();
       })
       .catch((error) => {
         if (error.response){ console.log(error.response.status) }
@@ -77,11 +77,13 @@ const FilaParticipacionConnected = ( props ) => {
       <td>{apellido}</td>
       <td>{nombre}</td>
       <td>{perfilButton}</td>
+      <td>{cantidad}</td>
+      <td>{presencias}</td>
       <td>{comentario ? comentario : "-"}</td>
       <td><input 
             type="checkbox" 
             name={"entregado" + idParticipacion} 
-            defaultChecked={participo}
+            defaultChecked={presencias===cantidad}
             onChange={(event) => handleCheckboxChange(event.target.checked, idParticipacion)}/>
             </td>
       <td>

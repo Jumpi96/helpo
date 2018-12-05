@@ -37,19 +37,15 @@ Go to our [Git wiki](https://github.com/Jumpi96/helpo/wiki/Git-hints)
 - Python 3.6.5: Full install, select "Add to PATH", for all users, including debugging binaries (select all options).
 - NodeJS and NPM LTS 8.11.1
 - PostgreSQL 10.3.2: Full install, select all options, password=postgres, port=5432, next.
-- Run CMD as Administrator and:
-```
-python -m pip install --upgrade pip
-pip install pipenv
-```
+- Create a virtualenv for your helpo-api app. Read [here](https://packaging.python.org/guides/installing-using-pip-and-virtualenv/)
 ### Setup
 - On pgAdmin, open Servers, PostgreSQL 10, right click on Databases and create db with name: `db-helpo`
 - On project folder `helpo-api/`:
   - Create file with name `.env` and text from: [API Local ENV Wiki](https://github.com/Jumpi96/helpo/wiki/ENV-Files#local)
-  - Run on `helpo-api/`: 
+  - Run on `helpo-api/` with virtualenv activated: 
 ```
-pipenv install --dev
-pipenv shell
+pip install numpy
+pip install -r requirements.txt
 python manage.py migrate
 python manage.py runserver
 ```

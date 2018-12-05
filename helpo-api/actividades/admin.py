@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Evento, ActividadesTasks, RubroEvento, CategoriaRecurso, Recurso, Necesidad, Funcion, Voluntario, Comentario, Colaboracion, Participacion, EventoImagen, Mensaje, LogMensaje, Propuesta
+from .models import Evento, ActividadesTasks, RubroEvento, CategoriaRecurso, Recurso, Necesidad, Funcion, Voluntario, Comentario, Colaboracion, Participacion, EventoImagen, Mensaje, LogMensaje, Propuesta, Entrega, Presencia
 # Register your models here.
 
 class EventoAdmin(admin.ModelAdmin):
@@ -30,7 +30,7 @@ class ComentarioAdmin(admin.ModelAdmin):
     list_display = ['id', 'evento', 'voluntario', 'comentario']
 
 class ColaboracionAdmin(admin.ModelAdmin):
-    list_display = ['id', 'cantidad', 'comentario', 'necesidad_material', 'colaborador', 'entregado', 'vigente', 'retroalimentacion_voluntario', 'retroalimentacion_ong']
+    list_display = ['id', 'cantidad', 'comentario', 'necesidad_material', 'colaborador', 'vigente', 'retroalimentacion_voluntario', 'retroalimentacion_ong']
 
 class ParticipacionAdmin(admin.ModelAdmin):
     list_display = ['id', 'comentario', 'necesidad_voluntario', 'colaborador', 'participo', 'vigente', 'retroalimentacion_voluntario', 'retroalimentacion_ong', 'cantidad']
@@ -46,6 +46,12 @@ class LogMensajeAdmin(admin.ModelAdmin):
 
 class PropuestaAdmin(admin.ModelAdmin):
     list_display = ['id', 'empresa', 'evento', 'aceptado', 'comentario']
+
+class EntregaAdmin(admin.ModelAdmin):
+    list_display = ['id', 'colaboracion', 'cantidad']
+
+class PresenciaAdmin(admin.ModelAdmin):
+    list_display = ['id', 'participacion', 'cantidad']
 
 
 admin.site.register(Evento, EventoAdmin)
@@ -63,3 +69,5 @@ admin.site.register(EventoImagen, EventoImagenAdmin)
 admin.site.register(Mensaje, MensajeAdmin)
 admin.site.register(LogMensaje, LogMensajeAdmin)
 admin.site.register(Propuesta, PropuestaAdmin)
+admin.site.register(Entrega, EntregaAdmin)
+admin.site.register(Presencia, PresenciaAdmin)

@@ -2,19 +2,20 @@ import React from 'react'
 import { Card, CardHeader, CardBody } from 'reactstrap'
 import { Line, Doughnut, Bar } from 'react-chartjs-2'
 import { connect } from 'react-redux'
-import { Tooltip } from 'reactstrap'
+import { Tooltip, Button } from 'reactstrap'
 import api from '../../api'
-import { Page, Text, View, Document } from '@react-pdf/renderer'
+import getPDF from './ReporteOngPDF'
 
 /*
 Props:
   ong (id - viene de redux)
+  ong_nombre (viene de redux)
 */
 
 class DashboardReportes extends React.Component {
 
   constructor(props) {
-    super(props)
+    super(props)    
     // Creo refs para acceder a las instancias en el DOM de los graficos
     this.suscripciones_chart = React.createRef()
     this.generos_chart = React.createRef()
@@ -46,9 +47,11 @@ class DashboardReportes extends React.Component {
         data: [],
         labels: []
       },
-      tooltipOpen: false
+      tooltipOpen: false,
+      donwloadable: false
     }
     this.toggle = this.toggle.bind(this)
+    this.getChartsImages = this.getChartsImages.bind(this) 
     this.downloadPDF = this.downloadPDF.bind(this)
   }
 
@@ -62,26 +65,27 @@ class DashboardReportes extends React.Component {
   }
 
   downloadPDF() {
-
-    const MyDocument = () => (
-      <Document>
-        <Page>
-          <View >
-            <Text>Section #1</Text>
-          </View>
-          <View>
-            <Text>Section #2</Text>
-          </View>
-        </Page>
-      </Document>
-    )
-
-    return MyDocument
+    // Llamo a la funcion que arma y descarga el PDF, pasandole las imagenes y los datos necesarios
+    if(this.state.total_voluntarios !== null &&
+       this.state.total_voluntarios !== undefined) {
+      const data = {
+        suscripciones: this.state.total_suscripciones,
+        manos: this.state.total_manos,
+        eventos: this.state.total_eventos,
+        voluntarios: this.state.total_voluntarios,
+        nombre: this.props.ong_nombre
+      }
+      getPDF(this.getChartsImages(), data)
+    }
+    else {
+      alert("Espere unos segundos mientras se termina de cargar el reporte.")
+    }
+    
   }
 
   addLastMonthSuscripcion(grafico_data, total_suscripciones) {
     /*
-    Agrega el mes actual a las suscripciones
+    Agrega al array con los datos de las suscripciones por mes el mes actual
     */
     const { data, labels } = grafico_data
 
@@ -89,6 +93,7 @@ class DashboardReportes extends React.Component {
     const last_label = labels[length - 1]
     const last_year = parseInt(last_label.slice(0, 4), 10)
     const last_month = parseInt(last_label.slice(5, 7), 10)
+
     let new_label = ""
     if (last_month === 12) {
       const new_year = last_year + 1
@@ -99,6 +104,7 @@ class DashboardReportes extends React.Component {
       let new_month_str = new_month > 10 ? new_month : "0" + new_month
       new_label = last_year + "-" + new_month_str
     }
+
     const new_grafico_data = {
       data: [...data, total_suscripciones],
       labels: [...labels, new_label]
@@ -110,8 +116,8 @@ class DashboardReportes extends React.Component {
     /*
     Returns an array with the images of the charts, in the same order as they appear
     in the website
-    */
-    const images = []
+    */    
+    const images = []    
     images.push(this.suscripciones_chart.current.chartInstance.toBase64Image())
     images.push(this.generos_chart.current.chartInstance.toBase64Image())
     images.push(this.manos_chart.current.chartInstance.toBase64Image())
@@ -137,7 +143,7 @@ class DashboardReportes extends React.Component {
 
         return data.total_suscripciones
       })
-      .then( total_suscripciones => {
+      .then(total_suscripciones => {
         // Busco datos de suscripciones
         // --------------------------------
         // (Hago esta llamada aca para tener disponible total_suscripciones)
@@ -157,7 +163,7 @@ class DashboardReportes extends React.Component {
           .catch(error => {
             // TODO: Handle errors gracefully
           })
-        }
+      }
       )
       .catch(error => {
         // TODO: Handle errors gracefully
@@ -224,7 +230,9 @@ class DashboardReportes extends React.Component {
   }
 
   render() {
-
+    /*
+    Defino la data de todos los graficos
+    */
     const generos_data = {
       datasets: [{
         data: this.state.grafico_generos.data,
@@ -321,23 +329,12 @@ class DashboardReportes extends React.Component {
       ]
     };
 
-    // const MyDoc = () => (
-    //   <Document>
-    //     <Page>
-    //       <Text>Hello World</Text>
-    //     </Page>
-    //   </Document>
-    // )
-
     return (
       <Card>
         <CardHeader>
           <i className="fa fa-align-justify"></i> Estadísticas
           </CardHeader>
         <CardBody style={{ display: 'flex', flexDirection: 'column' }}>
-
-
-
           <div style={{ boxSizing: 'border-box' }}>
 
             <div className='row'>
@@ -361,8 +358,16 @@ class DashboardReportes extends React.Component {
               </div>
             </div>
 
+            <div className='row'>
+              <div className='col'>
+                <Button color='primary'onClick={() => this.downloadPDF()}>Descargar como PDF</Button>
+              </div>
+              <div className='col'>
+              </div>
+            </div>
+
           </div>
-          {/*Bootstrap muere a partir de aca */}
+          {/*Bootstrap muere a partir de aca, long live flexbox ╰། ◉ ◯ ◉ །╯*/}
           <div style={{ alignItems: 'center' }}>
             <div style={{
               height: 5,
@@ -393,6 +398,7 @@ class DashboardReportes extends React.Component {
             </div>
             <div style={{ marginVertical: 10 }}>
               <Doughnut
+                ref={this.generos_chart}
                 data={generos_data}
                 height={300}
                 width={600}
@@ -408,6 +414,7 @@ class DashboardReportes extends React.Component {
             </div>
             <div style={{ marginVertical: 10 }}>
               <Bar
+                ref={this.manos_chart}
                 data={manos_data}
                 height={300}
                 width={600}
@@ -423,6 +430,7 @@ class DashboardReportes extends React.Component {
             </div>
             <div style={{ marginVertical: 10 }}>
               <Bar
+                ref={this.colaboraciones_chart}
                 data={colaboraciones_data}
                 height={300}
                 width={600}
@@ -438,6 +446,7 @@ class DashboardReportes extends React.Component {
             </div>
             <div style={{ marginVertical: 10 }}>
               <Bar
+                ref={this.participaciones_chart}
                 data={participaciones_data}
                 height={300}
                 width={600}
@@ -453,6 +462,7 @@ class DashboardReportes extends React.Component {
             </div>
             <div style={{ marginVertical: 10 }}>
               <Bar
+                ref={this.empresas_chart}
                 data={empresas_data}
                 height={300}
                 width={600}
@@ -461,7 +471,6 @@ class DashboardReportes extends React.Component {
                 }}
               />
             </div>
-
           </div>
         </CardBody>
       </Card>
@@ -470,7 +479,8 @@ class DashboardReportes extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  ong: state.auth.user.id
+  ong: state.auth.user.id,
+  ong_nombre: state.auth.user.nombre
 })
 
 export default connect(mapStateToProps)(DashboardReportes)

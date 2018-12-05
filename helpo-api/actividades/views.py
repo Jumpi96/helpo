@@ -3,24 +3,29 @@ from rest_framework.decorators import api_view
 from rest_framework.generics import ListCreateAPIView
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
 from rest_framework.generics import RetrieveDestroyAPIView
+from rest_framework.generics import RetrieveAPIView
 from rest_framework.generics import CreateAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from django.shortcuts import get_object_or_404
 from datetime import datetime
 from actividades.models import Evento, RubroEvento, CategoriaRecurso, Recurso, Necesidad, \
     Contacto, Voluntario, Funcion, Participacion, Colaboracion, Comentario, Mensaje, EventoImagen, \
-    Propuesta
+    Propuesta, Entrega, Presencia
 from knox.models import AuthToken
 from users.models import User
+from recommendations.models import LogConsultaEvento
 from actividades.serializers import EventoSerializer, RubroEventoSerializer, \
     CategoriaRecursoSerializer, RecursoSerializer, NecesidadSerializer, ContactoSerializer, \
     ConsultaEventoSerializer, VoluntarioSerializer, FuncionSerializer, ConsultaNecesidadesSerializer, \
     ParticipacionSerializer, ColaboracionSerializer, ComentarioSerializer, MensajeSerializer, EventoImagenSerializer, \
-    PropuestaSerializer, ConsultaAllNecesidadesSerializer
-from actividades.services import create_propuesta
+    PropuestaSerializer, ConsultaAllNecesidadesSerializer, ConsultarPropuestasEmpresaSerializer, PropuestasEmpresasSerializer
+from actividades.services import create_propuesta, actualizar_colaboracion, actualizar_participacion
+from recommendations.services import predict_eventos_userbased
 from common.functions import get_token_user, calc_distance_locations
 import re
+
 
 class RubroEventoCreateReadView(ListCreateAPIView):
     """
@@ -29,12 +34,14 @@ class RubroEventoCreateReadView(ListCreateAPIView):
     serializer_class = RubroEventoSerializer
     queryset = RubroEvento.objects.all()
 
+
 class FuncionCreateReadView(ListCreateAPIView):
     """
     API endpoint para crear o ver todas las funciones de voluntariado
     """
     serializer_class = FuncionSerializer
     queryset = Funcion.objects.all()
+
 
 class RubroEventoReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     """
@@ -44,12 +51,14 @@ class RubroEventoReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     serializer_class = RubroEventoSerializer
     lookup_field = 'id'
 
+
 class FuncionCreateReadView(ListCreateAPIView):
     """
     API endpoint para crear o ver todas las funciones de voluntariado
     """
     serializer_class = FuncionSerializer
     queryset = Funcion.objects.all()
+
 
 class FuncionReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     """
@@ -59,12 +68,14 @@ class FuncionReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     serializer_class = FuncionSerializer
     lookup_field = 'id'
 
+
 class ContactoEventoCreateReadView(ListCreateAPIView):
     """
     API endpoint para crear o ver todos los contactos de evento
     """
     queryset = Contacto.objects.all()
     serializer_class = ContactoSerializer
+
 
 class ContactoEventoReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     """
@@ -73,6 +84,7 @@ class ContactoEventoReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     queryset = Contacto.objects.all()
     serializer_class = ContactoSerializer
     lookup_field = 'id'
+
 
 class EventoCreateReadView(ListCreateAPIView):
     """
@@ -87,6 +99,7 @@ class EventoCreateReadView(ListCreateAPIView):
             serializer.save(organizacion_id=get_token_user(self.request))
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class EventoReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     """
@@ -111,6 +124,7 @@ class CategoriaRecursoCreateReadView(ListCreateAPIView):
     queryset = CategoriaRecurso.objects.all()
     serializer_class = CategoriaRecursoSerializer
 
+
 class CategoriaRecursoReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     """
     API endpoint para leer, actualizar o eliminar una categoría de recurso
@@ -118,6 +132,7 @@ class CategoriaRecursoReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     queryset = CategoriaRecurso.objects.all()
     serializer_class = CategoriaRecursoSerializer
     lookup_field = 'id'
+
 
 class RecursoCreateReadView(ListCreateAPIView):
     """
@@ -132,6 +147,7 @@ class RecursoCreateReadView(ListCreateAPIView):
             queryset = queryset.filter(categoria_id=categoria)
         return queryset
 
+
 class RecursoReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     """
     API endpoint para leer, actualizar o eliminar un recurso
@@ -139,6 +155,7 @@ class RecursoReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     queryset = Recurso.objects.all()
     serializer_class = RecursoSerializer
     lookup_field = 'id'
+
 
 class NecesidadCreateReadView(ListCreateAPIView):
     """
@@ -153,6 +170,7 @@ class NecesidadCreateReadView(ListCreateAPIView):
             queryset = queryset.filter(evento_id=evento)
         return queryset
 
+
 class NecesidadReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     """
     API endpoint para leer, actualizar o eliminar una necesidad
@@ -160,6 +178,7 @@ class NecesidadReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     queryset = Necesidad.objects.all()
     serializer_class = NecesidadSerializer
     lookup_field = 'id'
+
 
 class VoluntarioCreateReadView(ListCreateAPIView):
     """
@@ -173,6 +192,7 @@ class VoluntarioCreateReadView(ListCreateAPIView):
         if evento is not None:
             queryset = queryset.filter(evento_id=evento)
         return queryset
+
 
 class VoluntarioReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     """
@@ -192,9 +212,11 @@ class EventoOrganizacionCreateReadView(ListCreateAPIView):
 
     def get_queryset(self):
         queryset = Evento.objects.all()
-        queryset = queryset.filter(organizacion_id=get_token_user(self.request))
+        queryset = queryset.filter(
+            organizacion_id=get_token_user(self.request))
         queryset = queryset.order_by('-fecha_hora_inicio')
         return queryset
+
 
 class EventoVoluntarioCreateReadView(ListCreateAPIView):
     """
@@ -213,44 +235,67 @@ class EventoVoluntarioCreateReadView(ListCreateAPIView):
         eventos = []
         colaboraciones = Colaboracion.objects.filter(colaborador_id=user)
         for colaboracion in colaboraciones:
-            necesidad = Necesidad.objects.filter(id=colaboracion.necesidad_material_id).first()
+            necesidad = Necesidad.objects.filter(
+                id=colaboracion.necesidad_material_id).first()
             if necesidad.evento_id not in eventos:
                 eventos.append(necesidad.evento_id)
         participaciones = Participacion.objects.filter(colaborador_id=user)
         for participacion in participaciones:
-            necesidad = Voluntario.objects.filter(id=participacion.necesidad_voluntario_id).first()
+            necesidad = Voluntario.objects.filter(
+                id=participacion.necesidad_voluntario_id).first()
             if necesidad.evento_id not in eventos:
                 eventos.append(necesidad.evento_id)
         return eventos
+
 
 class ConsultaEventosOrganizacionCreateReadView(ListCreateAPIView):
     """
     API endpoint para ver todos los eventos próximos
     """
-    
+
     serializer_class = ConsultaEventoSerializer
 
     def get_queryset(self):
         queryset = Evento.objects.all()
         if 'organizacion' in self.request.query_params:
-            queryset = queryset.filter(organizacion_id=self.request.query_params.get('organizacion'))
+            queryset = queryset.filter(
+                organizacion_id=self.request.query_params.get('organizacion'))
         elif 'empresa' in self.request.query_params:
-            queryset = queryset.filter(id__in=self.get_eventos_empresa(self.request.query_params.get('empresa')))
+            queryset = queryset.filter(id__in=self.get_eventos_empresa(
+                self.request.query_params.get('empresa')))
+        # Si quiero ver antiguos no filtro a partir de hoy
+        elif 'antiguos' not in self.request.query_params:  
+            from django.db.models import Q
+            queryset = queryset.filter(Q(fecha_hora_inicio__gte=datetime.today(
+            ), campaña=False) | Q(fecha_hora_fin__gte=datetime.today(), campaña=True))
         else:
-            queryset = queryset.filter(fecha_hora_inicio__gte=datetime.today())
+            queryset = queryset.order_by('fecha_hora_inicio').reverse()
         if 'fecha_desde' in self.request.query_params:
-            queryset = queryset.filter(fecha_hora_inicio__gte=self.request.query_params.get('fecha_desde'))
-            queryset = queryset.filter(fecha_hora_inicio__lte=self.request.query_params.get('fecha_hasta'))
+            queryset = queryset.filter(
+                fecha_hora_inicio__gte=self.request.query_params.get('fecha_desde'))
+            queryset = queryset.filter(
+                fecha_hora_inicio__lte=self.request.query_params.get('fecha_hasta'))
         if 'kms' in self.request.query_params:
             kms = float(self.request.query_params.get('kms'))
             latitud = float(self.request.query_params.get('latitud'))
             longitud = float(self.request.query_params.get('longitud'))
             lista_eventos = self.filtrar_ubicacion(kms, latitud, longitud)
-            queryset = queryset.filter(id__in=lista_eventos)
+            queryset = queryset.filter(id__in=lista_eventos)        
         if self.tiene_filtros(self.request.query_params):
             lista_eventos = self.get_eventos(self.request.query_params)
             queryset = queryset.filter(id__in=lista_eventos)
         queryset = queryset.order_by('fecha_hora_inicio')
+        user = get_token_user(self.request)
+        if user is not None:
+            queryset = self.recomendar_eventos(queryset, user)
+        return queryset
+
+    def recomendar_eventos(self, queryset, user):
+        lista_eventos = [e.id for e in queryset]
+        recomendados = predict_eventos_userbased(user, lista_eventos)
+        lista_recomendados = [r[1] for r in recomendados]
+        queryset = queryset.filter(id__in=lista_recomendados) | \
+            queryset.exclude(id__in=lista_recomendados)
         return queryset
 
     def tiene_filtros(self, params):
@@ -263,18 +308,18 @@ class ConsultaEventosOrganizacionCreateReadView(ListCreateAPIView):
     def filtrar_ubicacion(self, kms, latitud, longitud):
         eventos = Evento.objects.all()
         eventos = eventos.filter(fecha_hora_inicio__gte=datetime.today())
-        ids = [e.id for e in eventos 
-            if calc_distance_locations(latitud, longitud, e.ubicacion.latitud, e.ubicacion.longitud) <= kms
-        ]
+        ids = [e.id for e in eventos
+               if calc_distance_locations(latitud, longitud, e.ubicacion.latitud, e.ubicacion.longitud) <= kms
+               ]
         return ids
-    
+
     def get_eventos_empresa(self, empresa):
         eventos = []
         propuestas = Propuesta.objects.filter(empresa_id=empresa, aceptado=1)
         for p in propuestas:
             eventos.append(p.evento.id)
         return eventos
-    
+
     def get_eventos(self, params):
         eventos = []
         categorias_recurso = params.get('necesidades', None)
@@ -303,6 +348,7 @@ class ConsultaEventosOrganizacionCreateReadView(ListCreateAPIView):
                         eventos.append(e.id)
         return eventos
 
+
 class ConsultaEventosReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     """
     API endpoint para leer, actualizar o eliminar un evento
@@ -310,6 +356,30 @@ class ConsultaEventosReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     queryset = Evento.objects.all()
     serializer_class = ConsultaEventoSerializer
     lookup_field = 'id'
+
+    def retrieve(self, request, id=None):
+        user = get_token_user(self.request)
+        evento = get_object_or_404(Evento.objects.all(), id=id)
+        if user is not None:
+            LogConsultaEvento.objects.create(usuario_id=user, evento=evento)
+        return super().retrieve(request, id)
+
+
+
+class ConsultaPropuestasDetalleEmpresaView(RetrieveAPIView):
+    """
+    API endpoint para leer, actualizar o eliminar un evento
+    """
+    queryset = User.objects.all()
+    serializer_class = ConsultarPropuestasEmpresaSerializer
+    lookup_field = 'id'
+
+
+class ConsultaPropuestasEmpresaView(RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = PropuestasEmpresasSerializer
+    lookup_field = 'id'
+
 
 class ColaboracionCreateReadView(ListCreateAPIView):
     """
@@ -323,10 +393,12 @@ class ColaboracionCreateReadView(ListCreateAPIView):
         if serializer.is_valid():
             user = User.objects.get(id=get_token_user(self.request))
             if user.user_type == 3:
-                create_propuesta(user, request.data['necesidad_material_id'], False)
+                create_propuesta(
+                    user, request.data['necesidad_material_id'], False)
             serializer.save(colaborador_id=user.id)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class ColaboracionReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     """
@@ -335,7 +407,7 @@ class ColaboracionReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     queryset = Colaboracion.objects.all()
     serializer_class = ColaboracionSerializer
     lookup_field = 'id'
-    
+
     # de aca para abajo, es una negrada, no queda otra, preguntarle a Gon por que
     def destroy(self, request, *args, **kwargs):
         serializer = ColaboracionSerializer(data=request.data)
@@ -365,12 +437,14 @@ class ParticipacionCreateReadView(ListCreateAPIView):
             user = User.objects.get(id=get_token_user(self.request))
             serializer.save(colaborador_id=user.id)
             if user.user_type == 3:
-                create_propuesta(user, request.data['necesidad_voluntario_id'], True)
+                create_propuesta(
+                    user, request.data['necesidad_voluntario_id'], True)
             else:
                 from actividades.services import send_participacion_create_email
                 send_participacion_create_email(serializer.instance)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class ParticipacionReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     """
@@ -399,7 +473,8 @@ class ParticipacionReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
             if user.user_type != 3:
                 send_participacion_destroy_email(participacion)
             necesidad_voluntario = participacion.necesidad_voluntario
-            participaciones = Participacion.objects.filter(necesidad_voluntario_id=necesidad_voluntario.id)
+            participaciones = Participacion.objects.filter(
+                necesidad_voluntario_id=necesidad_voluntario.id)
             suma_participantes = 0
             for p in participaciones:
                 suma_participantes += p.cantidad
@@ -416,11 +491,12 @@ class ComentarioCreateReadView(ListCreateAPIView):
     serializer_class = ComentarioSerializer
 
     def create(self, request):
-        serializer = ComentarioSerializer(data=request.data)        
+        serializer = ComentarioSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(voluntario_id=get_token_user(self.request))
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class ComentarioReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     """
@@ -430,6 +506,7 @@ class ComentarioReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     serializer_class = ComentarioSerializer
     lookup_field = 'id'
 
+
 class ConsultaNecesidadesReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     """
     API endpoint para ver consultar el estado de necesidades de un evento
@@ -438,59 +515,66 @@ class ConsultaNecesidadesReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     queryset = Evento.objects.all()
     lookup_field = 'id'
 
+
 @api_view(['POST'])
 def RetroalimentacionVoluntarioEvento(request):
     try:
         user = get_token_user(request)
-        colaboraciones = Colaboracion.objects.filter(colaborador_id=user, necesidad_material__evento_id=request.data['evento'])
+        colaboraciones = Colaboracion.objects.filter(
+            colaborador_id=user, necesidad_material__evento_id=request.data['evento'])
         for c in colaboraciones:
             c.retroalimentacion_voluntario = True
             c.save()
-        participaciones = Participacion.objects.filter(colaborador_id=user, necesidad_voluntario__evento_id=request.data['evento'])
+        participaciones = Participacion.objects.filter(
+            colaborador_id=user, necesidad_voluntario__evento_id=request.data['evento'])
         for p in participaciones:
             p.retroalimentacion_voluntario = True
             p.save()
         return Response(request.data, status=status.HTTP_201_CREATED)
     except:
-       return Response(status=status.HTTP_400_BAD_REQUEST)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(['POST'])
 def RetroalimentacionONGEvento(request):
     try:
         voluntario = request.data['voluntario']
         if request.data['es_colaboracion']:
-            colaboraciones = Colaboracion.objects.filter(colaborador_id=voluntario, necesidad_material__evento_id=request.data['evento'])
+            colaboraciones = Colaboracion.objects.filter(
+                colaborador_id=voluntario, necesidad_material__evento_id=request.data['evento'])
             for c in colaboraciones:
                 c.retroalimentacion_ong = True
                 c.save()
         else:
-            participaciones = Participacion.objects.filter(colaborador_id=voluntario, necesidad_voluntario__evento_id=request.data['evento'])
+            participaciones = Participacion.objects.filter(
+                colaborador_id=voluntario, necesidad_voluntario__evento_id=request.data['evento'])
             for p in participaciones:
                 p.retroalimentacion_ong = True
                 p.save()
         return Response(request.data, status=status.HTTP_201_CREATED)
     except:
-       return Response(status=status.HTTP_400_BAD_REQUEST)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(['POST'])
 def EntregadoNecesidadEvento(request):
     try:
-        colaboracion = Colaboracion.objects.get(id=request.data['colaboracion'])
-        colaboracion.entregado = request.data['entregado']
-        colaboracion.save()
+        actualizar_colaboracion(
+            request.data['colaboracion'], request.data['entregado'])
         return Response(request.data, status=status.HTTP_201_CREATED)
     except:
-       return Response(status=status.HTTP_400_BAD_REQUEST)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(['POST'])
 def ParticipadoNecesidadEvento(request):
     try:
-        participacion = Participacion.objects.get(id=request.data['participacion'])
-        participacion.participo = request.data['participo']
-        participacion.save()
+        actualizar_participacion(
+            request.data['participacion'], request.data['participo'])
         return Response(request.data, status=status.HTTP_201_CREATED)
     except:
-       return Response(status=status.HTTP_400_BAD_REQUEST)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
 
 class EventoImagenRetrieveDestroyView(RetrieveDestroyAPIView):
 
@@ -510,12 +594,15 @@ class EventoImagenListView(APIView):
         serializer = EventoImagenSerializer(imagenes, many=True)
         return Response(serializer.data)
 
+
 class EventoImagenCreateView(CreateAPIView):
 
     """ API endpoint para crear una imagen de un evento """
 
     queryset = EventoImagen.objects.all()
     serializer_class = EventoImagenSerializer
+
+
 class MensajeCreateReadView(ListCreateAPIView):
     """
     API endpoint para crear o ver todos los mensajes
@@ -526,7 +613,7 @@ class MensajeCreateReadView(ListCreateAPIView):
     def get_queryset(self):
         queryset = Mensaje.objects.all()
         evento_id = self.request.query_params.get('evento', None)
-        user = get_token_user(self.request)        
+        user = get_token_user(self.request)
         if evento_id is not None:
             evento = Evento.objects.filter(id=evento_id)[0]
             if evento.organizacion_id == user:
@@ -534,6 +621,7 @@ class MensajeCreateReadView(ListCreateAPIView):
                 queryset = queryset.order_by('-created')
                 return queryset
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class MensajeReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     """
@@ -543,6 +631,7 @@ class MensajeReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     queryset = Mensaje.objects.all()
     serializer_class = MensajeSerializer
     lookup_field = 'id'
+
 
 class PropuestaEmpresaCreateReadView(ListCreateAPIView):
     """
@@ -556,6 +645,7 @@ class PropuestaEmpresaCreateReadView(ListCreateAPIView):
         queryset = queryset.filter(empresa_id=get_token_user(self.request))
         return queryset
 
+
 class PropuestaReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     """
     API endpoint para leer, actualizar o eliminar una propuesta
@@ -564,3 +654,13 @@ class PropuestaReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     queryset = Propuesta.objects.all()
     serializer_class = PropuestaSerializer
     lookup_field = 'id'
+
+    def update(self, request, *args, **kwargs):
+        if request is not None and request.data is not None and request.data['id'] is not None:
+            propuesta = Propuesta.objects.get(id=request.data['id'])
+            if propuesta is not None and propuesta.aceptado == 1:
+                from actividades.services import notify_cambio_propuesta
+                notify_cambio_propuesta(propuesta)
+            nueva_propuesta = super().update(request, *args, **kwargs)
+            return nueva_propuesta
+        return None

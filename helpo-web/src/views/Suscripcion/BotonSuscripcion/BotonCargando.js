@@ -6,7 +6,7 @@ class BotonCargando extends React.Component {
   render() {
     return  (
       <Button style={{ height: 35, width: 160 }}>
-        <p>Cargando...</p>
+        <div className="loader"/>
       </Button>
     )
   }

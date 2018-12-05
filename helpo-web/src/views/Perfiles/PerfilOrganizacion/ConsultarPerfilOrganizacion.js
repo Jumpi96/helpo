@@ -146,14 +146,13 @@ class ConsultarPerfilOrganizacion extends Component {
     else {
       const params = { v: '3.exp', key: process.env.GOOGLE_API_KEY }
       return (
-        <div className='row' style={{ marginBottom: '20px' }} >
-          <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }} className='col-2'>
-            <p style={{ textAlign: 'right' }} className='font-weight-bold' htmlFor="descripcion">Ubicación</p>
+        <div className="row">
+          <div className="form-group col-md-2">
+            <b className="float-left">Ubicación</b>
           </div>
-
-          <div className='col-6'>
+          <div className='col-md-9 offset-md-1'>
             <Gmaps
-              width={'300px'}
+              width={'75%'}
               height={'300px'}
               lat={this.props.data.ubicacion.latitud}
               lng={this.props.data.ubicacion.longitud}
@@ -164,7 +163,6 @@ class ConsultarPerfilOrganizacion extends Component {
                 lng={this.props.data.ubicacion.longitud}
               />
             </Gmaps>
-
             <p style={{ marginTop: '10px' }}>{this.props.data.ubicacion.notas}</p>
           </div>
         </div>
@@ -200,7 +198,7 @@ class ConsultarPerfilOrganizacion extends Component {
     if (this.props.auth.isAuthenticated) {
       return '/actividades/consultar-eventos?organizacion=' + this.props.id;
     }
-    return '/noAuth/actividades/consultar-eventos?organizacion=' + this.props.id;  
+    return '/noAuth/actividades/consultar-eventos?organizacion=' + this.props.id;
   }
 
   render() {
@@ -213,6 +211,9 @@ class ConsultarPerfilOrganizacion extends Component {
         <CardBody>
           <div className="row">
             <div className="col-md-8">
+              <div className="row">
+                <div className="col-md-2"><i style={{ color: "#A9A9A9" }}>ONG</i></div>
+              </div>
               <div className="row" style={{ marginBottom: '5%' }}>
                 <div className="col-md-3">
                   <p style={{ textAlign: 'left' }} className='h4'>{this.props.nombre}</p>
@@ -278,7 +279,7 @@ class ConsultarPerfilOrganizacion extends Component {
               <div style={{ display: 'flex', marginBottom: '10px' }} className='row offster-md-4'>
                 <div className="col-md-5 offset-md-3">
                   <Link to={link}>
-                    <button className='btn btn-primary'>Ver eventos organizados</button>
+                    <button className='btn btn-primary'>Ver actividades organizadas</button>
                   </Link>
                 </div>
               </div>
@@ -296,14 +297,16 @@ class ConsultarPerfilOrganizacion extends Component {
                   <Tooltip placement="top" isOpen={this.state.tooltipManos} target="cardManos" toggle={this.toggleManos}>
                     Manos acumuladas
                   </Tooltip>
-                </Card >
-                <Card id="cardEventos" className="text-center" body inverse color="primary" style={{ height: 100, width: 100, borderColor: 'white' }}>
-                  <CardTitle><i className="fa fa-calendar-check-o fa-2x"></i></CardTitle>
-                  <CardText style={{ fontSize: 20 }}>{this.renderEventos()}</CardText>
-                  <Tooltip placement="top" isOpen={this.state.tooltipEventos} target="cardEventos" toggle={this.toggleEventos}>
-                    Eventos organizados
-                  </Tooltip>
                 </Card>
+                <Link to={link}>
+                  <Card id="cardEventos" className="text-center" body inverse color="primary" style={{ height: 100, width: 100, borderColor: 'white' }}>
+                    <CardTitle><i className="fa fa-calendar-check-o fa-2x"></i></CardTitle>
+                    <CardText style={{ fontSize: 20 }}>{this.renderEventos()}</CardText>
+                    <Tooltip placement="top" isOpen={this.state.tooltipEventos} target="cardEventos" toggle={this.toggleEventos}>
+                      Eventos organizados
+                    </Tooltip>
+                  </Card>
+                </Link>
                 {this.props.data.verificada ?
                   <Card id="cardVerificada" className="text-center" body inverse color="primary" style={{ height: 100, width: 100, borderColor: 'white' }}>
                     <CardTitle><i className="fa fa-shield fa-3x"></i></CardTitle>

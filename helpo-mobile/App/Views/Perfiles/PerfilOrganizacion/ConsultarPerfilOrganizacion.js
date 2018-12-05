@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import openMap from 'react-native-open-maps';
 import {
+  Row,
+  ActionSheet,
   Container,
   Header,
   Title,
@@ -8,13 +11,13 @@ import {
   Button,
   Label,
   ListItem,
+  View,
   Body,
   Left,
   Right,
   Icon,
   Thumbnail,
-  Text,
-  Separator
+  Text
 } from 'native-base';
 import styles from './styles';
 
@@ -27,13 +30,15 @@ class ConsultarPerfilOrganizacion extends Component {
     this.renderTelefono = this.renderTelefono.bind(this);
     this.renderDescripcion = this.renderDescripcion.bind(this);
     this.renderCuit = this.renderCuit.bind(this);
+    this.showToast = this.showToast.bind(this);
+    this.showToastRetroalimentacion = this.showToastRetroalimentacion.bind(this);
   }
 
   renderRubro() {
     if (this.props.data.rubro == null) {
       return <Text style={styles.textMuted}> No hay valor ingresado</Text>
     }
-    return <Text> {this.props.data.rubro}</Text>
+    return <Text> {this.props.data.rubro.nombre}</Text>
   }
 
   renderTelefono() {
@@ -68,10 +73,54 @@ class ConsultarPerfilOrganizacion extends Component {
     } else if (this.props.data.usuario.user_type === 1) {
       return (
         <Button transparent onPress={this.props.switchToEventosOrg}>
-          <Text>Ver eventos</Text>
+          <Text>Ver actividades</Text>
         </Button>
       );
     }
+  }
+
+  showToast() {
+    const nombre = this.props.nombre;
+    ActionSheet.show({
+      options: [
+        { text: "Cerrar", icon: "close", iconColor: "#25de5b" },
+      ],
+      title: nombre + " es una cuenta verificada"
+    }, buttonIndex => {
+      console.log(buttonIndex);
+    });
+  }
+
+  showToastRetroalimentacion() {
+    ActionSheet.show({
+      options: [
+        { text: "Cerrar", icon: "close", iconColor: "#25de5b" },
+      ],
+      title: "Cantidad de manos y actividades sociales acumuladas"
+    }, buttonIndex => {
+      console.log(buttonIndex);
+    });
+  }
+
+  goToUbicacion(ubicacion) {
+    openMap({
+      query: ubicacion.latitud + ',' + ubicacion.longitud
+    });
+  }
+
+  renderUbicacion() {
+    return (
+      <View>
+        <Button block style={{ margin: 15, marginTop: 20 }}
+          onPress={() => this.goToUbicacion(this.props.data.ubicacion)}
+        >
+          <Text>Abrir ubicación</Text>
+        </Button>
+        <ListItem>
+          <Text>{this.props.data.ubicacion.notas}</Text>
+        </ListItem>
+      </View>
+    );
   }
 
   render() {
@@ -92,12 +141,27 @@ class ConsultarPerfilOrganizacion extends Component {
             </Right>
           </Header>
           <Content>
-            <Thumbnail large center source={{ uri: this.props.data.avatar.url }} />
+            <Row>
+              <Thumbnail large center source={{ uri: this.props.data.avatar.url }} />
+              <Right>
+                <Button transparent onPress={this.props.switchToEventosOrg}>
+                  <Icon name="hand" style={{ color: "#F39200" }} ></Icon>
+                  <Text style={styles.retroalimentacion}>{this.props.data.manos}</Text>
+                  <Icon name="calendar" family="Entypo" style={{ color: "#F39200" }} ></Icon>
+                  <Text style={styles.retroalimentacion}>{this.props.data.eventos}</Text>
+                </Button>
+              </Right>
+            </Row>
             <ListItem itemDivider>
               <Label style={styles.label}>Nombre</Label>
             </ListItem>
             <ListItem>
               <Text>{this.props.nombre}</Text>
+              {this.props.data.verificada ?
+                <Button transparent onPress={this.showToast} >
+                  <Icon type="Feather" name="check-circle" style={{ color: "#F39200", marginLeft: 10 }} />
+                </Button>
+                : undefined}
             </ListItem>
 
             <ListItem itemDivider>
@@ -127,6 +191,15 @@ class ConsultarPerfilOrganizacion extends Component {
             <ListItem>
               {this.renderRubro()}
             </ListItem>
+
+            {this.props.data.ubicacion !== null ?
+              <View>
+                <ListItem itemDivider>
+                  <Label style={styles.label}>Ubicación</Label>
+                </ListItem>
+                {this.renderUbicacion()}
+              </View> : undefined
+            }
 
             <ListItem itemDivider>
               <Label style={styles.label}>Descripción</Label>

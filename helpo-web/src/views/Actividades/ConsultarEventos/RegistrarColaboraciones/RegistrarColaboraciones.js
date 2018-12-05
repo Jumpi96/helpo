@@ -5,6 +5,7 @@ import { auth } from '../../../../actions';
 import './RegistrarColaboraciones.css';
 import api from '../../../../api';
 import ModalRegistrarColaboracion from './ModalRegistrarColaboracion/ModalRegistrarColaboracion';
+import ModalGenerico from '../../../Perfiles/ModalGenerico';
 
 
 class RegistrarColaboraciones extends Component {
@@ -22,12 +23,16 @@ class RegistrarColaboraciones extends Component {
       evento: { id: evento },
       necesidades: [],
       voluntarios: [],
-      funcionVoluntario: undefined
+      funcionVoluntario: undefined,
+      modalGuardar: false
     };
     this.selectFuncion = this.selectFuncion.bind(this);
-    this.getTablaVoluntarios = this.getTablaVoluntarios.bind(this);
+    this.getTablaVoluntariosEvento = this.getTablaVoluntariosEvento.bind(this);
+    this.getTablaVoluntariosCampana = this.getTablaVoluntariosCampana.bind(this);
+    this.getEntregado = this.getEntregado.bind(this);
     this.handleModalChange = this.handleModalChange.bind(this);
     this.saveColaboracionModal = this.saveColaboracionModal.bind(this);
+    this.getParticipacionPorId = this.getParticipacionPorId.bind(this);
   }
 
   componentDidMount() {
@@ -71,6 +76,10 @@ class RegistrarColaboraciones extends Component {
     return n.colaboraciones.filter(c => c.colaborador.id === this.getUserId()).length > 0;
   }
 
+  existeParticipacion(v) {
+    return v.participaciones.filter(p => p.colaborador.id === this.getUserId()).length > 0;
+  }
+
   getTablaNecesidades() {
     return this.state.necesidades.map((n) =>
       <tr>
@@ -79,9 +88,28 @@ class RegistrarColaboraciones extends Component {
         <td>{n.recurso.nombre}</td>
         <td>{n.descripcion}</td>
         <td>{this.getCantidadNecesidades(n)}</td>
+        <td>{this.getEntregado(n)}</td>
         {this.getBotonesNecesidad(n)}
       </tr>
     );
+  }
+
+  getBotonesVoluntario(v) {
+    if (this.existeParticipacion(v)) {
+      const participacion = v.participaciones.filter(p => p.colaborador.id === this.getUserId())[0];
+      return (
+        <td>
+          <Button onClick={() => this.deleteParticipacion(participacion.id)}
+            color="danger">Eliminar</Button>
+        </td>
+      );
+    } else {
+      return (
+        <td>
+          <Button onClick={() => this.openModalParticipacion(v.id)} color="primary">Ofrecer</Button>
+        </td>
+      );
+    }
   }
 
   getBotonesNecesidad(n) {
@@ -108,6 +136,20 @@ class RegistrarColaboraciones extends Component {
     }
   }
 
+  getEntregado(n) {
+    if (n.funcion) {
+      if (this.existeParticipacion(n)) {
+        return n.participaciones.filter(p => p.colaborador.id === this.getUserId())[0].presencias;
+      }
+    } else {
+      if (this.existeColaboracion(n)) {
+        return n.colaboraciones.filter(c => c.colaborador.id === this.getUserId())[0].entregados;
+      }
+    }
+    return '-';
+  }
+
+
   selectFuncion(e) {
     this.setState({ funcionVoluntario: parseInt(e.target.value, 10) });
   }
@@ -124,7 +166,40 @@ class RegistrarColaboraciones extends Component {
     return '' + contador + '/' + v.cantidad;
   }
 
-  getTablaVoluntarios() {
+  getTablaVoluntariosCampana() {
+    const voluntarios = [];
+    for (let i = 0; i < this.state.voluntarios.length; i++) {
+      voluntarios.push(
+        <tr>
+          <td><i className="cui-user"></i></td>
+          <td>{this.state.voluntarios[i].funcion.nombre}</td>
+          <td>{this.state.voluntarios[i].descripcion}</td>
+          <td>{this.getCantidadVoluntarios(this.state.voluntarios[i])}</td>
+          <td>{this.getEntregado(this.state.voluntarios[i])}</td>
+          {this.getBotonesVoluntario(this.state.voluntarios[i])}
+        </tr>
+      )
+    }
+    return (
+      <Table responsive striped>
+        <thead>
+          <tr>
+            <th></th>
+            <th>Función</th>
+            <th>Descripción</th>
+            <th>Participando</th>
+            <th>Presencias</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {voluntarios}
+        </tbody>
+      </Table>
+    );
+  }
+
+  getTablaVoluntariosEvento() {
     const funcion = this.state.funcionVoluntario;
     const voluntarios = [];
     for (let i = 0; i < this.state.voluntarios.length; i++) {
@@ -192,6 +267,7 @@ class RegistrarColaboraciones extends Component {
       cantidad_anterior: 0,
       cantidad: undefined,
       cantidad_restante: this.getCantidadRestante(necesidad, 0),
+      entregados: 0,
       recurso: necesidad.recurso,
       descripcion: necesidad.descripcion,
       comentarios: undefined,
@@ -216,6 +292,7 @@ class RegistrarColaboraciones extends Component {
       id: idNecesidad,
       cantidad_anterior: colaboracionAnterior.cantidad,
       cantidad: colaboracionAnterior.cantidad,
+      entregados: colaboracionAnterior.entregados,
       cantidad_restante: this.getCantidadRestante(necesidad, colaboracionAnterior.cantidad),
       recurso: necesidad.recurso,
       descripcion: necesidad.descripcion,
@@ -225,26 +302,45 @@ class RegistrarColaboraciones extends Component {
   }
 
 
-  openModalParticipacion() {
-    const voluntario = this.state.voluntarios.filter(v => v.id === this.state.funcionVoluntario)[0];
-    const participacionVoluntario = this.getNecesidadVoluntario(this.state.voluntarios) === this.state.funcionVoluntario;
-    if (!participacionVoluntario) {
-      if (this.state.funcionVoluntario !== 0) {
-        const participacion = {
-          id: this.state.funcionVoluntario,
-          cantidad_anterior: participacionVoluntario,
-          cantidad: participacionVoluntario,
-          cantidad_restante: this.getCantidadRestante(voluntario, participacionVoluntario),
-          funcion: voluntario.funcion,
-          descripcion: voluntario.descripcion,
-          comentarios: undefined,
+  openModalParticipacion(voluntarioId = 0) {
+    let voluntario, participacion;
+    if (voluntarioId === 0) {
+      voluntario = this.state.voluntarios.filter(v => v.id === this.state.funcionVoluntario)[0];
+      const participacionVoluntario = this.getNecesidadVoluntario(this.state.voluntarios) === this.state.funcionVoluntario;
+      if (!participacionVoluntario) {
+        if (this.state.funcionVoluntario !== 0) {
+          participacion = {
+            id: this.state.funcionVoluntario,
+            cantidad_anterior: participacionVoluntario,
+            cantidad: participacionVoluntario,
+            cantidad_restante: this.getCantidadRestante(voluntario, participacionVoluntario),
+            presencias: 0,
+            funcion: voluntario.funcion,
+            descripcion: voluntario.descripcion,
+            comentarios: undefined,
+          }
+        } else {
+          this.deleteParticipacion();
         }
         this.setState({ colaboracionModificada: participacion });
       } else {
         this.setState({ apiToken: true });
         this.deleteParticipacion();
       }
+    } else {
+      voluntario = this.state.voluntarios.filter(v => v.id === voluntarioId)[0];
+      participacion = {
+        id: voluntario.id,
+        cantidad_anterior: 0,
+        cantidad: 0,
+        cantidad_restante: this.getCantidadRestante(voluntario, 0),
+        funcion: voluntario.funcion,
+        descripcion: voluntario.descripcion,
+        presencias: 0,
+        comentarios: undefined,
+      }
     }
+    this.setState({ colaboracionModificada: participacion });
   }
 
   saveColaboracionModal(guardar) {
@@ -275,20 +371,44 @@ class RegistrarColaboraciones extends Component {
     return undefined;
   }
 
-  deleteParticipacion() {
-    var _this = this;
-    const participacionAEliminar = this.getIdParticipacionVoluntario();
-    api.delete('/actividades/participaciones/' + participacionAEliminar + '/')
-      .then(res => {
-        console.log(res);
-        console.log(res.data);
-        this.loadNecesidadesYVoluntarios();
-      }).catch((error) => {
-        if (error.response) { console.log(error.response.status) }
-        else { console.log('Error: ', error.message) }
-        _this.setState({ error_necesidad: "Hubo un problema al cargar su información.", apiToken: false });
-      });
+  getParticipacionPorId(id) {
+    const { voluntarios } = this.state;
+    let participaciones;
+    for (let i = 0; i < voluntarios.length; i++) {
+      participaciones = voluntarios[i].participaciones.filter(c => c.id === id);
+      if (participaciones.length > 0) {
+        return participaciones[0];
+      }
+    }
+  }
 
+  deleteParticipacion(id = 0) {
+    let idParticipacion;
+    if (id === 0) {
+      idParticipacion = this.getIdParticipacionVoluntario();
+    } else {
+      idParticipacion = id;
+    }
+    const participacion = this.getParticipacionPorId(idParticipacion);
+    if (participacion) {
+      if (participacion.presencias === 0) {
+        api.delete('/actividades/participaciones/' + idParticipacion + '/')
+          .then(res => {
+            console.log(res);
+            console.log(res.data);
+            this.loadNecesidadesYVoluntarios();
+          }).catch((error) => {
+            if (error.response) { console.log(error.response.status) }
+            else { console.log('Error: ', error.message) }
+            this.setState({ error_necesidad: "Hubo un problema al cargar su información.", apiToken: false });
+          });
+      } else {
+        alert("No se puede eliminar una participación que ya fue realizada.");
+        this.setState({ apiToken: false })
+      }
+    } else {
+      this.setState({ apiToken: false })
+    }
   }
 
   saveColaboracion(colaboracion) {
@@ -336,19 +456,41 @@ class RegistrarColaboraciones extends Component {
   }
 
   deleteColaboracion(idNecesidad) {
-    var _this = this;
     this.setState({ apiToken: true });
-    const colaboracionAnterior = this.getColaboracionAnterior(idNecesidad);
-    api.delete('/actividades/colaboraciones/' + colaboracionAnterior + '/')
-      .then(res => {
-        console.log(res);
-        console.log(res.data);
-        this.loadNecesidadesYVoluntarios();
-      }).catch((error) => {
-        if (error.response) { console.log(error.response.status) }
-        else { console.log('Error: ', error.message) }
-        _this.setState({ error_necesidad: "Hubo un problema al cargar su información.", apiToken: false });
-      });
+    const necesidad = this.state.necesidades.filter(n => n.id === idNecesidad)[0];
+    const colaboracion = necesidad.colaboraciones.filter(c => c.colaborador.id === this.getUserId())[0];
+    if (colaboracion.entregados === 0) {
+      api.delete('/actividades/colaboraciones/' + colaboracion.id + '/')
+        .then(res => {
+          console.log(res);
+          console.log(res.data);
+          this.loadNecesidadesYVoluntarios();
+        }).catch((error) => {
+          if (error.response) { console.log(error.response.status) }
+          else { console.log('Error: ', error.message) }
+          this.setState({ error_necesidad: "Hubo un problema al cargar su información.", apiToken: false });
+        });
+    } else if (colaboracion.entregados === colaboracion.cantidad) {
+      alert("No se puede eliminar una colaboración que ya ha sido entregada.");
+      this.setState({ apiToken: false });
+    } else if (colaboracion.entregados < colaboracion.cantidad) {
+      const nuevaColaboracion = {
+        id: colaboracion.id,
+        cantidad: colaboracion.entregados,
+        comentario: colaboracion.comentarios,
+        necesidad_material_id: colaboracion.necesidad_material_id,
+      }
+      api.patch('/actividades/colaboraciones/' + colaboracion.id + '/', nuevaColaboracion)
+        .then(res => {
+          console.log(res);
+          console.log(res.data);
+          this.loadNecesidadesYVoluntarios();
+        }).catch((error) => {
+          if (error.response) { console.log(error.response.status) }
+          else { console.log('Error: ', error.message) }
+          this.setState({ error_necesidad: "Hubo un problema al cargar su información.", apiToken: false });
+        });
+    }
   }
 
   getColaboracionAnterior(necesidadId) {
@@ -363,9 +505,11 @@ class RegistrarColaboraciones extends Component {
       necesidad_voluntario_id: participacion.id,
       cantidad: 1,
     };
-    const funcion_anterior = this.getNecesidadVoluntario(this.state.voluntarios);
-    if (funcion_anterior !== this.state.funcionVoluntario && funcion_anterior !== 0) {
-      this.deleteParticipacion();
+    if (!this.state.evento.campaña) {
+      const necesidadVoluntario = this.getNecesidadVoluntario(this.state.voluntarios);
+      if (necesidadVoluntario !== 0 && necesidadVoluntario !== this.state.funcionVoluntario) {
+        this.deleteParticipacion();
+      }
     }
     api.post('/actividades/participaciones/', nuevaParticipacion)
       .then(res => {
@@ -401,6 +545,7 @@ class RegistrarColaboraciones extends Component {
                     <th>Ítem</th>
                     <th>Descripción</th>
                     <th>Colaborando</th>
+                    <th>Entregados</th>
                     <th></th>
                   </tr>
                 </thead>
@@ -409,7 +554,13 @@ class RegistrarColaboraciones extends Component {
                 </tbody>
               </Table>
               <hr />
-              {this.getTablaVoluntarios()}
+              {
+                this.state.evento.campaña ?
+                  this.getTablaVoluntariosCampana() :
+                  this.getTablaVoluntariosEvento()
+              }
+              <Button onClick={() => this.setState({ modalGuardar: true })}
+                color="primary">Guardar colaboraciones</Button>
             </form>
           </CardBody>
         </Card>
@@ -417,6 +568,12 @@ class RegistrarColaboraciones extends Component {
           open={this.state.colaboracionModificada} handleChange={this.handleModalChange}
           colaboracion={this.state.colaboracionModificada} closeModal={this.saveColaboracionModal}
         />
+        {this.state.modalGuardar ?
+          <ModalGenerico
+            body='Se guardaron los cambios exitosamente'
+            onCancel={() => this.props.history.push('/actividades/consultar-evento?id=' + this.state.evento.id)}
+          /> : undefined
+        }
       </div>
     )
   }

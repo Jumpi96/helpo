@@ -17,15 +17,20 @@ import {
   Fab,
   IconNB,
   View,
+  CheckBox
 } from 'native-base';
 import * as eventoActions from '../../../Redux/actions/eventoActions';
 import * as rubrosEventoActions from '../../../Redux/actions/rubroEventoActions';
 import styles from './styles';
 import CompartirOrganizacion from '../CompartirEvento/CompartirOrganizacion';
+import Immutable from 'seamless-immutable'
 
 class MisEventos extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      verAntiguos: false
+    }
     this.props.loadRubrosEvento();
     this.props.loadEventosOrganizacion();
   }
@@ -37,9 +42,42 @@ class MisEventos extends React.Component {
   getONG() {
     return this.props.auth.user;
   }
+
+  handleChangeVerAntiguos = () => {
+    const verAntiguos = !this.state.verAntiguos
+    this.setState({verAntiguos: verAntiguos})
+  }
+
+  verEventosAntiguos = () => (
+    <ListItem>
+      <CheckBox 
+        checked={this.state.verAntiguos} 
+        onPress={this.handleChangeVerAntiguos}
+        color='orange'
+      />
+      <Body>
+        <Text>¿Ver actividades finalizadas?</Text>
+      </Body>
+    </ListItem>
+  )
+
+  sortEventos(eventos_unsorted) {
+    let eventos = Immutable.asMutable(eventos_unsorted)
+    return eventos.sort(function (a, b) {
+      var keyA = new Date(a.fecha_hora_inicio),
+        keyB = new Date(b.fecha_hora_inicio);
+      if (keyA < keyB) return 1;
+      if (keyA > keyB) return -1;
+      return 0;
+    });
+  }
   
   render() {
-    const eventos = this.props.evento.eventos;
+    let unsortedEventos = this.props.evento.eventos;
+    let unfilteredEventos = this.sortEventos(unsortedEventos)
+    const eventos = this.state.verAntiguos 
+                    ? unfilteredEventos
+                    : unfilteredEventos.filter(evento => moment(evento.fecha_hora_fin).format() > moment().format())
     const listaEventos = eventos.map((n) =>
       <ListItem icon key={n.id}>
         <Left>
@@ -47,7 +85,11 @@ class MisEventos extends React.Component {
             style={{ backgroundColor: '#ffe859' }}
             onPress={() => this.props.navigation.navigate('VerEvento', { evento: n.id })}
           >
-            <Icon name="hand" />
+            {
+              n.campaña ?
+              <Icon name="calendar" family="Entypo" /> :
+              <Icon name="hand" />
+            }
           </Button>
         </Left>
         <Body>
@@ -77,26 +119,16 @@ class MisEventos extends React.Component {
             </Button>
           </Left>
           <Body>
-            <Title>Mis eventos</Title>
+            <Title>Mis actividades</Title>
           </Body>
         </Header>
         <Content>
           <Form>
+            {this.verEventosAntiguos()}
             {listaEventos}
           </Form>
           <CompartirOrganizacion ong={this.getONG()} />
         </Content>
-        <View style={{ flex: 0.1 }}>
-          <Fab
-            direction="up"
-            containerStyle={{}}
-            style={{ backgroundColor: "#E94E1B" }}
-            position="bottomRight"
-            onPress={() => this.props.navigation.navigate('RegistrarEvento')}
-          >
-            <IconNB name="md-add" />
-          </Fab>
-        </View>
       </Container>
     );
   }

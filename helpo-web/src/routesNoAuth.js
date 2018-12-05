@@ -4,7 +4,7 @@ import Loadable from 'react-loadable'
 import NoAuthLayout from './containers/NoAuthLayout';
 
 function Loading() {
-  return <div>Cargando...</div>;
+  return <div className="loader"/>;
 }
 
 const ConsultarEventosPage = Loadable({
@@ -22,6 +22,11 @@ const OrganizacionesPage = Loadable({
   loading: Loading,
 })
 
+const EmpresasPage = Loadable({
+  loader: () => import('./views/Empresas/EmpresasPage.js'),
+  loading: Loading,
+})
+
 const ConsultarPerfil = Loadable({
   loader: () => import('./views/Perfiles/ConsultarPerfilGenerico'),
   loading: Loading,
@@ -32,14 +37,21 @@ const Dashboard = Loadable({
   loading: Loading,
 });
 
+const AlbumImagenes = Loadable({
+  loader: () => import('./views/Actividades/ConsultarEventos/AlbumImagenes/AlbumImagenes'),
+  loading: Loading,
+})
+
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
   { path: '/noAuth', exact: true, name: 'Home', component: NoAuthLayout },
   { path: '/noAuth/dashboard', name: 'helpo', component: Dashboard },
-  { path: '/noAuth/actividades/consultar-eventos', name: 'Consultar eventos', component: ConsultarEventosPage },
-  { path: '/noAuth/actividades/consultar-evento/', name: 'Consultar evento', component: ConsultarEventosView },
+  { path: '/noAuth/actividades/consultar-eventos', name: 'Consultar actividades sociales', component: ConsultarEventosPage },
+  { path: '/noAuth/actividades/consultar-evento/', name: 'Consultar actividad social', component: ConsultarEventosView },
+  { path: '/noAuth/actividades/album/:eventoId', name: 'Album de Evento', component: AlbumImagenes },
   { path: '/noAuth/organizaciones', name: 'Organizaciones', component: OrganizacionesPage },
+  { path: '/noAuth/empresas', name: 'Empresas', component: EmpresasPage },
   { path: '/noAuth/perfil/:usuarioId?', name: 'Perfil de usuario', component: ConsultarPerfil }
 ];
 

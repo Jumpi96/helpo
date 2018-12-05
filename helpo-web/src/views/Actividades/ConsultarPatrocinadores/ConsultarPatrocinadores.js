@@ -51,30 +51,41 @@ class ConsultarPatrocinadores extends Component {
         <td><label>{moment(p.created).format('DD/MM/YYYY HH:mm')}</label></td>
         <td>{this.getBotonEstado(p)}</td>
         <td>
-          <button 
-            className="btn btn-primary"
+          <Button 
+            color="primary"
             onClick={() => this.setState({ propuestaModal: p })}>
             Ver propuesta
-          </button>
+          </Button>
         </td>
       </tr>
     );
-    return (
-      <Table responsive striped>
-        <thead>
-          <tr>
-            <th>Empresa</th>
-            <th></th>
-            <th>Fecha</th>
-            <th>Estado</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {listaPropuestas}
-        </tbody>
-      </Table>
+    if(propuestas && propuestas.length > 0){
+      return (
+        <Table responsive striped>
+          <thead>
+            <tr>
+              <th>Empresa</th>
+              <th></th>
+              <th>Fecha</th>
+              <th>Estado</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {listaPropuestas}
+          </tbody>
+        </Table>
+      );
+    }
+  else{
+    return(
+      <CardBody>
+        <br />
+        <label>No se recibieron propuestas para esta actividad</label>
+      </CardBody>
     );
+  }
+    
   }
 
   getBotonEstado(propuesta) {
@@ -152,7 +163,7 @@ class ConsultarPatrocinadores extends Component {
             </CardHeader>
             <CardBody>
               <form>
-                <p>Desde aquí puede <b>aceptar o rechazar</b> las propuestas de patrocinación de las empresas para el evento.</p>
+                <p>Desde aquí puede <b>aceptar o rechazar</b> las propuestas de patrocinación de las empresas para la actividad social.</p>
                 {this.getTablaPropuestas(evento.propuestas)}
               </form>
             </CardBody>
@@ -168,7 +179,7 @@ class ConsultarPatrocinadores extends Component {
         </div>
       )
     } else {
-      return (<p>Cargando...</p>)
+      return (<div className="loader"/>)
     }
   }
 }

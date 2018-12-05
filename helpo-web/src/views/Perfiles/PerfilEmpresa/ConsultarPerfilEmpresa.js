@@ -144,14 +144,13 @@ class ConsultarPerfilEmpresa extends Component {
     else {
       const params = { v: '3.exp', key: process.env.GOOGLE_API_KEY }
       return (
-        <div className='row' style={{ marginBottom: '20px' }} >
-          <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }} className='col-2'>
-            <p style={{ textAlign: 'right' }} className='font-weight-bold' htmlFor="descripcion">Ubicación</p>
+        <div className="row">
+          <div className="form-group col-md-2">
+            <b className="float-left">Ubicación</b>
           </div>
-
-          <div className='col-6'>
+          <div className='col-md-9 offset-md-1'>
             <Gmaps
-              width={'300px'}
+              width={'75%'}
               height={'300px'}
               lat={this.props.data.ubicacion.latitud}
               lng={this.props.data.ubicacion.longitud}
@@ -162,7 +161,6 @@ class ConsultarPerfilEmpresa extends Component {
                 lng={this.props.data.ubicacion.longitud}
               />
             </Gmaps>
-
             <p style={{ marginTop: '10px' }}>{this.props.data.ubicacion.notas}</p>
           </div>
         </div>
@@ -208,6 +206,9 @@ class ConsultarPerfilEmpresa extends Component {
         <CardBody>
           <div className="row">
             <div className="col-md-8">
+              <div className="row">
+                <div className="col-md-2"><i style={{ color: "#A9A9A9" }}>Empresa</i></div>
+              </div>
               <div className="row" style={{ marginBottom: '5%' }}>
                 <div className="col-md-3">
                   <p style={{ textAlign: 'left' }} className='h4'>{this.props.nombre}</p>
@@ -264,16 +265,16 @@ class ConsultarPerfilEmpresa extends Component {
               </div>
               {this.mostrarUbicacion()}
               <div style={{ display: 'flex', marginBottom: '10px' }} className='row offster-md-4'>
-                <div className="col-md-4">
+                <div className="col-md-5 offset-md-3">
                   {this.props.sinModificar
                     ? ""
                     : <Button onClick={this.props.switchToModificar} color='primary'>Modificar datos</Button>}
                 </div>
               </div>
               <div style={{ display: 'flex', marginBottom: '10px' }} className='row offster-md-4'>
-                <div className="col-md-4">
+                <div className="col-md-5 offset-md-3">
                   <Link to={link}>
-                    <button className='btn btn-primary'>Ver eventos patrocinados</button>
+                    <button className='btn btn-primary'>Ver actividades patrocinadas</button>
                   </Link>
                 </div>
               </div>
@@ -287,13 +288,15 @@ class ConsultarPerfilEmpresa extends Component {
                     Manos acumuladas
                   </Tooltip>
                 </Card >
-                <Card id="cardEventos" className="text-center" body inverse color="primary" style={{ height: 100, width: 100, borderColor: 'white' }}>
-                  <CardTitle><i className="fa fa-calendar-check-o fa-2x"></i></CardTitle>
-                  <CardText style={{ fontSize: 20 }}>{this.renderEventos()}</CardText>
-                  <Tooltip placement="top" isOpen={this.state.tooltipEventos} target="cardEventos" toggle={this.toggleEventos}>
-                    Eventos patrocinados
+                <Link to={link}>
+                  <Card id="cardEventos" className="text-center" body inverse color="primary" style={{ height: 100, width: 100, borderColor: 'white' }}>
+                    <CardTitle><i className="fa fa-calendar-check-o fa-2x"></i></CardTitle>
+                    <CardText style={{ fontSize: 20 }}>{this.renderEventos()}</CardText>
+                    <Tooltip placement="top" isOpen={this.state.tooltipEventos} target="cardEventos" toggle={this.toggleEventos}>
+                      Eventos patrocinados
                   </Tooltip>
-                </Card>
+                  </Card>
+                </Link>
                 {this.props.data.verificada ?
                   <Card id="cardVerificada" className="text-center" body inverse color="primary" style={{ height: 100, width: 100, borderColor: 'white' }}>
                     <CardTitle><i className="fa fa-shield fa-3x"></i></CardTitle>
@@ -307,7 +310,7 @@ class ConsultarPerfilEmpresa extends Component {
           </div>
         </CardBody>
         {this.renderModal()}
-      </Card>
+      </Card >
     );
   }
 }

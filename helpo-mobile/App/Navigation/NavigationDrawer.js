@@ -5,7 +5,9 @@ import DrawerContent from "../Containers/DrawerContent";
 import Login from '../Views/Usuarios/Login';
 import SignUp from '../Views/Usuarios/SignUp';
 import Configuracion from '../Views/Usuarios/Configuracion';
+import ChangePassword from '../Views/Usuarios/ChangePassword';
 import ConsultarEventos from '../Views/Actividades/ConsultarEventos/ConsultarEventos';
+import ConsultarEventosInicial from '../Views/Actividades/ConsultarEventos/ConsultarEventosInicial';
 import ConsultarEvento from '../Views/Actividades/ConsultarEventos/ConsultarEvento';
 import RegistrarEvento from '../Views/Actividades/RegistrarEvento/RegistrarEvento';
 import RegistrarNecesidades from '../Views/Actividades/RegistrarNecesidades/RegistrarNecesidades';
@@ -21,6 +23,7 @@ import FiltroEventos from '../Views/Actividades/ConsultarEventos/FiltroEventos/F
 import MensajesEvento from '../Views/Actividades/MensajesEvento/MensajesEvento';
 import NuevoMensaje from '../Views/Actividades/MensajesEvento/NuevoMensaje';
 import OrganizacionesPage from '../Views/Organizaciones/OrganizacionesPage';
+import EmpresasPage from '../Views/Empresas/EmpresasPage';
 import AgregarOfrecimiento from "../Views/Actividades/RegistrarOfrecimiento/AgregarOfrecimiento";
 import RegistrarOfrecimiento from "../Views/Actividades/RegistrarOfrecimiento/RegistrarOfrecimiento";
 import MisPropuestas from '../Views/Actividades/MisPropuestas/MisPropuestas';
@@ -28,13 +31,13 @@ import VerPropuestaEvento from '../Views/Actividades/MisPropuestas/VerPropuestaE
 import ConsultarPerfilGenerico from '../Views/Perfiles/ConsultarPerfilGenerico';
 import ModificarPerfilVoluntario from '../Views/Perfiles/PerfilVoluntario/ModificarPerfilVoluntario';
 import ModificarPerfilOrganizacion from '../Views/Perfiles/PerfilOrganizacion/ModificarPerfilOrganizacion';
-import AlbumEvento from '../Views/Actividades/AlbumEvento/AlbumEvento';
 import VerPatrocinadores from '../Views/Actividades/VerPatrocinadores/VerPatrocinadores';
 import VerPropuestaPatrocinador from '../Views/Actividades/VerPatrocinadores/VerPropuestaPatrocinador'
 import ResponderPropuesta from '../Views/Actividades/VerPatrocinadores/ResponderPropuesta';
 import MisSuscripciones from '../Views/Suscripciones/MisSuscripciones/MisSuscripciones';
 import AgregarNecesidad from '../Views/Actividades/RegistrarNecesidades/AgregarNecesidad/AgregarNecesidad';
 import AgregarVoluntario from '../Views/Actividades/RegistrarNecesidades/AgregarVoluntario/AgregarVoluntario';
+import ConfirmarEditarPropuesta from '../Views/Actividades/MisPropuestas/ConfirmarEditarPropuesta';
 
  
 const NavigationDrawer = DrawerNavigator({
@@ -42,7 +45,9 @@ const NavigationDrawer = DrawerNavigator({
 	Login: { screen: Login },
 	SignUp: { screen: SignUp },
 	Configuracion: { screen: Configuracion },
+	ChangePassword: { screen: ChangePassword },
 	ConsultarEventos: { screen: ConsultarEventos },
+	ConsultarEventosInicial: { screen: ConsultarEventosInicial },
 	ConsultarEvento: { screen: ConsultarEvento },
 	RegistrarColaboraciones: { screen: RegistrarColaboraciones },
 	AgregarColaboracion: { screen: AgregarColaboracion },
@@ -58,13 +63,13 @@ const NavigationDrawer = DrawerNavigator({
 	MensajesEvento: { screen: MensajesEvento },
 	NuevoMensaje: { screen: NuevoMensaje },
 	OrganizacionesPage: { screen: OrganizacionesPage },
+	EmpresasPage: { screen: EmpresasPage },
 	AgregarOfrecimiento: { screen: AgregarOfrecimiento },
 	RegistrarOfrecimiento: { screen: RegistrarOfrecimiento },
 	MisPropuestas: { screen: MisPropuestas },
 	VerPropuestaEvento: { screen: VerPropuestaEvento },
 	ConsultarPerfilGenerico: { screen: ConsultarPerfilGenerico },
 	ConsultarOtroPerfilGenerico: { screen: ConsultarPerfilGenerico },
-	AlbumEvento: { screen: AlbumEvento },
 	VerPatrocinadores: { screen: VerPatrocinadores },
 	VerPropuestaPatrocinador: { screen: VerPropuestaPatrocinador },
 	ResponderPropuesta: { screen: ResponderPropuesta },
@@ -73,6 +78,7 @@ const NavigationDrawer = DrawerNavigator({
 	MisSuscripciones: { screen: MisSuscripciones },
 	AgregarNecesidad: { screen: AgregarNecesidad },
 	AgregarVoluntario: { screen: AgregarVoluntario },
+	ConfirmarEditarPropuesta: { screen: ConfirmarEditarPropuesta },
   },
   {
 	initialRouteName: "LaunchScreen",

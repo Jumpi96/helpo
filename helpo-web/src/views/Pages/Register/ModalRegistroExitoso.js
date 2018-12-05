@@ -24,7 +24,7 @@ function ModalRegistroExitoso(props) {
           </ModalBody>
           <ModalFooter>
             {success}{' '}
-            <Button color="secondary" onClick={props.onCancel}>Volver</Button>
+            <Button color="secondary" onClick={props.onCancel}>Aceptar</Button>
           </ModalFooter>
         </Modal>
       

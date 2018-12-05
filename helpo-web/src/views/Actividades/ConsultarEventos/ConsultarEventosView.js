@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, CardHeader, CardBody, Table } from 'reactstrap';
 import { connect } from "react-redux";
 import { Link } from 'react-router-dom';
+import { Gmaps, Marker } from 'react-gmaps';
 import moment from 'moment';
 import api from '../../../api';
 import './Eventos.css';
@@ -109,9 +110,38 @@ class ConsultarEventosView extends React.Component {
     return false;
   }
 
+  getHorarios(evento) {
+    if (evento.campaña && evento.horarios.length > 0) {
+      const listaHorarios = [];
+      evento.horarios.forEach((h) => {
+        listaHorarios.push(
+          <div className="row">
+            <div className="col-md-2">
+              <p>{h[0]}</p>
+            </div>
+            <div className="col-md-2">
+              <p>{h[1] + " - " + h[2]}</p>
+            </div>
+          </div>
+        )
+      })
+      return (
+        <div className="row">
+          <div className="form-group col-md-2 offset-md-1">
+            <b className="float-left">Horarios de atención</b>
+          </div>
+          <div className="form-group col-md-9">
+            {listaHorarios}
+          </div>
+        </div>
+      );
+    }
+  }
+
   render() {
     if (this.state.evento.nombre) {
       const evento = this.state.evento;
+      const params = { v: '3.exp', key: process.env.GOOGLE_API_KEY };
       let listaContactos, listaNecesidades, listaVoluntarios;
       if (evento.necesidades.length > 0) {
         listaNecesidades = evento.necesidades.map((n) =>
@@ -152,7 +182,7 @@ class ConsultarEventosView extends React.Component {
                   alt={evento.organizacion.nombre}
                   style={{ width: '75px', height: '75px' }}
                 />
-                {' ' + evento.nombre}
+                {evento.campaña ? " Campaña" : " Evento"}{" - " + evento.nombre}
               </h1>
               <div className="row">
                 <div className="form-group col-md-2 offset-md-1">
@@ -186,6 +216,7 @@ class ConsultarEventosView extends React.Component {
                   <p>{moment(evento.fecha_hora_fin).format('DD/MM/YYYY HH:mm')}</p>
                 </div>
               </div>
+              {this.getHorarios(evento)}
               {listaContactos ? (
                 <div className="row">
                   <div className="form-group col-md-2 offset-md-1">
@@ -197,6 +228,26 @@ class ConsultarEventosView extends React.Component {
                 </div>
               ) : undefined
               }
+              <div className="row">
+                <div className="form-group col-md-2 offset-md-1">
+                  <b className="float-left">Ubicación</b>
+                </div>
+                <div className='col-md-9'>
+                  <Gmaps
+                    width={'75%'}
+                    height={'300px'}
+                    lat={evento.ubicacion.latitud}
+                    lng={evento.ubicacion.longitud}
+                    zoom={12}
+                    params={params}>
+                    <Marker
+                      lat={evento.ubicacion.latitud}
+                      lng={evento.ubicacion.longitud}
+                    />
+                  </Gmaps>
+                  <p style={{ marginTop: '10px' }}>{evento.ubicacion.notas}</p>
+                </div>
+              </div>
               {evento.propuestas.length > 0 && this.getPropuestas(evento.propuestas)}
               {listaNecesidades ? (
                 <div className="row">
@@ -248,11 +299,14 @@ class ConsultarEventosView extends React.Component {
               {this.puedeColaborar() ? (
                 <button
                   onClick={this.toggleColaborar}
-                  hidden={moment(evento.fecha_hora_inicio) <= moment()}
-                  className="btn btn-warning offset-md-10"
+                  hidden={
+                    (moment(evento.fecha_hora_inicio) <= moment() && !evento.campaña) ||
+                    (evento.campaña && (moment(evento.fecha_hora_fin) <= moment()))
+                  }
+                  className="btn btn-primary offset-md-10"
                 >
                   {this.props.auth.user.user_type === 2 ? "Colaborar" : "Patrocinar"}
-              </button>
+                </button>
               ) : undefined
               }
               {moment(evento.fecha_hora_inicio) <= moment() && this.props.auth.user ? (
@@ -260,11 +314,11 @@ class ConsultarEventosView extends React.Component {
               ) : undefined
               }
               {/* Renderiza boton Ver album si empezo evento */}
-              {this.state.evento.estado > 1
+              {moment().format() > moment(this.state.evento.fecha_hora_inicio).format()
                 ? (
                   <div className="row">
                     <div className="form-group col-md-2 offset-md-1">
-                      <b name="compartir" className="float-left">Album</b>
+                      <b name="compartir" className="float-left">Álbum</b>
                     </div>
                     <div className="form-group col-md-9">
                       <ButtonGoAlbum eventoId={this.state.evento.id} />
@@ -284,7 +338,7 @@ class ConsultarEventosView extends React.Component {
         </div>
       );
     } else {
-      return <p>Cargando...</p>
+      return <div className="loader"/>
     }
   }
 };

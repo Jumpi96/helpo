@@ -1,16 +1,18 @@
 import React from 'react';
 import DateTimePicker from 'react-datetime-picker';
 import { PropTypes } from 'prop-types';
+import { Button } from 'reactstrap';
 import moment from 'moment';
 import SelectorUbicacion from '../RegistrarEvento/SelectorUbicacion/SelectorUbicacion';
 import RegistrarContacto from '../RegistrarEvento/RegistrarContacto/RegistrarContacto';
+import SelectorHorarios from '../RegistrarEvento/SelectorHorarios/SelectorHorarios';
 import validateEmail from '../../../utils/ValidateEmail';
 
 
-class EventoForm extends React.Component {  
+class EventoForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { errors: [] };
+    this.state = { errors: {} };
     this.handleChange = this.handleChange.bind(this);
     this.handleUbicacionChange = this.handleUbicacionChange.bind(this);
     this.handleRubroChange = this.handleRubroChange.bind(this);
@@ -18,9 +20,15 @@ class EventoForm extends React.Component {
     this.handleFechaHoraFinChange = this.handleFechaHoraFinChange.bind(this);
     this.handleSave = this.handleSave.bind(this);
     this.handleActualizacionContactos = this.handleActualizacionContactos.bind(this);
+    this.handleActualizacionHorarios = this.handleActualizacionHorarios.bind(this);
   }
 
- 
+  componentDidMount() {
+    this.setState({
+      isCampañaStarted: this.props.evento.campaña && moment(this.props.evento.fecha_hora_inicio) < moment()
+    });
+  }
+
   handleChange(e) {
     this.props.onChange(e.target.name, e.target.value);
   }
@@ -43,8 +51,12 @@ class EventoForm extends React.Component {
     this.props.onChange('fecha_hora_fin', fecha_hora);
   }
 
-  handleActualizacionContactos(nuevosContactos){
+  handleActualizacionContactos(nuevosContactos) {
     this.props.onChange('contacto', nuevosContactos);
+  }
+
+  handleActualizacionHorarios(horarios) {
+    this.props.onChange('horarios', horarios);
   }
 
   handleSave() {
@@ -63,20 +75,37 @@ class EventoForm extends React.Component {
     } else { errors.nombre = undefined; }
 
     if (isNaN(Date.parse(this.props.evento.fecha_hora_inicio)) ||
-    isNaN(Date.parse(this.props.evento.fecha_hora_fin))) {
+      isNaN(Date.parse(this.props.evento.fecha_hora_fin))) {
       formIsValid = false;
       errors.fechas = 'Las fechas ingresadas no son válidas.';
     } else {
-      const inicio = moment(this.props.evento.fecha_hora_inicio);
+      let inicio;
+      if (this.state.isCampañaStarted) {
+        inicio = moment(new Date());
+      } else {
+        inicio = moment(this.props.evento.fecha_hora_inicio);
+      }
       const fin = moment(this.props.evento.fecha_hora_fin);
-      const ahora = moment(new Date());
-      if (moment.duration(fin.diff(inicio)).asHours() > 24 ||
-          inicio < ahora ||
-          moment.duration(fin.diff(inicio)).asHours() < 0) {
+      const actual = moment(new Date());
+      if (inicio < actual && !this.state.isCampañaStarted) {
         formIsValid = false;
-        errors.fechas = 'Las fecha de fin debe ser mayor a la de inicio y ' +
-          'la actividad no durar más de 24 horas.';
-      } else { errors.fechas = undefined; }
+        errors.fechas = 'La fecha de inicio debe ser posterior a la fecha actual';
+      } else {
+        if (fin < inicio) {
+          formIsValid = false;
+          errors.fechas = !this.state.isCampañaStarted ? 
+            'La fecha de inicio debe ser anterior a la fecha de fin de la actividad'
+             : 'La fecha de fin ingresada no es válida.';
+        } else {
+          if (moment.duration(fin.diff(inicio)).asHours() > 24 && inicio < fin && !this.props.evento.campaña) {
+            formIsValid = false;
+            errors.fechas = 'El evento no puede durar más de 24 horas'
+          }
+          else {
+            errors.fechas = '';
+          }
+        }
+      }
     }
     if (this.props.evento.rubro_id === 0) {
       formIsValid = false;
@@ -87,27 +116,27 @@ class EventoForm extends React.Component {
   }
 
   validateContactos() {
-    let errors = {contactoNombre: "", contactoContacto: "", email: ""};    
-    let validacion = {is_valid: true, errors: errors};
+    let errors = { contactoNombre: "", contactoContacto: "", email: "" };
+    let validacion = { is_valid: true, errors: errors };
     const contactos = this.props.evento.contacto;
     for (let i = 0; i < contactos.length; i += 1) {
       // Es valido no ingresar ningun contacto
       if (contactos[i].nombre === "" &&
-      contactos[i].mail === "" &&
-      contactos[i].telefono === "" &&
-      contactos.length === 1) {
+        contactos[i].mail === "" &&
+        contactos[i].telefono === "" &&
+        contactos.length === 1) {
         return validacion;
       }
       if (contactos[i].nombre === "") {
-        errors.contactoNombre = 'No puede ingresar un contacto sin nombre';        
+        errors.contactoNombre = 'No puede ingresar un contacto sin nombre';
         validacion.is_valid = false;
       }
       if (contactos[i].mail === "" && contactos[i].telefono === "") {
-        errors.contactoContacto = 'Debe ingresar un mail o un teléfono';        
+        errors.contactoContacto = 'Debe ingresar un mail o un teléfono';
         validacion.is_valid = false;
       }
       if (contactos[i].mail !== "" && !validateEmail(contactos[i].mail)) {
-        errors.email = 'Debe ingresar un mail válido';        
+        errors.email = 'Debe ingresar un mail válido';
         validacion.is_valid = false;
       }
     }
@@ -116,7 +145,7 @@ class EventoForm extends React.Component {
   }
 
   parseISOString(s) {
-    if (s[s.length-1] === 'Z') {
+    if (s[s.length - 1] === 'Z') {
       var b = s.split(/\D+/);
       return new Date(Date.UTC(b[0], --b[1], b[2], b[3], b[4], b[5], b[6]));
     } else {
@@ -125,12 +154,26 @@ class EventoForm extends React.Component {
   }
 
 
-  
+  getFechaHoraInicio() {
+    const fechaInicio = this.parseISOString(this.props.evento.fecha_hora_inicio);
+    if (this.state.isCampañaStarted) {
+      return (<p>{moment(this.props.evento.fecha_hora_inicio).format('DD/MM/YYYY HH:mm')}</p>);
+    }
+    return (
+      <DateTimePicker
+        name="inicio"
+        onChange={this.handleFechaHoraInicioChange}
+        isClockOpen={false}
+        value={fechaInicio}
+      />
+    );
+  }
+
+
   render() {
     const listaRubroEventos = this.props.rubros.map((r) =>
       <option value={r.id}>{r.nombre}</option>
     );
-    const fechaInicio = this.parseISOString(this.props.evento.fecha_hora_inicio);
     const fechaFin = this.parseISOString(this.props.evento.fecha_hora_fin);
     return (
       <div>
@@ -154,20 +197,22 @@ class EventoForm extends React.Component {
                 value={this.props.evento.rubro_id}
                 className="form-control"
                 onChange={this.handleRubroChange}>
-                  {listaRubroEventos}
+                {listaRubroEventos}
               </select>
               <span style={{ color: 'red' }}>{this.state.errors.rubro}</span>
             </div>
           </div>
-          <div className="form-group">
-            <label>Fecha</label>
-            <div className="form-group">
-              <DateTimePicker
-                name="inicio"
-                onChange={this.handleFechaHoraInicioChange}
-                isClockOpen={false}
-                value={fechaInicio}
-              />
+          <div className="row">
+            <div className="form-group col-md-1">
+              <label>Inicio:  </label>
+            </div>
+            <div className="form-group col-md-4">
+              {this.getFechaHoraInicio()}
+            </div>
+            <div className="form-group col-md-1">
+              <label>Fin:  </label>
+            </div>
+            <div className="form-group col-md-4">
               <DateTimePicker
                 name="fin"
                 onChange={this.handleFechaHoraFinChange}
@@ -175,8 +220,8 @@ class EventoForm extends React.Component {
                 value={fechaFin}
               />
             </div>
-            <span style={{ color: 'red' }}>{this.state.errors.fechas}</span>
           </div>
+          <span style={{ color: 'red' }}>{this.state.errors.fechas}</span>
           <div className="form-group">
             <label htmlFor="descripcion">Descripción</label>
             <textarea
@@ -188,6 +233,12 @@ class EventoForm extends React.Component {
               onChange={this.handleChange}
             />
           </div>
+          {this.props.evento.campaña ?
+            <SelectorHorarios
+              horarios={this.props.evento.horarios}
+              onHorariosChange={this.handleActualizacionHorarios}
+            /> : undefined
+          }
           <SelectorUbicacion
             name="ubicacion"
             ubicacion={this.props.evento.ubicacion}
@@ -200,19 +251,17 @@ class EventoForm extends React.Component {
           <span style={{ color: 'red' }}>{this.state.errors.contactoNombre}</span><p>{"\n"}</p>
           <span style={{ color: 'red' }}>{this.state.errors.contactoContacto}</span><p>{"\n"}</p>
           <span style={{ color: 'red' }}>{this.state.errors.email}</span>
-          <input
-            type="submit"
+          <Button
             disabled={this.props.saving}
-            className="btn btn-primary"
-            value="Guardar evento"
-            onClick={this.handleSave}/>
+            color="primary"
+            onClick={this.handleSave}>Guardar actividad social</Button>
         </form>
       </div>
-  );
+    );
   }
 }
 
-EventoForm.propTypes = {  
+EventoForm.propTypes = {
   evento: PropTypes.object.isRequired,
   onSave: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired

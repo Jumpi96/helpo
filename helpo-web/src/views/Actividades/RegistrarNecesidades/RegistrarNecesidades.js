@@ -35,7 +35,8 @@ class RegistrarNecesidades extends Component {
       error_necesidad: undefined,
       showModalEliminar: false,
       showModalEditar: false,
-      necesidadModificada: undefined
+      necesidadModificada: undefined,
+      submitting: false
     };
     this.handleSubmitNecesidad = this.handleSubmitNecesidad.bind(this);
     this.handleSubmitVoluntario = this.handleSubmitVoluntario.bind(this);
@@ -70,33 +71,59 @@ class RegistrarNecesidades extends Component {
     }
   }
 
+  necesidadIsInserted(new_necesidad) {
+    /* Returns true if new_necesidad is in necesidades table */ 
+    for(const necesidad of this.state.necesidades) {
+      if(parseInt(new_necesidad.recurso_id, 10) === parseInt(necesidad.recurso.id, 10)) {
+          return true 
+         }
+    }
+    return false
+  }
+
+  voluntarioIsInserted(new_voluntario) {
+    /* Returns true if new_voluntario is in voluntarios table */
+    for(const voluntario of this.state.voluntarios) {
+      if(parseInt(voluntario.funcion.id, 10) === parseInt(new_voluntario.funcion_id, 10)) {
+          return true 
+         }
+    }
+    return false
+  }
+
   addNecesidad(necesidad) {
+    // Validate that necesidad isnt in table
+    if(this.necesidadIsInserted(necesidad)) { return }
     var _this = this;
+    this.setState({ submitting: true });
     api.post('/actividades/necesidades/', necesidad)
       .then(res => {
-        console.log(res);
-        console.log(res.data);
         this.cleanNecesidad();
         this.loadNecesidadesYVoluntarios();
+        this.setState({ submitting: false });
       }).catch(function (error) {
         if (error.response){ console.log(error.response.status) }
         else { console.log('Error: ', error.message)}
         _this.setState({ error_necesidad: "Hubo un problema al cargar su información." });
+        this.setState({ submitting: false });
       });
   }
 
   addVoluntario(voluntario) {
+    // Validate that necesidad isnt in table
+    if(this.voluntarioIsInserted(voluntario)) { return }
     var _this = this;
+    this.setState({ submitting: true });
     api.post('/actividades/voluntarios/', voluntario)
       .then(res => {
-        console.log(res);
-        console.log(res.data);
         this.cleanVoluntario();
         this.loadNecesidadesYVoluntarios();
+        this.setState({ submitting: false });
       }).catch(function (error) {
         if (error.response){ console.log(error.response.status) }
         else { console.log('Error: ', error.message)}
         _this.setState({ error_voluntario: "Hubo un problema al cargar su información." });
+        this.setState({ submitting: false });
       });
   }
 
@@ -339,7 +366,7 @@ class RegistrarNecesidades extends Component {
       <div className="animated fadeIn">
         <Card>
           <CardHeader>
-            <i className="fa fa-align-justify"></i> Complete las necesidades del evento
+            <i className="fa fa-align-justify"></i> Complete las necesidades de la Actividad Social
           </CardHeader>
           <CardBody>
             <form>
@@ -369,6 +396,7 @@ class RegistrarNecesidades extends Component {
                       outline
                       color="success"
                       onClick={this.handleSubmitNecesidad}
+                      disabled={this.state.submitting}
                     >
                       Agregar
                     </Button>
@@ -421,6 +449,7 @@ class RegistrarNecesidades extends Component {
                       outline
                       color="success"
                       onClick={this.handleSubmitVoluntario}
+                      disabled={this.state.submitting}
                     >
                       Agregar
                     </Button>
@@ -443,7 +472,7 @@ class RegistrarNecesidades extends Component {
                   {this.getTablaVoluntarios()}
                 </tbody>
               </Table>
-              <Button onClick={() => this.props.history.push('dashboard')} 
+              <Button onClick={() => this.props.history.push('/actividades/consultar-evento?id=' + this.state.evento)} 
                 color="primary">Guardar necesidades</Button>
             </form>
           </CardBody>

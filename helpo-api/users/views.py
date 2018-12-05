@@ -11,7 +11,7 @@ from rest_framework.generics import RetrieveUpdateDestroyAPIView, RetrieveUpdate
 from knox.models import AuthToken
 from django.contrib.auth import get_user_model
 from users.models import RubroOrganizacion, RubroEmpresa, OrganizacionProfile, VoluntarioProfile, EmpresaProfile, AppValues, User, DeviceID, Suscripcion
-from users.serializers import FacebookAuthSerializer, GoogleAuthSerializer, CreateUserSerializer, UserSerializer, LoginUserSerializer, RubroOrganizacionSerializer, RubroEmpresaSerializer, OrganizacionProfileSerializer, VoluntarioProfileSerializer, EmpresaProfileSerializer, VerificationMailSerializer, VerificationSmsSerializer, AppValuesSerializer, DeviceIDSerializer, SuscripcionSerializer, SuscripcionSerializerLista
+from users.serializers import FacebookAuthSerializer, GoogleAuthSerializer, CreateUserSerializer, UserSerializer, LoginUserSerializer, ChangePasswordSerializer, ResetPasswordSerializer, RubroOrganizacionSerializer, RubroEmpresaSerializer, OrganizacionProfileSerializer, VoluntarioProfileSerializer, EmpresaProfileSerializer, VerificationMailSerializer, SendVerificationEmailSerializer, VerificationSmsSerializer, AppValuesSerializer, DeviceIDSerializer, SuscripcionSerializer, SuscripcionSerializerLista
 import time
 import requests
 from users.services import send_confirmation_sms
@@ -62,7 +62,7 @@ class LoginView(generics.GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user =  serializer.validated_data
-        if not user.is_confirmed and user.user_type != 2:
+        if not user.is_confirmed:
             return Response({
                 "user": UserSerializer(user, context=self.get_serializer_context()).data
             }, status=status.HTTP_406_NOT_ACCEPTABLE)
@@ -116,11 +116,18 @@ class RubroEmpresaReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     serializer_class = RubroEmpresaSerializer
     lookup_field = 'id'
 
+class EmpresaProfileReadView(ListAPIView):
+    """
+    API endpoint para ver todos los perfiles de empresa
+    """
+    queryset = EmpresaProfile.objects.all()
+    serializer_class = EmpresaProfileSerializer
+
 class OrgProfileCreateReadView(ListCreateAPIView):
     """
     API endpoint para crear o ver todos los perfiles de organización
     """
-    queryset = OrganizacionProfile.objects.all()
+    queryset = OrganizacionProfile.objects.all().exclude(usuario__email__regex=r'@machine\.com')
     serializer_class = OrganizacionProfileSerializer
 
 class OrgProfileReadUpdateDeleteView(RetrieveUpdateAPIView):
@@ -200,6 +207,45 @@ class VerifyMailView(generics.GenericAPIView):
         return Response({
             "verification": "Failed"
         })
+
+class SendVerificationEmailView(generics.GenericAPIView):
+    serializer_class = SendVerificationEmailSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            return Response({
+                "email_sending": "Success"
+             }, status=status.HTTP_200_OK)
+        return Response({
+            "email_sending": "Failed"
+        }, status=status.HTTP_404_NOT_FOUND)
+
+class ChangePasswordView(generics.GenericAPIView):
+    serializer_class = ChangePasswordSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        from common.functions import get_token_user
+        request_user = User.objects.filter(id=get_token_user(self.request)).first()
+        user = serializer.validate(request.data, request_user)
+        return Response({
+            "user": UserSerializer(user, context=self.get_serializer_context()).data,
+            "token": AuthToken.objects.create(user)
+        }, status=status.HTTP_200_OK)
+
+class ResetPasswordView(generics.GenericAPIView):
+    serializer_class = ResetPasswordSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            return Response({
+                "password_reset": "Success"
+             }, status=status.HTTP_200_OK)
+        return Response({
+            "password_reset": "Failed"
+        }, status=status.HTTP_404_NOT_FOUND)
 
 def refreshToken():
   now = time.time()

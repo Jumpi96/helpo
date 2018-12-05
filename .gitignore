@@ -71,3 +71,6 @@ certs/
 # Logging
 logs/
 helpo-api/logs/
+
+# Serialized objects
+*.pkl

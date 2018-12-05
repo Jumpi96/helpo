@@ -14,12 +14,12 @@ class RedireccionarEvento extends Component {
 
   componentDidMount() {
     if (localStorage.getItem("token") !== null) {
-      this.props.history.push({ 
+      this.props.history.push({
         pathname: '/actividades/consultar-evento',
         search: '?id=' + this.state.evento,
       });
     } else {
-      this.props.history.push({ 
+      this.props.history.push({
         pathname: '/noAuth/actividades/consultar-evento',
         search: '?id=' + this.state.evento,
       });
@@ -31,15 +31,15 @@ class RedireccionarEvento extends Component {
       <div className="animated fadeIn">
         <Card>
           <CardHeader>
-            <i className="fa fa-align-justify"></i> Consultar evento
+            <i className="fa fa-align-justify"></i> Consultar actividad social
           </CardHeader>
           <CardBody>
-              <p>Cargando...</p>
+            <div className="loader" />
           </CardBody>
         </Card>
       </div>
     )
   }
 }
-  
-  export default RedireccionarEvento;
+
+export default RedireccionarEvento;

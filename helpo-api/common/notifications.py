@@ -43,7 +43,7 @@ def send_mail_to_worker(url, headers, mail_to, mail_from, json_subject, json_con
     if not isinstance(mail_to, (list, tuple)):
         mail_to = [mail_to]
     for mail in mail_to:
-        sleep_secs = randint(30, 90)
+        sleep_secs = randint(30, 40)
         log.info("Enviando mail a %s desde %s, dentro de %s segundos" %
                  (mail, mail_from, sleep_secs))
         time.sleep(sleep_secs)
@@ -84,7 +84,7 @@ def send_push_notification_to_id_list(ids_to, en_title, es_title, en_message, es
 
 def send_push_notification_to_list_worker(url, payload, headers, mails_to):
     log = logging.getLogger('django')
-    sleep_secs = randint(5, 55)
+    sleep_secs = randint(5, 15)
     log.info("Enviando notificacion push a %s, dentro de %s segundos" % (
         mails_to, sleep_secs))
     time.sleep(sleep_secs)

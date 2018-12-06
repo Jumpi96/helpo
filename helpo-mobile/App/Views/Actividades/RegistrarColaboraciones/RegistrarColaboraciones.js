@@ -111,8 +111,8 @@ class RegistrarColaboraciones extends React.Component {
               ActionSheet.show(
                 {
                   options: deleteButtons,
-                  cancelButtonIndex: 2,
-                  destructiveButtonIndex: 1,
+                  cancelButtonIndex: deleteButtons.length-1,
+                  destructiveButtonIndex: 0,
                   title: '¿Qué desea hacer?',
                 },
                 (buttonIndex) => {
@@ -162,8 +162,8 @@ class RegistrarColaboraciones extends React.Component {
               ActionSheet.show(
                 {
                   options: deleteButtons,
-                  cancelButtonIndex: 2,
-                  destructiveButtonIndex: 1,
+                  cancelButtonIndex: deleteButtons.length-1,
+                  destructiveButtonIndex: 0,
                   title: '¿Qué desea hacer?',
                 },
                 (buttonIndex) => {

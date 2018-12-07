@@ -132,6 +132,10 @@ LOGGING = {
             'level': 'DEBUG',
             'propagate': True,
         },
+        'django.template': {
+            'handlers': ['console', 'file', 'file_warning'],
+            'level': 'WARNING',
+        },
     },
 }
 

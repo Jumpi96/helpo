@@ -104,7 +104,7 @@ LOGGING = {
     'disable_existing_loggers': False,
     'formatters': {
         'standard': {
-            'format': '%(levelname)-8s [%(asctime)s] %(name)s: %(message)s'
+            'format': '%(levelname)s [%(asctime)s] %(name)s: %(message)s'
         },
     },
     'handlers': {
@@ -117,23 +117,24 @@ LOGGING = {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
             'filename': str(os.path.abspath(os.path.dirname(sys.argv[0]))) + '/logs/debug.log',
+            'formatter': 'standard',
         },
         'file_warning': {
             'level': 'WARNING',
             'class': 'logging.FileHandler',
             'filename': str(os.path.abspath(os.path.dirname(sys.argv[0]))) + '/logs/warning.log',
+            'formatter': 'standard',
         },
     },
     'loggers': {
         'django': {
-            'handlers': ['console', 'file'],
+            'handlers': ['console', 'file', 'file_warning'],
             'level': 'DEBUG',
             'propagate': True,
         },
-        'django_warning': {
-            'handlers': ['file_warning'],
+        'django.template': {
+            'handlers': ['console', 'file', 'file_warning'],
             'level': 'WARNING',
-            'propagate': True,
         },
     },
 }

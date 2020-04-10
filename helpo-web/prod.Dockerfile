@@ -12,7 +12,8 @@ COPY package*.json ./
 RUN apk add --no-cache --virtual .gyp \
     python \
     make \
-    g++
+    g++ \
+    git
 
 # If you are building your code for production
 RUN npm install chalk eslint node-sass-chokidar npm-run-all react-scripts redux-devtools-extension

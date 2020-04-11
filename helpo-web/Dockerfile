@@ -12,8 +12,7 @@ COPY package*.json ./
 RUN apk add --no-cache --virtual .gyp \
     python \
     make \
-    g++ \
-    git
+    g++
 
 # If you are building your code for production
 # RUN npm install --only=production

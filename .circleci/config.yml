@@ -133,4 +133,3 @@ workflows:
     jobs:
       - build-and-test-api
       - build-and-test-web
-      - build-and-test-mobile

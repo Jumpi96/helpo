@@ -355,7 +355,7 @@ class ConsultaEvento extends React.Component {
               eventoId={evento.id}
               navigation={this.props.navigation}
             />
-            <CompartirEvento evento={params.evento} />
+            <CompartirEvento evento={evento} />
           </Content>
         </Container>
       );

@@ -4,7 +4,7 @@ fixmydjango==0.3.2
 django==1.11.15
 celery==4.2.1
 redis==2.10.6
-django-js-reverse==0.8.2
+django-js-reverse===0.9.1
 djangorestframework==3.8.2
 django-import-export==1.0.1
 django-cors-headers==2.4.0

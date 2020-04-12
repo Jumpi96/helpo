@@ -2,7 +2,7 @@
 
 service cron start
 mkdir -p logs
-./wait-for-it.sh $DB_HOSTNAME:5432 -- bash -c
+./wait-for-it.sh "${DB_HOSTNAME}":5432 -- bash -c
 python manage.py migrate
 python manage.py populate_db
 python manage.py collectstatic --noinput

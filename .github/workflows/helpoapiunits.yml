@@ -27,6 +27,6 @@ jobs:
         python -m pip install --upgrade pip
         cd helpo-api && pip install -r requirements.txt
     - name: Run migrations
-      run: cd helpo-api && python manage.py migrate
+      run: cd helpo-api && DJANGO_SETTINGS_MODULE=helpo.settings.test && python manage.py migrate
     - name: Run tests
-      run: cd helpo-api && python -m coverage run manage.py test
+      run: cd helpo-api && DJANGO_SETTINGS_MODULE=helpo.settings.test && python -m coverage run manage.py test

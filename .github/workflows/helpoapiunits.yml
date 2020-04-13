@@ -33,7 +33,7 @@ jobs:
         AWS_ACCESS_KEY_ID: 
         AWS_SECRET_ACCESS_KEY: 
     - name: Run tests
-      run: cd helpo-api && python -m coverage run manage.py test
+      run: cd helpo-api && python -m coverage run manage.py test && python -m coverage html
       env:
         DJANGO_SETTINGS_MODULE: helpo.settings.test
         AWS_ACCESS_KEY_ID: 

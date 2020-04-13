@@ -1,4 +1,4 @@
-name: Python application
+name: helpo-api units
 on: [push]
 jobs:
   build:

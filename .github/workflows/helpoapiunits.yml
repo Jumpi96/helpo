@@ -38,3 +38,5 @@ jobs:
         DJANGO_SETTINGS_MODULE: helpo.settings.test
         AWS_ACCESS_KEY_ID: 
         AWS_SECRET_ACCESS_KEY: 
+        ZOHO_ACCOUNT_ID: x
+        ZOHO_AUTH_TOKEN: x

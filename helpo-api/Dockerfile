@@ -1,15 +1,22 @@
 FROM python:3.6-jessie
+
 ENV PYTHONUNBUFFERED 1
-RUN mkdir /code
+
+RUN apt-get update -y && \
+    apt-get install -y python-pip python-dev build-essential && \
+    apt-get install -y --no-install-recommends cron && \
+    rm -rf /var/cache/apt/archives/* /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
+    mkdir /code
+
 WORKDIR /code
-ADD requirements.txt /code/
-RUN apt-get update -y
-RUN apt-get install -y python-pip python-dev build-essential
-RUN pip install numpy && pip install -r requirements.txt
-# cron installation for periodic command scheduler
+
 ADD cronjob /code/
-RUN apt-get install -y --no-install-recommends cron \
-    && rm -rf /var/lib/apt/lists/* && crontab cronjob
+RUN crontab cronjob
+
+ADD requirements.txt /code/
+RUN pip install numpy && pip install -r requirements.txt
+
 ADD . /code/
+
 EXPOSE 8000
 ENTRYPOINT ["./entrypoint.sh"]

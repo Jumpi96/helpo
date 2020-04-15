@@ -1,7 +1,7 @@
 django-debug-toolbar==1.9.1
 django-debug-toolbar-request-history==0.0.7
 fixmydjango==0.3.2
-django==1.11.15
+django==1.11.28
 celery==4.2.1
 redis==2.10.6
 django-js-reverse===0.9.1

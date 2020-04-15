@@ -40,3 +40,5 @@ jobs:
         AWS_SECRET_ACCESS_KEY: 
         ZOHO_ACCOUNT_ID: x
         ZOHO_AUTH_TOKEN: x
+     - name: Upload coverage
+       run: coverage report -m

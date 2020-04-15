@@ -1,4 +1,4 @@
-# helpo ![helpo-api units](https://github.com/Jumpi96/helpo/workflows/helpo-api%20units/badge.svg) ![helpo-web units](https://github.com/Jumpi96/helpo/workflows/helpo-web%20units/badge.svg)
+# helpo ![helpo-api units](https://github.com/Jumpi96/helpo/workflows/helpo-api%20units/badge.svg) [![codecov](https://codecov.io/gh/Jumpi96/helpo/branch/master/graph/badge.svg)](https://codecov.io/gh/Jumpi96/helpo) ![helpo-web units](https://github.com/Jumpi96/helpo/workflows/helpo-web%20units/badge.svg)
 
 > Proyecto Final - UTN FRC - 2018
 

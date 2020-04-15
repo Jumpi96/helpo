@@ -33,10 +33,15 @@ jobs:
         AWS_ACCESS_KEY_ID: 
         AWS_SECRET_ACCESS_KEY: 
     - name: Run tests
-      run: cd helpo-api && python -m coverage run manage.py test
+      run: cd helpo-api && python -m coverage run manage.py test && python -m coverage xml
       env:
         DJANGO_SETTINGS_MODULE: helpo.settings.test
         AWS_ACCESS_KEY_ID: 
         AWS_SECRET_ACCESS_KEY: 
         ZOHO_ACCOUNT_ID: x
         ZOHO_AUTH_TOKEN: x
+    - name: Upload coverage to Codecov  
+      uses: codecov/codecov-action@v1
+      with:
+        file: ./helpo-api/coverage.xml
+        fail_ci_if_error: true

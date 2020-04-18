@@ -10,11 +10,11 @@ RUN apt-get update -y && \
 
 WORKDIR /code
 
-ADD cronjobs /code/
+ADD cronjobs /code/cronjobs
 RUN crontab cronjobs/tasks && crontab cronjobs/backup
 
 ADD requirements.txt /code/
-RUN pip install numpy awscli && pip install -r requirements.txt
+RUN pip install -r requirements.txt
 
 ADD . /code/
 

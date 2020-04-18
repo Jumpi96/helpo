@@ -44,4 +44,3 @@ jobs:
       uses: codecov/codecov-action@v1
       with:
         file: ./helpo-api/coverage.xml
-        fail_ci_if_error: true

@@ -12,7 +12,7 @@ def test_should_remove_user(authenticated_client: APIClient, an_email: str, crea
     data = json.dumps({
         'email': an_email
     })
-    response = authenticated_client.delete(url, data, content_type='application/json')
+    response = authenticated_client.post(url, data, content_type='application/json')
 
     assert response.status_code == 204
 
@@ -22,7 +22,7 @@ def test_should_not_remove_user(authenticated_client: APIClient, another_email: 
     data = json.dumps({
         'email': another_email
     })
-    response = authenticated_client.delete(url, data, content_type='application/json')
+    response = authenticated_client.post(url, data, content_type='application/json')
 
     print(response)
     assert response.status_code == 400

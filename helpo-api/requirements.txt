@@ -26,3 +26,7 @@ sklearn==0.0
 boto3==1.9.28
 coverage==4.5.1
 surprise==0.1
+dacite==1.4.0
+Inject==3.3.2
+pytest==3.6.0
+pytest-django==3.2.1

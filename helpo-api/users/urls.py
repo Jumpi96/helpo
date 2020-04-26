@@ -183,7 +183,7 @@ urlpatterns = [
     ),
     # {% url "api:users" %}
     url(
-        regex=r"^users/?$",
+        regex=r"^users/user?$",
         view=hex_users_views.RemoveUserView.as_view(),
         name="remove_user"
     )

@@ -1,10 +1,12 @@
 import inject
 from django.apps import AppConfig
 
-from users.application.repositories import UsersRepository
-from users.infrastructure.repositories import DjangoORMUsersRepository
+
 
 def inject_config(binder: inject.Binder) -> None:
+    from users.application.repositories import UsersRepository
+    from users.infrastructure.repositories import DjangoORMUsersRepository
+
     binder.bind(UsersRepository, DjangoORMUsersRepository())
 
 

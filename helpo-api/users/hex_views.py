@@ -13,6 +13,8 @@ from common.mixins import AuthTokenMixin
 from common.functions import get_token_user
 from users.application.use_cases import remove_user
 
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 
 class RemoveUserPresenter(remove_user.RemoveUserOutputBoundary):
     def present(self, output_dto: remove_user.RemoveUserOutputBoundary) -> None:
@@ -26,10 +28,10 @@ class RemoveUserPresenter(remove_user.RemoveUserOutputBoundary):
         else:
             return HttpResponse('The email input is incorrect.', status=400)
 
-
+@method_decorator(csrf_exempt, name='dispatch') # TODO: implement CSRF in WebApp
 class RemoveUserView(AuthTokenMixin, View):
 
-    def delete(self, request: HttpRequest) -> HttpResponse:
+    def post(self, request: HttpRequest) -> HttpResponse:
         data = json.loads(request.body)
         input_dto = dacite.from_dict(remove_user.RemoveUserInputDto, {
             'email': data['email'],

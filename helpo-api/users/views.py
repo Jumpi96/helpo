@@ -50,6 +50,8 @@ class CreateUserView(generics.GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
+        if user.user_type not in [1, 2]:
+            return Response({"error": "No se puede crear este tipo de usuario."}, status=status.HTTP_403_FORBIDDEN)
         return Response({
             "user": UserSerializer(user, context=self.get_serializer_context()).data,
             "token": AuthToken.objects.create(user)

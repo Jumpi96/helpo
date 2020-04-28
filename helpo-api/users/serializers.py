@@ -121,9 +121,6 @@ class UserSerializer(serializers.ModelSerializer):
         if obj.user_type == 1:
             perfil = OrganizacionProfile.objects.filter(usuario=obj.id).first()
             return perfil.avatar.url
-        elif obj.user_type == 2:
-            perfil = VoluntarioProfile.objects.filter(usuario=obj.id).first()
-            return perfil.avatar.url
         elif obj.user_type == 3:
             perfil = EmpresaProfile.objects.filter(usuario=obj.id).first()
             return perfil.avatar.url

@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'knox',
 
     'common',
-    'users',
+    'users.apps.UsersConfig',
     'actividades',
     'reportes',
     'recommendations'

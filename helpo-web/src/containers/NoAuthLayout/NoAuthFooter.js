@@ -21,7 +21,7 @@ class NoAuthFooter extends Component {
             <Col sm={{ size: 'auto', offset: 5 }}>
               <a className="msn-ic" href="mailto:helpoconsultas@helpo.com.ar"><i style={{color:'white'}} className="fa fa-envelope-o fa-lg white-text mr-md-5 mr-3 fa-2x"> </i></a>                  
               <a className="fb-ic" href="https://fb.me/HelpoConsultas"><i style={{color:'white'}} className="fa fa-facebook fa-lg white-text mr-md-5 mr-3 fa-2x"> </i></a>
-              <a className="ins-ic" href="https://www.instagram.com/helpoconsultas/"><i style={{color:'white'}} className="fa fa-instagram fa-lg white-text mr-md-5 mr-3 fa-2x"> </i></a>
+              <a className="ins-ic" href="https://www.instagram.com/helpo.oficial/"><i style={{color:'white'}} className="fa fa-instagram fa-lg white-text mr-md-5 mr-3 fa-2x"> </i></a>
             </Col>
           </Row>
           <Row>

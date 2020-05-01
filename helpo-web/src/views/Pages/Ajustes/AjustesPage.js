@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Card, CardBody, CardHeader, Form, FormGroup, Input, InputGroup, InputGroupAddon, InputGroupText, Label } from 'reactstrap'
+import { connect } from "react-redux";
+import {auth} from "../../../../src/actions";
 import api from '../../../api';
 
 class AjustesPage extends Component {
@@ -9,10 +11,12 @@ class AjustesPage extends Component {
       oldPassword: "",
       newPassword: "",
       newPasswordVerification: "",
+      emailCheck: "",
       errors: {},
     }
     this.sendResetPasswordEmail = this.sendResetPasswordEmail.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleEliminarPerfil = this.handleEliminarPerfil.bind(this);
   }
 
   handleValidation() {
@@ -77,6 +81,28 @@ class AjustesPage extends Component {
         );
     }
   }
+
+  handleEliminarPerfil() {
+    const email = this.state.emailCheck;
+    let headers = { "Content-Type": "application/json" };
+    let body = JSON.stringify({ email });
+    api.post("/users/user", body, { headers })
+      .then(res => {
+        if (res.status === 204) {
+          this.props.logout()
+        }
+      }
+      )
+      .catch(
+        e => {
+          console.log(e.response);
+          this.setState({
+            errors: { emailCheck: 'Email incorrecto.' }
+          })
+        }
+      );
+  }
+
 
   sendResetPasswordEmail() {
     let headers = { "Content-Type": "application/json" };
@@ -190,9 +216,65 @@ class AjustesPage extends Component {
             </div>
           </CardBody>
         </Card>
+        <Card>
+          <CardHeader>
+            <i className="fa fa-align-justify"></i> Eliminar perfil
+          </CardHeader>
+          <CardBody>
+            <Form>
+              <FormGroup>
+                <div className="row">
+                  <div className="col-md-2">
+                    <Label for="oldPassword">Confirme su correo</Label>
+                  </div>
+                  <div className="col-md-8">
+                    <InputGroup className="mb-2">
+                      <InputGroupAddon addonType="prepend">
+                        <InputGroupText>
+                          <i className="icon-ban"></i>
+                        </InputGroupText>
+                      </InputGroupAddon>
+                      <Input placeholder="Ésta acción no es reversible." id="emailCheck"
+                        onChange={(e) => this.setState({ emailCheck: e.target.value })} />
+                    </InputGroup>
+                    <span style={{ color: 'red' }}>{this.state.errors.emailCheck}</span>
+                    {this.state.passwordReseteada ?
+                      <span className="text-muted"> Se ha enviado un email a {this.state.email}</span>
+                      : (this.state.errors.oldPassword === 'Contraseña incorrecta') ?
+                        (this.state.passwordReseteada === false) ?
+                          <span className="text-muted"> Se produjo un error al resetear su contraseña</span>
+                          : <span className="text-muted"> ¿Olvidaste tu contraseña? Click <a style={{ textDecoration: "underline" }} onClick={this.sendResetPasswordEmail}>aquí</a></span>
+                        : undefined}
+                  </div>
+                </div>
+              </FormGroup>
+            </Form>
+            <div className="row">
+              <div className="offset-md-2 col-md-8">
+                <Button className="col-md-4" color="primary" onClick={this.handleEliminarPerfil}>Eliminar perfil</Button>
+                <span className="offset-md-1 col-md-3" style={{ color: 'green' }}>{this.state.exitoPerfil}</span>
+              </div>
+            </div>
+          </CardBody>
+        </Card>
       </div>
     );
   }
 }
 
-export default AjustesPage;
+
+const mapStateToProps = state => {
+  return {
+    auth: state.auth,
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    logout: () => {
+      return dispatch(auth.logout());
+    }
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AjustesPage);

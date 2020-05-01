@@ -24,6 +24,7 @@ from actividades.serializers import EventoSerializer, RubroEventoSerializer, \
 from actividades.services import create_propuesta, actualizar_colaboracion, actualizar_participacion
 from recommendations.services import predict_eventos_userbased
 from common.functions import get_token_user, calc_distance_locations
+from common.mixins import AuthTokenMixin
 import re
 
 
@@ -248,7 +249,7 @@ class EventoVoluntarioCreateReadView(ListCreateAPIView):
         return eventos
 
 
-class ConsultaEventosOrganizacionCreateReadView(ListCreateAPIView):
+class ConsultaEventosOrganizacionCreateReadView(AuthTokenMixin, ListCreateAPIView):
     """
     API endpoint para ver todos los eventos próximos
     """

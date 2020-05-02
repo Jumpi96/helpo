@@ -150,7 +150,7 @@ class Home extends Component {
               <div className="col-md-4 offset-md-4">
                 <Card><CardBody>
                   <FacebookProvider appId="343119846258901">
-                    <Page href="https://www.facebook.com/HelpoConsultas" tabs="timeline" height={500} />
+                    <Page href="https://www.facebook.com/helpo.oficial" tabs="timeline" height={500} />
                   </FacebookProvider>
                 </CardBody></Card>
               </div>

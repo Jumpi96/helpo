@@ -10,8 +10,8 @@ from rest_framework.generics import CreateAPIView
 from rest_framework.generics import RetrieveUpdateDestroyAPIView, RetrieveUpdateAPIView
 from knox.models import AuthToken
 from django.contrib.auth import get_user_model
-from users.models import RubroOrganizacion, RubroEmpresa, OrganizacionProfile, VoluntarioProfile, EmpresaProfile, AppValues, User, DeviceID, Suscripcion
-from users.serializers import FacebookAuthSerializer, GoogleAuthSerializer, CreateUserSerializer, UserSerializer, LoginUserSerializer, ChangePasswordSerializer, ResetPasswordSerializer, RubroOrganizacionSerializer, RubroEmpresaSerializer, OrganizacionProfileSerializer, VoluntarioProfileSerializer, EmpresaProfileSerializer, VerificationMailSerializer, SendVerificationEmailSerializer, VerificationSmsSerializer, AppValuesSerializer, DeviceIDSerializer, SuscripcionSerializer, SuscripcionSerializerLista
+from users.models import OrganizationArea, RubroEmpresa, OrganizacionProfile, EmpresaProfile, AppValues, User, DeviceID, Suscripcion
+from users.serializers import FacebookAuthSerializer, GoogleAuthSerializer, CreateUserSerializer, UserSerializer, LoginUserSerializer, ChangePasswordSerializer, ResetPasswordSerializer, OrganizationAreaSerializer, RubroEmpresaSerializer, OrganizacionProfileSerializer, EmpresaProfileSerializer, VerificationMailSerializer, SendVerificationEmailSerializer, VerificationSmsSerializer, AppValuesSerializer, DeviceIDSerializer, SuscripcionSerializer, SuscripcionSerializerLista
 import time
 import requests
 from users.services import send_confirmation_sms
@@ -86,19 +86,19 @@ class UserInfoView(generics.RetrieveAPIView):
     serializer_class = UserSerializer
     lookup_field = 'id'
 
-class RubroOrganizacionCreateReadView(ListCreateAPIView):
+class OrganizationAreaCreateReadView(ListCreateAPIView):
     """
     API endpoint para crear o ver todos los rubros de organización
     """
-    queryset = RubroOrganizacion.objects.all()
-    serializer_class = RubroOrganizacionSerializer
+    queryset = OrganizationArea.objects.all()
+    serializer_class = OrganizationAreaSerializer
 
-class RubroOrganizacionReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
+class OrganizationAreaReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     """
     API endpoint para leer, actualizar o eliminar un rubro de organización
     """
-    queryset = RubroOrganizacion.objects.all()
-    serializer_class = RubroOrganizacionSerializer
+    queryset = OrganizationArea.objects.all()
+    serializer_class = OrganizationAreaSerializer
     lookup_field = 'id'
 
 class RubroEmpresaCreateReadView(ListCreateAPIView):
@@ -144,14 +144,6 @@ class EmpresaProfileReadUpdateDeleteView(RetrieveUpdateAPIView):
     """
     queryset = EmpresaProfile.objects.all()
     serializer_class = EmpresaProfileSerializer
-    lookup_field = 'usuario'
-
-class VoluntarioProfileReadUpdateDeleteView(RetrieveUpdateAPIView):
-    """
-    API endpoint para leer, actualizar o eliminar un perfil de voluntario
-    """
-    queryset = VoluntarioProfile.objects.all()
-    serializer_class = VoluntarioProfileSerializer
     lookup_field = 'usuario'
 
 class SendSmsOrganizacionView(APIView):

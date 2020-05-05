@@ -1,12 +1,11 @@
 import abc
-import pytz
 from dataclasses import dataclass
 from django.utils import timezone
 
 
 import inject
 
-from users.application.repositories import UsersRepository
+from users.application.repositories import UsersRepository, VolunteerProfilesRepository
 from users.domain.entities import User
 
 
@@ -32,6 +31,7 @@ class RemoveUserOutputBoundary(metaclass=abc.ABCMeta):
 
 class RemoveUserUseCase:
     users_repo: UsersRepository = inject.attr(UsersRepository)
+    profiles_repo: VolunteerProfilesRepository = inject.attr(VolunteerProfilesRepository)
 
     @inject.params(presenter=RemoveUserOutputBoundary)
     def __init__(self, presenter: RemoveUserOutputBoundary) -> None:
@@ -65,12 +65,12 @@ class RemoveUserUseCase:
         # TODO: Replace Django models with repositories.
         from actividades.models import Comentario, LogMensaje
         from recommendations.models import LogConsultaEvento
-        from users.models import VoluntarioProfile, OrganizacionProfile, EmpresaProfile, Suscripcion
+        from users.models import OrganizacionProfile, EmpresaProfile, Suscripcion
         
         Comentario.objects.filter(voluntario_id=user.id).delete()
         LogMensaje.objects.filter(usuario_id=user.id).delete()
         LogConsultaEvento.objects.filter(usuario_id=user.id).delete()
-        VoluntarioProfile.objects.filter(usuario_id=user.id).delete()
+        profiles_repo.delete(user.id)
         OrganizacionProfile.objects.filter(usuario_id=user.id).delete()
         EmpresaProfile.objects.filter(usuario_id=user.id).delete()
         Suscripcion.objects.filter(usuario_id=user.id).delete()

@@ -2,7 +2,7 @@ from rest_framework import serializers
 from django.contrib.auth import authenticate
 from django.conf import settings
 from decouple import config
-from users.models import User, UserWrapper, RubroOrganizacion, RubroEmpresa, OrganizacionProfile, Ubicacion, Imagen, VoluntarioProfile, EmpresaProfile, SmsVerification, UserVerification, AppValues, DeviceID, Suscripcion
+from users.models import User, UserWrapper, OrganizationArea, RubroEmpresa, OrganizacionProfile, Ubicacion, Imagen, VolunteerProfile, EmpresaProfile, SmsVerification, UserVerification, AppValues, DeviceID, Suscripcion
 from actividades.models import Participacion, Evento, Colaboracion
 from django.core.exceptions import ObjectDoesNotExist
 from common.functions import get_datos_token_google, get_datos_token_facebook
@@ -122,7 +122,7 @@ class UserSerializer(serializers.ModelSerializer):
             perfil = OrganizacionProfile.objects.filter(usuario=obj.id).first()
             return perfil.avatar.url
         elif obj.user_type == 2:
-            perfil = VoluntarioProfile.objects.filter(usuario=obj.id).first()
+            perfil = VolunteerProfile.objects.filter(usuario=obj.id).first()
             return perfil.avatar.url
         elif obj.user_type == 3:
             perfil = EmpresaProfile.objects.filter(usuario=obj.id).first()
@@ -141,9 +141,9 @@ class UbicacionSerializer(serializers.ModelSerializer):
             }
         }
 
-class RubroOrganizacionSerializer(serializers.ModelSerializer):
+class OrganizationAreaSerializer(serializers.ModelSerializer):
     class Meta:
-        model = RubroOrganizacion
+        model = OrganizationArea
         fields = ('id', 'nombre')
 
 class RubroEmpresaSerializer(serializers.ModelSerializer):
@@ -157,7 +157,7 @@ class ImagenSerializer(serializers.ModelSerializer):
         fields = ('id', 'url')
 
 class OrganizacionProfileSerializer(serializers.ModelSerializer):
-    rubro = RubroOrganizacionSerializer(required=False)
+    rubro = OrganizationAreaSerializer(required=False)
     ubicacion = UbicacionSerializer(required=False)
     avatar = ImagenSerializer(required=False)
     usuario = UserSerializer(read_only=True)
@@ -195,7 +195,7 @@ class OrganizacionProfileSerializer(serializers.ModelSerializer):
         instance.descripcion = validated_data.get('descripcion', instance.descripcion) 
 
         if rubro_data != None:
-            nuevoRubro = RubroOrganizacion.objects.get(nombre=rubro_data["nombre"])
+            nuevoRubro = OrganizationArea.objects.get(nombre=rubro_data["nombre"])
             instance.rubro = nuevoRubro       
         
         if ubicacion_data != None:
@@ -316,14 +316,14 @@ class EmpresaProfileSerializer(serializers.ModelSerializer):
         eventos = Evento.objects.filter(id__in = cantidad).count()
         return eventos    
 
-class VoluntarioProfileSerializer(serializers.ModelSerializer):
+class VolunteerProfileSerializer(serializers.ModelSerializer):
     avatar = ImagenSerializer(required=False)   
     usuario = UserSerializer(read_only=True) 
     manos = serializers.SerializerMethodField()
     eventos = serializers.SerializerMethodField()
 
     class Meta:
-        model = VoluntarioProfile
+        model = VolunteerProfile
         fields = ( 'telefono', 'apellido', 'dni', 'sexo', 'gustos', 'habilidades', 'avatar', 'usuario','manos','eventos')
         read_only_fields = ('usuario','manos','eventos')
 
@@ -509,13 +509,13 @@ class ColaboradorInfoSerializer(serializers.ModelSerializer):
 
     def get_apellido(self, obj):
         if obj.user_type != 3:
-            return VoluntarioProfile.objects.get(usuario=obj.id).apellido
+            return VolunteerProfile.objects.get(usuario=obj.id).apellido
     
     def get_identificador(self, obj):
         if obj.user_type == 3:
             return EmpresaProfile.objects.get(usuario=obj.id).cuit
         else:
-            return VoluntarioProfile.objects.get(usuario=obj.id).dni
+            return VolunteerProfile.objects.get(usuario=obj.id).dni
             
 
 class DeviceIDSerializer(serializers.ModelSerializer):

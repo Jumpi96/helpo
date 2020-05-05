@@ -21,7 +21,7 @@ class Imagen(models.Model):
     def __str__(self):
         return self.url
 
-class RubroOrganizacion(models.Model):
+class OrganizationArea(models.Model):
     # nombre deberia ser Unique=True, pero me da problemas en el serializer para hacer update
     # TODO: Ver como arreglar eso, por ahora workaround -> Sacar Unique=True
     nombre = models.CharField(max_length=100)
@@ -47,7 +47,7 @@ class OrganizacionProfile(Profile):
     verificada = models.BooleanField(default=False)
     telefono = models.BigIntegerField(blank=True, null=True)
     cuit = models.BigIntegerField(blank=True, null=True)
-    rubro = models.ForeignKey(RubroOrganizacion, on_delete=models.SET_NULL, blank=True, null=True)
+    rubro = models.ForeignKey(OrganizationArea, on_delete=models.SET_NULL, blank=True, null=True)
     avatar = models.ForeignKey(Imagen, on_delete=models.SET_NULL, blank=True, null=True)
     ubicacion = models.ForeignKey(Ubicacion, on_delete=models.SET_NULL,blank=True, null=True)
     descripcion = models.TextField(blank=True, null=True)
@@ -104,7 +104,7 @@ class UserManager(BaseUserManager):
             suscripciones_mensuales = OrganizacionSuscripcionesMensuales.objects.create(
                 organizacion=user, fecha=previous_month, suscripciones=0)
         elif user_type == 2:
-            profile = VoluntarioProfile.objects.create(usuario=user, apellido=kwargs["apellido"], avatar=avatar)
+            profile = VolunteerProfile.objects.create(usuario=user, apellido=kwargs["apellido"], avatar=avatar)
         else:
             profile = EmpresaProfile.objects.create(usuario=user, avatar=avatar)
         self.send_confirmation_email(user)
@@ -195,15 +195,33 @@ class User(AbstractBaseUser, PermissionsMixin, IndexedTimeStampedModel):
 class UserWrapper(User):
     id_token = models.TextField()
 
-class VoluntarioProfile(Profile):
-    sexo = models.TextField(blank=True, null=True)
-    apellido = models.CharField(max_length=140, default="no apellido")
-    telefono = models.BigIntegerField(blank=True, null=True)
-    dni = models.BigIntegerField(blank=True, null=True)
+
+class Skill(models.Model):
+    nombre = models.TextField()
+
+
+class State(models.Model):
+    nombre = models.TextField()
+
+
+class VolunteerProfile(Profile):
+    user = models.ForeignKey(User, related_name='profile', on_delete=models.CASCADE)
     avatar = models.ForeignKey(Imagen, on_delete=models.SET_NULL, blank=True, null=True)
-    gustos = models.TextField(blank=True, null=True)
-    habilidades = models.TextField(blank=True, null=True)
-    usuario = models.ForeignKey(User, related_name='perfil', on_delete=models.CASCADE)
+    dni = models.BigIntegerField(blank=True, null=True)
+    gender = models.CharField(max_length=70, blank=True, null=True)
+    last_name = models.CharField(max_length=140, default='no last name')
+    birth_date = models.DateField()
+    phone = models.CharField(max_length=70, blank=True, null=True)
+    work_position = models.CharField(max_length=140, null=True)
+    profession = models.CharField(max_length=140, null=True)
+    educational_level = models.CharField(max_length=140, null=True)
+    availability = models.CharField(max_length=280, null=True)
+    modality = models.CharField(max_length=70, null=True)
+    state = models.ForeignKey(State)
+    city = models.CharField(max_length=70, null=True)
+    interests = models.ManyToManyField(OrganizationArea)
+    skills = models.ManyToManyField(Skill)
+    
 
 class UserVerification(IndexedTimeStampedModel):
     usuario = models.OneToOneField('User')

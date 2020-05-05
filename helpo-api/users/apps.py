@@ -4,10 +4,16 @@ from django.apps import AppConfig
 
 
 def inject_config(binder: inject.Binder) -> None:
-    from users.application.repositories import UsersRepository
-    from users.infrastructure.repositories import DjangoORMUsersRepository
+    from users.application.repositories import UsersRepository, VolunteerProfilesRepository, \
+        SkillsRepository, OrganizationAreasRepository
+    from users.infrastructure.repositories import DjangoORMUsersRepository, \
+        DjangoORMVolunteerProfilesRepository, DjangoORMSkillsRepository, \
+        DjangoORMOrganizationAreasRepository
 
     binder.bind(UsersRepository, DjangoORMUsersRepository())
+    binder.bind(VolunteerProfilesRepository, DjangoORMVolunteerProfilesRepository())
+    binder.bind(SkillsRepository, DjangoORMSkillsRepository())
+    binder.bind(OrganizationAreasRepository, DjangoORMOrganizationAreasRepository())
 
 
 class UsersConfig(AppConfig):

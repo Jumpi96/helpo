@@ -70,7 +70,7 @@ class RemoveUserUseCase:
         Comentario.objects.filter(voluntario_id=user.id).delete()
         LogMensaje.objects.filter(usuario_id=user.id).delete()
         LogConsultaEvento.objects.filter(usuario_id=user.id).delete()
-        profiles_repo.delete(user.id)
+        self.profiles_repo.delete(user.id)
         OrganizacionProfile.objects.filter(usuario_id=user.id).delete()
         EmpresaProfile.objects.filter(usuario_id=user.id).delete()
         Suscripcion.objects.filter(usuario_id=user.id).delete()

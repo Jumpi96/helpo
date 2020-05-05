@@ -57,4 +57,4 @@ class DjangoORMVolunteerProfilesRepository(VolunteerProfilesRepository):
         
     
     def delete(self, user_id: int) -> None:
-        VolunteerProfile.objects.get(user_id=user_id).delete()
+        VolunteerProfileModel.objects.filter(user__id=user_id).delete()

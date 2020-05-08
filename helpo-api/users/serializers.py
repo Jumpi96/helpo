@@ -321,8 +321,7 @@ class VolunteerProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = VolunteerProfile
-        fields = ( 'telefono', 'apellido', 'dni', 'sexo', 'gustos', 'habilidades', 'avatar', 'usuario','manos','eventos')
-        read_only_fields = ('usuario','manos','eventos')
+        fields = ('avatar', 'dni', 'gender', 'last_name', 'birth_date', 'phone', 'work_position', 'profession', 'educational_level', 'availability', 'modality', 'state', 'city', 'interests', 'skills', 'usuario','manos','eventos')        read_only_fields = ('usuario','manos','eventos')
 
     def update(self, instance, validated_data):
         avatar_data = None

@@ -10,8 +10,8 @@ from rest_framework.generics import CreateAPIView
 from rest_framework.generics import RetrieveUpdateDestroyAPIView, RetrieveUpdateAPIView
 from knox.models import AuthToken
 from django.contrib.auth import get_user_model
-from users.models import OrganizationArea, RubroEmpresa, OrganizacionProfile, EmpresaProfile, AppValues, User, DeviceID, Suscripcion
-from users.serializers import FacebookAuthSerializer, GoogleAuthSerializer, CreateUserSerializer, UserSerializer, LoginUserSerializer, ChangePasswordSerializer, ResetPasswordSerializer, OrganizationAreaSerializer, RubroEmpresaSerializer, OrganizacionProfileSerializer, EmpresaProfileSerializer, VerificationMailSerializer, SendVerificationEmailSerializer, VerificationSmsSerializer, AppValuesSerializer, DeviceIDSerializer, SuscripcionSerializer, SuscripcionSerializerLista
+from users.models import OrganizationArea, RubroEmpresa, OrganizacionProfile, EmpresaProfile, AppValues, User, DeviceID, Suscripcion, VolunteerProfile
+from users.serializers import FacebookAuthSerializer, GoogleAuthSerializer, CreateUserSerializer, UserSerializer, LoginUserSerializer, ChangePasswordSerializer, ResetPasswordSerializer, OrganizationAreaSerializer, RubroEmpresaSerializer, OrganizacionProfileSerializer, EmpresaProfileSerializer, VerificationMailSerializer, SendVerificationEmailSerializer, VerificationSmsSerializer, AppValuesSerializer, DeviceIDSerializer, SuscripcionSerializer, SuscripcionSerializerLista, VolunteerProfileSerializer
 import time
 import requests
 from users.services import send_confirmation_sms
@@ -146,6 +146,14 @@ class EmpresaProfileReadUpdateDeleteView(RetrieveUpdateAPIView):
     """
     queryset = EmpresaProfile.objects.all()
     serializer_class = EmpresaProfileSerializer
+    lookup_field = 'usuario'
+
+class VolunteerProfileReadUpdateDeleteView(RetrieveUpdateAPIView):	
+    """	
+    API endpoint para leer, actualizar o eliminar un perfil de voluntario	
+    """	
+    queryset = VolunteerProfile.objects.all()	
+    serializer_class = VolunteerProfileSerializer	
     lookup_field = 'usuario'
 
 class SendSmsOrganizacionView(APIView):

@@ -104,7 +104,11 @@ class UserManager(BaseUserManager):
             suscripciones_mensuales = OrganizacionSuscripcionesMensuales.objects.create(
                 organizacion=user, fecha=previous_month, suscripciones=0)
         elif user_type == 2:
-            profile = VolunteerProfile.objects.create(usuario=user, apellido=kwargs["apellido"], avatar=avatar)
+            profile = VolunteerProfile.objects.create(
+                usuario=user, 
+                last_name=kwargs["apellido"], 
+                avatar=avatar
+            )
         else:
             profile = EmpresaProfile.objects.create(usuario=user, avatar=avatar)
         self.send_confirmation_email(user)
@@ -205,19 +209,18 @@ class State(models.Model):
 
 
 class VolunteerProfile(Profile):
-    user = models.ForeignKey(User, related_name='profile', on_delete=models.CASCADE)
     avatar = models.ForeignKey(Imagen, on_delete=models.SET_NULL, blank=True, null=True)
     dni = models.BigIntegerField(blank=True, null=True)
     gender = models.CharField(max_length=70, blank=True, null=True)
     last_name = models.CharField(max_length=140, default='no last name')
-    birth_date = models.DateField()
+    birth_date = models.DateField(null=True)
     phone = models.CharField(max_length=70, blank=True, null=True)
     work_position = models.CharField(max_length=140, null=True)
     profession = models.CharField(max_length=140, null=True)
     educational_level = models.CharField(max_length=140, null=True)
     availability = models.CharField(max_length=280, null=True)
     modality = models.CharField(max_length=70, null=True)
-    state = models.ForeignKey(State)
+    state = models.ForeignKey(State, null=True)
     city = models.CharField(max_length=70, null=True)
     interests = models.ManyToManyField(OrganizationArea)
     skills = models.ManyToManyField(Skill)

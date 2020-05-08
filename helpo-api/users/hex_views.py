@@ -22,7 +22,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 
 @method_decorator(csrf_exempt, name='dispatch') # TODO: implement CSRF in WebApp
-class UpdateProfileView(AuthTokenMixin, View):
+class UpdateVolunteerProfileView(AuthTokenMixin, View):
 
     def put(self, request: HttpRequest, user_id: int) -> HttpResponse:
         repo: repositories.VolunteerProfilesRepository = inject.instance(repositories.VolunteerProfilesRepository)
@@ -38,7 +38,6 @@ class UpdateProfileView(AuthTokenMixin, View):
         )
         repo.save(input_profile)
         return HttpResponse(data, status=200)
-
 
 class RemoveUserPresenter(remove_user.RemoveUserOutputBoundary):
     def present(self, output_dto: remove_user.RemoveUserOutputBoundary) -> None:

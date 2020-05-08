@@ -110,12 +110,6 @@ urlpatterns = [
         view=users_views.EmpresaProfileReadUpdateDeleteView.as_view(),
         name="get_put_delete_perfil_empresa"
     ),
-    # {% url "api:volunteer_profile" user.id %}
-    url(
-        regex=r"^users/profiles/volunteer/(?P<user_id>[-\w]+)/$",
-        view=hex_users_views.UpdateProfileView.as_view(),
-        name="update_volunteer_profile"
-    ),
     url(
         regex=r"^verify_email/$",
         view=users_views.VerifyMailView.as_view(),
@@ -186,5 +180,11 @@ urlpatterns = [
         regex=r"^users/user?$",
         view=hex_users_views.RemoveUserView.as_view(),
         name="remove_user"
-    )
+    ),
+    # {% url "api:volunteer_profile" user.id %}
+    url(
+        regex=r"^users/profiles/volunteer/(?P<user_id>[-\w]+)/$",
+        view=hex_users_views.UpdateVolunteerProfileView.as_view(),
+        name="update_volunteer_profile"
+    ),
 ]

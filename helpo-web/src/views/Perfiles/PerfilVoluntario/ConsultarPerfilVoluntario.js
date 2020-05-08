@@ -210,6 +210,7 @@ class ConsultarPerfilVoluntario extends Component {
                     Manos acumuladas
                 </Tooltip>
                 </Card >
+                {/*
                 <Card id="cardEventos" className="text-center" body inverse color="primary" style={{ height: 100, width: 100, borderColor: 'white' }}>
                   <CardTitle><i class="fa fa-calendar-check-o fa-2x"></i></CardTitle>
                   <CardText style={{ fontSize: 20 }}>{this.renderEventos()}</CardText>
@@ -217,6 +218,7 @@ class ConsultarPerfilVoluntario extends Component {
                     Eventos asistidos
                 </Tooltip>
                 </Card>
+                */}
               </CardColumns>
             </div>
           </div>

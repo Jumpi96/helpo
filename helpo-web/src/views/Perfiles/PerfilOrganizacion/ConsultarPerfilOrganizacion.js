@@ -276,6 +276,7 @@ class ConsultarPerfilOrganizacion extends Component {
                     : <Button className='btn btn-primary' onClick={this.props.switchToModificar} color='primary'>Modificar datos</Button>}
                 </div>
               </div>
+              {/*
               <div style={{ display: 'flex', marginBottom: '10px' }} className='row offster-md-4'>
                 <div className="col-md-5 offset-md-3">
                   <Link to={link}>
@@ -283,6 +284,7 @@ class ConsultarPerfilOrganizacion extends Component {
                   </Link>
                 </div>
               </div>
+              */}
               <div style={{ display: 'flex', marginBottom: '10px' }} className='row offster-md-4'>
                 <div className="col-md-5 offset-md-3">
                   <BotonSuscripcion organizacion={this.props.id} />
@@ -298,6 +300,7 @@ class ConsultarPerfilOrganizacion extends Component {
                     Manos acumuladas
                   </Tooltip>
                 </Card>
+                {/*
                 <Link to={link}>
                   <Card id="cardEventos" className="text-center" body inverse color="primary" style={{ height: 100, width: 100, borderColor: 'white' }}>
                     <CardTitle><i className="fa fa-calendar-check-o fa-2x"></i></CardTitle>
@@ -307,6 +310,7 @@ class ConsultarPerfilOrganizacion extends Component {
                     </Tooltip>
                   </Card>
                 </Link>
+                */}
                 {this.props.data.verificada ?
                   <Card id="cardVerificada" className="text-center" body inverse color="primary" style={{ height: 100, width: 100, borderColor: 'white' }}>
                     <CardTitle><i className="fa fa-shield fa-3x"></i></CardTitle>

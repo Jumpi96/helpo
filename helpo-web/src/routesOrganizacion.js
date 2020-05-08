@@ -98,6 +98,7 @@ const routes = [
   { path: '/', exact: true, name: 'Home', component: DefaultLayout },
   { path: '/dashboard', name: 'helpo', component: Dashboard },
 
+  /*
   { path: '/actividades/evento', name: 'Mis actividades sociales', component: EventoPage },
   { path: '/actividades/consultar-eventos', name: 'Consultar actividades sociales', component: ConsultarEventosPage },
   { path: '/actividades/consultar-evento/', name: 'Consultar actividad social', component: ConsultarEventosView },
@@ -106,15 +107,16 @@ const routes = [
   { path: '/actividades/consultar-colaboraciones', name: 'Consultar Colaboraciones', component: ConsultarColaboraciones },
   { path: '/actividades/mensajes', name: 'Mensajes de evento', component: ListadoMensajes },
   { path: '/actividades/patrocinadores', name: 'Administración de patrocinadores', component: ConsultarPatrocinadores },
+  { path: '/empresas', name: 'Empresas', component: EmpresasPage },
+  { path: '/planificador', name: 'Planificador', component: PlanificadorEvento },
+  { path: '/actividades/album/:eventoId', name: 'Album de Evento', component: AlbumImagenes },
+  { path: '/reportes', name: 'Reportes', component: DashboardReportes },
+  */
   { path: '/perfiles/perfil-organizacion', name: 'Perfil organizacion', component: ModificarPerfilOrganizacion },
   { path: '/perfil/:usuarioId', name: 'Perfil de usuario', component: ConsultarPerfil },
   { path: '/perfil/', name: 'Mi perfil', component: ConsultarPerfil },
   { path: '/ajustes/', name: 'Ajustes', component: AjustesPage },
-  { path: '/actividades/album/:eventoId', name: 'Album de Evento', component: AlbumImagenes },
-  { path: '/reportes', name: 'Reportes', component: DashboardReportes },
   { path: '/organizaciones', name: 'Organizaciones', component: OrganizacionesPage },
-  { path: '/empresas', name: 'Empresas', component: EmpresasPage },
-  { path: '/planificador', name: 'Planificador', component: PlanificadorEvento },
 ];
 
 export default routes;

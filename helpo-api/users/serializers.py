@@ -321,35 +321,8 @@ class VolunteerProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = VolunteerProfile
-        fields = ('avatar', 'dni', 'gender', 'last_name', 'birth_date', 'phone', 'work_position', 'profession', 'educational_level', 'availability', 'modality', 'state', 'city', 'interests', 'skills', 'usuario','manos','eventos')        read_only_fields = ('usuario','manos','eventos')
-
-    def update(self, instance, validated_data):
-        avatar_data = None
-        
-        try:
-            avatar_data = validated_data.pop('avatar')
-        except KeyError:
-            avatar_data = None
-
-        instance.telefono = validated_data.get('telefono', instance.telefono)
-        instance.apellido = validated_data.get('apellido', instance.apellido)
-        instance.dni = validated_data.get('dni', instance.dni)
-        instance.sexo = validated_data.get('sexo', instance.sexo)         
-        instance.gustos = validated_data.get('gustos', instance.gustos)         
-        instance.habilidades = validated_data.get('habilidades', instance.habilidades)    
-
-        #TODO: Ver si hay que cambiar cuando se haga mejor manejo de imagenes
-        if avatar_data != None:
-            try:    
-                nuevaImagen = Imagen.objects.get(url=avatar_data["url"])
-                instance.avatar = nuevaImagen
-            except Exception: # Imagen.DoesNotExist
-                ## TODO: Sacar isExternal hardcodeado
-                nuevaImagen = Imagen(**avatar_data, isExternal=False)
-                nuevaImagen.save()
-                instance.avatar = nuevaImagen
-        instance.save()
-        return instance
+        fields = ('avatar', 'dni', 'gender', 'last_name', 'birth_date', 'phone', 'work_position', 'profession', 'educational_level', 'availability', 'modality', 'state', 'city', 'interests', 'skills', 'usuario','manos','eventos')        
+        read_only_fields = ('usuario','manos','eventos')
 
     def get_manos(self, obj):
         participaciones = Participacion.objects.filter(retroalimentacion_ong=True, colaborador_id=obj.usuario_id).count()

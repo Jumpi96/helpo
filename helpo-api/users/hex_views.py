@@ -21,7 +21,6 @@ from users.application.use_cases import remove_user, update_volunteer_profile
 from users.domain.entities import VolunteerProfile
 
 
-
 class UpdateVolunteerProfilePresenter(update_volunteer_profile.UpdateVolunteerProfileOutputBoundary):
     def present(self, output_dto: update_volunteer_profile.UpdateVolunteerProfileOutputBoundary) -> None:
         self._data = {
@@ -37,17 +36,13 @@ class UpdateVolunteerProfilePresenter(update_volunteer_profile.UpdateVolunteerPr
 @method_decorator(csrf_exempt, name='dispatch') # TODO: implement CSRF in WebApp
 class UpdateVolunteerProfileView(AuthTokenMixin, View):
 
-    def put(self, request: HttpRequest, user_id: int) -> HttpResponse:
+    def put(self, request: HttpRequest, user_id: str) -> HttpResponse:
         data = json.loads(request.body)
-        return HttpResponse(data, status=200)
-
-
-@method_decorator(csrf_exempt, name='dispatch') # TODO: implement CSRF in WebApp
-class UpdateVolunteerProfileView(AuthTokenMixin, View):
-
-    def put(self, request: HttpRequest, user_id: int) -> HttpResponse:
-        data = json.loads(request.body)
-        input_dto = dacite.from_dict(update_volunteer_profile.VolunteerProfileUpdateInputDto, data)
+        try:
+            data['user_id'] = int(user_id)
+            input_dto = dacite.from_dict(update_volunteer_profile.UpdateVolunteerProfileInputDto, data)
+        except dacite.exceptions.MissingValueError as error:
+            return HttpResponse(str(error), status=400) 
         presenter = UpdateVolunteerProfilePresenter()
         uc = update_volunteer_profile.UpdateVolunteerProfileUseCase(presenter)
         uc.execute(input_dto)

@@ -8,4 +8,4 @@ class DjangoORMOrganizationAreasRepository(OrganizationAreasRepository):
 
     def get(self, id: int) -> OrganizationArea:
         model = OrganizationAreaModel.objects.get(pk=id) 
-        return OrganizationArea(model.id, model.name)
+        return OrganizationArea(model.id, model.nombre)

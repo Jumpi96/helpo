@@ -193,4 +193,16 @@ urlpatterns = [
         view=hex_users_views.UpdateVolunteerProfileView.as_view(),
         name="update_volunteer_profile"
     ),
+    # {% url "api:skills" %}
+    url(
+        regex=r"^users/skills/$",
+        view=users_views.SkillCreateReadView.as_view(),
+        name="get_post_skill"
+    ),
+    # {% url "api:states" %}
+    url(
+        regex=r"^users/states/$",
+        view=users_views.StateCreateReadView.as_view(),
+        name="get_post_state"
+    ),
 ]

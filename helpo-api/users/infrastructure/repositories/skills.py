@@ -8,4 +8,4 @@ class DjangoORMSkillsRepository(SkillsRepository):
 
     def get(self, id: int) -> Skill:
         model = SkillModel.objects.get(pk=id) 
-        return Skill(model.id, model.name)
+        return Skill(model.id, model.nombre)

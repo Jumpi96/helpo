@@ -2,7 +2,7 @@ from rest_framework import serializers
 from django.contrib.auth import authenticate
 from django.conf import settings
 from decouple import config
-from users.models import User, UserWrapper, OrganizationArea, RubroEmpresa, OrganizacionProfile, Ubicacion, Imagen, VolunteerProfile, EmpresaProfile, SmsVerification, UserVerification, AppValues, DeviceID, Suscripcion
+from users.models import User, UserWrapper, OrganizationArea, RubroEmpresa, OrganizacionProfile, Ubicacion, Imagen, VolunteerProfile, EmpresaProfile, SmsVerification, UserVerification, AppValues, DeviceID, Suscripcion, Skill, State
 from actividades.models import Participacion, Evento, Colaboracion
 from django.core.exceptions import ObjectDoesNotExist
 from common.functions import get_datos_token_google, get_datos_token_facebook
@@ -508,3 +508,17 @@ class SuscripcionSerializerLista(serializers.ModelSerializer):
     class Meta:
         model = Suscripcion
         fields = ('id', 'usuario', 'organizacion')
+
+
+class SkillSerializer(serializers.ModelSerializer):   
+
+    class Meta:
+        model = Skill
+        fields = ('id', 'nombre')
+
+
+class StateSerializer(serializers.ModelSerializer):   
+
+    class Meta:
+        model = State
+        fields = ('id', 'nombre')

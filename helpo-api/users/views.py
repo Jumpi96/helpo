@@ -10,8 +10,8 @@ from rest_framework.generics import CreateAPIView
 from rest_framework.generics import RetrieveUpdateDestroyAPIView, RetrieveUpdateAPIView
 from knox.models import AuthToken
 from django.contrib.auth import get_user_model
-from users.models import OrganizationArea, RubroEmpresa, OrganizacionProfile, EmpresaProfile, AppValues, User, DeviceID, Suscripcion, VolunteerProfile
-from users.serializers import FacebookAuthSerializer, GoogleAuthSerializer, CreateUserSerializer, UserSerializer, LoginUserSerializer, ChangePasswordSerializer, ResetPasswordSerializer, OrganizationAreaSerializer, RubroEmpresaSerializer, OrganizacionProfileSerializer, EmpresaProfileSerializer, VerificationMailSerializer, SendVerificationEmailSerializer, VerificationSmsSerializer, AppValuesSerializer, DeviceIDSerializer, SuscripcionSerializer, SuscripcionSerializerLista, VolunteerProfileSerializer
+from users.models import OrganizationArea, RubroEmpresa, OrganizacionProfile, EmpresaProfile, AppValues, User, DeviceID, Suscripcion, VolunteerProfile, Skill, State
+from users.serializers import FacebookAuthSerializer, GoogleAuthSerializer, CreateUserSerializer, UserSerializer, LoginUserSerializer, ChangePasswordSerializer, ResetPasswordSerializer, OrganizationAreaSerializer, RubroEmpresaSerializer, OrganizacionProfileSerializer, EmpresaProfileSerializer, VerificationMailSerializer, SendVerificationEmailSerializer, VerificationSmsSerializer, AppValuesSerializer, DeviceIDSerializer, SuscripcionSerializer, SuscripcionSerializerLista, VolunteerProfileSerializer, SkillSerializer, StateSerializer
 import time
 import requests
 from users.services import send_confirmation_sms
@@ -329,3 +329,17 @@ class SuscripcionListUserView(APIView):
         suscripciones = Suscripcion.objects.filter(usuario=usuario)
         serializer = SuscripcionSerializerLista(suscripciones, many=True)
         return Response(serializer.data)
+
+class SkillCreateReadView(ListCreateAPIView):
+    """
+    API endpoint to create and view all the skills
+    """
+    queryset = Skill.objects.all()
+    serializer_class = SkillSerializer
+
+class StateCreateReadView(ListCreateAPIView):
+    """
+    API endpoint to create and view all the states
+    """
+    queryset = State.objects.all()
+    serializer_class = StateSerializer

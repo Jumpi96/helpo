@@ -69,7 +69,7 @@ class UpdateVolunteerProfileUseCase:
             input_dto.user_id, avatar_id, int(input_dto.dni), input_dto.gender, input_dto.last_name,
             None if input_dto.birth_date == "" else input_dto.birth_date, input_dto.phone, input_dto.work_position, input_dto.profession,
             input_dto.educational_level, input_dto.availability, input_dto.modality, 
-            input_dto.state_id, input_dto.city,
+            None if input_dto.state_id == -1 else input_dto.state_id, input_dto.city,
             [self.interests_repo.get(i) for i in input_dto.interests],
             [self.skills_repo.get(s) for s in input_dto.skills]
         )

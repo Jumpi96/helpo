@@ -5,8 +5,8 @@ import imagen from "../../assets/img/home-noauth-background.jpg";
 import imagen2 from "../../assets/img/foto_celular.jpg";
 import imagen3 from "../../assets/img/organizaciones.jpg";
 import imagen4 from "../../assets/img/empresas.jpg";
-import TwitterTimeline from 'react-twitter-embedded-timeline';
-import { FacebookProvider, Page } from 'react-facebook';
+// import TwitterTimeline from 'react-twitter-embedded-timeline';
+// import { FacebookProvider, Page } from 'react-facebook';
 
 const items = [
   {

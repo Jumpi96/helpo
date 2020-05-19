@@ -141,7 +141,7 @@ class Home extends Component {
                 </Collapse>
               </Col>
             </Row>
-            <Row>
+            {/* <Row>
               <div className="col-md-4">
                 <Card><CardBody>
                   <TwitterTimeline loading={"HelpoApp"} user={"HelpoApp"} height={'500px'} width={'100%'} chrome="noborders noheader" />
@@ -154,7 +154,7 @@ class Home extends Component {
                   </FacebookProvider>
                 </CardBody></Card>
               </div>
-            </Row>
+            </Row> */}
           </CardBody>
         </Card>
       </React.Fragment>

@@ -48,6 +48,8 @@ class ModificarPerfilVoluntario extends Component {
     super(props);
     this.state = {
       nombre: this.props.nombre,
+      first_name: this.props.nombre,
+      last_name: this.props.data.last_name,
       gender: this.getMaybeEmptyInput(this.props.data.gender),
       dni: this.getMaybeEmptyInput(this.props.data.dni),
       birth_date: this.props.data.birth_date == null ? null : this.processDate(this.props.data.birth_date),
@@ -69,6 +71,8 @@ class ModificarPerfilVoluntario extends Component {
     };
     this.handleGenderChange = this.handleGenderChange.bind(this);
     this.handleDniChange = this.handleDniChange.bind(this);
+    this.handleFirstNameChange = this.handleFirstNameChange.bind(this);
+    this.handleLastNameChange = this.handleLastNameChange.bind(this);
     this.handleBirthDateChange = this.handleBirthDateChange.bind(this);
     this.handlePhoneChange = this.handlePhoneChange.bind(this);
     this.handleWorkPositionChange = this.handleWorkPositionChange.bind(this);
@@ -321,23 +325,18 @@ class ModificarPerfilVoluntario extends Component {
     this.setState({ skills });
   }
 
-  renderNombre() {
-    return (
-      <input
-        type="text"
-        name="nombre"
-        className="form-control"
-        placeholder="Nombre"
-        value={this.props.nombre}
-        onChange={this.handleNombreChange}
-      />)
-  }
-
-  handleNombreChange(event) {
+  handleFirstNameChange(event) {
     this.setState({
-      nombre: event.target.value
+      first_name: event.target.value
     })
   }
+
+  handleLastNameChange(event) {
+    this.setState({
+      last_name: event.target.value
+    })
+  }
+
 
   renderTelefono() {
     return (
@@ -349,6 +348,28 @@ class ModificarPerfilVoluntario extends Component {
         value={this.state.phone}
         onChange={this.handlePhoneChange}
       />)
+  }
+
+  renderFirstName() {
+    return (
+      <input
+        type="text"
+        name="first-name"
+        className="form-control"
+        value={this.state.first_name}
+        onChange={this.handleFirstNameChange}
+      />) 
+  }
+
+  renderLastName() {
+    return (
+      <input
+        type="text"
+        name="last-name"
+        className="form-control"
+        value={this.state.last_name}
+        onChange={this.handleLastNameChange}
+      />) 
   }
 
   handlePhoneChange(event) {
@@ -413,7 +434,8 @@ class ModificarPerfilVoluntario extends Component {
       avatar_url: avatar_url,
       dni: newData.dni.toString(),
       gender: newData.gender,
-      last_name: this.props.data.last_name,
+      last_name: newData.last_name,
+      first_name: newData.first_name,
       birth_date: newData.birth_date,
       phone: newData.phone,
       work_position: newData.work_position,
@@ -520,7 +542,7 @@ class ModificarPerfilVoluntario extends Component {
         <CardBody>
           <div style={{ alignItems: 'center' }} className='form-group'>
             <div className='col-md-3'>
-              <p className='h4'>{this.props.nombre} {this.props.data.last_name}</p>
+              <p className='h4'>{this.state.first_name} {this.state.last_name}</p>
             </div>
             <div className='col-md-9'>
               <img
@@ -536,6 +558,13 @@ class ModificarPerfilVoluntario extends Component {
 
           <div className="row">
             <div className="col-md">
+            <div className='row'>
+                <p style={{ paddingTop: '8px' }} className='font-weight-bold col-md-2' htmlFor="first_name">Nombre</p>
+                <div className='col-md-4'>{this.renderFirstName()}</div>
+                <p style={{ paddingTop: '8px' }} className='font-weight-bold col-md-2' htmlFor="last_name">Apellido</p>
+                <div className='col-md-4'>{this.renderLastName()}</div>
+              </div>
+
               <div className='row'>
                 <p style={{ paddingTop: '8px' }} className='font-weight-bold col-md-2' htmlFor="telefono">Teléfono</p>
                 <div className='col-md-4'>{this.renderTelefono()}</div>

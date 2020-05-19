@@ -4,7 +4,7 @@ from django.utils import timezone
 import inject
 from typing import List
 
-from users.models import Imagen
+from users.models import Imagen, User
 
 from users.application.repositories import VolunteerProfilesRepository, SkillsRepository, OrganizationAreasRepository
 from users.domain.entities import VolunteerProfile
@@ -12,6 +12,7 @@ from users.domain.entities import VolunteerProfile
 
 @dataclass
 class UpdateVolunteerProfileInputDto:
+    first_name: str
     user_id: int
     avatar_url: str
     dni: str
@@ -64,7 +65,11 @@ class UpdateVolunteerProfileUseCase:
                 new_image.save()
                 avatar_id = new_image.id
 
-        
+        # TODO: Move this logic to an User repository.
+        input_user = User.objects.get(pk=input_dto.user_id)
+        input_user.nombre = input_dto.first_name
+        input_user.save()
+
         input_profile = VolunteerProfile(
             input_dto.user_id, avatar_id, int(input_dto.dni), input_dto.gender, input_dto.last_name,
             None if input_dto.birth_date == "" else input_dto.birth_date, input_dto.phone, input_dto.work_position, input_dto.profession,

@@ -26,7 +26,9 @@ from recommendations.services import predict_eventos_userbased
 from common.functions import get_token_user, calc_distance_locations
 from common.mixins import AuthTokenMixin
 import re
+import logging
 
+log = logging.getLogger('django')
 
 class RubroEventoCreateReadView(ListCreateAPIView):
     """
@@ -288,7 +290,10 @@ class ConsultaEventosOrganizacionCreateReadView(AuthTokenMixin, ListCreateAPIVie
         queryset = queryset.order_by('fecha_hora_inicio')
         user = get_token_user(self.request)
         if user is not None:
-            queryset = self.recomendar_eventos(queryset, user)
+            try:
+                queryset = self.recomendar_eventos(queryset, user)
+            except Exception as e:
+                log.error("Event recommendation couldn't be completed. {}".format(e))
         return queryset
 
     def recomendar_eventos(self, queryset, user):

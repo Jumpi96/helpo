@@ -249,7 +249,7 @@ class EventoVoluntarioCreateReadView(ListCreateAPIView):
         return eventos
 
 
-class ConsultaEventosOrganizacionCreateReadView(AuthTokenMixin, ListCreateAPIView):
+class ConsultaEventosOrganizacionCreateReadView(ListCreateAPIView):
     """
     API endpoint para ver todos los eventos próximos
     """

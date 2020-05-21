@@ -10,8 +10,8 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    matrix:
     strategy:
-      matrix:
         node-version: [10.x]
 
     steps:
@@ -24,5 +24,7 @@ jobs:
       run: cd helpo-web && npm install
     - name: Build JS
       run: cd helpo-web && npm run build
+      env:
+        CI: false
     - name: run tests
       run: cd helpo-web && npm test

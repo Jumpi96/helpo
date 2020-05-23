@@ -301,7 +301,7 @@ class Register extends Component {
       <body>
 		    <div className="container">
 				  <div className="panel-heading">
-	          <div className="panel-title text-center">
+	          <div className="panel-title text-center" style={{ margin: '20px' }}>
               <img src={logo} alt="Helpo" width="150" height="150"></img>
 	          </div>
 	        </div>

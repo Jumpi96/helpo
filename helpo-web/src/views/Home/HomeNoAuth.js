@@ -4,8 +4,8 @@ import './HomeNoAuth.css';
 import imagen from "../../assets/img/home-noauth-background-converted.jpg";
 import imagen2 from "../../assets/img/organizaciones-converted.jpg";
 import imagen3 from "../../assets/img/voluntario-converted.jpg";
-import TwitterTimeline from 'react-twitter-embedded-timeline';
-import { FacebookProvider, Page } from 'react-facebook';
+// import TwitterTimeline from 'react-twitter-embedded-timeline';
+// import { FacebookProvider, Page } from 'react-facebook';
 
 const items = [
   {
@@ -136,6 +136,7 @@ class Home extends Component {
                 </Collapse>
               </Col>
             </Row>
+            {/* TODO: Add new Twitter and FB timelines/feeds
             <Row>
               <div className="col-md-4">
                 <Card><CardBody>
@@ -149,7 +150,7 @@ class Home extends Component {
                   </FacebookProvider>
                 </CardBody></Card>
               </div>
-            </Row>
+            </Row> */}
           </CardBody>
         </Card>
       </React.Fragment>

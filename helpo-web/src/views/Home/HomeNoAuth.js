@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { Row, Col, Collapse, CarouselCaption, CarouselControl, CarouselIndicators, CarouselItem, Carousel, Card, Button, CardBody } from 'reactstrap';
 import './HomeNoAuth.css';
-import imagen from "../../assets/img/home-noauth-background.jpg";
-import imagen2 from "../../assets/img/foto_celular.jpg";
-import imagen3 from "../../assets/img/organizaciones.jpg";
-import imagen4 from "../../assets/img/empresas.jpg";
+import imagen from "../../assets/img/home-noauth-background-converted.jpg";
+import imagen2 from "../../assets/img/organizaciones-converted.jpg";
+import imagen3 from "../../assets/img/voluntario-converted.jpg";
 import TwitterTimeline from 'react-twitter-embedded-timeline';
 import { FacebookProvider, Page } from 'react-facebook';
 
@@ -17,11 +16,7 @@ const items = [
   },
   {
     src: imagen3,
-  },
-  {
-    src: imagen4
   }
-
 ];
 
 class Home extends Component {

@@ -1,7 +1,5 @@
 # helpo ![helpo-api units](https://github.com/Jumpi96/helpo/workflows/helpo-api%20units/badge.svg) [![codecov](https://codecov.io/gh/Jumpi96/helpo/branch/master/graph/badge.svg)](https://codecov.io/gh/Jumpi96/helpo) ![helpo-web units](https://github.com/Jumpi96/helpo/workflows/helpo-web%20units/badge.svg)
 
-> Proyecto Final - UTN FRC - 2018
-
 Created with [Django React Boilerplate](https://github.com/vintasoftware/django-react-boilerplate).
 
 ## Conventions
@@ -103,6 +101,9 @@ npm run start
     - Use *pipenv* to run your environment and run your Django *locally*.
     - Run `python manage.py makemigrations` and `python manage.py migrate` on your shell.
   - To use Docker again, change your .env file, build your Docker image and run with *docker-compose*.
+
+### Running tests
+- You can run tests from inside the container. Run `pytest`, create logs folder if needed.
   
 ## Testing your deployment
 

@@ -142,12 +142,12 @@ class Command(BaseCommand):
                 i = 0
                 for row in reader:
                     state, created = State.objects.get_or_create(
-                        name=row[0],
+                        nombre=row[0],
                         # aca se podria agregar icono
                     )
                     i += 1
                     print('- state_{0}: {1}, Created: {2}'.format(
-                        str(i), str(state.name), str(created)))
+                        str(i), str(state.nombre), str(created)))
 
         def __set_skills():
             path = os.path.dirname(__file__) + "/skills.csv"
@@ -156,12 +156,12 @@ class Command(BaseCommand):
                 i = 0
                 for row in reader:
                     skill, created = Skill.objects.get_or_create(
-                        name=row[0],
+                        nombre=row[0],
                         # aca se podria agregar icono
                     )
                     i += 1
                     print('- state_{0}: {1}, Created: {2}'.format(
-                        str(i), str(skill.name), str(created)))
+                        str(i), str(skill.nombre), str(created)))
 
                     
         print('Populating Database...')

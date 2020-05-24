@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { Row, Col, Collapse, CarouselCaption, CarouselControl, CarouselIndicators, CarouselItem, Carousel, Card, Button, CardBody } from 'reactstrap';
 import './HomeNoAuth.css';
-import imagen from "../../assets/img/home-noauth-background.jpg";
-import imagen2 from "../../assets/img/foto_celular.jpg";
-import imagen3 from "../../assets/img/organizaciones.jpg";
-import imagen4 from "../../assets/img/empresas.jpg";
-import TwitterTimeline from 'react-twitter-embedded-timeline';
-import { FacebookProvider, Page } from 'react-facebook';
+import imagen from "../../assets/img/home-noauth-background-converted.jpg";
+import imagen2 from "../../assets/img/organizaciones-converted.jpg";
+import imagen3 from "../../assets/img/voluntario-converted.jpg";
+// import TwitterTimeline from 'react-twitter-embedded-timeline';
+// import { FacebookProvider, Page } from 'react-facebook';
 
 const items = [
   {
@@ -17,11 +16,7 @@ const items = [
   },
   {
     src: imagen3,
-  },
-  {
-    src: imagen4
   }
-
 ];
 
 class Home extends Component {
@@ -141,6 +136,7 @@ class Home extends Component {
                 </Collapse>
               </Col>
             </Row>
+            {/* TODO: Add new Twitter and FB timelines/feeds
             <Row>
               <div className="col-md-4">
                 <Card><CardBody>
@@ -150,11 +146,11 @@ class Home extends Component {
               <div className="col-md-4 offset-md-4">
                 <Card><CardBody>
                   <FacebookProvider appId="343119846258901">
-                    <Page href="https://www.facebook.com/HelpoConsultas" tabs="timeline" height={500} />
+                    <Page href="https://www.facebook.com/helpo.oficial" tabs="timeline" height={500} />
                   </FacebookProvider>
                 </CardBody></Card>
               </div>
-            </Row>
+            </Row> */}
           </CardBody>
         </Card>
       </React.Fragment>

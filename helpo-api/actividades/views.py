@@ -24,8 +24,11 @@ from actividades.serializers import EventoSerializer, RubroEventoSerializer, \
 from actividades.services import create_propuesta, actualizar_colaboracion, actualizar_participacion
 from recommendations.services import predict_eventos_userbased
 from common.functions import get_token_user, calc_distance_locations
+from common.mixins import AuthTokenMixin
 import re
+import logging
 
+log = logging.getLogger('django')
 
 class RubroEventoCreateReadView(ListCreateAPIView):
     """
@@ -248,7 +251,7 @@ class EventoVoluntarioCreateReadView(ListCreateAPIView):
         return eventos
 
 
-class ConsultaEventosOrganizacionCreateReadView(ListCreateAPIView):
+class ConsultaEventosOrganizacionCreateReadView(AuthTokenMixin, ListCreateAPIView):
     """
     API endpoint para ver todos los eventos próximos
     """
@@ -287,7 +290,10 @@ class ConsultaEventosOrganizacionCreateReadView(ListCreateAPIView):
         queryset = queryset.order_by('fecha_hora_inicio')
         user = get_token_user(self.request)
         if user is not None:
-            queryset = self.recomendar_eventos(queryset, user)
+            try:
+                queryset = self.recomendar_eventos(queryset, user)
+            except Exception as e:
+                log.error("Event recommendation couldn't be completed. {}".format(e))
         return queryset
 
     def recomendar_eventos(self, queryset, user):

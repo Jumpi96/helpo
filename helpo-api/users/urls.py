@@ -1,5 +1,6 @@
 from django.conf.urls import url
 from users import views as users_views
+from users import hex_views as hex_users_views
 
 urlpatterns = [
     # {% url "api:exists_facebook" %}
@@ -161,7 +162,7 @@ urlpatterns = [
         view=users_views.DeviceIDReadUpdateDeleteView.as_view(),
         name="get_put_delete_device_id"
     ),
-    #####
+    ##### TODO: Eliminar suscripciones de la app users
     # {% url "api:suscripciones"  %}
     url(
         regex=r"^user/suscripciones/$",
@@ -180,4 +181,10 @@ urlpatterns = [
         view=users_views.SuscripcionListUserView.as_view(),
         name="get_put_delete_device_id"
     ),
+    # {% url "api:users" %}
+    url(
+        regex=r"^users/user?$",
+        view=hex_users_views.RemoveUserView.as_view(),
+        name="remove_user"
+    )
 ]

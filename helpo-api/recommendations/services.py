@@ -21,7 +21,7 @@ from users.models import User, Suscripcion
 from common.functions import calc_distance_locations
 
 
-bucket_name = 'helpo-ml'
+bucket_name = 'helpo-1.1-ml'
 model_evento = 'model_evento.pkl'
 model_fecha = 'model_fecha.pkl'
 features_fecha = 'features_fecha.pkl'

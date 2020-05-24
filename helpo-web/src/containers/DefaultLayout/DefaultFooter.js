@@ -15,7 +15,7 @@ class DefaultFooter extends Component {
 
     return (
       <React.Fragment>
-        <span><a href="https://www.helpo.com.ar">helpo</a> &copy; 2018 </span>
+        <span><a href="https://www.helpo.com.ar">helpo</a> &copy; 2020 </span>
       </React.Fragment>
     );
   }

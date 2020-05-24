@@ -23,6 +23,17 @@ class Command(BaseCommand):
                 print('- superuser: helpoweb@gmail.com, Created: {0}'.format(
                     str(created)))
 
+        def __set_removed_user():
+            if not User.objects.filter(email='removed_user').exists():
+                deleted = User.objects.create_user(
+                    email="removed_user",
+                    nombre="Removed user",
+                    password=config('SECRET_KEY'),
+                    user_type=2
+                )
+                print('- user: removed_user, Created: {0}'.format(
+                    str(deleted)))
+
         def __set_images():
             if not AppValues.objects.filter(key='imgurRefreshToken').exists():
                 imgur_refresh_token, created = AppValues.objects.get_or_create(
@@ -133,6 +144,10 @@ class Command(BaseCommand):
 
         print('Setting Superuser')
         __set_super_user()
+        print('----------------------\n')
+
+        print('Setting removed user')
+        __set_removed_user()
         print('----------------------\n')
 
         print('Setting Rubros Evento')

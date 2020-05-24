@@ -33,6 +33,7 @@ services:
     depends_on:
       - db
       - api
+      - messenger
   pgadmin:
     image: thajeztah/pgadmin4
     volumes:
@@ -41,5 +42,14 @@ services:
       - "5050:5050"
     depends_on:
       - db
+  messenger:
+    build: helpo-messenger/.
+    volumes:
+      - ./helpo-messenger/conf/ejabberd.yml:/home/ejabberd/conf/ejabberd.yml
+    ports:
+      - "5222:5222"
+    depends_on:
+      - db
+    
 
 # Default docker-compose, made for development

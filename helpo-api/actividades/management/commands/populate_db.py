@@ -3,7 +3,7 @@ import csv
 from django.core.management.base import BaseCommand, CommandError
 from decouple import config
 from actividades.models import RubroEvento, Funcion, CategoriaRecurso, Recurso
-from users.models import AppValues, Imagen, OrganizationArea, RubroEmpresa, User, UserManager
+from users.models import AppValues, Imagen, OrganizationArea, RubroEmpresa, User, UserManager, State, Skill
 
 
 class Command(BaseCommand):
@@ -135,6 +135,35 @@ class Command(BaseCommand):
                         print('- recursos_{0}_{1}: {2}, Created: {3}'.format(
                             str(categoria.nombre), str(j), str(recurso.nombre), str(created)))
 
+        def __set_states():
+            path = os.path.dirname(__file__) + "/states.csv"
+            with open(path) as f:
+                reader = csv.reader(f)
+                i = 0
+                for row in reader:
+                    state, created = State.objects.get_or_create(
+                        name=row[0],
+                        # aca se podria agregar icono
+                    )
+                    i += 1
+                    print('- state_{0}: {1}, Created: {2}'.format(
+                        str(i), str(state.name), str(created)))
+
+        def __set_skills():
+            path = os.path.dirname(__file__) + "/skills.csv"
+            with open(path) as f:
+                reader = csv.reader(f)
+                i = 0
+                for row in reader:
+                    skill, created = Skill.objects.get_or_create(
+                        name=row[0],
+                        # aca se podria agregar icono
+                    )
+                    i += 1
+                    print('- state_{0}: {1}, Created: {2}'.format(
+                        str(i), str(skill.name), str(created)))
+
+                    
         print('Populating Database...')
         print('----------------------\n')
 
@@ -168,4 +197,12 @@ class Command(BaseCommand):
 
         print('Setting Categorias Recurso')
         __set_categorias_recurso()
+        print('----------------------\n')
+
+        print('Setting States')
+        __set_states()
+        print('----------------------\n')
+
+        print('Setting Skills')
+        __set_skills()
         print('----------------------\n')

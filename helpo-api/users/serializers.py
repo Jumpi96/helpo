@@ -2,7 +2,7 @@ from rest_framework import serializers
 from django.contrib.auth import authenticate
 from django.conf import settings
 from decouple import config
-from users.models import User, UserWrapper, RubroOrganizacion, RubroEmpresa, OrganizacionProfile, Ubicacion, Imagen, VoluntarioProfile, EmpresaProfile, SmsVerification, UserVerification, AppValues, DeviceID, Suscripcion
+from users.models import User, UserWrapper, OrganizationArea, RubroEmpresa, OrganizacionProfile, Ubicacion, Imagen, VolunteerProfile, EmpresaProfile, SmsVerification, UserVerification, AppValues, DeviceID, Suscripcion, Skill, State
 from actividades.models import Participacion, Evento, Colaboracion
 from django.core.exceptions import ObjectDoesNotExist
 from common.functions import get_datos_token_google, get_datos_token_facebook
@@ -121,9 +121,6 @@ class UserSerializer(serializers.ModelSerializer):
         if obj.user_type == 1:
             perfil = OrganizacionProfile.objects.filter(usuario=obj.id).first()
             return perfil.avatar.url
-        elif obj.user_type == 2:
-            perfil = VoluntarioProfile.objects.filter(usuario=obj.id).first()
-            return perfil.avatar.url
         elif obj.user_type == 3:
             perfil = EmpresaProfile.objects.filter(usuario=obj.id).first()
             return perfil.avatar.url
@@ -141,9 +138,9 @@ class UbicacionSerializer(serializers.ModelSerializer):
             }
         }
 
-class RubroOrganizacionSerializer(serializers.ModelSerializer):
+class OrganizationAreaSerializer(serializers.ModelSerializer):
     class Meta:
-        model = RubroOrganizacion
+        model = OrganizationArea
         fields = ('id', 'nombre')
 
 class RubroEmpresaSerializer(serializers.ModelSerializer):
@@ -157,7 +154,7 @@ class ImagenSerializer(serializers.ModelSerializer):
         fields = ('id', 'url')
 
 class OrganizacionProfileSerializer(serializers.ModelSerializer):
-    rubro = RubroOrganizacionSerializer(required=False)
+    rubro = OrganizationAreaSerializer(required=False)
     ubicacion = UbicacionSerializer(required=False)
     avatar = ImagenSerializer(required=False)
     usuario = UserSerializer(read_only=True)
@@ -195,7 +192,7 @@ class OrganizacionProfileSerializer(serializers.ModelSerializer):
         instance.descripcion = validated_data.get('descripcion', instance.descripcion) 
 
         if rubro_data != None:
-            nuevoRubro = RubroOrganizacion.objects.get(nombre=rubro_data["nombre"])
+            nuevoRubro = OrganizationArea.objects.get(nombre=rubro_data["nombre"])
             instance.rubro = nuevoRubro       
         
         if ubicacion_data != None:
@@ -316,44 +313,16 @@ class EmpresaProfileSerializer(serializers.ModelSerializer):
         eventos = Evento.objects.filter(id__in = cantidad).count()
         return eventos    
 
-class VoluntarioProfileSerializer(serializers.ModelSerializer):
+class VolunteerProfileSerializer(serializers.ModelSerializer):
     avatar = ImagenSerializer(required=False)   
     usuario = UserSerializer(read_only=True) 
     manos = serializers.SerializerMethodField()
     eventos = serializers.SerializerMethodField()
 
     class Meta:
-        model = VoluntarioProfile
-        fields = ( 'telefono', 'apellido', 'dni', 'sexo', 'gustos', 'habilidades', 'avatar', 'usuario','manos','eventos')
+        model = VolunteerProfile
+        fields = ('avatar', 'dni', 'gender', 'last_name', 'birth_date', 'phone', 'work_position', 'profession', 'educational_level', 'availability', 'modality', 'state', 'city', 'interests', 'skills', 'usuario','manos','eventos')        
         read_only_fields = ('usuario','manos','eventos')
-
-    def update(self, instance, validated_data):
-        avatar_data = None
-        
-        try:
-            avatar_data = validated_data.pop('avatar')
-        except KeyError:
-            avatar_data = None
-
-        instance.telefono = validated_data.get('telefono', instance.telefono)
-        instance.apellido = validated_data.get('apellido', instance.apellido)
-        instance.dni = validated_data.get('dni', instance.dni)
-        instance.sexo = validated_data.get('sexo', instance.sexo)         
-        instance.gustos = validated_data.get('gustos', instance.gustos)         
-        instance.habilidades = validated_data.get('habilidades', instance.habilidades)    
-
-        #TODO: Ver si hay que cambiar cuando se haga mejor manejo de imagenes
-        if avatar_data != None:
-            try:    
-                nuevaImagen = Imagen.objects.get(url=avatar_data["url"])
-                instance.avatar = nuevaImagen
-            except Exception: # Imagen.DoesNotExist
-                ## TODO: Sacar isExternal hardcodeado
-                nuevaImagen = Imagen(**avatar_data, isExternal=False)
-                nuevaImagen.save()
-                instance.avatar = nuevaImagen
-        instance.save()
-        return instance
 
     def get_manos(self, obj):
         participaciones = Participacion.objects.filter(retroalimentacion_ong=True, colaborador_id=obj.usuario_id).count()
@@ -509,13 +478,13 @@ class ColaboradorInfoSerializer(serializers.ModelSerializer):
 
     def get_apellido(self, obj):
         if obj.user_type != 3:
-            return VoluntarioProfile.objects.get(usuario=obj.id).apellido
+            return VolunteerProfile.objects.get(usuario=obj.id).apellido
     
     def get_identificador(self, obj):
         if obj.user_type == 3:
             return EmpresaProfile.objects.get(usuario=obj.id).cuit
         else:
-            return VoluntarioProfile.objects.get(usuario=obj.id).dni
+            return VolunteerProfile.objects.get(usuario=obj.id).dni
             
 
 class DeviceIDSerializer(serializers.ModelSerializer):
@@ -539,3 +508,17 @@ class SuscripcionSerializerLista(serializers.ModelSerializer):
     class Meta:
         model = Suscripcion
         fields = ('id', 'usuario', 'organizacion')
+
+
+class SkillSerializer(serializers.ModelSerializer):   
+
+    class Meta:
+        model = Skill
+        fields = ('id', 'nombre')
+
+
+class StateSerializer(serializers.ModelSerializer):   
+
+    class Meta:
+        model = State
+        fields = ('id', 'nombre')

@@ -2,27 +2,9 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import ugettext_lazy as _
 
-from .models import User, AppValues, Imagen, Suscripcion, RubroOrganizacion, OrganizacionProfile, Ubicacion, EmpresaProfile, VoluntarioProfile, RubroEmpresa
+from .models import User, AppValues, Imagen, Suscripcion, OrganizationArea, OrganizacionProfile, \
+    Ubicacion, EmpresaProfile, VolunteerProfile, RubroEmpresa, Skill, State
 
-"""
-class CustomUserAdmin(UserAdmin):
-    list_display = ('id', 'email', 'created', 'modified', 'is_confirmed')
-    list_filter = ('is_active', 'is_staff', 'groups')
-    search_fields = ('email',)
-    ordering = ('email',)
-    filter_horizontal = ('groups', 'user_permissions',)
-
-    fieldsets = (
-        (None, {'fields': ('email', 'password')}),
-        (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser',
-                                       'groups', 'user_permissions')}),
-    )
-    add_fieldsets = (
-        (None, {
-            'classes': ('wide',),
-            'fields': ('email', 'password1', 'password2')}),
-    )
-"""
 
 class SimpleUserAdmin(admin.ModelAdmin):
     list_display = ['id', 'email', 'is_confirmed']
@@ -36,7 +18,7 @@ class ImagenAdmin(admin.ModelAdmin):
 class SuscripcionAdmin(admin.ModelAdmin):
     list_display = ['id', 'usuario', 'organizacion']
 
-class RubroOrganizacionAdmin(admin.ModelAdmin):
+class OrganizationAreaAdmin(admin.ModelAdmin):
     list_display = ['id', 'nombre']
 
 class OrganizacionProfileAdmin(admin.ModelAdmin):
@@ -48,20 +30,28 @@ class UbicacionAdmin(admin.ModelAdmin):
 class EmpresaProfileAdmin(admin.ModelAdmin):
     list_display = ['id', 'verificada', 'telefono', 'cuit', 'rubro', 'avatar', 'descripcion', 'ubicacion']
 
-class VoluntarioProfileAdmin(admin.ModelAdmin):
-    list_display = ['id', 'usuario', 'sexo', 'apellido', 'dni', 'telefono', 'avatar', 'gustos', 'habilidades'] 
+class VolunteerProfileAdmin(admin.ModelAdmin):
+    list_display = ['id', 'usuario', 'avatar', 'dni', 'gender', 'last_name', 'birth_date', \
+        'phone', 'work_position', 'profession', 'educational_level', 'availability', 'modality']
 
 class RubroEmpresaAdmin(admin.ModelAdmin):
     list_display = ['id', 'nombre']
 
-#admin.site.register(User, CustomUserAdmin)
+class SkillAdmin(admin.ModelAdmin):
+    list_display = ['id', 'nombre']
+
+class StateAdmin(admin.ModelAdmin):
+    list_display = ['id', 'nombre']
+
 admin.site.register(User, SimpleUserAdmin)
 admin.site.register(AppValues, CustomAppValuesAdmin)
 admin.site.register(Imagen, ImagenAdmin)
 admin.site.register(Suscripcion, SuscripcionAdmin)
-admin.site.register(RubroOrganizacion, RubroOrganizacionAdmin)
+admin.site.register(OrganizationArea, OrganizationAreaAdmin)
 admin.site.register(Ubicacion, UbicacionAdmin)
 admin.site.register(OrganizacionProfile, OrganizacionProfileAdmin)
 admin.site.register(EmpresaProfile, EmpresaProfileAdmin)
-admin.site.register(VoluntarioProfile, VoluntarioProfileAdmin)
+admin.site.register(VolunteerProfile, VolunteerProfileAdmin)
+admin.site.register(Skill, SkillAdmin)
+admin.site.register(State, StateAdmin)
 admin.site.register(RubroEmpresa, RubroEmpresaAdmin)

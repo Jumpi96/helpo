@@ -13,7 +13,7 @@ export default {
         name: 'Inicio',
         url: '/dashboard',
         icon: 'icon-home'
-      },
+      },/*
       {
         title: true,
         name: 'Actividades sociales',
@@ -39,11 +39,6 @@ export default {
         icon: 'icon-cursor'
       },
       {
-        name: 'Organizaciones',
-        url: '/organizaciones',
-        icon: 'icon-calendar'
-      },
-      {
         name: 'Empresas',
         url: '/empresas',
         icon: 'icon-calendar'
@@ -57,6 +52,12 @@ export default {
         name: 'Planificar actividad',
         url: '/planificador',
         icon: 'icon-star'
+      },
+      */
+      {
+        name: 'Organizaciones',
+        url: '/organizaciones',
+        icon: 'icon-calendar'
       },
     ],
   };

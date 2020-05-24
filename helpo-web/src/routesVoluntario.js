@@ -67,16 +67,17 @@ const AlbumImagenes = Loadable({
 const routes = [
   { path: '/', exact: true, name: 'Home', component: DefaultLayout },
   { path: '/dashboard', name: 'helpo', component: Dashboard },
-  { path: '/actividades/consultar-eventos', name: 'Consultar actividades sociales', component: ConsultarEventosPage },
+  /*{ path: '/actividades/consultar-eventos', name: 'Consultar actividades sociales', component: ConsultarEventosPage },
   { path: '/actividades/consultar-evento/', name: 'Consultar actividad social', component: ConsultarEventosView },
   { path: '/actividades/registrar-colaboraciones', name: 'Registrar colaboraciones', component: RegistrarColaboraciones },
   { path: '/actividades/mis-colaboraciones', name: 'Mis colaboraciones', component: MisColaboraciones },
   { path: '/actividades/album/:eventoId', name: 'Album de Evento', component: AlbumImagenes },
+  { path: '/empresas', name: 'Empresas', component: EmpresasPage },
+  */
   { path: '/perfil/:usuarioId', name: 'Perfil de usuario', component: ConsultarPerfil },
   { path: '/perfil/', name: 'Mi perfil', component: ConsultarPerfil },
   { path: '/ajustes/', name: 'Ajustes', component: AjustesPage },
   { path: '/organizaciones', name: 'Organizaciones', component: OrganizacionesPage },
-  { path: '/empresas', name: 'Empresas', component: EmpresasPage },
   { path: '/suscripciones', name: 'Mis suscripciones', component: MisSuscripciones }
 ];
 

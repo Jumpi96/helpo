@@ -7,11 +7,11 @@ USER_TYPE_CHOICES = (
 )
 
 class User:
-    def __init__(self, id: int, nombre: str, user_type: int, email: str, is_staff: bool, \
+    def __init__(self, id: int, name: str, user_type: int, email: str, is_staff: bool, \
             is_active: bool, is_confirmed: bool) -> None:
         assert user_type in [t[0] for t in USER_TYPE_CHOICES]
         self.id = id
-        self.nombre = nombre
+        self.name = name
         self.user_type = user_type
         self.email = email
         self.is_staff = is_staff

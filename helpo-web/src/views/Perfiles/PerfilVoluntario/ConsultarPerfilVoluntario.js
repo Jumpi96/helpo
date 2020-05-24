@@ -1,19 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import moment from 'moment';
-import { Card, CardHeader, Tooltip, Button, CardTitle, CardText, CardBody, CardColumns } from 'reactstrap';
+import { Card, CardHeader, Button, CardBody } from 'reactstrap';
 import { getImagen } from '../../../utils/Imagen'
 
 const perfilPropTypes = {
   nombre: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
   data: PropTypes.shape({
-    dni: PropTypes.number,
     gender: PropTypes.string,
     last_name: PropTypes.string,
     birth_date: PropTypes.string,
     phone: PropTypes.string,
-    work_position: PropTypes.string,
     profession: PropTypes.string,
     educational_level: PropTypes.string,
     availability: PropTypes.string,
@@ -84,13 +82,6 @@ class ConsultarPerfilVoluntario extends Component {
     return <p> {this.props.data.phone}</p>
   }
 
-  renderDni() {
-    if (this.props.data.dni == null) {
-      return <p className='text-muted'> No hay valor ingresado</p>
-    }
-    return <p> {this.props.data.dni.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}</p>
-  }
-
   renderManos() {
     if (this.props.data.manos == null) {
       return <p className='text-muted'> - </p>
@@ -124,13 +115,6 @@ class ConsultarPerfilVoluntario extends Component {
       }
     });
     return <p>{state.nombre}</p>
-  }
-
-  renderWorkPosition() {
-    if (this.props.data.work_position == null) {
-      return <p className='text-muted'> No hay valor ingresado</p>
-    }
-    return <p> {this.props.data.work_position}</p>
   }
 
   renderProfession() {
@@ -208,58 +192,44 @@ class ConsultarPerfilVoluntario extends Component {
               </div>
               <div className='row'>
                 <div className="col-md-2">
-                  <p style={{ textAlign: 'left' }} className='font-weight-bold' htmlFor="mail">Mail</p>
-                </div>
-                <div className="col-md-4">
-                  <p>{this.props.email}</p>
-                </div>
-                <div className="col-md-2">
-                  <p style={{ textAlign: 'left' }} className='font-weight-bold' htmlFor="telefono">Teléfono</p>
-                </div>
-                <div className="col-md-4">
-                  {this.renderTelefono()}
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-md-2">
-                  <p style={{ textAlign: 'left' }} className='font-weight-bold' htmlFor="sexo">Género</p>
-                </div>
-                <div className="col-md-4">
-                  {this.renderSexo()}
-                </div>
-                <div className="col-md-2">
-                  <p style={{ textAlign: 'left' }} className='font-weight-bold' htmlFor="dni">DNI</p>
-                </div>
-                <div className="col-md-4">
-                  {this.renderDni()}
-                </div>
-              </div>
-              <div className='row'>
-                <div className="col-md-2">
-                  <p style={{ paddingLeft: 0, textAlign: 'left' }} className='font-weight-bold' htmlFor="city">Ciudad</p>
-                </div>
-                <div className="col-md-4">
-                  {this.renderCity()}
-                </div>
-                <div className="col-md-2">
-                  <p style={{ paddingLeft: 0, textAlign: 'left' }} className='font-weight-bold' htmlFor="state">Provincia</p>
-                </div>
-                <div className="col-md-4">
-                  {this.renderState()}
-                </div>
-              </div>
-              <div className='row'>
-              <div className="col-md-2">
                   <p style={{ textAlign: 'left' }} className='font-weight-bold' htmlFor="profession">Fecha de nacimiento</p>
                 </div>
                 <div className="col-md-4">
                   <p>{this.renderBirthDate()}</p>
                 </div>
                 <div className="col-md-2">
-                  <p style={{ textAlign: 'left' }} className='font-weight-bold' htmlFor="profession">Profesión</p>
+                  <p style={{ textAlign: 'left' }} className='font-weight-bold' htmlFor="sexo">Género</p>
                 </div>
                 <div className="col-md-4">
-                  <p>{this.renderProfession()}</p>
+                  {this.renderSexo()}
+                </div>
+              </div>
+              <div className='row'>
+                <div className="col-md-2">
+                  <p style={{ textAlign: 'left' }} className='font-weight-bold' htmlFor="telefono">Teléfono</p>
+                </div>
+                <div className="col-md-4">
+                  {this.renderTelefono()}
+                </div>
+                <div className="col-md-2">
+                  <p style={{ textAlign: 'left' }} className='font-weight-bold' htmlFor="mail">Mail</p>
+                </div>
+                <div className="col-md-4">
+                  <p>{this.props.email}</p>
+                </div>
+              </div>
+              <div className='row'>
+                <div className="col-md-2">
+                  <p style={{ paddingLeft: 0, textAlign: 'left' }} className='font-weight-bold' htmlFor="state">Provincia</p>
+                </div>
+                <div className="col-md-4">
+                  {this.renderState()}
+                </div>
+                <div className="col-md-2">
+                  <p style={{ paddingLeft: 0, textAlign: 'left' }} className='font-weight-bold' htmlFor="city">Ciudad</p>
+                </div>
+                <div className="col-md-4">
+                  {this.renderCity()}
                 </div>
               </div>
               <div className='row'>
@@ -270,10 +240,10 @@ class ConsultarPerfilVoluntario extends Component {
                   <p>{this.renderEducationalLevel()}</p>
                 </div>
                 <div className="col-md-2">
-                  <p style={{ textAlign: 'left' }} className='font-weight-bold' htmlFor="availability">Disponibilidad</p>
+                  <p style={{ textAlign: 'left' }} className='font-weight-bold' htmlFor="profession">Profesión</p>
                 </div>
                 <div className="col-md-4">
-                  <p>{this.renderAvailability()}</p>
+                  <p>{this.renderProfession()}</p>
                 </div>
               </div>
               <div className='row'>
@@ -287,21 +257,21 @@ class ConsultarPerfilVoluntario extends Component {
                   <p style={{ paddingLeft: 0, textAlign: 'left' }} className='font-weight-bold' htmlFor="habilidades">Habilidades</p>
                 </div>
                 <div className="col-md-4">
-                {this.renderList(this.props.data.skills, this.props.skills)}
+                  {this.renderList(this.props.data.skills, this.props.skills)}
                 </div>
               </div>
               <div className='row'>
+                <div className="col-md-2">
+                  <p style={{ textAlign: 'left' }} className='font-weight-bold' htmlFor="availability">Disponibilidad horaria</p>
+                </div>
+                <div className="col-md-4">
+                  <p>{this.renderAvailability()}</p>
+                </div>
                 <div className="col-md-2">
                   <p style={{ textAlign: 'left' }} className='font-weight-bold' htmlFor="modality">Modalidad</p>
                 </div>
                 <div className="col-md-4">
                   <p>{this.renderModality()}</p>
-                </div>
-                <div className="col-md-2">
-                  <p style={{ textAlign: 'left' }} className='font-weight-bold' htmlFor="work_position">Posición laboral</p>
-                </div>
-                <div className="col-md-4">
-                  <p>{this.renderWorkPosition()}</p>
                 </div>
               </div>
               <div style={{ display: 'flex', marginBottom: '10px' }} className='row offster-md-4'>

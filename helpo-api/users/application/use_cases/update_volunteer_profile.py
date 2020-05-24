@@ -15,12 +15,10 @@ class UpdateVolunteerProfileInputDto:
     first_name: str
     user_id: int
     avatar_url: str
-    dni: str
     gender: str
     last_name: str
     birth_date: str
     phone: str
-    work_position: str
     profession: str
     educational_level: str
     availability: str
@@ -71,8 +69,8 @@ class UpdateVolunteerProfileUseCase:
         input_user.save()
 
         input_profile = VolunteerProfile(
-            input_dto.user_id, avatar_id, int(input_dto.dni), input_dto.gender, input_dto.last_name,
-            None if input_dto.birth_date == "" else input_dto.birth_date, input_dto.phone, input_dto.work_position, input_dto.profession,
+            input_dto.user_id, avatar_id, input_dto.gender, input_dto.last_name,
+            None if input_dto.birth_date == "" else input_dto.birth_date, input_dto.phone, input_dto.profession,
             input_dto.educational_level, input_dto.availability, input_dto.modality, 
             None if input_dto.state_id == -1 else input_dto.state_id, input_dto.city,
             [self.interests_repo.get(i) for i in input_dto.interests],

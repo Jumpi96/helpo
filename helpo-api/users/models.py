@@ -210,12 +210,10 @@ class State(models.Model):
 
 class VolunteerProfile(Profile):
     avatar = models.ForeignKey(Imagen, on_delete=models.SET_NULL, blank=True, null=True)
-    dni = models.BigIntegerField(blank=True, null=True)
     gender = models.CharField(max_length=70, blank=True, null=True)
     last_name = models.CharField(max_length=140, default='no last name')
     birth_date = models.DateField(null=True)
     phone = models.CharField(max_length=70, blank=True, null=True)
-    work_position = models.CharField(max_length=140, null=True)
     profession = models.CharField(max_length=140, null=True)
     educational_level = models.CharField(max_length=140, null=True)
     availability = models.CharField(max_length=280, null=True)

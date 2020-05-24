@@ -12,12 +12,10 @@ class DjangoORMVolunteerProfilesRepository(VolunteerProfilesRepository):
         return VolunteerProfile(
             user_id=v.user.id,
             avatar_id=v.avatar.id,
-            dni=v.dni,
             gender=v.gender,
             last_name=v.last_name,
             birth_date=v.birth_date,
             phone=v.phone,
-            work_position=v.work_position,
             profession=v.profession,
             educational_level=v.educational_level,
             availability=v.availability,
@@ -40,12 +38,10 @@ class DjangoORMVolunteerProfilesRepository(VolunteerProfilesRepository):
             model = VolunteerProfileModel(
                 usuario_id=profile.user_id,
                 avatar_id=profile.avatar_id,
-                dni=profile.dni,
                 gender=profile.gender,
                 last_name=profile.last_name,
                 birth_date=profile.birth_date,
                 phone=profile.phone,
-                work_position=profile.work_position,
                 profession=profile.profession,
                 educational_level=profile.educational_level,
                 availability=profile.availability,
@@ -55,12 +51,10 @@ class DjangoORMVolunteerProfilesRepository(VolunteerProfilesRepository):
             )
         else:
             model.avatar_id = profile.avatar_id
-            model.dni = profile.dni
             model.gender = profile.gender
             model.last_name = profile.last_name
             model.birth_date = profile.birth_date
             model.phone = profile.phone
-            model.work_position = profile.work_position
             model.profession = profile.profession
             model.educational_level = profile.educational_level
             model.availability = profile.availability

@@ -31,8 +31,8 @@ class EmpresaProfileAdmin(admin.ModelAdmin):
     list_display = ['id', 'verificada', 'telefono', 'cuit', 'rubro', 'avatar', 'descripcion', 'ubicacion']
 
 class VolunteerProfileAdmin(admin.ModelAdmin):
-    list_display = ['id', 'usuario', 'avatar', 'dni', 'gender', 'last_name', 'birth_date', \
-        'phone', 'work_position', 'profession', 'educational_level', 'availability', 'modality']
+    list_display = ['id', 'usuario', 'avatar', 'gender', 'last_name', 'birth_date', \
+        'phone', 'profession', 'educational_level', 'availability', 'modality']
 
 class RubroEmpresaAdmin(admin.ModelAdmin):
     list_display = ['id', 'nombre']

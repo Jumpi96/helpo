@@ -17,11 +17,9 @@ const perfilPropTypes = {
       url: PropTypes.string,
     }),
     last_name: PropTypes.string,
-    dni: PropTypes.number,
     gender: PropTypes.string,
     birth_date: PropTypes.string,
     phone: PropTypes.string,
-    work_position: PropTypes.string,
     profession: PropTypes.string,
     educational_level: PropTypes.string,
     availability: PropTypes.string,
@@ -51,10 +49,8 @@ class ModificarPerfilVoluntario extends Component {
       first_name: this.props.nombre,
       last_name: this.props.data.last_name,
       gender: this.getMaybeEmptyInput(this.props.data.gender),
-      dni: this.getMaybeEmptyInput(this.props.data.dni),
       birth_date: this.props.data.birth_date == null ? null : this.processDate(this.props.data.birth_date),
       phone: this.getMaybeEmptyInput(this.props.data.phone),
-      work_position: this.getMaybeEmptyInput(this.props.data.work_position),
       profession: this.getMaybeEmptyInput(this.props.data.profession),
       educational_level: this.getMaybeEmptyInput(this.props.data.educational_level),
       availability: this.getMaybeEmptyInput(this.props.data.availability),
@@ -70,12 +66,10 @@ class ModificarPerfilVoluntario extends Component {
       avatar_changed: false,
     };
     this.handleGenderChange = this.handleGenderChange.bind(this);
-    this.handleDniChange = this.handleDniChange.bind(this);
     this.handleFirstNameChange = this.handleFirstNameChange.bind(this);
     this.handleLastNameChange = this.handleLastNameChange.bind(this);
     this.handleBirthDateChange = this.handleBirthDateChange.bind(this);
     this.handlePhoneChange = this.handlePhoneChange.bind(this);
-    this.handleWorkPositionChange = this.handleWorkPositionChange.bind(this);
     this.handleProfessionChange = this.handleProfessionChange.bind(this);
     this.handleEducationalLevelChange = this.handleEducationalLevelChange.bind(this);
     this.handleAvailabilityChange = this.handleAvailabilityChange.bind(this);
@@ -211,23 +205,6 @@ class ModificarPerfilVoluntario extends Component {
     })
   }
 
-  renderWorkPosition() {
-    return (
-      <input
-        type="text"
-        name="work_position"
-        className="form-control"
-        value={this.state.work_position}
-        onChange={this.handleWorkPositionChange}
-      />)
-  }
-
-  handleWorkPositionChange(event) {
-    this.setState({
-      work_position: event.target.value
-    })
-  }
-
   renderEducationalLevel() {
     return (
       <input
@@ -358,7 +335,7 @@ class ModificarPerfilVoluntario extends Component {
         className="form-control"
         value={this.state.first_name}
         onChange={this.handleFirstNameChange}
-      />) 
+      />)
   }
 
   renderLastName() {
@@ -369,7 +346,7 @@ class ModificarPerfilVoluntario extends Component {
         className="form-control"
         value={this.state.last_name}
         onChange={this.handleLastNameChange}
-      />) 
+      />)
   }
 
   handlePhoneChange(event) {
@@ -381,32 +358,12 @@ class ModificarPerfilVoluntario extends Component {
     });
   }
 
-  renderDni() {
-    return (
-      <input
-        type="text"
-        name="dni"
-        className="form-control"
-        value={this.state.dni}
-        onChange={this.handleDniChange}
-      />)
-  }
-
   loadOptions(rawOptions) {
     const options = [];
     rawOptions.forEach(function (o) {
       options.push({ value: o.id, label: o.nombre });
     });
     return options;
-  }
-
-  handleDniChange(event) {
-    if (isNaN(event.target.value)) {
-      return;
-    }
-    this.setState({
-      dni: event.target.value
-    });
   }
 
   handleAvatarChange(avatar_url) {
@@ -432,13 +389,11 @@ class ModificarPerfilVoluntario extends Component {
       user_id: this.props.data.usuario.id,
       avatar: { url: avatar_url },
       avatar_url: avatar_url,
-      dni: newData.dni.toString(),
       gender: newData.gender,
       last_name: newData.last_name,
       first_name: newData.first_name,
       birth_date: newData.birth_date,
       phone: newData.phone,
-      work_position: newData.work_position,
       profession: newData.profession,
       educational_level: newData.educational_level,
       availability: newData.availability,
@@ -533,7 +488,7 @@ class ModificarPerfilVoluntario extends Component {
     })
   }
 
-  render() {    
+  render() {
     return (
       <Card>
         <CardHeader>
@@ -558,7 +513,7 @@ class ModificarPerfilVoluntario extends Component {
 
           <div className="row">
             <div className="col-md">
-            <div className='row'>
+              <div className='row'>
                 <p style={{ paddingTop: '8px' }} className='font-weight-bold col-md-2' htmlFor="first_name">Nombre</p>
                 <div className='col-md-4'>{this.renderFirstName()}</div>
                 <p style={{ paddingTop: '8px' }} className='font-weight-bold col-md-2' htmlFor="last_name">Apellido</p>
@@ -566,24 +521,22 @@ class ModificarPerfilVoluntario extends Component {
               </div>
 
               <div className='row'>
-                <p style={{ paddingTop: '8px' }} className='font-weight-bold col-md-2' htmlFor="telefono">Teléfono</p>
-                <div className='col-md-4'>{this.renderTelefono()}</div>
-                <p style={{ paddingTop: '8px' }} className='font-weight-bold col-md-2' htmlFor="dni">DNI</p>
-                <div className='col-md-4'>{this.renderDni()}</div>
-              </div>
-
-              <div className='row'>
-                <p className='font-weight-bold col-md-2' htmlFor="sexo">Género</p>
-                <div className='col-md-4'>{this.renderGender()}</div>
                 <p className='font-weight-bold col-md-2' htmlFor="birth_date">Fecha de nacimiento</p>
                 <div className='col-md-4'>{this.renderBirthDate()}</div>
+                <p className='font-weight-bold col-md-2' htmlFor="sexo">Género</p>
+                <div className='col-md-4'>{this.renderGender()}</div>
               </div>
 
               <div className='row'>
-                <p className='font-weight-bold col-md-2' htmlFor="city">Ciudad</p>
-                <div className='col-md-4'>{this.renderCity()}</div>
+                <p style={{ paddingTop: '8px' }} className='font-weight-bold col-md-2' htmlFor="telefono">Teléfono</p>
+                <div className='col-md-4'>{this.renderTelefono()}</div>
+              </div>
+
+              <div className='row'>
                 <p className='font-weight-bold col-md-2' htmlFor="state">Provincia</p>
                 <div className='col-md-4'>{this.renderState()}</div>
+                <p className='font-weight-bold col-md-2' htmlFor="city">Ciudad</p>
+                <div className='col-md-4'>{this.renderCity()}</div>
               </div>
 
               <div className='row'>
@@ -594,22 +547,17 @@ class ModificarPerfilVoluntario extends Component {
               </div>
 
               <div className='row'>
-                <p style={{ paddingTop: '8px' }} className='font-weight-bold col-md-2' htmlFor="work_position">Posición laboral</p>
-                <div className='col-md-4'>{this.renderWorkPosition()}</div>
+                <p style={{ paddingTop: '8px' }} className='font-weight-bold col-md-2' htmlFor="educational_level">Nivel educativo</p>
+                <div className='col-md-4'>{this.renderEducationalLevel()}</div>
                 <p style={{ paddingTop: '8px' }} className='font-weight-bold col-md-2' htmlFor="profession">Profesión</p>
                 <div className='col-md-4'>{this.renderProfession()}</div>
               </div>
 
               <div className='row'>
-                <p style={{ paddingTop: '8px' }} className='font-weight-bold col-md-2' htmlFor="educational_level">Nivel educativo</p>
-                <div className='col-md-4'>{this.renderEducationalLevel()}</div>
+                <p style={{ paddingTop: '8px' }} className='font-weight-bold col-md-2' htmlFor="availability">Disponibilidad horaria</p>
+                <div className='col-md-4'>{this.renderAvailability()}</div>
                 <p style={{ paddingTop: '8px' }} className='font-weight-bold col-md-2' htmlFor="modality">Modalidad</p>
                 <div className='col-md-4'>{this.renderModality()}</div>
-              </div>
-
-              <div className='row'>
-                <p style={{ paddingTop: '8px' }} className='font-weight-bold col-md-2' htmlFor="availability">Disponibilidad</p>
-                <div className='col-md-4'>{this.renderAvailability()}</div>
               </div>
 
               <div className='row' style={{ paddingTop: '8px' }}>

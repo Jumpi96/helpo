@@ -321,7 +321,7 @@ class VolunteerProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = VolunteerProfile
-        fields = ('avatar', 'dni', 'gender', 'last_name', 'birth_date', 'phone', 'work_position', 'profession', 'educational_level', 'availability', 'modality', 'state', 'city', 'interests', 'skills', 'usuario','manos','eventos')        
+        fields = ('avatar', 'gender', 'last_name', 'birth_date', 'phone', 'profession', 'educational_level', 'availability', 'modality', 'state', 'city', 'interests', 'skills', 'usuario','manos','eventos')        
         read_only_fields = ('usuario','manos','eventos')
 
     def get_manos(self, obj):
@@ -484,7 +484,7 @@ class ColaboradorInfoSerializer(serializers.ModelSerializer):
         if obj.user_type == 3:
             return EmpresaProfile.objects.get(usuario=obj.id).cuit
         else:
-            return VolunteerProfile.objects.get(usuario=obj.id).dni
+            return VolunteerProfile.objects.get(usuario=obj.id).id
             
 
 class DeviceIDSerializer(serializers.ModelSerializer):

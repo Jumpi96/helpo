@@ -406,7 +406,7 @@ class Register extends Component {
                         <input type="checkbox"
                           name="tyc" value={this.state.tyc}
                           onChange={(event) => this.handleTyC(event.target.checked)} />
-                        <p className="text-muted">Acepto los <a href="/#/noAuth/tyc">términos y condiciones</a> de Helpo.</p>
+                        <p className="text-muted">Acepto los <a target="_blank" href="/#/noAuth/tyc">términos y condiciones</a> de Helpo.</p>
                       </InputGroup>
                       <Button color="primary" onClick={() => this.onSubmitData()} block>Crear cuenta</Button>
                       <br />

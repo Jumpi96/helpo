@@ -142,13 +142,17 @@ class ModificarPerfilVoluntario extends Component {
 
   renderGender() {
     return (
-      <select
-        className="form-control" value={this.state.gender} onChange={this.handleGenderChange}>
-        <option value=""> </option>
-        <option value="hombre">Hombre</option>
-        <option value="mujer">Mujer</option>
-        <option value="otro">Otro</option>
-      </select>)
+      <Select
+        name="gender"
+        placeholder="Seleccione..."
+        onChange={this.handleGenderChange}
+        value={this.state.gender}
+        options= {[
+          { value: 'hombre', label: 'Hombre' },
+          { value: 'mujer', label: 'Mujer' },
+          { value: 'otro', label: 'Otro' },
+        ]}
+      />)
   }
 
   renderBirthDate() {
@@ -248,20 +252,21 @@ class ModificarPerfilVoluntario extends Component {
 
   renderModality() {
     return (
-      <input
-        type="text"
+      <Select
         name="modality"
-        placeholder="Ejemplo: presencial"
-        className="form-control"
-        value={this.state.modality}
+        placeholder="Seleccione..."
         onChange={this.handleModalityChange}
+        value={this.state.modality}
+        options= {[
+          { value: 'presencial', label: 'Presencial' },
+          { value: 'telefónica', label: 'Telefónica' },
+          { value: 'virtual', label: 'Virtual' },
+        ]}
       />)
   }
 
-  handleModalityChange(event) {
-    this.setState({
-      modality: event.target.value
-    })
+  handleModalityChange(modality) {
+    this.setState({ modality })
   }
 
   renderAvailability() {
@@ -289,10 +294,8 @@ class ModificarPerfilVoluntario extends Component {
     })
   }
 
-  handleGenderChange(event) {
-    this.setState({
-      gender: event.target.value
-    })
+  handleGenderChange(gender) {
+    this.setState({ gender })
   }
 
   renderGustos() {

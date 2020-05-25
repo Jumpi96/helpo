@@ -110,7 +110,13 @@ class ConsultarPerfilGenerico extends Component {
           states: initialState.states,
           modalities: initialState.modalities,
           rubrosEmpresa: initialState.rubrosEmpresa,
-          loggedUser: initialState.loggedUser
+          loggedUser: initialState.loggedUser,
+          genders: [
+            { id: "", nombre: "" },
+            { id: "hombre", nombre: "Hombre" },
+            { id: "mujer", nombre: "Mujer" },
+            { id: "otro", nombre: "Otro" }
+          ]
         })
       })
       .catch(error => {
@@ -166,6 +172,7 @@ class ConsultarPerfilGenerico extends Component {
           skills={this.state.skills}
           states={this.state.states}
           modalities={this.state.modalities}
+          genders={this.state.genders}
           switchToConsultar={this.switchToConsultar}
         />)
 

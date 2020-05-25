@@ -48,7 +48,7 @@ class ModificarPerfilVoluntario extends Component {
       nombre: this.props.nombre,
       first_name: this.props.nombre,
       last_name: this.props.data.last_name,
-      gender: this.getMaybeEmptyInput(this.props.data.gender),
+      gender: this.loadValueFromOptions(this.props.data.gender, this.props.genders),
       birth_date: this.props.data.birth_date == null ? null : this.processDate(this.props.data.birth_date),
       phone: this.getMaybeEmptyInput(this.props.data.phone),
       profession: this.getMaybeEmptyInput(this.props.data.profession),
@@ -66,7 +66,6 @@ class ModificarPerfilVoluntario extends Component {
       errors: [],
       avatar_changed: false,
     };
-    this.handleGenderChange = this.handleGenderChange.bind(this);
     this.handleFirstNameChange = this.handleFirstNameChange.bind(this);
     this.handleLastNameChange = this.handleLastNameChange.bind(this);
     this.handleBirthDateChange = this.handleBirthDateChange.bind(this);
@@ -136,17 +135,6 @@ class ModificarPerfilVoluntario extends Component {
     }
   }
 
-  renderGender() {
-    return (
-      <select
-        className="form-control" value={this.state.gender} onChange={this.handleGenderChange}>
-        <option value=""> </option>
-        <option value="hombre">Hombre</option>
-        <option value="mujer">Mujer</option>
-        <option value="otro">Otro</option>
-      </select>)
-  }
-
   renderBirthDate() {
     return (
       <DateTimePicker
@@ -159,7 +147,6 @@ class ModificarPerfilVoluntario extends Component {
   }
 
   handleBirthDateChange(date) {
-    console.log(date)
     this.setState({ birth_date: date });
   }
 
@@ -284,12 +271,6 @@ class ModificarPerfilVoluntario extends Component {
     })
   }
 
-  handleGenderChange(event) {
-    this.setState({
-      gender: event.target.value
-    })
-  }
-
   renderGustos() {
     return (
       <Select
@@ -407,7 +388,7 @@ class ModificarPerfilVoluntario extends Component {
       user_id: this.props.data.usuario.id,
       avatar: { url: avatar_url },
       avatar_url: avatar_url,
-      gender: newData.gender,
+      gender: undefined,
       last_name: newData.last_name,
       first_name: newData.first_name,
       birth_date: newData.birth_date,
@@ -437,11 +418,11 @@ class ModificarPerfilVoluntario extends Component {
 
     submitData.state_id = newData.state === undefined ? null : newData.state.value;
     submitData.modality_id = newData.modality === undefined ? null : newData.modality.value;
+    submitData.gender = newData.gender === undefined ? null : newData.gender.value;
 
     if (newData.birth_date !== "") {
       submitData.birth_date = moment(newData.birth_date).format("YYYY-MM-DD");
     }
-    console.log(submitData);
     return submitData;
   }
 
@@ -544,7 +525,7 @@ class ModificarPerfilVoluntario extends Component {
                 <p className='font-weight-bold col-md-2' htmlFor="birth_date">Fecha de nacimiento</p>
                 <div className='col-md-4'>{this.renderBirthDate()}</div>
                 <p className='font-weight-bold col-md-2' htmlFor="sexo">Género</p>
-                <div className='col-md-4'>{this.renderGender()}</div>
+                <div className='col-md-4'>{this.renderValueFromOptions("gender", "genders")}</div>
               </div>
 
               <div className='row'>

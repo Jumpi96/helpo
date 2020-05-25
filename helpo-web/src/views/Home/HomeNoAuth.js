@@ -26,7 +26,8 @@ class Home extends Component {
       activeIndex: 0,
       open1: false,
       open2: false,
-      open3: false
+      open3: false,
+      open4: false
     };
     this.next = this.next.bind(this);
     this.previous = this.previous.bind(this);
@@ -99,38 +100,48 @@ class Home extends Component {
             </Carousel>
             <Row >
               <Col>
-                <Button color="primary" onClick={() => this.setState({ open1: !this.state.open1 })} style={{ fontSize: '20px', marginTop: '10px', marginBottom: '1rem', height: '150px', width: '100%' }}>¿Quiénes somos?</Button>
+                <Button color="primary" onClick={() => this.setState({ open1: !this.state.open1 })} style={{ fontSize: '20px', marginTop: '10px', marginBottom: '1rem', height: '150px', width: '100%' }}>Sobre nosotros</Button>
                 <Collapse isOpen={this.state.open1}>
                   <Card style={{ width: '100%', textAlign: 'center' }}>
                     <CardBody>
-                      Helpo es una plataforma orientada a vincular organizaciones sin fines de lucro,
-                      voluntarios y empresas. Nuestro objetivo es incrementar el flujo de recursos de las
-                      organizaciones, brindar oportunidades para colaborar y adquirir experiencia a
-                      voluntarios y maxizimizar la visibilidad de las empresas.
+                      <p>Somos un grupo de jóvenes emprendedores independientes que decidimos combinar nuestras habilidades para crear una plataforma, que genere lazos entre diferentes actores de la comunidad para contribuir a construir una sociedad más justa y homogénea. </p>
                   </CardBody>
                   </Card>
                 </Collapse>
               </Col>
               <Col>
-                <Button color="primary" onClick={() => this.setState({ open2: !this.state.open2 })} style={{ fontSize: '20px', marginTop: '10px', marginBottom: '1rem', height: '150px', width: '100%' }}>¿Qué hacemos?</Button>
+                <Button color="primary" onClick={() => this.setState({ open2: !this.state.open2 })} style={{ fontSize: '20px', marginTop: '10px', marginBottom: '1rem', height: '150px', width: '100%' }}>Misión</Button>
                 <Collapse isOpen={this.state.open2}>
                   <Card style={{ width: '100%', textAlign: 'center' }}>
                     <CardBody>
-                      Permitimos que las organizaciones sin fines de lucro registren sus actividades sociales a fin
-                      de que voluntarios y empresas puedan conocerlas y colaborar, ya sea donando o participando
-                      en los eventos o campañas.
+                      <p>"Fomentar las actividades de voluntariado, facilitando la vinculación entre organizaciones sin fines de lucro y entidades públicas con voluntarios, a través de una plataforma de acceso público y gratuito."</p>
                   </CardBody>
                   </Card>
                 </Collapse>
               </Col>
               <Col>
-                <Button color="primary" onClick={() => this.setState({ open3: !this.state.open3 })} style={{ fontSize: '20px', marginTop: '10px', marginBottom: '1rem', height: '150px', width: '100%' }}>¿Cómo participar?</Button>
+                <Button color="primary" onClick={() => this.setState({ open3: !this.state.open3 })} style={{ fontSize: '20px', marginTop: '10px', marginBottom: '1rem', height: '150px', width: '100%' }}>Visión</Button>
                 <Collapse isOpen={this.state.open3}>
                   <Card style={{ width: '100%', textAlign: 'center' }}>
                     <CardBody>
-                      Si sos una organización sin fines de lucro, una persona interesada en adquirir
-                      experiencia en voluntariado o una empresa que desea realizar voluntariado corporativo,
-                      registrate en nuestra plataforma y conocé nuestras soluciones
+                    <p>"Ser la plataforma líder del país en soluciones de vinculación entre entidades y voluntarios, facilitando conexiones que trasciendan la vida comunitaria y la realidad sociocultural en la que se encuentran inmersas."</p>
+                  </CardBody>
+                  </Card>
+                </Collapse>
+              </Col>
+              <Col>
+                <Button color="primary" onClick={() => this.setState({ open4: !this.state.open4 })} style={{ fontSize: '20px', marginTop: '10px', marginBottom: '1rem', height: '150px', width: '100%' }}>Valores</Button>
+                <Collapse isOpen={this.state.open4}>
+                  <Card style={{ width: '100%', textAlign: 'center' }}>
+                    <CardBody>
+                      <ul class="list-group">
+                        <li>Empatía</li> 
+                        <p>Hacemos Helpo <strong>para</strong> otros.</p>
+                        <li>Co-elaboración</li>
+                        <p>No es suficiente hacer para otros, sino especialmente <strong>con</strong> otros.</p>
+                        <li>Impacto social</li>
+                        <p>Trabajamos para lograr una sociedad más <strong>justa</strong> y <strong>homogénea</strong>.</p>
+                      </ul> 
                   </CardBody>
                   </Card>
                 </Collapse>

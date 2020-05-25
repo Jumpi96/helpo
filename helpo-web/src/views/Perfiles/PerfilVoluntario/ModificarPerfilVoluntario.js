@@ -112,7 +112,7 @@ class ModificarPerfilVoluntario extends Component {
         selected = o;
       }
     });
-    return selected;
+    return selected === null ? [] : selected;
   }
 
   getMaybeEmptyInput(data) {
@@ -391,7 +391,7 @@ class ModificarPerfilVoluntario extends Component {
       gender: undefined,
       last_name: newData.last_name,
       first_name: newData.first_name,
-      birth_date: newData.birth_date,
+      birth_date: "",
       phone: newData.phone,
       profession: newData.profession,
       educational_level: newData.educational_level,
@@ -416,13 +416,14 @@ class ModificarPerfilVoluntario extends Component {
     }
     submitData.skills = skills;
 
-    submitData.state_id = newData.state === undefined ? null : newData.state.value;
-    submitData.modality_id = newData.modality === undefined ? null : newData.modality.value;
-    submitData.gender = newData.gender === undefined ? null : newData.gender.value;
+    submitData.state_id = Array.isArray(newData.state) ? -1 : newData.state.value;
+    submitData.modality_id = Array.isArray(newData.modality) ? -1 : newData.modality.value;
+    submitData.gender = Array.isArray(newData.gender) ? "" : newData.gender.value;
 
-    if (newData.birth_date !== "") {
+    if (newData.birth_date !== "" && newData.birth_date !== null) {
       submitData.birth_date = moment(newData.birth_date).format("YYYY-MM-DD");
     }
+
     return submitData;
   }
 

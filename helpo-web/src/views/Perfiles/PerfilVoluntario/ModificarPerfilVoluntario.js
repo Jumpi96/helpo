@@ -280,7 +280,7 @@ class ModificarPerfilVoluntario extends Component {
 
   handleCityChange(event) {
     this.setState({
-      nombre: event.target.value
+      city: event.target.value
     })
   }
 
@@ -372,7 +372,7 @@ class ModificarPerfilVoluntario extends Component {
       return;
     }
     this.setState({
-      telefono: event.target.value
+      phone: event.target.value
     });
   }
 

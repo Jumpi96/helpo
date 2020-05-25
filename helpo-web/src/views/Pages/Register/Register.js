@@ -412,23 +412,22 @@ class Register extends Component {
                       <br />
                       {this.renderErrorList()}
                     </CardBody>
-                    <CardFooter style={{ padding: '1.5rem', textAlign: 'center', display: 'block' }}>
+                    <CardFooter style={{ textAlign: 'center' }}>
                       <FacebookLogin
                         appId="343119846258901"
                         autoLoad={false}
                         fields="name,email,picture"
                         callback={responseFacebook}
                         render={renderProps => (
-                          <Button onClick={renderProps.onClick} className="btn-facebook" block><span>Facebook</span></Button>
+                          <Button onClick={renderProps.onClick} className="btn-facebook" block><span>Registrarse con Facebook</span></Button>
                         )} />
-                      {/* <Button className="btn-facebook" block><span>Facebook</span></Button> */}
+                      <hr />
                       <GoogleLogin
                         className="btn-google"
                         clientId="93328850687-681u9fksr6g52g2bebbj1qu8thldgaq6.apps.googleusercontent.com"
-                        buttonText="Google"
+                        buttonText="Registrarse con Google"
                         onSuccess={responseGoogle}
                         onFailure={responseGoogle} />
-                      {/* <Button className="btn-google" block><span>Google</span></Button> */}
                     </CardFooter>
                   </Card>
                 </Col>

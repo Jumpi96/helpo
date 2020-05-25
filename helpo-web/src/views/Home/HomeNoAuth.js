@@ -124,7 +124,7 @@ class Home extends Component {
                 <Collapse isOpen={this.state.open3}>
                   <Card style={{ width: '100%', textAlign: 'center' }}>
                     <CardBody>
-                    <p>"Ser la plataforma líder del país en soluciones de vinculación entre entidades y voluntarios, facilitando conexiones que trasciendan la vida comunitaria y la realidad sociocultural en la que se encuentran inmersas."</p>
+                    <p>"Ser la plataforma líder del país en soluciones de vinculación entre entidades y voluntarios, favoreciendo conexiones que trasciendan la vida comunitaria y la realidad sociocultural en la que se encuentran inmersas."</p>
                   </CardBody>
                   </Card>
                 </Collapse>

@@ -44,7 +44,7 @@ class ConsultarPerfilVoluntario extends Component {
   }
 
   renderSexo() {
-    if (this.props.data.gender == null) {
+    if (this.props.data.gender === "" || this.props.data.gender === null) {
       return <p className='text-muted'> No hay valor ingresado</p>
     }
     const gender = this.props.data.gender[0].toUpperCase() + this.props.data.gender.slice(1);

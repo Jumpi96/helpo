@@ -23,7 +23,7 @@ const perfilPropTypes = {
     profession: PropTypes.string,
     educational_level: PropTypes.string,
     availability: PropTypes.string,
-    modality: PropTypes.string,
+    modality: PropTypes.number,
     state: PropTypes.number,
     city: PropTypes.string,
     interests: PropTypes.arrayOf(PropTypes.number),
@@ -54,12 +54,13 @@ class ModificarPerfilVoluntario extends Component {
       profession: this.getMaybeEmptyInput(this.props.data.profession),
       educational_level: this.getMaybeEmptyInput(this.props.data.educational_level),
       availability: this.getMaybeEmptyInput(this.props.data.availability),
-      modality: this.getMaybeEmptyInput(this.props.data.modality),
-      state: this.loadState(this.props.data.state),
+      modality: this.loadValueFromOptions(this.props.data.modality, this.props.modalities),
+      state: this.loadValueFromOptions(this.props.data.state, this.props.states),
       city: this.getMaybeEmptyInput(this.props.data.city),
       interests: this.loadSelectedOptions(this.props.data.interests, this.loadOptions(this.props.rubros)),
       avatar_url: this.props.data.avatar.url,
       skills: this.loadSelectedOptions(this.props.data.skills, this.loadOptions(this.props.skills)),
+      experience: this.getMaybeEmptyInput(this.props.data.experience),
       showModal: false,
       modalType: 'success',
       errors: [],
@@ -73,8 +74,9 @@ class ModificarPerfilVoluntario extends Component {
     this.handleProfessionChange = this.handleProfessionChange.bind(this);
     this.handleEducationalLevelChange = this.handleEducationalLevelChange.bind(this);
     this.handleAvailabilityChange = this.handleAvailabilityChange.bind(this);
+    this.handleExperienceChange = this.handleExperienceChange.bind(this);
     this.handleModalityChange = this.handleModalityChange.bind(this);
-    this.handleStateChange = this.handleStateChange.bind(this);
+    this.handleValueFromOptionsChange = this.handleValueFromOptionsChange.bind(this);
     this.handleCityChange = this.handleCityChange.bind(this);
     this.handleInterestsChange = this.handleInterestsChange.bind(this);
     this.handleSkillsChange = this.handleSkillsChange.bind(this);
@@ -104,10 +106,10 @@ class ModificarPerfilVoluntario extends Component {
     return selected;
   }
 
-  loadState(state) {
+  loadValueFromOptions(input, options) {
     let selected = null;
-    this.loadOptions(this.props.states).forEach(function (o) {
-      if (o.value === state) {
+    this.loadOptions(options).forEach(function (o) {
+      if (o.value === input) {
         selected = o;
       }
     });
@@ -161,20 +163,8 @@ class ModificarPerfilVoluntario extends Component {
     this.setState({ birth_date: date });
   }
 
-  handleStateChange(state) {
-    this.setState({ state });
-  }
-
-  renderState() {
-    return (
-      <Select
-        name="states"
-        placeholder="Seleccione..."
-        options={this.loadOptions(this.props.states)}
-        onChange={this.handleStateChange}
-        value={this.state.state}
-      />
-    )
+  handleValueFromOptionsChange(stateKey, selected) {
+    this.setState({ [stateKey]: selected });
   }
 
   renderCity() {
@@ -228,11 +218,39 @@ class ModificarPerfilVoluntario extends Component {
       <input
         type="text"
         name="modality"
-        placeholder="Ejemplo: presencial"
         className="form-control"
         value={this.state.modality}
         onChange={this.handleModalityChange}
       />)
+  }
+
+  renderValueFromOptions(name, dataName) {
+    return (
+      <Select
+        name={dataName}
+        placeholder="Seleccione..."
+        options={this.loadOptions(this.props[dataName])}
+        onChange={(s) => this.handleValueFromOptionsChange(name, s)}
+        value={this.state[name]}
+      />
+    )
+  }
+
+  renderExperience() {
+    return (
+      <input
+        type="text"
+        name="experience"
+        className="form-control"
+        value={this.state.experience}
+        onChange={this.handleExperienceChange}
+      />)
+  }
+
+  handleExperienceChange(event) {
+    this.setState({
+      experience: event.target.value
+    })
   }
 
   handleModalityChange(event) {
@@ -397,7 +415,8 @@ class ModificarPerfilVoluntario extends Component {
       profession: newData.profession,
       educational_level: newData.educational_level,
       availability: newData.availability,
-      modality: newData.modality,
+      modality_id: undefined,
+      experience: newData.experience,
       state_id: undefined,
       city: newData.city,
       interests: undefined,
@@ -417,11 +436,12 @@ class ModificarPerfilVoluntario extends Component {
     submitData.skills = skills;
 
     submitData.state_id = newData.state === undefined ? null : newData.state.value;
+    submitData.modality_id = newData.modality === undefined ? null : newData.modality.value;
 
     if (newData.birth_date !== "") {
       submitData.birth_date = moment(newData.birth_date).format("YYYY-MM-DD");
     }
-
+    console.log(submitData);
     return submitData;
   }
 
@@ -534,7 +554,7 @@ class ModificarPerfilVoluntario extends Component {
 
               <div className='row'>
                 <p className='font-weight-bold col-md-2' htmlFor="state">Provincia</p>
-                <div className='col-md-4'>{this.renderState()}</div>
+                <div className='col-md-4'>{this.renderValueFromOptions("state", "states")}</div>
                 <p className='font-weight-bold col-md-2' htmlFor="city">Ciudad</p>
                 <div className='col-md-4'>{this.renderCity()}</div>
               </div>
@@ -557,7 +577,12 @@ class ModificarPerfilVoluntario extends Component {
                 <p style={{ paddingTop: '8px' }} className='font-weight-bold col-md-2' htmlFor="availability">Disponibilidad horaria</p>
                 <div className='col-md-4'>{this.renderAvailability()}</div>
                 <p style={{ paddingTop: '8px' }} className='font-weight-bold col-md-2' htmlFor="modality">Modalidad</p>
-                <div className='col-md-4'>{this.renderModality()}</div>
+                <div className='col-md-4'>{this.renderValueFromOptions("modality", "modalities")}</div>
+              </div>
+
+              <div className='row'>
+                <p style={{ paddingTop: '8px' }} className='font-weight-bold col-md-2' htmlFor="availability">Experiencia en voluntariado</p>
+                <div className='col-md-4'>{this.renderExperience()}</div>
               </div>
 
               <div className='row' style={{ paddingTop: '8px' }}>

@@ -204,6 +204,10 @@ class Skill(models.Model):
     nombre = models.TextField()
 
 
+class Modality(models.Model):
+    nombre = models.TextField()
+
+
 class State(models.Model):
     nombre = models.TextField()
 
@@ -215,11 +219,12 @@ class VolunteerProfile(Profile):
     birth_date = models.DateField(null=True)
     phone = models.CharField(max_length=70, blank=True, null=True)
     profession = models.CharField(max_length=140, null=True)
+    experience = models.CharField(max_length=140, null=True)
     educational_level = models.CharField(max_length=140, null=True)
     availability = models.CharField(max_length=280, null=True)
-    modality = models.CharField(max_length=70, null=True)
     state = models.ForeignKey(State, null=True)
     city = models.CharField(max_length=70, null=True)
+    modality = models.ForeignKey(Modality, null=True)
     interests = models.ManyToManyField(OrganizationArea)
     skills = models.ManyToManyField(Skill)
     

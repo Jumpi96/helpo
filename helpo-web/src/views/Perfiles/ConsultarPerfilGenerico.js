@@ -92,6 +92,10 @@ class ConsultarPerfilGenerico extends Component {
       })
       .then(res => {
         initialState.states = res.data
+        return api.get('/users/modalities/')
+      })
+      .then(res => {
+        initialState.modalities = res.data
       })
       .then(() => {
         // Cambio estado aca para asegurarme que se llame todo lo anterior
@@ -104,6 +108,7 @@ class ConsultarPerfilGenerico extends Component {
           rubros: initialState.rubros,
           skills: initialState.skills,
           states: initialState.states,
+          modalities: initialState.modalities,
           rubrosEmpresa: initialState.rubrosEmpresa,
           loggedUser: initialState.loggedUser
         })
@@ -160,6 +165,7 @@ class ConsultarPerfilGenerico extends Component {
           rubros={this.state.rubros}
           skills={this.state.skills}
           states={this.state.states}
+          modalities={this.state.modalities}
           switchToConsultar={this.switchToConsultar}
         />)
 
@@ -202,6 +208,7 @@ class ConsultarPerfilGenerico extends Component {
           skills={this.state.skills}
           interests={this.state.rubros}
           states={this.state.states}
+          modalities={this.state.modalities}
           switchToModificar={this.switchToModificar}
           sinModificar={!this.isLoggedUser()}
         />)
@@ -244,6 +251,7 @@ class ConsultarPerfilGenerico extends Component {
           data={this.state.data}
           states={this.state.states}
           skills={this.state.skills}
+          modalities={this.state.modalities}
           interests={this.state.rubros}
           switchToModificar={this.switchToModificar}
           sinModificar={!this.isLoggedUser()}

@@ -17,11 +17,12 @@ class DjangoORMVolunteerProfilesRepository(VolunteerProfilesRepository):
             birth_date=v.birth_date,
             phone=v.phone,
             profession=v.profession,
+            experience=v.experience,
             educational_level=v.educational_level,
             availability=v.availability,
-            modality=v.modality,
             state_id=v.state_id,
             city=v.city,
+            modality_id=v.modality_id,
             interests=[
                 OrganizationArea(id=a.id, name=a.name)
                 for a in v.organization_area_set.all()
@@ -43,11 +44,12 @@ class DjangoORMVolunteerProfilesRepository(VolunteerProfilesRepository):
                 birth_date=profile.birth_date,
                 phone=profile.phone,
                 profession=profile.profession,
+                experience=profile.experience,
                 educational_level=profile.educational_level,
                 availability=profile.availability,
-                modality=profile.modality,
                 state_id=profile.state_id,
-                city=profile.city
+                city=profile.city,
+                modality_id=profile.modality_id
             )
         else:
             model.avatar_id = profile.avatar_id
@@ -56,11 +58,12 @@ class DjangoORMVolunteerProfilesRepository(VolunteerProfilesRepository):
             model.birth_date = profile.birth_date
             model.phone = profile.phone
             model.profession = profile.profession
+            model.experience = profile.experience
             model.educational_level = profile.educational_level
             model.availability = profile.availability
-            model.modality = profile.modality
             model.state_id = profile.state_id
             model.city = profile.city
+            model.modality_id = profile.modality_id
         model.save()
         model.interests = [OrganizationAreaModel.objects.get(pk=a.id) for a in profile.interests]
         model.skills = [SkillModel.objects.get(pk=s.id) for s in profile.skills]

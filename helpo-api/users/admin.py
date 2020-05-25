@@ -3,7 +3,7 @@ from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import ugettext_lazy as _
 
 from .models import User, AppValues, Imagen, Suscripcion, OrganizationArea, OrganizacionProfile, \
-    Ubicacion, EmpresaProfile, VolunteerProfile, RubroEmpresa, Skill, State
+    Ubicacion, EmpresaProfile, VolunteerProfile, RubroEmpresa, Skill, State, Modality
 
 
 class SimpleUserAdmin(admin.ModelAdmin):
@@ -32,7 +32,7 @@ class EmpresaProfileAdmin(admin.ModelAdmin):
 
 class VolunteerProfileAdmin(admin.ModelAdmin):
     list_display = ['id', 'usuario', 'avatar', 'gender', 'last_name', 'birth_date', \
-        'phone', 'profession', 'educational_level', 'availability', 'modality']
+        'phone', 'profession', 'experience', 'educational_level', 'availability', 'modality']
 
 class RubroEmpresaAdmin(admin.ModelAdmin):
     list_display = ['id', 'nombre']
@@ -41,6 +41,9 @@ class SkillAdmin(admin.ModelAdmin):
     list_display = ['id', 'nombre']
 
 class StateAdmin(admin.ModelAdmin):
+    list_display = ['id', 'nombre']
+
+class ModalityAdmin(admin.ModelAdmin):
     list_display = ['id', 'nombre']
 
 admin.site.register(User, SimpleUserAdmin)
@@ -54,4 +57,5 @@ admin.site.register(EmpresaProfile, EmpresaProfileAdmin)
 admin.site.register(VolunteerProfile, VolunteerProfileAdmin)
 admin.site.register(Skill, SkillAdmin)
 admin.site.register(State, StateAdmin)
+admin.site.register(Modality, ModalityAdmin)
 admin.site.register(RubroEmpresa, RubroEmpresaAdmin)

@@ -13,9 +13,10 @@ const perfilPropTypes = {
     birth_date: PropTypes.string,
     phone: PropTypes.string,
     profession: PropTypes.string,
+    experience: PropTypes.string,
     educational_level: PropTypes.string,
     availability: PropTypes.string,
-    modality: PropTypes.string,
+    modality: PropTypes.number,
     state: PropTypes.number,
     city: PropTypes.string,
     avatar: PropTypes.shape({
@@ -96,46 +97,24 @@ class ConsultarPerfilVoluntario extends Component {
     return <p> {this.props.data.eventos}</p>
   }
 
-  renderCity() {
-    if (this.props.data.city == null) {
+  renderValueFromOptions(inputData, options) {
+    if (inputData == null) {
       return <p className='text-muted'> No hay valor ingresado</p>
     }
-    return <p> {this.props.data.city}</p>
-  }
-
-  renderState() {
-    if (this.props.data.state == null) {
-      return <p className='text-muted'> No hay valor ingresado</p>
-    }
-    const inputState = this.props.data.state;
-    let state;
-    this.props.states.forEach(function (o) {
-      if (o.id === inputState) {
-        state = o;
+    let selected;
+    options.forEach(function (o) {
+      if (o.id === inputData) {
+        selected = o;
       }
     });
-    return <p>{state.nombre}</p>
+    return <p>{selected.nombre}</p>
   }
 
-  renderProfession() {
-    if (this.props.data.profession == null) {
+  renderTextValue(inputData) {
+    if (inputData == "") {
       return <p className='text-muted'> No hay valor ingresado</p>
     }
-    return <p> {this.props.data.profession}</p>
-  }
-
-  renderEducationalLevel() {
-    if (this.props.data.educational_level == null) {
-      return <p className='text-muted'> No hay valor ingresado</p>
-    }
-    return <p> {this.props.data.educational_level}</p>
-  }
-
-  renderAvailability() {
-    if (this.props.data.availability == null) {
-      return <p className='text-muted'> No hay valor ingresado</p>
-    }
-    return <p> {this.props.data.availability}</p>
+    return <p> {inputData}</p>
   }
 
   renderBirthDate() {
@@ -143,13 +122,6 @@ class ConsultarPerfilVoluntario extends Component {
       return <p className='text-muted'> No hay valor ingresado</p>
     }
     return <p> {moment(this.props.data.birth_date, "YYYY-MM-DD").format("DD/MM/YYYY")}</p>
-  }
-
-  renderModality() {
-    if (this.props.data.modality == null) {
-      return <p className='text-muted'> No hay valor ingresado</p>
-    }
-    return <p> {this.props.data.modality}</p>
   }
 
   toggleEventos() {
@@ -223,13 +195,13 @@ class ConsultarPerfilVoluntario extends Component {
                   <p style={{ paddingLeft: 0, textAlign: 'left' }} className='font-weight-bold' htmlFor="state">Provincia</p>
                 </div>
                 <div className="col-md-4">
-                  {this.renderState()}
+                  {this.renderValueFromOptions(this.props.data.state, this.props.states)}
                 </div>
                 <div className="col-md-2">
                   <p style={{ paddingLeft: 0, textAlign: 'left' }} className='font-weight-bold' htmlFor="city">Ciudad</p>
                 </div>
                 <div className="col-md-4">
-                  {this.renderCity()}
+                  <p>{this.renderTextValue(this.props.data.city)}</p>
                 </div>
               </div>
               <div className='row'>
@@ -237,13 +209,13 @@ class ConsultarPerfilVoluntario extends Component {
                   <p style={{ textAlign: 'left' }} className='font-weight-bold' htmlFor="educational_level">Nivel educativo</p>
                 </div>
                 <div className="col-md-4">
-                  <p>{this.renderEducationalLevel()}</p>
+                <p>{this.renderTextValue(this.props.data.educational_level)}</p>
                 </div>
                 <div className="col-md-2">
                   <p style={{ textAlign: 'left' }} className='font-weight-bold' htmlFor="profession">Profesión</p>
                 </div>
                 <div className="col-md-4">
-                  <p>{this.renderProfession()}</p>
+                  <p>{this.renderTextValue(this.props.data.profession)}</p>
                 </div>
               </div>
               <div className='row'>
@@ -265,13 +237,21 @@ class ConsultarPerfilVoluntario extends Component {
                   <p style={{ textAlign: 'left' }} className='font-weight-bold' htmlFor="availability">Disponibilidad horaria</p>
                 </div>
                 <div className="col-md-4">
-                  <p>{this.renderAvailability()}</p>
+                <p>{this.renderTextValue(this.props.data.availability)}</p>
                 </div>
                 <div className="col-md-2">
                   <p style={{ textAlign: 'left' }} className='font-weight-bold' htmlFor="modality">Modalidad</p>
                 </div>
                 <div className="col-md-4">
-                  <p>{this.renderModality()}</p>
+                  <p>{this.renderValueFromOptions(this.props.data.modality, this.props.modalities)}</p>
+                </div>
+              </div>
+              <div className='row'>
+                <div className="col-md-2">
+                  <p style={{ textAlign: 'left' }} className='font-weight-bold' htmlFor="experience">Experiencia en voluntariado</p>
+                </div>
+                <div className="col-md-4">
+                  <p>{this.renderTextValue(this.props.data.experience)}</p>
                 </div>
               </div>
               <div style={{ display: 'flex', marginBottom: '10px' }} className='row offster-md-4'>

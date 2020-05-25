@@ -20,11 +20,12 @@ class UpdateVolunteerProfileInputDto:
     birth_date: str
     phone: str
     profession: str
+    experience: str
     educational_level: str
     availability: str
-    modality: str
     state_id: int
     city: str
+    modality_id: int
     interests: List[int]
     skills: List[int]
 
@@ -71,8 +72,9 @@ class UpdateVolunteerProfileUseCase:
         input_profile = VolunteerProfile(
             input_dto.user_id, avatar_id, input_dto.gender, input_dto.last_name,
             None if input_dto.birth_date == "" else input_dto.birth_date, input_dto.phone, input_dto.profession,
-            input_dto.educational_level, input_dto.availability, input_dto.modality, 
+            input_dto.experience, input_dto.educational_level, input_dto.availability,
             None if input_dto.state_id == -1 else input_dto.state_id, input_dto.city,
+            None if input_dto.modality_id == -1 else input_dto.modality_id,
             [self.interests_repo.get(i) for i in input_dto.interests],
             [self.skills_repo.get(s) for s in input_dto.skills]
         )

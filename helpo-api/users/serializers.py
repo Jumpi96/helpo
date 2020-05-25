@@ -2,7 +2,7 @@ from rest_framework import serializers
 from django.contrib.auth import authenticate
 from django.conf import settings
 from decouple import config
-from users.models import User, UserWrapper, OrganizationArea, RubroEmpresa, OrganizacionProfile, Ubicacion, Imagen, VolunteerProfile, EmpresaProfile, SmsVerification, UserVerification, AppValues, DeviceID, Suscripcion, Skill, State
+from users.models import User, UserWrapper, OrganizationArea, RubroEmpresa, OrganizacionProfile, Ubicacion, Imagen, VolunteerProfile, EmpresaProfile, SmsVerification, UserVerification, AppValues, DeviceID, Suscripcion, Skill, State, Modality
 from actividades.models import Participacion, Evento, Colaboracion
 from django.core.exceptions import ObjectDoesNotExist
 from common.functions import get_datos_token_google, get_datos_token_facebook
@@ -321,7 +321,7 @@ class VolunteerProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = VolunteerProfile
-        fields = ('avatar', 'gender', 'last_name', 'birth_date', 'phone', 'profession', 'educational_level', 'availability', 'modality', 'state', 'city', 'interests', 'skills', 'usuario','manos','eventos')        
+        fields = ('avatar', 'gender', 'last_name', 'birth_date', 'phone', 'profession', 'experience', 'educational_level', 'availability', 'state', 'city', 'modality', 'interests', 'skills', 'usuario','manos','eventos')
         read_only_fields = ('usuario','manos','eventos')
 
     def get_manos(self, obj):
@@ -521,4 +521,11 @@ class StateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = State
+        fields = ('id', 'nombre')
+
+
+class ModalitySerializer(serializers.ModelSerializer):   
+
+    class Meta:
+        model = Modality
         fields = ('id', 'nombre')

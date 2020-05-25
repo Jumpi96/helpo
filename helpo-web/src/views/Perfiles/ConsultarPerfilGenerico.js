@@ -22,6 +22,7 @@ class ConsultarPerfilGenerico extends Component {
       rubrosEmpresa: [], // [{ id: , nombre: },]
       modificar: false,
       loggedUser: true,
+      mandatoryVol: []
     };
     this.renderConsultar = this.renderConsultar.bind(this)
     this.renderModificar = this.renderModificar.bind(this)
@@ -116,6 +117,13 @@ class ConsultarPerfilGenerico extends Component {
             { id: "hombre", nombre: "Hombre" },
             { id: "mujer", nombre: "Mujer" },
             { id: "otro", nombre: "Otro" }
+          ],
+          mandatoryVol: [
+            "first_name", "last_name",
+            "birth_date", "gender",
+            "phone", "interests",
+            "skills", "availability",
+            "modality"
           ]
         })
       })
@@ -281,12 +289,28 @@ class ConsultarPerfilGenerico extends Component {
     }
   }
 
+  mandatoryCompleted() {
+    let completed = true;
+    let state = this.state;
+    state.mandatoryVol.forEach(function (k) {
+      if (state.data[k] === null ||
+        (Array.isArray(state.data[k]) && state.data[k].length === 0)) {
+        completed = false;
+      }
+    });
+    return completed;
+  }
+
   renderComponente() {
     if (this.state.loggedUser && this.state.modificar) {
       return this.renderModificar()
     }
     else if (this.state.loggedUser && !this.state.modificar) {
-      return this.renderConsultar()
+      if (this.mandatoryCompleted()) {
+        return this.renderConsultar();
+      } else {
+        return this.renderModificar();
+      }
     }
     else { return this.renderConsultarOtro() }
   }

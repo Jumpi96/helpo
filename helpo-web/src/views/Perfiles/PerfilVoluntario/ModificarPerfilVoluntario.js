@@ -65,6 +65,13 @@ class ModificarPerfilVoluntario extends Component {
       modalType: 'success',
       errors: [],
       avatar_changed: false,
+      mandatoryVol: [
+        "first_name", "last_name",
+        "birth_date", "gender",
+        "phone", "interests",
+        "skills", "availability",
+        "modality_id"
+      ]
     };
     this.handleFirstNameChange = this.handleFirstNameChange.bind(this);
     this.handleLastNameChange = this.handleLastNameChange.bind(this);
@@ -429,13 +436,29 @@ class ModificarPerfilVoluntario extends Component {
 
   validateData(submitData) {
     if (submitData.avatar.url === 'error' || submitData.avatar.url == null) {
-      let errors = this.state.errors
+      let errors = this.state.errors;
       errors.push("Imagen upload failure")
       this.setState({
         errors: errors
       })
       return false
     }
+
+    let completed = true;
+    this.state.mandatoryVol.forEach(function (k) {
+      if (submitData[k] === -1 || submitData === "" ||
+          (Array.isArray(submitData[k]) && submitData[k].length === 0)) {
+        completed = false;
+      }
+    });
+
+    if (!completed) {
+      let errors = this.state.errors;
+      errors.push("Falta completar campos obligatorios.");
+      this.setState({errors: errors});
+      return false;
+    }
+
     this.setState({
       avatar_url: submitData.avatar.url
     })
@@ -490,6 +513,27 @@ class ModificarPerfilVoluntario extends Component {
     })
   }
 
+  renderErrorList() {
+    var list = [];
+    var ids = 0;
+    for (var key in this.state.errors) {
+      var value = this.state.errors[key]
+      if (value !== "") {
+        list.push((<li class="list-group-item" key={ids}><span>{value}</span></li>))
+      }
+      ids = ids + 1;
+    }
+    if (list.length > 0) {
+      return (
+        <div class="alert alert-danger" role="alert">
+          <ul class="list-group">
+            {list}
+          </ul>
+        </div>
+      )
+    }
+  }
+
   render() {
     return (
       <Card>
@@ -516,21 +560,21 @@ class ModificarPerfilVoluntario extends Component {
           <div className="row">
             <div className="col-md">
               <div className='row'>
-                <p style={{ paddingTop: '8px' }} className='font-weight-bold col-md-2' htmlFor="first_name">Nombre</p>
+                <p style={{ paddingTop: '8px' }} className='font-weight-bold col-md-2' htmlFor="first_name">Nombre (*)</p>
                 <div className='col-md-4'>{this.renderFirstName()}</div>
-                <p style={{ paddingTop: '8px' }} className='font-weight-bold col-md-2' htmlFor="last_name">Apellido</p>
+                <p style={{ paddingTop: '8px' }} className='font-weight-bold col-md-2' htmlFor="last_name">Apellido (*)</p>
                 <div className='col-md-4'>{this.renderLastName()}</div>
               </div>
 
               <div className='row'>
-                <p className='font-weight-bold col-md-2' htmlFor="birth_date">Fecha de nacimiento</p>
+                <p className='font-weight-bold col-md-2' htmlFor="birth_date">Fecha de nacimiento (*)</p>
                 <div className='col-md-4'>{this.renderBirthDate()}</div>
-                <p className='font-weight-bold col-md-2' htmlFor="sexo">Género</p>
+                <p className='font-weight-bold col-md-2' htmlFor="sexo">Género (*)</p>
                 <div className='col-md-4'>{this.renderValueFromOptions("gender", "genders")}</div>
               </div>
 
               <div className='row'>
-                <p style={{ paddingTop: '8px' }} className='font-weight-bold col-md-2' htmlFor="telefono">Teléfono</p>
+                <p style={{ paddingTop: '8px' }} className='font-weight-bold col-md-2' htmlFor="telefono">Teléfono  (*)</p>
                 <div className='col-md-4'>{this.renderTelefono()}</div>
               </div>
 
@@ -542,9 +586,9 @@ class ModificarPerfilVoluntario extends Component {
               </div>
 
               <div className='row'>
-                <p style={{ paddingTop: '8px' }} className='font-weight-bold col-md-2' htmlFor="gustos">Áreas de interés</p>
+                <p style={{ paddingTop: '8px' }} className='font-weight-bold col-md-2' htmlFor="gustos">Áreas de interés (*)</p>
                 <div className='col-md-4'>{this.renderGustos()}</div>
-                <p style={{ paddingTop: '8px' }} className='font-weight-bold col-md-2' htmlFor="habilidades">Habilidades</p>
+                <p style={{ paddingTop: '8px' }} className='font-weight-bold col-md-2' htmlFor="habilidades">Habilidades (*)</p>
                 <div className='col-md-4'>{this.renderHabilidades()}</div>
               </div>
 
@@ -556,9 +600,9 @@ class ModificarPerfilVoluntario extends Component {
               </div>
 
               <div className='row'>
-                <p style={{ paddingTop: '8px' }} className='font-weight-bold col-md-2' htmlFor="availability">Disponibilidad horaria</p>
+                <p style={{ paddingTop: '8px' }} className='font-weight-bold col-md-2' htmlFor="availability">Disponibilidad horaria (*)</p>
                 <div className='col-md-4'>{this.renderAvailability()}</div>
-                <p style={{ paddingTop: '8px' }} className='font-weight-bold col-md-2' htmlFor="modality">Modalidad</p>
+                <p style={{ paddingTop: '8px' }} className='font-weight-bold col-md-2' htmlFor="modality">Modalidad (*)</p>
                 <div className='col-md-4'>{this.renderValueFromOptions("modality", "modalities")}</div>
               </div>
 
@@ -566,7 +610,7 @@ class ModificarPerfilVoluntario extends Component {
                 <p style={{ paddingTop: '8px' }} className='font-weight-bold col-md-2' htmlFor="availability">Experiencia en voluntariado</p>
                 <div className='col-md-4'>{this.renderExperience()}</div>
               </div>
-
+              {this.renderErrorList()}
               <div className='row' style={{ paddingTop: '8px' }}>
                 <div className='form-group'>
                   <div className='col-md-3'>
@@ -585,7 +629,6 @@ class ModificarPerfilVoluntario extends Component {
               </div>
             </div>
           </div>
-
         </CardBody>
         {this.renderModal()}
       </Card >

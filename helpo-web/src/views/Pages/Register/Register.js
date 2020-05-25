@@ -229,8 +229,8 @@ class Register extends Component {
     var ids = 0;
     for (var key in this.state.errors) {
       var value = this.state.errors[key]
-      if (value !== "") { 
-        list.push((<li class="list-group-item" key={ids}><span>{value}</span></li>)) 
+      if (value !== "") {
+        list.push((<li class="list-group-item" key={ids}><span>{value}</span></li>))
       }
       ids = ids + 1;
     }
@@ -365,8 +365,12 @@ class Register extends Component {
                       </Row>
                     </CardHeader>
                     <CardBody className="p-4">
-                      <h1>Registrar Usuario</h1>
-                      <p className="text-muted">Cree su cuenta</p>
+                      <h2>Registrar usuario</h2>
+                      <div class="alert alert-warning" role="alert">
+                        <a href="#" class="alert-link">Hola! </a>
+                        Queríamos contarte que ésta versión de Helpo es un buffer. La próxima es mejor.
+                        No te vayas.
+                      </div>
                       {this.renderNameField()}
                       <InputGroup className="mb-3">
                         <InputGroupAddon addonType="prepend">

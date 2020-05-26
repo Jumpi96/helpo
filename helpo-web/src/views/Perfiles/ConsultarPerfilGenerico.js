@@ -293,7 +293,7 @@ class ConsultarPerfilGenerico extends Component {
     let completed = true;
     let state = this.state;
     state.mandatoryVol.forEach(function (k) {
-      if (state.data[k] === null ||
+      if (state.data[k] === null || state.data[k] === "" ||
         (Array.isArray(state.data[k]) && state.data[k].length === 0)) {
         completed = false;
       }

@@ -446,16 +446,14 @@ class ModificarPerfilVoluntario extends Component {
 
     let completed = true;
     this.state.mandatoryVol.forEach(function (k) {
-      if (submitData[k] === -1 || submitData === "" ||
+      if (submitData[k] === -1 || submitData[k] === "" ||
           (Array.isArray(submitData[k]) && submitData[k].length === 0)) {
         completed = false;
       }
     });
 
     if (!completed) {
-      let errors = this.state.errors;
-      errors.push("Falta completar campos obligatorios.");
-      this.setState({errors: errors});
+      this.setState({errors: ["Falta completar campos obligatorios."]});
       return false;
     }
 

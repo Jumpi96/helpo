@@ -366,10 +366,10 @@ class Register extends Component {
                     </CardHeader>
                     <CardBody className="p-4">
                       <h2>Registrar usuario</h2>
-                      <div class="alert alert-warning" role="alert">
-                        <a href="#" class="alert-link">Hola! </a>
-                        Queríamos contarte que ésta versión de Helpo es un buffer. La próxima es mejor.
-                        No te vayas.
+                      <div class="alert alert-warning" role="alert" align='justify'>
+                        <a href="#" class="alert-link">¡Hola! </a>
+                        Actualmente nos encontramos en una primera etapa de reclutamiento de voluntarios. 
+                        Te invitamos a registrarte como usuario y armar tu perfil, así podemos contactarte apenas se encuentren habilitadas las demás funcionalidades de la plataforma.
                       </div>
                       {this.renderNameField()}
                       <InputGroup className="mb-3">

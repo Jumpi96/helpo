@@ -31,10 +31,12 @@ class Register extends Component {
       },
       showModalRegistro: false,
       modalType: 'success',
-      tyc: false
+      tyc: false,
+      mayor: false
     }
     this.handleUserTypeSelect = this.handleUserTypeSelect.bind(this);
     this.handleTyC = this.handleTyC.bind(this);
+    this.handleMayor = this.handleMayor.bind(this);
     this.renderNameField = this.renderNameField.bind(this);
     this.onSubmitData = this.onSubmitData.bind(this);
     this.renderErrorList = this.renderErrorList.bind(this);
@@ -256,8 +258,8 @@ class Register extends Component {
     let isValid = true;
 
     //TyC
-    if (!this.state.tyc) {
-      errors.tyc = "Debe aceptar los TyC de Helpo para continuar.";
+    if (!this.state.tyc || !this.state.mayor) {
+      errors.tyc = "Debe aceptar los términos y condiciones de Helpo para continuar.";
       isValid = false;
     }
 
@@ -304,6 +306,10 @@ class Register extends Component {
   handleTyC(checked) {
     this.setState({ tyc: checked })
   }
+  
+  handleMayor(checked) {
+    this.setState({ mayor: checked })
+  }
 
   render() {
     const user_type = this.state.user_type;
@@ -336,6 +342,7 @@ class Register extends Component {
                   <Card className="mx-4" style={{ width: '100%' }}>
                     <CardHeader>
                       <Row>
+                        {/*
                         <Col xs="12" sm="12">
                           <Button className={user_type === "2" ? "btn-warning" : "btn-primary"}
                             block
@@ -344,7 +351,6 @@ class Register extends Component {
                             <span>Voluntario</span>
                           </Button>
                         </Col>
-                        {/*
                       <Col xs="12" sm="4">
                         <Button className={user_type === "1" ? "btn-warning" : "btn-primary"}  
                                 block
@@ -365,10 +371,10 @@ class Register extends Component {
                       </Row>
                     </CardHeader>
                     <CardBody className="p-4">
-                      <h2>Registrar usuario</h2>
+                      <h2>Registrar voluntario</h2>
                       <div class="alert alert-warning" role="alert" align='justify'>
                         <a href="#" class="alert-link">¡Hola! </a>
-                        Actualmente nos encontramos en una primera etapa de reclutamiento de voluntarios. 
+                        Actualmente nos encontramos en una primera etapa de reclutamiento de voluntarios.
                         Te invitamos a registrarte como usuario y armar tu perfil, así podemos contactarte apenas se encuentren habilitadas las demás funcionalidades de la plataforma.
                       </div>
                       {this.renderNameField()}
@@ -403,10 +409,18 @@ class Register extends Component {
                           onChange={(e) => this.handleValueChange(e, "repeat")} />
                       </InputGroup>
                       <InputGroup className="mb-4">
-                        <input type="checkbox"
-                          name="tyc" value={this.state.tyc}
-                          onChange={(event) => this.handleTyC(event.target.checked)} />
-                        <p className="text-muted">Acepto los <a target="_blank" href="/#/noAuth/tyc">términos y condiciones</a> de Helpo.</p>
+                        <div class="form-check">
+                          <input type="checkbox" class="form-check-input"
+                            id="mayor" value={this.state.mayor}
+                            onChange={(event) => this.handleMayor(event.target.checked)} />
+                          <p class="form-check-label text-muted" for="mayor">Declaro que soy persona mayor de edad y con capacidad plena en los términos de la ley o, según sea el caso, cuento con autorización expresa de Madre/Padre/Tutor para acceder y utilizar el Sitio.</p>
+                        </div>
+                        <div class="form-check">
+                          <input type="checkbox" class="form-check-input"
+                            naidme="tyc" value={this.state.tyc}
+                            onChange={(event) => this.handleTyC(event.target.checked)} />
+                          <p class="form-check-label text-muted" for="tyc">Acepto los <a target="_blank" href="/#/noAuth/tyc">términos y condiciones</a> de Helpo.</p>
+                        </div>
                       </InputGroup>
                       <Button color="primary" onClick={() => this.onSubmitData()} block>Crear cuenta</Button>
                       <br />
@@ -459,9 +473,9 @@ const mapStateToProps = state => {
 //NO SACAR POR LAS DUDAS
 /*const mapDispatchToProps = dispatch => {
   return {
-    register: (username, password) => dispatch(auth.register(username, password)),
-  };
-}*/
+            register: (username, password) => dispatch(auth.register(username, password)),
+        };
+      }*/
 const mapDispatchToProps = dispatch => {
   return {
     loginGoogle: (nombre, email, password, user_type, apellido, id_token) => {

@@ -51,7 +51,7 @@ const AlbumImagenes = Loadable({
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
   { path: '/noAuth', exact: true, name: 'Home', component: NoAuthLayout },
-  { path: '/noAuth/dashboard', name: 'helpo', component: Dashboard },
+  { path: '/noAuth/dashboard', name: 'Helpo', component: Dashboard },
   { path: '/noAuth/organizaciones', name: 'Organizaciones', component: OrganizacionesPage },
   { path: '/noAuth/tyc', name: 'Términos y condiciones', component: PageTyC },
   { path: '/noAuth/perfil/:usuarioId?', name: 'Perfil de usuario', component: ConsultarPerfil }

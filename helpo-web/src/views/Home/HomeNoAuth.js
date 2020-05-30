@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { Row, Col, Collapse, CarouselCaption, CarouselControl, CarouselIndicators, CarouselItem, Carousel, Card, Button, CardBody } from 'reactstrap';
 import './HomeNoAuth.css';
 import imagen from "../../assets/img/home-noauth-background-converted.jpg";
-import imagen2 from "../../assets/img/organizaciones-converted.jpg";
-import imagen3 from "../../assets/img/voluntario-converted.jpg";
+import imagen2 from "../../assets/img/voluntario-converted.jpg";
+import imagen3 from "../../assets/img/organizaciones-converted.jpg";
 // import TwitterTimeline from 'react-twitter-embedded-timeline';
 // import { FacebookProvider, Page } from 'react-facebook';
 
@@ -99,8 +99,8 @@ class Home extends Component {
               <CarouselControl direction="next" directionText="Next" onClickHandler={this.next} />
             </Carousel>
             <Row >
-              <Col>
-                <Button color="primary" onClick={() => this.setState({ open1: !this.state.open1 })} style={{ fontSize: '20px', marginTop: '10px', marginBottom: '1rem', height: '150px', width: '100%' }}>Sobre nosotros</Button>
+              <Col md="3" sm="12">
+                <Button color="primary" onClick={() => this.setState({ open1: !this.state.open1 })} style={{ fontSize: '20px', marginTop: '10px', marginBottom: '1rem',  height: '5em', width: '100%' }}>Sobre nosotros</Button>
                 <Collapse isOpen={this.state.open1}>
                   <Card style={{ width: '100%', textAlign: 'center' }}>
                     <CardBody>
@@ -109,8 +109,8 @@ class Home extends Component {
                   </Card>
                 </Collapse>
               </Col>
-              <Col>
-                <Button color="primary" onClick={() => this.setState({ open2: !this.state.open2 })} style={{ fontSize: '20px', marginTop: '10px', marginBottom: '1rem', height: '150px', width: '100%' }}>Misión</Button>
+              <Col md="3" sm="12">
+                <Button color="primary" onClick={() => this.setState({ open2: !this.state.open2 })} style={{ fontSize: '20px', marginTop: '10px', marginBottom: '1rem',  height: '5em', width: '100%' }}>Misión</Button>
                 <Collapse isOpen={this.state.open2}>
                   <Card style={{ width: '100%', textAlign: 'center' }}>
                     <CardBody>
@@ -119,8 +119,8 @@ class Home extends Component {
                   </Card>
                 </Collapse>
               </Col>
-              <Col>
-                <Button color="primary" onClick={() => this.setState({ open3: !this.state.open3 })} style={{ fontSize: '20px', marginTop: '10px', marginBottom: '1rem', height: '150px', width: '100%' }}>Visión</Button>
+              <Col md="3" sm="12">
+                <Button color="primary" onClick={() => this.setState({ open3: !this.state.open3 })} style={{ fontSize: '20px', marginTop: '10px', marginBottom: '1rem',  height: '5em', width: '100%' }}>Visión</Button>
                 <Collapse isOpen={this.state.open3}>
                   <Card style={{ width: '100%', textAlign: 'center' }}>
                     <CardBody>
@@ -129,8 +129,8 @@ class Home extends Component {
                   </Card>
                 </Collapse>
               </Col>
-              <Col>
-                <Button color="primary" onClick={() => this.setState({ open4: !this.state.open4 })} style={{ fontSize: '20px', marginTop: '10px', marginBottom: '1rem', height: '150px', width: '100%' }}>Valores</Button>
+              <Col md="3" sm="12">
+                <Button color="primary" onClick={() => this.setState({ open4: !this.state.open4 })} style={{ fontSize: '20px', marginTop: '10px', marginBottom: '1rem',  height: '5em', width: '100%' }}>Valores</Button>
                 <Collapse isOpen={this.state.open4}>
                   <Card style={{ width: '100%', textAlign: 'center' }}>
                     <CardBody>

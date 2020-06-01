@@ -4,7 +4,7 @@ import './HomeNoAuth.css';
 import imagen from "../../assets/img/home-noauth-background-converted.jpg";
 import imagen2 from "../../assets/img/voluntario-converted.jpg";
 import imagen3 from "../../assets/img/organizaciones-converted.jpg";
-import imagenComoFunciona from "../../assets/img/home-como-funciona.jpg"
+import imagenComoFunciona from "../../assets/img/home-como-funciona-converted.jpg"
 // import TwitterTimeline from 'react-twitter-embedded-timeline';
 // import { FacebookProvider, Page } from 'react-facebook';
 

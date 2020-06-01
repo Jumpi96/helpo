@@ -330,7 +330,7 @@ class Register extends Component {
         <body>
           <div className="container">
             <div className="panel-heading">
-              <div className="panel-title text-center">
+              <div className="panel-title text-center" style={{ margin: '20px' }}>
                 <img src={logo} alt="Helpo" width="150" height="150"></img>
               </div>
             </div>
@@ -409,13 +409,13 @@ class Register extends Component {
                           onChange={(e) => this.handleValueChange(e, "repeat")} />
                       </InputGroup>
                       <InputGroup className="mb-4">
-                        <div class="form-check">
+                        <div class="form-check" style={{ margin: '5px' }}>
                           <input type="checkbox" class="form-check-input"
                             id="mayor" value={this.state.mayor}
                             onChange={(event) => this.handleMayor(event.target.checked)} />
                           <p class="form-check-label text-muted" for="mayor">Declaro que soy persona mayor de edad y con capacidad plena en los términos de la ley o, según sea el caso, cuento con autorización expresa de Madre/Padre/Tutor para acceder y utilizar el Sitio.</p>
                         </div>
-                        <div class="form-check">
+                        <div class="form-check"style={{ margin: '5px' }}>
                           <input type="checkbox" class="form-check-input"
                             naidme="tyc" value={this.state.tyc}
                             onChange={(event) => this.handleTyC(event.target.checked)} />

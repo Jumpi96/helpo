@@ -92,7 +92,7 @@ class Login extends Component {
       if (this.state.modalType === "success") {
         return (
           <ModalRegistroExitoso
-            body='Debe seleccionar su tipo de usuario'
+            body='Primero debe registrarse en Helpo'
             onCancel={() => this.props.history.push('register')}
           />)
       }

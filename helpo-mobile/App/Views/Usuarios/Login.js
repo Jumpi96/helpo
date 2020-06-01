@@ -98,7 +98,7 @@ class Login extends Component {
                   { text: "Volver", icon: "close", iconColor: "#25de5b" }
                 ],
                 cancelButtonIndex: 0,
-                title: "Debe seleccionar su tipo de usuario"
+                title: "Primero debe registrarse en Helpo"
               },
               buttonIndex => {
                 this.props.navigation.navigate('SignUp')

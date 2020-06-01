@@ -253,13 +253,20 @@ class Register extends Component {
       apellido: "",
       email: "",
       contraseña: "",
-      tyc: ""
+      tyc: "",
+      mayor: ""
     };
     let isValid = true;
 
     //TyC
-    if (!this.state.tyc || !this.state.mayor) {
+    if (!this.state.tyc) {
       errors.tyc = "Debe aceptar los términos y condiciones de Helpo para continuar.";
+      isValid = false;
+    }
+
+    //Mayor
+    if (!this.state.mayor) {
+      errors.mayor = "Debe declarar que es mayor o que cuenta con autorización para continuar.";
       isValid = false;
     }
 

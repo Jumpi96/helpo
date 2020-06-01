@@ -112,7 +112,7 @@ class UserManager(BaseUserManager):
         else:
             profile = EmpresaProfile.objects.create(usuario=user, avatar=avatar)
         self.send_confirmation_email(user)
-        if not settings.DEBUG and not user_type == 2:
+        if not settings.DEBUG:
             self.send_warning_email(user)
 
         return user
@@ -141,8 +141,8 @@ class UserManager(BaseUserManager):
 
     def send_warning_email(self, user):
         mail_from = settings.REGISTER_EMAIL
-        entidad = "organización" if user.user_type == 1 else "empresa"
-        subject = u'ALERTA: La %s "%s" se ha registrado en Helpo' % (entidad, user.nombre)
+        entidad = user.USER_TYPE_CHOICES[int(user.user_type)][1]
+        subject = u'ALERTA: Un usuario de tipo %s y nombre "%s" se ha registrado en Helpo' % (entidad, user.nombre)
         from common.templates import render_warning_email
         content = render_warning_email(user, entidad)
         from common.notifications import send_mail_to

@@ -3,7 +3,7 @@ import csv
 from django.core.management.base import BaseCommand, CommandError
 from decouple import config
 from actividades.models import RubroEvento, Funcion, CategoriaRecurso, Recurso
-from users.models import AppValues, Imagen, RubroOrganizacion, RubroEmpresa, User, UserManager
+from users.models import AppValues, Imagen, OrganizationArea, RubroEmpresa, User, UserManager
 
 
 class Command(BaseCommand):
@@ -80,7 +80,7 @@ class Command(BaseCommand):
                 reader = csv.reader(f)
                 i = 0
                 for row in reader:
-                    obj, created = RubroOrganizacion.objects.get_or_create(
+                    obj, created = OrganizationArea.objects.get_or_create(
                         nombre=row[0],
                     )
                     i += 1

@@ -28,8 +28,10 @@ def input_dto(exemplary_user_email: int, user_id: int) -> RemoveUserInputDto:
 @pytest.mark.usefixtures('transactional_db')
 def test_remove_user(
         user_id: int,
+        exemplary_user_id: int,
         user: User,
         users_repo_mock: Mock,
+        volunteer_profiles_repo_mock: Mock,
         input_dto: RemoveUserInputDto,
         remove_user_output_boundary_mock: Mock
 ) -> None:
@@ -37,6 +39,7 @@ def test_remove_user(
 
     users_repo_mock.get.assert_called_once_with(user_id)
     users_repo_mock.delete.assert_called_once_with(user)
+    volunteer_profiles_repo_mock.delete.assert_called_once_with(exemplary_user_id)
     desired_output_dto = RemoveUserOutputDto(removed=True)
     remove_user_output_boundary_mock.present.assert_called_once_with(desired_output_dto)
 

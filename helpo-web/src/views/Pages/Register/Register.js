@@ -313,7 +313,7 @@ class Register extends Component {
                 <Card className="mx-4" style={{width: '100%'}}>
                   <CardHeader>
                    <Row>
-                      <Col xs="12" sm="4">
+                      <Col xs="12" sm="12">
                         <Button className={user_type === "2" ? "btn-warning" : "btn-primary"} 
                                 block
                                 onClick={() => this.handleUserTypeSelect("voluntario")}
@@ -321,6 +321,7 @@ class Register extends Component {
                                 <span>Voluntario</span>
                         </Button>
                       </Col>
+                      {/*
                       <Col xs="12" sm="4">
                         <Button className={user_type === "1" ? "btn-warning" : "btn-primary"}  
                                 block
@@ -337,6 +338,7 @@ class Register extends Component {
                                 <span>Empresa</span>
                         </Button>
                       </Col>
+                      */}
                     </Row>
                   </CardHeader>
                   <CardBody className="p-4">

@@ -10,8 +10,8 @@ from rest_framework.generics import CreateAPIView
 from rest_framework.generics import RetrieveUpdateDestroyAPIView, RetrieveUpdateAPIView
 from knox.models import AuthToken
 from django.contrib.auth import get_user_model
-from users.models import RubroOrganizacion, RubroEmpresa, OrganizacionProfile, VoluntarioProfile, EmpresaProfile, AppValues, User, DeviceID, Suscripcion
-from users.serializers import FacebookAuthSerializer, GoogleAuthSerializer, CreateUserSerializer, UserSerializer, LoginUserSerializer, ChangePasswordSerializer, ResetPasswordSerializer, RubroOrganizacionSerializer, RubroEmpresaSerializer, OrganizacionProfileSerializer, VoluntarioProfileSerializer, EmpresaProfileSerializer, VerificationMailSerializer, SendVerificationEmailSerializer, VerificationSmsSerializer, AppValuesSerializer, DeviceIDSerializer, SuscripcionSerializer, SuscripcionSerializerLista
+from users.models import OrganizationArea, RubroEmpresa, OrganizacionProfile, EmpresaProfile, AppValues, User, DeviceID, Suscripcion, VolunteerProfile, Skill, State
+from users.serializers import FacebookAuthSerializer, GoogleAuthSerializer, CreateUserSerializer, UserSerializer, LoginUserSerializer, ChangePasswordSerializer, ResetPasswordSerializer, OrganizationAreaSerializer, RubroEmpresaSerializer, OrganizacionProfileSerializer, EmpresaProfileSerializer, VerificationMailSerializer, SendVerificationEmailSerializer, VerificationSmsSerializer, AppValuesSerializer, DeviceIDSerializer, SuscripcionSerializer, SuscripcionSerializerLista, VolunteerProfileSerializer, SkillSerializer, StateSerializer
 import time
 import requests
 from users.services import send_confirmation_sms
@@ -50,6 +50,8 @@ class CreateUserView(generics.GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
+        if user.user_type not in [1, 2]:
+            return Response({"error": "No se puede crear este tipo de usuario."}, status=status.HTTP_403_FORBIDDEN)
         return Response({
             "user": UserSerializer(user, context=self.get_serializer_context()).data,
             "token": AuthToken.objects.create(user)
@@ -86,19 +88,19 @@ class UserInfoView(generics.RetrieveAPIView):
     serializer_class = UserSerializer
     lookup_field = 'id'
 
-class RubroOrganizacionCreateReadView(ListCreateAPIView):
+class OrganizationAreaCreateReadView(ListCreateAPIView):
     """
     API endpoint para crear o ver todos los rubros de organización
     """
-    queryset = RubroOrganizacion.objects.all()
-    serializer_class = RubroOrganizacionSerializer
+    queryset = OrganizationArea.objects.all()
+    serializer_class = OrganizationAreaSerializer
 
-class RubroOrganizacionReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
+class OrganizationAreaReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     """
     API endpoint para leer, actualizar o eliminar un rubro de organización
     """
-    queryset = RubroOrganizacion.objects.all()
-    serializer_class = RubroOrganizacionSerializer
+    queryset = OrganizationArea.objects.all()
+    serializer_class = OrganizationAreaSerializer
     lookup_field = 'id'
 
 class RubroEmpresaCreateReadView(ListCreateAPIView):
@@ -146,12 +148,12 @@ class EmpresaProfileReadUpdateDeleteView(RetrieveUpdateAPIView):
     serializer_class = EmpresaProfileSerializer
     lookup_field = 'usuario'
 
-class VoluntarioProfileReadUpdateDeleteView(RetrieveUpdateAPIView):
-    """
-    API endpoint para leer, actualizar o eliminar un perfil de voluntario
-    """
-    queryset = VoluntarioProfile.objects.all()
-    serializer_class = VoluntarioProfileSerializer
+class VolunteerProfileReadUpdateDeleteView(RetrieveUpdateAPIView):	
+    """	
+    API endpoint para leer, actualizar o eliminar un perfil de voluntario	
+    """	
+    queryset = VolunteerProfile.objects.all()	
+    serializer_class = VolunteerProfileSerializer	
     lookup_field = 'usuario'
 
 class SendSmsOrganizacionView(APIView):
@@ -327,3 +329,17 @@ class SuscripcionListUserView(APIView):
         suscripciones = Suscripcion.objects.filter(usuario=usuario)
         serializer = SuscripcionSerializerLista(suscripciones, many=True)
         return Response(serializer.data)
+
+class SkillCreateReadView(ListCreateAPIView):
+    """
+    API endpoint to create and view all the skills
+    """
+    queryset = Skill.objects.all()
+    serializer_class = SkillSerializer
+
+class StateCreateReadView(ListCreateAPIView):
+    """
+    API endpoint to create and view all the states
+    """
+    queryset = State.objects.all()
+    serializer_class = StateSerializer

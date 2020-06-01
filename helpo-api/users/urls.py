@@ -65,13 +65,13 @@ urlpatterns = [
     # {% url "api:rubros_organizacion" %}
     url(
         regex=r"^perfiles/rubros_organizacion/$",
-        view=users_views.RubroOrganizacionCreateReadView.as_view(),
+        view=users_views.OrganizationAreaCreateReadView.as_view(),
         name="get_post_rubro_organizacion"
     ),
     # {% url "api:rubros_organizacion" rubro_organizacion.id %}
     url(
         regex=r"^perfiles/rubros_organizacion/(?P<id>[-\w]+)/$",
-        view=users_views.RubroOrganizacionReadUpdateDeleteView.as_view(),
+        view=users_views.OrganizationAreaReadUpdateDeleteView.as_view(),
         name="get_put_delete_rubro_organizacion"
     ),
     # {% url "api:rubros_empresa" %}
@@ -110,11 +110,11 @@ urlpatterns = [
         view=users_views.EmpresaProfileReadUpdateDeleteView.as_view(),
         name="get_put_delete_perfil_empresa"
     ),
-    # {% url "api:perfil_voluntario" usuario.id %}
-    url(
-        regex=r"^perfiles/perfil_voluntario/(?P<usuario>[-\w]+)/$",
-        view=users_views.VoluntarioProfileReadUpdateDeleteView.as_view(),
-        name="get_put_delete_perfil_voluntario"
+    # {% url "api:perfil_voluntario" usuario.id %}	
+    url(	
+        regex=r"^perfiles/perfil_voluntario/(?P<usuario>[-\w]+)/$",	
+        view=users_views.VolunteerProfileReadUpdateDeleteView.as_view(),	
+        name="get_put_delete_perfil_voluntario"	
     ),
     url(
         regex=r"^verify_email/$",
@@ -186,5 +186,23 @@ urlpatterns = [
         regex=r"^users/user?$",
         view=hex_users_views.RemoveUserView.as_view(),
         name="remove_user"
-    )
+    ),
+    # {% url "api:volunteer_profile" user.id %}
+    url(
+        regex=r"^users/profiles/volunteer/(?P<user_id>[-\w]+)/$",
+        view=hex_users_views.UpdateVolunteerProfileView.as_view(),
+        name="update_volunteer_profile"
+    ),
+    # {% url "api:skills" %}
+    url(
+        regex=r"^users/skills/$",
+        view=users_views.SkillCreateReadView.as_view(),
+        name="get_post_skill"
+    ),
+    # {% url "api:states" %}
+    url(
+        regex=r"^users/states/$",
+        view=users_views.StateCreateReadView.as_view(),
+        name="get_post_state"
+    ),
 ]

@@ -3,7 +3,7 @@ from collections import namedtuple
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .services import update_monthly_suscriptions
-from users.models import User, Suscripcion, VoluntarioProfile, OrganizacionSuscripcionesMensuales
+from users.models import User, Suscripcion, VolunteerProfile, OrganizacionSuscripcionesMensuales
 from actividades.models import Participacion, Colaboracion, Evento, Propuesta
 
 
@@ -83,9 +83,9 @@ class OrganizacionVoluntariosGenero(APIView):
         """
         Handle GET request
         """
-        vol_participaciones = VoluntarioProfile.objects.filter(
+        vol_participaciones = VolunteerProfile.objects.filter(
             usuario__participacion__necesidad_voluntario__evento__organizacion_id=id)
-        vol_colaboraciones = VoluntarioProfile.objects.filter(
+        vol_colaboraciones = VolunteerProfile.objects.filter(
             usuario__colaboracion__necesidad_material__evento__organizacion_id=id)
         voluntarios = vol_participaciones.union(vol_colaboraciones)
 

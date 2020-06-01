@@ -132,7 +132,7 @@ class ModificarPerfilOrganizacion extends Component {
         type="text"
         name="telefono"
         className="form-control"
-        placeholder="Teléfono (ejemplo: 3515234567)"
+        placeholder="Ejemplo: 3515234567"
         value={this.state.telefono}
         onChange={this.handleTelefonoChange}
       />)

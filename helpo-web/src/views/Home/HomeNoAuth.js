@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Row, Col, Collapse, CarouselCaption, CarouselControl, CarouselIndicators, CarouselItem, Carousel, Card, Button, CardBody } from 'reactstrap';
+import { Row, Col, Collapse, CarouselCaption, CarouselControl, CarouselIndicators, CarouselItem, Carousel, Card, Button, CardBody, Modal, ModalBody, ModalHeader } from 'reactstrap';
 import './HomeNoAuth.css';
 import imagen from "../../assets/img/home-noauth-background-converted.jpg";
 import imagen2 from "../../assets/img/voluntario-converted.jpg";
 import imagen3 from "../../assets/img/organizaciones-converted.jpg";
+import imagenComoFunciona from "../../assets/img/home-como-funciona.jpg"
 // import TwitterTimeline from 'react-twitter-embedded-timeline';
 // import { FacebookProvider, Page } from 'react-facebook';
 
@@ -27,7 +28,8 @@ class Home extends Component {
       open1: false,
       open2: false,
       open3: false,
-      open4: false
+      open4: false,
+      showComoFunciona: false
     };
     this.next = this.next.bind(this);
     this.previous = this.previous.bind(this);
@@ -68,6 +70,20 @@ class Home extends Component {
     this.setState({ activeIndex: newIndex });
   }
 
+  renderModal() {
+    return (
+      <Modal isOpen={this.state.showComoFunciona} className="modalComoFunciona">
+        <ModalHeader><span class="close" onClick={() => this.setState({showComoFunciona: false})}>&times;</span></ModalHeader>
+        <ModalBody>
+          <img id="myImg" class="modalContent" src={imagenComoFunciona}/>
+          <div id="myModal" class="modal">
+            <img class="modal-content" id="img01" />
+          </div>
+        </ModalBody>
+      </Modal>
+    )
+  }
+
   render() {
     const { activeIndex } = this.state;
 
@@ -100,53 +116,59 @@ class Home extends Component {
             </Carousel>
             <Row >
               <Col md="3" sm="12">
-                <Button color="primary" onClick={() => this.setState({ open1: !this.state.open1 })} style={{ fontSize: '20px', marginTop: '10px', marginBottom: '1rem',  height: '5em', width: '100%' }}>Sobre nosotros</Button>
+                <Button color="primary" onClick={() => this.setState({ open1: !this.state.open1 })} style={{ fontSize: '20px', marginTop: '10px', marginBottom: '1rem', height: '5em', width: '100%' }}>Sobre nosotros</Button>
                 <Collapse isOpen={this.state.open1}>
                   <Card style={{ width: '100%', textAlign: 'center' }}>
                     <CardBody>
                       <p>Somos un grupo de jóvenes emprendedores independientes que decidimos combinar nuestras habilidades para crear una plataforma, que genere lazos entre diferentes actores de la comunidad para contribuir a construir una sociedad más justa y homogénea. </p>
-                  </CardBody>
+                    </CardBody>
                   </Card>
                 </Collapse>
               </Col>
               <Col md="3" sm="12">
-                <Button color="primary" onClick={() => this.setState({ open2: !this.state.open2 })} style={{ fontSize: '20px', marginTop: '10px', marginBottom: '1rem',  height: '5em', width: '100%' }}>Misión</Button>
+                <Button color="primary" onClick={() => this.setState({ open2: !this.state.open2 })} style={{ fontSize: '20px', marginTop: '10px', marginBottom: '1rem', height: '5em', width: '100%' }}>Misión</Button>
                 <Collapse isOpen={this.state.open2}>
                   <Card style={{ width: '100%', textAlign: 'center' }}>
                     <CardBody>
                       <p>"Fomentar las actividades de voluntariado, facilitando la vinculación entre organizaciones sin fines de lucro y entidades públicas con voluntarios, a través de una plataforma de acceso público y gratuito."</p>
-                  </CardBody>
+                    </CardBody>
                   </Card>
                 </Collapse>
               </Col>
               <Col md="3" sm="12">
-                <Button color="primary" onClick={() => this.setState({ open3: !this.state.open3 })} style={{ fontSize: '20px', marginTop: '10px', marginBottom: '1rem',  height: '5em', width: '100%' }}>Visión</Button>
+                <Button color="primary" onClick={() => this.setState({ open3: !this.state.open3 })} style={{ fontSize: '20px', marginTop: '10px', marginBottom: '1rem', height: '5em', width: '100%' }}>Visión</Button>
                 <Collapse isOpen={this.state.open3}>
                   <Card style={{ width: '100%', textAlign: 'center' }}>
                     <CardBody>
-                    <p>"Ser la plataforma líder del país en soluciones de vinculación entre entidades y voluntarios, favoreciendo conexiones que trasciendan la vida comunitaria y la realidad sociocultural en la que se encuentran inmersas."</p>
-                  </CardBody>
+                      <p>"Ser la plataforma líder del país en soluciones de vinculación entre entidades y voluntarios, favoreciendo conexiones que trasciendan la vida comunitaria y la realidad sociocultural en la que se encuentran inmersas."</p>
+                    </CardBody>
                   </Card>
                 </Collapse>
               </Col>
               <Col md="3" sm="12">
-                <Button color="primary" onClick={() => this.setState({ open4: !this.state.open4 })} style={{ fontSize: '20px', marginTop: '10px', marginBottom: '1rem',  height: '5em', width: '100%' }}>Valores</Button>
+                <Button color="primary" onClick={() => this.setState({ open4: !this.state.open4 })} style={{ fontSize: '20px', marginTop: '10px', marginBottom: '1rem', height: '5em', width: '100%' }}>Valores</Button>
                 <Collapse isOpen={this.state.open4}>
                   <Card style={{ width: '100%', textAlign: 'center' }}>
                     <CardBody>
                       <ul class="list-group">
-                        <li>Empatía</li> 
+                        <li>Empatía</li>
                         <p>Hacemos Helpo <strong>para</strong> otros.</p>
                         <li>Co-elaboración</li>
                         <p>No es suficiente hacer para otros, sino especialmente <strong>con</strong> otros.</p>
                         <li>Impacto social</li>
                         <p>Trabajamos para lograr una sociedad más <strong>justa</strong> y <strong>homogénea</strong>.</p>
-                      </ul> 
-                  </CardBody>
+                      </ul>
+                    </CardBody>
                   </Card>
                 </Collapse>
               </Col>
             </Row>
+            <Row>
+              <Col md="12">
+                <Button color="primary" onClick={() => this.setState({ showComoFunciona: true })} style={{ fontSize: '20px', marginTop: '10px', marginBottom: '1rem', height: '5em', width: '100%' }}>Cómo funciona Helpo</Button>
+              </Col>
+            </Row>
+            {this.renderModal()}
             {/* TODO: Add new Twitter and FB timelines/feeds
             <Row>
               <div className="col-md-4">

@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { auth } from "../../../actions";
 import logo from '../../../assets/img/brand/logo_principal.svg'
 import GoogleLogin from 'react-google-login';
-import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
+// import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
 import api from "../../../api"
 import ModalRegistroExitoso from '../Register/ModalRegistroExitoso';
 
@@ -223,14 +223,14 @@ class Login extends Component {
                           : undefined}
                     </div>
                     <Button color="primary" type="submit" className="mb-4 px-4">¡Ingresá!</Button>
-                    <FacebookLogin
+                    {/* <FacebookLogin
                       appId="343119846258901"
                       autoLoad={false}
                       fields="name,email,picture"
                       callback={responseFacebook}
                       render={renderProps => (
                         <Button onClick={renderProps.onClick} className="btn-facebook mb-2 px-2" block><span>Facebook</span></Button>
-                      )} />
+                      )} /> */}
                     {/* <Button className="btn-facebook" block><span>Facebook</span></Button> */}
                     <GoogleLogin
                       className="btn-google mb-2 px-2"

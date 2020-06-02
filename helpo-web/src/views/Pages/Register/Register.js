@@ -8,7 +8,7 @@ import ModalRegistroExitoso from './ModalRegistroExitoso';
 import './Register.css';
 import logo from '../../../assets/img/brand/logo_principal.svg';
 import GoogleLogin from 'react-google-login';
-import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
+// import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
 import { auth } from "../../../actions";
 import { Redirect } from 'react-router-dom';
 
@@ -434,7 +434,7 @@ class Register extends Component {
                       {this.renderErrorList()}
                     </CardBody>
                     <CardFooter style={{ textAlign: 'center' }}>
-                      <FacebookLogin
+                      {/* <FacebookLogin
                         appId="343119846258901"
                         autoLoad={false}
                         fields="name,email,picture"
@@ -442,7 +442,7 @@ class Register extends Component {
                         render={renderProps => (
                           <Button onClick={renderProps.onClick} className="btn-facebook" block><span>Registrarse con Facebook</span></Button>
                         )} />
-                      <hr />
+                      <hr /> */}
                       <GoogleLogin
                         className="btn-google"
                         clientId="93328850687-681u9fksr6g52g2bebbj1qu8thldgaq6.apps.googleusercontent.com"

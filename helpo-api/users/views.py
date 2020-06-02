@@ -10,8 +10,8 @@ from rest_framework.generics import CreateAPIView
 from rest_framework.generics import RetrieveUpdateDestroyAPIView, RetrieveUpdateAPIView
 from knox.models import AuthToken
 from django.contrib.auth import get_user_model
-from users.models import OrganizationArea, RubroEmpresa, OrganizacionProfile, EmpresaProfile, AppValues, User, DeviceID, Suscripcion, VolunteerProfile, Skill, State
-from users.serializers import FacebookAuthSerializer, GoogleAuthSerializer, CreateUserSerializer, UserSerializer, LoginUserSerializer, ChangePasswordSerializer, ResetPasswordSerializer, OrganizationAreaSerializer, RubroEmpresaSerializer, OrganizacionProfileSerializer, EmpresaProfileSerializer, VerificationMailSerializer, SendVerificationEmailSerializer, VerificationSmsSerializer, AppValuesSerializer, DeviceIDSerializer, SuscripcionSerializer, SuscripcionSerializerLista, VolunteerProfileSerializer, SkillSerializer, StateSerializer
+from users.models import OrganizationArea, RubroEmpresa, OrganizacionProfile, EmpresaProfile, AppValues, User, DeviceID, Suscripcion, VolunteerProfile, Skill, State, Modality
+from users.serializers import FacebookAuthSerializer, GoogleAuthSerializer, CreateUserSerializer, UserSerializer, LoginUserSerializer, ChangePasswordSerializer, ResetPasswordSerializer, OrganizationAreaSerializer, RubroEmpresaSerializer, OrganizacionProfileSerializer, EmpresaProfileSerializer, VerificationMailSerializer, SendVerificationEmailSerializer, VerificationSmsSerializer, AppValuesSerializer, DeviceIDSerializer, SuscripcionSerializer, SuscripcionSerializerLista, VolunteerProfileSerializer, SkillSerializer, StateSerializer, ModalitySerializer
 import time
 import requests
 from users.services import send_confirmation_sms
@@ -343,3 +343,10 @@ class StateCreateReadView(ListCreateAPIView):
     """
     queryset = State.objects.all()
     serializer_class = StateSerializer
+
+class ModalityCreateReadView(ListCreateAPIView):
+    """
+    API endpoint to create and view all the modalities
+    """
+    queryset = Modality.objects.all()
+    serializer_class = ModalitySerializer

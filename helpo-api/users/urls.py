@@ -205,4 +205,10 @@ urlpatterns = [
         view=users_views.StateCreateReadView.as_view(),
         name="get_post_state"
     ),
+    # {% url "api:modalities" %}
+    url(
+        regex=r"^users/modalities/$",
+        view=users_views.ModalityCreateReadView.as_view(),
+        name="get_post_modality"
+    )
 ]

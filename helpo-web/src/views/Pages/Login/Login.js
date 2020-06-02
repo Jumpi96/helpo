@@ -92,7 +92,7 @@ class Login extends Component {
       if (this.state.modalType === "success") {
         return (
           <ModalRegistroExitoso
-            body='Debe seleccionar su tipo de usuario'
+            body='Primero debe registrarse en Helpo'
             onCancel={() => this.props.history.push('register')}
           />)
       }
@@ -246,7 +246,7 @@ class Login extends Component {
                   <CardBody className="text-center">
                     <div>
                       <h1>Registrarse</h1>
-                      <p>¿No estás registrado todavía en <strong>helpo</strong>?</p>
+                      <p>¿No estás registrado todavía en <strong>Helpo</strong>?</p>
                       <Button onClick={() => this.props.history.push('register')}
                         color="primary">¡Regístrate!</Button>
                     </div>

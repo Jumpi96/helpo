@@ -30,16 +30,20 @@ class Register extends Component {
         contraseña: "",
       },
       showModalRegistro: false,
-      modalType: 'success'
+      modalType: 'success',
+      tyc: false,
+      mayor: false
     }
     this.handleUserTypeSelect = this.handleUserTypeSelect.bind(this);
-    this.renderNameField = this.renderNameField.bind(this); 
+    this.handleTyC = this.handleTyC.bind(this);
+    this.handleMayor = this.handleMayor.bind(this);
+    this.renderNameField = this.renderNameField.bind(this);
     this.onSubmitData = this.onSubmitData.bind(this);
     this.renderErrorList = this.renderErrorList.bind(this);
     this.showModalRegistro = this.showModalRegistro.bind(this);
   }
 
-  onSubmitData() {        
+  onSubmitData() {
     if (this.handleValidation()) {
       const usuario = {
         nombre: this.state.nombre,
@@ -50,30 +54,30 @@ class Register extends Component {
       }
 
       api.post('/auth/sign_up/', usuario)
-      .then(res => {
-        if(res.status === 200) {
-          this.setState({
-            showModalRegistro: true,
-            modalType: 'success',
-          })
-        }
-      }
-      )
-      .catch ( 
-        res => {
-          if(res.status !== 200) {
+        .then(res => {
+          if (res.status === 200) {
             this.setState({
               showModalRegistro: true,
-              modalType: 'failure',
+              modalType: 'success',
             })
           }
         }
-      )
-     // this.props.history.push('dashboard')
-    } 
+        )
+        .catch(
+          res => {
+            if (res.status !== 200) {
+              this.setState({
+                showModalRegistro: true,
+                modalType: 'failure',
+              })
+            }
+          }
+        )
+      // this.props.history.push('dashboard')
+    }
   }
 
-  onSubmitGoogle(response) {        
+  onSubmitGoogle(response) {
     const nombre = response.profileObj.givenName;
     const email = response.profileObj.email;
     const password = response.profileObj.email;
@@ -83,7 +87,7 @@ class Register extends Component {
     this.props.loginGoogle(nombre, email, password, user_type, apellido, id_token);
   }
 
-  onSubmitFacebook(response) {        
+  onSubmitFacebook(response) {
     const nombre = response.name;
     const email = response.email;
     const password = response.email;
@@ -101,17 +105,17 @@ class Register extends Component {
             title='¡Se ha registrado exitosamente en Helpo!'
             body='Revise su correo para activar su cuenta'
             onCancel={() => this.props.history.push('dashboard')}
-          />)  
+          />)
       }
       else {
         return (
           <ModalRegistroExitoso
             title='Error al registrarse en Helpo'
             body='Ya existe un usuario con ese mail'
-            onCancel={() => {this.setState({ showModalRegistro: false })}}
+            onCancel={() => { this.setState({ showModalRegistro: false }) }}
           />
         )
-      }      
+      }
     }
   }
 
@@ -123,20 +127,20 @@ class Register extends Component {
 
   handleUserTypeSelect(user_type) {
     this.setState({
-      errors:{
-        nombre:'',
-        apellido:'',
-        email:'',
-        contraseña:''
+      errors: {
+        nombre: '',
+        apellido: '',
+        email: '',
+        contraseña: ''
       },
     })
-    switch(user_type) {
+    switch (user_type) {
       case "voluntario": {
         this.setState({ user_type: "2", apellido: "" });
         break;
       }
       case "ong": {
-        this.setState({ user_type: "1", apellido: "ong"  });
+        this.setState({ user_type: "1", apellido: "ong" });
         break;
       }
       case "empresa": {
@@ -150,7 +154,7 @@ class Register extends Component {
   }
 
   handleValueChange(event, type) {
-    switch(type) {
+    switch (type) {
       case "nombre": {
         this.setState({ nombre: event.target.value });
         break;
@@ -180,148 +184,180 @@ class Register extends Component {
   renderNameField() {
     if (this.state.user_type === "2") {
       return (
-      <div>
-        <InputGroup className="mb-3">
+        <div>
+          <InputGroup className="mb-3">
             <InputGroupAddon addonType="prepend">
-               <InputGroupText>
-                 <i className="icon-user"></i>
-               </InputGroupText>
+              <InputGroupText>
+                <i className="icon-user"></i>
+              </InputGroupText>
             </InputGroupAddon>
-            <Input type="text" 
-                 placeholder="Nombre" 
-                 onChange={(e) => this.handleValueChange(e, "nombre")}/>
-        </InputGroup>
-        <InputGroup className="mb-3">
-          <InputGroupAddon addonType="prepend">
-            <InputGroupText>
-               <i className="icon-user"></i>
-            </InputGroupText>            
-          </InputGroupAddon>
-          <Input type="text" 
-                 placeholder="Apellido" 
-                 onChange={(e) => this.handleValueChange(e, "apellido")}/>          
-        </InputGroup>
-      </div>
+            <Input type="text"
+              placeholder="Nombre"
+              onChange={(e) => this.handleValueChange(e, "nombre")} />
+          </InputGroup>
+          <InputGroup className="mb-3">
+            <InputGroupAddon addonType="prepend">
+              <InputGroupText>
+                <i className="icon-user"></i>
+              </InputGroupText>
+            </InputGroupAddon>
+            <Input type="text"
+              placeholder="Apellido"
+              onChange={(e) => this.handleValueChange(e, "apellido")} />
+          </InputGroup>
+        </div>
       );
     }
     else {
       return (
         <div>
-        <InputGroup className="mb-3">
+          <InputGroup className="mb-3">
             <InputGroupAddon addonType="prepend">
-               <InputGroupText>
-                 <i className="icon-user"></i>
-               </InputGroupText>
+              <InputGroupText>
+                <i className="icon-user"></i>
+              </InputGroupText>
             </InputGroupAddon>
-          <Input type="text" 
-                 placeholder="Nombre" 
-                 onChange={(e) => this.handleValueChange(e, "nombre")}/>          
-        </InputGroup>
+            <Input type="text"
+              placeholder="Nombre"
+              onChange={(e) => this.handleValueChange(e, "nombre")} />
+          </InputGroup>
         </div>
       )
     }
   }
 
-  renderErrorList() {    
+  renderErrorList() {
     var list = [];
     var ids = 0;
-    for(var key in this.state.errors) {
+    for (var key in this.state.errors) {
       var value = this.state.errors[key]
-       if (value !== "") { list.push((<li key={ids}><span style={{ color: 'red' }}>{value}</span></li>)) }
-       ids = ids + 1; 
+      if (value !== "") {
+        list.push((<li class="list-group-item" key={ids}><span>{value}</span></li>))
+      }
+      ids = ids + 1;
     }
-    return list;
+    if (list.length > 0) {
+      return (
+        <div class="alert alert-danger" role="alert">
+          <ul class="list-group">
+            {list}
+          </ul>
+        </div>
+      )
+    }
   }
-  
+
   handleValidation() {
     const errors = {
       nombre: "",
       apellido: "",
       email: "",
       contraseña: "",
+      tyc: "",
+      mayor: ""
     };
     let isValid = true;
-    
+
+    //TyC
+    if (!this.state.tyc) {
+      errors.tyc = "Debe aceptar los términos y condiciones de Helpo para continuar.";
+      isValid = false;
+    }
+
+    //Mayor
+    if (!this.state.mayor) {
+      errors.mayor = "Debe declarar que es mayor o que cuenta con autorización para continuar.";
+      isValid = false;
+    }
+
     //Nombre
     if (this.state.nombre === "") {
-      errors.nombre = "Debe ingresar un nombre";
+      errors.nombre = "Debe ingresar un nombre.";
       isValid = false;
     }
     //Apellido
     if (this.state.user_type === "voluntario" && this.state.apellido === "") {
-      errors.apellido = "Debe ingresar un apellido";
+      errors.apellido = "Debe ingresar un apellido.";
       isValid = false;
     }
     //Mail
     if (this.state.email === "") {
-      errors.email = "Debe ingresar un email";
+      errors.email = "Debe ingresar un email.";
       isValid = false;
     }
     if (errors.email === "" && !validateEmail(this.state.email)) {
-      errors.email = "Ingrese un email válido";
+      errors.email = "Ingrese un email válido.";
       isValid = false;
     }
     //Contraseña
-    if (this.state.password.length < 8){
-      errors.contraseña = "La contraseña debe tener al menos 8 caracteres"
-      isValid = false; 
+    if (this.state.password.length < 8) {
+      errors.contraseña = "La contraseña debe tener al menos 8 caracteres."
+      isValid = false;
     }
     if (this.state.password === "" || this.state.repeat === "") {
-      errors.contraseña = "Debe ingresar la contraseña en ambos campos";
+      errors.contraseña = "Debe ingresar la contraseña en ambos campos.";
       isValid = false;
     }
     if (errors.contraseña === "" && this.state.password !== this.state.repeat) {
-      errors.contraseña = "La contraseña no coincide en ambos campos";
+      errors.contraseña = "La contraseña no coincide en ambos campos.";
       isValid = false;
-    }    
+    }
     //End
     if (isValid) {
       return isValid;
     }
-    this.setState({ errors: errors})
+    this.setState({ errors: errors })
     return isValid;
+  }
+
+  handleTyC(checked) {
+    this.setState({ tyc: checked })
+  }
+  
+  handleMayor(checked) {
+    this.setState({ mayor: checked })
   }
 
   render() {
     const user_type = this.state.user_type;
     const responseGoogle = (response) => {
-      if(response && response.profileObj) {
+      if (response && response.profileObj) {
         this.onSubmitGoogle(response);
       }
     }
     const responseFacebook = (response) => {
-      if(response && response.email) {
+      if (response && response.email) {
         this.onSubmitFacebook(response);
       }
     }
     if (this.props.isAuthenticated) {
       return <Redirect to="/" />
     } else {
-    return (
-      <body>
-		    <div className="container">
-				  <div className="panel-heading">
-	          <div className="panel-title text-center" style={{ margin: '20px' }}>
-              <img src={logo} alt="Helpo" width="150" height="150"></img>
-	          </div>
-	        </div>
-	      </div> 
-        <div>
-          <Container>
-            <Row className="justify-content-center">
-              <Col md="6">
-                <Card className="mx-4" style={{width: '100%'}}>
-                  <CardHeader>
-                   <Row>
-                      <Col xs="12" sm="12">
-                        <Button className={user_type === "2" ? "btn-warning" : "btn-primary"} 
-                                block
-                                onClick={() => this.handleUserTypeSelect("voluntario")}
-                                >
-                                <span>Voluntario</span>
-                        </Button>
-                      </Col>
-                      {/*
+      return (
+        <body>
+          <div className="container">
+            <div className="panel-heading">
+              <div className="panel-title text-center" style={{ margin: '20px' }}>
+                <img src={logo} alt="Helpo" width="150" height="150"></img>
+              </div>
+            </div>
+          </div>
+          <div>
+            <Container>
+              <Row className="justify-content-center">
+                <Col md="6">
+                  <Card className="mx-4" style={{ width: '100%' }}>
+                    <CardHeader>
+                      <Row>
+                        {/*
+                        <Col xs="12" sm="12">
+                          <Button className={user_type === "2" ? "btn-warning" : "btn-primary"}
+                            block
+                            onClick={() => this.handleUserTypeSelect("voluntario")}
+                          >
+                            <span>Voluntario</span>
+                          </Button>
+                        </Col>
                       <Col xs="12" sm="4">
                         <Button className={user_type === "1" ? "btn-warning" : "btn-primary"}  
                                 block
@@ -339,74 +375,92 @@ class Register extends Component {
                         </Button>
                       </Col>
                       */}
-                    </Row>
-                  </CardHeader>
-                  <CardBody className="p-4">
-                    <h1>Registrar Usuario</h1>
-                    <p className="text-muted">Cree su cuenta</p>
-                    {this.renderNameField()}
-                    <InputGroup className="mb-3">
-                      <InputGroupAddon addonType="prepend">
-                        <InputGroupText>@</InputGroupText>
-                      </InputGroupAddon>
-                      <Input 
-                             className="Email"
-                             type="text" 
-                             placeholder="Email" 
-                             onChange={(e) => this.handleValueChange(e, "email")}/>                    
-                    </InputGroup>
-                    <InputGroup className="mb-3">
-                      <InputGroupAddon addonType="prepend">
-                        <InputGroupText>
-                          <i className="icon-lock"></i>
-                        </InputGroupText>
-                      </InputGroupAddon>
-                      <Input type="password" 
-                             placeholder="Contraseña" 
-                             onChange={(e) => this.handleValueChange(e, "password")}/>
-                    </InputGroup>
-                    <InputGroup className="mb-4">
-                      <InputGroupAddon addonType="prepend">
-                        <InputGroupText>
-                          <i className="icon-lock"></i>
-                        </InputGroupText>
-                      </InputGroupAddon>
-                      <Input type="password" 
-                            placeholder="Repetir contraseña" 
-                            onChange={(e) => this.handleValueChange(e, "repeat")}/>                    
-                    </InputGroup>
-                    <Button color="primary" onClick={() => this.onSubmitData()} block>Crear Cuenta</Button>                  
-                    <ul>{this.renderErrorList()}</ul>
-                  </CardBody>
-                  <CardFooter style={{padding: '1.5rem', textAlign: 'center', display: 'block'}}>
-                        <FacebookLogin
-                          appId="343119846258901"
-                          autoLoad={false}
-                          fields="name,email,picture"
-                          callback={responseFacebook}
-                          render={renderProps => (
-                            <Button onClick={renderProps.onClick} className="btn-facebook" block><span>Facebook</span></Button>
-                          )} />
-                        {/* <Button className="btn-facebook" block><span>Facebook</span></Button> */}
-                        <GoogleLogin 
-                          className="btn-google"
-                          clientId="93328850687-681u9fksr6g52g2bebbj1qu8thldgaq6.apps.googleusercontent.com"
-                          buttonText="Google"
-                          onSuccess={responseGoogle}
-                          onFailure={responseGoogle} />
-                        {/* <Button className="btn-google" block><span>Google</span></Button> */}
-                  </CardFooter>
-                </Card>
-              </Col>
-            </Row>
-          </Container>
-        {this.renderModal()}
-        </div>
-		<script type="text/javascript" src="assets/js/bootstrap.js"></script>
-	  </body>
-    );
+                      </Row>
+                    </CardHeader>
+                    <CardBody className="p-4">
+                      <h2>Registrar voluntario</h2>
+                      <div class="alert alert-warning" role="alert" align='justify'>
+                        <a href="#" class="alert-link">¡Hola! </a>
+                        Actualmente nos encontramos en una primera etapa de reclutamiento de voluntarios.
+                        Te invitamos a registrarte como usuario y armar tu perfil, así podemos contactarte apenas se encuentren habilitadas las demás funcionalidades de la plataforma.
+                      </div>
+                      {this.renderNameField()}
+                      <InputGroup className="mb-3">
+                        <InputGroupAddon addonType="prepend">
+                          <InputGroupText>@</InputGroupText>
+                        </InputGroupAddon>
+                        <Input
+                          className="Email"
+                          type="text"
+                          placeholder="Email"
+                          onChange={(e) => this.handleValueChange(e, "email")} />
+                      </InputGroup>
+                      <InputGroup className="mb-3">
+                        <InputGroupAddon addonType="prepend">
+                          <InputGroupText>
+                            <i className="icon-lock"></i>
+                          </InputGroupText>
+                        </InputGroupAddon>
+                        <Input type="password"
+                          placeholder="Contraseña"
+                          onChange={(e) => this.handleValueChange(e, "password")} />
+                      </InputGroup>
+                      <InputGroup className="mb-4">
+                        <InputGroupAddon addonType="prepend">
+                          <InputGroupText>
+                            <i className="icon-lock"></i>
+                          </InputGroupText>
+                        </InputGroupAddon>
+                        <Input type="password"
+                          placeholder="Repetir contraseña"
+                          onChange={(e) => this.handleValueChange(e, "repeat")} />
+                      </InputGroup>
+                      <InputGroup className="mb-4">
+                        <div class="form-check" style={{ margin: '5px' }}>
+                          <input type="checkbox" class="form-check-input"
+                            id="mayor" value={this.state.mayor}
+                            onChange={(event) => this.handleMayor(event.target.checked)} />
+                          <p class="form-check-label text-muted" for="mayor">Declaro que soy persona mayor de edad y con capacidad plena en los términos de la ley o, según sea el caso, cuento con autorización expresa de Madre/Padre/Tutor para acceder y utilizar el Sitio.</p>
+                        </div>
+                        <div class="form-check"style={{ margin: '5px' }}>
+                          <input type="checkbox" class="form-check-input"
+                            naidme="tyc" value={this.state.tyc}
+                            onChange={(event) => this.handleTyC(event.target.checked)} />
+                          <p class="form-check-label text-muted" for="tyc">Acepto los <a target="_blank" href="/#/noAuth/tyc">términos y condiciones</a> de Helpo.</p>
+                        </div>
+                      </InputGroup>
+                      <Button color="primary" onClick={() => this.onSubmitData()} block>Crear cuenta</Button>
+                      <br />
+                      {this.renderErrorList()}
+                    </CardBody>
+                    <CardFooter style={{ textAlign: 'center' }}>
+                      <FacebookLogin
+                        appId="343119846258901"
+                        autoLoad={false}
+                        fields="name,email,picture"
+                        callback={responseFacebook}
+                        render={renderProps => (
+                          <Button onClick={renderProps.onClick} className="btn-facebook" block><span>Registrarse con Facebook</span></Button>
+                        )} />
+                      <hr />
+                      <GoogleLogin
+                        className="btn-google"
+                        clientId="93328850687-681u9fksr6g52g2bebbj1qu8thldgaq6.apps.googleusercontent.com"
+                        buttonText="Registrarse con Google"
+                        onSuccess={responseGoogle}
+                        onFailure={responseGoogle} />
+                    </CardFooter>
+                  </Card>
+                </Col>
+              </Row>
+            </Container>
+            {this.renderModal()}
+          </div>
+          <script type="text/javascript" src="assets/js/bootstrap.js"></script>
+        </body>
+      );
+    }
   }
-}
 }
 
 
@@ -414,7 +468,7 @@ const mapStateToProps = state => {
   let errors = [];
   if (state.auth.errors) {
     errors = Object.keys(state.auth.errors).map(field => {
-      return {field, message: state.auth.errors[field]};
+      return { field, message: state.auth.errors[field] };
     });
   }
   return {
@@ -426,9 +480,9 @@ const mapStateToProps = state => {
 //NO SACAR POR LAS DUDAS
 /*const mapDispatchToProps = dispatch => {
   return {
-    register: (username, password) => dispatch(auth.register(username, password)),
-  };
-}*/
+            register: (username, password) => dispatch(auth.register(username, password)),
+        };
+      }*/
 const mapDispatchToProps = dispatch => {
   return {
     loginGoogle: (nombre, email, password, user_type, apellido, id_token) => {

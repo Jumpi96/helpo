@@ -96,7 +96,7 @@ const PlanificadorEvento = Loadable({
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
   { path: '/', exact: true, name: 'Home', component: DefaultLayout },
-  { path: '/dashboard', name: 'helpo', component: Dashboard },
+  { path: '/dashboard', name: 'Helpo', component: Dashboard },
 
   /*
   { path: '/actividades/evento', name: 'Mis actividades sociales', component: EventoPage },

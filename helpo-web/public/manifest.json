@@ -3,8 +3,8 @@
   "name": "helpo",
   "icons": [
     {
-      "src": "./assets/favicon.png",
-      "sizes": "100x100",
+      "src": "./assets/favicon2.png",
+      "sizes": "96x96",
       "type": "image/png"
     }
   ],

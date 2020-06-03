@@ -22,6 +22,7 @@ class ConsultarPerfilGenerico extends Component {
       rubrosEmpresa: [], // [{ id: , nombre: },]
       modificar: false,
       loggedUser: true,
+      mandatoryVol: []
     };
     this.renderConsultar = this.renderConsultar.bind(this)
     this.renderModificar = this.renderModificar.bind(this)
@@ -92,6 +93,10 @@ class ConsultarPerfilGenerico extends Component {
       })
       .then(res => {
         initialState.states = res.data
+        return api.get('/users/modalities/')
+      })
+      .then(res => {
+        initialState.modalities = res.data
       })
       .then(() => {
         // Cambio estado aca para asegurarme que se llame todo lo anterior
@@ -104,8 +109,22 @@ class ConsultarPerfilGenerico extends Component {
           rubros: initialState.rubros,
           skills: initialState.skills,
           states: initialState.states,
+          modalities: initialState.modalities,
           rubrosEmpresa: initialState.rubrosEmpresa,
-          loggedUser: initialState.loggedUser
+          loggedUser: initialState.loggedUser,
+          genders: [
+            { id: "", nombre: "" },
+            { id: "hombre", nombre: "Hombre" },
+            { id: "mujer", nombre: "Mujer" },
+            { id: "otro", nombre: "Otro" }
+          ],
+          mandatoryVol: [
+            "first_name", "last_name",
+            "birth_date", "gender",
+            "phone", "interests",
+            "skills", "availability",
+            "modality"
+          ]
         })
       })
       .catch(error => {
@@ -160,6 +179,8 @@ class ConsultarPerfilGenerico extends Component {
           rubros={this.state.rubros}
           skills={this.state.skills}
           states={this.state.states}
+          modalities={this.state.modalities}
+          genders={this.state.genders}
           switchToConsultar={this.switchToConsultar}
         />)
 
@@ -202,6 +223,7 @@ class ConsultarPerfilGenerico extends Component {
           skills={this.state.skills}
           interests={this.state.rubros}
           states={this.state.states}
+          modalities={this.state.modalities}
           switchToModificar={this.switchToModificar}
           sinModificar={!this.isLoggedUser()}
         />)
@@ -244,6 +266,7 @@ class ConsultarPerfilGenerico extends Component {
           data={this.state.data}
           states={this.state.states}
           skills={this.state.skills}
+          modalities={this.state.modalities}
           interests={this.state.rubros}
           switchToModificar={this.switchToModificar}
           sinModificar={!this.isLoggedUser()}
@@ -266,12 +289,28 @@ class ConsultarPerfilGenerico extends Component {
     }
   }
 
+  mandatoryCompleted() {
+    let completed = true;
+    let state = this.state;
+    state.mandatoryVol.forEach(function (k) {
+      if (state.data[k] === null || state.data[k] === "" ||
+        (Array.isArray(state.data[k]) && state.data[k].length === 0)) {
+        completed = false;
+      }
+    });
+    return completed;
+  }
+
   renderComponente() {
     if (this.state.loggedUser && this.state.modificar) {
       return this.renderModificar()
     }
     else if (this.state.loggedUser && !this.state.modificar) {
-      return this.renderConsultar()
+      if (this.mandatoryCompleted()) {
+        return this.renderConsultar();
+      } else {
+        return this.renderModificar();
+      }
     }
     else { return this.renderConsultarOtro() }
   }

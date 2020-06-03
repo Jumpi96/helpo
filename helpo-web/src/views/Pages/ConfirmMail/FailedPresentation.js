@@ -16,7 +16,7 @@ class FailedPresentation extends Component {
         return (
             <div class="container">
                 <div class="panel-heading">
-                    <div class="panel-title text-center">
+                    <div class="panel-title text-center" style={{ margin: '20px' }}>
                         <img src={logo} alt="Helpo" width="150" height="150"></img>
                     </div>
                 </div>

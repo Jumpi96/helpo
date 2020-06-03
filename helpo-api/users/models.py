@@ -112,7 +112,7 @@ class UserManager(BaseUserManager):
         else:
             profile = EmpresaProfile.objects.create(usuario=user, avatar=avatar)
         self.send_confirmation_email(user)
-        if not settings.DEBUG and not user_type == 2:
+        if not settings.DEBUG:
             self.send_warning_email(user)
 
         return user
@@ -141,8 +141,8 @@ class UserManager(BaseUserManager):
 
     def send_warning_email(self, user):
         mail_from = settings.REGISTER_EMAIL
-        entidad = "organización" if user.user_type == 1 else "empresa"
-        subject = u'ALERTA: La %s "%s" se ha registrado en Helpo' % (entidad, user.nombre)
+        entidad = user.USER_TYPE_CHOICES[int(user.user_type)][1]
+        subject = u'ALERTA: Un usuario de tipo %s y nombre "%s" se ha registrado en Helpo' % (entidad, user.nombre)
         from common.templates import render_warning_email
         content = render_warning_email(user, entidad)
         from common.notifications import send_mail_to
@@ -204,24 +204,27 @@ class Skill(models.Model):
     nombre = models.TextField()
 
 
+class Modality(models.Model):
+    nombre = models.TextField()
+
+
 class State(models.Model):
     nombre = models.TextField()
 
 
 class VolunteerProfile(Profile):
     avatar = models.ForeignKey(Imagen, on_delete=models.SET_NULL, blank=True, null=True)
-    dni = models.BigIntegerField(blank=True, null=True)
     gender = models.CharField(max_length=70, blank=True, null=True)
     last_name = models.CharField(max_length=140, default='no last name')
     birth_date = models.DateField(null=True)
     phone = models.CharField(max_length=70, blank=True, null=True)
-    work_position = models.CharField(max_length=140, null=True)
     profession = models.CharField(max_length=140, null=True)
+    experience = models.CharField(max_length=140, null=True)
     educational_level = models.CharField(max_length=140, null=True)
     availability = models.CharField(max_length=280, null=True)
-    modality = models.CharField(max_length=70, null=True)
     state = models.ForeignKey(State, null=True)
     city = models.CharField(max_length=70, null=True)
+    modality = models.ForeignKey(Modality, null=True)
     interests = models.ManyToManyField(OrganizationArea)
     skills = models.ManyToManyField(Skill)
     

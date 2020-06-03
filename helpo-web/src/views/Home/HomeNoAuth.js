@@ -150,14 +150,9 @@ class Home extends Component {
                 <Collapse isOpen={this.state.open4}>
                   <Card style={{ width: '100%', textAlign: 'center' }}>
                     <CardBody>
-                      <ul class="list-group">
-                        <li>Empatía</li>
-                        <p>Hacemos Helpo <strong>para</strong> otros.</p>
-                        <li>Co-elaboración</li>
-                        <p>No es suficiente hacer para otros, sino especialmente <strong>con</strong> otros.</p>
-                        <li>Impacto social</li>
-                        <p>Trabajamos para lograr una sociedad más <strong>justa</strong> y <strong>homogénea</strong>.</p>
-                      </ul>
+                        <p><strong>Empatía</strong><br/>Hacemos Helpo <strong>para</strong> otros.</p>
+                        <p><strong>Co-Elaboración</strong><br/>No es suficiente hacer para otros, sino especialmente <strong>con</strong> otros.</p>
+                        <p><strong>Impacto social</strong><br/>Trabajamos para lograr una sociedad más <strong>justa</strong> y <strong>homogénea</strong></p>
                     </CardBody>
                   </Card>
                 </Collapse>

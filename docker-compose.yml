@@ -45,9 +45,9 @@ services:
   messenger:
     build: helpo-messenger/.
     volumes:
-      - ./helpo-messenger/conf/ejabberd.yml:/home/ejabberd/conf/ejabberd.yml
+      - ./helpo-messenger/:/opt/app
     ports:
-      - "5222:5222"
+      - "4000:4000"
     depends_on:
       - db
     

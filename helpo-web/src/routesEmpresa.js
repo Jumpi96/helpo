@@ -67,7 +67,7 @@ const AlbumImagenes = Loadable({
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
   { path: '/', exact: true, name: 'Home', component: DefaultLayout },
-  { path: '/dashboard', name: 'helpo', component: Dashboard },
+  { path: '/dashboard', name: 'Helpo', component: Dashboard },
   { path: '/actividades/consultar-eventos', name: 'Consultar actividades sociales', component: ConsultarEventosPage },
   { path: '/actividades/consultar-evento/', name: 'Consultar actividad social', component: ConsultarEventosView },
   { path: '/perfiles/perfil-empresa', name: 'Perfil empresa', component: ModificarPerfilEmpresa },

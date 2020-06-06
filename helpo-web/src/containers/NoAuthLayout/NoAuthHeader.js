@@ -29,10 +29,11 @@ class NoAuthHeader extends Component {
           <NavItem className="px-3">
             <NavLink href="#noAuth/dashboard">Inicio</NavLink>
           </NavItem>
+          {/*
           <NavItem className="px-3">
             <NavLink href="#noAuth/organizaciones">Organizaciones</NavLink>
           </NavItem>
-          {/*<NavItem className="px-3">
+          <NavItem className="px-3">
             <NavLink href="#noAuth/actividades/consultar-eventos">Actividades sociales</NavLink>
           </NavItem>
           <NavItem className="px-3">

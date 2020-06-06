@@ -246,7 +246,7 @@ class ConsultarPerfilOrganizacion extends Component {
               </div>
               <div className='row'>
                 <div className="col-md-3">
-                  <p style={{ textAlign: 'left' }} className='font-weight-bold' htmlFor="cuit">CUIT</p>
+                  <p style={{ textAlign: 'left' }} className='font-weight-bold' htmlFor="cuit">CUIT/CUIL</p>
                 </div>
                 <div className="col-md-5">
                   {this.renderCuit()}

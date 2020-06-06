@@ -383,7 +383,7 @@ class ModificarPerfilOrganizacion extends Component {
             </div>
 
             <div className='form-group'>
-              <p className='font-weight-bold col-md-3' htmlFor="cuit">CUIT</p>
+              <p className='font-weight-bold col-md-3' htmlFor="cuit">CUIT/CUIL</p>
               <div className='col-md-9'>{this.renderCuit()}</div>
             </div>
 

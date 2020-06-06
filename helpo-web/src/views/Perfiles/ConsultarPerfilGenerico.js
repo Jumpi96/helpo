@@ -124,6 +124,12 @@ class ConsultarPerfilGenerico extends Component {
             "phone", "interests",
             "skills", "availability",
             "modality"
+          ],
+          mandatoryOng: [
+            "telefono",
+            "cuit",
+            "descripcion",
+            "rubro",
           ]
         })
       })
@@ -289,10 +295,10 @@ class ConsultarPerfilGenerico extends Component {
     }
   }
 
-  mandatoryCompleted() {
+  mandatoryCompleted(mandatory) {
     let completed = true;
     let state = this.state;
-    state.mandatoryVol.forEach(function (k) {
+    mandatory.forEach(function (k) {
       if (state.data[k] === null || state.data[k] === "" ||
         (Array.isArray(state.data[k]) && state.data[k].length === 0)) {
         completed = false;
@@ -306,7 +312,9 @@ class ConsultarPerfilGenerico extends Component {
       return this.renderModificar()
     }
     else if (this.state.loggedUser && !this.state.modificar) {
-      if (this.mandatoryCompleted()) {
+      const mandatory = this.state.userType === 1 ? 
+          this.state.mandatoryOng : this.state.mandatoryVol;
+      if (this.mandatoryCompleted(mandatory)) {
         return this.renderConsultar();
       } else {
         return this.renderModificar();

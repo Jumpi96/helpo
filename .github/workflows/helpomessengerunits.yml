@@ -20,7 +20,7 @@ jobs:
         with:
           otp-version: '22.2'
           elixir-version: '1.9.4'
-      - run: cd helpo-messenger && mix deps.get && mix ecto.setup
+      - run: cd helpo-messenger && mix deps.get && MIXENV=test mix ecto.setup
       - run: cd helpo-messenger && MIXENV=test mix test --cover
       - name: Upload coverage to Codecov  
         uses: codecov/codecov-action@v1

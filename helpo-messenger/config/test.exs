@@ -8,7 +8,7 @@ use Mix.Config
 config :messenger, Messenger.Repo,
   username: "postgres",
   password: "postgres",
-  database: "messenger_test#{System.get_env("MIX_TEST_PARTITION")}",
+  database: "messenger_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
 

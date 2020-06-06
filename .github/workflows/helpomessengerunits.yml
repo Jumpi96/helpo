@@ -3,6 +3,17 @@ on: push
 jobs:
   build:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:10.8
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: messenger_test
+        ports:
+          - 5432:5432
+        # needed because the postgres container does not provide a healthcheck
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-elixir@v1
@@ -10,7 +21,7 @@ jobs:
           otp-version: '22.2'
           elixir-version: '1.9.4'
       - run: cd helpo-messenger && mix deps.get && mix ecto.setup
-      - run: cd helpo-messenger && mix test --cover
+      - run: cd helpo-messenger && MIXENV=test mix test --cover
       - name: Upload coverage to Codecov  
         uses: codecov/codecov-action@v1
         with:

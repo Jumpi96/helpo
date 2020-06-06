@@ -14,7 +14,6 @@
       url: '/dashboard',
       icon: 'icon-home'
     },
-    /*
     {
       title: true,
       name: 'Actividades sociales',
@@ -38,7 +37,7 @@
       name: 'Organizaciones',
       url: '/organizaciones',
       icon: 'icon-calendar'
-    },
+    }/*,
     {
       name: 'Empresas',
       url: '/empresas',
@@ -57,12 +56,11 @@
       name: 'Mi perfil',
       url: '/perfil/',
       icon: 'icon-star',
-    }
-    /*
+    },
     {
       name: 'Mis suscripciones',
       url: '/suscripciones/',
       icon: 'icon-pencil',
-    },*/
+    },
   ],
 };

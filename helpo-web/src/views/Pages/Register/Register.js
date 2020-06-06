@@ -265,7 +265,7 @@ class Register extends Component {
     }
 
     //Mayor
-    if (!this.state.mayor) {
+    if (!this.state.mayor && this.state.user_type === "2") {
       errors.mayor = "Debe declarar que es mayor o que cuenta con autorización para continuar.";
       isValid = false;
     }
@@ -349,8 +349,7 @@ class Register extends Component {
                   <Card className="mx-4" style={{ width: '100%' }}>
                     <CardHeader>
                       <Row>
-                        {/*
-                        <Col xs="12" sm="12">
+                        <Col xs="12" sm="6">
                           <Button className={user_type === "2" ? "btn-warning" : "btn-primary"}
                             block
                             onClick={() => this.handleUserTypeSelect("voluntario")}
@@ -358,7 +357,7 @@ class Register extends Component {
                             <span>Voluntario</span>
                           </Button>
                         </Col>
-                      <Col xs="12" sm="4">
+                      <Col xs="12" sm="6">
                         <Button className={user_type === "1" ? "btn-warning" : "btn-primary"}  
                                 block
                                 onClick={() => this.handleUserTypeSelect("ong")}
@@ -366,6 +365,7 @@ class Register extends Component {
                                 <span>ONG</span>
                         </Button>
                       </Col>
+                      {/*
                       <Col xs="12" sm="4">
                         <Button className={user_type === "3" ? "btn-warning" : "btn-primary"}  
                                 block
@@ -378,12 +378,7 @@ class Register extends Component {
                       </Row>
                     </CardHeader>
                     <CardBody className="p-4">
-                      <h2>Registrar voluntario</h2>
-                      <div class="alert alert-warning" role="alert" align='justify'>
-                        <a href="#" class="alert-link">¡Hola! </a>
-                        Actualmente nos encontramos en una primera etapa de reclutamiento de voluntarios.
-                        Te invitamos a registrarte como usuario y armar tu perfil, así podemos contactarte apenas se encuentren habilitadas las demás funcionalidades de la plataforma.
-                      </div>
+                      <h2>Registrar {user_type === "1" ? "ONG" : "voluntario" }</h2>
                       {this.renderNameField()}
                       <InputGroup className="mb-3">
                         <InputGroupAddon addonType="prepend">

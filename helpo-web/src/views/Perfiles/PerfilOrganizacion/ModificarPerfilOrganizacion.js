@@ -269,6 +269,8 @@ class ModificarPerfilOrganizacion extends Component {
     }
     if (newData.rubro_id != null && newData.rubro_id !== 0) {
       submitData.rubro = { id: newData.rubro_id, nombre: this.state.rubros[newData.rubro_id].nombre }
+    } else {
+      submitData.rubro = -1;
     }
     if (newData.ubicacion !== oldData.ubicacion && newData.ubicacion !== this.fakeProps.ubicacion) {
       submitData.ubicacion = this.state.ubicacion

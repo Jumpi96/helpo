@@ -164,10 +164,10 @@ class Home extends Component {
             </Row>
             <Row>
               <Col md="6">
-                <Button color="primary" onClick={() => this.setState({ showComoFunciona: 'Voluntario' })} style={{ fontSize: '20px', marginTop: '10px', marginBottom: '1rem', height: '5em', width: '100%' }}>Cómo colaboro cómo voluntario</Button>
+                <Button color="primary" onClick={() => this.setState({ showComoFunciona: 'Voluntario' })} style={{ fontSize: '20px', marginTop: '10px', marginBottom: '1rem', height: '5em', width: '100%' }}>Cómo colaboro como voluntario</Button>
               </Col>
               <Col md="6">
-                <Button color="primary" onClick={() => this.setState({ showComoFunciona: 'ONG' })} style={{ fontSize: '20px', marginTop: '10px', marginBottom: '1rem', height: '5em', width: '100%' }}>Cómo colaboro cómo ONG</Button>
+                <Button color="primary" onClick={() => this.setState({ showComoFunciona: 'ONG' })} style={{ fontSize: '20px', marginTop: '10px', marginBottom: '1rem', height: '5em', width: '100%' }}>Cómo participo como ONG</Button>
               </Col>
             </Row>
             {this.renderModal()}

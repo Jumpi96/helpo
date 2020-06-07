@@ -1,4 +1,4 @@
-  export default {
+export default {
   items: [
     {
       title: true,
@@ -37,12 +37,12 @@
       name: 'Organizaciones',
       url: '/organizaciones',
       icon: 'icon-calendar'
-    }/*,
-    {
+    },
+    /* {
       name: 'Empresas',
       url: '/empresas',
       icon: 'icon-calendar'
-    }*/,
+    }, */
     {
       name: 'Mis suscripciones',
       url: '/suscripciones/',

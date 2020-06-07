@@ -72,6 +72,11 @@ const EmpresasPage = Loadable({
   loading: Loading,
 })
 
+const VoluntariosPage = Loadable({
+  loader: () => import('./views/Voluntarios/VoluntariosPage.js'),
+  loading: Loading,
+})
+
 const ConsultarPatrocinadores = Loadable({
   loader: () => import('./views/Actividades/ConsultarPatrocinadores/ConsultarPatrocinadores'),
   loading: Loading,
@@ -117,6 +122,7 @@ const routes = [
   { path: '/perfil/', name: 'Mi perfil', component: ConsultarPerfil },
   { path: '/ajustes/', name: 'Ajustes', component: AjustesPage },
   { path: '/organizaciones', name: 'Organizaciones', component: OrganizacionesPage },
+  { path: '/voluntarios', name: 'Voluntarios', component: VoluntariosPage },
 ];
 
 export default routes;

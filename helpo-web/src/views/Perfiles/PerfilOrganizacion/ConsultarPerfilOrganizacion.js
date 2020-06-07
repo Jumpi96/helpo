@@ -68,7 +68,7 @@ class ConsultarPerfilOrganizacion extends Component {
     if (this.props.data.telefono == null) {
       return <p className='text-muted'> No hay valor ingresado</p>
     }
-    if (!this.props.data.verificada) {
+    if (!this.props.data.verificada && !this.props.sinModificar) {
       return (
         <div>
           <p>{this.props.data.telefono} <span id="btnVerificar" onClick={this.togglePopover} style={{ borderRadius: '4px' }} className="btn-primary fa fa-pencil fa-fw"></span></p>

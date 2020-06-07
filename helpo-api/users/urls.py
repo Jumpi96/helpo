@@ -98,6 +98,12 @@ urlpatterns = [
         view=users_views.OrgProfileCreateReadView.as_view(),
         name="get_post_perfil_organizacion"
     ),
+    # {% url "api:perfil_voluntario" usuario.id %}
+    url(
+        regex=r"^perfiles/perfil_voluntario/$",
+        view=users_views.VolunteerProfileCreateReadView.as_view(),
+        name="get_post_perfil_voluntario"
+    ),
     # {% url "api:perfil_organizacion" usuario.id %}
     url(
         regex=r"^perfiles/perfil_organizacion/(?P<usuario>[-\w]+)/$",

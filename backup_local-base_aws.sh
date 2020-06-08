@@ -2,7 +2,6 @@
 #
 # Script to create a daily backup of the local PostgreSQL DB running in AWS
 # Cron it using `crontab -e` && "0 0 * * * /home/ec2-user/helpo/backup_local-base_aws.sh"
-# Check `aws configure list` before running
 
 ENV=$(grep DJANGO_SETTINGS_MODULE helpo-api/.env | cut -d '=' -f2)
 

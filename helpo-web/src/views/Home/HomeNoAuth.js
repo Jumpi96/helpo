@@ -4,7 +4,8 @@ import './HomeNoAuth.css';
 import imagen from "../../assets/img/home-noauth-background-converted.jpg";
 import imagen2 from "../../assets/img/voluntario-converted.jpg";
 import imagen3 from "../../assets/img/organizaciones-converted.jpg";
-import imagenComoFunciona from "../../assets/img/home-como-funciona-converted.jpg"
+import imagenComoFuncionaVoluntario from "../../assets/img/home-como-funciona-converted.jpg";
+import imagenComoFuncionaONG from "../../assets/img/home-como-funciona-ong-converted.jpg";
 // import TwitterTimeline from 'react-twitter-embedded-timeline';
 // import { FacebookProvider, Page } from 'react-facebook';
 
@@ -71,17 +72,20 @@ class Home extends Component {
   }
 
   renderModal() {
-    return (
-      <Modal isOpen={this.state.showComoFunciona} className="modalComoFunciona">
-        <ModalHeader><span class="close" onClick={() => this.setState({showComoFunciona: false})}>&times;</span></ModalHeader>
-        <ModalBody>
-          <img id="myImg" class="modalContent" src={imagenComoFunciona}/>
-          <div id="myModal" class="modal">
-            <img class="modal-content" id="img01" />
-          </div>
-        </ModalBody>
-      </Modal>
-    )
+    if (this.state.showComoFunciona) {
+      let comoFunciona = this.state.showComoFunciona === 'ONG' ? imagenComoFuncionaONG : imagenComoFuncionaVoluntario;
+      return (
+        <Modal isOpen={this.state.showComoFunciona} className="modalComoFunciona">
+          <ModalHeader><span class="close" onClick={() => this.setState({ showComoFunciona: false })}>&times;</span></ModalHeader>
+          <ModalBody>
+            <img id="myImg" class="modalContent" src={comoFunciona} />
+            <div id="myModal" class="modal">
+              <img class="modal-content" id="img01" />
+            </div>
+          </ModalBody>
+        </Modal>
+      )
+    }
   }
 
   render() {
@@ -150,17 +154,20 @@ class Home extends Component {
                 <Collapse isOpen={this.state.open4}>
                   <Card style={{ width: '100%', textAlign: 'center' }}>
                     <CardBody>
-                        <p><strong>Empatía</strong><br/>Hacemos Helpo <strong>para</strong> otros.</p>
-                        <p><strong>Co-Elaboración</strong><br/>No es suficiente hacer para otros, sino especialmente <strong>con</strong> otros.</p>
-                        <p><strong>Impacto social</strong><br/>Trabajamos para lograr una sociedad más <strong>justa</strong> y <strong>homogénea</strong></p>
+                      <p><strong>Empatía</strong><br />Hacemos Helpo <strong>para</strong> otros.</p>
+                      <p><strong>Co-Elaboración</strong><br />No es suficiente hacer para otros, sino especialmente <strong>con</strong> otros.</p>
+                      <p><strong>Impacto social</strong><br />Trabajamos para lograr una sociedad más <strong>justa</strong> y <strong>homogénea</strong></p>
                     </CardBody>
                   </Card>
                 </Collapse>
               </Col>
             </Row>
             <Row>
-              <Col md="12">
-                <Button color="primary" onClick={() => this.setState({ showComoFunciona: true })} style={{ fontSize: '20px', marginTop: '10px', marginBottom: '1rem', height: '5em', width: '100%' }}>Cómo funciona Helpo</Button>
+              <Col md="6">
+                <Button color="primary" onClick={() => this.setState({ showComoFunciona: 'Voluntario' })} style={{ fontSize: '20px', marginTop: '10px', marginBottom: '1rem', height: '5em', width: '100%' }}>Cómo colaboro como voluntario</Button>
+              </Col>
+              <Col md="6">
+                <Button color="primary" onClick={() => this.setState({ showComoFunciona: 'ONG' })} style={{ fontSize: '20px', marginTop: '10px', marginBottom: '1rem', height: '5em', width: '100%' }}>Cómo participo como ONG</Button>
               </Col>
             </Row>
             {this.renderModal()}

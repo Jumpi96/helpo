@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import moment from 'moment';
-import { Card, CardHeader, Button, CardBody } from 'reactstrap';
+import { Card, CardHeader, Button, CardBody, CardColumns, CardTitle, CardText, Tooltip } from 'reactstrap';
 import { getImagen } from '../../../utils/Imagen'
 
 const perfilPropTypes = {
@@ -260,7 +260,6 @@ class ConsultarPerfilVoluntario extends Component {
                 </div>
               </div>
             </div>
-            {/*
             <div className="col-md-4">
               <CardColumns>
                 <Card id="cardManos" className="text-center" body inverse color="primary" style={{ height: 100, width: 100, borderColor: 'white' }}>
@@ -279,7 +278,7 @@ class ConsultarPerfilVoluntario extends Component {
                 </Card>
                 
               </CardColumns>
-            </div>*/}
+            </div>
           </div>
         </CardBody>
       </Card>

@@ -46,7 +46,7 @@ const TablaVoluntario = ( props ) => {
 
   return (
     <div>
-      <p className="h4" style={{ marginTop: '20px', marginBottom: '20px' }}>Función - {funcion + ' - ' + descripcion}</p>
+      <p className="h4" style={{ marginTop: '20px', marginBottom: '20px' }}>Función - {funcion}</p>
       <table className="table">
         <thead>
           <tr>

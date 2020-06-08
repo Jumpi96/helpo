@@ -255,11 +255,12 @@ class Login extends Component {
                       {this.props.errors.length > 0 && (
                         <div>
                           {this.props.errors.map(error => (
-                            <p className="row text-center" key={error.field}>{error.message}</p>
+                            <b className="row text-center" key={error.field}>{error.message}</b>
                           ))}
                         </div>
                       )}
                     </div>
+                    <br />
                     <div>
                       {(this.props.isVerificationError && this.state.emailEnviado === undefined) ?
                         <p className="row text-center">Para enviar el correo de verificación, haga click&#160;<a style={{ color: "#FFFFFF" }} onClick={this.sendVerificationEmail}>aquí</a></p>

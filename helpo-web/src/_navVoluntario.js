@@ -24,12 +24,12 @@ export default {
       class: ''             // optional class names space delimited list for title item ex: "text-center"
     },
     {
-      name: 'Mis colaboraciones',
+      name: 'Historial social',
       url: '/actividades/mis-colaboraciones',
       icon: 'icon-star'
     },
     {
-      name: 'Actividades sociales',
+      name: 'Próximas actividades',
       url: '/actividades/consultar-eventos',
       icon: 'icon-cursor'
     },

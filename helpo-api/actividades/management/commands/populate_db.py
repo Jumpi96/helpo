@@ -126,7 +126,7 @@ class Command(BaseCommand):
                     i += 1
                     print('- categoria_recurso_{0}: {1}, Created: {2}'.format(
                         str(i), str(categoria.nombre), str(created)))
-                    for j in range(1, len(row)-1):
+                    for j in range(1, len(row)):
                         recurso, created = Recurso.objects.get_or_create(
                             nombre=row[j],
                             categoria=categoria

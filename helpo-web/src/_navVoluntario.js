@@ -1,4 +1,4 @@
-  export default {
+export default {
   items: [
     {
       title: true,
@@ -14,7 +14,6 @@
       url: '/dashboard',
       icon: 'icon-home'
     },
-    /*
     {
       title: true,
       name: 'Actividades sociales',
@@ -25,12 +24,12 @@
       class: ''             // optional class names space delimited list for title item ex: "text-center"
     },
     {
-      name: 'Mis colaboraciones',
+      name: 'Historial social',
       url: '/actividades/mis-colaboraciones',
       icon: 'icon-star'
     },
     {
-      name: 'Actividades sociales',
+      name: 'Próximas actividades',
       url: '/actividades/consultar-eventos',
       icon: 'icon-cursor'
     },
@@ -39,30 +38,15 @@
       url: '/organizaciones',
       icon: 'icon-calendar'
     },
-    {
+    /* {
       name: 'Empresas',
       url: '/empresas',
       icon: 'icon-calendar'
-    }*/,
-    {
-      title: true,
-      name: 'Perfil',
-      wrapper: {            // optional wrapper object
-        element: '',        // required valid HTML5 element tag
-        attributes: {}        // optional valid JS object with JS API naming ex: { className: "my-class", style: { fontFamily: "Verdana" }, id: "my-id"}
-      },
-      class: ''             // optional class names space delimited list for title item ex: "text-center"
-    },
-    {
-      name: 'Mi perfil',
-      url: '/perfil/',
-      icon: 'icon-star',
-    }
-    /*
+    }, */
     {
       name: 'Mis suscripciones',
       url: '/suscripciones/',
       icon: 'icon-pencil',
-    },*/
+    },
   ],
 };

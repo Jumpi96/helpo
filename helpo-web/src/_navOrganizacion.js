@@ -13,7 +13,7 @@ export default {
         name: 'Inicio',
         url: '/dashboard',
         icon: 'icon-home'
-      },/*
+      },
       {
         title: true,
         name: 'Actividades sociales',
@@ -38,6 +38,7 @@ export default {
         url: '/actividades/consultar-eventos',
         icon: 'icon-cursor'
       },
+      /*
       {
         name: 'Empresas',
         url: '/empresas',

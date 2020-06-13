@@ -470,15 +470,15 @@ class AppValuesSerializer(serializers.ModelSerializer):
 # Colaborador refiere a voluntario o empresa que colabora/participa en la actividad social.
 class ColaboradorInfoSerializer(serializers.ModelSerializer):
     identificador = serializers.SerializerMethodField() # Número de DNI o CUIT
-    apellido = serializers.SerializerMethodField()
+    last_name = serializers.SerializerMethodField()
 
     class Meta:
         model = User
-        fields = ('id', 'nombre', 'identificador', 'apellido')
+        fields = ('id', 'nombre', 'identificador', 'last_name')
 
-    def get_apellido(self, obj):
+    def get_last_name(self, obj):
         if obj.user_type != 3:
-            return VolunteerProfile.objects.get(usuario=obj.id).apellido
+            return VolunteerProfile.objects.get(usuario=obj.id).last_name
     
     def get_identificador(self, obj):
         if obj.user_type == 3:

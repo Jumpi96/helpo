@@ -28,13 +28,6 @@ class ButtonsCompartirOrganizacion extends Component {
                         <img src={twitter} alt="Compartir en Twitter" width="40" height="40" />
                     </a>
                     {
-                        // Google+
-                    }
-                    <a target="_blank" rel="noopener noreferrer"
-                        href={"https://plus.google.com/share?url=https%3A%2F%2Fwww.helpo.com.ar%2F%23%2Fredirect%2Fong%3Fid%3D" + ong.id}>
-                        <img src={google} alt="Compartir en Google+" width="40" height="40" />
-                    </a>
-                    {
                         // LinkedIn
                     }
                     <a target="_blank" rel="noopener noreferrer"

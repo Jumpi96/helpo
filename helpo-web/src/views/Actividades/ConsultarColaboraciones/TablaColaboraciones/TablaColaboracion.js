@@ -45,7 +45,7 @@ const TablaColaboracion = (props) => {
 
   return (
     <div>
-      <p className="h4" style={{ marginTop: '20px', marginBottom: '20px' }}>Recurso - {necesidad + ' - ' + descripcion}</p>
+      <p className="h4" style={{ marginTop: '20px', marginBottom: '20px' }}>Recurso - {necesidad}</p>
       <table className="table">
         <thead>
           <tr>

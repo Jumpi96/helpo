@@ -58,6 +58,12 @@ class ModificarPerfilOrganizacion extends Component {
       modalType: 'success',
       errors: [],
       avatar_changed: false,
+      mandatoryOng: [
+        "telefono",
+        "cuit",
+        "descripcion",
+        "rubro",
+      ]
     }
     this.renderNombre = this.renderNombre.bind(this);
     this.renderUbicacion = this.renderUbicacion.bind(this);
@@ -263,6 +269,8 @@ class ModificarPerfilOrganizacion extends Component {
     }
     if (newData.rubro_id != null && newData.rubro_id !== 0) {
       submitData.rubro = { id: newData.rubro_id, nombre: this.state.rubros[newData.rubro_id].nombre }
+    } else {
+      submitData.rubro = -1;
     }
     if (newData.ubicacion !== oldData.ubicacion && newData.ubicacion !== this.fakeProps.ubicacion) {
       submitData.ubicacion = this.state.ubicacion
@@ -279,6 +287,20 @@ class ModificarPerfilOrganizacion extends Component {
       })
       return false
     }
+
+    let completed = true;
+    this.state.mandatoryOng.forEach(function (k) {
+      if (submitData[k] === -1 || submitData[k] === "" ||
+          (Array.isArray(submitData[k]) && submitData[k].length === 0)) {
+        completed = false;
+      }
+    });
+
+    if (!completed) {
+      this.setState({errors: ["Falta completar campos obligatorios."]});
+      return false;
+    }
+
     this.setState({
       avatar_url: submitData.avatar.url
     })
@@ -325,6 +347,27 @@ class ModificarPerfilOrganizacion extends Component {
           />
         )
       }
+    }
+  }
+
+  renderErrorList() {
+    var list = [];
+    var ids = 0;
+    for (var key in this.state.errors) {
+      var value = this.state.errors[key]
+      if (value !== "") {
+        list.push((<li class="list-group-item" key={ids}><span>{value}</span></li>))
+      }
+      ids = ids + 1;
+    }
+    if (list.length > 0) {
+      return (
+        <div class="alert alert-danger" role="alert">
+          <ul class="list-group">
+            {list}
+          </ul>
+        </div>
+      )
     }
   }
 
@@ -383,7 +426,7 @@ class ModificarPerfilOrganizacion extends Component {
             </div>
 
             <div className='form-group'>
-              <p className='font-weight-bold col-md-3' htmlFor="cuit">CUIT</p>
+              <p className='font-weight-bold col-md-3' htmlFor="cuit">CUIT/CUIL</p>
               <div className='col-md-9'>{this.renderCuit()}</div>
             </div>
 
@@ -401,11 +444,11 @@ class ModificarPerfilOrganizacion extends Component {
               <p className='font-weight-bold col-md-3' htmlFor="ubicacion" style={{ textAlign: 'right' }}>Ubicación</p>
               <div className='col-md-9' style={{ marginBottom: '5px' }}>{this.renderUbicacion()}</div>
             </div>
-
+            {this.renderErrorList()}
             <div style={{ margin: '20px' }} className='row'>
               <div style={{ display: 'flex' }} className='col-md-3'>
                 <button onClick={this.handleSubmit} type="button" className="btn btn-primary">
-                  Guardar Cambios
+                  Guardar cambios
             </button>
               </div>
               <div className='col-md-3'>

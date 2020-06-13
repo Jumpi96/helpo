@@ -1,0 +1,43 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:10.4-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: db-helpo
+    expose:
+      - "5432"
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+  api:
+    build: helpo-api/.
+    restart: always
+    env_file:
+      - helpo-api/.env
+    expose:
+      - "8000"
+    depends_on:
+      - db
+  web:
+    build:
+      context: helpo-web/.
+      dockerfile: staging.Dockerfile
+    restart: always
+    env_file:
+      - helpo-web/.env
+    ports:
+    - "80:80"
+    - "443:443"
+    - "8080:8080"
+    - "8443:8443"
+    volumes:
+    - ./certs:/certs
+    depends_on:
+      - db
+      - api
+
+# Should be used alone, make for building the staging app
+# docker-compose -f docker-compose.staging.yml COMMAND

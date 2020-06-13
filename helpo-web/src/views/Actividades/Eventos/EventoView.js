@@ -215,12 +215,13 @@ class EventoView extends React.Component {
             >
               Ver mensajes
             </button>
+            {/*
             <button
               onClick={this.togglePatrocinadores}
               className="btn btn-warning"
             >
               Ver patrocinadores
-            </button>
+            </button>*/}
           </div>
           <div className="form-group">
             <button

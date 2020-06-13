@@ -68,7 +68,7 @@ class ConsultarPerfilOrganizacion extends Component {
     if (this.props.data.telefono == null) {
       return <p className='text-muted'> No hay valor ingresado</p>
     }
-    if (!this.props.data.verificada) {
+    if (!this.props.data.verificada && !this.props.sinModificar) {
       return (
         <div>
           <p>{this.props.data.telefono} <span id="btnVerificar" onClick={this.togglePopover} style={{ borderRadius: '4px' }} className="btn-primary fa fa-pencil fa-fw"></span></p>
@@ -246,7 +246,7 @@ class ConsultarPerfilOrganizacion extends Component {
               </div>
               <div className='row'>
                 <div className="col-md-3">
-                  <p style={{ textAlign: 'left' }} className='font-weight-bold' htmlFor="cuit">CUIT</p>
+                  <p style={{ textAlign: 'left' }} className='font-weight-bold' htmlFor="cuit">CUIT/CUIL</p>
                 </div>
                 <div className="col-md-5">
                   {this.renderCuit()}
@@ -276,7 +276,6 @@ class ConsultarPerfilOrganizacion extends Component {
                     : <Button className='btn btn-primary' onClick={this.props.switchToModificar} color='primary'>Modificar datos</Button>}
                 </div>
               </div>
-              {/*
               <div style={{ display: 'flex', marginBottom: '10px' }} className='row offster-md-4'>
                 <div className="col-md-5 offset-md-3">
                   <Link to={link}>
@@ -284,7 +283,6 @@ class ConsultarPerfilOrganizacion extends Component {
                   </Link>
                 </div>
               </div>
-              */}
               <div style={{ display: 'flex', marginBottom: '10px' }} className='row offster-md-4'>
                 <div className="col-md-5 offset-md-3">
                   <BotonSuscripcion organizacion={this.props.id} />
@@ -300,7 +298,6 @@ class ConsultarPerfilOrganizacion extends Component {
                     Manos acumuladas
                   </Tooltip>
                 </Card>
-                {/*
                 <Link to={link}>
                   <Card id="cardEventos" className="text-center" body inverse color="primary" style={{ height: 100, width: 100, borderColor: 'white' }}>
                     <CardTitle><i className="fa fa-calendar-check-o fa-2x"></i></CardTitle>
@@ -310,7 +307,6 @@ class ConsultarPerfilOrganizacion extends Component {
                     </Tooltip>
                   </Card>
                 </Link>
-                */}
                 {this.props.data.verificada ?
                   <Card id="cardVerificada" className="text-center" body inverse color="primary" style={{ height: 100, width: 100, borderColor: 'white' }}>
                     <CardTitle><i className="fa fa-shield fa-3x"></i></CardTitle>

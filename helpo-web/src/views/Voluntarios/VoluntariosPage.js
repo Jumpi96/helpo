@@ -38,7 +38,7 @@ class VoluntariosPage extends React.Component {
     else {
       return (
         <CardBody>
-          <VoluntariosList voluntarios />
+          <VoluntariosList voluntarios={voluntarios} />
         </CardBody>
       )
     }

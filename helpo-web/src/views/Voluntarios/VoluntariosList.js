@@ -1,6 +1,6 @@
 import React from 'react';
 import { Col, Row } from 'reactstrap';
-import OrganizacionCard from './OrganizacionCard';
+import VoluntarioCard from './VoluntarioCard';
 
 class VoluntariosList extends React.Component {
   constructor(props) {
@@ -10,7 +10,7 @@ class VoluntariosList extends React.Component {
       error: '',
     };
     this.handleInputChange = this.handleInputChange.bind(this);
-    this.buscarOrganizaciones = this.buscarOrganizaciones.bind(this);
+    this.buscarVoluntarios = this.buscarVoluntarios.bind(this);
     this.getLink = this.getLink.bind(this);
   }
 
@@ -23,51 +23,47 @@ class VoluntariosList extends React.Component {
     });
   }
 
-  buscarOrganizaciones(organizaciones) {
+  buscarVoluntarios(voluntarios) {
     if (this.state.nombre !== '') {
-      const organizacionesFiltradas = organizaciones.filter(organizacion => this.contieneNombre(organizacion));
-      return organizacionesFiltradas;
+      const voluntariosFiltrados = voluntarios.filter(voluntario => this.contieneNombre(voluntario));
+      return voluntariosFiltrados;
     }
-    else return organizaciones;
+    return voluntarios;
   }
 
-  contieneNombre(organizacion) {
-    return organizacion.usuario.nombre.toLowerCase().includes(this.state.nombre.toLowerCase())
+  contieneNombre(voluntarios) {
+    return voluntarios.usuario.nombre.toLowerCase().includes(this.state.nombre.toLowerCase())
   }
 
-  getLink(organizacion) {
-    if (this.props.auth.isAuthenticated) {
-      return '/perfil/' + organizacion.usuario.id;
-    }
-    return '/noAuth/perfil/' + organizacion.usuario.id;
+  getLink(voluntario) {
+    return '/perfil/' + voluntario.usuario.id;
   }
 
   render() {
-    const organizaciones = this.buscarOrganizaciones(this.props.organizaciones);
+    const voluntarios = this.buscarVoluntarios(this.props.voluntarios);
     return (
       <div className="row">
         <div className="form-group col-md-4">
-          <label for="nombre">Buscar una {this.props.isAboutEmpresas ? "empresa" : "organización"}</label>
+          <label for="nombre">Buscar un voluntario</label>
           <input
             type="text"
             name="nombre"
             className="form-control"
-            placeholder={"Ingrese el nombre de una " + (this.props.isAboutEmpresas ? "empresa" : "organización")}
+            placeholder={"Ingrese el nombre de un voluntario"}
             value={this.state.nombre}
             onChange={this.handleInputChange}
           />
           <span style={{ color: 'red' }}>{this.state.error}</span>
         </div>
         <div className="col-md-8">
-          {organizaciones.map(organizacion =>
+          {voluntarios.map(voluntario =>
             <Row>
               <Col>
-                <OrganizacionCard
-                  organizacion={organizacion}
-                  key={organizacion.id} footer
-                  isAboutEmpresas={this.props.isAboutEmpresas}
+                <VoluntarioCard
+                  voluntario={voluntario}
+                  key={voluntario.id} footer
                   color="primary" auth={this.props.auth}
-                  link={this.getLink(organizacion)} // Ver que link va
+                  link={this.getLink(voluntario)} // Ver que link va
                 />
               </Col>
             </Row>

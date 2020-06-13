@@ -4,9 +4,8 @@ import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import { mapToCssModules } from 'reactstrap/lib/utils';
 import { getImagen } from '../../utils/Imagen';
-import BotonSuscripcion from '../Suscripcion/BotonSuscripcion/BotonSuscripcion'
 
-class OrganizacionCard extends Component {
+class VoluntarioCard extends Component {
   render() {
     const {
       evento,
@@ -29,27 +28,24 @@ class OrganizacionCard extends Component {
 
     const classes = mapToCssModules(classNames(className, card.style, card.bgColor), cssModule);
 
-    const organizacion = this.props.organizacion;
+    const voluntario = this.props.voluntario;
     return (
       <Card className={classes} {...attributes}>
         <CardBody>
           <div>
             <img
-              src={getImagen(organizacion ? organizacion.usuario.avatar : undefined)}
+              src={getImagen(voluntario ? voluntario.avatar.url : undefined)}
               alt="ONG"
               style={{ width: '75px', height: '75px' }}
             />
-            <div className="h4 m-0">{organizacion.usuario.nombre}</div>
+            <div className="h4 m-0">{voluntario.usuario.nombre} {voluntario.last_name}</div>
 
-            <div>{organizacion.descripcion}</div>
+            <div>{voluntario.profession}</div>
             <Link to={this.props.link}>
               <button className="btn btn-primary pull-right" >
                 + Ver perfil
                 </button>
             </Link>
-            {!this.props.isAboutEmpresas ?
-              <BotonSuscripcion organizacion={organizacion.usuario.id}/> : undefined
-            }
           </div>
         </CardBody>
       </Card>
@@ -57,4 +53,4 @@ class OrganizacionCard extends Component {
   }
 }
 
-export default OrganizacionCard;
+export default VoluntarioCard;

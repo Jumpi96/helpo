@@ -148,6 +148,13 @@ class EmpresaProfileReadUpdateDeleteView(RetrieveUpdateAPIView):
     serializer_class = EmpresaProfileSerializer
     lookup_field = 'usuario'
 
+class VolunteerProfileCreateReadView(ListCreateAPIView):
+    """
+    API endpoint para crear o ver todos los perfiles de voluntarios
+    """
+    queryset = VolunteerProfile.objects.all()
+    serializer_class = VolunteerProfileSerializer
+
 class VolunteerProfileReadUpdateDeleteView(RetrieveUpdateAPIView):	
     """	
     API endpoint para leer, actualizar o eliminar un perfil de voluntario	

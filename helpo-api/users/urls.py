@@ -187,10 +187,10 @@ urlpatterns = [
         view=hex_users_views.RemoveUserView.as_view(),
         name="remove_user"
     ),
-    # {% url "api:volunteer_profile" user.id %}
+    # {% url "api:volunteer_profile" user.id user.user_type %}
     url(
-        regex=r"^users/profiles/volunteer/(?P<user_id>[-\w]+)/$",
-        view=hex_users_views.UpdateVolunteerProfileView.as_view(),
+        regex=r"^users/profiles/(?P<user_type>[-\w]+)/(?P<user_id>[-\w]+)/$",
+        view=hex_users_views.UpdateProfileView.as_view(),
         name="update_volunteer_profile"
     ),
     # {% url "api:skills" %}

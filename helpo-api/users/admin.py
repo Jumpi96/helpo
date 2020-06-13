@@ -22,7 +22,7 @@ class OrganizationAreaAdmin(admin.ModelAdmin):
     list_display = ['id', 'nombre']
 
 class OrganizacionProfileAdmin(admin.ModelAdmin):
-    list_display = ['id', 'verificada', 'telefono', 'cuit', 'rubro', 'avatar', 'ubicacion', 'descripcion']
+    list_display = ['id', 'verificada', 'telefono', 'cuit', 'avatar', 'ubicacion', 'descripcion']
 
 class UbicacionAdmin(admin.ModelAdmin):
     list_display = ['id', 'latitud', 'longitud', 'notas']

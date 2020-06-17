@@ -35,9 +35,9 @@ class UpdateOrganizationProfileInputDto:
     user_id: int
     avatar_url: str
     descripcion: str
-    cuit: int
-    telefono: int
-    ubicacion: Optional[dict]
+    cuit: str
+    telefono: str
+    ubicacion: dict
     rubros: List[int]
 
 

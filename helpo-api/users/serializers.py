@@ -154,7 +154,7 @@ class ImagenSerializer(serializers.ModelSerializer):
         fields = ('id', 'url')
 
 class OrganizacionProfileSerializer(serializers.ModelSerializer):
-    rubro = OrganizationAreaSerializer(required=False)
+    rubros = serializers.SerializerMethodField()
     ubicacion = UbicacionSerializer(required=False)
     avatar = ImagenSerializer(required=False)
     usuario = UserSerializer(read_only=True)
@@ -163,19 +163,12 @@ class OrganizacionProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = OrganizacionProfile
-        fields = ('verificada', 'telefono', 'cuit', 'descripcion', 'rubro', 'avatar', 'ubicacion', 'usuario','manos','eventos')
+        fields = ('verificada', 'telefono', 'cuit', 'descripcion', 'rubros', 'avatar', 'ubicacion', 'usuario','manos','eventos')
         read_only_fields = ('usuario','verificada','manos','eventos')
 
     def update(self, instance, validated_data):
-        rubro_data = None
         avatar_data = None
         ubicacion_data = None
-
-        try:
-            rubro_data = validated_data.pop('rubro')
-        except KeyError:
-            # Repito asginar None porque python me hace poner algo en la excepcion
-            rubro_data = None
 
         try:
             avatar_data = validated_data.pop('avatar')
@@ -198,7 +191,7 @@ class OrganizacionProfileSerializer(serializers.ModelSerializer):
         if ubicacion_data != None:
             nuevaUbicacion = Ubicacion(**ubicacion_data)           
             nuevaUbicacion.save()
-            instance.ubicacion = nuevaUbicacion        
+            instance.ubicacion = nuevaUbicacion
 
         #TODO: Ver si hay que cambiar cuando se haga mejor manejo de imagenes
         if avatar_data != None:
@@ -233,6 +226,9 @@ class OrganizacionProfileSerializer(serializers.ModelSerializer):
     def get_eventos(self, obj):
         eventos = Evento.objects.filter(organizacion_id=obj.usuario_id).count()
         return eventos
+
+    def get_rubros(self, obj):
+        return [r.id for r in obj.rubros.all()]
 
 class EmpresaProfileSerializer(serializers.ModelSerializer):
     rubro = RubroEmpresaSerializer(required=False)

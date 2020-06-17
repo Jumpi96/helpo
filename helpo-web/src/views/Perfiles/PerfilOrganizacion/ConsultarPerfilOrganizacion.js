@@ -43,7 +43,6 @@ class ConsultarPerfilOrganizacion extends Component {
     this.mostrarUbicacion = this.mostrarUbicacion.bind(this);
     this.renderCuit = this.renderCuit.bind(this);
     this.renderDescripcion = this.renderDescripcion.bind(this);
-    this.renderRubro = this.renderRubro.bind(this);
     this.renderTelefono = this.renderTelefono.bind(this);
     this.renderManos = this.renderManos.bind(this);
     this.renderEventos = this.renderEventos.bind(this);
@@ -89,11 +88,21 @@ class ConsultarPerfilOrganizacion extends Component {
     return <p> {this.props.data.cuit}</p>
   }
 
-  renderRubro() {
-    if (this.props.data.rubro == null) {
+  renderList(selectedRubros, options) {
+    if (selectedRubros.length == 0) {
       return <p className='text-muted'> No hay valor ingresado</p>
     }
-    return <p> {this.props.data.rubro.nombre}</p>
+    let optionsToRender = [];
+    options.forEach(function (o) {
+      if (selectedRubros.indexOf(o.id) >= 0) {
+        optionsToRender.push(o);
+      }
+    });
+    return (
+      <ul className="list-group">
+        {optionsToRender.map(i => <li><p>{i.nombre}</p></li>)}
+      </ul>
+    )
   }
 
   renderDescripcion() {
@@ -254,10 +263,10 @@ class ConsultarPerfilOrganizacion extends Component {
               </div>
               <div className='row'>
                 <div className="col-md-3">
-                  <p style={{ textAlign: 'left' }} className='font-weight-bold' htmlFor="telefono">Rubro</p>
+                  <p style={{ textAlign: 'left' }} className='font-weight-bold' htmlFor="telefono">Rubros</p>
                 </div>
                 <div className="col-md-5">
-                  {this.renderRubro()}
+                  {this.renderList(this.props.data.rubros, this.props.rubros)}
                 </div>
               </div>
               <div className='row'>

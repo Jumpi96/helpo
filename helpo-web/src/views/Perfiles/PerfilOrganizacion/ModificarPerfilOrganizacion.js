@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import { Card, CardHeader } from 'reactstrap';
+import Select from 'react-select';
 import SelectorUbicacion from '../../../utils/SelectorUbicacionGenerico'
 import api from '../../../api'
 import ModalGenerico from '../ModalGenerico'
@@ -52,8 +53,7 @@ class ModificarPerfilOrganizacion extends Component {
       descripcion: this.props.data.descripcion == null ? '' : this.props.data.descripcion,
       avatar_url: this.props.data.avatar.url,
       ubicacion: this.fakeProps.ubicacion,
-      rubro_id: this.fakeProps.rubro.id,
-      rubros: this.rubros,
+      rubros: this.loadSelectedOptions(this.props.data.rubros, this.loadOptions(this.props.rubros)),
       showModal: false,
       modalType: 'success',
       errors: [],
@@ -62,25 +62,42 @@ class ModificarPerfilOrganizacion extends Component {
         "telefono",
         "cuit",
         "descripcion",
-        "rubro",
+        "rubros",
       ]
     }
     this.renderNombre = this.renderNombre.bind(this);
     this.renderUbicacion = this.renderUbicacion.bind(this);
     this.renderCuit = this.renderCuit.bind(this);
     this.renderDescripcion = this.renderDescripcion.bind(this);
-    this.renderRubro = this.renderRubro.bind(this);
     this.renderTelefono = this.renderTelefono.bind(this);
     this.handleNombreChange = this.handleNombreChange.bind(this);
     this.handleCuitChange = this.handleCuitChange.bind(this);
     this.handleTelefonoChange = this.handleTelefonoChange.bind(this);
     this.handleDescripcionChange = this.handleDescripcionChange.bind(this);
-    this.handleRubroChange = this.handleRubroChange.bind(this);
+    this.handleRubrosChange = this.handleRubrosChange.bind(this);
     this.handleUbicacionChange = this.handleUbicacionChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.onSelectFile = this.onSelectFile.bind(this);
     this.showModal = this.showModal.bind(this);
     this.handleAvatarChange = this.handleAvatarChange.bind(this);
+  }
+
+  loadOptions(rawOptions) {
+    const options = [];
+    rawOptions.forEach(function (o) {
+      options.push({ value: o.id, label: o.nombre });
+    });
+    return options;
+  }
+
+  loadSelectedOptions(selectedOptions, options) {
+    let selected = [];
+    options.forEach(function (o) {
+      if (selectedOptions.indexOf(o.value) >= 0) {
+        selected.push(o);
+      }
+    });
+    return selected;
   }
 
   //Checkeo si hay nulls en los props antes meterlos en state
@@ -174,29 +191,19 @@ class ModificarPerfilOrganizacion extends Component {
     });
   }
 
-  renderRubro() {
-
-    const rubro = this.state.rubro_id == null ? 0 : this.state.rubro_id
-    const listaRubroEventos = this.state.rubros.map((r) =>
-      <option key={r.id} value={r.id} data-key={r.id}>{r.nombre}</option>
-    );
-
+  renderRubros() {
     return (
-      <select
-        value={rubro}
-        className="form-control"
-        onChange={this.handleRubroChange}>
-        {listaRubroEventos}
-      </select>
-    )
+      <Select
+        name="rubros"
+        placeholder="Seleccione..."
+        options={this.loadOptions(this.props.rubros)}
+        isMulti onChange={this.handleRubrosChange}
+        value={this.state.rubros}
+      />)
   }
 
-  handleRubroChange(event) {
-    const selectedIndex = event.target.options.selectedIndex;
-    const selectedId = event.target.options[selectedIndex].getAttribute('data-key');
-    this.setState({
-      rubro_id: parseInt(selectedId, 10)
-    })
+  handleRubrosChange(rubros) {
+    this.setState({ rubros });
   }
 
   handleAvatarChange(avatar_url) {
@@ -244,7 +251,7 @@ class ModificarPerfilOrganizacion extends Component {
       descripcion: this.props.data.descripcion,
       avatar_url: this.props.data.avatar.url,
       ubicacion: this.fakeProps.ubicacion,
-      rubro_id: this.fakeProps.rubro.id,
+      rubros: this.fakeProps.rubros,
     }
     const newData = this.state
 
@@ -259,7 +266,8 @@ class ModificarPerfilOrganizacion extends Component {
     }
     const submitData = {
       descripcion: newData.descripcion,
-      avatar: { url: avatar_url },
+      avatar_url,
+      ubicacion: null
     }
     if (newData.cuit !== "") {
       submitData.cuit = newData.cuit
@@ -267,11 +275,11 @@ class ModificarPerfilOrganizacion extends Component {
     if (newData.telefono !== "") {
       submitData.telefono = newData.telefono
     }
-    if (newData.rubro_id != null && newData.rubro_id !== 0) {
-      submitData.rubro = { id: newData.rubro_id, nombre: this.state.rubros[newData.rubro_id].nombre }
-    } else {
-      submitData.rubro = -1;
+    let rubros = [];
+    if (newData.rubros !== null) {
+      newData.rubros.forEach(function (o) { rubros.push(o.value); });
     }
+    submitData.rubros = rubros;
     if (newData.ubicacion !== oldData.ubicacion && newData.ubicacion !== this.fakeProps.ubicacion) {
       submitData.ubicacion = this.state.ubicacion
     }
@@ -279,7 +287,7 @@ class ModificarPerfilOrganizacion extends Component {
   }
 
   validateData(submitData) {
-    if (submitData.avatar.url === 'error' || submitData.avatar.url == null) {
+    if (submitData.avatar_url === 'error' || submitData.avatar_url == null) {
       let errors = this.state.errors
       errors.push("Imagen upload failure")
       this.setState({
@@ -302,7 +310,7 @@ class ModificarPerfilOrganizacion extends Component {
     }
 
     this.setState({
-      avatar_url: submitData.avatar.url
+      avatar_url: submitData.avatar_url
     })
     return true
   }
@@ -310,10 +318,9 @@ class ModificarPerfilOrganizacion extends Component {
   handleSubmit() {
     this.prepareSubmitData().then(submitData => {
       if (this.validateData(submitData)) {
-
-        api.put(`/perfiles/perfil_organizacion/${this.props.data.usuario.id}/`, submitData)
+        api.put(`/users/profiles/organization/${this.props.data.usuario.id}/`, submitData)
           .then(res => {
-            if (res.status === 200) {
+            if (res.status === 201) {
               this.setState({
                 showModal: true,
                 modalType: 'success'
@@ -431,8 +438,8 @@ class ModificarPerfilOrganizacion extends Component {
             </div>
 
             <div className='form-group'>
-              <p className='font-weight-bold col-md-3' htmlFor="telefono">Rubro</p>
-              <div className='col-md-9'>{this.renderRubro()}</div>
+              <p className='font-weight-bold col-md-3' htmlFor="telefono">Rubros</p>
+              <div className='col-md-9'>{this.renderRubros()}</div>
             </div>
 
             <div className='form-group'>

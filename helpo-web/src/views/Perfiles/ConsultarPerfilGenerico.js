@@ -214,6 +214,7 @@ class ConsultarPerfilGenerico extends Component {
           userType={this.state.userType}
           nombre={this.state.nombre}
           email={this.state.email}
+          rubros={this.state.rubros}
           data={this.state.data}
           switchToModificar={this.switchToModificar}
           sinModificar={!this.isLoggedUser()}
@@ -259,6 +260,7 @@ class ConsultarPerfilGenerico extends Component {
           nombre={this.state.nombre}
           email={this.state.email}
           data={this.state.data}
+          rubros={this.state.rubros}
           switchToModificar={this.switchToModificar}
           sinModificar={!this.isLoggedUser()}
         />)

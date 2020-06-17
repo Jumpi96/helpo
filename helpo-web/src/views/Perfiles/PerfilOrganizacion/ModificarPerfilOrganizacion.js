@@ -48,11 +48,11 @@ class ModificarPerfilOrganizacion extends Component {
     this.state = {
       nombre: this.props.nombre,
       // Checkeo null porque si es null react tira un warning (https://github.com/reactstrap/reactstrap/issues/570)
-      telefono: this.props.data.telefono == null ? '' : this.props.data.telefono,
-      cuit: this.props.data.cuit == null ? '' : this.props.data.cuit,
+      telefono: this.props.data.telefono == null ? '' : this.props.data.telefono.toString(),
+      cuit: this.props.data.cuit == null ? '' : this.props.data.cuit.toString(),
       descripcion: this.props.data.descripcion == null ? '' : this.props.data.descripcion,
       avatar_url: this.props.data.avatar.url,
-      ubicacion: this.fakeProps.ubicacion,
+      ubicacion: this.props.data.ubicacion == null ? this.fakeProps.ubicacion : this.props.data.ubicacion,
       rubros: this.loadSelectedOptions(this.props.data.rubros, this.loadOptions(this.props.rubros)),
       showModal: false,
       modalType: 'success',
@@ -176,7 +176,6 @@ class ModificarPerfilOrganizacion extends Component {
         type="text"
         name="cuit"
         className="form-control"
-        placeholder="Cuit"
         value={this.state.cuit}
         onChange={this.handleCuitChange}
       />)
@@ -244,15 +243,6 @@ class ModificarPerfilOrganizacion extends Component {
   }
 
   async prepareSubmitData() {
-    const oldData = {
-      nombre: this.props.nombre,
-      telefono: this.props.data.telefono,
-      cuit: this.props.data.cuit,
-      descripcion: this.props.data.descripcion,
-      avatar_url: this.props.data.avatar.url,
-      ubicacion: this.fakeProps.ubicacion,
-      rubros: this.fakeProps.rubros,
-    }
     const newData = this.state
 
     let avatar_url = this.props.data.avatar.url
@@ -267,22 +257,17 @@ class ModificarPerfilOrganizacion extends Component {
     const submitData = {
       descripcion: newData.descripcion,
       avatar_url,
+      cuit: newData.cuit,
+      telefono: newData.telefono,
       ubicacion: null
-    }
-    if (newData.cuit !== "") {
-      submitData.cuit = newData.cuit
-    }
-    if (newData.telefono !== "") {
-      submitData.telefono = newData.telefono
     }
     let rubros = [];
     if (newData.rubros !== null) {
       newData.rubros.forEach(function (o) { rubros.push(o.value); });
     }
     submitData.rubros = rubros;
-    if (newData.ubicacion !== oldData.ubicacion && newData.ubicacion !== this.fakeProps.ubicacion) {
-      submitData.ubicacion = this.state.ubicacion
-    }
+    submitData.ubicacion = this.state.ubicacion
+    
     return submitData
   }
 
@@ -299,13 +284,13 @@ class ModificarPerfilOrganizacion extends Component {
     let completed = true;
     this.state.mandatoryOng.forEach(function (k) {
       if (submitData[k] === -1 || submitData[k] === "" ||
-          (Array.isArray(submitData[k]) && submitData[k].length === 0)) {
+        (Array.isArray(submitData[k]) && submitData[k].length === 0)) {
         completed = false;
       }
     });
 
     if (!completed) {
-      this.setState({errors: ["Falta completar campos obligatorios."]});
+      this.setState({ errors: ["Falta completar campos obligatorios."] });
       return false;
     }
 
@@ -428,22 +413,22 @@ class ModificarPerfilOrganizacion extends Component {
             </div>
 
             <div className='form-group'>
-              <p className='font-weight-bold col-md-3' htmlFor="telefono">Teléfono</p>
+              <p className='font-weight-bold col-md-3' htmlFor="telefono">Teléfono (*)</p>
               <div className='col-md-9'>{this.renderTelefono()}</div>
             </div>
 
             <div className='form-group'>
-              <p className='font-weight-bold col-md-3' htmlFor="cuit">CUIT/CUIL</p>
+              <p className='font-weight-bold col-md-3' htmlFor="cuit">CUIT/CUIL (*)</p>
               <div className='col-md-9'>{this.renderCuit()}</div>
             </div>
 
             <div className='form-group'>
-              <p className='font-weight-bold col-md-3' htmlFor="telefono">Rubros</p>
+              <p className='font-weight-bold col-md-3' htmlFor="telefono">Rubros (*)</p>
               <div className='col-md-9'>{this.renderRubros()}</div>
             </div>
 
             <div className='form-group'>
-              <p className='font-weight-bold col-md-3' htmlFor="descripcion">Descripción</p>
+              <p className='font-weight-bold col-md-3' htmlFor="descripcion">Descripción (*)</p>
               <div className='col-md-9'>{this.renderDescripcion()}</div>
             </div>
 

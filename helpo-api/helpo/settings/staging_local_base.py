@@ -120,3 +120,7 @@ LOGGING = {
 }
 
 JS_REVERSE_JS_MINIFY = False
+
+# Email
+NOTIFICATION_EMAIL = 'staging@helpo.com.ar'
+REGISTER_EMAIL = 'staging@helpo.com.ar'

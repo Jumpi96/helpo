@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Card, CardHeader, CardBody, CardFooter, Col, Container, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
 import { connect } from "react-redux";
-//import {auth} from "../../../actions"; SE USA ABAJO - COMENTADO
 import validateEmail from "../../../utils/ValidateEmail";
 import api from "../../../api"
 import ModalRegistroExitoso from './ModalRegistroExitoso';
@@ -265,7 +264,7 @@ class Register extends Component {
     }
 
     //Mayor
-    if (!this.state.mayor) {
+    if (!this.state.mayor && this.state.user_type === "2") {
       errors.mayor = "Debe declarar que es mayor o que cuenta con autorización para continuar.";
       isValid = false;
     }
@@ -349,8 +348,7 @@ class Register extends Component {
                   <Card className="mx-4" style={{ width: '100%' }}>
                     <CardHeader>
                       <Row>
-                        {/*
-                        <Col xs="12" sm="12">
+                        <Col xs="12" sm="6">
                           <Button className={user_type === "2" ? "btn-warning" : "btn-primary"}
                             block
                             onClick={() => this.handleUserTypeSelect("voluntario")}
@@ -358,7 +356,7 @@ class Register extends Component {
                             <span>Voluntario</span>
                           </Button>
                         </Col>
-                      <Col xs="12" sm="4">
+                      <Col xs="12" sm="6">
                         <Button className={user_type === "1" ? "btn-warning" : "btn-primary"}  
                                 block
                                 onClick={() => this.handleUserTypeSelect("ong")}
@@ -366,6 +364,7 @@ class Register extends Component {
                                 <span>ONG</span>
                         </Button>
                       </Col>
+                      {/*
                       <Col xs="12" sm="4">
                         <Button className={user_type === "3" ? "btn-warning" : "btn-primary"}  
                                 block
@@ -378,12 +377,7 @@ class Register extends Component {
                       </Row>
                     </CardHeader>
                     <CardBody className="p-4">
-                      <h2>Registrar voluntario</h2>
-                      <div class="alert alert-warning" role="alert" align='justify'>
-                        <a href="#" class="alert-link">¡Hola! </a>
-                        Actualmente nos encontramos en una primera etapa de reclutamiento de voluntarios.
-                        Te invitamos a registrarte como usuario y armar tu perfil, así podemos contactarte apenas se encuentren habilitadas las demás funcionalidades de la plataforma.
-                      </div>
+                      <h2>Registrar {user_type === "1" ? "ONG" : "voluntario" }</h2>
                       {this.renderNameField()}
                       <InputGroup className="mb-3">
                         <InputGroupAddon addonType="prepend">
@@ -415,13 +409,16 @@ class Register extends Component {
                           placeholder="Repetir contraseña"
                           onChange={(e) => this.handleValueChange(e, "repeat")} />
                       </InputGroup>
+                      <hr />
                       <InputGroup className="mb-4">
+                        {this.state.user_type === "2" ?
                         <div class="form-check" style={{ margin: '5px' }}>
                           <input type="checkbox" class="form-check-input"
                             id="mayor" value={this.state.mayor}
                             onChange={(event) => this.handleMayor(event.target.checked)} />
                           <p class="form-check-label text-muted" for="mayor">Declaro que soy persona mayor de edad y con capacidad plena en los términos de la ley o, según sea el caso, cuento con autorización expresa de Madre/Padre/Tutor para acceder y utilizar el Sitio.</p>
                         </div>
+                        : undefined}
                         <div class="form-check"style={{ margin: '5px' }}>
                           <input type="checkbox" class="form-check-input"
                             naidme="tyc" value={this.state.tyc}
@@ -443,12 +440,17 @@ class Register extends Component {
                           <Button onClick={renderProps.onClick} className="btn-facebook" block><span>Registrarse con Facebook</span></Button>
                         )} />
                       <hr /> */}
+                      <p class="text-muted">Por favor acepta los Términos y condiciones para registrarte con Google.</p>
                       <GoogleLogin
                         className="btn-google"
                         clientId="93328850687-681u9fksr6g52g2bebbj1qu8thldgaq6.apps.googleusercontent.com"
                         buttonText="Registrarse con Google"
                         onSuccess={responseGoogle}
-                        onFailure={responseGoogle} />
+                        onFailure={responseGoogle} 
+                        disabled={
+                          !(this.state.tyc && (this.state.mayor || this.state.user_type === "1"))
+                        }
+                      />
                     </CardFooter>
                   </Card>
                 </Col>
@@ -477,12 +479,6 @@ const mapStateToProps = state => {
   };
 }
 
-//NO SACAR POR LAS DUDAS
-/*const mapDispatchToProps = dispatch => {
-  return {
-            register: (username, password) => dispatch(auth.register(username, password)),
-        };
-      }*/
 const mapDispatchToProps = dispatch => {
   return {
     loginGoogle: (nombre, email, password, user_type, apellido, id_token) => {

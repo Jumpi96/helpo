@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import { Card, CardHeader } from 'reactstrap';
+import Select from 'react-select';
 import SelectorUbicacion from '../../../utils/SelectorUbicacionGenerico'
 import api from '../../../api'
 import ModalGenerico from '../ModalGenerico'
@@ -47,34 +48,56 @@ class ModificarPerfilOrganizacion extends Component {
     this.state = {
       nombre: this.props.nombre,
       // Checkeo null porque si es null react tira un warning (https://github.com/reactstrap/reactstrap/issues/570)
-      telefono: this.props.data.telefono == null ? '' : this.props.data.telefono,
-      cuit: this.props.data.cuit == null ? '' : this.props.data.cuit,
+      telefono: this.props.data.telefono == null ? '' : this.props.data.telefono.toString(),
+      cuit: this.props.data.cuit == null ? '' : this.props.data.cuit.toString(),
       descripcion: this.props.data.descripcion == null ? '' : this.props.data.descripcion,
       avatar_url: this.props.data.avatar.url,
-      ubicacion: this.fakeProps.ubicacion,
-      rubro_id: this.fakeProps.rubro.id,
-      rubros: this.rubros,
+      ubicacion: this.props.data.ubicacion == null ? this.fakeProps.ubicacion : this.props.data.ubicacion,
+      rubros: this.loadSelectedOptions(this.props.data.rubros, this.loadOptions(this.props.rubros)),
       showModal: false,
       modalType: 'success',
       errors: [],
       avatar_changed: false,
+      mandatoryOng: [
+        "telefono",
+        "cuit",
+        "descripcion",
+        "rubros",
+      ]
     }
     this.renderNombre = this.renderNombre.bind(this);
     this.renderUbicacion = this.renderUbicacion.bind(this);
     this.renderCuit = this.renderCuit.bind(this);
     this.renderDescripcion = this.renderDescripcion.bind(this);
-    this.renderRubro = this.renderRubro.bind(this);
     this.renderTelefono = this.renderTelefono.bind(this);
     this.handleNombreChange = this.handleNombreChange.bind(this);
     this.handleCuitChange = this.handleCuitChange.bind(this);
     this.handleTelefonoChange = this.handleTelefonoChange.bind(this);
     this.handleDescripcionChange = this.handleDescripcionChange.bind(this);
-    this.handleRubroChange = this.handleRubroChange.bind(this);
+    this.handleRubrosChange = this.handleRubrosChange.bind(this);
     this.handleUbicacionChange = this.handleUbicacionChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.onSelectFile = this.onSelectFile.bind(this);
     this.showModal = this.showModal.bind(this);
     this.handleAvatarChange = this.handleAvatarChange.bind(this);
+  }
+
+  loadOptions(rawOptions) {
+    const options = [];
+    rawOptions.forEach(function (o) {
+      options.push({ value: o.id, label: o.nombre });
+    });
+    return options;
+  }
+
+  loadSelectedOptions(selectedOptions, options) {
+    let selected = [];
+    options.forEach(function (o) {
+      if (selectedOptions.indexOf(o.value) >= 0) {
+        selected.push(o);
+      }
+    });
+    return selected;
   }
 
   //Checkeo si hay nulls en los props antes meterlos en state
@@ -153,7 +176,6 @@ class ModificarPerfilOrganizacion extends Component {
         type="text"
         name="cuit"
         className="form-control"
-        placeholder="Cuit"
         value={this.state.cuit}
         onChange={this.handleCuitChange}
       />)
@@ -168,29 +190,19 @@ class ModificarPerfilOrganizacion extends Component {
     });
   }
 
-  renderRubro() {
-
-    const rubro = this.state.rubro_id == null ? 0 : this.state.rubro_id
-    const listaRubroEventos = this.state.rubros.map((r) =>
-      <option key={r.id} value={r.id} data-key={r.id}>{r.nombre}</option>
-    );
-
+  renderRubros() {
     return (
-      <select
-        value={rubro}
-        className="form-control"
-        onChange={this.handleRubroChange}>
-        {listaRubroEventos}
-      </select>
-    )
+      <Select
+        name="rubros"
+        placeholder="Seleccione..."
+        options={this.loadOptions(this.props.rubros)}
+        isMulti onChange={this.handleRubrosChange}
+        value={this.state.rubros}
+      />)
   }
 
-  handleRubroChange(event) {
-    const selectedIndex = event.target.options.selectedIndex;
-    const selectedId = event.target.options[selectedIndex].getAttribute('data-key');
-    this.setState({
-      rubro_id: parseInt(selectedId, 10)
-    })
+  handleRubrosChange(rubros) {
+    this.setState({ rubros });
   }
 
   handleAvatarChange(avatar_url) {
@@ -231,15 +243,6 @@ class ModificarPerfilOrganizacion extends Component {
   }
 
   async prepareSubmitData() {
-    const oldData = {
-      nombre: this.props.nombre,
-      telefono: this.props.data.telefono,
-      cuit: this.props.data.cuit,
-      descripcion: this.props.data.descripcion,
-      avatar_url: this.props.data.avatar.url,
-      ubicacion: this.fakeProps.ubicacion,
-      rubro_id: this.fakeProps.rubro.id,
-    }
     const newData = this.state
 
     let avatar_url = this.props.data.avatar.url
@@ -253,25 +256,23 @@ class ModificarPerfilOrganizacion extends Component {
     }
     const submitData = {
       descripcion: newData.descripcion,
-      avatar: { url: avatar_url },
+      avatar_url,
+      cuit: newData.cuit,
+      telefono: newData.telefono,
+      ubicacion: null
     }
-    if (newData.cuit !== "") {
-      submitData.cuit = newData.cuit
+    let rubros = [];
+    if (newData.rubros !== null) {
+      newData.rubros.forEach(function (o) { rubros.push(o.value); });
     }
-    if (newData.telefono !== "") {
-      submitData.telefono = newData.telefono
-    }
-    if (newData.rubro_id != null && newData.rubro_id !== 0) {
-      submitData.rubro = { id: newData.rubro_id, nombre: this.state.rubros[newData.rubro_id].nombre }
-    }
-    if (newData.ubicacion !== oldData.ubicacion && newData.ubicacion !== this.fakeProps.ubicacion) {
-      submitData.ubicacion = this.state.ubicacion
-    }
+    submitData.rubros = rubros;
+    submitData.ubicacion = this.state.ubicacion
+    
     return submitData
   }
 
   validateData(submitData) {
-    if (submitData.avatar.url === 'error' || submitData.avatar.url == null) {
+    if (submitData.avatar_url === 'error' || submitData.avatar_url == null) {
       let errors = this.state.errors
       errors.push("Imagen upload failure")
       this.setState({
@@ -279,8 +280,22 @@ class ModificarPerfilOrganizacion extends Component {
       })
       return false
     }
+
+    let completed = true;
+    this.state.mandatoryOng.forEach(function (k) {
+      if (submitData[k] === -1 || submitData[k] === "" ||
+        (Array.isArray(submitData[k]) && submitData[k].length === 0)) {
+        completed = false;
+      }
+    });
+
+    if (!completed) {
+      this.setState({ errors: ["Falta completar campos obligatorios."] });
+      return false;
+    }
+
     this.setState({
-      avatar_url: submitData.avatar.url
+      avatar_url: submitData.avatar_url
     })
     return true
   }
@@ -288,10 +303,9 @@ class ModificarPerfilOrganizacion extends Component {
   handleSubmit() {
     this.prepareSubmitData().then(submitData => {
       if (this.validateData(submitData)) {
-
-        api.put(`/perfiles/perfil_organizacion/${this.props.data.usuario.id}/`, submitData)
+        api.put(`/users/profiles/organization/${this.props.data.usuario.id}/`, submitData)
           .then(res => {
-            if (res.status === 200) {
+            if (res.status === 201) {
               this.setState({
                 showModal: true,
                 modalType: 'success'
@@ -325,6 +339,27 @@ class ModificarPerfilOrganizacion extends Component {
           />
         )
       }
+    }
+  }
+
+  renderErrorList() {
+    var list = [];
+    var ids = 0;
+    for (var key in this.state.errors) {
+      var value = this.state.errors[key]
+      if (value !== "") {
+        list.push((<li class="list-group-item" key={ids}><span>{value}</span></li>))
+      }
+      ids = ids + 1;
+    }
+    if (list.length > 0) {
+      return (
+        <div class="alert alert-danger" role="alert">
+          <ul class="list-group">
+            {list}
+          </ul>
+        </div>
+      )
     }
   }
 
@@ -378,22 +413,22 @@ class ModificarPerfilOrganizacion extends Component {
             </div>
 
             <div className='form-group'>
-              <p className='font-weight-bold col-md-3' htmlFor="telefono">Teléfono</p>
+              <p className='font-weight-bold col-md-3' htmlFor="telefono">Teléfono (*)</p>
               <div className='col-md-9'>{this.renderTelefono()}</div>
             </div>
 
             <div className='form-group'>
-              <p className='font-weight-bold col-md-3' htmlFor="cuit">CUIT</p>
+              <p className='font-weight-bold col-md-3' htmlFor="cuit">CUIT/CUIL (*)</p>
               <div className='col-md-9'>{this.renderCuit()}</div>
             </div>
 
             <div className='form-group'>
-              <p className='font-weight-bold col-md-3' htmlFor="telefono">Rubro</p>
-              <div className='col-md-9'>{this.renderRubro()}</div>
+              <p className='font-weight-bold col-md-3' htmlFor="telefono">Rubros (*)</p>
+              <div className='col-md-9'>{this.renderRubros()}</div>
             </div>
 
             <div className='form-group'>
-              <p className='font-weight-bold col-md-3' htmlFor="descripcion">Descripción</p>
+              <p className='font-weight-bold col-md-3' htmlFor="descripcion">Descripción (*)</p>
               <div className='col-md-9'>{this.renderDescripcion()}</div>
             </div>
 
@@ -401,11 +436,11 @@ class ModificarPerfilOrganizacion extends Component {
               <p className='font-weight-bold col-md-3' htmlFor="ubicacion" style={{ textAlign: 'right' }}>Ubicación</p>
               <div className='col-md-9' style={{ marginBottom: '5px' }}>{this.renderUbicacion()}</div>
             </div>
-
+            {this.renderErrorList()}
             <div style={{ margin: '20px' }} className='row'>
               <div style={{ display: 'flex' }} className='col-md-3'>
                 <button onClick={this.handleSubmit} type="button" className="btn btn-primary">
-                  Guardar Cambios
+                  Guardar cambios
             </button>
               </div>
               <div className='col-md-3'>

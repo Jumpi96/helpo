@@ -46,7 +46,7 @@ class Ubicacion(models.Model):
 class OrganizacionProfile(Profile):
     verificada = models.BooleanField(default=False)
     telefono = models.BigIntegerField(blank=True, null=True)
-    rubro = models.ForeignKey(OrganizationArea, on_delete=models.SET_NULL, blank=True, null=True)
+    rubros = models.ManyToManyField(OrganizationArea)
     cuit = models.BigIntegerField(blank=True, null=True)
     avatar = models.ForeignKey(Imagen, on_delete=models.SET_NULL, blank=True, null=True)
     ubicacion = models.ForeignKey(Ubicacion, on_delete=models.SET_NULL,blank=True, null=True)

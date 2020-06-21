@@ -98,6 +98,12 @@ urlpatterns = [
         view=users_views.OrgProfileCreateReadView.as_view(),
         name="get_post_perfil_organizacion"
     ),
+    # {% url "api:perfil_voluntario" usuario.id %}
+    url(
+        regex=r"^perfiles/perfil_voluntario/$",
+        view=users_views.VolunteerProfileCreateReadView.as_view(),
+        name="get_post_perfil_voluntario"
+    ),
     # {% url "api:perfil_organizacion" usuario.id %}
     url(
         regex=r"^perfiles/perfil_organizacion/(?P<usuario>[-\w]+)/$",
@@ -187,10 +193,10 @@ urlpatterns = [
         view=hex_users_views.RemoveUserView.as_view(),
         name="remove_user"
     ),
-    # {% url "api:volunteer_profile" user.id %}
+    # {% url "api:volunteer_profile" user.id user.user_type %}
     url(
-        regex=r"^users/profiles/volunteer/(?P<user_id>[-\w]+)/$",
-        view=hex_users_views.UpdateVolunteerProfileView.as_view(),
+        regex=r"^users/profiles/(?P<user_type>[-\w]+)/(?P<user_id>[-\w]+)/$",
+        view=hex_users_views.UpdateProfileView.as_view(),
         name="update_volunteer_profile"
     ),
     # {% url "api:skills" %}

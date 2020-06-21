@@ -54,11 +54,11 @@ const routes = [
   { path: '/noAuth/dashboard', name: 'Helpo', component: Dashboard },
   { path: '/noAuth/organizaciones', name: 'Organizaciones', component: OrganizacionesPage },
   { path: '/noAuth/tyc', name: 'Términos y condiciones', component: PageTyC },
-  { path: '/noAuth/perfil/:usuarioId?', name: 'Perfil de usuario', component: ConsultarPerfil }
-  //{ path: '/noAuth/actividades/consultar-eventos', name: 'Consultar actividades sociales', component: ConsultarEventosPage },
-  //{ path: '/noAuth/actividades/consultar-evento/', name: 'Consultar actividad social', component: ConsultarEventosView },
-  //{ path: '/noAuth/actividades/album/:eventoId', name: 'Album de Evento', component: AlbumImagenes },
-  // { path: '/noAuth/empresas', name: 'Empresas', component: EmpresasPage },
+  { path: '/noAuth/perfil/:usuarioId?', name: 'Perfil de usuario', component: ConsultarPerfil },
+  { path: '/noAuth/actividades/consultar-eventos', name: 'Consultar actividades sociales', component: ConsultarEventosPage },
+  { path: '/noAuth/actividades/consultar-evento/', name: 'Consultar actividad social', component: ConsultarEventosView },
+  { path: '/noAuth/actividades/album/:eventoId', name: 'Album de Evento', component: AlbumImagenes },
+  { path: '/noAuth/empresas', name: 'Empresas', component: EmpresasPage },
   
 ];
 

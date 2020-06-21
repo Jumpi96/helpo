@@ -5,13 +5,14 @@ from django.apps import AppConfig
 
 def inject_config(binder: inject.Binder) -> None:
     from users.application.repositories import UsersRepository, VolunteerProfilesRepository, \
-        SkillsRepository, OrganizationAreasRepository
+        SkillsRepository, OrganizationAreasRepository, OrganizationProfilesRepository
     from users.infrastructure.repositories import DjangoORMUsersRepository, \
         DjangoORMVolunteerProfilesRepository, DjangoORMSkillsRepository, \
-        DjangoORMOrganizationAreasRepository
+        DjangoORMOrganizationAreasRepository, DjangoORMOrganizationProfilesRepository
 
     binder.bind(UsersRepository, DjangoORMUsersRepository())
     binder.bind(VolunteerProfilesRepository, DjangoORMVolunteerProfilesRepository())
+    binder.bind(OrganizationProfilesRepository, DjangoORMOrganizationProfilesRepository())
     binder.bind(SkillsRepository, DjangoORMSkillsRepository())
     binder.bind(OrganizationAreasRepository, DjangoORMOrganizationAreasRepository())
 

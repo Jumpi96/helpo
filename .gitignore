@@ -3,6 +3,7 @@
 /db.sqlite3
 .DS_Store
 *.env
+*.env2
 *.pem
 # */settings/local.py
 */staticfiles/*

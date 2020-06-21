@@ -4,7 +4,5 @@
 # WARNING: Check the content of helpo-web/.env before running
 
 docker-compose -f docker-compose.prod.yml build
-docker tag helpo_web:latest helpo/helpo_web
-docker tag helpo_api:latest helpo/helpo_api
+docker tag helpo_web:latest helpo/helpo_web:latest
 docker push helpo/helpo_web:latest
-docker push helpo/helpo_api:latest

@@ -148,6 +148,52 @@ class EmpresaProfileReadUpdateDeleteView(RetrieveUpdateAPIView):
     serializer_class = EmpresaProfileSerializer
     lookup_field = 'usuario'
 
+class VolunteerProfileCreateReadView(ListCreateAPIView):
+    """
+    API endpoint para crear o ver todos los perfiles de voluntarios
+    """
+    serializer_class = VolunteerProfileSerializer
+
+    def get_queryset(self):
+        queryset = VolunteerProfile.objects.all()
+        if self.tiene_filtros(self.request.query_params):
+            lista_voluntarios = self.get_voluntarios(self.request.query_params)
+            queryset = queryset.filter(id__in=lista_voluntarios)
+        queryset = queryset.order_by('id').reverse()
+        return queryset
+
+    def get_voluntarios(self, params):
+        voluntarios = []
+        queryset = VolunteerProfile.objects.all()
+        interests = params.get('interests', None)
+        if interests is not None:
+            interests = interests.split(',')
+            queryset = queryset.filter(interests__in=interests)
+            voluntarios += [v.id for v in queryset]
+        skills = params.get('skills', None)
+        if skills is not None:
+            skills = skills.split(',')
+            queryset = queryset.filter(skills__in=skills)
+            voluntarios += [v.id for v in queryset]
+        modalities = params.get('modalities', None)
+        if modalities is not None:
+            modalities = modalities.split(',')
+            queryset = queryset.filter(modality_id__in=modalities)
+            voluntarios += [v.id for v in queryset]
+        states = params.get('states', None)
+        if states is not None:
+            states = states.split(',')
+            with_states = queryset.filter(state_id__in=states)
+            voluntarios += [v.id for v in queryset]
+        return voluntarios
+
+    def tiene_filtros(self, params):
+        filtros = ['interests', 'skills', 'modalities', 'states']
+        for f in filtros:
+            if f in params:
+                return True
+        return False
+
 class VolunteerProfileReadUpdateDeleteView(RetrieveUpdateAPIView):	
     """	
     API endpoint para leer, actualizar o eliminar un perfil de voluntario	

@@ -86,7 +86,7 @@ class DefaultLayout extends Component {
             <DefaultAside />
           </AppAside>
         </div>
-        <AppFooter>
+        <AppFooter className="app-footer-auth">
           <DefaultFooter />
         </AppFooter>
       </div>

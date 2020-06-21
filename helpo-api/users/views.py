@@ -159,7 +159,7 @@ class VolunteerProfileCreateReadView(ListCreateAPIView):
         if self.tiene_filtros(self.request.query_params):
             lista_voluntarios = self.get_voluntarios(self.request.query_params)
             queryset = queryset.filter(id__in=lista_voluntarios)
-        queryset = queryset.order_by('id').reverse()[:50]
+        queryset = queryset.order_by('id').reverse()
         return queryset
 
     def get_voluntarios(self, params):

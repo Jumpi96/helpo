@@ -2,8 +2,8 @@ from collections import namedtuple
 from django.db.models import Sum
 from actividades.models import Evento, Necesidad, Colaboracion, Voluntario, Participacion, LogMensaje, Mensaje, Propuesta, Presencia, Entrega
 from common.notifications import send_mail_to_list, send_mail_to, send_mail_to_id_list, send_mail_to_id, send_push_notification_to_id_list
-from common.templates import render_participacion_email, render_cambio_evento_email, render_mensaje_evento, render_full_participacion_email, render_full_colaboracion_email, render_was_full_colaboracion_email, render_was_full_participacion_email, render_inicio_evento_email, render_fin_evento_email, render_creacion_evento_email, render_propuesta
-from users.models import User, Suscripcion
+from common.templates import render_participacion_email, render_cambio_evento_email, render_mensaje_evento, render_full_participacion_email, render_full_colaboracion_email, render_was_full_colaboracion_email, render_was_full_participacion_email, render_inicio_evento_email, render_fin_evento_email, render_creacion_evento_email, render_propuesta, render_ong_colaboracion_email, render_ong_participacion_email
+from users.models import User, Suscripcion, VolunteerProfile
 
 
 def send_mail_mensaje_evento(mensaje, evento_id):
@@ -78,6 +78,17 @@ def send_was_full_colaboracion_mail(necesidad_material):
     send_mail_to(organizacion_email, "Necesidad pendiente en Helpo",
                  render_was_full_colaboracion_email(necesidad_material))
 
+def send_ong_participacion_mail(necesidad_voluntario, participacion):
+    organizacion_email = necesidad_voluntario.evento.organizacion.email
+    profile = VolunteerProfile.objects.filter(usuario=participacion.colaborador)[0]
+    send_mail_to(organizacion_email, "Nueva participación en su evento en Helpo",
+                  render_ong_participacion_email(necesidad_voluntario, profile, participacion))
+
+def send_ong_colaboracion_mail(necesidad_material, colaboracion):
+    organizacion_email = necesidad_material.evento.organizacion.email
+    profile = VolunteerProfile.objects.filter(usuario=colaboracion.colaborador)[0]
+    send_mail_to(organizacion_email, "Nueva colaboración en su evento en Helpo",
+                 render_ong_colaboracion_email(necesidad_material, colaboracion, profile))
 
 def send_mail_creacion_evento(evento):
     """

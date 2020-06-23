@@ -76,7 +76,7 @@ class Home extends Component {
       let comoFunciona = this.state.showComoFunciona === 'ONG' ? imagenComoFuncionaONG : imagenComoFuncionaVoluntario;
       return (
         <Modal isOpen={this.state.showComoFunciona} className="modalComoFunciona">
-          <ModalHeader><span onClick={() => this.setState({ showComoFunciona: false })}>&times;</span></ModalHeader>
+          <ModalHeader><span class="close" onClick={() => this.setState({ showComoFunciona: false })}>&times;</span></ModalHeader>
           <ModalBody>
             <img id="myImg" class="modalContent" src={comoFunciona} />
             <div id="myModal" class="modal">

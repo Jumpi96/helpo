@@ -361,7 +361,7 @@ class Register extends Component {
                                 block
                                 onClick={() => this.handleUserTypeSelect("ong")}
                                 >
-                                <span>ONG</span>
+                                <span>Organización social</span>
                         </Button>
                       </Col>
                       {/*
@@ -377,7 +377,7 @@ class Register extends Component {
                       </Row>
                     </CardHeader>
                     <CardBody className="p-4">
-                      <h2>Registrar {user_type === "1" ? "ONG" : "voluntario" }</h2>
+                      <h2>Registrar {user_type === "1" ? "organización social" : "voluntario" }</h2>
                       {this.renderNameField()}
                       <InputGroup className="mb-3">
                         <InputGroupAddon addonType="prepend">

@@ -76,7 +76,7 @@ class Home extends Component {
       let comoFunciona = this.state.showComoFunciona === 'ONG' ? imagenComoFuncionaONG : imagenComoFuncionaVoluntario;
       return (
         <Modal isOpen={this.state.showComoFunciona} className="modalComoFunciona">
-          <ModalHeader><span class="close" onClick={() => this.setState({ showComoFunciona: false })}>&times;</span></ModalHeader>
+          <ModalHeader><span onClick={() => this.setState({ showComoFunciona: false })}>&times;</span></ModalHeader>
           <ModalBody>
             <img id="myImg" class="modalContent" src={comoFunciona} />
             <div id="myModal" class="modal">
@@ -134,7 +134,7 @@ class Home extends Component {
                 <Collapse isOpen={this.state.open2}>
                   <Card style={{ width: '100%', textAlign: 'center' }}>
                     <CardBody>
-                      <p>"Fomentar las actividades de voluntariado, facilitando la vinculación entre organizaciones sin fines de lucro y entidades públicas con voluntarios, a través de una plataforma de acceso público y gratuito."</p>
+                      <p>Fomentar las actividades de voluntariado, facilitando la vinculación entre organizaciones sin fines de lucro y entidades públicas con voluntarios, a través de una plataforma de acceso público y gratuito.</p>
                     </CardBody>
                   </Card>
                 </Collapse>
@@ -144,7 +144,7 @@ class Home extends Component {
                 <Collapse isOpen={this.state.open3}>
                   <Card style={{ width: '100%', textAlign: 'center' }}>
                     <CardBody>
-                      <p>"Ser la plataforma líder del país en soluciones de vinculación entre entidades y voluntarios, favoreciendo conexiones que trasciendan la vida comunitaria y la realidad sociocultural en la que se encuentran inmersas."</p>
+                      <p>Ser la plataforma líder del país en soluciones de vinculación entre entidades y voluntarios, favoreciendo conexiones que trasciendan la vida comunitaria y la realidad sociocultural en la que se encuentran inmersas.</p>
                     </CardBody>
                   </Card>
                 </Collapse>

@@ -433,7 +433,7 @@ class ModificarPerfilOrganizacion extends Component {
             </div>
 
             <div className='form-group'>
-              <p className='font-weight-bold col-md-3' htmlFor="ubicacion" style={{ textAlign: 'right' }}>Ubicación</p>
+              <p className='font-weight-bold col-md-3' htmlFor="ubicacion">Ubicación</p>
               <div className='col-md-9' style={{ marginBottom: '5px' }}>{this.renderUbicacion()}</div>
             </div>
             {this.renderErrorList()}

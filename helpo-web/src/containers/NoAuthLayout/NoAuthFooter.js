@@ -19,9 +19,10 @@ class NoAuthFooter extends Component {
         <Container>
           <Row className="py-4">
             <Col sm={{ size: 'auto', offset: 5 }}>
-              <a target="_blank" rel="noopener noreferrer" className="msn-ic" href="mailto:consultas@helpo.com.ar"><i style={{color:'white'}} className="fa fa-envelope-o fa-lg white-text mr-md-5 mr-3 fa-2x"> </i></a>                  
-              <a target="_blank" rel="noopener noreferrer" className="fb-ic" href="https://fb.me/helpo.oficial"><i style={{color:'white'}} className="fa fa-facebook fa-lg white-text mr-md-5 mr-3 fa-2x"> </i></a>
-              <a target="_blank" rel="noopener noreferrer" className="ins-ic" href="https://www.instagram.com/helpo.oficial/"><i style={{color:'white'}} className="fa fa-instagram fa-lg white-text mr-md-5 mr-3 fa-2x"> </i></a>
+              <a target="_blank" rel="noopener noreferrer" className="msn-ic" href="mailto:consultas@helpo.com.ar"><i style={{color:'white'}} className="fa fa-envelope-o fa-lg white-text mr-md-4 mr-3 fa-2x"> </i></a>                  
+              <a target="_blank" rel="noopener noreferrer" className="wsp-ic" href="https://api.whatsapp.com/send?phone=5493517507784&text=¡Hola%20Helpo!"><i style={{color:'white'}} className="fa fa-whatsapp fa-lg white-text mr-md-4 mr-3 fa-2x"> </i></a>                  
+              <a target="_blank" rel="noopener noreferrer" className="fb-ic" href="https://fb.me/helpo.oficial"><i style={{color:'white'}} className="fa fa-facebook fa-lg white-text mr-md-4 mr-3 fa-2x"> </i></a>
+              <a target="_blank" rel="noopener noreferrer" className="ins-ic" href="https://www.instagram.com/helpo.oficial/"><i style={{color:'white'}} className="fa fa-instagram fa-lg white-text mr-md-4 mr-3 fa-2x"> </i></a>
             </Col>
           </Row>
           <Row>

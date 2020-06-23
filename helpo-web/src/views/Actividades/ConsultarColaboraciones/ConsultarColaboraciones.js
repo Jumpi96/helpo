@@ -60,7 +60,7 @@ class ConsultarColaboracionConnected extends React.Component {
         return <p>Hubo un problema al querer guardar los datos, intentelo mas tarde</p>
       }
       else if (this.props.sentSuccess) {
-        return <p>Se guardaron los datos con exito</p>
+        return <p>Se guardaron los datos con éxito</p>
       }
       else {
         return <p> Aguarde unos segundos... </p>

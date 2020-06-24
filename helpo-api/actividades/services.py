@@ -78,17 +78,17 @@ def send_was_full_colaboracion_mail(necesidad_material):
     send_mail_to(organizacion_email, "Necesidad pendiente en Helpo",
                  render_was_full_colaboracion_email(necesidad_material))
 
-def send_ong_participacion_mail(necesidad_voluntario, participacion):
+def send_ong_participacion_mail(necesidad_voluntario, participacion, cancelada=False):
     organizacion_email = necesidad_voluntario.evento.organizacion.email
     profile = VolunteerProfile.objects.filter(usuario=participacion.colaborador)[0]
-    send_mail_to(organizacion_email, "Nueva participación en su evento en Helpo",
-                  render_ong_participacion_email(necesidad_voluntario, profile, participacion))
+    title = "Participación cancelada en su evento en Helpo" if cancelada else "Nueva participación en su evento en Helpo"
+    send_mail_to(organizacion_email, title, render_ong_participacion_email(necesidad_voluntario, profile, participacion, cancelada))
 
-def send_ong_colaboracion_mail(necesidad_material, colaboracion):
+def send_ong_colaboracion_mail(necesidad_material, colaboracion, cancelada=False):
     organizacion_email = necesidad_material.evento.organizacion.email
     profile = VolunteerProfile.objects.filter(usuario=colaboracion.colaborador)[0]
-    send_mail_to(organizacion_email, "Nueva colaboración en su evento en Helpo",
-                 render_ong_colaboracion_email(necesidad_material, colaboracion, profile))
+    title = "Colaboración cancelada en su evento en Helpo" if cancelada else "Nueva colaboración en su evento en Helpo"
+    send_mail_to(organizacion_email, title, render_ong_colaboracion_email(necesidad_material, colaboracion, profile, cancelada))
 
 def send_mail_creacion_evento(evento):
     """

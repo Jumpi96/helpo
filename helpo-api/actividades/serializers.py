@@ -2,7 +2,7 @@ from rest_framework import serializers
 from actividades.models import Evento, RubroEvento, Ubicacion, CategoriaRecurso, \
     Recurso, Necesidad, Contacto, Funcion, Voluntario, Participacion, Colaboracion, Comentario, Mensaje, EventoImagen, \
     Propuesta, Entrega, Presencia
-from actividades.services import send_mail_mensaje_evento, send_previous_mail_evento, response_propuesta, deny_propuesta, send_full_participacion_mail, send_full_colaboracion_mail, send_was_full_colaboracion_mail, send_ong_participacion_mail, send_ong_colaboracion_mail
+from actividades.services import send_mail_mensaje_evento, send_previous_mail_evento, response_propuesta, deny_propuesta, send_full_participacion_mail, send_full_colaboracion_mail, send_was_full_colaboracion_mail, send_ong_participacion_mail, send_ong_colaboracion_mail, send_ong_colaboracion_mail
 from users.serializers import UserSerializer, ColaboradorInfoSerializer
 from users.models import User
 
@@ -205,6 +205,7 @@ class ColaboracionSerializer(serializers.ModelSerializer):
         titulo_email = u"Usted ha modificado su colaboración en un Evento. Los nuevos datos son:"
         self.send_colaboracion_email(
             colaborador_id, evento, new_instance, titulo_email)
+        send_ong_colaboracion_mail(necesidad_material, new_instance)
         colaboraciones = Colaboracion.objects.filter(
             necesidad_material_id=necesidad_material.id)
         suma_colaboraciones = 0
@@ -224,6 +225,7 @@ class ColaboracionSerializer(serializers.ModelSerializer):
             titulo_email = u"Usted ha cancelado su colaboración en el siguiente Evento:"
             self.send_colaboracion_email(
                 colaborador_id, evento, colaboracion, titulo_email)
+            send_ong_colaboracion_mail(necesidad_material, colaboracion, True)
             colaboraciones = Colaboracion.objects.filter(
                 necesidad_material_id=necesidad_material.id)
             suma_colaboraciones = 0

@@ -474,7 +474,7 @@ class ParticipacionReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
         else:
             return Response(None, status=status.HTTP_404_NOT_FOUND)
         if participacion is not None:
-            from actividades.services import send_participacion_destroy_email, send_was_full_participacion_mail
+            from actividades.services import send_participacion_destroy_email, send_was_full_participacion_mail, send_ong_participacion_mail
             user = User.objects.get(id=get_token_user(self.request))
             if user.user_type != 3:
                 send_participacion_destroy_email(participacion)
@@ -484,6 +484,7 @@ class ParticipacionReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
             suma_participantes = 0
             for p in participaciones:
                 suma_participantes += p.cantidad
+            send_ong_participacion_mail(necesidad_voluntario, participacion, True)
             if suma_participantes == necesidad_voluntario.cantidad:
                 send_was_full_participacion_mail(necesidad_voluntario)
         return super().destroy(request, *args, **kwargs)

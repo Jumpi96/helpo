@@ -98,6 +98,26 @@ def render_was_full_colaboracion_email(necesidad_material):
     return render_mail('was-full-colaboracion-email.html', dict_context)
 
 
+def render_ong_participacion_email(necesidad_voluntario, voluntario, participacion, cancelada):
+    dict_context = dict(
+        necesidad=necesidad_voluntario,
+        voluntario=voluntario,
+        participacion=participacion
+    )
+    mail = 'was-ong-participacion-email.html' if cancelada else 'ong-participacion-email.html'
+    return render_mail(mail, dict_context)
+
+
+def render_ong_colaboracion_email(necesidad_material, colaboracion, colaborador, cancelada):
+    dict_context = dict(
+        necesidad=necesidad_material,
+        colaboracion=colaboracion,
+        colaborador=colaborador
+    )
+    mail = 'was-ong-colaboracion-email.html' if cancelada else 'ong-colaboracion-email.html'
+    return render_mail(mail, dict_context)
+
+
 def render_inicio_evento_email(evento):
     dict_context = dict(
         evento=evento,

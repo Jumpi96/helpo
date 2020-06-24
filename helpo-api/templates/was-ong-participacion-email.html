@@ -223,16 +223,18 @@
                       <tr>
                         <td align="left">
                           <div>
+                            <h2>Datos del voluntario</h2>
+                            <ul style="list-style-type:disc">
+                              <li>Nombre y apellido: {{voluntario.usuario.nombre}} {{voluntario.last_name}}</li>
+                              <li>Tel&oacute;fono: {{voluntario.phone}}</li>
+                              <li>Email: {{voluntario.usuario.email}}</li>
+                              <li>Comentario: {{participacion.comentario|default:"Sin comentarios."}}</li>
+                            </ul>
                             <h2>Datos de la necesidad</h2>
                             <ul style="list-style-type:disc">
                               <li>Funci&oacute;n: {{necesidad.funcion.nombre}}</li>
                               <li>Cantidad: {{necesidad.cantidad}}</li>
                               <li>Descripci&oacute;n: {{necesidad.descripcion|default:"Sin descripci&oacute;n"}}</li>
-                            </ul>
-                            <h2>Datos del voluntario</h2>
-                            <ul style="list-style-type:disc">
-                              <li>Nombre y apellido: {{voluntario.usuario.nombre}} {{voluntario.last_name}}</li>
-                              <li>Comentario: {{participacion.comentario|default:"Sin comentarios."}}</li>
                             </ul>
                             <h2>Datos de la actividad</h2>
                             <ul style="list-style-type:disc">

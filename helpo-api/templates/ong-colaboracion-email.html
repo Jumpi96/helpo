@@ -223,18 +223,20 @@
                       <tr>
                         <td align="left">
                           <div>
+                            <h2>Datos del colaborador</h2>
+                            <ul style="list-style-type:disc">
+                              <li>Nombre y apellido: {{colaborador.usuario.nombre}} {{colaborador.last_name}}</li>
+                              <li>Tel&eacute;fono: {{colaborador.phone}}</li>
+                              <li>Email: {{colaborador.usuario.email}}</li>
+                              <li>Cantidad: {{colaboracion.cantidad}}</li>
+                              <li>Comentario: {{colaboracion.comentario|default:"Sin comentarios."}}</li>
+                            </ul>
                             <h2>Datos de la necesidad</h2>
                             <ul style="list-style-type:disc">
                               <li>Categor&iacute;a: {{necesidad.recurso.categoria.nombre}}</li>
                               <li>Recurso: {{necesidad.recurso.nombre}}</li>
                               <li>Cantidad: {{necesidad.cantidad}}</li>
                               <li>Descripci&oacute;n: {{necesidad.descripcion|default:"Sin descripci&oacute;n"}}</li>
-                            </ul>
-                            <h2>Datos del colaborador</h2>
-                            <ul style="list-style-type:disc">
-                              <li>Nombre y apellido: {{colaborador.usuario.nombre}} {{colaborador.last_name}}</li>
-                              <li>Cantidad: {{colaboracion.cantidad}}</li>
-                              <li>Comentario: {{colaboracion.comentario|default:"Sin comentarios."}}</li>
                             </ul>
                             <h2>Datos de la actividad</h2>
                             <ul style="list-style-type:disc">

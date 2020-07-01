@@ -11,14 +11,16 @@ class VoluntariosList extends React.Component {
     this.state = {
       nombre: '',
       error: '',
-      voluntarios: []
+      voluntarios: [],
+      voluntariosTotal: 0
     };
     this.getLink = this.getLink.bind(this);
+    this.movePage = this.movePage.bind(this);
     this.loadVoluntarios = this.loadVoluntarios.bind(this);
   }
 
   componentDidMount() {
-    this.loadVoluntarios("");
+    this.loadVoluntarios("", 1);
   }
 
 
@@ -30,11 +32,18 @@ class VoluntariosList extends React.Component {
     return '/perfil/' + voluntario.usuario.id;
   }
 
-  loadVoluntarios(ruta) {
+  loadVoluntarios(ruta, page=1) {
     this.setState({ isLoading: true });
-    api.get('/perfiles/perfil_voluntario/' + ruta)
+    const limit = 10;
+    api.get('/perfiles/perfil_voluntario/?' + ruta + 'limit=' + limit + '&offset=' + ((page-1) * limit))
       .then((res) => {
-        this.setState({ voluntarios: res.data.data, isLoading: false });
+        this.setState({ 
+          voluntarios: res.data.data, 
+          voluntariosTotal: res.data.total, 
+          page: page, 
+          rutas: ruta,
+          isLoading: false 
+        });
       })
       .catch((error) => {
         if (error.response) { console.log(error.response.status) }
@@ -87,8 +96,26 @@ class VoluntariosList extends React.Component {
     return render;
   }
 
+  movePage(page) {
+    if (page > 0 && page <= (this.state.voluntariosTotal / 10) + 1) {
+      this.loadVoluntarios(this.state.rutas, page);
+    }
+  }
+
+  loadPages() {
+    let pages = [];
+    for (let i = 0; i < (this.state.voluntariosTotal / 10); i++) {
+      pages.push(
+        <li class={this.state.page === i + 1 ? "page-item active" : "page-item"}>
+          <a class="page-link" onClick={() => this.movePage(i + 1)}>{i + 1}</a>
+        </li>
+      );
+    }
+    return pages;
+  }
+
   render() {
-    const { voluntarios } = this.state;
+    let { voluntarios } = this.state;
     return (
       <div>
         <div className="row">
@@ -105,6 +132,17 @@ class VoluntariosList extends React.Component {
             </div>
           </div>
         }
+        <nav aria-label="...">
+          <ul class="pagination">
+            <li class="page-item">
+              <a class="page-link" onClick={() => this.movePage(this.state.page - 1)}>Anterior</a>
+            </li>
+            {this.loadPages()}
+            <li class="page-item">
+              <a class="page-link" onClick={() => this.movePage(this.state.page + 1)}>Posterior</a>
+            </li>
+          </ul>
+        </nav>
       </div >
     );
   }

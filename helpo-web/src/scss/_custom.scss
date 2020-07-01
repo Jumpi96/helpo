@@ -10727,3 +10727,8 @@ select.btn-mini + .caret {
     margin-left: -20px;
     margin-top: 9px;
 }
+
+.page-item.active .page-link {
+  background-color: #F39200;
+  border-color: #F39200;
+}

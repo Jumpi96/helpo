@@ -80,7 +80,7 @@ class VoluntariosFilter extends React.Component {
   }
 
   updatePath(selectedInterests, selectedModalities, selectedSkills, selectedStates, name) {
-    let ruta = '?';
+    let ruta = '';
     if (selectedInterests.length > 0) {
       ruta += 'interests=';
       selectedInterests.forEach(function (m) {
@@ -113,7 +113,6 @@ class VoluntariosFilter extends React.Component {
     if (name && name.length > 1) {
       ruta += 'name=' + name + '&';
     }
-    ruta = ruta[ruta.length - 1] === '&' ? ruta.substring(0, ruta.length - 1) : ruta;
     this.props.updatePath(ruta);
   }
 

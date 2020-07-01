@@ -33,7 +33,7 @@ class VoluntariosList extends React.Component {
   }
 
   buscarVoluntarios() {
-    const {voluntarios} = this.state;
+    const { voluntarios } = this.state;
     if (this.state.nombre !== '') {
       const voluntariosFiltrados = voluntarios.filter(voluntario => this.contieneNombre(voluntario));
       return voluntariosFiltrados;
@@ -62,6 +62,51 @@ class VoluntariosList extends React.Component {
       })
   }
 
+  renderVoluntarios(voluntarios) {
+    let render = [];
+    for (let i = 0; i < voluntarios.length; i += 2) {
+      const voluntario = voluntarios[i];
+      if (voluntarios.length > i + 1) {
+        const voluntarioDos = voluntarios[i + 1];
+        render.push(
+          <div className="row">
+            <Col md="6">
+              <VoluntarioCard
+                voluntario={voluntario}
+                key={voluntario.id} footer
+                color="primary" auth={this.props.auth}
+                link={this.getLink(voluntario)} // Ver que link va
+              />
+            </Col>
+            <Col md="6">
+              <VoluntarioCard
+                voluntario={voluntarioDos}
+                key={voluntarioDos.id} footer
+                color="primary" auth={this.props.auth}
+                link={this.getLink(voluntarioDos)} // Ver que link va
+              />
+            </Col>
+          </div >
+        )
+        console.log(render.length)
+      } else {
+        render.push(
+          <div className="row">
+            <Col md="6">
+              <VoluntarioCard
+                voluntario={voluntario}
+                key={voluntario.id} footer
+                color="primary" auth={this.props.auth}
+                link={this.getLink(voluntario)} // Ver que link va
+              />
+            </Col>
+          </div>
+        )
+      }
+    }
+    return render;
+  }
+
   render() {
     const voluntarios = this.buscarVoluntarios();
     return (
@@ -73,41 +118,14 @@ class VoluntariosList extends React.Component {
             />
           </CardBody>
         </div>
-        <div className="row">
-          <div className="form-group col-md-4">
-            <label for="nombre">Buscar un voluntario</label>
-            <input
-              type="text"
-              name="nombre"
-              className="form-control"
-              placeholder={"Ingrese el nombre de un voluntario"}
-              value={this.state.nombre}
-              onChange={this.handleInputChange}
-            />
-            <span style={{ color: 'red' }}>{this.state.error}</span>
+        {voluntarios.length > 0 ? this.renderVoluntarios(voluntarios) :
+          <div className="row">
+            <div className="form-group col-md-6 col-md-offset-3">
+              <label>&emsp;Todav&iacute;a no hay voluntarios registrados.</label>
+            </div>
           </div>
-          <div className="col-md-8">
-            {voluntarios.length > 0 ? voluntarios.map(voluntario =>
-              <Row>
-                <Col>
-                  <VoluntarioCard
-                    voluntario={voluntario}
-                    key={voluntario.id} footer
-                    color="primary" auth={this.props.auth}
-                    link={this.getLink(voluntario)} // Ver que link va
-                  />
-                </Col>
-              </Row>
-            ) :
-              <div className="row">
-                <div className="form-group col-md-6 col-md-offset-3">
-                  <label>&emsp;Todav&iacute;a no hay voluntarios registrados.</label>
-                </div>
-              </div>
-            }
-          </div>
-        </div>
-      </div>
+        }
+      </div >
     );
   }
 };

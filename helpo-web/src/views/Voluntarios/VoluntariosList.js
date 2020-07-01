@@ -34,7 +34,7 @@ class VoluntariosList extends React.Component {
     this.setState({ isLoading: true });
     api.get('/perfiles/perfil_voluntario/' + ruta)
       .then((res) => {
-        this.setState({ voluntarios: res.data, isLoading: false });
+        this.setState({ voluntarios: res.data.data, isLoading: false });
       })
       .catch((error) => {
         if (error.response) { console.log(error.response.status) }

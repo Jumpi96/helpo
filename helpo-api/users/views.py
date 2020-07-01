@@ -3,6 +3,7 @@ import decouple
 from rest_framework import generics, permissions, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from django.core import serializers
 from rest_framework.generics import ListCreateAPIView
 from rest_framework.generics import ListAPIView
 from rest_framework.generics import DestroyAPIView
@@ -155,6 +156,18 @@ class VolunteerProfileCreateReadView(ListCreateAPIView):
     API endpoint para crear o ver todos los perfiles de voluntarios
     """
     serializer_class = VolunteerProfileSerializer
+
+    def get(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        limit = request.query_params.get('limit', 10)
+        offset = request.query_params.get('offset', 0)
+        return Response({
+            'data': [VolunteerProfileSerializer(p).data for p in queryset[offset:offset+limit]],
+            'total': len(queryset),
+            'offset': offset,
+            'limit': limit
+        })
+
 
     def get_queryset(self):
         queryset = VolunteerProfile.objects.all()

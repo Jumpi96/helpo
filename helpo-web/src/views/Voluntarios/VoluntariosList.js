@@ -13,8 +13,6 @@ class VoluntariosList extends React.Component {
       error: '',
       voluntarios: []
     };
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.buscarVoluntarios = this.buscarVoluntarios.bind(this);
     this.getLink = this.getLink.bind(this);
     this.loadVoluntarios = this.loadVoluntarios.bind(this);
   }
@@ -23,23 +21,6 @@ class VoluntariosList extends React.Component {
     this.loadVoluntarios("");
   }
 
-  handleInputChange(event) {
-    const target = event.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
-    const name = target.name;
-    this.setState({
-      [name]: value
-    });
-  }
-
-  buscarVoluntarios() {
-    const { voluntarios } = this.state;
-    if (this.state.nombre !== '') {
-      const voluntariosFiltrados = voluntarios.filter(voluntario => this.contieneNombre(voluntario));
-      return voluntariosFiltrados;
-    }
-    return voluntarios;
-  }
 
   contieneNombre(voluntarios) {
     return voluntarios.usuario.nombre.toLowerCase().includes(this.state.nombre.toLowerCase())
@@ -87,8 +68,7 @@ class VoluntariosList extends React.Component {
               />
             </Col>
           </div >
-        )
-        console.log(render.length)
+        );
       } else {
         render.push(
           <div className="row">
@@ -108,7 +88,7 @@ class VoluntariosList extends React.Component {
   }
 
   render() {
-    const voluntarios = this.buscarVoluntarios();
+    const { voluntarios } = this.state;
     return (
       <div>
         <div className="row">

@@ -9,6 +9,8 @@ from rest_framework.generics import DestroyAPIView
 from rest_framework.generics import CreateAPIView
 from rest_framework.generics import RetrieveUpdateDestroyAPIView, RetrieveUpdateAPIView
 from knox.models import AuthToken
+from django.db.models import Value as V
+from django.db.models.functions import Concat
 from django.contrib.auth import get_user_model
 from users.models import OrganizationArea, RubroEmpresa, OrganizacionProfile, EmpresaProfile, AppValues, User, DeviceID, Suscripcion, VolunteerProfile, Skill, State, Modality
 from users.serializers import FacebookAuthSerializer, GoogleAuthSerializer, CreateUserSerializer, UserSerializer, LoginUserSerializer, ChangePasswordSerializer, ResetPasswordSerializer, OrganizationAreaSerializer, RubroEmpresaSerializer, OrganizacionProfileSerializer, EmpresaProfileSerializer, VerificationMailSerializer, SendVerificationEmailSerializer, VerificationSmsSerializer, AppValuesSerializer, DeviceIDSerializer, SuscripcionSerializer, SuscripcionSerializerLista, VolunteerProfileSerializer, SkillSerializer, StateSerializer, ModalitySerializer
@@ -163,32 +165,32 @@ class VolunteerProfileCreateReadView(ListCreateAPIView):
         return queryset
 
     def get_voluntarios(self, params):
-        voluntarios = []
         queryset = VolunteerProfile.objects.all()
         interests = params.get('interests', None)
         if interests is not None:
             interests = interests.split(',')
             queryset = queryset.filter(interests__in=interests)
-            voluntarios += [v.id for v in queryset]
         skills = params.get('skills', None)
         if skills is not None:
             skills = skills.split(',')
             queryset = queryset.filter(skills__in=skills)
-            voluntarios += [v.id for v in queryset]
         modalities = params.get('modalities', None)
         if modalities is not None:
             modalities = modalities.split(',')
             queryset = queryset.filter(modality_id__in=modalities)
-            voluntarios += [v.id for v in queryset]
         states = params.get('states', None)
         if states is not None:
             states = states.split(',')
-            with_states = queryset.filter(state_id__in=states)
-            voluntarios += [v.id for v in queryset]
-        return voluntarios
+            queryset = queryset.filter(state_id__in=states)
+        name = params.get('name', None)
+        if name is not None:
+            queryset = queryset \
+                .annotate(full_name=Concat('usuario__nombre', V(' '), 'last_name')) \
+                .filter(full_name__icontains=name)
+        return queryset
 
     def tiene_filtros(self, params):
-        filtros = ['interests', 'skills', 'modalities', 'states']
+        filtros = ['interests', 'skills', 'modalities', 'states', 'name']
         for f in filtros:
             if f in params:
                 return True

@@ -227,6 +227,10 @@ class VolunteerProfile(Profile):
     modality = models.ForeignKey(Modality, null=True)
     interests = models.ManyToManyField(OrganizationArea)
     skills = models.ManyToManyField(Skill)
+
+    @property
+    def full_name(self):
+        return self.usuario.nombre + ' ' + self.last_name
     
 
 class UserVerification(IndexedTimeStampedModel):

@@ -1,8 +1,6 @@
 import React from 'react';
-import { Col, Row, Modal, ModalBody, ModalHeader, ModalFooter } from 'reactstrap';
-import LocationPicker from 'react-location-picker';
+import { Col, Row } from 'reactstrap';
 import Select from 'react-select';
-import moment from 'moment';
 import api from '../../api.js';
 
 class VoluntariosFilter extends React.Component {
@@ -17,9 +15,11 @@ class VoluntariosFilter extends React.Component {
       optionsStates: [],
       optionsSkills: [],
       optionsModalities: [],
-      optionsInterests: []
+      optionsInterests: [],
+      name: ''
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handleSearchChange = this.handleSearchChange.bind(this)
   }
 
   componentDidMount() {
@@ -61,16 +61,25 @@ class VoluntariosFilter extends React.Component {
 
   handleChange(key, selected) {
     this.setState({ [key]: selected });
-    const { selectedStates, selectedSkills, selectedModalities, selectedInterests } = this.state;
+    const { selectedStates, selectedSkills, selectedModalities, selectedInterests, name } = this.state;
     this.updatePath(
       key == "selectedInterests" ? selected : selectedInterests,
       key == "selectedModalities" ? selected : selectedModalities,
       key == "selectedSkills" ? selected : selectedSkills,
-      key == "selectedStates" ? selected : selectedStates
+      key == "selectedStates" ? selected : selectedStates,
+      name
     );
   }
 
-  updatePath(selectedInterests, selectedModalities, selectedSkills, selectedStates) {
+  handleSearchChange(event) {
+    const target = event.target;
+    const value = target.value;
+    this.setState({ name: value });
+    const { selectedStates, selectedSkills, selectedModalities, selectedInterests } = this.state;
+    this.updatePath(selectedInterests, selectedModalities, selectedSkills, selectedStates, value);
+  }
+
+  updatePath(selectedInterests, selectedModalities, selectedSkills, selectedStates, name) {
     let ruta = '?';
     if (selectedInterests.length > 0) {
       ruta += 'interests=';
@@ -100,6 +109,9 @@ class VoluntariosFilter extends React.Component {
         ruta += f.value + ',';
       });
       ruta = ruta.substring(0, ruta.length - 1) + '&';
+    }
+    if (name) {
+      ruta += 'name=' + name + '&';
     }
     ruta = ruta[ruta.length - 1] === '&' ? ruta.substring(0, ruta.length - 1) : ruta;
     this.props.updatePath(ruta);
@@ -156,8 +168,8 @@ class VoluntariosFilter extends React.Component {
               name="nombre"
               className="form-control"
               placeholder={"Ingrese el nombre"}
-              value={this.state.nombre}
-              onChange={this.handleInputChange}
+              value={this.state.name}
+              onChange={this.handleSearchChange}
             />
             <span style={{ color: 'red' }}>{this.state.error}</span>
           </Col>

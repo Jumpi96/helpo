@@ -110,7 +110,7 @@ class VoluntariosFilter extends React.Component {
       });
       ruta = ruta.substring(0, ruta.length - 1) + '&';
     }
-    if (name) {
+    if (name && name.length > 1) {
       ruta += 'name=' + name + '&';
     }
     ruta = ruta[ruta.length - 1] === '&' ? ruta.substring(0, ruta.length - 1) : ruta;

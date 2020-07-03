@@ -170,15 +170,14 @@ class VolunteerProfileCreateReadView(ListCreateAPIView):
 
 
     def get_queryset(self):
-        queryset = VolunteerProfile.objects.all()
+        queryset = VolunteerProfile.objects.filter(usuario__is_confirmed=True)
         if self.tiene_filtros(self.request.query_params):
-            lista_voluntarios = self.get_voluntarios(self.request.query_params)
+            lista_voluntarios = self.get_voluntarios(self.request.query_params, queryset)
             queryset = queryset.filter(id__in=lista_voluntarios)
         queryset = queryset.order_by('id').reverse()
         return queryset
 
-    def get_voluntarios(self, params):
-        queryset = VolunteerProfile.objects.all()
+    def get_voluntarios(self, params, queryset):
         interests = params.get('interests', None)
         if interests is not None:
             interests = interests.split(',')

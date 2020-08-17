@@ -33,6 +33,13 @@ services:
     depends_on:
       - db
       - api
+      - facade
+  facade:
+    build: helpo-facade/.
+    ports:
+    - "3001:3000"
+    volumes:
+      - ./helpo-facade/src:/usr/src/app/src
   pgadmin:
     image: thajeztah/pgadmin4
     volumes:

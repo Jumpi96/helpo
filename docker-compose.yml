@@ -27,19 +27,19 @@ services:
     env_file:
       - helpo-web/.env
     ports:
-    - "3000:3000"
+    - "3001:3000"
     volumes:
       - ./helpo-web/src:/usr/src/app/src
     depends_on:
       - db
       - api
-      - facade
-  facade:
-    build: helpo-facade/.
-    ports:
-    - "3001:3000"
-    volumes:
-      - ./helpo-facade/src:/usr/src/app/src
+  #    - facade
+  #facade:
+  #  build: helpo-facade/.
+  #  ports:
+  #  - "3001:3000"
+  #  volumes:
+  #    - ./helpo-facade/src:/usr/src/app/src
   pgadmin:
     image: thajeztah/pgadmin4
     volumes:

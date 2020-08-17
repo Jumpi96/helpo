@@ -2,6 +2,7 @@ import React from "react";
 import tw from "twin.macro";
 import styled from "styled-components";
 import { css } from "styled-components/macro"; //eslint-disable-line
+import { createUrl } from "../../helpers/RoutingHelper";
 
 import Header, { NavLink, NavLinks, PrimaryLink, LogoLink, NavToggle, DesktopNavLinks } from "../headers/light.js";
 import PageImageSrc from "../../images/fondo1.jpg";
@@ -51,18 +52,18 @@ export default () => {
       <NavLink href="#">
         Inicio
       </NavLink>
-      <NavLink href="#">
+      <NavLink href={createUrl("/#/noAuth/organizaciones")}>
         Organizaciones
       </NavLink>
-      <NavLink href="#">
+      <NavLink href={createUrl("/#/noAuth/actividades/consultar-eventos")}>
         Actividades sociales
       </NavLink>
     </NavLinks>,
     <NavLinks key={2}>
-      <PrimaryLink href="/#">
+      <PrimaryLink href={createUrl("/#/login")}>
         Iniciar sesión
       </PrimaryLink>
-      <PrimaryLink href="/#">
+      <PrimaryLink href={createUrl("/#/register")}>
         Registrarse
       </PrimaryLink>
     </NavLinks>

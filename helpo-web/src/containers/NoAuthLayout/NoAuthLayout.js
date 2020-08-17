@@ -10,6 +10,7 @@ import {
 import NoAuthFooter from './NoAuthFooter';
 import NoAuthHeader from './NoAuthHeader';
 
+import createFacadeUrl from '../../utils/AppsRouterHelper';
 import { connect } from "react-redux";
 import routes from '../../routesNoAuth';
 import {auth} from "../../../src/actions";
@@ -36,7 +37,10 @@ class NoAuthLayout extends Component {
                         : (null);
                     },
                   )}
-                  <Redirect from="/noAuth/" to="/noAuth/dashboard" />
+                  <Route path="/noAuth" name="Home" component={() => { 
+                      window.location.href = createFacadeUrl(""); 
+                      return null;
+                  }}/>
                 </Switch>
               </Container>
             </main>

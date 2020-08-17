@@ -132,7 +132,7 @@ class UserManager(BaseUserManager):
 
         mail_from = settings.REGISTER_EMAIL
         subject = "Verifique su registro en Helpo"
-        url_confirmation = '%s/#/confirmMail/%s' % (config('URL_CLIENT', default='localhost:3000'), bash)
+        url_confirmation = '%s/#/confirmMail/%s' % (config('URL_CLIENT', default='localhost:3001'), bash)
         from common.templates import render_verify_email
         content = render_verify_email(url_confirmation)
 

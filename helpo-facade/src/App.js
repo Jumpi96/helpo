@@ -2,6 +2,7 @@ import "tailwindcss/dist/base.css";
 import "styles/globalStyles.css";
 import React from "react";
 import { css } from "styled-components/macro"; //eslint-disable-line
+import { isAuthenticated, createUrl } from './helpers/RoutingHelper';
 
 /*
  * This is the entry point component of this project. You can change the below exported default App component to any of
@@ -109,20 +110,33 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 export default function App() {
   // return <AnimationRevealPage disabled></AnimationRevealPage>;
+  let routes;
+  if (!isAuthenticated()) {
+    routes = (
+      /*
+      <Route path="/components/:type/:subtype/:name">
+        <ComponentRenderer />
+      </Route>
+      <Route path="/components/:type/:name">
+        <ComponentRenderer />
+      </Route>
+      */
+      <Route path="/">
+        <HomeNoAuth />
+      </Route>
+    );
+  } else {
+    routes = (
+      <Route path="/" name="App" component={() => {
+        window.location.href = createUrl("");
+        return null;
+      }} />
+    );
+  }
   return (
     <Router>
       <Switch>
-        {/*
-        <Route path="/components/:type/:subtype/:name">
-          <ComponentRenderer />
-        </Route>
-        <Route path="/components/:type/:name">
-          <ComponentRenderer />
-        </Route>
-        */}
-        <Route path="/">
-          <HomeNoAuth />
-        </Route>
+        {routes}
       </Switch>
     </Router>
   );

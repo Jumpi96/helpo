@@ -14,6 +14,5 @@ export default () => (
     <Features />
     <MainFeature />
     <Footer />
-    {this.renderModal()}
   </AnimationRevealPage>
 );

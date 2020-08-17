@@ -82,7 +82,9 @@ export default () => {
               <br />
               <SlantedBackground>en Helpo.</SlantedBackground>
             </Heading>
-            <PrimaryAction>Colaborá como voluntario</PrimaryAction>
+            <PrimaryAction href={createUrl("/#/noAuth/comoFunciona/voluntario")}>>
+              Colaborá como voluntario
+            </PrimaryAction>
           </LeftColumn>
         </TwoColumn>
       </HeroContainer>

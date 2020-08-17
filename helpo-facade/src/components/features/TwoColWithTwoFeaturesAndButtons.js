@@ -7,6 +7,7 @@ import { PrimaryButton as PrimaryButtonBase } from "components/misc/Buttons.js";
 import { ReactComponent as UserIcon } from "feather-icons/dist/icons/user.svg";
 import { ReactComponent as MaximizeIcon } from "feather-icons/dist/icons/maximize-2.svg";
 import TeamIllustrationSrc from "images/team-illustration-2.svg";
+import { createUrl } from "../../helpers/RoutingHelper";
 
 const Container = tw.div`relative`;
 const TwoColumn = tw.div`flex flex-col md:flex-row justify-between max-w-screen-xl mx-auto py-20 md:py-24`;
@@ -54,7 +55,7 @@ export default ({
   ),
   description = "",
   primaryButtonText = "Colaborá como ONG",
-  primaryButtonUrl = "https://timerse.com",
+  primaryButtonUrl = createUrl("/#/noAuth/comoFunciona/ONG"),
   features = null,
   textOnLeft = true
 }) => {

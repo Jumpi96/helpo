@@ -75,3 +75,6 @@ helpo-api/logs/
 
 # Serialized objects
 *.pkl
+
+# Building web
+build/

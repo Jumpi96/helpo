@@ -38,6 +38,7 @@ RUN npm run build
 FROM nginx:alpine
 COPY --from=0 /usr/src/facade/build /usr/share/nginx/html/facade
 COPY --from=0 /usr/src/app/build /usr/share/nginx/html/app
+COPY --from=0 /usr/share/nginx/html/app/static /usr/share/nginx/html/facade/static
 COPY helpo-web/nginx-staging.conf /etc/nginx/nginx.conf
 
 EXPOSE 80

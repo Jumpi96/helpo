@@ -60,10 +60,10 @@ export default () => {
       </NavLink>
     </NavLinks>,
     <NavLinks key={2}>
-      <PrimaryLink href={createUrl("/#/login")}>
+      <NavLink href={createUrl("/#/login")} tw="lg:ml-12!">
         Iniciar sesión
-      </PrimaryLink>
-      <PrimaryLink href={createUrl("/#/register")}>
+      </NavLink>
+      <PrimaryLink css={roundedHeaderButton && tw`rounded-full`} href={createUrl("/#/register")}>
         Registrarse
       </PrimaryLink>
     </NavLinks>

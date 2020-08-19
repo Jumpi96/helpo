@@ -63,7 +63,7 @@ export default () => {
       <NavLink href={createUrl("/#/login")} tw="lg:ml-12!">
         Iniciar sesión
       </NavLink>
-      <PrimaryLink css={roundedHeaderButton && tw`rounded-full`} href={createUrl("/#/register")}>
+      <PrimaryLink css={tw`rounded-full`} href={createUrl("/#/register")}>
         Registrarse
       </PrimaryLink>
     </NavLinks>
@@ -82,8 +82,10 @@ export default () => {
               <br />
               <SlantedBackground>en Helpo.</SlantedBackground>
             </Heading>
-            <PrimaryAction href={createUrl("/#/noAuth/comoFunciona/voluntario")}>>
-              Colaborá como voluntario
+            <PrimaryAction>
+              <a href={createUrl("/#/noAuth/comoFunciona/voluntario")}>
+                > Colaborá como voluntario
+              </a>
             </PrimaryAction>
           </LeftColumn>
         </TwoColumn>

@@ -76,15 +76,20 @@ export default () => {
         <StyledHeader links={navLinks} />
         <TwoColumn>
           <LeftColumn>
-            <Notification>Sumá tu ONG y sé parte de Helpo.</Notification>
+            <Notification>Enlazando voluntades.</Notification>
             <Heading>
-              <span>Ayudá como voluntario</span>
+              <span>Ayudá a tu comunidad</span>
               <br />
               <SlantedBackground>en Helpo.</SlantedBackground>
             </Heading>
             <PrimaryAction>
-              <a href={createUrl("/#/noAuth/comoFunciona/voluntario")}>
+              <a href={createUrl("/#/register/voluntario")}>
                 > Colaborá como voluntario
+              </a>
+            </PrimaryAction>
+            <PrimaryAction>
+            <a href={createUrl("/#/register/organizacion")}>
+                > Colaborá como organización social
               </a>
             </PrimaryAction>
           </LeftColumn>

@@ -18,7 +18,6 @@ class Register extends Component {
     this.state = {
       nombre: "",
       apellido: "",
-      user_type: "2",
       email: "",
       password: "",
       repeat: "",
@@ -31,7 +30,8 @@ class Register extends Component {
       showModalRegistro: false,
       modalType: 'success',
       tyc: false,
-      mayor: false
+      mayor: false,
+      user_type: props.match.params.userType == "organizacion" ? "1" : "2" 
     }
     this.handleUserTypeSelect = this.handleUserTypeSelect.bind(this);
     this.handleTyC = this.handleTyC.bind(this);

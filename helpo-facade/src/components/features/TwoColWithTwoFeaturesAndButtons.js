@@ -47,7 +47,7 @@ const FeatureDescription = tw.div`mt-1 text-sm`;
 const PrimaryButton = tw(PrimaryButtonBase)`mt-8 md:mt-10 text-sm inline-block mx-auto md:mx-0`;
 
 export default ({
-  subheading = "Empatía",
+  subheading = "",
   heading = (
     <>
       Hacemos Helpo <span tw="text-primary-500">para</span> otros.
@@ -67,6 +67,11 @@ export default ({
    */
   const defaultFeatures = [
     {
+      Icon: MaximizeIcon,
+      title: "Empatía",
+      description: "Trabajamos para lograr una sociedad más justa y homogénea."
+    },
+    {
       Icon: UserIcon,
       title: "Co-Elaboración",
       description: "No es suficiente hacer para otros, sino especialmente con otros."
@@ -75,7 +80,7 @@ export default ({
       Icon: MaximizeIcon,
       title: "Impacto social",
       description: "Trabajamos para lograr una sociedad más justa y homogénea."
-    }
+    }    
   ];
 
   if (!features) features = defaultFeatures;

@@ -49,9 +49,6 @@ const PrimaryAction = tw.button`px-8 py-3 mt-10 text-sm sm:text-base sm:mt-16 sm
 export default () => {
   const navLinks = [
     <NavLinks key={1}>
-      <NavLink href="#">
-        Inicio
-      </NavLink>
       <NavLink href={createUrl("/#/noAuth/organizaciones")}>
         Organizaciones
       </NavLink>

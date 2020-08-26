@@ -69,17 +69,17 @@ export default ({
     {
       Icon: MaximizeIcon,
       title: "Empatía",
-      description: "Trabajamos para lograr una sociedad más justa y homogénea."
+      description: "Hacemos en comunidad para cumplir con nuestra misión."
     },
     {
       Icon: UserIcon,
       title: "Co-Elaboración",
-      description: "No es suficiente hacer para otros, sino especialmente con otros."
+      description: "No es suficiente hacer para otros sino con otros."
     },
     {
       Icon: MaximizeIcon,
       title: "Impacto social",
-      description: "Trabajamos para lograr una sociedad más justa y homogénea."
+      description: "Trabajamos para lograr una sociedad más justa e igualitaria."
     }    
   ];
 

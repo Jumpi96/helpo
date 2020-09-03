@@ -60,7 +60,7 @@ export default () => {
       <NavLink href={createUrl("/#/login")} tw="lg:ml-12!">
         Iniciar sesión
       </NavLink>
-      <PrimaryLink css={tw`rounded-full`} href={createUrl("/#/register")}>
+      <PrimaryLink css={tw`rounded-full`} href={createUrl("/#/register/voluntario")}>
         Registrarse
       </PrimaryLink>
     </NavLinks>

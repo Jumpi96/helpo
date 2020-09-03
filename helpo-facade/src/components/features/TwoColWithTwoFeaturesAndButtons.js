@@ -4,8 +4,9 @@ import styled from "styled-components";
 import { css } from "styled-components/macro"; //eslint-disable-line
 import { SectionHeading, Subheading as SubheadingBase } from "components/misc/Headings.js";
 import { PrimaryButton as PrimaryButtonBase } from "components/misc/Buttons.js";
-import { ReactComponent as UserIcon } from "feather-icons/dist/icons/user.svg";
-import { ReactComponent as MaximizeIcon } from "feather-icons/dist/icons/maximize-2.svg";
+import { ReactComponent as UsersIcon } from "feather-icons/dist/icons/users.svg";
+import { ReactComponent as RefreshCwIcon } from "feather-icons/dist/icons/refresh-cw.svg";
+import { ReactComponent as ThumbsUpIcon } from "feather-icons/dist/icons/thumbs-up.svg";
 import TeamIllustrationSrc from "images/team-illustration-2.svg";
 import { createUrl } from "../../helpers/RoutingHelper";
 
@@ -67,17 +68,17 @@ export default ({
    */
   const defaultFeatures = [
     {
-      Icon: MaximizeIcon,
+      Icon: UsersIcon,
       title: "Empatía",
       description: "Hacemos en comunidad para cumplir con nuestra misión."
     },
     {
-      Icon: UserIcon,
+      Icon: RefreshCwIcon,
       title: "Co-Elaboración",
       description: "No es suficiente hacer para otros sino con otros."
     },
     {
-      Icon: MaximizeIcon,
+      Icon: ThumbsUpIcon,
       title: "Impacto social",
       description: "Trabajamos para lograr una sociedad más justa e igualitaria."
     }    

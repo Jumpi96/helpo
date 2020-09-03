@@ -9,9 +9,9 @@ import defaultCardImage from "../../images/shield-icon.svg";
 
 import { ReactComponent as SvgDecoratorBlob3 } from "../../images/svg-decorator-blob-3.svg";
 
-import ShieldIconImage from "../../images/shield-icon.svg";
-import FastIconImage from "../../images/fast-icon.svg";
-import SimpleIconImage from "../../images/simple-icon.svg";
+import SmileIcon from "feather-icons/dist/icons/smile.svg";
+import TrendingUpIcon from "feather-icons/dist/icons/trending-up.svg";
+import EyeIcon from "feather-icons/dist/icons/eye.svg";
 
 const Container = tw.div`relative`;
 
@@ -61,17 +61,17 @@ export default () => {
 
   const cards = [
     {
-      imageSrc: SimpleIconImage,
+      imageSrc: SmileIcon,
       title: "Nosotros",
       description: "Somos un grupo de jóvenes emprendedores independientes que decidimos combinar nuestras habilidades para crear una plataforma, que genere lazos entre diferentes actores de la comunidad para contribuir a construir una sociedad más justa y homogénea."
     },
     { 
-      imageSrc: FastIconImage, 
+      imageSrc: TrendingUpIcon, 
       title: "Misión",
       description: "Fomentar las actividades de voluntariado, facilitando la vinculación entre organizaciones sin fines de lucro y entidades públicas con voluntarios, a través de una plataforma de acceso público y gratuito." 
     },
     { 
-      imageSrc: ShieldIconImage, 
+      imageSrc: EyeIcon, 
       title: "Visión",
       description: "Ser la plataforma líder del país en soluciones de vinculación entre entidades y voluntarios, favoreciendo conexiones que trasciendan la vida comunitaria y la realidad sociocultural en la que se encuentran inmersas." 
     },

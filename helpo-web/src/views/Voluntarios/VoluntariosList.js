@@ -11,35 +11,18 @@ class VoluntariosList extends React.Component {
     this.state = {
       nombre: '',
       error: '',
-      voluntarios: []
+      voluntarios: [],
+      voluntariosTotal: 0
     };
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.buscarVoluntarios = this.buscarVoluntarios.bind(this);
     this.getLink = this.getLink.bind(this);
+    this.movePage = this.movePage.bind(this);
     this.loadVoluntarios = this.loadVoluntarios.bind(this);
   }
 
   componentDidMount() {
-    this.loadVoluntarios("");
+    this.loadVoluntarios("", 1);
   }
 
-  handleInputChange(event) {
-    const target = event.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
-    const name = target.name;
-    this.setState({
-      [name]: value
-    });
-  }
-
-  buscarVoluntarios() {
-    const {voluntarios} = this.state;
-    if (this.state.nombre !== '') {
-      const voluntariosFiltrados = voluntarios.filter(voluntario => this.contieneNombre(voluntario));
-      return voluntariosFiltrados;
-    }
-    return voluntarios;
-  }
 
   contieneNombre(voluntarios) {
     return voluntarios.usuario.nombre.toLowerCase().includes(this.state.nombre.toLowerCase())
@@ -49,11 +32,18 @@ class VoluntariosList extends React.Component {
     return '/perfil/' + voluntario.usuario.id;
   }
 
-  loadVoluntarios(ruta) {
+  loadVoluntarios(ruta, page=1) {
     this.setState({ isLoading: true });
-    api.get('/perfiles/perfil_voluntario/' + ruta)
+    const limit = 10;
+    api.get('/perfiles/perfil_voluntario/?' + ruta + 'limit=' + limit + '&offset=' + ((page-1) * limit))
       .then((res) => {
-        this.setState({ voluntarios: res.data, isLoading: false });
+        this.setState({ 
+          voluntarios: res.data.data, 
+          voluntariosTotal: res.data.total, 
+          page: page, 
+          rutas: ruta,
+          isLoading: false 
+        });
       })
       .catch((error) => {
         if (error.response) { console.log(error.response.status) }
@@ -62,8 +52,70 @@ class VoluntariosList extends React.Component {
       })
   }
 
+  renderVoluntarios(voluntarios) {
+    let render = [];
+    for (let i = 0; i < voluntarios.length; i += 2) {
+      const voluntario = voluntarios[i];
+      if (voluntarios.length > i + 1) {
+        const voluntarioDos = voluntarios[i + 1];
+        render.push(
+          <div className="row">
+            <Col md="6">
+              <VoluntarioCard
+                voluntario={voluntario}
+                key={voluntario.id} footer
+                color="primary" auth={this.props.auth}
+                link={this.getLink(voluntario)} // Ver que link va
+              />
+            </Col>
+            <Col md="6">
+              <VoluntarioCard
+                voluntario={voluntarioDos}
+                key={voluntarioDos.id} footer
+                color="primary" auth={this.props.auth}
+                link={this.getLink(voluntarioDos)} // Ver que link va
+              />
+            </Col>
+          </div >
+        );
+      } else {
+        render.push(
+          <div className="row">
+            <Col md="6">
+              <VoluntarioCard
+                voluntario={voluntario}
+                key={voluntario.id} footer
+                color="primary" auth={this.props.auth}
+                link={this.getLink(voluntario)} // Ver que link va
+              />
+            </Col>
+          </div>
+        )
+      }
+    }
+    return render;
+  }
+
+  movePage(page) {
+    if (page > 0 && page <= (this.state.voluntariosTotal / 10) + 1) {
+      this.loadVoluntarios(this.state.rutas, page);
+    }
+  }
+
+  loadPages() {
+    let pages = [];
+    for (let i = 0; i < (this.state.voluntariosTotal / 10); i++) {
+      pages.push(
+        <li class={this.state.page === i + 1 ? "page-item active" : "page-item"}>
+          <a class="page-link" onClick={() => this.movePage(i + 1)}>{i + 1}</a>
+        </li>
+      );
+    }
+    return pages;
+  }
+
   render() {
-    const voluntarios = this.buscarVoluntarios();
+    let { voluntarios } = this.state;
     return (
       <div>
         <div className="row">
@@ -73,41 +125,25 @@ class VoluntariosList extends React.Component {
             />
           </CardBody>
         </div>
-        <div className="row">
-          <div className="form-group col-md-4">
-            <label for="nombre">Buscar un voluntario</label>
-            <input
-              type="text"
-              name="nombre"
-              className="form-control"
-              placeholder={"Ingrese el nombre de un voluntario"}
-              value={this.state.nombre}
-              onChange={this.handleInputChange}
-            />
-            <span style={{ color: 'red' }}>{this.state.error}</span>
+        {voluntarios.length > 0 ? this.renderVoluntarios(voluntarios) :
+          <div className="row">
+            <div className="form-group col-md-6 col-md-offset-3">
+              <label>&emsp;Todav&iacute;a no hay voluntarios registrados.</label>
+            </div>
           </div>
-          <div className="col-md-8">
-            {voluntarios.length > 0 ? voluntarios.map(voluntario =>
-              <Row>
-                <Col>
-                  <VoluntarioCard
-                    voluntario={voluntario}
-                    key={voluntario.id} footer
-                    color="primary" auth={this.props.auth}
-                    link={this.getLink(voluntario)} // Ver que link va
-                  />
-                </Col>
-              </Row>
-            ) :
-              <div className="row">
-                <div className="form-group col-md-6 col-md-offset-3">
-                  <label>&emsp;Todav&iacute;a no hay voluntarios registrados.</label>
-                </div>
-              </div>
-            }
-          </div>
-        </div>
-      </div>
+        }
+        <nav aria-label="...">
+          <ul class="pagination">
+            <li class="page-item">
+              <a class="page-link" onClick={() => this.movePage(this.state.page - 1)}>Anterior</a>
+            </li>
+            {this.loadPages()}
+            <li class="page-item">
+              <a class="page-link" onClick={() => this.movePage(this.state.page + 1)}>Posterior</a>
+            </li>
+          </ul>
+        </nav>
+      </div >
     );
   }
 };

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Row, CardBody } from 'reactstrap';
+import { Col, CardBody } from 'reactstrap';
 import VoluntarioCard from './VoluntarioCard';
 import VoluntariosFilter from './VoluntariosFilter';
 import api from '../../api';

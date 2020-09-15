@@ -89,7 +89,7 @@ class ConsultarPerfilOrganizacion extends Component {
   }
 
   renderList(selectedRubros, options) {
-    if (selectedRubros.length == 0) {
+    if (selectedRubros.length === 0) {
       return <p className='text-muted'> No hay valor ingresado</p>
     }
     let optionsToRender = [];

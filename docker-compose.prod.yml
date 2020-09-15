@@ -23,7 +23,7 @@ services:
       - db
   web:
     build:
-      context: helpo-web/.
+      context: .
       dockerfile: prod.Dockerfile
     restart: always
     env_file:

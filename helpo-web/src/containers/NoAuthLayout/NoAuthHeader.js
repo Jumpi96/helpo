@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { AppNavbarBrand } from '@coreui/react';
 import logo from '../../assets/img/brand/logo.svg'
 import sygnet from '../../assets/img/brand/sygnet.svg'
+import createFacadeUrl from "../../utils/AppsRouterHelper.js";
 
 const propTypes = {
   children: PropTypes.node,
@@ -27,7 +28,7 @@ class NoAuthHeader extends Component {
         />
         <Nav className="d-md-down-none" navbar>
           <NavItem className="px-3">
-            <NavLink href="#noAuth/dashboard">Inicio</NavLink>
+            <NavLink href={createFacadeUrl("")}>Inicio</NavLink>
           </NavItem>
           <NavItem className="px-3">
             <NavLink href="#noAuth/organizaciones">Organizaciones</NavLink>

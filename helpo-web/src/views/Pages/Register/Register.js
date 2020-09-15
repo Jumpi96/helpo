@@ -7,9 +7,12 @@ import ModalRegistroExitoso from './ModalRegistroExitoso';
 import './Register.css';
 import logo from '../../../assets/img/brand/logo_principal.svg';
 import GoogleLogin from 'react-google-login';
+import imagenComoFuncionaVoluntario from "../../../assets/img/home-como-funciona-converted.jpg";
+import imagenComoFuncionaONG from "../../../assets/img/home-como-funciona-ong-converted.jpg";
+import { Modal, ModalBody, ModalHeader } from 'reactstrap';
 // import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
 import { auth } from "../../../actions";
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 
 
 class Register extends Component {
@@ -18,7 +21,6 @@ class Register extends Component {
     this.state = {
       nombre: "",
       apellido: "",
-      user_type: "2",
       email: "",
       password: "",
       repeat: "",
@@ -31,7 +33,9 @@ class Register extends Component {
       showModalRegistro: false,
       modalType: 'success',
       tyc: false,
-      mayor: false
+      mayor: false,
+      user_type: props.match.params.userType == "organizacion" ? "1" : "2",
+      showComoFunciona: false
     }
     this.handleUserTypeSelect = this.handleUserTypeSelect.bind(this);
     this.handleTyC = this.handleTyC.bind(this);
@@ -317,6 +321,23 @@ class Register extends Component {
     this.setState({ mayor: checked })
   }
 
+  renderModal() {
+    if (this.state.showComoFunciona) {
+      let comoFunciona = this.state.user_type === "1" ? imagenComoFuncionaONG : imagenComoFuncionaVoluntario;
+      return (
+        <Modal isOpen={comoFunciona} className="modalComoFunciona">
+          <ModalHeader><span class="close" onClick={() => this.setState({showComoFunciona: false})}>&times;</span></ModalHeader>
+          <ModalBody>
+            <img id="myImg" class="modalContent" src={comoFunciona} />
+            <div id="myModal" class="modal">
+              <img class="modal-content" id="img01" />
+            </div>
+          </ModalBody>
+        </Modal>
+      );
+    }
+  }
+
   render() {
     const user_type = this.state.user_type;
     const responseGoogle = (response) => {
@@ -377,6 +398,9 @@ class Register extends Component {
                       </Row>
                     </CardHeader>
                     <CardBody className="p-4">
+                      <div class="alert alert-warning" role="alert" align='justify'>
+                      <a style={{cursor: 'pointer'}} onClick={() => this.setState({showComoFunciona: true})}><b>¿Cómo funciona Helpo?</b> Haz click para descubrirlo.</a>
+                      </div>
                       <h2>Registrar {user_type === "1" ? "organización social" : "voluntario" }</h2>
                       {this.renderNameField()}
                       <InputGroup className="mb-3">
@@ -429,6 +453,7 @@ class Register extends Component {
                       <Button color="primary" onClick={() => this.onSubmitData()} block>Crear cuenta</Button>
                       <br />
                       {this.renderErrorList()}
+                      {this.renderModal()}
                     </CardBody>
                     <CardFooter style={{ textAlign: 'center' }}>
                       {/* <FacebookLogin

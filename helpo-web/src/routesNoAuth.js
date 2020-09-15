@@ -45,6 +45,11 @@ const Dashboard = Loadable({
 const AlbumImagenes = Loadable({
   loader: () => import('./views/Actividades/ConsultarEventos/AlbumImagenes/AlbumImagenes'),
   loading: Loading,
+});
+
+const ComoFuncionaPage = Loadable({
+  loader: () => import('./views/Home/ComoFuncionaPage'),
+  loading: Loading,
 })
 
 
@@ -58,6 +63,7 @@ const routes = [
   { path: '/noAuth/actividades/consultar-eventos', name: 'Consultar actividades sociales', component: ConsultarEventosPage },
   { path: '/noAuth/actividades/consultar-evento/', name: 'Consultar actividad social', component: ConsultarEventosView },
   { path: '/noAuth/actividades/album/:eventoId', name: 'Album de Evento', component: AlbumImagenes },
+  { path: '/noAuth/comoFunciona/:userType', name: 'Cómo funciona Helpo', component: ComoFuncionaPage },
   { path: '/noAuth/empresas', name: 'Empresas', component: EmpresasPage },
   
 ];

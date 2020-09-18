@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { Row, Col, Collapse, CarouselCaption, CarouselControl, CarouselIndicators, CarouselItem, Carousel, Card, Button, CardBody, Modal, ModalBody, ModalHeader } from 'reactstrap';
+import { Card, CardBody, Modal, ModalBody, ModalHeader } from 'reactstrap';
 import './ComoFuncionaPage.css';
 import imagenComoFuncionaVoluntario from "../../assets/img/home-como-funciona-converted.jpg";
 import imagenComoFuncionaONG from "../../assets/img/home-como-funciona-ong-converted.jpg";
-import createFacadeUrl from '../../utils/AppsRouterHelper';
 import { Redirect } from 'react-router-dom';
 
 

@@ -6,6 +6,7 @@ import logo from "../../images/helpo.svg";
 import { ReactComponent as FacebookIcon } from "../../images/facebook-icon.svg";
 import { ReactComponent as WhatsAppIcon } from "../../images/whatsapp-icon.svg";
 import { ReactComponent as InstagramIcon } from "../../images/instagram-icon.svg";
+import { ReactComponent as MediumIcon } from "../../images/medium-icon.svg";
 import { ReactComponent as MailIcon } from "feather-icons/dist/icons/mail.svg";
 
 
@@ -37,16 +38,19 @@ export default () => {
             <LogoText>Helpo</LogoText>
           </LogoContainer>
           <SocialLinksContainer>
-            <SocialLink href="https://fb.me/helpo.oficial">
+            <SocialLink href="https://fb.me/helpo.oficial" target="_blank">
               <FacebookIcon />
             </SocialLink>
-            <SocialLink href="https://api.whatsapp.com/send?phone=5493517507784&text=¡Hola%20Helpo!">
+            <SocialLink href="https://api.whatsapp.com/send?phone=5493517507784&text=¡Hola%20Helpo!" target="_blank">
               <WhatsAppIcon />
             </SocialLink>
-            <SocialLink href="https://www.instagram.com/helpo.oficial">
+            <SocialLink href="https://www.instagram.com/helpo.oficial" target="_blank">
               <InstagramIcon />
             </SocialLink>
-            <SocialLink href="mailto:consultas@helpo.com.ar">
+            <SocialLink href="https://medium.com/@helpo" target="_blank">
+              <MediumIcon />
+            </SocialLink>
+            <SocialLink href="mailto:consultas@helpo.com.ar" target="_blank">
               <MailIcon />
             </SocialLink>
           </SocialLinksContainer>

@@ -12,7 +12,7 @@ import imagenComoFuncionaONG from "../../../assets/img/home-como-funciona-ong-co
 import { Modal, ModalBody, ModalHeader } from 'reactstrap';
 // import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
 import { auth } from "../../../actions";
-import { Redirect, Link } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
 
 class Register extends Component {
@@ -34,7 +34,7 @@ class Register extends Component {
       modalType: 'success',
       tyc: false,
       mayor: false,
-      user_type: props.match.params.userType == "organizacion" ? "1" : "2",
+      user_type: props.match.params.userType === "organizacion" ? "1" : "2",
       showComoFunciona: false
     }
     this.handleUserTypeSelect = this.handleUserTypeSelect.bind(this);

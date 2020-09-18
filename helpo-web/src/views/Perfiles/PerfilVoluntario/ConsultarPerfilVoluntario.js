@@ -59,7 +59,7 @@ class ConsultarPerfilVoluntario extends Component {
   }
 
   renderList(selectedInterests, options) {
-    if (selectedInterests.length == 0) {
+    if (selectedInterests.length === 0) {
       return <p className='text-muted'> No hay valor ingresado</p>
     }
     let optionsToRender = [];
@@ -111,7 +111,7 @@ class ConsultarPerfilVoluntario extends Component {
   }
 
   renderTextValue(inputData) {
-    if (inputData == "") {
+    if (inputData === "") {
       return <p className='text-muted'> No hay valor ingresado</p>
     }
     return <p> {inputData}</p>

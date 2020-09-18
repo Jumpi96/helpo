@@ -51,7 +51,7 @@ export default ({
   subheading = "",
   heading = (
     <>
-      Hacemos Helpo <span tw="text-primary-500">para</span> otros.
+      Hacemos Helpo <span tw="text-primary-500">para</span> otros y <span tw="text-primary-500">con</span> otros.
     </>
   ),
   description = "",
@@ -70,12 +70,12 @@ export default ({
     {
       Icon: UsersIcon,
       title: "Empatía",
-      description: "Hacemos en comunidad para cumplir con nuestra misión."
+      description: "Helpo nace desde la capacidad de ponerse en el lugar de los demás."
     },
     {
       Icon: RefreshCwIcon,
       title: "Co-Elaboración",
-      description: "No es suficiente hacer para otros sino con otros."
+      description: "Es fundamental la participación activa de diversos actores sociales."
     },
     {
       Icon: ThumbsUpIcon,

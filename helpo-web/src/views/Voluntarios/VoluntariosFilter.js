@@ -63,10 +63,10 @@ class VoluntariosFilter extends React.Component {
     this.setState({ [key]: selected });
     const { selectedStates, selectedSkills, selectedModalities, selectedInterests, name } = this.state;
     this.updatePath(
-      key == "selectedInterests" ? selected : selectedInterests,
-      key == "selectedModalities" ? selected : selectedModalities,
-      key == "selectedSkills" ? selected : selectedSkills,
-      key == "selectedStates" ? selected : selectedStates,
+      key === "selectedInterests" ? selected : selectedInterests,
+      key === "selectedModalities" ? selected : selectedModalities,
+      key === "selectedSkills" ? selected : selectedSkills,
+      key === "selectedStates" ? selected : selectedStates,
       name
     );
   }

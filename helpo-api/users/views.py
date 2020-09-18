@@ -159,7 +159,7 @@ class VolunteerProfileCreateReadView(ListCreateAPIView):
 
     def get(self, request, *args, **kwargs):
         queryset = self.get_queryset()
-        limit = min(int(request.query_params.get('limit', 10), 1000)
+        limit = min(int(request.query_params.get('limit', 10), 1000))
         offset = int(request.query_params.get('offset', 0))
         return Response({
             'data': [VolunteerProfileSerializer(p).data for p in queryset[offset:offset+limit]],

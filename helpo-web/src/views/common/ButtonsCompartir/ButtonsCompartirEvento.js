@@ -15,7 +15,7 @@ class ButtonsCompartirEvento extends Component {
                         // Facebook
                     }
                     <a target="_blank" rel="noopener noreferrer"
-                        href={"https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.helpo.com.ar%2F%23%2F" +
+                        href={"https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fapp.helpo.com.ar%2F%23%2F" +
                             "redirect%2Fevento%3Fid%3D" + evento.id}>
                         <img src={facebook} alt="Compartir en Facebook" width="40" height="40" facebook-share-dialog="true" />
                     </a>
@@ -24,14 +24,14 @@ class ButtonsCompartirEvento extends Component {
                     }
                     <a target="_blank" rel="noopener noreferrer"
                         href={"http://twitter.com/share?text=Sumate%20a%20este%20evento%20en%20Helpo%3A%20" + evento.nombre +
-                            "&url=https%3A%2F%2Fwww.helpo.com.ar%2F%23%2Fredirect%2Fevento%3Fid%3D" + evento.id + "&hashtags=Helpo"}>
+                            "&url=https%3A%2F%2Fapp.helpo.com.ar%2F%23%2Fredirect%2Fevento%3Fid%3D" + evento.id + "&hashtags=Helpo"}>
                         <img src={twitter} alt="Compartir en Twitter" width="40" height="40" />
                     </a>
                     {
                         // LinkedIn
                     }
                     <a target="_blank" rel="noopener noreferrer"
-                        href={"https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fwww.helpo.com.ar%2F%23%2Fredirect%2Fevento%3Fid%3D" +
+                        href={"https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fapp.helpo.com.ar%2F%23%2Fredirect%2Fevento%3Fid%3D" +
                             evento.id + "&summary=Sumate%20a%20este%20evento%20en%20Helpo%3A%20" + evento.nombre + "&source=Helpo"}>
                         <img src={linkedin} alt="Compartir en LinkedIn" width="40" height="40" />
                     </a>

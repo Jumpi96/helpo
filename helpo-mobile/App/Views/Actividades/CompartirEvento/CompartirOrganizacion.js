@@ -20,7 +20,7 @@ class CompartirOrganizacion extends Component {
           <TouchableHighlight onPress={() => {
             // Facebook
             var url = "https://www.facebook.com/sharer/sharer.php?u=" +
-              "https%3A%2F%2Fwww.helpo.com.ar%2F%23%2Fredirect%2Fong%3Fid%3D" + ong.id;
+              "https%3A%2F%2Fapp.helpo.com.ar%2F%23%2Fredirect%2Fong%3Fid%3D" + ong.id;
             Linking.openURL(url);
           }}>
             <Image
@@ -31,7 +31,7 @@ class CompartirOrganizacion extends Component {
           <TouchableHighlight onPress={() => {
             // Twitter
             var url = "http://twitter.com/share?text=Sumate%20a%20los%20eventos%20de%20" + ong.nombre + "%20en%20Helpo"
-              + "&url=https%3A%2F%2Fwww.helpo.com.ar%2F%23%2Fredirect%2Fong%3Fid%3D" +
+              + "&url=https%3A%2F%2Fapp.helpo.com.ar%2F%23%2Fredirect%2Fong%3Fid%3D" +
               ong.id + "&hashtags=Helpo";
             Linking.openURL(url);
           }}>
@@ -42,7 +42,7 @@ class CompartirOrganizacion extends Component {
           </TouchableHighlight>
           <TouchableHighlight onPress={() => {
             // Google+
-            var url = "https://plus.google.com/share?url=https%3A%2F%2Fwww.helpo.com.ar%2F%23%2Fredirect%2Fong%3Fid%3D" + ong.id;
+            var url = "https://plus.google.com/share?url=https%3A%2F%2Fapp.helpo.com.ar%2F%23%2Fredirect%2Fong%3Fid%3D" + ong.id;
             Linking.openURL(url);
           }}>
             <Image
@@ -52,7 +52,7 @@ class CompartirOrganizacion extends Component {
           </TouchableHighlight>
           <TouchableHighlight onPress={() => {
             // LinkedIn
-            var url = "https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fwww.helpo.com.ar%2F%23%2Fredirect%2Fong%3Fid%3D" +
+            var url = "https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fapp.helpo.com.ar%2F%23%2Fredirect%2Fong%3Fid%3D" +
               ong.id + "&summary=Sumate%20a%20los%20eventos%20de%20" + ong.nombre + "%20en%20Helpo" + "&source=Helpo";
             Linking.openURL(url);
           }}>

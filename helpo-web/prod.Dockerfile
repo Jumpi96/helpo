@@ -39,7 +39,7 @@ FROM nginx:alpine
 COPY --from=0 /usr/src/facade/build /usr/share/nginx/html/facade
 COPY --from=0 /usr/src/app/build /usr/share/nginx/html/app
 RUN cp -r /usr/share/nginx/html/app/static/* /usr/share/nginx/html/facade/static
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY helpo-web/nginx.conf /etc/nginx/nginx.conf
 
 EXPOSE 80
 

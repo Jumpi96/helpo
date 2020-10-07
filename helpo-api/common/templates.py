@@ -30,7 +30,7 @@ def render_participacion_email(participacion, titulo_email):
 def render_creacion_evento_email(evento):
     dict_context = dict(
         evento=evento,
-        action_url="https://www.helpo.com.ar/#/redirect/evento?id=" +
+        action_url="https://app.helpo.com.ar/#/redirect/evento?id=" +
         str(evento.id)
     )
     return render_mail('creacion-evento-email.html', dict_context)
@@ -121,7 +121,7 @@ def render_ong_colaboracion_email(necesidad_material, colaboracion, colaborador,
 def render_inicio_evento_email(evento):
     dict_context = dict(
         evento=evento,
-        action_url="https://www.helpo.com.ar/#/redirect/evento?id=" +
+        action_url="https://app.helpo.com.ar/#/redirect/evento?id=" +
         str(evento.id)
     )
     return render_mail('inicio-evento-email.html', dict_context)
@@ -130,7 +130,7 @@ def render_inicio_evento_email(evento):
 def render_fin_evento_email(evento):
     dict_context = dict(
         evento=evento,
-        action_url="https://www.helpo.com.ar/#/redirect/evento?id=" +
+        action_url="https://app.helpo.com.ar/#/redirect/evento?id=" +
         str(evento.id)
     )
     return render_mail('fin-evento-email.html', dict_context)

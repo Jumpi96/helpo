@@ -24,7 +24,7 @@ services:
   web:
     build:
       context: .
-      dockerfile: staging.Dockerfile
+      dockerfile: helpo-web/staging.Dockerfile
     restart: always
     env_file:
       - helpo-web/.env

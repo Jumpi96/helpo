@@ -339,7 +339,6 @@ class Register extends Component {
   }
 
   render() {
-    console.log(this.state)
     const user_type = this.state.user_type;
     const responseGoogle = (response) => {
       if (response && response.profileObj) {

@@ -101,25 +101,7 @@ class Register extends Component {
   }
 
   renderModal() {
-    if (this.state.showModalRegistro) {
-      if (this.state.modalType === "success") {
-        return (
-          <ModalRegistroExitoso
-            title='¡Se ha registrado exitosamente en Helpo!'
-            body='Revise su correo para activar su cuenta'
-            onCancel={() => this.props.history.push('dashboard')}
-          />)
-      }
-      else {
-        return (
-          <ModalRegistroExitoso
-            title='Error al registrarse en Helpo'
-            body='Ya existe un usuario con ese mail'
-            onCancel={() => { this.setState({ showModalRegistro: false }) }}
-          />
-        )
-      }
-    }
+    
   }
 
   showModalRegistro() {
@@ -335,6 +317,24 @@ class Register extends Component {
           </ModalBody>
         </Modal>
       );
+    } else if (this.state.showModalRegistro) {
+      if (this.state.modalType === "success") {
+        return (
+          <ModalRegistroExitoso
+            title='¡Se ha registrado exitosamente en Helpo!'
+            body='Revise su correo para activar su cuenta'
+            onCancel={() => this.props.history.push('/dashboard')}
+          />)
+      }
+      else {
+        return (
+          <ModalRegistroExitoso
+            title='Error al registrarse en Helpo'
+            body='Ya existe un usuario con ese mail'
+            onCancel={() => { this.setState({ showModalRegistro: false }) }}
+          />
+        )
+      }
     }
   }
 
@@ -453,7 +453,6 @@ class Register extends Component {
                       <Button color="primary" onClick={() => this.onSubmitData()} block>Crear cuenta</Button>
                       <br />
                       {this.renderErrorList()}
-                      {this.renderModal()}
                     </CardBody>
                     <CardFooter style={{ textAlign: 'center' }}>
                       {/* <FacebookLogin

@@ -101,25 +101,7 @@ class Register extends Component {
   }
 
   renderModal() {
-    if (this.state.showModalRegistro) {
-      if (this.state.modalType === "success") {
-        return (
-          <ModalRegistroExitoso
-            title='¡Se ha registrado exitosamente en Helpo!'
-            body='Revise su correo para activar su cuenta'
-            onCancel={() => this.props.history.push('dashboard')}
-          />)
-      }
-      else {
-        return (
-          <ModalRegistroExitoso
-            title='Error al registrarse en Helpo'
-            body='Ya existe un usuario con ese mail'
-            onCancel={() => { this.setState({ showModalRegistro: false }) }}
-          />
-        )
-      }
-    }
+    
   }
 
   showModalRegistro() {
@@ -335,10 +317,29 @@ class Register extends Component {
           </ModalBody>
         </Modal>
       );
+    } else if (this.state.showModalRegistro) {
+      if (this.state.modalType === "success") {
+        return (
+          <ModalRegistroExitoso
+            title='¡Se ha registrado exitosamente en Helpo!'
+            body='Revise su correo para activar su cuenta'
+            onCancel={() => this.props.history.push('/dashboard')}
+          />)
+      }
+      else {
+        return (
+          <ModalRegistroExitoso
+            title='Error al registrarse en Helpo'
+            body='Ya existe un usuario con ese mail'
+            onCancel={() => { this.setState({ showModalRegistro: false }) }}
+          />
+        )
+      }
     }
   }
 
   render() {
+    console.log(this.state)
     const user_type = this.state.user_type;
     const responseGoogle = (response) => {
       if (response && response.profileObj) {
@@ -453,7 +454,6 @@ class Register extends Component {
                       <Button color="primary" onClick={() => this.onSubmitData()} block>Crear cuenta</Button>
                       <br />
                       {this.renderErrorList()}
-                      {this.renderModal()}
                     </CardBody>
                     <CardFooter style={{ textAlign: 'center' }}>
                       {/* <FacebookLogin

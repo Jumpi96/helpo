@@ -247,7 +247,7 @@ class Login extends Component {
                     <div>
                       <h1>Registrarse</h1>
                       <p>¿No estás registrado todavía en <strong>Helpo</strong>?</p>
-                      <Button onClick={() => this.props.history.push('register')}
+                      <Button onClick={() => this.props.history.push('register/voluntario')}
                         color="primary">¡Regístrate!</Button>
                     </div>
                     <br />

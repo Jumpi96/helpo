@@ -68,7 +68,8 @@ class Register extends Component {
         )
         .catch(
           res => {
-            if (res.status !== 200) {
+            console.log(res);
+            if (res.response && res.response.status === 400) {
               this.setState({
                 showModalRegistro: true,
                 modalType: 'failure',
@@ -76,7 +77,6 @@ class Register extends Component {
             }
           }
         )
-      // this.props.history.push('dashboard')
     }
   }
 
@@ -100,9 +100,6 @@ class Register extends Component {
     this.props.loginFacebook(nombre, email, password, user_type, apellido, id_token);
   }
 
-  renderModal() {
-    
-  }
 
   showModalRegistro() {
     this.setState({
@@ -326,7 +323,7 @@ class Register extends Component {
             onCancel={() => this.props.history.push('/dashboard')}
           />)
       }
-      else {
+      else if (this.state.modalType === "failure") {
         return (
           <ModalRegistroExitoso
             title='Error al registrarse en Helpo'
